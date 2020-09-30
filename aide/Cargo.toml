@@ -1,21 +1,28 @@
 [package]
 name = "aide"
 version = "0.1.0"
-authors = ["tamasf97"]
+authors = ["tamasfe"]
 edition = "2018"
+keywords = ["api", "spec", "specification"]
+license = "MIT"
+repository = "https://github.com/tamasfe/aide"
+description = "An API documentation library"
 
 [dependencies]
 actix-web = { version = "3", optional = true }
-aide-macros = { path = "../aide-macros" }
+aide-macros = { path = "../aide-macros", version = "0.1.0" }
 askama = { version = "0.10", optional = true }
 linkme = "0.2"
-schemars = { git = "https://github.com/tamasfe/schemars.git", branch = "master", features = ["impl_json_schema"] }
+schemars = { package = "tamasfe-schemars", version = "0.8.0", features = ["impl_json_schema"] }
 serde = "1"
 serde_json = "1"
 
 [dev-dependencies]
 actix-web = "3"
 anyhow = "1"
+
+[package.metadata.docs.rs]
+all-features = true
 
 [features]
 default = ["openapi-v3", "actix", "ui-redoc"]

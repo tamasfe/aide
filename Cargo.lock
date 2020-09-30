@@ -327,9 +327,9 @@ dependencies = [
  "anyhow",
  "askama",
  "linkme",
- "schemars",
  "serde",
  "serde_json",
+ "tamasfe-schemars",
 ]
 
 [[package]]
@@ -1391,28 +1391,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "71d301d4193d031abdd79ff7e3dd721168a9572ef3fe51a1517aba235bd8f86e"
 
 [[package]]
-name = "schemars"
-version = "0.8.0"
-source = "git+https://github.com/tamasfe/schemars.git?branch=master#d49a5f736fd1756150692f5904d7f198a26a9f57"
-dependencies = [
- "dyn-clone",
- "schemars_derive",
- "serde",
- "serde_json",
-]
-
-[[package]]
-name = "schemars_derive"
-version = "0.8.0"
-source = "git+https://github.com/tamasfe/schemars.git?branch=master#d49a5f736fd1756150692f5904d7f198a26a9f57"
-dependencies = [
- "proc-macro2",
- "quote",
- "serde_derive_internals",
- "syn",
-]
-
-[[package]]
 name = "scopeguard"
 version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1607,6 +1585,30 @@ dependencies = [
  "proc-macro2",
  "quote",
  "unicode-xid",
+]
+
+[[package]]
+name = "tamasfe-schemars"
+version = "0.8.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e83600d6762e52a7eee76963f8ad599386669f61972830be74438018c5cee55b"
+dependencies = [
+ "dyn-clone",
+ "serde",
+ "serde_json",
+ "tamasfe-schemars_derive",
+]
+
+[[package]]
+name = "tamasfe-schemars_derive"
+version = "0.8.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9b65ddc7b4e59ede0cb1df1d92291bdf4fff1fe133d4923ddcc9dddd8b00ab10"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "serde_derive_internals",
+ "syn",
 ]
 
 [[package]]

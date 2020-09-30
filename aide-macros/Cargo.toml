@@ -1,8 +1,10 @@
 [package]
 name = "aide-macros"
 version = "0.1.0"
-authors = ["tamasf97"]
+authors = ["tamasfe"]
 edition = "2018"
+license = "MIT"
+description = "Macros for the Aide library"
 
 [lib]
 proc-macro = true
@@ -13,7 +15,7 @@ proc-macro-error = "1.0"
 proc-macro2 = "1"
 quote = "1"
 regex = "1"
-syn = "1"
+syn = { version = "1", features = ["full", "extra-traits"] }
 titlecase = "1.1"
 uuid = { version = "0.8", features = ["v4"] }
 
