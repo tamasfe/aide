@@ -1,0 +1,22 @@
+[package]
+name = "aide-macros"
+version = "0.1.0"
+authors = ["tamasf97"]
+edition = "2018"
+
+[lib]
+proc-macro = true
+
+[dependencies]
+heck = "0.3"
+proc-macro-error = "1.0"
+proc-macro2 = "1"
+quote = "1"
+regex = "1"
+syn = "1"
+titlecase = "1.1"
+uuid = { version = "0.8", features = ["v4"] }
+
+[features]
+default = ["warn-as-error"]
+warn-as-error = []
