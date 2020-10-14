@@ -43,3 +43,20 @@ pub fn openapi_v3_api(_args: TokenStream, input: TokenStream) -> TokenStream {
         _ => abort!(Span::call_site(), "unsupported item"),
     }
 }
+
+#[proc_macro_error]
+#[proc_macro]
+pub fn openapi_v3_define_operation(input: TokenStream) -> TokenStream {
+    let item = parse_macro_input!(input as Item);
+    match item {
+        Item::Enum(_) | Item::Struct(_) => {
+            let model = Model::from_item(item).unwrap_or_else(|e| abort!(e));
+            (quote!(#model)).into()
+        }
+        Item::Fn(_) => {
+            let op = Operation::from_item(item).unwrap_or_else(|e| abort!(e));
+            (quote!(#op)).into()
+        }
+        _ => abort!(Span::call_site(), "unsupported item"),
+    }
+}

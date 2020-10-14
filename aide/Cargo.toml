@@ -1,6 +1,6 @@
 [package]
 name = "aide"
-version = "0.1.0"
+version = "0.1.2"
 authors = ["tamasfe"]
 edition = "2018"
 keywords = ["api", "spec", "specification"]
@@ -30,6 +30,13 @@ default = ["openapi-v3", "actix", "ui-redoc"]
 actix = ["actix-web"]
 openapi-v3 = []
 ui-redoc = ["askama"]
+
+chrono = ["schemars/chrono"]
+time = ["schemars/time"]
+indexmap = ["schemars/indexmap"]
+uuid = ["schemars/uuid"]
+smallvec = ["schemars/smallvec"]
+arrayvec = ["schemars/arrayvec"]
 
 [[example]]
 name = "actix"
