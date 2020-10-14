@@ -74,7 +74,8 @@ impl ReDoc {
     /// If a local document is set, it is also served.
     #[cfg(feature = "actix")]
     pub fn actix_service(self, path: &str) -> Resource {
-        let p = Path::new(path).join("/{tail:.*}");
+        let p = path.trim_end_matches('/').to_string() + "{tail:.*}";
+
         const REDOC_STANDALONE: &str = include_str!("../../../assets/redoc/redoc.standalone.js");
 
         let spec_url = self.url.unwrap_or_else(|| "api.json".to_string());
@@ -86,32 +87,38 @@ impl ReDoc {
         .render()
         .unwrap();
 
-        web::resource(p.to_str().unwrap()).route(web::get().to(
-            move |req: HttpRequest| -> HttpResponse {
-                match req.match_info().get("tail") {
-                    Some(p) => {
-                        if p == "" || p == "/" || p == "index" || p == "index.html" {
-                            HttpResponse::Ok()
-                                .content_type("text/html;charset=utf-8")
-                                .body(redoc_html.clone())
-                        } else if p == &spec_url.clone() {
-                            HttpResponse::Ok()
-                                .content_type("application/json;charset=utf-8")
-                                .body(spec_json.clone().unwrap())
-                        } else if p == "redoc.standalone.js" {
-                            HttpResponse::Ok()
-                                .content_type("text/javascript;charset=utf-8")
-                                .body(REDOC_STANDALONE)
-                        } else {
-                            HttpResponse::NotFound().finish()
-                        }
+        web::resource(&p).route(web::get().to(move |req: HttpRequest| -> HttpResponse {
+            match req.match_info().get("tail") {
+                Some(p) => {
+                    if p == "" || p == "/" || p == "index" || p == "index.html" {
+                        HttpResponse::Ok()
+                            .content_type("text/html;charset=utf-8")
+                            .body(redoc_html.clone())
+                    } else if p == "/".to_string() + &spec_url {
+                        HttpResponse::Ok()
+                            .content_type("application/json;charset=utf-8")
+                            .body(spec_json.clone().unwrap())
+                    } else if p == "/redoc.standalone.js" {
+                        HttpResponse::Ok()
+                            .content_type("text/javascript;charset=utf-8")
+                            .body(REDOC_STANDALONE)
+                    } else {
+                        HttpResponse::NotFound().finish()
                     }
-                    None => HttpResponse::Ok()
-                        .content_type("text/html")
-                        .body(redoc_html.clone()),
                 }
-            },
-        ))
+                None => {
+                    if !req.uri().path().ends_with('/') {
+                        return HttpResponse::MovedPermanently()
+                            .set_header("LOCATION", req.uri().path().to_string() + "/")
+                            .finish();
+                    } else {
+                        HttpResponse::Ok()
+                            .content_type("text/html")
+                            .body(redoc_html.clone())
+                    }
+                }
+            }
+        }))
     }
 
     fn check_external_url(&self) {
