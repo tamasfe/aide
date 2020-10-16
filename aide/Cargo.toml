@@ -10,7 +10,7 @@ description = "An API documentation library"
 
 [dependencies]
 actix-web = { version = "3", optional = true }
-aide-macros = { path = "../aide-macros", version = "0.1.1" }
+aide-macros = { path = "../aide-macros", version = "0.1.2" }
 askama = { version = "0.10", optional = true }
 linkme = "0.2"
 schemars = { package = "tamasfe-schemars", version = "0.8", features = ["impl_json_schema"] }
