@@ -228,7 +228,7 @@ impl Operation {
 
         if arg_bindings.path.is_some()
             || arg_bindings.query.is_some()
-            || arg_bindings.path.is_some()
+            || arg_bindings.body.is_some()
         {
             bindings.push(arg_bindings);
         }
