@@ -1,5 +1,3 @@
-use std::path::Path;
-
 #[cfg(feature = "actix")]
 use actix_web::{web, HttpRequest, HttpResponse, Resource};
 
@@ -91,9 +89,15 @@ impl ReDoc {
             match req.match_info().get("tail") {
                 Some(p) => {
                     if p == "" || p == "/" || p == "index" || p == "index.html" {
-                        HttpResponse::Ok()
-                            .content_type("text/html;charset=utf-8")
-                            .body(redoc_html.clone())
+                        if p == "" && !req.uri().path().ends_with('/') {
+                            HttpResponse::MovedPermanently()
+                                .set_header("LOCATION", req.uri().path().to_string() + "/")
+                                .finish()
+                        } else {
+                            HttpResponse::Ok()
+                                .content_type("text/html;charset=utf-8")
+                                .body(redoc_html.clone())
+                        }
                     } else if p == "/".to_string() + &spec_url {
                         HttpResponse::Ok()
                             .content_type("application/json;charset=utf-8")
