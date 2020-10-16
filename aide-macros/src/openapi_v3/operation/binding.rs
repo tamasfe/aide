@@ -1,4 +1,4 @@
-use crate::util::attr::{AttrParam, AttrParams};
+use tamasfe_macro_utils::attr::{AttrParam, AttrParams};
 use syn::{parse::Parse, spanned::Spanned, Error, Ident, LitStr, Type};
 
 pub enum BindingKind {

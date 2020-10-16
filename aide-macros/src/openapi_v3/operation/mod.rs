@@ -1,7 +1,4 @@
-use crate::util::{
-    examples::Example, examples::Examples, parse_path_params, parsing::is_option, parsing::is_type,
-    parsing::type_args,
-};
+use crate::util::{examples::Example, examples::Examples, parse_path_params};
 use binding::{Binding, BindingKind, Bindings};
 use heck::MixedCase;
 use param::{Param, ParamLocation};
@@ -12,8 +9,14 @@ use quote::{quote, quote_spanned};
 use response::{DefaultResponse, Response};
 use syn::{
     parse::{Parse, ParseStream},
+    punctuated::Punctuated,
     spanned::Spanned,
-    Error, FnArg, GenericArgument, Ident, Item, ItemFn, LitStr, Pat, PathArguments, Token, Type,
+    Error, Expr, FnArg, GenericArgument, Ident, Item, ItemFn, LitStr, Pat, PathArguments, Token,
+    Type,
+};
+use tamasfe_macro_utils::{
+    path::{is_option, is_type, type_args},
+    path_segments,
 };
 use titlecase::titlecase;
 
@@ -30,6 +33,7 @@ pub struct Operation {
     pub params: Vec<Param>,
     pub responses: Vec<Response>,
     pub bindings: Vec<Bindings>,
+    pub tags: Vec<Expr>,
     pub default_response: Option<DefaultResponse>,
 }
 
@@ -50,6 +54,7 @@ impl Operation {
         let mut bindings: Vec<Bindings> = Vec::new();
         let mut path_params: Vec<String> = Vec::new();
         let mut doc_val = String::new();
+        let mut tags: Vec<Expr> = Vec::new();
 
         item_fn.attrs.retain(|attr| {
             if attr.path.is_ident("res") || attr.path.is_ident("response") {
@@ -173,6 +178,22 @@ impl Operation {
                         true
                     }
                 }
+            } else if attr.path.is_ident("tag") {
+                match attr.parse_args_with(|input: ParseStream| input.parse::<Expr>()) {
+                    Ok(b) => {
+                        tags.push(b);
+                        false
+                    }
+                    Err(e) => {
+                        match &mut errors {
+                            None => errors = Some(e),
+                            Some(errors) => {
+                                errors.combine(Error::new(attr.path.span(), e.to_string()))
+                            }
+                        }
+                        true
+                    }
+                }
             } else if attr.path.is_ident("doc") {
                 match syn::parse2::<DocString>(attr.tokens.clone()) {
                     Ok(d) => {
@@ -253,6 +274,7 @@ impl Operation {
             None => Ok(Self {
                 item: item_fn,
                 id,
+                tags,
                 doc: if doc_val.is_empty() {
                     None
                 } else {
@@ -467,6 +489,7 @@ impl Operation {
         id: &LitStr,
         crate_name: TokenStream,
         doc: Option<&LitStr>,
+        tags: &[Expr],
         path: &LitStr,
         method: &LitStr,
         fn_name: &Ident,
@@ -507,6 +530,16 @@ impl Operation {
                     description: None,
                 }
             }
+        });
+
+        let mut tag_values: Punctuated<Expr, Token!(,)> = Punctuated::new();
+
+        for tag in tags {
+            tag_values.push(tag.clone());
+        }
+
+        op_fields.extend(quote! {
+            tags: &[#tag_values],
         });
 
         let res_fn_name = Ident::new(
@@ -1104,6 +1137,7 @@ impl ToTokens for Operation {
             &id,
             crate_name.clone(),
             doc,
+            &self.tags,
             path,
             &method,
             &self.item.sig.ident,

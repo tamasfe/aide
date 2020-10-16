@@ -1,7 +1,7 @@
 use super::{
     definition::{
         Components, MediaType, OpenApi, Operation, Parameter, ParameterLocation, ParameterValue,
-        PathItem, RefOr, RequestBody,
+        PathItem, RefOr, RequestBody, Tag,
     },
     transform::remove_parameter_nullable,
 };
@@ -107,6 +107,7 @@ pub fn generate_with_options(options: Options) -> Result<OpenApi, Error> {
                 o.operation_id = Some(item_op.operation_id.into());
                 o.summary = Some(item_op.summary.into());
                 o.description = item_op.description.map(|d| d.to_string());
+                o.tags = item_op.tags.into_iter().map(|t| t.to_string()).collect();
 
                 *op = Some(o);
                 break;
@@ -156,6 +157,55 @@ pub fn generate_with_options(options: Options) -> Result<OpenApi, Error> {
             }
         }
 
+        if let Some(v) = item.content.downcast_ref::<item::ItemTag>() {
+            let item_tag: &item::ItemTag = v;
+            if spec.tags.iter().any(|t| t.name == item_tag.name) {
+                return Err(Error {
+                    position: Some(item.position.clone()),
+                    kind: ErrorKind::DuplicateTag {
+                        name: item_tag.name.into(),
+                    },
+                });
+            }
+
+            spec.tags.push(item_tag.clone().into());
+        }
+
+        if let Some(v) = item.content.downcast_ref::<item::ItemModel>() {
+            let item_model: &item::ItemModel = v;
+
+            let mut components = match spec.components {
+                Some(c) => c,
+                None => Components::default(),
+            };
+
+            let schema_obj = item_model.schema.clone().into_object();
+
+            if item_model.create_tag {
+                let mut t = Tag {
+                    name: item_model.name.into(),
+                    description: Some(format!(
+                        r##"<SchemaDefinition schemaRef="#/components/schemas/{}" showReadOnly={{true}} showWriteOnly={{true}} />"##,
+                        item_model.name
+                    )),
+                    ..Default::default()
+                };
+
+                if let Some(d) = item_model.tag_display_name {
+                    t.extensions
+                        .insert("x-displayName".into(), serde_json::to_value(d).unwrap());
+                }
+
+                spec.tags.push(t);
+            }
+
+            components
+                .schemas
+                .insert(item_model.name.to_string(), schema_obj);
+
+            spec.components = Some(components);
+        }
+
         if let Some(v) = item.content.downcast_ref::<item::ItemBinding>() {
             let binding: &item::ItemBinding = v;
             let mut p = spec.paths.get_mut(binding.route.path);
@@ -195,7 +245,7 @@ pub fn generate_with_options(options: Options) -> Result<OpenApi, Error> {
                                                     name: p.name.clone().into(),
                                                     path: binding.route.path.into(),
                                                 },
-                                            })
+                                            });
                                         }
                                     }
                                 }
@@ -326,13 +376,14 @@ pub fn generate_with_options(options: Options) -> Result<OpenApi, Error> {
         None => Components::default(),
     };
 
-    components.schemas = options
-        .schema_gen
-        .into_inner()
-        .take_definitions()
-        .into_iter()
-        .map(|(name, schema)| (name.clone(), schema.clone().into_object()))
-        .collect();
+    components.schemas.extend(
+        options
+            .schema_gen
+            .into_inner()
+            .take_definitions()
+            .into_iter()
+            .map(|(name, schema)| (name.clone(), schema.clone().into_object())),
+    );
 
     spec.components = Some(components);
 
@@ -375,6 +426,9 @@ pub enum ErrorKind {
         path: String,
         status: String,
     },
+    DuplicateTag {
+        name: String,
+    },
     SerdeJson(serde_json::Error),
     Other(Box<dyn std::error::Error + Send + Sync + 'static>),
 }
@@ -396,6 +450,7 @@ impl fmt::Display for ErrorKind {
             ),
             ErrorKind::Other(e) => e.fmt(f),
             ErrorKind::SerdeJson(e) => e.fmt(f),
+            ErrorKind::DuplicateTag { name } => write!(f, "duplicate tag {}", name),
         }
     }
 }

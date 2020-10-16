@@ -1,7 +1,7 @@
 use proc_macro_error::{abort, emit_error};
 use syn::{spanned::Spanned, Error, Expr, Ident};
 
-use super::attr::{AttrParam, AttrParams};
+use tamasfe_macro_utils::attr::{AttrParam, AttrParams};
 
 #[derive(Debug)]
 pub struct Example {

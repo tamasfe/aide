@@ -287,7 +287,7 @@ dependencies = [
 
 [[package]]
 name = "aide"
-version = "0.1.4"
+version = "0.1.5"
 dependencies = [
  "actix-web",
  "aide-macros",
@@ -301,7 +301,7 @@ dependencies = [
 
 [[package]]
 name = "aide-macros"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "heck",
  "proc-macro-error",
@@ -309,6 +309,7 @@ dependencies = [
  "quote",
  "regex",
  "syn",
+ "tamasfe-macro-utils",
  "titlecase",
  "uuid",
 ]
@@ -1580,6 +1581,18 @@ dependencies = [
  "proc-macro2",
  "quote",
  "unicode-xid",
+]
+
+[[package]]
+name = "tamasfe-macro-utils"
+version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9d45961f4a9644735232e64a1df5561ef4b357815e815ef3979c55efcb079ce1"
+dependencies = [
+ "proc-macro-error",
+ "proc-macro2",
+ "quote",
+ "syn",
 ]
 
 [[package]]

@@ -1,6 +1,6 @@
 [package]
 name = "aide-macros"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["tamasfe"]
 edition = "2018"
 license = "MIT"
@@ -18,6 +18,7 @@ regex = "1"
 syn = { version = "1", features = ["full", "extra-traits"] }
 titlecase = "1.1"
 uuid = { version = "0.8", features = ["v4"] }
+tamasfe-macro-utils = "0.1.1"
 
 [features]
 default = ["warn-as-error"]

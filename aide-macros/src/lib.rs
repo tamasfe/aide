@@ -1,6 +1,6 @@
 extern crate proc_macro;
 
-use openapi_v3::model::Model;
+use openapi_v3::{model::Model, tag::Tag};
 use openapi_v3::operation::Operation;
 use proc_macro::TokenStream;
 use proc_macro2::Span;
@@ -46,17 +46,7 @@ pub fn openapi_v3_api(_args: TokenStream, input: TokenStream) -> TokenStream {
 
 #[proc_macro_error]
 #[proc_macro]
-pub fn openapi_v3_define_operation(input: TokenStream) -> TokenStream {
-    let item = parse_macro_input!(input as Item);
-    match item {
-        Item::Enum(_) | Item::Struct(_) => {
-            let model = Model::from_item(item).unwrap_or_else(|e| abort!(e));
-            (quote!(#model)).into()
-        }
-        Item::Fn(_) => {
-            let op = Operation::from_item(item).unwrap_or_else(|e| abort!(e));
-            (quote!(#op)).into()
-        }
-        _ => abort!(Span::call_site(), "unsupported item"),
-    }
+pub fn openapi_v3_define_tag(input: TokenStream) -> TokenStream {
+    let tag = parse_macro_input!(input as Tag);
+    quote!(#tag).into()
 }

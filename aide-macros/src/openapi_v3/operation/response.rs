@@ -1,3 +1,4 @@
+use crate::util::examples::Examples;
 use proc_macro_error::abort;
 use quote::ToTokens;
 use syn::{
@@ -5,11 +6,7 @@ use syn::{
     spanned::Spanned,
     Error, Expr, LitInt, Type,
 };
-
-use crate::util::{
-    attr::{AttrParam, AttrParams},
-    examples::Examples,
-};
+use tamasfe_macro_utils::attr::{AttrParam, AttrParams};
 
 pub struct Response {
     pub status_code: Option<StatusCode>,

@@ -10,14 +10,16 @@ use super::definition::OpenApi;
 #[derive(Debug, Clone)]
 pub struct ReDoc {
     url: Option<String>,
+    title: Option<String>,
     spec_json: Option<String>,
 }
 
 #[cfg(feature = "ui-redoc")]
 #[derive(Debug, Template)]
 #[template(path = "redoc.html")]
-struct ReDocTemplate {
-    spec_url: String,
+struct ReDocTemplate<'t> {
+    title: &'t str,
+    spec_url: &'t str,
 }
 
 #[cfg(feature = "ui-redoc")]
@@ -25,6 +27,7 @@ impl ReDoc {
     pub fn new() -> Self {
         Self {
             url: None,
+            title: None,
             spec_json: None,
         }
     }
@@ -36,6 +39,9 @@ impl ReDoc {
     /// If an external URL is already set.
     pub fn openapi_v3(mut self, api: &OpenApi) -> Self {
         self.spec_json = Some(serde_json::to_string(api).unwrap());
+        if self.title.is_none() && !api.info.title.is_empty() {
+            self.title = api.info.title.clone().into();
+        }
         self.check_external_url();
         self
     }
@@ -68,6 +74,11 @@ impl ReDoc {
         self
     }
 
+    pub fn title(mut self, title: &str) -> Self {
+        self.title = Some(title.into());
+        self
+    }
+
     /// Serve ReDoc in an Actix Web service at the given path.
     /// If a local document is set, it is also served.
     #[cfg(feature = "actix")]
@@ -80,7 +91,8 @@ impl ReDoc {
         let spec_json = self.spec_json;
 
         let redoc_html: String = ReDocTemplate {
-            spec_url: spec_url.clone(),
+            title: self.title.as_deref().unwrap_or("API Documentation"),
+            spec_url: &spec_url,
         }
         .render()
         .unwrap();

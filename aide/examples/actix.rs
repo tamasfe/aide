@@ -1,5 +1,20 @@
 use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
-use aide::openapi::v3::{generate_api, macros::api, transform, ui::ReDoc};
+use aide::openapi::v3::{generate_api, macros::api, macros::api::define, transform, ui::ReDoc};
+
+const EXAMPLE_TAG: &str = "example_tag";
+const EXAMPLE_TAG2: &str = "example_tag2";
+
+define::tag! {
+    name(EXAMPLE_TAG),
+    description("An example tag"),
+    display_name("An Example Tag")
+}
+
+define::tag! {
+    name(EXAMPLE_TAG2),
+    description("Another example tag"),
+    display_name("Example tag 2")
+}
 
 /// User path parameters.
 /// The `#[api]` macro is universal for all items.
@@ -13,6 +28,7 @@ pub struct UserPathParams {
 /// Greets a user with the given name.
 #[api]
 #[get("/user/{userId}")]
+#[tag(EXAMPLE_TAG)]
 #[response(
     status(200),
     type(String),
@@ -39,6 +55,7 @@ pub struct UserUpdate {
 /// Updates a user with the given ID.
 /// This operation uses the explicit `operation` macro instead of just `api`.
 #[api::operation]
+#[tag(EXAMPLE_TAG2)]
 #[post("/user/{userId}")]
 #[response(204)]
 async fn update_user(
@@ -58,15 +75,28 @@ pub struct GenericError {
     error_message: Option<String>,
 }
 
+/// This struct isn't used in the API,
+/// but will appear in the definitions.
+#[api]
+#[derive(Debug)]
+#[create_tag("An Unused Object")] // Create a tag for this model for ReDoc.
+pub struct AdditionalStruct {}
+
 #[actix_web::main]
 async fn main() -> anyhow::Result<()> {
-    let api = generate_api(None)?.transform(transform::default_response(
-        "An unexpected error occurred",
-        GenericError {
-            error_code: 0,
-            error_message: Some("unknown error".into()),
-        },
-    ));
+    let api = generate_api(None)?
+        .transform(transform::default_response(
+            "An unexpected error occurred",
+            GenericError {
+                error_code: 0,
+                error_message: Some("unknown error".into()),
+            },
+        ))
+        .transform(transform::tag_groups(&[
+            ("Example Group 1", &[EXAMPLE_TAG]),
+            ("Example Group 2", &[EXAMPLE_TAG2]),
+            ("Models", &["AdditionalStruct"]),
+        ]));
 
     println!("{}", serde_json::to_string_pretty(&api).unwrap());
 

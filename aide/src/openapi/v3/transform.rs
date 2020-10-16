@@ -10,7 +10,7 @@ use super::{
     definition_ext::OperationMethod,
 };
 use schemars::{gen::SchemaSettings, schema::Schema, JsonSchema, Map};
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 
 #[derive(Debug)]
 pub enum Error {
@@ -44,6 +44,56 @@ where
     default_response_when(description, value, |(_, _, _, o)| {
         o.responses.default.is_none()
     })
+}
+
+/// Define a tag group for ReDoc.
+pub fn tag_group(group: TagGroup) -> impl FnOnce(OpenApi) -> OpenApi {
+    |mut api: OpenApi| {
+        let mut tag_groups: Vec<TagGroup> = api
+            .extensions
+            .remove("x-tagGroups")
+            .map(|v| serde_json::from_value(v).unwrap())
+            .unwrap_or_default();
+        tag_groups.push(group);
+        api.extensions.insert(
+            "x-tagGroups".into(),
+            serde_json::to_value(&tag_groups).unwrap(),
+        );
+        api
+    }
+}
+
+/// Define tag groups for ReDoc.
+///
+/// Example usage:
+/// ```no_run
+/// api.transform(
+///     tag_groups(&[
+///         ("A Tag Group", &["tag_1", "tag_2"]),
+///         ("Another Tag Group", &["tag_3", "tag_4"]),
+///     ])
+/// )
+/// ```
+pub fn tag_groups<'t>(
+    groups: &'t [(&'t str, &'t [&'t str])],
+) -> impl FnOnce(OpenApi) -> OpenApi + 't {
+    move |mut api: OpenApi| {
+        for (group, tags) in groups {
+            api = api.transform(tag_group(TagGroup {
+                name: group.to_string(),
+                tags: tags.into_iter().map(|t| t.to_string()).collect(),
+            }));
+        }
+
+        api
+    }
+}
+
+/// A tag group used in ReDoc.
+#[derive(Debug, Serialize, Deserialize)]
+pub struct TagGroup {
+    pub name: String,
+    tags: Vec<String>,
 }
 
 /// Sets the default response for operations that match the predicate.

@@ -1,9 +1,8 @@
-use std::any::Any;
-
-use crate::openapi::v3::definition::{MediaType, Response};
-
-use super::super::definition::{Example, Parameter, ParameterLocation, ParameterValue};
+use crate::openapi::v3::definition::{
+    self, Example, MediaType, Parameter, ParameterLocation, ParameterValue, Response, Tag,
+};
 use schemars::{schema::Schema, Map};
+use std::any::Any;
 
 #[derive(Debug, Clone, Copy, Eq, PartialEq)]
 pub struct Position {
@@ -27,14 +26,16 @@ pub struct Item {
 
 #[derive(Debug, Clone)]
 pub struct ItemModel {
-    pub type_name: &'static str,
+    pub name: &'static str,
+    pub create_tag: bool,
+    pub tag_display_name: Option<&'static str>,
     pub schema: Schema,
 }
 
 #[derive(Debug, Clone)]
 pub struct ItemResponse {
     pub route: Route,
-    /// Default responses have no status codes.
+    // Default responses have no status codes.
     pub status: Option<i32>,
     pub schema: Option<Schema>,
     pub content_type: Option<&'static str>,
@@ -141,7 +142,44 @@ pub struct ItemOperation {
     pub route: Route,
     pub operation_id: &'static str,
     pub summary: &'static str,
+    pub tags: &'static [&'static str],
     pub description: Option<&'static str>,
+}
+
+#[derive(Debug, Clone)]
+pub struct ItemTag {
+    pub name: &'static str,
+    pub description: Option<&'static str>,
+    pub display_name: Option<&'static str>,
+    pub external_docs: Option<ExternalDocs>,
+}
+
+impl Into<Tag> for ItemTag {
+    fn into(self) -> Tag {
+        let mut t = Tag {
+            name: self.name.into(),
+            description: self.description.map(|s| s.to_string()),
+            external_docs: self.external_docs.map(|e| definition::ExternalDocs {
+                description: e.description.map(|d| d.to_string()),
+                url: e.url.into(),
+                extensions: Default::default(),
+            }),
+            extensions: Default::default(),
+        };
+
+        if let Some(dn) = self.display_name {
+            t.extensions
+                .insert("x-displayName".into(), serde_json::to_value(dn).unwrap());
+        }
+
+        t
+    }
+}
+
+#[derive(Debug, Clone)]
+pub struct ExternalDocs {
+    pub description: Option<&'static str>,
+    pub url: &'static str,
 }
 
 #[derive(Debug, Clone, Eq, PartialEq)]

@@ -1,12 +1,9 @@
-use crate::util::{
-    attr::{AttrParam, AttrParams},
-    examples::Examples,
-    parsing::is_option,
-};
+use crate::util::examples::Examples;
 use proc_macro_error::abort;
 use quote::ToTokens;
 use std::fmt;
 use syn::{parse::Parse, spanned::Spanned, Error, Expr, Ident, LitStr, Type};
+use tamasfe_macro_utils::{attr::{AttrParams, AttrParam}, path::is_option};
 
 pub enum ParamLocation {
     Path(Ident),
