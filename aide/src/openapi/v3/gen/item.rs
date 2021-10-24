@@ -27,8 +27,6 @@ pub struct Item {
 #[derive(Debug, Clone)]
 pub struct ItemModel {
     pub name: &'static str,
-    pub create_tag: bool,
-    pub tag_display_name: Option<&'static str>,
     pub schema: Schema,
 }
 
@@ -44,29 +42,26 @@ pub struct ItemResponse {
     pub examples: Map<String, Example>,
 }
 
-impl Into<Response> for ItemResponse {
-    fn into(self) -> Response {
+impl From<ItemResponse> for Response {
+    fn from(val: ItemResponse) -> Self {
         let mut content = Map::new();
 
-        if self.schema.is_some()
-            || self.example.is_some()
-            || !self.examples.is_empty()
-            || self.content_type.is_some()
+        if val.schema.is_some()
+            || val.example.is_some()
+            || !val.examples.is_empty()
+            || val.content_type.is_some()
         {
-            let ct = match self.content_type {
-                Some(c) => c,
-                None => "application/json".into(),
-            };
+            let ct = val.content_type.unwrap_or("application/json");
 
             content.insert(
                 ct.to_string(),
                 MediaType {
-                    schema: self.schema.map(|s| s.into_object()),
-                    example: self.example,
-                    examples: if self.examples.is_empty() {
+                    schema: val.schema.map(|s| s.into_object()),
+                    example: val.example,
+                    examples: if val.examples.is_empty() {
                         None
                     } else {
-                        Some(self.examples)
+                        Some(val.examples)
                     },
                     ..Default::default()
                 },
@@ -74,7 +69,7 @@ impl Into<Response> for ItemResponse {
         }
 
         Response {
-            description: self.description.map(|s| s.to_string()).unwrap_or_default(),
+            description: val.description.map(|s| s.to_string()).unwrap_or_default(),
             content,
             ..Default::default()
         }
@@ -110,26 +105,26 @@ pub struct ItemParameter {
     pub examples: Map<String, Example>,
 }
 
-impl Into<Parameter> for ItemParameter {
-    fn into(self) -> Parameter {
+impl From<ItemParameter> for Parameter {
+    fn from(val: ItemParameter) -> Self {
         Parameter {
-            name: self.name.into(),
-            location: self.location,
-            description: self.description.map(|s| s.to_string()),
-            required: self.required,
-            deprecated: self.deprecated,
+            name: val.name.into(),
+            location: val.location,
+            description: val.description.map(|s| s.to_string()),
+            required: val.required,
+            deprecated: val.deprecated,
             allow_empty_value: false,
             allow_reserved: false,
             value: ParameterValue::Schema {
                 style: None,
                 explode: None,
                 allow_reserved: false,
-                schema: self.schema.into_object(),
-                example: self.example,
-                examples: if self.examples.is_empty() {
+                schema: val.schema.into_object(),
+                example: val.example,
+                examples: if val.examples.is_empty() {
                     None
                 } else {
-                    Some(self.examples)
+                    Some(val.examples)
                 },
             },
             extensions: Default::default(),
@@ -154,12 +149,12 @@ pub struct ItemTag {
     pub external_docs: Option<ExternalDocs>,
 }
 
-impl Into<Tag> for ItemTag {
-    fn into(self) -> Tag {
+impl From<ItemTag> for Tag {
+    fn from(val: ItemTag) -> Self {
         let mut t = Tag {
-            name: self.name.into(),
-            description: self.description.map(|s| s.to_string()),
-            external_docs: self.external_docs.map(|e| definition::ExternalDocs {
+            name: val.name.into(),
+            description: val.description.map(|s| s.to_string()),
+            external_docs: val.external_docs.map(|e| definition::ExternalDocs {
                 description: e.description.map(|d| d.to_string()),
                 url: e.url.into(),
                 extensions: Default::default(),
@@ -167,7 +162,7 @@ impl Into<Tag> for ItemTag {
             extensions: Default::default(),
         };
 
-        if let Some(dn) = self.display_name {
+        if let Some(dn) = val.display_name {
             t.extensions
                 .insert("x-displayName".into(), serde_json::to_value(dn).unwrap());
         }

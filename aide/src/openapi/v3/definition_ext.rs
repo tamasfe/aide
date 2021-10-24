@@ -73,10 +73,7 @@ impl PathItem {
             (OperationMethod::Trace, &self.trace),
         ]
         .into_iter()
-        .filter_map(|(m, o)| match o {
-            Some(o) => Some((m, o)),
-            None => None,
-        })
+        .filter_map(|(m, o)| o.as_ref().map(|o| (m, o)))
     }
 
     /// Returns a mutable iterator over the operations.

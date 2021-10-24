@@ -1,5 +1,7 @@
-use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
-use aide::openapi::v3::{generate_api, macros::api, macros::api::define, transform, ui::ReDoc};
+use actix_web::{get, post, web, HttpResponse, Responder};
+use aide::openapi::v3::{generate_api, macros::api, macros::api::define, transform};
+use schemars::JsonSchema;
+use serde::{Deserialize, Serialize};
 
 const EXAMPLE_TAG: &str = "example_tag";
 const EXAMPLE_TAG2: &str = "example_tag2";
@@ -17,8 +19,8 @@ define::tag! {
 }
 
 /// User path parameters.
-/// The `#[api]` macro is universal for all items.
-#[api]
+/// The `#[api::operation]` macro is universal for all items.
+#[derive(api::Model, JsonSchema, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct UserPathParams {
     /// The user's name.
@@ -26,7 +28,7 @@ pub struct UserPathParams {
 }
 
 /// Greets a user with the given name.
-#[api]
+#[api::operation]
 #[get("/user/{userId}")]
 #[tag(EXAMPLE_TAG)]
 #[response(
@@ -40,8 +42,7 @@ async fn greet_user(params: web::Path<UserPathParams>) -> impl Responder {
 }
 
 /// Updates the user with the given user ID.
-/// This model uses the explicit `model` macro instead of just `api`.
-#[api::model]
+#[derive(api::Model, JsonSchema, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct UserUpdate {
     /// The user to update.
@@ -53,7 +54,6 @@ pub struct UserUpdate {
 }
 
 /// Updates a user with the given ID.
-/// This operation uses the explicit `operation` macro instead of just `api`.
 #[api::operation]
 #[tag(EXAMPLE_TAG2)]
 #[post("/user/{userId}")]
@@ -66,7 +66,7 @@ async fn update_user(
 }
 
 /// A generic error message.
-#[api]
+#[derive(api::Model, JsonSchema, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GenericError {
     /// A unique error code.
@@ -77,13 +77,10 @@ pub struct GenericError {
 
 /// This struct isn't used in the API,
 /// but will appear in the definitions.
-#[api]
-#[derive(Debug)]
-#[create_tag("An Unused Object")] // Create a tag for this model for ReDoc.
+#[derive(Debug, api::Model, JsonSchema, Serialize, Deserialize)]
 pub struct AdditionalStruct {}
 
-#[actix_web::main]
-async fn main() -> anyhow::Result<()> {
+fn main() -> anyhow::Result<()> {
     let api = generate_api(None)?
         .transform(transform::default_response(
             "An unexpected error occurred",
@@ -99,18 +96,6 @@ async fn main() -> anyhow::Result<()> {
         ]));
 
     println!("{}", serde_json::to_string_pretty(&api).unwrap());
-
-    HttpServer::new(move || {
-        App::new().service(greet_user).service(update_user).service(
-            ReDoc::new()
-                .api_at("userApi.json")
-                .openapi_v3(&api)
-                .actix_service("/docs"),
-        )
-    })
-    .bind("127.0.0.1:8080")?
-    .run()
-    .await?;
 
     Ok(())
 }

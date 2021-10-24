@@ -365,7 +365,7 @@ pub enum SecuritySchemeData {
     },
     #[serde(rename = "oauth2")]
     OAuth2 {
-        flows: OAuthFlows,
+        flows: Box<OAuthFlows>,
     },
     OpenIdConnect {
         open_id_connect_url: String,

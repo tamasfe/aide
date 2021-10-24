@@ -1,14 +1,12 @@
 use proc_macro2::{Span, TokenStream};
 use proc_macro_error::abort;
 use quote::{quote, ToTokens};
-use syn::{Expr, Ident, Item, LitStr, Path, Token, parse::Parse, parse::ParseStream, parse2, parse_quote, punctuated::Punctuated};
-use tamasfe_macro_utils::{attr::AttrParam, attr::AttrParams, path::is_path, path_segments};
+use syn::{Ident, Item, LitStr, Path, parse::Parse, parse::ParseStream, parse2, parse_quote};
+use tamasfe_macro_utils::{attr::AttrParam, attr::AttrParams};
 
 #[derive(Debug, Clone)]
 pub struct Model {
     id: Option<LitStr>,
-    create_tag: bool,
-    tag_display_name: Option<Expr>,
     item: Item,
 }
 
@@ -27,8 +25,6 @@ impl Model {
 
         let mut crate_name: Path = parse_quote!(aide);
         let mut id: Option<LitStr> = None;
-        let mut create_tag = false;
-        let mut tag_display_name: Option<Expr> = None;
 
         attrs.retain(|a| {
             if a.path.is_ident("api") || a.path.is_ident("aide") {
@@ -62,88 +58,27 @@ impl Model {
             }
         });
 
-        let mut has_derive = false;
-
-        let mut has_serialize = false;
-        let mut has_deserialize = false;
-        let mut has_schemars = false;
-
         for att in attrs.iter_mut() {
-            if att.path.is_ident("derive") {
-                has_derive = true;
-                let mut derives =
-                    att.parse_args_with(Punctuated::<Path, Token!(,)>::parse_terminated)?;
+             if att.path.is_ident("api") {
+                let params: AttrParams = parse2(att.tokens.clone())?;
+                params.no_duplicates();
+                params.no_unnamed();
 
-                for d in &derives {
-                    if is_path(d, &path_segments!(::serde::Serialize))
-                        || is_path(d, &path_segments!(::serde::ser::Serialize))
-                    {
-                        has_serialize = true;
-                    }
-
-                    if is_path(d, &path_segments!(::serde::Deserialize))
-                        || is_path(d, &path_segments!(::serde::de::Deserialize))
-                    {
-                        has_deserialize = true;
-                    }
-
-                    if is_path(d, &path_segments!(::schemars::JsonSchema)) {
-                        has_schemars = true;
-                    }
+                for param in params {
+                    match param {
+                        AttrParam::Named { name, value } => {
+                            if name == "id" {
+                                id = Some(value.parse()?);
+                            }
+                        },
+                        AttrParam::Unnamed(_) => unreachable!(),
+                    };
                 }
 
-                if !has_serialize {
-                    derives.push(parse_quote!(#crate_name::internal::serde::Serialize));
-                }
-
-                if !has_deserialize {
-                    derives.push(parse_quote!(#crate_name::internal::serde::Deserialize));
-                }
-
-                if !has_schemars {
-                    derives.push(parse_quote!(#crate_name::internal::schemars::JsonSchema));
-                }
-
-                att.tokens = quote!((#derives));
-            } else if att.path.is_ident("id") {
-                id = Some(parse2(att.tokens.clone())?);
-            } else if att.path.is_ident("create_tag") {
-                create_tag = true;
-                if !att.tokens.is_empty() {
-                    tag_display_name = Some(parse2(att.tokens.clone())?);
-                }
             }
         }
 
-        attrs.retain(|att| !att.path.is_ident("id") && !att.path.is_ident("create_tag"));
-
-        if !has_derive {
-            attrs.push(parse_quote! {
-                    #[derive(
-                        #crate_name::internal::serde::Serialize,
-                        #crate_name::internal::serde::Deserialize,
-                        #crate_name::internal::schemars::JsonSchema
-                    )]
-            });
-        }
-
-        if !has_schemars {
-            let s = LitStr::new(
-                &format!("{}::internal::schemars", quote!(#crate_name)),
-                Span::call_site(),
-            );
-            attrs.push(parse_quote! {#[schemars(crate = #s)]})
-        }
-
-        if !has_serialize || !has_deserialize {
-            let s = LitStr::new(
-                &format!("{}::internal::serde", quote!(#crate_name)),
-                Span::call_site(),
-            );
-            attrs.push(parse_quote! {#[serde(crate = #s)]})
-        }
-
-        Ok(Model { id, item, create_tag, tag_display_name })
+        Ok(Model { id, item })
     }
 }
 
@@ -155,7 +90,7 @@ impl Parse for Model {
 
 impl ToTokens for Model {
     fn to_tokens(&self, tokens: &mut TokenStream) {
-        self.item.to_tokens(tokens);
+        // self.item.to_tokens(tokens);
 
         // TODO crate name
         let crate_name = quote!(aide);
@@ -181,22 +116,14 @@ impl ToTokens for Model {
         };
 
         let name = LitStr::new(&ty.to_string(), ty.span());
-        let create_tag = self.create_tag;
-
-        let tag_display_name = match &self.tag_display_name {
-            Some(d) => {
-                quote!(tag_display_name: Some(#d),)
-            }
-            None => {
-                quote!(tag_display_name: None,)
-            }
-        };
 
         tokens.extend(
         quote! {
+                #[allow(clippy::all)]
                 #[#crate_name::internal::linkme::distributed_slice(#crate_name::openapi::v3::gen::ITEMS)]
                 #[linkme(crate = #crate_name::internal::linkme)]
                 static #static_res_fn_name: #crate_name::openapi::v3::gen::ItemFn = #res_fn_name;
+                #[allow(clippy::all)]
                 #[allow(unused_parens)]
                 fn #res_fn_name(opts: &#crate_name::openapi::v3::gen::Options) -> Result<#crate_name::openapi::v3::gen::item::Item, #crate_name::openapi::v3::gen::Error> {
                     if opts.id != #id {
@@ -223,9 +150,7 @@ impl ToTokens for Model {
                             content: Box::new(
                                 #crate_name::openapi::v3::gen::item::ItemModel {
                                     name: #name,
-                                    create_tag: #create_tag,
                                     schema: opts.generate_schema::<#ty>(),
-                                    #tag_display_name
                                 }
                             )
                         }

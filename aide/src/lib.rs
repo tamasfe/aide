@@ -5,7 +5,6 @@ pub mod openapi;
 /// it contains reexports that can be relied on.
 pub mod internal {
     pub use linkme;
-    pub use schemars;
     pub use serde;
     pub use serde_json;
 }

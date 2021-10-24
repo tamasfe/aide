@@ -1,7 +1,7 @@
 use super::{
     definition::{
         Components, MediaType, OpenApi, Operation, Parameter, ParameterLocation, ParameterValue,
-        PathItem, RefOr, RequestBody, Tag,
+        PathItem, RefOr, RequestBody,
     },
     transform::remove_parameter_nullable,
 };
@@ -62,8 +62,10 @@ pub fn generate<'a, V: Into<Option<&'a str>>>(id: V) -> Result<OpenApi, Error> {
 }
 
 pub fn generate_with_options(options: Options) -> Result<OpenApi, Error> {
-    let mut spec = OpenApi::default();
-    spec.openapi = "3.0.0".into();
+    let mut spec = OpenApi {
+        openapi: "3.1.0".into(),
+        ..OpenApi::default()
+    };
 
     for item_fn in ITEMS {
         let item: item::Item = match item_fn(&options) {
@@ -94,7 +96,7 @@ pub fn generate_with_options(options: Options) -> Result<OpenApi, Error> {
                     *op = Some(Operation::default());
                 } else {
                     return Err(Error {
-                        position: Some(item.position.clone()),
+                        position: Some(item.position),
                         kind: ErrorKind::DuplicateOperation {
                             path: item_op.route.path.into(),
                             operation_id: item_op.operation_id.into(),
@@ -107,7 +109,7 @@ pub fn generate_with_options(options: Options) -> Result<OpenApi, Error> {
                 o.operation_id = Some(item_op.operation_id.into());
                 o.summary = Some(item_op.summary.into());
                 o.description = item_op.description.map(|d| d.to_string());
-                o.tags = item_op.tags.into_iter().map(|t| t.to_string()).collect();
+                o.tags = item_op.tags.iter().map(|t| t.to_string()).collect();
 
                 *op = Some(o);
                 break;
@@ -140,7 +142,7 @@ pub fn generate_with_options(options: Options) -> Result<OpenApi, Error> {
                     if let RefOr::Object(p) = p {
                         if p.name == param.name {
                             return Err(Error {
-                                position: Some(item.position.clone()),
+                                position: Some(item.position),
                                 kind: ErrorKind::DuplicateParameter {
                                     name: param.name.into(),
                                     path: param.route.path.into(),
@@ -161,7 +163,7 @@ pub fn generate_with_options(options: Options) -> Result<OpenApi, Error> {
             let item_tag: &item::ItemTag = v;
             if spec.tags.iter().any(|t| t.name == item_tag.name) {
                 return Err(Error {
-                    position: Some(item.position.clone()),
+                    position: Some(item.position),
                     kind: ErrorKind::DuplicateTag {
                         name: item_tag.name.into(),
                     },
@@ -180,24 +182,6 @@ pub fn generate_with_options(options: Options) -> Result<OpenApi, Error> {
             };
 
             let schema_obj = item_model.schema.clone().into_object();
-
-            if item_model.create_tag {
-                let mut t = Tag {
-                    name: item_model.name.into(),
-                    description: Some(format!(
-                        r##"<SchemaDefinition schemaRef="#/components/schemas/{}" showReadOnly={{true}} showWriteOnly={{true}} />"##,
-                        item_model.name
-                    )),
-                    ..Default::default()
-                };
-
-                if let Some(d) = item_model.tag_display_name {
-                    t.extensions
-                        .insert("x-displayName".into(), serde_json::to_value(d).unwrap());
-                }
-
-                spec.tags.push(t);
-            }
 
             components
                 .schemas
@@ -240,9 +224,9 @@ pub fn generate_with_options(options: Options) -> Result<OpenApi, Error> {
                                     if let RefOr::Object(p) = p {
                                         if p.name == name.as_str() {
                                             return Err(Error {
-                                                position: Some(item.position.clone()),
+                                                position: Some(item.position),
                                                 kind: ErrorKind::DuplicateParameter {
-                                                    name: p.name.clone().into(),
+                                                    name: p.name.clone(),
                                                     path: binding.route.path.into(),
                                                 },
                                             });
@@ -337,7 +321,7 @@ pub fn generate_with_options(options: Options) -> Result<OpenApi, Error> {
                             .is_some()
                         {
                             return Err(Error {
-                                position: Some(item.position.clone()),
+                                position: Some(item.position),
                                 kind: ErrorKind::DuplicateResponse {
                                     status: status.to_string(),
                                     path: res.route.path.into(),
@@ -348,7 +332,7 @@ pub fn generate_with_options(options: Options) -> Result<OpenApi, Error> {
                     None => {
                         if o.responses.default.is_some() {
                             return Err(Error {
-                                position: Some(item.position.clone()),
+                                position: Some(item.position),
                                 kind: ErrorKind::DuplicateResponse {
                                     status: "default".into(),
                                     path: res.route.path.into(),
@@ -382,7 +366,7 @@ pub fn generate_with_options(options: Options) -> Result<OpenApi, Error> {
             .into_inner()
             .take_definitions()
             .into_iter()
-            .map(|(name, schema)| (name.clone(), schema.clone().into_object())),
+            .map(|(name, schema)| (name, schema.into_object())),
     );
 
     spec.components = Some(components);

@@ -53,7 +53,7 @@ impl Parse for Response {
                         } else if name == "example" || name == "examples" {
                             examples.update(value.parse()?).map_err(|e| {
                                 Error::new(
-                                    e.span().join(name.span()).unwrap_or(e.span()),
+                                    e.span().join(name.span()).unwrap_or_else(|| e.span()),
                                     e.to_string(),
                                 )
                             })?;
@@ -137,7 +137,7 @@ impl Parse for DefaultResponse {
                         } else if name == "example" || name == "examples" {
                             examples.update(value.parse()?).map_err(|e| {
                                 Error::new(
-                                    e.span().join(name.span()).unwrap_or(e.span()),
+                                    e.span().join(name.span()).unwrap_or_else(||e.span()),
                                     e.to_string(),
                                 )
                             })?;
@@ -174,9 +174,9 @@ pub enum StatusCode {
 impl Parse for StatusCode {
     fn parse(input: ParseStream) -> syn::Result<Self> {
         if input.peek(LitInt) {
-            return Ok(StatusCode::LitInt(input.parse()?));
+            Ok(StatusCode::LitInt(input.parse()?))
         } else {
-            return Ok(StatusCode::Expr(input.parse()?));
+            Ok(StatusCode::Expr(input.parse()?))
         }
     }
 }

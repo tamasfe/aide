@@ -195,11 +195,8 @@ impl Operation {
                     }
                 }
             } else if attr.path.is_ident("doc") {
-                match syn::parse2::<DocString>(attr.tokens.clone()) {
-                    Ok(d) => {
-                        doc_val += &d.content.value();
-                    }
-                    Err(_) => {}
+                if let Ok(d) = syn::parse2::<DocString>(attr.tokens.clone()) {
+                    doc_val += &d.content.value();
                 };
                 true
             } else {
@@ -565,7 +562,7 @@ impl Operation {
                                 column: column!(),
                                 line: line!()
                             }),
-                            kind: #crate_name::openapi::v3::gen::ErrorKind::IdExpected(#id.into()),
+                            kind: #crate_name::openapi::v3::gen::ErrorKind::IdExpected(#id),
                         }
                     );
                 }
@@ -775,7 +772,7 @@ impl Operation {
                                 column: column!(),
                                 line: line!()
                             }),
-                            kind: #crate_name::openapi::v3::gen::ErrorKind::IdExpected(#id.into()),
+                            kind: #crate_name::openapi::v3::gen::ErrorKind::IdExpected(#id),
                         }
                     );
                 }
@@ -849,9 +846,11 @@ impl Operation {
         );
 
         quote! {
+            #[allow(clippy::all)]
             #[#crate_name::internal::linkme::distributed_slice(#crate_name::openapi::v3::gen::ITEMS)]
             #[linkme(crate = #crate_name::internal::linkme)]
             static #static_res_fn_name: #crate_name::openapi::v3::gen::ItemFn = #res_fn_name;
+            #[allow(clippy::all)]
             fn #res_fn_name(opts: &#crate_name::openapi::v3::gen::Options) -> Result<#crate_name::openapi::v3::gen::item::Item, #crate_name::openapi::v3::gen::Error> {
                 if opts.id != #id {
                     return Err(
@@ -861,7 +860,7 @@ impl Operation {
                                 column: column!(),
                                 line: line!()
                             }),
-                            kind: #crate_name::openapi::v3::gen::ErrorKind::IdExpected(#id.into()),
+                            kind: #crate_name::openapi::v3::gen::ErrorKind::IdExpected(#id),
                         }
                     );
                 }
@@ -1058,7 +1057,7 @@ impl Operation {
         }
 
         param_fields.extend(quote_spanned! {ty.span()=> schema: opts.generate_schema::<#ty>(),});
-        param_fields.extend(if is_option(&ty) || param.location.is_path() {
+        param_fields.extend(if is_option(ty) || param.location.is_path() {
             quote! {required: true,}
         } else {
             quote! {required: false,}
@@ -1082,9 +1081,11 @@ impl Operation {
         );
 
         quote! {
+            #[allow(clippy::all)]
             #[#crate_name::internal::linkme::distributed_slice(#crate_name::openapi::v3::gen::ITEMS)]
             #[linkme(crate = #crate_name::internal::linkme)]
             static #static_res_fn_name: #crate_name::openapi::v3::gen::ItemFn = #res_fn_name;
+            #[allow(clippy::all)]
             fn #res_fn_name(opts: &#crate_name::openapi::v3::gen::Options) -> Result<#crate_name::openapi::v3::gen::item::Item, #crate_name::openapi::v3::gen::Error> {
                 if opts.id != #id {
                     return Err(
@@ -1094,7 +1095,7 @@ impl Operation {
                                 column: column!(),
                                 line: line!()
                             }),
-                            kind: #crate_name::openapi::v3::gen::ErrorKind::IdExpected(#id.into()),
+                            kind: #crate_name::openapi::v3::gen::ErrorKind::IdExpected(#id),
                         }
                     );
                 }
@@ -1204,7 +1205,7 @@ impl ToTokens for Operation {
         if let Some(default_res) = &self.default_response {
             responses.extend(Operation::gen_response(
                 &id,
-                crate_name.clone(),
+                crate_name,
                 &method,
                 path,
                 &default_res.0,

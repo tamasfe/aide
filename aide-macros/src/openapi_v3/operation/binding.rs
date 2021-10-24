@@ -85,7 +85,7 @@ impl Parse for Bindings {
         } else {
             return Err(Error::new(
                 params.span(),
-                format!(r#"expected named parameters"#),
+                "expected named parameters",
             ));
         }
 

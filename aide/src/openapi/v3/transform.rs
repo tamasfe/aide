@@ -81,7 +81,7 @@ pub fn tag_groups<'t>(
         for (group, tags) in groups {
             api = api.transform(tag_group(TagGroup {
                 name: group.to_string(),
-                tags: tags.into_iter().map(|t| t.to_string()).collect(),
+                tags: tags.iter().map(|t| t.to_string()).collect(),
             }));
         }
 
@@ -116,13 +116,12 @@ where
             .map(|c| mem::take(&mut c.schemas))
             .unwrap_or_default();
 
-        let mut gen = SchemaSettings::openapi3()
-            .into_generator()
-            .with_definitions(
-                defs.into_iter()
-                    .map(|(name, o)| (name, Schema::Object(o)))
-                    .collect(),
-            );
+        let mut gen = SchemaSettings::openapi3().into_generator();
+
+        *gen.definitions_mut() = defs
+            .into_iter()
+            .map(|(name, o)| (name, Schema::Object(o)))
+            .collect();
 
         let s = gen.subschema_for::<R>().into_object();
 
@@ -135,12 +134,14 @@ where
                     .collect();
             }
             None => {
-                let mut c = Components::default();
-                c.schemas = gen
-                    .take_definitions()
-                    .into_iter()
-                    .map(|(name, s)| (name, s.into_object()))
-                    .collect();
+                let c = Components {
+                    schemas: gen
+                        .take_definitions()
+                        .into_iter()
+                        .map(|(name, s)| (name, s.into_object()))
+                        .collect(),
+                    ..Default::default()
+                };
                 spec.components = c.into();
             }
         }
@@ -185,7 +186,7 @@ where
 
 /// Removes the nullable property from parameters.
 pub fn remove_parameter_nullable(mut spec: OpenApi) -> OpenApi {
-    for (_, pt) in &mut spec.paths {
+    for pt in spec.paths.values_mut() {
         for (_, op) in pt.operations_mut() {
             if let Some(op) = op {
                 for param in &mut op.parameters {
@@ -196,7 +197,7 @@ pub fn remove_parameter_nullable(mut spec: OpenApi) -> OpenApi {
                                 schema.extensions.remove("nullable");
                             }
                             ParameterValue::Content { content } => {
-                                for (_, c) in content {
+                                for c in content.values_mut() {
                                     match &mut c.schema {
                                         Some(s) => {
                                             s.extensions.remove("nullable");

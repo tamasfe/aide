@@ -14,8 +14,8 @@ mod util;
 mod openapi_v3;
 
 #[proc_macro_error]
-#[proc_macro_attribute]
-pub fn openapi_v3_model(_args: TokenStream, input: TokenStream) -> TokenStream {
+#[proc_macro_derive(Model, attributes(api))]
+pub fn openapi_v3_model(input: TokenStream) -> TokenStream {
     let model = parse_macro_input!(input as Model);
     (quote! {#model}).into()
 }

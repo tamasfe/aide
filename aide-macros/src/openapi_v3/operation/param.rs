@@ -3,7 +3,10 @@ use proc_macro_error::abort;
 use quote::ToTokens;
 use std::fmt;
 use syn::{parse::Parse, spanned::Spanned, Error, Expr, Ident, LitStr, Type};
-use tamasfe_macro_utils::{attr::{AttrParams, AttrParam}, path::is_option};
+use tamasfe_macro_utils::{
+    attr::{AttrParam, AttrParams},
+    path::is_option,
+};
 
 pub enum ParamLocation {
     Path(Ident),
@@ -14,10 +17,7 @@ pub enum ParamLocation {
 
 impl ParamLocation {
     pub fn is_path(&self) -> bool {
-        match self {
-            ParamLocation::Path(_) => true,
-            _ => false,
-        }
+        matches!(self, ParamLocation::Path(_))
     }
 
     pub fn ident(&self) -> &Ident {
@@ -54,22 +54,10 @@ impl Parse for ParamLocation {
 impl PartialEq for ParamLocation {
     fn eq(&self, other: &Self) -> bool {
         match self {
-            ParamLocation::Path(_) => match other {
-                ParamLocation::Path(_) => true,
-                _ => false,
-            },
-            ParamLocation::Query(_) => match other {
-                ParamLocation::Query(_) => true,
-                _ => false,
-            },
-            ParamLocation::Header(_) => match other {
-                ParamLocation::Header(_) => true,
-                _ => false,
-            },
-            ParamLocation::Cookie(_) => match other {
-                ParamLocation::Cookie(_) => true,
-                _ => false,
-            },
+            ParamLocation::Path(_) => matches!(other, ParamLocation::Path(_)),
+            ParamLocation::Query(_) => matches!(other, ParamLocation::Query(_)),
+            ParamLocation::Header(_) => matches!(other, ParamLocation::Header(_)),
+            ParamLocation::Cookie(_) => matches!(other, ParamLocation::Cookie(_)),
         }
     }
 }
@@ -178,7 +166,7 @@ impl Parse for Param {
                         } else if name == "example" {
                             examples.update(value.parse()?).map_err(|e| {
                                 Error::new(
-                                    e.span().join(name.span()).unwrap_or(e.span()),
+                                    e.span().join(name.span()).unwrap_or_else(|| e.span()),
                                     e.to_string(),
                                 )
                             })?;
@@ -218,13 +206,10 @@ impl Parse for Param {
             abort!(sp, "type must be known");
         }
 
-        match location.as_ref().unwrap() {
-            ParamLocation::Path(_) => {
-                if is_option(ty.as_ref().unwrap()) {
-                    abort!(ty.span(), "path parameter cannot be optional");
-                }
+        if let ParamLocation::Path(_) = location.as_ref().unwrap() {
+            if is_option(ty.as_ref().unwrap()) {
+                abort!(ty.span(), "path parameter cannot be optional");
             }
-            _ => {}
         }
 
         Ok(Param {
