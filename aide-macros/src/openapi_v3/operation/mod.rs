@@ -15,6 +15,7 @@ use syn::{
     Type,
 };
 use tamasfe_macro_utils::{
+    attr::{AttrParam, AttrParams},
     path::{is_option, is_type, type_args},
     path_segments,
 };
@@ -57,73 +58,130 @@ impl Operation {
         let mut tags: Vec<Expr> = Vec::new();
 
         item_fn.attrs.retain(|attr| {
-            if attr.path.is_ident("res") || attr.path.is_ident("response") {
-                match attr.parse_args_with(|input: ParseStream| input.parse::<Response>()) {
-                    Ok(r) => {
-                        responses.push(r);
-                        false
-                    }
-                    Err(e) => {
+            if attr.path.is_ident("api") {
+                let attr_params = match attr.parse_args::<AttrParams>() {
+                    Ok(p) => p,
+                    Err(err) => {
                         match &mut errors {
-                            None => errors = Some(e),
+                            None => errors = Some(err),
                             Some(errors) => {
-                                errors.combine(Error::new(attr.path.span(), e.to_string()))
+                                errors.combine(Error::new(attr.path.span(), err.to_string()))
                             }
                         }
-                        true
+                        return false;
                     }
-                }
-            } else if attr.path.is_ident("param") || attr.path.is_ident("parameter") {
-                match attr.parse_args_with(|input: ParseStream| input.parse::<Param>()) {
-                    Ok(r) => {
-                        for p in &params {
-                            if p.location == r.location && p.name == r.name {
-                                emit_error!(
-                                    p.name.span(),
-                                    r#"{} parameter "{}" is given here"#,
-                                    p.location.ident(),
-                                    p.name
-                                );
-                                abort!(
-                                    r.name.span(),
-                                    r#"{} parameter "{}" already exists"#,
-                                    r.location.ident(),
-                                    r.name
-                                );
+                };
+
+                attr_params.no_unnamed();
+
+                for param in attr_params {
+                    let (name, value) = match param {
+                        AttrParam::Named { name, value } => (name, value),
+                        AttrParam::Unnamed(_) => unreachable!(),
+                    };
+
+                    if name == "res" || name == "response" {
+                        match value.parse_with(|input: ParseStream| input.parse::<Response>()) {
+                            Ok(r) => {
+                                responses.push(r);
                             }
+                            Err(e) => match &mut errors {
+                                None => errors = Some(e),
+                                Some(errors) => {
+                                    errors.combine(Error::new(attr.path.span(), e.to_string()))
+                                }
+                            },
                         }
-                        params.push(r);
-                        false
-                    }
-                    Err(e) => {
-                        match &mut errors {
-                            None => errors = Some(e),
-                            Some(errors) => {
-                                errors.combine(Error::new(attr.path.span(), e.to_string()))
+                    } else if name == "param" || name == "parameter" {
+                        match value.parse_with(|input: ParseStream| input.parse::<Param>()) {
+                            Ok(r) => {
+                                for p in &params {
+                                    if p.location == r.location && p.name == r.name {
+                                        emit_error!(
+                                            p.name.span(),
+                                            r#"{} parameter "{}" is given here"#,
+                                            p.location.ident(),
+                                            p.name
+                                        );
+                                        abort!(
+                                            r.name.span(),
+                                            r#"{} parameter "{}" already exists"#,
+                                            r.location.ident(),
+                                            r.name
+                                        );
+                                    }
+                                }
+                                params.push(r);
                             }
+                            Err(e) => match &mut errors {
+                                None => errors = Some(e),
+                                Some(errors) => {
+                                    errors.combine(Error::new(attr.path.span(), e.to_string()))
+                                }
+                            },
                         }
-                        true
-                    }
-                }
-            } else if attr.path.is_ident("default_response") || attr.path.is_ident("default_res") {
-                if default_response.is_some() {
-                    abort!(attr.path.span(), "only one default response is allowed");
-                }
-                match attr.parse_args_with(|input: ParseStream| input.parse::<DefaultResponse>()) {
-                    Ok(r) => {
-                        default_response = Some(r);
-                        false
-                    }
-                    Err(e) => {
-                        match &mut errors {
-                            None => errors = Some(e),
-                            Some(errors) => {
-                                errors.combine(Error::new(attr.path.span(), e.to_string()))
+                    } else if name == "default_response" || name == "default_res" {
+                        if default_response.is_some() {
+                            abort!(attr.path.span(), "only one default response is allowed");
+                        }
+                        match value
+                            .parse_with(|input: ParseStream| input.parse::<DefaultResponse>())
+                        {
+                            Ok(r) => {
+                                default_response = Some(r);
                             }
+                            Err(e) => match &mut errors {
+                                None => errors = Some(e),
+                                Some(errors) => {
+                                    errors.combine(Error::new(attr.path.span(), e.to_string()))
+                                }
+                            },
                         }
-                        true
+                    } else if name == "id" {
+                        match value.parse_with(|input: ParseStream| input.parse::<LitStr>()) {
+                            Ok(r) => {
+                                id = Some(r);
+                            }
+                            Err(e) => match &mut errors {
+                                None => errors = Some(e),
+                                Some(errors) => {
+                                    errors.combine(Error::new(attr.path.span(), e.to_string()))
+                                }
+                            },
+                        }
+                    } else if name == "bind" {
+                        match value.parse_with(|input: ParseStream| input.parse::<Bindings>()) {
+                            Ok(b) => {
+                                bindings.push(b);
+                            }
+                            Err(e) => match &mut errors {
+                                None => errors = Some(e),
+                                Some(errors) => {
+                                    errors.combine(Error::new(attr.path.span(), e.to_string()))
+                                }
+                            },
+                        }
+                    } else if name == "tag" {
+                        match value.parse_with(|input: ParseStream| input.parse::<Expr>()) {
+                            Ok(b) => {
+                                tags.push(b);
+                            }
+                            Err(e) => match &mut errors {
+                                None => errors = Some(e),
+                                Some(errors) => {
+                                    errors.combine(Error::new(attr.path.span(), e.to_string()))
+                                }
+                            },
+                        }
                     }
                 }
+
+                false
+            } else if attr.path.is_ident("doc") {
+                if let Ok(d) = syn::parse2::<DocString>(attr.tokens.clone()) {
+                    doc_val += &d.content.value();
+                };
+                true
             } else if attr.path.is_ident("get")
                 || attr.path.is_ident("post")
                 || attr.path.is_ident("put")
@@ -146,62 +204,11 @@ impl Operation {
                     },
                 };
                 true
-            } else if attr.path.is_ident("id") {
-                match attr.parse_args_with(|input: ParseStream| input.parse::<LitStr>()) {
-                    Ok(r) => {
-                        id = Some(r);
-                        false
-                    }
-                    Err(e) => {
-                        match &mut errors {
-                            None => errors = Some(e),
-                            Some(errors) => {
-                                errors.combine(Error::new(attr.path.span(), e.to_string()))
-                            }
-                        }
-                        true
-                    }
-                }
-            } else if attr.path.is_ident("bind") {
-                match attr.parse_args_with(|input: ParseStream| input.parse::<Bindings>()) {
-                    Ok(b) => {
-                        bindings.push(b);
-                        false
-                    }
-                    Err(e) => {
-                        match &mut errors {
-                            None => errors = Some(e),
-                            Some(errors) => {
-                                errors.combine(Error::new(attr.path.span(), e.to_string()))
-                            }
-                        }
-                        true
-                    }
-                }
-            } else if attr.path.is_ident("tag") {
-                match attr.parse_args_with(|input: ParseStream| input.parse::<Expr>()) {
-                    Ok(b) => {
-                        tags.push(b);
-                        false
-                    }
-                    Err(e) => {
-                        match &mut errors {
-                            None => errors = Some(e),
-                            Some(errors) => {
-                                errors.combine(Error::new(attr.path.span(), e.to_string()))
-                            }
-                        }
-                        true
-                    }
-                }
-            } else if attr.path.is_ident("doc") {
-                if let Ok(d) = syn::parse2::<DocString>(attr.tokens.clone()) {
-                    doc_val += &d.content.value();
-                };
-                true
             } else {
                 true
             }
+
+            // false
         });
 
         if method.is_none() {

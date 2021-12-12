@@ -1,6 +1,6 @@
 [package]
 name = "aide"
-version = "0.2.0"
+version = "0.3.0"
 authors = ["tamasfe"]
 edition = "2018"
 keywords = ["api", "spec", "specification"]
@@ -9,7 +9,7 @@ repository = "https://github.com/tamasfe/aide"
 description = "An API documentation library"
 
 [dependencies]
-aide-macros = { path = "../aide-macros", version = "=0.2.0" }
+aide-macros = { path = "../aide-macros", version = "=0.3.0" }
 linkme = "0.2.7"
 schemars = { version = "0.8.6", features = ["impl_json_schema"] }
 serde = "1"

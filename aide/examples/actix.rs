@@ -30,12 +30,14 @@ pub struct UserPathParams {
 /// Greets a user with the given name.
 #[api::operation]
 #[get("/user/{userId}")]
-#[tag(EXAMPLE_TAG)]
-#[response(
-    status(200),
-    type(String),
-    description("A user greeting"),
-    example(String::from("hello Tom!"))
+#[api(
+    tag(EXAMPLE_TAG),
+    response(
+        status(200),
+        type(String),
+        description("A user greeting"),
+        example(String::from("hello Tom!"))
+    )
 )]
 async fn greet_user(params: web::Path<UserPathParams>) -> impl Responder {
     format!("hello {}!", params.user_name)
@@ -55,9 +57,11 @@ pub struct UserUpdate {
 
 /// Updates a user with the given ID.
 #[api::operation]
-#[tag(EXAMPLE_TAG2)]
+#[api(
+    tag(EXAMPLE_TAG2),
+    response(204)
+)]
 #[post("/user/{userId}")]
-#[response(204)]
 async fn update_user(
     _params: web::Path<UserPathParams>,
     _body: web::Json<UserUpdate>,
