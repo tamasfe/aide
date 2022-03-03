@@ -34,7 +34,7 @@ pub struct ItemModel {
 pub struct ItemResponse {
     pub route: Route,
     // Default responses have no status codes.
-    pub status: Option<i32>,
+    pub status: Option<u16>,
     pub schema: Option<Schema>,
     pub content_type: Option<&'static str>,
     pub description: Option<&'static str>,
@@ -80,6 +80,7 @@ impl From<ItemResponse> for Response {
 pub enum BindingKind {
     Query,
     Path,
+    Header,
     Body,
 }
 
@@ -134,6 +135,7 @@ impl From<ItemParameter> for Parameter {
 
 #[derive(Debug, Clone)]
 pub struct ItemOperation {
+    pub deprecated: bool,
     pub route: Route,
     pub operation_id: &'static str,
     pub summary: &'static str,
@@ -182,3 +184,5 @@ pub struct Route {
     pub method: &'static str,
     pub path: &'static str,
 }
+
+pub struct ItemNothing;

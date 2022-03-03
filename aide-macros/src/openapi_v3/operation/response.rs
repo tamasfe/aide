@@ -1,5 +1,4 @@
 use crate::util::examples::Examples;
-use proc_macro_error::abort;
 use quote::ToTokens;
 use syn::{
     parse::{Parse, ParseStream},
@@ -85,7 +84,7 @@ impl Parse for Response {
         }
 
         if status_code.is_none() {
-            abort!(sp, "status code must be known");
+            return Err(syn::Error::new(sp, "status code must be known"));
         }
 
         Ok(Response {
@@ -137,7 +136,7 @@ impl Parse for DefaultResponse {
                         } else if name == "example" || name == "examples" {
                             examples.update(value.parse()?).map_err(|e| {
                                 Error::new(
-                                    e.span().join(name.span()).unwrap_or_else(||e.span()),
+                                    e.span().join(name.span()).unwrap_or_else(|| e.span()),
                                     e.to_string(),
                                 )
                             })?;
@@ -149,11 +148,13 @@ impl Parse for DefaultResponse {
         } else if params.len() == 1 {
             ty = Some(params.into_iter().next().unwrap().parse()?);
         } else {
-            abort!(
+            return Err(syn::Error::new(
                 params.span(),
-                r#"expected exactly 1 unnamed parameter, but got {}"#,
-                params.len()
-            );
+                format!(
+                    r#"expected exactly 1 unnamed parameter, but got {}"#,
+                    params.len(),
+                ),
+            ));
         }
 
         Ok(DefaultResponse(Response {
@@ -185,7 +186,10 @@ impl ToTokens for StatusCode {
     fn to_tokens(&self, tokens: &mut proc_macro2::TokenStream) {
         match self {
             StatusCode::Expr(v) => v.to_tokens(tokens),
-            StatusCode::LitInt(v) => v.to_tokens(tokens),
+            StatusCode::LitInt(v) => {
+                let val: u16 = v.base10_parse().unwrap();
+                val.to_tokens(tokens)
+            }
         }
     }
 }

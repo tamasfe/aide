@@ -19,7 +19,6 @@ define::tag! {
 }
 
 /// User path parameters.
-/// The `#[api::operation]` macro is universal for all items.
 #[derive(api::Model, JsonSchema, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct UserPathParams {
@@ -29,7 +28,7 @@ pub struct UserPathParams {
 
 /// Greets a user with the given name.
 #[api::operation]
-#[get("/user/{userId}")]
+#[get("/user/{userName}")]
 #[api(
     tag(EXAMPLE_TAG),
     response(
@@ -37,9 +36,10 @@ pub struct UserPathParams {
         type(String),
         description("A user greeting"),
         example(String::from("hello Tom!"))
-    )
+    ),
+    skip(return)
 )]
-async fn greet_user(params: web::Path<UserPathParams>) -> impl Responder {
+async fn greet_user(params: web::Path<UserPathParams>) -> String {
     format!("hello {}!", params.user_name)
 }
 
@@ -57,11 +57,8 @@ pub struct UserUpdate {
 
 /// Updates a user with the given ID.
 #[api::operation]
-#[api(
-    tag(EXAMPLE_TAG2),
-    response(204)
-)]
-#[post("/user/{userId}")]
+#[api(tag(EXAMPLE_TAG2), response(204))]
+#[post("/user/{userName}")]
 async fn update_user(
     _params: web::Path<UserPathParams>,
     _body: web::Json<UserUpdate>,

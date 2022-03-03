@@ -1,5 +1,4 @@
 use crate::util::examples::Examples;
-use proc_macro_error::abort;
 use quote::ToTokens;
 use std::fmt;
 use syn::{parse::Parse, spanned::Spanned, Error, Expr, Ident, LitStr, Type};
@@ -195,20 +194,20 @@ impl Parse for Param {
         }
 
         if location.is_none() {
-            abort!(sp, "parameter location must be known");
+            return Err(syn::Error::new(sp, "parameter location must be known"));
         }
 
         if param_name.is_none() {
-            abort!(sp, "parameter name must be known");
+            return Err(syn::Error::new(sp, "parameter name must be known"));
         }
 
         if ty.is_none() {
-            abort!(sp, "type must be known");
+            return Err(syn::Error::new(sp, "type must be known"));
         }
 
         if let ParamLocation::Path(_) = location.as_ref().unwrap() {
             if is_option(ty.as_ref().unwrap()) {
-                abort!(ty.span(), "path parameter cannot be optional");
+                return Err(syn::Error::new(ty.span(), "path parameter cannot be optional"));
             }
         }
 

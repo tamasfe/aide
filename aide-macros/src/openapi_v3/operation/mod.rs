@@ -1,23 +1,25 @@
-use crate::util::{examples::Example, examples::Examples, parse_path_params};
+use std::collections::HashSet;
+
+use crate::util::{examples::Example, parse_path_params};
 use binding::{Binding, BindingKind, Bindings};
 use heck::MixedCase;
-use param::{Param, ParamLocation};
+use param::Param;
 use proc_macro2::{Span, TokenStream};
-use proc_macro_error::{abort, emit_error, emit_warning};
-use quote::ToTokens;
+use proc_macro_error::{emit_error};
+use quote::{format_ident, ToTokens};
 use quote::{quote, quote_spanned};
 use response::{DefaultResponse, Response};
+use syn::ext::IdentExt;
 use syn::{
     parse::{Parse, ParseStream},
     punctuated::Punctuated,
     spanned::Spanned,
-    Error, Expr, FnArg, GenericArgument, Ident, Item, ItemFn, LitStr, Pat, PathArguments, Token,
-    Type,
+    Error, Expr, FnArg, Ident, Item, ItemFn, LitStr, Pat, Token,
 };
+use syn::{ReturnType, Type};
 use tamasfe_macro_utils::{
     attr::{AttrParam, AttrParams},
-    path::{is_option, is_type, type_args},
-    path_segments,
+    path::is_option,
 };
 use titlecase::titlecase;
 
@@ -26,6 +28,7 @@ mod param;
 mod response;
 
 pub struct Operation {
+    pub deprecated: bool,
     pub id: Option<LitStr>,
     pub path: LitStr,
     pub method: Ident,
@@ -36,15 +39,19 @@ pub struct Operation {
     pub bindings: Vec<Bindings>,
     pub tags: Vec<Expr>,
     pub default_response: Option<DefaultResponse>,
+    pub skip_params: HashSet<Ident>,
+    pub inputs: Vec<OperationInput>,
+    pub output: Option<OperationOutput>,
 }
 
 impl Operation {
     pub fn from_item(item: Item) -> syn::Result<Self> {
         let mut item_fn = match item {
             Item::Fn(f) => f,
-            _ => abort!(Span::call_site(), "function expected"),
+            _ => return Err(syn::Error::new(Span::call_site(), "function expected")),
         };
 
+        let mut deprecated = false;
         let mut params: Vec<Param> = Vec::new();
         let mut responses = Vec::new();
         let mut default_response: Option<DefaultResponse> = None;
@@ -56,6 +63,7 @@ impl Operation {
         let mut path_params: Vec<String> = Vec::new();
         let mut doc_val = String::new();
         let mut tags: Vec<Expr> = Vec::new();
+        let mut skip_params: HashSet<Ident> = HashSet::new();
 
         item_fn.attrs.retain(|attr| {
             if attr.path.is_ident("api") {
@@ -103,12 +111,13 @@ impl Operation {
                                             p.location.ident(),
                                             p.name
                                         );
-                                        abort!(
+                                        emit_error!(
                                             r.name.span(),
                                             r#"{} parameter "{}" already exists"#,
                                             r.location.ident(),
                                             r.name
                                         );
+                                        continue;
                                     }
                                 }
                                 params.push(r);
@@ -122,7 +131,8 @@ impl Operation {
                         }
                     } else if name == "default_response" || name == "default_res" {
                         if default_response.is_some() {
-                            abort!(attr.path.span(), "only one default response is allowed");
+                            emit_error!(attr.path.span(), "only one default response is allowed");
+                            continue;
                         }
                         match value
                             .parse_with(|input: ParseStream| input.parse::<DefaultResponse>())
@@ -173,13 +183,37 @@ impl Operation {
                                 }
                             },
                         }
+                    } else if name == "skip" {
+                        match value.parse_with(|input: ParseStream| {
+                            Punctuated::<Ident, Token!(,)>::parse_terminated_with(input, |ident| {
+                                Ident::parse_any(ident)
+                            })
+                        }) {
+                            Ok(list) => {
+                                for ident in list {
+                                    skip_params.insert(ident);
+                                }
+                            }
+                            Err(e) => match &mut errors {
+                                None => errors = Some(e),
+                                Some(errors) => {
+                                    errors.combine(Error::new(attr.path.span(), e.to_string()))
+                                }
+                            },
+                        }
                     }
                 }
 
                 false
+            } else if attr.path.is_ident("deprecated") {
+                deprecated = true;
+                true
             } else if attr.path.is_ident("doc") {
                 if let Ok(d) = syn::parse2::<DocString>(attr.tokens.clone()) {
-                    doc_val += &d.content.value();
+                    let val = d.content.value();
+                    let v = val.strip_prefix(' ').unwrap_or(&val).trim_end();
+                    doc_val += v;
+                    doc_val += "\n";
                 };
                 true
             } else if attr.path.is_ident("get")
@@ -207,75 +241,21 @@ impl Operation {
             } else {
                 true
             }
-
-            // false
         });
 
         if method.is_none() {
-            abort!(Span::call_site(), "HTTP request method must be known");
+            return Err(syn::Error::new(Span::call_site(),  "HTTP request method must be known"));
         }
 
         if path.is_none() {
-            abort!(Span::call_site(), "request path must be known");
+            return Err(syn::Error::new(Span::call_site(),  "request path must be known"));
         }
 
-        let (mut arg_bindings, arg_path_params) = Operation::parse_args(&item_fn, &path_params);
-
-        let mut body_binding = false;
-        let mut query_binding = false;
-        let mut path_binding = false;
-
-        for b in &bindings {
-            if b.query.is_some() {
-                query_binding = true;
-            }
-
-            if b.body.is_some() {
-                body_binding = true;
-            }
-
-            if b.path.is_some() {
-                path_binding = true;
-            }
-        }
-
-        if body_binding {
-            arg_bindings.body = None
-        }
-
-        if query_binding {
-            arg_bindings.query = None
-        }
-
-        if path_binding {
-            arg_bindings.path = None
-        }
-
-        if arg_bindings.path.is_some()
-            || arg_bindings.query.is_some()
-            || arg_bindings.body.is_some()
-        {
-            bindings.push(arg_bindings);
-        }
-
-        if let Some(arg_params) = arg_path_params {
-            for p in arg_params {
-                let mut exists = false;
-                for existing_p in &params {
-                    if existing_p.name.to_string() == p.name.to_string() {
-                        exists = true;
-                        break;
-                    }
-                }
-
-                if !exists {
-                    params.push(p);
-                }
-            }
-        }
+        let (inputs, output) = Operation::parse_sig(&item_fn, &skip_params);
 
         match errors {
             None => Ok(Self {
+                deprecated,
                 item: item_fn,
                 id,
                 tags,
@@ -290,6 +270,9 @@ impl Operation {
                 bindings,
                 path: path.unwrap(),
                 method: method.unwrap(),
+                skip_params,
+                inputs,
+                output,
             }),
             Some(errors) => Err(errors),
         }
@@ -303,193 +286,192 @@ impl Parse for Operation {
 }
 
 impl Operation {
-    fn parse_args(f: &ItemFn, path_param_names: &[String]) -> (Bindings, Option<Vec<Param>>) {
-        let mut bindings = Bindings::default();
-        let mut path_params: Vec<Param> = Vec::new();
+    fn parse_sig(
+        f: &ItemFn,
+        skipped: &HashSet<Ident>,
+    ) -> (Vec<OperationInput>, Option<OperationOutput>) {
+        let mut inputs: Vec<OperationInput> = Vec::new();
+        let mut output: Option<OperationOutput> = None;
 
         for input in &f.sig.inputs {
             if let FnArg::Typed(arg) = &input {
-                if is_type(&*arg.ty, &path_segments!(actix_web::web::Json)) {
-                    if let Some(inner_type) = type_args(&*arg.ty).and_then(|a| match a {
-                        PathArguments::None => None,
-                        PathArguments::Parenthesized(_) => None,
-                        PathArguments::AngleBracketed(t) => {
-                            t.args.iter().next().and_then(|g| match g {
-                                GenericArgument::Lifetime(_) => None,
-                                GenericArgument::Binding(_) => None,
-                                GenericArgument::Constraint(_) => None,
-                                GenericArgument::Const(_) => None,
-                                GenericArgument::Type(ty) => Some(ty),
-                            })
-                        }
-                    }) {
-                        if let Some(b) = &bindings.body {
-                            emit_error!(b.kind.ident().span(), "previous binding here");
-                            abort!(arg.span(), "the request body is already bound");
-                        }
-
-                        bindings.body = Some(Binding {
-                            kind: BindingKind::Body(Ident::new("body", arg.span())),
-                            content_type: Some(LitStr::new("application/json", arg.span())),
-                            ty: inner_type.clone(),
-                        })
-                    }
-                } else if is_type(&*arg.ty, &path_segments!(actix_web::web::Path)) {
-                    if let Some(inner_type) = type_args(&*arg.ty).and_then(|a| match a {
-                        PathArguments::None => None,
-                        PathArguments::Parenthesized(_) => None,
-                        PathArguments::AngleBracketed(t) => {
-                            t.args.iter().next().and_then(|g| match g {
-                                GenericArgument::Lifetime(_) => None,
-                                GenericArgument::Binding(_) => None,
-                                GenericArgument::Constraint(_) => None,
-                                GenericArgument::Const(_) => None,
-                                GenericArgument::Type(ty) => Some(ty),
-                            })
-                        }
-                    }) {
-                        if let Some(b) = &bindings.path {
-                            emit_error!(b.kind.ident().span(), "previous binding here");
-                            abort!(arg.span(), "the request path is already bound");
-                        }
-
-                        if !path_params.is_empty() {
-                            abort!(arg.span(), "the request path is already bound");
-                        }
-
-                        if let Type::Tuple(param_tuple) = inner_type {
-                            if param_tuple.elems.len() != path_param_names.len() {
-                                abort!(
-                                    param_tuple.span(),
-                                    "the path binding expects {} path parameters, but there are {} in the path",
-                                    param_tuple.elems.len(), path_param_names.len()
-                                );
-                            }
-
-                            if let Pat::TupleStruct(ts) = &*arg.pat {
-                                if let Some(Pat::Tuple(t)) = ts.pat.elems.iter().next() {
-                                    for (i, elem) in t.elems.iter().enumerate() {
-                                        if let Pat::Ident(p_ident) = elem {
-                                            for (j, p_name) in path_param_names.iter().enumerate() {
-                                                if p_ident.ident == p_name && i != j {
-                                                    if cfg!(feature = "warn-as-error") {
-                                                        abort!(
-                                                            p_ident.span(),
-                                                            r#"parameter "{}" is at position {} in the binding, but {} in the path"#,
-                                                            p_name,
-                                                            i,
-                                                            j
-                                                        );
-                                                    } else {
-                                                        emit_warning!(
-                                                            p_ident.span(),
-                                                            r#"parameter "{}" is at position {} in the binding, but {} in the path"#,
-                                                            p_name,
-                                                            i,
-                                                            j
-                                                        );
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-
-                            for (i, path_ty) in param_tuple.elems.iter().enumerate() {
-                                path_params.push(Param {
-                                    location: ParamLocation::Path(Ident::new(
-                                        "path",
-                                        path_ty.span(),
-                                    )),
-                                    name: param::ParamName::LitStr(LitStr::new(
-                                        &path_param_names[i],
-                                        path_ty.span(),
-                                    )),
-                                    default_value: None,
-                                    deprecated: None,
-                                    description: None,
-                                    ty: path_ty.clone(),
-                                    examples: Examples::default(),
-                                })
-                            }
-                            continue;
-                        }
-
-                        bindings.path = Some(Binding {
-                            kind: BindingKind::Path(Ident::new("path", arg.span())),
-                            content_type: None,
-                            ty: inner_type.clone(),
-                        })
-                    }
-                } else if is_type(&*arg.ty, &path_segments!(actix_web::web::Query)) {
-                    if let Some(inner_type) = type_args(&*arg.ty).and_then(|a| match a {
-                        PathArguments::None => None,
-                        PathArguments::Parenthesized(_) => None,
-                        PathArguments::AngleBracketed(t) => {
-                            t.args.iter().next().and_then(|g| match g {
-                                GenericArgument::Lifetime(_) => None,
-                                GenericArgument::Binding(_) => None,
-                                GenericArgument::Constraint(_) => None,
-                                GenericArgument::Const(_) => None,
-                                GenericArgument::Type(ty) => Some(ty),
-                            })
-                        }
-                    }) {
-                        if let Some(b) = &bindings.query {
-                            emit_error!(b.kind.ident().span(), "previous binding here");
-                            abort!(arg.span(), "the request query is already bound");
-                        }
-
-                        bindings.query = Some(Binding {
-                            kind: BindingKind::Query(Ident::new("query", arg.span())),
-                            content_type: None,
-                            ty: inner_type.clone(),
-                        })
-                    }
-                } else if is_type(&*arg.ty, &path_segments!(actix_web::web::Form)) {
-                    if let Some(inner_type) = type_args(&*arg.ty).and_then(|a| match a {
-                        PathArguments::None => None,
-                        PathArguments::Parenthesized(_) => None,
-                        PathArguments::AngleBracketed(t) => {
-                            t.args.iter().next().and_then(|g| match g {
-                                GenericArgument::Lifetime(_) => None,
-                                GenericArgument::Binding(_) => None,
-                                GenericArgument::Constraint(_) => None,
-                                GenericArgument::Const(_) => None,
-                                GenericArgument::Type(ty) => Some(ty),
-                            })
-                        }
-                    }) {
-                        if let Some(b) = &bindings.body {
-                            emit_error!(b.kind.ident().span(), "previous binding here");
-                            abort!(arg.span(), "the request body is already bound");
-                        }
-
-                        bindings.body = Some(Binding {
-                            kind: BindingKind::Body(Ident::new("body", arg.span())),
-                            content_type: Some(LitStr::new(
-                                "application/x-www-form-urlencoded",
-                                arg.span(),
-                            )),
-                            ty: inner_type.clone(),
-                        })
+                if let Pat::Ident(id) = &*arg.pat {
+                    if skipped.contains(&id.ident) {
+                        continue;
                     }
                 }
+
+                inputs.push(OperationInput {
+                    ty: (*arg.ty).clone(),
+                });
             }
         }
 
-        (
-            bindings,
-            if path_params.is_empty() {
-                None
-            } else {
-                Some(path_params)
-            },
-        )
+        // TODO: separate attribute
+        if !skipped.contains(&format_ident!("return")) {
+            if let ReturnType::Type(_, ty) = &f.sig.output {
+                match &**ty {
+                    Type::ImplTrait(_) | Type::Infer(_) | Type::Never(_) => {},
+                    _ => {
+                        output = Some(OperationOutput { ty: (**ty).clone() })
+                    }
+                }
+
+                
+            }
+        }
+
+        (inputs, output)
     }
 
+    fn gen_inputs(
+        inputs: &[OperationInput],
+        id: &LitStr,
+        method: &LitStr,
+        crate_name: TokenStream,
+        path: &LitStr,
+    ) -> TokenStream {
+        let mut input_tokens = TokenStream::new();
+
+        for input in inputs {
+            let res_fn_name = Ident::new(
+                &format!("aide_operation_input{}", uuid::Uuid::new_v4().to_simple_ref()),
+                Span::call_site(),
+            );
+    
+            let static_res_fn_name = Ident::new(
+                &(res_fn_name.to_string().to_uppercase() + "_LINK"),
+                Span::call_site(),
+            );
+
+            let ty = &input.ty;
+            input_tokens.extend(quote! {
+                #[#crate_name::internal::linkme::distributed_slice(#crate_name::openapi::v3::gen::ITEMS)]
+                #[linkme(crate = #crate_name::internal::linkme)]
+                static #static_res_fn_name: #crate_name::openapi::v3::gen::ItemFn = #res_fn_name;
+                fn #res_fn_name(opts: &#crate_name::openapi::v3::gen::Options) -> Result<#crate_name::openapi::v3::gen::item::Item, #crate_name::openapi::v3::gen::Error> {
+                    if opts.id != #id {
+                        return Err(
+                            #crate_name::openapi::v3::gen::Error {
+                                position: Some(#crate_name::openapi::v3::gen::item::Position {
+                                    file: file!(),
+                                    column: column!(),
+                                    line: line!()
+                                }),
+                                kind: #crate_name::openapi::v3::gen::ErrorKind::IdExpected(#id),
+                            }
+                        );
+                    }
+    
+                    Ok(
+                        match <#ty as #crate_name::openapi::v3::gen::OperationInput>::operation_input(
+                            opts,
+                            #id,
+                            #crate_name::openapi::v3::gen::item::Position {
+                                file: file!(),
+                                column: column!(),
+                                line: line!()
+                            },
+                            #crate_name::openapi::v3::gen::item::Route {
+                                method: #method,
+                                path: #path
+                            }
+                        ) {
+                            Some(it) => it,
+                            None => #crate_name::openapi::v3::gen::item::Item {
+                                id: #id,
+                                position: #crate_name::openapi::v3::gen::item::Position {
+                                    file: file!(),
+                                    column: column!(),
+                                    line: line!()
+                                },
+                                content: Box::new(
+                                    #crate_name::openapi::v3::gen::item::ItemNothing
+                                )
+                            }
+                        }
+                    )
+                }
+
+                
+            });
+        }
+
+        input_tokens
+    }
+
+    fn gen_output(
+        output: &OperationOutput,
+        id: &LitStr,
+        method: &LitStr,
+        crate_name: TokenStream,
+        path: &LitStr,
+    ) -> TokenStream {
+        let res_fn_name = Ident::new(
+            &format!("aide_operation_output{}", uuid::Uuid::new_v4().to_simple_ref()),
+            Span::call_site(),
+        );
+
+        let static_res_fn_name = Ident::new(
+            &(res_fn_name.to_string().to_uppercase() + "_LINK"),
+            Span::call_site(),
+        );
+
+        let ty = &output.ty;
+
+        quote! {
+            #[#crate_name::internal::linkme::distributed_slice(#crate_name::openapi::v3::gen::ITEMS)]
+            #[linkme(crate = #crate_name::internal::linkme)]
+            static #static_res_fn_name: #crate_name::openapi::v3::gen::ItemFn = #res_fn_name;
+            fn #res_fn_name(opts: &#crate_name::openapi::v3::gen::Options) -> Result<#crate_name::openapi::v3::gen::item::Item, #crate_name::openapi::v3::gen::Error> {
+                if opts.id != #id {
+                    return Err(
+                        #crate_name::openapi::v3::gen::Error {
+                            position: Some(#crate_name::openapi::v3::gen::item::Position {
+                                file: file!(),
+                                column: column!(),
+                                line: line!()
+                            }),
+                            kind: #crate_name::openapi::v3::gen::ErrorKind::IdExpected(#id),
+                        }
+                    );
+                }
+
+                Ok(
+                    match <#ty as #crate_name::openapi::v3::gen::OperationOutput>::operation_output(
+                        opts,
+                        #id,
+                        #crate_name::openapi::v3::gen::item::Position {
+                            file: file!(),
+                            column: column!(),
+                            line: line!()
+                        },
+                        #crate_name::openapi::v3::gen::item::Route {
+                            method: #method,
+                            path: #path
+                        }
+                    ) {
+                        Some(it) => it,
+                        None => #crate_name::openapi::v3::gen::item::Item {
+                            id: #id,
+                            position: #crate_name::openapi::v3::gen::item::Position {
+                                file: file!(),
+                                column: column!(),
+                                line: line!()
+                            },
+                            content: Box::new(
+                                #crate_name::openapi::v3::gen::item::ItemNothing
+                            )
+                        }
+                    }
+                )
+            }
+        }
+    }
+
+    #[allow(clippy::too_many_arguments)]
     fn gen_operation(
+        deprecated: bool,
         id: &LitStr,
         crate_name: TokenStream,
         doc: Option<&LitStr>,
@@ -512,7 +494,7 @@ impl Operation {
         let operation_id = fn_name_string.to_mixed_case();
         let op_id_lit = LitStr::new(&operation_id, fn_name.span());
 
-        let summary = titlecase(&fn_name_string.replace("_", " "));
+        let summary = titlecase(&fn_name_string.replace('_', " "));
         let summary_lit = LitStr::new(&summary, fn_name.span());
 
         op_fields.extend(quote! {
@@ -584,6 +566,7 @@ impl Operation {
                         },
                         content: Box::new(
                             #crate_name::openapi::v3::gen::item::ItemOperation {
+                                deprecated: #deprecated,
                                 #op_fields
                             }
                         )
@@ -1141,7 +1124,17 @@ impl ToTokens for Operation {
         let method = LitStr::new(&self.method.to_string().to_lowercase(), self.method.span());
         let path = &self.path;
 
+        let inputs = Operation::gen_inputs(&self.inputs, &id, &method, crate_name.clone(), path);
+
+        let output = match &self.output {
+            Some(o) => {
+                Operation::gen_output(o, &id, &method, crate_name.clone(), path)
+            },
+            None => TokenStream::new(),
+        };
+
         let op = Operation::gen_operation(
+            self.deprecated,
             &id,
             crate_name.clone(),
             doc,
@@ -1223,6 +1216,8 @@ impl ToTokens for Operation {
 
         tokens.extend(quote! {
             #op
+            #inputs
+            #output
             #params
             #responses
             #bindings
@@ -1233,15 +1228,23 @@ impl ToTokens for Operation {
 
 #[derive(Debug, Clone)]
 struct DocString {
-    eq: Token!(=),
+    _eq: Token!(=),
     content: LitStr,
 }
 
 impl Parse for DocString {
     fn parse(input: ParseStream) -> syn::Result<Self> {
         Ok(Self {
-            eq: input.parse()?,
+            _eq: input.parse()?,
             content: input.parse()?,
         })
     }
+}
+
+pub struct OperationInput {
+    ty: Type,
+}
+
+pub struct OperationOutput {
+    ty: Type,
 }

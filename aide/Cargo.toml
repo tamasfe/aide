@@ -1,6 +1,6 @@
 [package]
 name = "aide"
-version = "0.3.0"
+version = "0.4.3"
 authors = ["tamasfe"]
 edition = "2018"
 keywords = ["api", "spec", "specification"]
@@ -9,21 +9,22 @@ repository = "https://github.com/tamasfe/aide"
 description = "An API documentation library"
 
 [dependencies]
-aide-macros = { path = "../aide-macros", version = "=0.3.0" }
+aide-macros = { path = "../aide-macros", version = "=0.4.0" }
 linkme = "0.2.7"
 schemars = { version = "0.8.6", features = ["impl_json_schema"] }
 serde = "1"
 serde_json = "1"
+actix-web = { version = "4", optional = true }
 
 [dev-dependencies]
-actix-web = "4.0.0-beta.10"
+actix-web = "4"
 anyhow = "1"
 
 [package.metadata.docs.rs]
 all-features = true
 
 [features]
-default = ["openapi-v3"]
+default = ["openapi-v3", "actix-web"]
 
 openapi-v3 = []
 
@@ -34,4 +35,4 @@ arrayvec = ["schemars/arrayvec"]
 
 [[example]]
 name = "actix"
-required-features = [ "openapi-v3"]
+required-features = ["openapi-v3", "actix-web"]

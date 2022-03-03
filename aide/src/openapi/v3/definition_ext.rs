@@ -96,6 +96,7 @@ impl PathItem {
 
 impl OpenApi {
     /// Allows applying transform functions in a neat way.
+    #[must_use]
     pub fn transform<T: FnOnce(Self) -> Self>(self, transform_fn: T) -> Self {
         transform_fn(self)
     }

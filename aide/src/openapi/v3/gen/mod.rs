@@ -1,3 +1,5 @@
+use self::item::Position;
+
 use super::{
     definition::{
         Components, MediaType, OpenApi, Operation, Parameter, ParameterLocation, ParameterValue,
@@ -14,6 +16,8 @@ use schemars::{
     JsonSchema, Map,
 };
 use std::cell::RefCell;
+
+mod impls;
 
 pub mod item;
 
@@ -107,6 +111,7 @@ pub fn generate_with_options(options: Options) -> Result<OpenApi, Error> {
                 let mut o = op.take().unwrap();
 
                 o.operation_id = Some(item_op.operation_id.into());
+                o.deprecated = item_op.deprecated;
                 o.summary = Some(item_op.summary.into());
                 o.description = item_op.description.map(|d| d.to_string());
                 o.tags = item_op.tags.iter().map(|t| t.to_string()).collect();
@@ -215,7 +220,7 @@ pub fn generate_with_options(options: Options) -> Result<OpenApi, Error> {
                 // TODO: checks
 
                 match binding.kind {
-                    BindingKind::Query | BindingKind::Path => {
+                    BindingKind::Query | BindingKind::Path | BindingKind::Header => {
                         let schema_obj = binding.schema.clone().into_object();
 
                         if let Some(obj) = schema_obj.object {
@@ -241,6 +246,7 @@ pub fn generate_with_options(options: Options) -> Result<OpenApi, Error> {
                                     location: match binding.kind {
                                         BindingKind::Query => ParameterLocation::Query,
                                         BindingKind::Path => ParameterLocation::Path,
+                                        BindingKind::Header => ParameterLocation::Header,
                                         BindingKind::Body => unreachable!(),
                                     },
                                     description: s
@@ -443,4 +449,22 @@ impl From<serde_json::Error> for ErrorKind {
     fn from(e: serde_json::Error) -> Self {
         ErrorKind::SerdeJson(e)
     }
+}
+
+pub trait OperationInput {
+    fn operation_input(
+        opts: &Options,
+        id: &'static str,
+        position: Position,
+        route: item::Route,
+    ) -> Option<item::Item>;
+}
+
+pub trait OperationOutput {
+    fn operation_output(
+        opts: &Options,
+        id: &'static str,
+        position: Position,
+        route: item::Route,
+    ) -> Option<item::Item>;
 }
