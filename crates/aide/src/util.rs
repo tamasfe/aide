@@ -1,4 +1,4 @@
-#![allow(clippy::all, clippy::pedantic, missing_docs)]
+#![allow(clippy::all, clippy::pedantic, missing_docs, dead_code)]
 //! Miscellaneous utilities.
 
 use std::borrow::Cow;
