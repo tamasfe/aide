@@ -27,4 +27,6 @@ pub enum Error {
     DuplicateRequestBody,
     #[error(r#"duplicate parameter "{0}" for the operation"#)]
     DuplicateParameter(String),
+    #[error("{0}")]
+    Other(Box<dyn std::error::Error + Send>)
 }
