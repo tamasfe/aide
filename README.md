@@ -1,9 +1,5 @@
 # Aide
-_Your personal API companion_
 
-- [Aide](#aide)
-  - [About](#about)
+![https://img.shields.io/crates/v/aide](https://img.shields.io/crates/v/aide) ![https://img.shields.io/docsrs/aide](https://img.shields.io/docsrs/aide)
 
-## About
-
-An API documentation library, [example usage](aide/examples/actix.rs). **WIP**.
+Code-first API documentation library for Rust.

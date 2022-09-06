@@ -1,0 +1,51 @@
+[package]
+name = "aide"
+version = "0.5.0"
+authors = ["tamasfe"]
+edition = "2021"
+keywords = ["generate", "api", "openapi", "documentation", "specification"]
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/tamasfe/aide"
+description = "A code-first API documentation library"
+
+[dependencies]
+indexmap = { version = "1.9.1", features = ["serde"] }
+schemars = "0.8.10"
+serde = "1.0.144"
+serde_json = "1.0.85"
+thiserror = "1.0.33"
+tracing = "0.1.36"
+
+aide-macros = { version = "0.5.0", path = "../aide-macros", optional = true }
+
+bytes = { version = "1.2.1", optional = true }
+http = { version = "0.2.8", optional = true }
+
+axum = { version = "0.6.0-rc.1", optional = true }
+axum-extra = { version = "0.4.0-rc.1", optional = true }
+tower-layer = { version = "0.3.1", optional = true }
+tower-service = { version = "0.3.2", optional = true }
+
+
+[features]
+macros = ["dep:aide-macros"]
+axum = ["dep:axum", "bytes", "http", "tower-layer", "tower-service"]
+axum-ws = ["axum/ws"]
+axum-multipart = ["axum/multipart"]
+axum-extra = ["axum", "dep:axum-extra"]
+axum-extra-cookie = ["axum", "axum-extra", "axum-extra/cookie"]
+axum-extra-cookie-private = [
+    "axum",
+    "axum-extra",
+    "axum-extra/cookie-private",
+]
+axum-extra-form = ["axum", "axum-extra", "axum-extra/form"]
+axum-extra-query = ["axum", "axum-extra", "axum-extra/query"]
+
+[dev-dependencies]
+serde = { version = "1.0.144", features = ["derive"] }
+tokio = { version = "1.21.0", features = ["macros", "rt-multi-thread"] }
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]

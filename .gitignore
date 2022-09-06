@@ -1,2 +1,5 @@
 target
 .vscode
+.local*
+.vscode
+Cargo.lock

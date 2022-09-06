@@ -1,0 +1,24 @@
+[package]
+name = "example-axum"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[dependencies]
+aide = { path = "../../crates/aide", features = [
+    "axum",
+    "axum-extra",
+    "macros",
+] }
+async-trait = "0.1.57"
+axum = { version = "0.6.0-rc.1", features = ["macros"] }
+axum-extra = "0.4.0-rc.1"
+axum-jsonschema = { path = "../../crates/axum-jsonschema", features = [
+    "aide",
+] }
+axum-macros = "0.3.0-rc.1"
+schemars = { version = "0.8.10", features = ["uuid1"] }
+serde = { version = "1.0.144", features = ["derive", "rc"] }
+serde_json = "1.0.85"
+tokio = { version = "1.21.0", features = ["macros", "rt-multi-thread"] }
+uuid = { version = "1.1.2", features = ["serde", "v4"] }

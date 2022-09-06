@@ -1,0 +1,188 @@
+//! Method routing that closely mimics [`axum::routing`] while extending
+//! it with API documentation-specific features..
+
+use std::{convert::Infallible, mem};
+
+use crate::openapi::{Operation, PathItem};
+use axum::{
+    body::Body,
+    handler::Handler,
+    routing::{self, MethodRouter},
+};
+use indexmap::IndexMap;
+
+use crate::{
+    gen::in_context,
+    operation::{OperationHandler, OperationInput},
+    transform::TransformOperation,
+};
+
+/// A wrapper over [`axum::routing::MethodRouter`] that adds
+/// API documentation-specific features.
+#[must_use]
+pub struct ApiMethodRouter<S = (), B = Body, E = Infallible> {
+    pub(crate) operations: IndexMap<&'static str, Operation>,
+    pub(crate) router: MethodRouter<S, B, E>,
+}
+
+impl<S, B, E> From<ApiMethodRouter<S, B, E>> for MethodRouter<S, B, E> {
+    fn from(router: ApiMethodRouter<S, B, E>) -> Self {
+        router.router
+    }
+}
+
+impl<S, B, E> ApiMethodRouter<S, B, E> {
+    fn new(router: MethodRouter<S, B, E>) -> Self {
+        Self {
+            operations: IndexMap::default(),
+            router,
+        }
+    }
+
+    pub(crate) fn take_path_item(&mut self) -> PathItem {
+        let mut path = PathItem::default();
+
+        for (method, op) in mem::take(&mut self.operations) {
+            match method {
+                "delete" => path.delete = Some(op),
+                "get" => path.get = Some(op),
+                "head" => path.head = Some(op),
+                "options" => path.options = Some(op),
+                "patch" => path.patch = Some(op),
+                "post" => path.post = Some(op),
+                "put" => path.put = Some(op),
+                "trace" => path.trace = Some(op),
+                _ => unreachable!(),
+            }
+        }
+
+        path
+    }
+}
+
+macro_rules! method_router_chain_method {
+    ($name:ident, $name_with:ident) => {
+        #[doc = concat!("Route `", stringify!($name) ,"` requests to the given handler. See [`axum::routing::MethodRouter::", stringify!($name) , "`] for more details.")]
+        pub fn $name<H, I, T>(mut self, handler: H) -> Self
+        where
+            H: Handler<T, S, B> + OperationHandler<I>,
+            I: OperationInput,
+            B: Send + 'static,
+            T: 'static,
+        {
+            let mut operation = Operation::default();
+            in_context(|ctx| {
+                I::operation_input(ctx, &mut operation);
+            });
+            self.operations.insert(stringify!($name), operation);
+            self.router = self.router.$name(handler);
+            self
+        }
+
+        #[doc = concat!("Route `", stringify!($name) ,"` requests to the given handler. See [`axum::routing::MethodRouter::", stringify!($name) , "`] for more details.")]
+        ///
+        /// This method additionally accepts a transform function,
+        /// see [`crate::axum`] for more details.
+        pub fn $name_with<H, I, T, F>(mut self, handler: H, transform: F) -> Self
+        where
+            H: Handler<T, S, B> + OperationHandler<I>,
+            I: OperationInput,
+            B: Send + 'static,
+            T: 'static,
+            F: FnOnce(TransformOperation) -> TransformOperation,
+        {
+            let mut operation = Operation::default();
+            in_context(|ctx| {
+                I::operation_input(ctx, &mut operation);
+            });
+
+            let t = transform(TransformOperation::new(&mut operation));
+
+            if !t.hidden {
+                self.operations.insert(stringify!($name), operation);
+            }
+
+            self.router = self.router.$name(handler);
+            self
+        }
+    };
+}
+
+macro_rules! method_router_top_level {
+    ($name:ident, $name_with:ident) => {
+        #[doc = concat!("Route `", stringify!($name) ,"` requests to the given handler. See [`axum::routing::", stringify!($name) , "`] for more details.")]
+        #[tracing::instrument(skip_all)]
+        pub fn $name<H, I, T, B, S>(handler: H) -> ApiMethodRouter<S, B, Infallible>
+        where
+            H: Handler<T, S, B> + OperationHandler<I>,
+            I: OperationInput,
+            B: Send + Sync + 'static,
+            S: Send + Sync + 'static,
+            T: 'static,
+        {
+            let mut router = ApiMethodRouter::new(routing::$name(handler));
+            let mut operation = Operation::default();
+            in_context(|ctx| {
+                I::operation_input(ctx, &mut operation);
+            });
+            router.operations.insert(stringify!($name), operation);
+            router
+        }
+
+        #[doc = concat!("Route `", stringify!($name) ,"` requests to the given handler. See [`axum::routing::", stringify!($name) , "`] for more details.")]
+        ///
+        /// This method additionally accepts a transform function,
+        /// see [`crate::axum`] for more details.
+        #[tracing::instrument(skip_all)]
+        pub fn $name_with<H, I, T, B, S, F>(
+            handler: H,
+            transform: F,
+        ) -> ApiMethodRouter<S, B, Infallible>
+        where
+            H: Handler<T, S, B> + OperationHandler<I>,
+            I: OperationInput,
+            B: Send + Sync + 'static,
+            S: Send + Sync + 'static,
+            T: 'static,
+            F: FnOnce(TransformOperation) -> TransformOperation,
+        {
+            let mut router = ApiMethodRouter::new(routing::$name(handler));
+            let mut operation = Operation::default();
+            in_context(|ctx| {
+                I::operation_input(ctx, &mut operation);
+            });
+
+            let t = transform(TransformOperation::new(&mut operation));
+
+            if !t.hidden {
+                router.operations.insert(stringify!($name), operation);
+            }
+
+            router
+        }
+    };
+}
+
+impl<S, B> ApiMethodRouter<S, B, Infallible>
+where
+    S: Send + Sync + 'static,
+    B: Send + Sync + 'static,
+{
+    method_router_chain_method!(delete, delete_with);
+    method_router_chain_method!(get, get_with);
+    method_router_chain_method!(head, head_with);
+    method_router_chain_method!(options, options_with);
+    method_router_chain_method!(patch, patch_with);
+    method_router_chain_method!(post, post_with);
+    method_router_chain_method!(put, put_with);
+    method_router_chain_method!(trace, trace_with);
+}
+
+method_router_top_level!(delete, delete_with);
+method_router_top_level!(get, get_with);
+method_router_top_level!(head, head_with);
+method_router_top_level!(options, options_with);
+method_router_top_level!(patch, patch_with);
+method_router_top_level!(post, post_with);
+method_router_top_level!(put, put_with);
+method_router_top_level!(trace, trace_with);
