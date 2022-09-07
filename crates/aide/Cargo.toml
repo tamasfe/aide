@@ -29,7 +29,7 @@ tower-service = { version = "0.3.2", optional = true }
 
 [features]
 macros = ["dep:aide-macros"]
-axum = ["dep:axum", "bytes", "http", "tower-layer", "tower-service"]
+axum = ["dep:axum", "bytes", "http", "dep:tower-layer", "dep:tower-service"]
 axum-ws = ["axum/ws"]
 axum-multipart = ["axum/multipart"]
 axum-extra = ["axum", "dep:axum-extra"]
