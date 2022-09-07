@@ -315,7 +315,12 @@ impl<'t> TransformOperation<'t> {
             }) {
             Some((idx, p)) => match p {
                 ReferenceOr::Item(p) => (idx, p),
-                ReferenceOr::Reference { .. } => unreachable!(),
+                ReferenceOr::Reference { .. } => {
+                    in_context(|ctx| {
+                        ctx.error(Error::UnexpectedReference);
+                    });
+                    return self;
+                }
             },
             None => {
                 in_context(|ctx| {

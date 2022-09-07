@@ -30,5 +30,5 @@ pub enum Error {
     #[error(r#"transformations do not support references"#)]
     UnexpectedReference,
     #[error("{0}")]
-    Other(Box<dyn std::error::Error + Send>)
+    Other(Box<dyn std::error::Error + Send>),
 }
