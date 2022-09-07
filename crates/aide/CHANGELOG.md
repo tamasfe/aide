@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.5.2 - 2022-09-07
+
+[9c59f3d](9c59f3de6bb97907b9e8e00c3b8a153c4b3da1be)...[66cbfad](66cbfad9985dfedce97e7afc0b6301d11a63b1b9)
+
+### Bug Fixes
+
+- Do not panic inside transform ([2ec0585](2ec0585b30a049179b37ced17f36ce3e1d4f675a))
+
+### Features
+
+- Add input to operation transform ([66cbfad](66cbfad9985dfedce97e7afc0b6301d11a63b1b9))
+
 ## 0.5.1 - 2022-09-07
 
 [2d799fb](2d799fbd926f30d588047ea1e24a9cccb3698496)...[9c59f3d](9c59f3de6bb97907b9e8e00c3b8a153c4b3da1be)
