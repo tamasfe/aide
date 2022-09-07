@@ -7,7 +7,7 @@
 
 # Aide
 
-![https://img.shields.io/crates/v/aide](https://crates.io/crates/aide) ![https://img.shields.io/docsrs/aide](https://docs.rs/aide/latest/aide/)
+![https://crates.io/crates/aide](https://img.shields.io/crates/v/aide) ![https://docs.rs/aide/latest/aide/](https://img.shields.io/docsrs/aide)
 
 A code-first API documentation and other utility libraries for Rust.
 
