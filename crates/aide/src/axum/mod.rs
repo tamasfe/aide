@@ -170,8 +170,8 @@
 use std::{convert::Infallible, future::Future, mem, pin::Pin, sync::Arc};
 
 use crate::{
-    gen::in_context,
-    openapi::{OpenApi, PathItem, ReferenceOr},
+    gen::{self, in_context},
+    openapi::{Components, OpenApi, PathItem, ReferenceOr, SchemaObject},
     util::merge_paths,
 };
 use axum::{
@@ -340,6 +340,40 @@ where
                 )
             })
             .collect();
+
+        let needs_reset =
+            in_context(|ctx| {
+                if !ctx.extract_schemas {
+                    return false;
+                }
+
+                if api.components.is_none() {
+                    api.components = Some(Components::default());
+                }
+
+                let components = api.components.as_mut().unwrap();
+
+                components
+                    .schemas
+                    .extend(ctx.schema.take_definitions().into_iter().map(
+                        |(name, json_schema)| {
+                            (
+                                name,
+                                SchemaObject {
+                                    json_schema,
+                                    example: None,
+                                    external_docs: None,
+                                },
+                            )
+                        },
+                    ));
+
+                true
+            });
+
+        if needs_reset {
+            gen::reset_context();
+        }
     }
 }
 

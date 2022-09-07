@@ -25,6 +25,8 @@ async fn main() {
         println!("{error}");
     });
 
+    aide::gen::extract_schemas();
+
     let state = AppState::default();
 
     let mut api = OpenApi::default();
