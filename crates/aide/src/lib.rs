@@ -7,6 +7,10 @@
 //!
 //! The goal is to minimize the learning curve, mental context switches
 //! and make documentation somewhat slightly less of a chore.
+//! 
+//! See the [examples](examples) to see how Aide is used with various frameworks.
+//! 
+//! [examples]: https://github.com/tamasfe/aide/tree/master/examples
 //!
 //! Currently only Open API version `3.1.0` is supported.
 //!
@@ -16,7 +20,7 @@
 //! rustfmt did not work with them, code completion was hit-and-miss.
 //!
 //! With `0.5.0`, aide was rewritten and instead it is based on on good old functions,
-//! type inference and declarative apis based on the builder pattern.
+//! type inference and declarative APIs based on the builder pattern.
 //!
 //! Now all documentation can be traced in the source code[^1],
 //! no more macro and global magic all over the place.[^2]

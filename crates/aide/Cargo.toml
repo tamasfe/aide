@@ -1,6 +1,6 @@
 [package]
 name = "aide"
-version = "0.5.4"
+version = "0.5.5"
 authors = ["tamasfe"]
 edition = "2021"
 keywords = ["generate", "api", "openapi", "documentation", "specification"]
@@ -16,7 +16,7 @@ serde_json = "1.0.85"
 thiserror = "1.0.33"
 tracing = "0.1.36"
 
-aide-macros = { version = "0.5.0", path = "../aide-macros", optional = true }
+aide-macros = { version = "0.5.1", path = "../aide-macros", optional = true }
 
 bytes = { version = "1.2.1", optional = true }
 http = { version = "0.2.8", optional = true }

@@ -60,8 +60,8 @@ struct OperationIoOpts {
 /// ```
 ///
 /// [`JsonSchema`]: https://docs.rs/schemars/latest/schemars/trait.JsonSchema.html
-/// [`OperationInput`]: https://docs.rs/aide/latest/aide/trait.OperationInput.html
-/// [`OperationOutput`]: https://docs.rs/aide/latest/aide/trait.OperationOutput.html
+/// [`OperationInput`]: https://docs.rs/aide/latest/aide/operation/trait.OperationInput.html
+/// [`OperationOutput`]: https://docs.rs/aide/latest/aide/operation/trait.OperationOutput.html
 #[proc_macro_derive(OperationIo, attributes(aide))]
 pub fn derive_operation_io(ts: TokenStream) -> TokenStream {
     let mut derive_input = parse_macro_input!(ts as DeriveInput);

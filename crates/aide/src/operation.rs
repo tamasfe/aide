@@ -32,10 +32,13 @@ pub use aide_macros::OperationIo;
 /// impl OperationInput for MyExtractor {}
 /// ```
 ///
-/// This will enable us to use the extractor in our handlers,
+/// This will enable usage of the extractor in handlers,
 /// but will not add anything to the documentation.
 /// To extend the generated documentation refer to some of the provided
 /// implementations in this crate.
+///
+/// For simpler cases or wrappers the [`OperationIo`] derive macro
+/// can be used to implement this trait.
 #[allow(unused_variables)]
 pub trait OperationInput {
     /// Modify the operation.
@@ -43,6 +46,9 @@ pub trait OperationInput {
     /// This method gets mutable access to the
     /// entire operation, it's the implementer's responsibility
     /// to detect errors and only modify the operation as much as needed.
+    ///
+    /// There are reusable helpers in [`aide::operation`](crate::operation)
+    /// to help with both boilerplate and error detection.
     fn operation_input(ctx: &mut GenContext, operation: &mut Operation) {}
 }
 
@@ -90,6 +96,9 @@ all_the_tuples!(impl_operation_handler);
 /// describe their own output schema.
 ///
 /// All method implementations are optional.
+///
+/// For simpler cases or wrappers the [`OperationIo`] derive macro
+/// can be used to implement this trait.
 #[allow(unused_variables)]
 pub trait OperationOutput {
     /// The type that is used in examples.
@@ -97,7 +106,7 @@ pub trait OperationOutput {
     /// # Examples
     ///
     /// In case of `Json<T>`, this should be `T`,
-    /// whereas it should be `Self` for `String`.
+    /// whereas for `String` it should be `Self`.
     type Inner;
 
     /// Return a response documentation for this type,
@@ -106,6 +115,9 @@ pub trait OperationOutput {
     /// This method gets mutable access to the
     /// entire operation, it's the implementer's responsibility
     /// to detect errors and only modify the operation as much as needed.
+    ///
+    /// There are reusable helpers in [`aide::operation`](crate::operation)
+    /// to help with both boilerplate and error detection.
     fn operation_response(ctx: &mut GenContext, operation: &mut Operation) -> Option<Response> {
         None
     }
