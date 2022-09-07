@@ -8,9 +8,8 @@
 //! The goal is to minimize the learning curve, mental context switches
 //! and make documentation somewhat slightly less of a chore.
 //! 
-//! See the [examples](examples) to see how Aide is used with various frameworks.
-//! 
-//! [examples]: https://github.com/tamasfe/aide/tree/master/examples
+//! See the [examples](https://github.com/tamasfe/aide/tree/master/examples)
+//! to see how Aide is used with various frameworks.
 //!
 //! Currently only Open API version `3.1.0` is supported.
 //!
