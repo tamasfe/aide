@@ -52,6 +52,7 @@ use crate::{
     gen::GenContext,
     openapi::{OpenApi, Operation, Parameter, PathItem, ReferenceOr, Response, StatusCode},
 };
+use indexmap::IndexMap;
 use serde::Serialize;
 
 use crate::{error::Error, gen::in_context, operation::OperationOutput, util::iter_operations_mut};
@@ -546,6 +547,60 @@ impl<'t> TransformOperation<'t> {
         self
     }
 
+    /// Add a callback to the operation.
+    #[allow(clippy::missing_panics_doc)]
+    pub fn callback(
+        self,
+        callback_name: &str,
+        callback_url: &str,
+        callback_transform: impl FnOnce(TransformCallback) -> TransformCallback,
+    ) -> Self {
+        let callbacks = self
+            .operation
+            .callbacks
+            .entry(callback_name.to_string())
+            .or_insert_with(|| ReferenceOr::Item(IndexMap::default()));
+
+        let callbacks = match callbacks {
+            ReferenceOr::Reference { .. } => {
+                in_context(|ctx| ctx.error(Error::UnexpectedReference));
+                return self;
+            }
+            ReferenceOr::Item(cbs) => cbs,
+        };
+
+        let p = callbacks
+            .entry(callback_url.to_string())
+            .or_insert_with(|| ReferenceOr::Item(PathItem::default()));
+
+        let p = match p {
+            ReferenceOr::Reference { .. } => {
+                in_context(|ctx| ctx.error(Error::UnexpectedReference));
+                return self;
+            }
+            ReferenceOr::Item(p) => p,
+        };
+
+        let t = callback_transform(TransformCallback::new(p));
+
+        if t.hidden {
+            callbacks.remove(callback_url);
+            if self
+                .operation
+                .callbacks
+                .get(callback_name)
+                .unwrap()
+                .as_item()
+                .unwrap()
+                .is_empty()
+            {
+                self.operation.callbacks.remove(callback_name);
+            }
+        }
+
+        self
+    }
+
     /// Apply an another transform function.
     pub fn with(self, transform: impl FnOnce(Self) -> Self) -> Self {
         transform(self)
@@ -682,6 +737,211 @@ impl<'t, T> TransformResponse<'t, T> {
     /// Access the inner [`Response`].
     pub fn inner(&mut self) -> &mut Response {
         self.response
+    }
+}
+
+/// A transform helper that wraps a callback [`PathItem`].
+#[must_use]
+pub struct TransformCallback<'t> {
+    hidden: bool,
+    path: &'t mut PathItem,
+}
+
+impl<'t> TransformCallback<'t> {
+    /// Create a new transform helper.
+    pub fn new(path: &'t mut PathItem) -> Self {
+        Self {
+            hidden: false,
+            path,
+        }
+    }
+
+    /// Hide the callback from the documentation.
+    ///
+    /// This is taken into account by generators provided
+    /// by this library.
+    ///
+    /// Hiding an item causes it to be ignored
+    /// completely, there is no way to restore or "unhide" it afterwards.
+    pub fn hidden(mut self, hidden: bool) -> Self {
+        self.hidden = hidden;
+        self
+    }
+
+    /// Add a "delete" callback operation.
+    #[allow(clippy::missing_panics_doc)]
+    pub fn delete(self, operation: impl FnOnce(TransformOperation) -> TransformOperation) -> Self {
+        let op = match &mut self.path.delete {
+            Some(op) => op,
+            None => {
+                self.path.delete = Some(Operation::default());
+                self.path.delete.as_mut().unwrap()
+            }
+        };
+
+        let t = operation(TransformOperation::new(op));
+
+        if t.hidden {
+            self.path.delete = None;
+        }
+
+        self
+    }
+
+    /// Add a "get" callback operation.
+    #[allow(clippy::missing_panics_doc)]
+    pub fn get(self, operation: impl FnOnce(TransformOperation) -> TransformOperation) -> Self {
+        let op = match &mut self.path.get {
+            Some(op) => op,
+            None => {
+                self.path.get = Some(Operation::default());
+                self.path.get.as_mut().unwrap()
+            }
+        };
+
+        let t = operation(TransformOperation::new(op));
+
+        if t.hidden {
+            self.path.get = None;
+        }
+
+        self
+    }
+
+    /// Add a "head" callback operation.
+    #[allow(clippy::missing_panics_doc)]
+    pub fn head(self, operation: impl FnOnce(TransformOperation) -> TransformOperation) -> Self {
+        let op = match &mut self.path.head {
+            Some(op) => op,
+            None => {
+                self.path.head = Some(Operation::default());
+                self.path.head.as_mut().unwrap()
+            }
+        };
+
+        let t = operation(TransformOperation::new(op));
+
+        if t.hidden {
+            self.path.head = None;
+        }
+
+        self
+    }
+
+    /// Add a "options" callback operation.
+    #[allow(clippy::missing_panics_doc)]
+    pub fn options(self, operation: impl FnOnce(TransformOperation) -> TransformOperation) -> Self {
+        let op = match &mut self.path.options {
+            Some(op) => op,
+            None => {
+                self.path.options = Some(Operation::default());
+                self.path.options.as_mut().unwrap()
+            }
+        };
+
+        let t = operation(TransformOperation::new(op));
+
+        if t.hidden {
+            self.path.options = None;
+        }
+
+        self
+    }
+
+    /// Add a "patch" callback operation.
+    #[allow(clippy::missing_panics_doc)]
+    pub fn patch(self, operation: impl FnOnce(TransformOperation) -> TransformOperation) -> Self {
+        let op = match &mut self.path.patch {
+            Some(op) => op,
+            None => {
+                self.path.patch = Some(Operation::default());
+                self.path.patch.as_mut().unwrap()
+            }
+        };
+
+        let t = operation(TransformOperation::new(op));
+
+        if t.hidden {
+            self.path.patch = None;
+        }
+
+        self
+    }
+
+    /// Add a "post" callback operation.
+    #[allow(clippy::missing_panics_doc)]
+    pub fn post(self, operation: impl FnOnce(TransformOperation) -> TransformOperation) -> Self {
+        let op = match &mut self.path.post {
+            Some(op) => op,
+            None => {
+                self.path.post = Some(Operation::default());
+                self.path.post.as_mut().unwrap()
+            }
+        };
+
+        let t = operation(TransformOperation::new(op));
+
+        if t.hidden {
+            self.path.post = None;
+        }
+
+        self
+    }
+
+    /// Add a "put" callback operation.
+    #[allow(clippy::missing_panics_doc)]
+    pub fn put(self, operation: impl FnOnce(TransformOperation) -> TransformOperation) -> Self {
+        let op = match &mut self.path.put {
+            Some(op) => op,
+            None => {
+                self.path.put = Some(Operation::default());
+                self.path.put.as_mut().unwrap()
+            }
+        };
+
+        let t = operation(TransformOperation::new(op));
+
+        if t.hidden {
+            self.path.put = None;
+        }
+
+        self
+    }
+
+    /// Add a "trace" callback operation.
+    #[allow(clippy::missing_panics_doc)]
+    pub fn trace(self, operation: impl FnOnce(TransformOperation) -> TransformOperation) -> Self {
+        let op = match &mut self.path.trace {
+            Some(op) => op,
+            None => {
+                self.path.trace = Some(Operation::default());
+                self.path.trace.as_mut().unwrap()
+            }
+        };
+
+        let t = operation(TransformOperation::new(op));
+
+        if t.hidden {
+            self.path.trace = None;
+        }
+
+        self
+    }
+
+    /// Apply an another transform function.
+    pub fn path(mut self, transform: impl FnOnce(TransformPathItem) -> TransformPathItem) -> Self {
+        let t = transform(TransformPathItem::new(self.path));
+
+        if t.hidden {
+            self.hidden = true;
+        }
+
+        self
+    }
+
+    /// Apply an another transform function.
+    pub fn with(self, transform: impl FnOnce(Self) -> Self) -> Self {
+        transform(self)
     }
 }
 

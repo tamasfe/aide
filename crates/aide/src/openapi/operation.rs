@@ -73,6 +73,9 @@ pub struct Operation {
     #[serde(default)]
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub servers: Vec<Server>,
+    /// Callbacks for the operation.
+    #[serde(default, skip_serializing_if = "IndexMap::is_empty")]
+    pub callbacks: IndexMap<String, ReferenceOr<Callback>>,
     /// Inline extensions to this object.
     #[serde(flatten, deserialize_with = "crate::util::deserialize_extensions")]
     pub extensions: IndexMap<String, serde_json::Value>,
