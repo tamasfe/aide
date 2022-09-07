@@ -51,6 +51,7 @@ use std::{any::type_name, marker::PhantomData};
 use crate::{
     gen::GenContext,
     openapi::{OpenApi, Operation, Parameter, PathItem, ReferenceOr, Response, StatusCode},
+    OperationInput,
 };
 use indexmap::IndexMap;
 use serde::Serialize;
@@ -294,6 +295,21 @@ impl<'t> TransformOperation<'t> {
     #[tracing::instrument(skip_all, fields(operation_id = ?self.operation.operation_id))]
     pub fn hidden(mut self, hidden: bool) -> Self {
         self.hidden = hidden;
+        self
+    }
+
+    /// Add input (parameters or request body) to the operation.
+    ///
+    /// The type parameter can be a single type
+    /// or a tuple of types that implement [`OperationInput`].
+    ///
+    /// This function is automatically called for
+    /// request handlers of supported web frameworks.
+    #[tracing::instrument(skip_all, fields(operation_id = ?self.operation.operation_id))]
+    pub fn input<T: OperationInput>(self) -> Self {
+        in_context(|ctx| {
+            T::operation_input(ctx, self.operation);
+        });
         self
     }
 
