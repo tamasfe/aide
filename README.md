@@ -15,7 +15,7 @@ A code-first API documentation and other utility libraries for Rust.
 
 ### aide
 
-A code-first API documentation and other utility libraries for Rust.
+A code-first API documentation and utility library.
 
 Read the [docs](https://docs.rs/aide/latest/aide/).
 
