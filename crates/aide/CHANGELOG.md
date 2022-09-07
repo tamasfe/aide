@@ -5,7 +5,6 @@
 ### Miscellaneous Tasks
 
 - Hide tower- optional dependencies ([152cb06](152cb06e0a9428d53290240b739aab383daa8614))
-- Added changelog ([b744916](b744916dfe6ab265f89ddd20f609fd50124cb08a))
 
 ## 0.5.0 - 2022-09-06
 
