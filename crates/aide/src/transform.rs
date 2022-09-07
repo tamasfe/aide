@@ -158,10 +158,29 @@ impl<'t> TransformPathItem<'t> {
         self
     }
 
+    /// Provide a summary for the path.
+    #[tracing::instrument(skip_all)]
+    pub fn summary(mut self, desc: &str) -> Self {
+        self.path.summary = Some(desc.into());
+        self
+    }
+
     /// Provide a description for the path.
     #[tracing::instrument(skip_all)]
     pub fn description(mut self, desc: &str) -> Self {
         self.path.description = Some(desc.into());
+        self
+    }
+
+    /// Add a tag to all operations.
+    #[tracing::instrument(skip_all)]
+    pub fn tag(self, tag: &str) -> Self {
+        for (_, op) in iter_operations_mut(self.path) {
+            if !op.tags.iter().any(|t| t == tag) {
+                op.tags.push(tag.into());
+            }
+        }
+
         self
     }
 
@@ -240,10 +259,27 @@ impl<'t> TransformOperation<'t> {
         self
     }
 
+    /// Provide a summary for the operation.
+    #[tracing::instrument(skip_all, fields(operation_id = ?self.operation.operation_id))]
+    pub fn summary(mut self, desc: &str) -> Self {
+        self.operation.summary = Some(desc.into());
+        self
+    }
+
     /// Provide a description for the operation.
     #[tracing::instrument(skip_all, fields(operation_id = ?self.operation.operation_id))]
     pub fn description(mut self, desc: &str) -> Self {
         self.operation.description = Some(desc.into());
+        self
+    }
+
+    /// Add a tag to this operation.
+    #[tracing::instrument(skip_all)]
+    pub fn tag(self, tag: &str) -> Self {
+        if !self.operation.tags.iter().any(|t| t == tag) {
+            self.operation.tags.push(tag.into());
+        }
+
         self
     }
 
