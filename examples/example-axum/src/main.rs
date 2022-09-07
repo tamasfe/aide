@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use aide::{
     axum::ApiRouter,
-    openapi::{Info, OpenApi},
+    openapi::{Info, OpenApi, Tag},
     transform::TransformOpenApi,
 };
 use axum::{http::StatusCode, Extension};
@@ -52,21 +52,30 @@ fn api_docs(mut api: TransformOpenApi) -> TransformOpenApi {
         ..Default::default()
     };
 
-    api.security_scheme(
-        "ApiKey",
-        aide::openapi::SecurityScheme::ApiKey {
-            location: aide::openapi::ApiKeyLocation::Header,
-            name: "X-Auth-Key".into(),
-            description: Some("A key that is ignored.".into()),
-            extensions: Default::default(),
-        },
-    )
-    .default_response_with::<Json<AppError>, _>(|res| {
-        res.example(AppError {
-            error: "some error happened".to_string(),
-            error_details: None,
-            error_id: Uuid::nil(),
-            status: StatusCode::IM_A_TEAPOT,
+    api.title("Aide axum Open API")
+        .summary("An example Todo application")
+        .description(include_str!("api.md"))
+        .tag(Tag {
+            name: "todo".into(),
+            description: Some("Todo Management".into()),
+            ..Default::default()
         })
-    })
+        .security_scheme(
+            "ApiKey",
+            aide::openapi::SecurityScheme::ApiKey {
+                location: aide::openapi::ApiKeyLocation::Header,
+                name: "X-Auth-Key".into(),
+                description: Some("A key that is ignored.".into()),
+                extensions: Default::default(),
+            },
+        )
+        .default_response_with::<Json<AppError>, _>(|res| {
+            res.example(AppError {
+                error: "some error happened".to_string(),
+                error_details: None,
+                error_id: Uuid::nil(),
+                // This is not visible.
+                status: StatusCode::IM_A_TEAPOT,
+            })
+        })
 }

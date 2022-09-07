@@ -51,8 +51,8 @@ use std::{any::type_name, marker::PhantomData};
 use crate::{
     gen::GenContext,
     openapi::{
-        Components, OpenApi, Operation, Parameter, PathItem, ReferenceOr, Response, SecurityScheme,
-        StatusCode,
+        Components, Info, OpenApi, Operation, Parameter, PathItem, ReferenceOr, Response,
+        SecurityScheme, StatusCode, Tag, Contact, License,
     },
     OperationInput,
 };
@@ -71,6 +71,62 @@ impl<'t> TransformOpenApi<'t> {
     /// Create a new transform helper.
     pub fn new(api: &'t mut OpenApi) -> Self {
         Self { api }
+    }
+
+    /// Set the title.
+    #[tracing::instrument(skip_all)]
+    pub fn title(self, title: &str) -> Self {
+        self.api.info.title = title.into();
+        self
+    }
+
+    /// Set the summary.
+    #[tracing::instrument(skip_all)]
+    pub fn summary(self, summary: &str) -> Self {
+        self.api.info.summary = Some(summary.into());
+        self
+    }
+
+    /// Set the terms of service.
+    #[tracing::instrument(skip_all)]
+    pub fn tos(self, tos: &str) -> Self {
+        self.api.info.terms_of_service = Some(tos.into());
+        self
+    }
+
+    /// Set the description.
+    #[tracing::instrument(skip_all)]
+    pub fn description(self, description: &str) -> Self {
+        self.api.info.description = Some(description.into());
+        self
+    }
+
+    /// Set API contact information.
+    #[tracing::instrument(skip_all)]
+    pub fn contact(self, contact: Contact) -> Self {
+        self.api.info.contact = Some(contact);
+        self
+    }
+
+    /// Set API license information.
+    #[tracing::instrument(skip_all)]
+    pub fn license(self, license: License) -> Self {
+        self.api.info.license = Some(license);
+        self
+    }
+
+    /// Override all API information.
+    #[tracing::instrument(skip_all)]
+    pub fn info(self, info: Info) -> Self {
+        self.api.info = info;
+        self
+    }
+
+    /// Add a tag to the documentation.
+    #[tracing::instrument(skip_all)]
+    pub fn tag(self, tag: Tag) -> Self {
+        self.api.tags.push(tag);
+        self
     }
 
     /// Set a default response for all operations
