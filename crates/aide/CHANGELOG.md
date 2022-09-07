@@ -1,6 +1,13 @@
 # Changelog
 
-## unreleased
+## 0.5.1 - 2022-09-07
+
+[2d799fb](2d799fbd926f30d588047ea1e24a9cccb3698496)...[9c59f3d](9c59f3de6bb97907b9e8e00c3b8a153c4b3da1be)
+
+### Features
+
+- Add tag and summary transforms ([4a67561](4a6756138b0cc82788bf640d21c8565581c702fd))
+- Added callbacks ([9c59f3d](9c59f3de6bb97907b9e8e00c3b8a153c4b3da1be))
 
 ### Miscellaneous Tasks
 
