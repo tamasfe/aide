@@ -56,6 +56,7 @@ commit_parsers = [
     { message = '^style\([^)]*(aide|\*)[^)]*\)', group = "Styling" },
     { message = '^test\([^)]*(aide|\*)[^)]*\)', group = "Testing" },
     { message = '^chore.*version\s*bump.*', skip = true },
+    { message = '^chore.*changelog.*', skip = true },
     { message = '^chore\([^)]*(aide|\*)[^)]*\)', group = "Miscellaneous Tasks" },
     { body = '.*security', group = "Security" },
 ]
