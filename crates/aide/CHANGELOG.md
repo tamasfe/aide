@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.5.5 - 2022-09-07
+
+[fa9f427](fa9f427bb59d13e713723510086992cfed065333)...[b8f98b3](b8f98b3f22a4f08aeca4fcf61968f8a757c3c0bf)
+
+### Features
+
+- Methods for OpenApi transform helper ([b8f98b3](b8f98b3f22a4f08aeca4fcf61968f8a757c3c0bf))
+
 ## 0.5.4 - 2022-09-07
 
 [2f1528d](2f1528d8512b14192158c7fc2fe6c923b8d46702)...[fa9f427](fa9f427bb59d13e713723510086992cfed065333)
