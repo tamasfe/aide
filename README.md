@@ -40,5 +40,6 @@ All code in this repository is dual licensed under [MIT](./LICENSE-MIT) and [Apa
 
 If Aide is not exactly what you are looking for, make sure to take a look at the alternatives:
 
+- [paperclip](https://crates.io/crates/paperclip)
 - [utoipa](https://github.com/juhaku/utoipa)
 - [okapi](https://github.com/GREsau/okapi)
