@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.5.3 - 2022-09-07
+
+[66cbfad](66cbfad9985dfedce97e7afc0b6301d11a63b1b9)...[2f1528d](2f1528d8512b14192158c7fc2fe6c923b8d46702)
+
+### Features
+
+- Schema extraction ([2f1528d](2f1528d8512b14192158c7fc2fe6c923b8d46702))
+
 ## 0.5.2 - 2022-09-07
 
 [9c59f3d](9c59f3de6bb97907b9e8e00c3b8a153c4b3da1be)...[66cbfad](66cbfad9985dfedce97e7afc0b6301d11a63b1b9)
