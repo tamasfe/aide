@@ -4,6 +4,7 @@
     - [axum-jsonschema](#axum-jsonschema)
   - [Contributing](#contributing)
   - [License](#license)
+  - [Similar Libraries](#similar-libraries)
 
 # Aide
 
@@ -12,6 +13,8 @@
 A code-first API documentation and other utility libraries for Rust.
 
 ## Crates
+
+This repository contains several crates related to web-servers and their documentation.
 
 ### aide
 
@@ -32,3 +35,10 @@ All contributions are welcome! Make sure to read [CONTRIBUTING.md](./CONTRIBUTIN
 ## License
 
 All code in this repository is dual licensed under [MIT](./LICENSE-MIT) and [Apache-2.0](./LICENSE-Apache).
+
+## Similar Libraries
+
+If Aide is not exactly what you are looking for, make sure to take a look at the alternatives:
+
+- [utoipa](https://github.com/juhaku/utoipa)
+- [okapi](https://github.com/GREsau/okapi)
