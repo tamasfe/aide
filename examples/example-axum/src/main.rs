@@ -52,7 +52,16 @@ fn api_docs(mut api: TransformOpenApi) -> TransformOpenApi {
         ..Default::default()
     };
 
-    api.default_response_with::<Json<AppError>, _>(|res| {
+    api.security_scheme(
+        "ApiKey",
+        aide::openapi::SecurityScheme::ApiKey {
+            location: aide::openapi::ApiKeyLocation::Header,
+            name: "X-Auth-Key".into(),
+            description: Some("A key that is ignored.".into()),
+            extensions: Default::default(),
+        },
+    )
+    .default_response_with::<Json<AppError>, _>(|res| {
         res.example(AppError {
             error: "some error happened".to_string(),
             error_details: None,

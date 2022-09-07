@@ -50,7 +50,10 @@ use std::{any::type_name, marker::PhantomData};
 
 use crate::{
     gen::GenContext,
-    openapi::{OpenApi, Operation, Parameter, PathItem, ReferenceOr, Response, StatusCode},
+    openapi::{
+        Components, OpenApi, Operation, Parameter, PathItem, ReferenceOr, Response, SecurityScheme,
+        StatusCode,
+    },
     OperationInput,
 };
 use indexmap::IndexMap;
@@ -115,6 +118,77 @@ impl<'t> TransformOpenApi<'t> {
                 }
             }
         }
+
+        self
+    }
+
+    /// Add a security scheme.
+    #[allow(clippy::missing_panics_doc)]
+    pub fn security_scheme(mut self, name: &str, scheme: SecurityScheme) -> Self {
+        let components = match &mut self.inner_mut().components {
+            Some(c) => c,
+            None => {
+                self.inner_mut().components = Some(Components::default());
+                self.inner_mut().components.as_mut().unwrap()
+            }
+        };
+
+        components
+            .security_schemes
+            .insert(name.into(), ReferenceOr::Item(scheme));
+
+        self
+    }
+
+    /// Add a global security requirement.
+    #[tracing::instrument(skip_all)]
+    pub fn security_requirement(mut self, security_scheme: &str) -> Self {
+        if self
+            .inner_mut()
+            .security
+            .iter()
+            .any(|s| s.contains_key(security_scheme))
+        {
+            return self;
+        }
+
+        self.inner_mut().security.push(IndexMap::from_iter([(
+            security_scheme.to_string(),
+            Vec::new(),
+        )]));
+
+        self
+    }
+
+    /// Add required scopes to a global security requirement.
+    ///
+    /// If the scheme requirement does not exist,
+    /// it will be added.
+    #[tracing::instrument(skip_all)]
+    #[allow(clippy::missing_panics_doc)]
+    pub fn security_requirement_scopes<I, S>(mut self, security_scheme: &str, scopes: I) -> Self
+    where
+        I: IntoIterator<Item = S>,
+        S: Into<String>,
+    {
+        match self
+            .inner_mut()
+            .security
+            .iter_mut()
+            .find(|s| s.contains_key(security_scheme))
+        {
+            Some(s) => s
+                .first_mut()
+                .unwrap()
+                .1
+                .extend(scopes.into_iter().map(Into::into)),
+            None => {
+                self.inner_mut().security.push(IndexMap::from_iter([(
+                    security_scheme.to_string(),
+                    scopes.into_iter().map(Into::into).collect(),
+                )]));
+            }
+        };
 
         self
     }
@@ -222,6 +296,37 @@ impl<'t> TransformPathItem<'t> {
         }
 
         in_context(GenContext::reset_error_filter);
+
+        self
+    }
+
+    /// Add a security requirement for all operations.
+    #[tracing::instrument(skip_all)]
+    pub fn security_requirement(self, security_scheme: &str) -> Self {
+        for (_, op) in iter_operations_mut(self.path) {
+            let _ = TransformOperation::new(op).security_requirement(security_scheme);
+        }
+
+        self
+    }
+
+    /// Add required scopes to a security requirement for all operations.
+    ///
+    /// If the scheme requirement does not exist,
+    /// it will be added.
+    #[tracing::instrument(skip_all)]
+    #[allow(clippy::missing_panics_doc)]
+    pub fn security_requirement_scopes<I, S>(self, security_scheme: &str, scopes: I) -> Self
+    where
+        I: IntoIterator<Item = S>,
+        S: Into<String>,
+    {
+        let scopes: Vec<String> = scopes.into_iter().map(Into::into).collect();
+
+        for (_, op) in iter_operations_mut(self.path) {
+            let _ = TransformOperation::new(op)
+                .security_requirement_scopes(security_scheme, scopes.clone());
+        }
 
         self
     }
@@ -569,6 +674,7 @@ impl<'t> TransformOperation<'t> {
     }
 
     /// Add a callback to the operation.
+    #[tracing::instrument(skip_all, fields(operation_id = ?self.operation.operation_id))]
     #[allow(clippy::missing_panics_doc)]
     pub fn callback(
         self,
@@ -618,6 +724,59 @@ impl<'t> TransformOperation<'t> {
                 self.operation.callbacks.remove(callback_name);
             }
         }
+
+        self
+    }
+
+    /// Add a security requirement to the operation.
+    #[tracing::instrument(skip_all, fields(operation_id = ?self.operation.operation_id))]
+    pub fn security_requirement(self, security_scheme: &str) -> Self {
+        if self
+            .operation
+            .security
+            .iter()
+            .any(|s| s.contains_key(security_scheme))
+        {
+            return self;
+        }
+
+        self.operation.security.push(IndexMap::from_iter([(
+            security_scheme.to_string(),
+            Vec::new(),
+        )]));
+
+        self
+    }
+
+    /// Add required scopes to a security requirement.
+    ///
+    /// If the scheme requirement does not exist,
+    /// it will be added.
+    #[tracing::instrument(skip_all, fields(operation_id = ?self.operation.operation_id))]
+    #[allow(clippy::missing_panics_doc)]
+    pub fn security_requirement_scopes<I, S>(self, security_scheme: &str, scopes: I) -> Self
+    where
+        I: IntoIterator<Item = S>,
+        S: Into<String>,
+    {
+        match self
+            .operation
+            .security
+            .iter_mut()
+            .find(|s| s.contains_key(security_scheme))
+        {
+            Some(s) => s
+                .first_mut()
+                .unwrap()
+                .1
+                .extend(scopes.into_iter().map(Into::into)),
+            None => {
+                self.operation.security.push(IndexMap::from_iter([(
+                    security_scheme.to_string(),
+                    scopes.into_iter().map(Into::into).collect(),
+                )]));
+            }
+        };
 
         self
     }

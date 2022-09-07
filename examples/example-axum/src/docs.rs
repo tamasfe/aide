@@ -17,12 +17,13 @@ use crate::{extractors::Json, state::AppState};
 
 pub fn docs_routes(state: AppState) -> ApiRouter<AppState> {
     ApiRouter::with_state(state)
-        .api_route(
+        .api_route_with(
             "/",
             get_with(serve_redoc, |op| {
                 op.description("This documentation page.")
                     .response::<200, Html<()>>()
             }),
+            |p| p.security_requirement("ApiKey"),
         )
         .route("/private/api.json", get(serve_docs))
 }

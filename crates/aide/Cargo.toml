@@ -1,6 +1,6 @@
 [package]
 name = "aide"
-version = "0.5.3"
+version = "0.5.4"
 authors = ["tamasfe"]
 edition = "2021"
 keywords = ["generate", "api", "openapi", "documentation", "specification"]
