@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.0 - 2022-09-08
+
+[2d799fb](2d799fbd926f30d588047ea1e24a9cccb3698496)...[eef015a](eef015aedd398a98d03589527a13837b2c33a6aa)
+
+### Features
+
+- Support aide 0.6.0 ([eef015a](eef015aedd398a98d03589527a13837b2c33a6aa))
+
 ## 0.1.0 - 2022-09-06
 
 ### Miscellaneous Tasks
