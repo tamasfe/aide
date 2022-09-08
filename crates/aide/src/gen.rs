@@ -43,13 +43,23 @@ pub fn on_error(handler: impl Fn(Error) + 'static) {
 /// in the context.
 ///
 /// [`OpenApi`]: crate::openapi::OpenApi
-pub fn extract_schemas() {
+pub fn extract_schemas(extract: bool) {
     in_context(|ctx| {
-        ctx.schema = SchemaGenerator::new(SchemaSettings::draft07().with(|s| {
-            s.inline_subschemas = false;
-            s.definitions_path = "#/components/schemas/".into();
-        }));
-        ctx.extract_schemas = true;
+        if extract {
+            ctx.schema = SchemaGenerator::new(SchemaSettings::draft07().with(|s| {
+                s.inline_subschemas = false;
+                s.definitions_path = "#/components/schemas/".into();
+            }));
+            ctx.extract_schemas = true;
+        } else {
+            ctx.schema = SchemaGenerator::new(SchemaSettings::draft07().with(|s| {
+                s.inline_subschemas = true;
+            }));
+            ctx.extract_schemas = false;
+        }
+    });
+}
+
     });
 }
 
