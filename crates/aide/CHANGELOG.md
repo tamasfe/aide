@@ -1,5 +1,12 @@
 # Changelog
 
+## unreleased
+
+### Features
+
+- **breaking** it is possible to disable schema extraction ([f120455](f1204559fba3e0fdb8b5c2bc67091e3c29782e36))
+- Response inference from handler return types ([91766d5](91766d5f1f15310305ad121660fbe20f6f0a32cc))
+
 ## 0.5.5 - 2022-09-07
 
 [fa9f427](fa9f427bb59d13e713723510086992cfed065333)...[b8f98b3](b8f98b3f22a4f08aeca4fcf61968f8a757c3c0bf)
