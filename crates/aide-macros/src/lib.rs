@@ -20,9 +20,9 @@ struct OperationIoOpts {
 ///
 /// # Examples
 ///
-/// The following implements an empty [`OperationInput`] so that
-/// the type can be used in documented handlers but
-/// does not modify the documentation generation in any way.
+/// The following implements an empty [`OperationInput`] and
+/// [`OperationOutput`] so that the type can be used in documented
+/// handlers but does not modify the documentation generation in any way.
 ///
 /// ```ignore
 /// use aide::{OperationInput, OperationOutput};
@@ -32,13 +32,14 @@ struct OperationIoOpts {
 /// struct MyExtractor;
 /// ```
 ///
-/// By default only [`OperationInput`] is implemented.
-/// The following implements both [`OperationInput`] and [`OperationOutput`]
-/// still without any documentation modifications.
+/// By default both [`OperationInput`] and [`OperationOutput`] are implemented.
+/// It is possible to restrict either with the `input` and `output` parameters.
+/// 
+/// The following will only implement [`OperationOutput`]:
 ///
 /// ```ignore
 /// #[derive(OperationIo)]
-/// #[aide(input, output)]
+/// #[aide(output)]
 /// struct MyExtractor;
 /// ```
 ///
@@ -102,6 +103,9 @@ pub fn derive_operation_io(ts: TokenStream) -> TokenStream {
     if !input && !output && input_with.is_none() && output_with.is_none() {
         ts.extend(quote! {
             impl #i_gen aide::OperationInput for #name #t_gen #w_gen {}
+            impl #i_gen aide::OperationOutput for #name #t_gen #w_gen {
+                type Inner = Self;
+            }
         });
     } else {
         if input {
@@ -142,6 +146,15 @@ pub fn derive_operation_io(ts: TokenStream) -> TokenStream {
                         operation: &mut aide::openapi::Operation
                     ) -> Option<aide::openapi::Response> {
                         <#output as aide::OperationOutput>::operation_response(
+                            ctx,
+                            operation
+                        )
+                    }
+                    fn inferred_responses(
+                        ctx: &mut aide::gen::GenContext,
+                        operation: &mut aide::openapi::Operation
+                    ) -> Vec<(Option<u16>, aide::openapi::Response)> {
+                        <#output as aide::OperationOutput>::inferred_responses(
                             ctx,
                             operation
                         )

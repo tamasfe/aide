@@ -43,11 +43,11 @@
 //! use aide::{
 //!     axum::{
 //!         routing::{get, post},
-//!         ApiRouter,
+//!         ApiRouter, IntoApiResponse,
 //!     },
 //!     openapi::{Info, OpenApi},
 //! };
-//! use axum::{response::IntoResponse, Extension, Json};
+//! use axum::{Extension, Json};
 //! use schemars::JsonSchema;
 //! use serde::Deserialize;
 //!
@@ -58,14 +58,14 @@
 //!     name: String,
 //! }
 //!
-//! async fn hello_user(Json(user): Json<User>) -> impl IntoResponse {
+//! async fn hello_user(Json(user): Json<User>) -> impl IntoApiResponse {
 //!     format!("hello {}", user.name)
 //! }
 //!
 //! // Note that this clones the document on each request.
 //! // To be more efficient, we could wrap it into an Arc,
 //! // or even store it as a serialized string.
-//! async fn serve_api(Extension(api): Extension<OpenApi>) -> impl IntoResponse {
+//! async fn serve_api(Extension(api): Extension<OpenApi>) -> impl IntoApiResponse {
 //!     Json(api)
 //! }
 //!
@@ -173,6 +173,7 @@ use crate::{
     gen::{self, in_context},
     openapi::{Components, OpenApi, PathItem, ReferenceOr, SchemaObject},
     util::merge_paths,
+    OperationOutput,
 };
 use axum::{
     body::{Body, HttpBody},
@@ -537,6 +538,17 @@ impl<S, B> From<ApiRouter<S, B>> for Router<S, B> {
     }
 }
 
+/// A trait analogous to [`IntoResponse`] that allows writing
+/// `impl IntoApiResponse` for documented handlers.
+/// Axum's `IntoResponse` cannot be used for these handlers
+/// since the return type has to implement [`OperationOutput`].
+/// 
+/// This trait has a blanket implementation for all types
+/// that implement [`IntoResponse`] and [`OperationOutput`],
+/// it should not be implemented manually.
+pub trait IntoApiResponse: IntoResponse + OperationOutput {}
+impl<T> IntoApiResponse for T where T: IntoResponse + OperationOutput {}
+
 /// Convenience extension trait for [`axum::Router`].
 pub trait RouterExt<S, B>: private::Sealed + Sized {
     /// Turn the router into an [`ApiRouter`] to enable
@@ -566,10 +578,6 @@ where
 }
 
 impl<S, B> private::Sealed for Router<S, B> {}
-
-mod private {
-    pub trait Sealed {}
-}
 
 #[doc(hidden)]
 pub enum ServiceOrApiRouter<S, B, T> {
@@ -617,4 +625,8 @@ impl<B> Service<Request<B>> for DefinitelyNotService {
     fn call(&mut self, _req: Request<B>) -> Self::Future {
         unreachable!()
     }
+}
+
+mod private {
+    pub trait Sealed {}
 }

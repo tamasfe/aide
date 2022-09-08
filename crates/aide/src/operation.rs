@@ -73,20 +73,28 @@ macro_rules! impl_operation_input {
 all_the_tuples!(impl_operation_input);
 
 #[doc(hidden)]
-pub trait OperationHandler<I: OperationInput> {}
+pub trait OperationHandler<I: OperationInput, O: OperationOutput> {}
 
 macro_rules! impl_operation_handler {
     ( $($ty:ident),* $(,)? ) => {
         #[allow(non_snake_case)]
-        impl<Ret, F, $($ty,)*> OperationHandler<($($ty,)*)> for F
+        impl<Ret, F, $($ty,)*> OperationHandler<($($ty,)*), Ret::Output> for F
         where
             F: FnOnce($($ty,)*) -> Ret,
+            Ret: std::future::Future,
+            Ret::Output: OperationOutput,
             $( $ty: OperationInput, )*
         {}
     };
 }
 
-impl<Ret, F> OperationHandler<()> for F where F: FnOnce() -> Ret {}
+impl<Ret, F> OperationHandler<(), Ret::Output> for F
+where
+    F: FnOnce() -> Ret,
+    Ret: std::future::Future,
+    Ret::Output: OperationOutput,
+{
+}
 
 all_the_tuples!(impl_operation_handler);
 
@@ -115,11 +123,35 @@ pub trait OperationOutput {
     /// This method gets mutable access to the
     /// entire operation, it's the implementer's responsibility
     /// to detect errors and only modify the operation as much as needed.
+    /// 
+    /// Note that this function **can be called multiple
+    /// times for the same operation** and should be idempotent.
     ///
     /// There are reusable helpers in [`aide::operation`](crate::operation)
     /// to help with both boilerplate and error detection.
     fn operation_response(ctx: &mut GenContext, operation: &mut Operation) -> Option<Response> {
         None
+    }
+
+    /// Inferred responses are used when the type is
+    /// used as a request handler return type.
+    ///
+    /// The function is supposed to return `(status code, response)` pairs,
+    /// if the status code is not specified, the response is assumed to be
+    /// a default response.
+    /// 
+    /// As an example `Result<T, E>` could
+    /// return `(Some(200), T::operation_response(..))` and
+    /// `(None, E::operation_response(..))` to indicate
+    /// a successful response and a default error.
+    /// 
+    /// This function can be called after or before `operation_response`,
+    /// it's important for the implementation to be idempotent.
+    fn inferred_responses(
+        ctx: &mut GenContext,
+        operation: &mut Operation,
+    ) -> Vec<(Option<u16>, Response)> {
+        Vec::new()
     }
 }
 

@@ -1,7 +1,7 @@
 use aide::{
     axum::{
         routing::{get_with, post_with, put_with},
-        ApiRouter,
+        ApiRouter, IntoApiResponse,
     },
     transform::TransformOperation,
 };
@@ -45,7 +45,10 @@ struct TodoCreated {
     id: Uuid,
 }
 
-async fn create_todo(State(app): State<AppState>, Json(todo): Json<NewTodo>) -> impl IntoResponse {
+async fn create_todo(
+    State(app): State<AppState>,
+    Json(todo): Json<NewTodo>,
+) -> impl IntoApiResponse {
     let id = Uuid::new_v4();
     app.todos.lock().unwrap().insert(
         id,
@@ -69,7 +72,7 @@ struct TodoList {
     todo_ids: Vec<Uuid>,
 }
 
-async fn list_todos(State(app): State<AppState>) -> impl IntoResponse {
+async fn list_todos(State(app): State<AppState>) -> impl IntoApiResponse {
     Json(TodoList {
         todo_ids: app.todos.lock().unwrap().keys().copied().collect(),
     })
@@ -86,7 +89,10 @@ struct SelectTodo {
     id: Uuid,
 }
 
-async fn get_todo(State(app): State<AppState>, Path(todo): Path<SelectTodo>) -> impl IntoResponse {
+async fn get_todo(
+    State(app): State<AppState>,
+    Path(todo): Path<SelectTodo>,
+) -> impl IntoApiResponse {
     if let Some(todo) = app.todos.lock().unwrap().get(&todo.id) {
         Json(todo.clone()).into_response()
     } else {
@@ -109,7 +115,7 @@ fn get_todo_docs(op: TransformOperation) -> TransformOperation {
 async fn delete_todo(
     State(app): State<AppState>,
     Path(todo): Path<SelectTodo>,
-) -> impl IntoResponse {
+) -> impl IntoApiResponse {
     if app.todos.lock().unwrap().remove(&todo.id).is_some() {
         StatusCode::NO_CONTENT
     } else {
@@ -126,7 +132,7 @@ fn delete_todo_docs(op: TransformOperation) -> TransformOperation {
 async fn complete_todo(
     State(app): State<AppState>,
     Path(todo): Path<SelectTodo>,
-) -> impl IntoResponse {
+) -> impl IntoApiResponse {
     if let Some(todo) = app.todos.lock().unwrap().get_mut(&todo.id) {
         todo.complete = true;
         StatusCode::NO_CONTENT

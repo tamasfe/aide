@@ -1,4 +1,4 @@
-use std::{borrow::Cow, rc::Rc, sync::Arc};
+use std::{borrow::Cow, rc::Rc, sync::Arc, convert::Infallible};
 
 use crate::{
     openapi::{MediaType, Operation, RequestBody, Response},
@@ -14,6 +14,30 @@ mod bytes;
 
 #[cfg(feature = "http")]
 mod http;
+
+impl<T, E> OperationOutput for Result<T, E>
+where
+    T: OperationOutput,
+    E: OperationOutput,
+{
+    type Inner = T;
+
+    fn operation_response(
+        ctx: &mut crate::gen::GenContext,
+        operation: &mut Operation,
+    ) -> Option<Response> {
+        T::operation_response(ctx, operation)
+    }
+
+    fn inferred_responses(
+        ctx: &mut crate::gen::GenContext,
+        operation: &mut Operation,
+    ) -> Vec<(Option<u16>, Response)> {
+        let mut responses = T::inferred_responses(ctx, operation);
+        responses.extend(E::inferred_responses(ctx, operation));
+        responses
+    }
+}
 
 impl<T> OperationInput for Option<T>
 where
@@ -35,6 +59,13 @@ where
         operation: &mut Operation,
     ) -> Option<Response> {
         T::operation_response(ctx, operation)
+    }
+
+    fn inferred_responses(
+        ctx: &mut crate::gen::GenContext,
+        operation: &mut Operation,
+    ) -> Vec<(Option<u16>, Response)> {
+        T::inferred_responses(ctx, operation)
     }
 }
 
@@ -59,6 +90,13 @@ where
     ) -> Option<Response> {
         T::operation_response(ctx, operation)
     }
+
+    fn inferred_responses(
+        ctx: &mut crate::gen::GenContext,
+        operation: &mut Operation,
+    ) -> Vec<(Option<u16>, Response)> {
+        T::inferred_responses(ctx, operation)
+    }
 }
 
 impl<T> OperationInput for Rc<T>
@@ -82,6 +120,13 @@ where
     ) -> Option<Response> {
         T::operation_response(ctx, operation)
     }
+
+    fn inferred_responses(
+        ctx: &mut crate::gen::GenContext,
+        operation: &mut Operation,
+    ) -> Vec<(Option<u16>, Response)> {
+        T::inferred_responses(ctx, operation)
+    }
 }
 
 impl<T> OperationInput for Arc<T>
@@ -104,6 +149,13 @@ where
         operation: &mut Operation,
     ) -> Option<Response> {
         T::operation_response(ctx, operation)
+    }
+
+    fn inferred_responses(
+        ctx: &mut crate::gen::GenContext,
+        operation: &mut Operation,
+    ) -> Vec<(Option<u16>, Response)> {
+        T::inferred_responses(ctx, operation)
     }
 }
 
@@ -141,6 +193,17 @@ impl OperationOutput for String {
             ..Default::default()
         })
     }
+
+    fn inferred_responses(
+        ctx: &mut crate::gen::GenContext,
+        operation: &mut Operation,
+    ) -> Vec<(Option<u16>, Response)> {
+        if let Some(res) = Self::operation_response(ctx, operation) {
+            Vec::from([(Some(200), res)])
+        } else {
+            Vec::new()
+        }
+    }
 }
 
 impl<'a> OperationOutput for &'a str {
@@ -152,6 +215,13 @@ impl<'a> OperationOutput for &'a str {
     ) -> Option<crate::openapi::Response> {
         String::operation_response(ctx, operation)
     }
+
+    fn inferred_responses(
+        ctx: &mut crate::gen::GenContext,
+        operation: &mut Operation,
+    ) -> Vec<(Option<u16>, Response)> {
+        String::inferred_responses(ctx, operation)
+    }
 }
 
 impl<'a> OperationOutput for Cow<'a, str> {
@@ -162,6 +232,13 @@ impl<'a> OperationOutput for Cow<'a, str> {
         operation: &mut Operation,
     ) -> Option<crate::openapi::Response> {
         String::operation_response(ctx, operation)
+    }
+
+    fn inferred_responses(
+        ctx: &mut crate::gen::GenContext,
+        operation: &mut Operation,
+    ) -> Vec<(Option<u16>, Response)> {
+        String::inferred_responses(ctx, operation)
     }
 }
 
@@ -176,6 +253,17 @@ impl OperationOutput for () {
             description: "no content".to_string(),
             ..Default::default()
         })
+    }
+
+    fn inferred_responses(
+        ctx: &mut crate::gen::GenContext,
+        operation: &mut Operation,
+    ) -> Vec<(Option<u16>, Response)> {
+        if let Some(res) = Self::operation_response(ctx, operation) {
+            Vec::from([(Some(204), res)])
+        } else {
+            Vec::new()
+        }
     }
 }
 
@@ -216,6 +304,17 @@ impl OperationOutput for Vec<u8> {
             ..Default::default()
         })
     }
+
+    fn inferred_responses(
+        ctx: &mut crate::gen::GenContext,
+        operation: &mut Operation,
+    ) -> Vec<(Option<u16>, Response)> {
+        if let Some(res) = Self::operation_response(ctx, operation) {
+            Vec::from([(Some(200), res)])
+        } else {
+            Vec::new()
+        }
+    }
 }
 
 impl<'a> OperationInput for &'a [u8] {
@@ -235,6 +334,13 @@ impl<'a> OperationOutput for &'a [u8] {
         operation: &mut Operation,
     ) -> Option<crate::openapi::Response> {
         Vec::<u8>::operation_response(ctx, operation)
+    }
+
+    fn inferred_responses(
+        ctx: &mut crate::gen::GenContext,
+        operation: &mut Operation,
+    ) -> Vec<(Option<u16>, Response)> {
+        Vec::<u8>::inferred_responses(ctx, operation)
     }
 }
 
@@ -256,4 +362,20 @@ impl<'a> OperationOutput for Cow<'a, [u8]> {
     ) -> Option<crate::openapi::Response> {
         Vec::<u8>::operation_response(ctx, operation)
     }
+
+    fn inferred_responses(
+        ctx: &mut crate::gen::GenContext,
+        operation: &mut Operation,
+    ) -> Vec<(Option<u16>, Response)> {
+        Vec::<u8>::inferred_responses(ctx, operation)
+    }
+}
+
+// Empty blanket impls for tuples.
+//
+// In axum these are (StatusCode, Value), 
+// we keep it more broad as other frameworks
+// could implement (u16, Value) instead for example.
+impl<T1, T2> OperationOutput for (T1, T2) {
+    type Inner = Infallible;
 }

@@ -33,6 +33,17 @@ where
             ..Default::default()
         })
     }
+
+    fn inferred_responses(
+        ctx: &mut crate::gen::GenContext,
+        operation: &mut Operation,
+    ) -> Vec<(Option<u16>, Response)> {
+        if let Some(res) = Self::operation_response(ctx, operation) {
+            Vec::from([(Some(200), res)])
+        } else {
+            Vec::new()
+        }
+    }
 }
 
 impl<T> OperationOutput for Form<T>
@@ -59,6 +70,17 @@ where
             )]),
             ..Default::default()
         })
+    }
+
+    fn inferred_responses(
+        ctx: &mut crate::gen::GenContext,
+        operation: &mut Operation,
+    ) -> Vec<(Option<u16>, Response)> {
+        if let Some(res) = Self::operation_response(ctx, operation) {
+            Vec::from([(Some(200), res)])
+        } else {
+            Vec::new()
+        }
     }
 }
 
@@ -87,5 +109,16 @@ impl<T> OperationOutput for Html<T> {
             )]),
             ..Default::default()
         })
+    }
+
+    fn inferred_responses(
+        ctx: &mut crate::gen::GenContext,
+        operation: &mut Operation,
+    ) -> Vec<(Option<u16>, Response)> {
+        if let Some(res) = Self::operation_response(ctx, operation) {
+            Vec::from([(Some(200), res)])
+        } else {
+            Vec::new()
+        }
     }
 }

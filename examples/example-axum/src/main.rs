@@ -25,7 +25,7 @@ async fn main() {
         println!("{error}");
     });
 
-    aide::gen::extract_schemas();
+    aide::gen::extract_schemas(true);
 
     let state = AppState::default();
 

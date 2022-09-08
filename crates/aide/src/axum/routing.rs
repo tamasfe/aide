@@ -3,7 +3,11 @@
 
 use std::{convert::Infallible, mem};
 
-use crate::openapi::{Operation, PathItem};
+use crate::{
+    gen::GenContext,
+    openapi::{Operation, PathItem, ReferenceOr, Response, StatusCode},
+    Error,
+};
 use axum::{
     body::Body,
     handler::Handler,
@@ -13,7 +17,7 @@ use indexmap::IndexMap;
 
 use crate::{
     gen::in_context,
-    operation::{OperationHandler, OperationInput},
+    operation::{OperationHandler, OperationInput, OperationOutput},
     transform::TransformOperation,
 };
 
@@ -63,10 +67,11 @@ impl<S, B, E> ApiMethodRouter<S, B, E> {
 macro_rules! method_router_chain_method {
     ($name:ident, $name_with:ident) => {
         #[doc = concat!("Route `", stringify!($name) ,"` requests to the given handler. See [`axum::routing::MethodRouter::", stringify!($name) , "`] for more details.")]
-        pub fn $name<H, I, T>(mut self, handler: H) -> Self
+        pub fn $name<H, I, O, T>(mut self, handler: H) -> Self
         where
-            H: Handler<T, S, B> + OperationHandler<I>,
+            H: Handler<T, S, B> + OperationHandler<I, O>,
             I: OperationInput,
+            O: OperationOutput,
             B: Send + 'static,
             T: 'static,
         {
@@ -83,10 +88,11 @@ macro_rules! method_router_chain_method {
         ///
         /// This method additionally accepts a transform function,
         /// see [`crate::axum`] for more details.
-        pub fn $name_with<H, I, T, F>(mut self, handler: H, transform: F) -> Self
+        pub fn $name_with<H, I, O, T, F>(mut self, handler: H, transform: F) -> Self
         where
-            H: Handler<T, S, B> + OperationHandler<I>,
+            H: Handler<T, S, B> + OperationHandler<I, O>,
             I: OperationInput,
+            O: OperationOutput,
             B: Send + 'static,
             T: 'static,
             F: FnOnce(TransformOperation) -> TransformOperation,
@@ -94,6 +100,12 @@ macro_rules! method_router_chain_method {
             let mut operation = Operation::default();
             in_context(|ctx| {
                 I::operation_input(ctx, &mut operation);
+
+                if ctx.infer_responses {
+                    for (code, res) in O::inferred_responses(ctx, &mut operation) {
+                        set_inferred_response(ctx, &mut operation, code, res);
+                    }
+                }
             });
 
             let t = transform(TransformOperation::new(&mut operation));
@@ -112,10 +124,11 @@ macro_rules! method_router_top_level {
     ($name:ident, $name_with:ident) => {
         #[doc = concat!("Route `", stringify!($name) ,"` requests to the given handler. See [`axum::routing::", stringify!($name) , "`] for more details.")]
         #[tracing::instrument(skip_all)]
-        pub fn $name<H, I, T, B, S>(handler: H) -> ApiMethodRouter<S, B, Infallible>
+        pub fn $name<H, I, O, T, B, S>(handler: H) -> ApiMethodRouter<S, B, Infallible>
         where
-            H: Handler<T, S, B> + OperationHandler<I>,
+            H: Handler<T, S, B> + OperationHandler<I, O>,
             I: OperationInput,
+            O: OperationOutput,
             B: Send + Sync + 'static,
             S: Send + Sync + 'static,
             T: 'static,
@@ -134,13 +147,14 @@ macro_rules! method_router_top_level {
         /// This method additionally accepts a transform function,
         /// see [`crate::axum`] for more details.
         #[tracing::instrument(skip_all)]
-        pub fn $name_with<H, I, T, B, S, F>(
+        pub fn $name_with<H, I, O, T, B, S, F>(
             handler: H,
             transform: F,
         ) -> ApiMethodRouter<S, B, Infallible>
         where
-            H: Handler<T, S, B> + OperationHandler<I>,
+            H: Handler<T, S, B> + OperationHandler<I, O>,
             I: OperationInput,
+            O: OperationOutput,
             B: Send + Sync + 'static,
             S: Send + Sync + 'static,
             T: 'static,
@@ -150,6 +164,12 @@ macro_rules! method_router_top_level {
             let mut operation = Operation::default();
             in_context(|ctx| {
                 I::operation_input(ctx, &mut operation);
+
+                if ctx.infer_responses {
+                    for (code, res) in O::inferred_responses(ctx, &mut operation) {
+                        set_inferred_response(ctx, &mut operation, code, res);
+                    }
+                }
             });
 
             let t = transform(TransformOperation::new(&mut operation));
@@ -161,6 +181,38 @@ macro_rules! method_router_top_level {
             router
         }
     };
+}
+
+fn set_inferred_response(
+    ctx: &mut GenContext,
+    operation: &mut Operation,
+    status: Option<u16>,
+    res: Response,
+) {
+    if operation.responses.is_none() {
+        operation.responses = Some(Default::default());
+    }
+
+    let responses = operation.responses.as_mut().unwrap();
+
+    match status {
+        Some(status) => {
+            if responses.responses.contains_key(&StatusCode::Code(status)) {
+                ctx.error(Error::InferredResponseConflict(status));
+            } else {
+                responses
+                    .responses
+                    .insert(StatusCode::Code(status), ReferenceOr::Item(res));
+            }
+        }
+        None => {
+            if responses.default.is_some() {
+                ctx.error(Error::InferredDefaultResponseConflict);
+            } else {
+                responses.default = Some(ReferenceOr::Item(res));
+            }
+        }
+    }
 }
 
 impl<S, B> ApiMethodRouter<S, B, Infallible>
