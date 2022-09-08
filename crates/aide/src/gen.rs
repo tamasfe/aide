@@ -60,6 +60,14 @@ pub fn extract_schemas(extract: bool) {
     });
 }
 
+/// Infer responses based on request handler
+/// return types.
+///
+/// This is disabled by default to avoid incorrect
+/// documentation.
+pub fn infer_responses(infer: bool) {
+    in_context(|ctx| {
+        ctx.infer_responses = infer;
     });
 }
 
@@ -67,7 +75,8 @@ pub fn extract_schemas(extract: bool) {
 ///
 /// Currently clears:
 ///
-/// - extracted schemas
+/// - extracted schemas if [`extract_schemas`] was enabled
+/// - disables inferred responses
 ///
 /// This function is not required in most cases.
 pub fn reset_context() {
@@ -80,6 +89,8 @@ pub struct GenContext {
     /// Schema generator that should be used
     /// for generating JSON schemas.
     pub schema: SchemaGenerator,
+
+    pub(crate) infer_responses: bool,
 
     /// Extract schemas.
     pub(crate) extract_schemas: bool,
@@ -97,6 +108,7 @@ impl GenContext {
             schema: SchemaGenerator::new(
                 SchemaSettings::draft07().with(|s| s.inline_subschemas = true),
             ),
+            infer_responses: false,
             extract_schemas: false,
             show_error: default_error_filter,
             error_handler: None,

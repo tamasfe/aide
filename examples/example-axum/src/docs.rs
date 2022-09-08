@@ -3,7 +3,7 @@ use std::sync::Arc;
 use aide::{
     axum::{
         routing::{get, get_with},
-        ApiRouter,
+        ApiRouter, IntoApiResponse,
     },
     openapi::OpenApi,
 };
@@ -16,19 +16,32 @@ use axum::{
 use crate::{extractors::Json, state::AppState};
 
 pub fn docs_routes(state: AppState) -> ApiRouter<AppState> {
-    ApiRouter::with_state(state)
+    // We infer the return types for these routes
+    // as an example.
+    //
+    // As a result, the `serve_redoc` route will
+    // have the `text/html` content-type correctly set
+    // with a 200 status.
+    aide::gen::infer_responses(true);
+
+    let router = ApiRouter::with_state(state)
         .api_route_with(
             "/",
             get_with(serve_redoc, |op| {
                 op.description("This documentation page.")
-                    .response::<200, Html<()>>()
             }),
             |p| p.security_requirement("ApiKey"),
         )
-        .route("/private/api.json", get(serve_docs))
+        .route("/private/api.json", get(serve_docs));
+
+    // Afterwards we disable response inference because
+    // it might be incorrect for other routes.
+    aide::gen::infer_responses(false);
+
+    router
 }
 
-async fn serve_redoc(uri: OriginalUri) -> impl IntoResponse {
+async fn serve_redoc(uri: OriginalUri) -> impl IntoApiResponse {
     let api_json_url = uri.0.to_string() + "/private/api.json";
 
     Html(format!(
@@ -60,6 +73,6 @@ async fn serve_redoc(uri: OriginalUri) -> impl IntoResponse {
     ))
 }
 
-async fn serve_docs(Extension(api): Extension<Arc<OpenApi>>) -> impl IntoResponse {
-    Json(api)
+async fn serve_docs(Extension(api): Extension<Arc<OpenApi>>) -> impl IntoApiResponse {
+    Json(api).into_response()
 }

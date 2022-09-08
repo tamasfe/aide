@@ -53,6 +53,17 @@ impl OperationOutput for Bytes {
             ..Default::default()
         })
     }
+
+    fn inferred_responses(
+        ctx: &mut crate::gen::GenContext,
+        operation: &mut Operation,
+    ) -> Vec<(Option<u16>, Response)> {
+        if let Some(res) = Self::operation_response(ctx, operation) {
+            Vec::from([(Some(200), res)])
+        } else {
+            Vec::new()
+        }
+    }
 }
 
 impl OperationOutput for BytesMut {
@@ -63,5 +74,12 @@ impl OperationOutput for BytesMut {
         operation: &mut Operation,
     ) -> Option<crate::openapi::Response> {
         Bytes::operation_response(ctx, operation)
+    }
+
+    fn inferred_responses(
+        ctx: &mut crate::gen::GenContext,
+        operation: &mut Operation,
+    ) -> Vec<(Option<u16>, Response)> {
+        Bytes::inferred_responses(ctx, operation)
     }
 }
