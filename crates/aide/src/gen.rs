@@ -38,9 +38,13 @@ pub fn on_error(handler: impl Fn(Error) + 'static) {
 /// Collect common schemas in the thread-local context,
 /// then store them under `#/components/schemas` the next
 /// time generated content is merged into [`OpenApi`].
+/// This feature is disabled by default.
 ///
 /// This will automatically clear the schemas stored
-/// in the context.
+/// in the context when they are merged into the documentation.
+/// 
+/// **warning**: This might cause name conflicts that are not detected!
+/// For more information see <https://github.com/GREsau/schemars/issues/62>.
 ///
 /// [`OpenApi`]: crate::openapi::OpenApi
 pub fn extract_schemas(extract: bool) {
