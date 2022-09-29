@@ -26,7 +26,7 @@ Read the [docs](https://docs.rs/aide/latest/aide/).
 
 A JSON request validation library for [axum](https://github.com/tokio-rs/axum).
 
-Read the [docs](https://docs.rs/axum-jsonschema/latest/axum-jsonschema/).
+Read the [docs](https://docs.rs/axum-jsonschema/latest/axum_jsonschema/).
 
 ## Contributing
 
