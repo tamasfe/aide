@@ -2,8 +2,7 @@ use indexmap::IndexMap;
 use serde::{Deserialize, Serialize};
 
 /// License information for the exposed API.
-#[derive(Debug, Clone, Serialize, Deserialize, Default, PartialEq)]
-#[derive(schemars::JsonSchema)]
+#[derive(Debug, Clone, Serialize, Deserialize, Default, PartialEq, schemars::JsonSchema)]
 pub struct License {
     /// REQUIRED. The license name used for the API.
     pub name: String,

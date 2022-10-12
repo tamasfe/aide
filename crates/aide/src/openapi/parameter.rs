@@ -6,8 +6,7 @@ use serde::{Deserialize, Serialize};
 /// Describes a single operation parameter.
 ///
 /// A unique parameter is defined by a combination of a name and location.
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
-#[derive(schemars::JsonSchema)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, schemars::JsonSchema)]
 pub struct ParameterData {
     /// REQUIRED. The name of the parameter. Parameter names are case sensitive.
     /// If in is "path", the name field MUST correspond to the associated path

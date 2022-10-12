@@ -2,8 +2,7 @@ use crate::openapi::*;
 use indexmap::IndexMap;
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, Serialize, Deserialize, Default, PartialEq)]
-#[derive(schemars::JsonSchema)]
+#[derive(Debug, Clone, Serialize, Deserialize, Default, PartialEq, schemars::JsonSchema)]
 pub struct OpenApi {
     #[serde(with = "serde_version")]
     #[schemars(with = "&'static str")]

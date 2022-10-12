@@ -7,7 +7,7 @@
 //!
 //! The goal is to minimize the learning curve, mental context switches
 //! and make documentation somewhat slightly less of a chore.
-//! 
+//!
 //! See the [examples](https://github.com/tamasfe/aide/tree/master/examples)
 //! to see how Aide is used with various frameworks.
 //!
@@ -111,7 +111,8 @@
     clippy::default_trait_access,
     clippy::module_name_repetitions,
     clippy::wildcard_imports,
-    clippy::too_many_lines
+    clippy::too_many_lines,
+    clippy::single_match_else
 )]
 
 #[macro_use]

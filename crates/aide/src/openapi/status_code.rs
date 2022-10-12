@@ -1,8 +1,7 @@
 use serde::{Deserialize, Serialize};
 use std::fmt;
 
-#[derive(Clone, Debug, Hash, PartialEq, Eq, PartialOrd, Ord)]
-#[derive(schemars::JsonSchema)]
+#[derive(Clone, Debug, Hash, PartialEq, Eq, PartialOrd, Ord, schemars::JsonSchema)]
 pub enum StatusCode {
     Code(u16),
     Range(u16),

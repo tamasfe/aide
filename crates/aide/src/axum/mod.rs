@@ -542,7 +542,7 @@ impl<S, B> From<ApiRouter<S, B>> for Router<S, B> {
 /// `impl IntoApiResponse` for documented handlers.
 /// Axum's `IntoResponse` cannot be used for these handlers
 /// since the return type has to implement [`OperationOutput`].
-/// 
+///
 /// This trait has a blanket implementation for all types
 /// that implement [`IntoResponse`] and [`OperationOutput`],
 /// it should not be implemented manually.

@@ -34,7 +34,7 @@ struct OperationIoOpts {
 ///
 /// By default both [`OperationInput`] and [`OperationOutput`] are implemented.
 /// It is possible to restrict either with the `input` and `output` parameters.
-/// 
+///
 /// The following will only implement [`OperationOutput`]:
 ///
 /// ```ignore

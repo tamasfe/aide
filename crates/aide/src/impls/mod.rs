@@ -1,4 +1,4 @@
-use std::{borrow::Cow, rc::Rc, sync::Arc, convert::Infallible};
+use std::{borrow::Cow, convert::Infallible, rc::Rc, sync::Arc};
 
 use crate::{
     openapi::{MediaType, Operation, RequestBody, Response},
@@ -373,7 +373,7 @@ impl<'a> OperationOutput for Cow<'a, [u8]> {
 
 // Empty blanket impls for tuples.
 //
-// In axum these are (StatusCode, Value), 
+// In axum these are (StatusCode, Value),
 // we keep it more broad as other frameworks
 // could implement (u16, Value) instead for example.
 impl<T1, T2> OperationOutput for (T1, T2) {

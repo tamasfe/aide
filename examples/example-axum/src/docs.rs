@@ -27,9 +27,7 @@ pub fn docs_routes(state: AppState) -> ApiRouter<AppState> {
     let router = ApiRouter::with_state(state)
         .api_route_with(
             "/",
-            get_with(serve_redoc, |op| {
-                op.description("This documentation page.")
-            }),
+            get_with(serve_redoc, |op| op.description("This documentation page.")),
             |p| p.security_requirement("ApiKey"),
         )
         .route("/private/api.json", get(serve_docs));

@@ -3,8 +3,7 @@ use indexmap::IndexMap;
 use serde::{Deserialize, Serialize};
 
 /// An object representing a Server.
-#[derive(Debug, Clone, Serialize, Deserialize, Default, PartialEq)]
-#[derive(schemars::JsonSchema)]
+#[derive(Debug, Clone, Serialize, Deserialize, Default, PartialEq, schemars::JsonSchema)]
 pub struct Server {
     /// REQUIRED. A URL to the target host.
     /// This URL supports Server Variables and MAY be relative,

@@ -51,8 +51,8 @@ use std::{any::type_name, marker::PhantomData};
 use crate::{
     gen::GenContext,
     openapi::{
-        Components, Info, OpenApi, Operation, Parameter, PathItem, ReferenceOr, Response,
-        SecurityScheme, StatusCode, Tag, Contact, License,
+        Components, Contact, Info, License, OpenApi, Operation, Parameter, PathItem, ReferenceOr,
+        Response, SecurityScheme, StatusCode, Tag,
     },
     OperationInput,
 };

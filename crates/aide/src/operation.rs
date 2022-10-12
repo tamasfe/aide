@@ -123,7 +123,7 @@ pub trait OperationOutput {
     /// This method gets mutable access to the
     /// entire operation, it's the implementer's responsibility
     /// to detect errors and only modify the operation as much as needed.
-    /// 
+    ///
     /// Note that this function **can be called multiple
     /// times for the same operation** and should be idempotent.
     ///
@@ -139,12 +139,12 @@ pub trait OperationOutput {
     /// The function is supposed to return `(status code, response)` pairs,
     /// if the status code is not specified, the response is assumed to be
     /// a default response.
-    /// 
+    ///
     /// As an example `Result<T, E>` could
     /// return `(Some(200), T::operation_response(..))` and
     /// `(None, E::operation_response(..))` to indicate
     /// a successful response and a default error.
-    /// 
+    ///
     /// This function can be called after or before `operation_response`,
     /// it's important for the implementation to be idempotent.
     fn inferred_responses(

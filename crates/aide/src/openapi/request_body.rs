@@ -2,8 +2,7 @@ use crate::{openapi::*, util::*};
 use indexmap::IndexMap;
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, Serialize, Deserialize, Default, PartialEq)]
-#[derive(schemars::JsonSchema)]
+#[derive(Debug, Clone, Serialize, Deserialize, Default, PartialEq, schemars::JsonSchema)]
 pub struct RequestBody {
     /// A brief description of the request body.
     /// This could contain examples of use.

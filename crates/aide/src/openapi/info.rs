@@ -6,8 +6,7 @@ use serde::{Deserialize, Serialize};
 /// The metadata MAY be used by the clients if needed,
 /// and MAY be presented in editing or documentation generation tools for
 /// convenience.
-#[derive(Debug, Clone, Serialize, Deserialize, Default, PartialEq)]
-#[derive(schemars::JsonSchema)]
+#[derive(Debug, Clone, Serialize, Deserialize, Default, PartialEq, schemars::JsonSchema)]
 pub struct Info {
     /// REQUIRED. The title of the application.
     pub title: String,

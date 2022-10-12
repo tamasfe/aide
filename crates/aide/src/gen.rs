@@ -42,7 +42,7 @@ pub fn on_error(handler: impl Fn(Error) + 'static) {
 ///
 /// This will automatically clear the schemas stored
 /// in the context when they are merged into the documentation.
-/// 
+///
 /// **warning**: This might cause name conflicts that are not detected!
 /// For more information see <https://github.com/GREsau/schemars/issues/62>.
 ///
