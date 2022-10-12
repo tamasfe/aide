@@ -410,11 +410,16 @@ where
     /// If an another [`ApiRouter`] is provided, the generated documentations
     /// are nested as well.
     #[tracing::instrument(skip_all)]
-    pub fn nest<T>(mut self, mut path: &str, svc: impl Into<ServiceOrApiRouter<S, B, T>>) -> Self
+    pub fn nest<T, S2>(
+        mut self,
+        mut path: &str,
+        svc: impl Into<ServiceOrApiRouter<S2, B, T>>,
+    ) -> Self
     where
         T: Service<Request<B>, Error = Infallible> + Clone + Send + 'static,
         T::Response: IntoResponse,
         T::Future: Send + 'static,
+        S2: Send + Sync + 'static,
     {
         match svc.into() {
             ServiceOrApiRouter::Router(r) => {
@@ -629,4 +634,15 @@ impl<B> Service<Request<B>> for DefinitelyNotService {
 
 mod private {
     pub trait Sealed {}
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::axum::ApiRouter;
+
+    #[test]
+    fn test_nesting_with_different_state() {
+        let _app: ApiRouter<usize> =
+            ApiRouter::with_state(1_usize).nest("/", ApiRouter::with_state(1_isize));
+    }
 }
