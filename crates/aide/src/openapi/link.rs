@@ -16,6 +16,7 @@ use serde::{Deserialize, Serialize};
 /// and using them as parameters while invoking the linked operation.
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 #[serde(rename_all = "camelCase")]
+#[derive(schemars::JsonSchema)]
 pub struct Link {
     /// A description of the link.
     /// CommonMark syntax MAY be used for rich text representation.
@@ -47,6 +48,7 @@ pub struct Link {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 #[serde(rename_all = "camelCase")]
+#[derive(schemars::JsonSchema)]
 pub enum LinkOperation {
     /// A relative or absolute reference to an OAS operation.
     /// This field is mutually exclusive of the operationId field,

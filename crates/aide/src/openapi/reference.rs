@@ -2,6 +2,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq)]
 #[serde(untagged)]
+#[derive(schemars::JsonSchema)]
 pub enum ReferenceOr<T> {
     Reference {
         /// REQUIRED. The reference identifier. This MUST be in the form of a

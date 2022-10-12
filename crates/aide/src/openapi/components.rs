@@ -8,6 +8,7 @@ use serde::{Deserialize, Serialize};
 /// outside the components object.
 #[derive(Debug, Clone, Serialize, Deserialize, Default, PartialEq)]
 #[serde(rename_all = "camelCase")]
+#[derive(schemars::JsonSchema)]
 pub struct Components {
     /// An object to hold reusable Security Scheme Objects.
     #[serde(default, skip_serializing_if = "IndexMap::is_empty")]

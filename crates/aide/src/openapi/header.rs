@@ -11,6 +11,7 @@ use serde::{Deserialize, Serialize};
 /// location of header (for example, style).
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 #[serde(rename_all = "camelCase")]
+#[derive(schemars::JsonSchema)]
 pub struct Header {
     /// A brief description of the parameter. This could
     /// contain examples of use. CommonMark syntax MAY be

@@ -3,8 +3,10 @@ use indexmap::IndexMap;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize, Default, PartialEq)]
+#[derive(schemars::JsonSchema)]
 pub struct OpenApi {
     #[serde(with = "serde_version")]
+    #[schemars(with = "&'static str")]
     pub openapi: &'static str,
     /// REQUIRED. Provides metadata about the API.
     /// The metadata MAY be used by tooling as required.

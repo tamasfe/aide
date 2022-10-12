@@ -10,6 +10,7 @@ use serde::{Deserialize, Deserializer, Serialize};
 /// viewer but they will not know which operations and
 /// parameters are available.
 #[derive(Debug, Clone, Serialize, Deserialize, Default, PartialEq)]
+#[derive(schemars::JsonSchema)]
 pub struct PathItem {
     /// Allows for a referenced definition of this path item. The referenced
     /// structure MUST be in the form of a Path Item Object.  In case a Path
@@ -107,6 +108,7 @@ impl IntoIterator for PathItem {
 /// Server Object in order to construct the full URL. The Paths
 /// MAY be empty, due to Access Control List (ACL) constraints.
 #[derive(Debug, Clone, Serialize, Deserialize, Default, PartialEq)]
+#[derive(schemars::JsonSchema)]
 pub struct Paths {
     /// A map of PathItems or references to them.
     #[serde(flatten, deserialize_with = "deserialize_paths")]

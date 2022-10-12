@@ -3,6 +3,7 @@ use indexmap::IndexMap;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize, Default, PartialEq)]
+#[derive(schemars::JsonSchema)]
 pub struct RequestBody {
     /// A brief description of the request body.
     /// This could contain examples of use.

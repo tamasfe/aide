@@ -3,6 +3,7 @@ use serde::{Deserialize, Serialize};
 
 /// Allows referencing an external resource for extended documentation.
 #[derive(Debug, Clone, Serialize, Deserialize, Default, PartialEq)]
+#[derive(schemars::JsonSchema)]
 pub struct ExternalDocumentation {
     /// A description of the target documentation.
     /// CommonMark syntax MAY be used for rich text representation.

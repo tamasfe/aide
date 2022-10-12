@@ -3,6 +3,7 @@ use crate::openapi::*;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[derive(schemars::JsonSchema)]
 pub struct SchemaObject {
     #[serde(flatten)]
     pub json_schema: schemars::schema::Schema,

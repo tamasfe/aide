@@ -3,6 +3,7 @@ use serde::{Deserialize, Serialize};
 
 /// Contact information for the exposed API.
 #[derive(Debug, Clone, Serialize, Deserialize, Default, PartialEq)]
+#[derive(schemars::JsonSchema)]
 pub struct Contact {
     /// The identifying name of the contact person/organization.
     #[serde(skip_serializing_if = "Option::is_none")]

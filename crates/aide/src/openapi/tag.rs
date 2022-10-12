@@ -6,6 +6,7 @@ use serde::{Deserialize, Serialize};
 /// Operation Object. It is not mandatory to have a
 /// Tag Object per tag defined in the Operation Object instances.
 #[derive(Debug, Clone, Serialize, Deserialize, Default, PartialEq)]
+#[derive(schemars::JsonSchema)]
 pub struct Tag {
     /// REQUIRED. The name of the tag.
     pub name: String,

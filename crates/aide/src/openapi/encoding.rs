@@ -5,6 +5,7 @@ use serde::{Deserialize, Serialize};
 /// A single encoding definition applied to a single schema property.
 #[derive(Debug, Clone, Serialize, Deserialize, Default, PartialEq)]
 #[serde(rename_all = "camelCase")]
+#[derive(schemars::JsonSchema)]
 pub struct Encoding {
     /// The Content-Type for encoding a specific property.
     /// Default value depends on the property type:

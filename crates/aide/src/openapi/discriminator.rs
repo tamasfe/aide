@@ -10,6 +10,7 @@ use serde::{Deserialize, Serialize};
 /// When using the discriminator, inline schemas will not be considered.
 #[derive(Serialize, Deserialize, Debug, Clone, Default, PartialEq)]
 #[serde(rename_all = "camelCase")]
+#[derive(schemars::JsonSchema)]
 pub struct Discriminator {
     /// REQUIRED. The name of the property in the payload that
     /// will hold the discriminator value.
