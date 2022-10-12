@@ -1,11 +1,26 @@
 # Changelog
 
-## unreleased
+## 0.6.1 - 2022-10-12
+
+[ab7fbd7](ab7fbd7f37fc91e147b6119997841638e4b406c7)...[a67ad80](a67ad80851f70171fd67e058aba0de48d050613b)
+
+### Bug Fixes
+
+- Implement JsonSchema for OpenApi ([9cce0d6](9cce0d6cfb0f4c44be659e8b04ecb7f1ace01eee))
+- Axum router nesting with different state ([a67ad80](a67ad80851f70171fd67e058aba0de48d050613b)), closes #2
+
+### Miscellaneous Tasks
+
+- Extend extract_schemas docs ([0b6232d](0b6232d81a1362e7fa1340765f43a5628ca86895))
+
+## 0.6.0 - 2022-09-08
+
+[b8f98b3](b8f98b3f22a4f08aeca4fcf61968f8a757c3c0bf)...[ab7fbd7](ab7fbd7f37fc91e147b6119997841638e4b406c7)
 
 ### Features
 
-- **breaking** it is possible to disable schema extraction ([f120455](f1204559fba3e0fdb8b5c2bc67091e3c29782e36))
-- Response inference from handler return types ([91766d5](91766d5f1f15310305ad121660fbe20f6f0a32cc))
+- **breaking** it is possible to disable schema extraction ([740d77c](740d77cde273c6940d403f2e4adf9b8751fe2669))
+- Response inference from handler return types ([675ea2a](675ea2a15f9e87ad6ca503d7101e5ceec82ef857))
 
 ## 0.5.5 - 2022-09-07
 
