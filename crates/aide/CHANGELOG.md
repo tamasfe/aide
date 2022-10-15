@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.6.2 - 2022-10-15
+
+[a67ad80](a67ad80851f70171fd67e058aba0de48d050613b)...[c40ddaf](c40ddaf106c87dfe55a2d3fc316f85108d4c9029)
+
+### Bug Fixes
+
+- Resolve schema references during gen ([be0a66c](be0a66cd30f36e30f435d9c6f31673e682142492)), closes #4
+- Use correct no content status code ([c40ddaf](c40ddaf106c87dfe55a2d3fc316f85108d4c9029))
+
+### Miscellaneous Tasks
+
+- Axum example cleanup ([5be6efd](5be6efd844ba5b287da4848a1595d74eb8647fd9))
+
 ## 0.6.1 - 2022-10-12
 
 [ab7fbd7](ab7fbd7f37fc91e147b6119997841638e4b406c7)...[a67ad80](a67ad80851f70171fd67e058aba0de48d050613b)
