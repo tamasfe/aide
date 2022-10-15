@@ -170,12 +170,14 @@ pub enum ParamLocation {
 /// property is a parameter.
 #[tracing::instrument(skip_all)]
 pub fn parameters_from_schema(
-    _ctx: &mut GenContext,
+    ctx: &mut GenContext,
     schema: SchemaObject,
     location: ParamLocation,
 ) -> Vec<Parameter> {
+    let schema = ctx.resolve_schema(&schema);
+
     let mut params = Vec::new();
-    if let Some(obj) = schema.object {
+    if let Some(obj) = &schema.object {
         for (name, schema) in &obj.properties {
             let s = schema.clone().into_object();
 

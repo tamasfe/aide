@@ -37,13 +37,17 @@ where
     T: JsonSchema,
 {
     fn operation_input(ctx: &mut crate::gen::GenContext, operation: &mut Operation) {
-        let mut schema = ctx.schema.subschema_for::<T>().into_object();
+        let schema = ctx.schema.subschema_for::<T>().into_object();
+        let resolved_schema = ctx.resolve_schema(&schema);
 
         set_body(
             ctx,
             operation,
             RequestBody {
-                description: schema.metadata().description.clone(),
+                description: resolved_schema
+                    .metadata
+                    .as_ref()
+                    .and_then(|m| m.description.clone()),
                 content: IndexMap::from_iter([(
                     "application/json".into(),
                     MediaType {
@@ -67,13 +71,17 @@ where
     T: JsonSchema,
 {
     fn operation_input(ctx: &mut crate::gen::GenContext, operation: &mut Operation) {
-        let mut schema = ctx.schema.subschema_for::<T>().into_object();
+        let schema = ctx.schema.subschema_for::<T>().into_object();
+        let resolved_schema = ctx.resolve_schema(&schema);
 
         set_body(
             ctx,
             operation,
             RequestBody {
-                description: schema.metadata().description.clone(),
+                description: resolved_schema
+                    .metadata
+                    .as_ref()
+                    .and_then(|m| m.description.clone()),
                 content: IndexMap::from_iter([(
                     "application/x-www-form-urlencoded".into(),
                     MediaType {
@@ -317,13 +325,17 @@ mod extra {
         T: JsonSchema,
     {
         fn operation_input(ctx: &mut crate::gen::GenContext, operation: &mut Operation) {
-            let mut schema = ctx.schema.subschema_for::<T>().into_object();
+            let schema = ctx.schema.subschema_for::<T>().into_object();
+            let resolved_schema = ctx.resolve_schema(&schema);
 
             set_body(
                 ctx,
                 operation,
                 RequestBody {
-                    description: schema.metadata().description.clone(),
+                    description: resolved_schema
+                        .metadata
+                        .as_ref()
+                        .and_then(|m| m.description.clone()),
                     content: IndexMap::from_iter([(
                         "application/x-www-form-urlencoded".into(),
                         MediaType {
