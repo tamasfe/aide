@@ -260,7 +260,7 @@ impl OperationOutput for () {
         operation: &mut Operation,
     ) -> Vec<(Option<u16>, Response)> {
         if let Some(res) = Self::operation_response(ctx, operation) {
-            Vec::from([(Some(204), res)])
+            Vec::from([(Some(ctx.no_content_status), res)])
         } else {
             Vec::new()
         }

@@ -2,6 +2,7 @@
 
 use std::cell::RefCell;
 
+use cfg_if::cfg_if;
 use schemars::{
     gen::{SchemaGenerator, SchemaSettings},
     schema::SchemaObject,
@@ -67,6 +68,18 @@ pub fn extract_schemas(extract: bool) {
     });
 }
 
+/// Set the inferred status code of empty responses (`()`).
+///
+/// Some frameworks might use `204` for empty responses, whereas
+/// others will set `200`.
+/// 
+/// The default value depends on the framework feature.
+pub fn inferred_empty_response_status(status: u16) {
+    in_context(|ctx| {
+        ctx.no_content_status = status;
+    });
+}
+
 /// Infer responses based on request handler
 /// return types.
 ///
@@ -102,6 +115,9 @@ pub struct GenContext {
     /// Extract schemas.
     pub(crate) extract_schemas: bool,
 
+    /// Status code for no content.
+    pub(crate) no_content_status: u16,
+
     /// The following filter is used internally
     /// to reduce the amount of false positives
     /// when possible.
@@ -111,6 +127,15 @@ pub struct GenContext {
 
 impl GenContext {
     fn new() -> Self {
+
+        cfg_if! {
+            if #[cfg(feature = "axum")] {
+                let no_content_status = 200;
+            } else {
+                let no_content_status = 204;
+            }
+        }
+
         Self {
             schema: SchemaGenerator::new(
                 SchemaSettings::draft07().with(|s| s.inline_subschemas = true),
@@ -119,6 +144,7 @@ impl GenContext {
             extract_schemas: false,
             show_error: default_error_filter,
             error_handler: None,
+            no_content_status,
         }
     }
 
