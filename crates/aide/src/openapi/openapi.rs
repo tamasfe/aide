@@ -87,8 +87,8 @@ impl OpenApi {
 mod serde_version {
     use serde::{Deserializer, Serialize, Serializer};
 
-    pub fn serialize<S: Serializer>(_: &'static str, ser: S) -> Result<S::Ok, S::Error> {
-        "3.1.0".serialize(ser)
+    pub fn serialize<S: Serializer>(version: &'static str, ser: S) -> Result<S::Ok, S::Error> {
+        version.serialize(ser)
     }
 
     pub fn deserialize<'de, D: Deserializer<'de>>(_ser: D) -> Result<&'static str, D::Error> {
