@@ -12,8 +12,9 @@ use axum::{
     response::{Html, IntoResponse},
     Extension,
 };
+use axum_jsonschema::Json;
 
-use crate::{extractors::Json, state::AppState};
+use crate::state::AppState;
 
 pub fn docs_routes(state: AppState) -> ApiRouter<AppState> {
     // We infer the return types for these routes

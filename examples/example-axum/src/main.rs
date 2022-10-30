@@ -6,9 +6,9 @@ use aide::{
     transform::TransformOpenApi,
 };
 use axum::{http::StatusCode, Extension};
+use axum_jsonschema::Json;
 use docs::docs_routes;
 use errors::AppError;
-use extractors::Json;
 use state::AppState;
 use todos::routes::todo_routes;
 use uuid::Uuid;

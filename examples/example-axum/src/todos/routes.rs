@@ -10,11 +10,12 @@ use axum::{
     http::StatusCode,
     response::IntoResponse,
 };
+use axum_jsonschema::Json;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-use crate::{extractors::Json, state::AppState};
+use crate::state::AppState;
 
 use super::TodoItem;
 
