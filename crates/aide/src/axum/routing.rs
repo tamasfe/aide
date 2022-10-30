@@ -137,8 +137,14 @@ macro_rules! method_router_top_level {
             let mut operation = Operation::default();
             in_context(|ctx| {
                 I::operation_input(ctx, &mut operation);
+
+                for (code, res) in O::inferred_responses(ctx, &mut operation) {
+                    set_inferred_response(ctx, &mut operation, code, res);
+                }
             });
+
             router.operations.insert(stringify!($name), operation);
+
             router
         }
 
