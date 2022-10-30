@@ -88,7 +88,7 @@ mod serde_version {
     use serde::{Deserializer, Serialize, Serializer};
 
     pub fn serialize<S: Serializer>(version: &'static str, ser: S) -> Result<S::Ok, S::Error> {
-        version.serialize(ser)
+        if version.is_empty() { "3.1.0" } else { version }.serialize(ser)
     }
 
     pub fn deserialize<'de, D: Deserializer<'de>>(_ser: D) -> Result<&'static str, D::Error> {
