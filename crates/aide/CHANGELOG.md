@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.6.3 - 2022-10-31
+
+[c40ddaf](c40ddaf106c87dfe55a2d3fc316f85108d4c9029)...[d1ef18a](d1ef18a99f4dd4f3426f6f3d03b4c4f7383ba036)
+
+### Bug Fixes
+
+- Missing inferred responses ([e3fe288](e3fe2882aa10a87f7334948c1de9a00c5d96b008))
+- Added missing inferred responses ([861e92a](861e92a23977ed5621c46475552aea3e16bcc464)), Add:default response.
+
 ## 0.6.2 - 2022-10-15
 
 [a67ad80](a67ad80851f70171fd67e058aba0de48d050613b)...[c40ddaf](c40ddaf106c87dfe55a2d3fc316f85108d4c9029)
