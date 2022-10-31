@@ -78,6 +78,10 @@ macro_rules! method_router_chain_method {
             let mut operation = Operation::default();
             in_context(|ctx| {
                 I::operation_input(ctx, &mut operation);
+
+                for (code, res) in O::inferred_responses(ctx, &mut operation) {
+                    set_inferred_response(ctx, &mut operation, code, res);
+                }
             });
             self.operations.insert(stringify!($name), operation);
             self.router = self.router.$name(handler);
