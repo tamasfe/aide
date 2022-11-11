@@ -6,7 +6,7 @@ use crate::{
     operation::{add_parameters, set_body},
 };
 use axum::extract::{
-    BodyStream, ConnectInfo, ContentLengthLimit, Extension, Form, Host, Json, MatchedPath,
+    BodyStream, ConnectInfo, Extension, Form, Host, Json, MatchedPath,
     OriginalUri, Path, Query, RawBody, RawQuery, State,
 };
 use indexmap::IndexMap;
@@ -25,7 +25,6 @@ impl<T> OperationInput for Extension<T> {}
 impl<T> OperationInput for State<T> {}
 impl OperationInput for BodyStream {}
 impl<T> OperationInput for ConnectInfo<T> {}
-impl<T, const N: u64> OperationInput for ContentLengthLimit<T, N> {}
 impl OperationInput for MatchedPath {}
 impl OperationInput for OriginalUri {}
 impl OperationInput for RawBody {}

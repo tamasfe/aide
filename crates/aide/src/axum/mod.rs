@@ -167,7 +167,7 @@
 //! and the documented routes will be updated as expected.
 //!
 
-use std::{convert::Infallible, future::Future, mem, pin::Pin, sync::Arc};
+use std::{convert::Infallible, future::Future, mem, pin::Pin};
 
 use crate::{
     gen::{self, in_context},
@@ -182,7 +182,7 @@ use axum::{
     http::Request,
     response::IntoResponse,
     routing::{IntoMakeService, Route},
-    Router,
+    Router, RouterService,
 };
 use indexmap::IndexMap;
 use tower_layer::Layer;
@@ -235,22 +235,15 @@ where
 impl<S, B> ApiRouter<S, B>
 where
     B: HttpBody + Send + 'static,
-    S: Send + Sync + 'static,
+    S: Clone + Send + Sync + 'static,
 {
     /// Create a new router with state.
     ///
     /// See [`axum::Router::with_state`] for details.
     pub fn with_state(state: S) -> Self {
-        Self::with_state_arc(Arc::new(state))
-    }
-
-    /// Create a new router with state.
-    ///
-    /// See [`axum::Router::with_state_arc`] for details.
-    pub fn with_state_arc(state: Arc<S>) -> Self {
         Self {
             paths: IndexMap::default(),
-            router: Router::with_state_arc(state),
+            router: Router::with_state(state),
         }
     }
 
@@ -382,7 +375,7 @@ where
 impl<S, B> ApiRouter<S, B>
 where
     B: HttpBody + Send + 'static,
-    S: Send + Sync + 'static,
+    S: Clone + Send + Sync + 'static,
 {
     /// See [`axum::Router::route`] for details.
     ///
@@ -407,36 +400,35 @@ where
 
     /// See [`axum::Router::nest`] for details.
     ///
-    /// If an another [`ApiRouter`] is provided, the generated documentations
-    /// are nested as well.
+    /// The generated documentations are nested as well.
     #[tracing::instrument(skip_all)]
-    pub fn nest<T, S2>(
-        mut self,
-        mut path: &str,
-        svc: impl Into<ServiceOrApiRouter<S2, B, T>>,
-    ) -> Self
+    pub fn nest<S2>(mut self, mut path: &str, router: ApiRouter<S2, B>) -> Self
+    where
+        S2: Clone + Send + Sync + 'static,
+    {
+        self.router = self.router.nest(path, router.router);
+
+        path = path.trim_end_matches('/');
+
+        self.paths.extend(
+            router
+                .paths
+                .into_iter()
+                .map(|(route, path_item)| (path.to_string() + &route, path_item)),
+        );
+
+        self
+    }
+
+    /// See [`axum::Router::nest_service`] for details.
+    #[tracing::instrument(skip_all)]
+    pub fn nest_service<T, S2>(mut self, path: &str, svc: T) -> Self
     where
         T: Service<Request<B>, Error = Infallible> + Clone + Send + 'static,
         T::Response: IntoResponse,
         T::Future: Send + 'static,
-        S2: Send + Sync + 'static,
     {
-        match svc.into() {
-            ServiceOrApiRouter::Router(r) => {
-                self.router = self.router.nest(path, r.router);
-
-                path = path.trim_end_matches('/');
-
-                self.paths.extend(
-                    r.paths
-                        .into_iter()
-                        .map(|(route, path_item)| (path.to_string() + &route, path_item)),
-                );
-            }
-            ServiceOrApiRouter::Service(svc) => {
-                self.router = self.router.nest(path, svc);
-            }
-        }
+        self.router = self.router.nest_service(path, svc);
 
         self
     }
@@ -449,7 +441,7 @@ where
     pub fn merge<S2, R>(mut self, other: R) -> Self
     where
         R: Into<ApiRouter<S2, B>>,
-        S2: Send + Sync + 'static,
+        S2: Clone + Send + Sync + 'static,
     {
         let other: ApiRouter<S2, B> = other.into();
 
@@ -460,9 +452,9 @@ where
 
     /// See [`axum::Router::layer`] for details.
     #[tracing::instrument(skip_all)]
-    pub fn layer<L, NewReqBody>(self, layer: L) -> ApiRouter<S, NewReqBody>
+    pub fn layer<L, NewReqBody: 'static>(self, layer: L) -> ApiRouter<S, NewReqBody>
     where
-        L: Layer<Route<B>>,
+        L: Layer<Route<B>> + Clone + Send + 'static,
         L::Service: Service<Request<NewReqBody>> + Clone + Send + 'static,
         <L::Service as Service<Request<NewReqBody>>>::Response: IntoResponse + 'static,
         <L::Service as Service<Request<NewReqBody>>>::Error: Into<Infallible> + 'static,
@@ -478,7 +470,7 @@ where
     #[tracing::instrument(skip_all)]
     pub fn route_layer<L>(mut self, layer: L) -> Self
     where
-        L: Layer<Route<B>>,
+        L: Layer<Route<B>> + Clone + Send + 'static,
         L::Service: Service<Request<B>> + Clone + Send + 'static,
         <L::Service as Service<Request<B>>>::Response: IntoResponse + 'static,
         <L::Service as Service<Request<B>>>::Error: Into<Infallible> + 'static,
@@ -514,7 +506,7 @@ where
     /// See [`axum::Router::into_make_service`] for details.
     #[tracing::instrument(skip_all)]
     #[must_use]
-    pub fn into_make_service(self) -> IntoMakeService<Router<S, B>> {
+    pub fn into_make_service(self) -> IntoMakeService<RouterService<B>> {
         self.router.into_make_service()
     }
 
@@ -523,7 +515,7 @@ where
     #[must_use]
     pub fn into_make_service_with_connect_info<C>(
         self,
-    ) -> IntoMakeServiceWithConnectInfo<Router<S, B>, C> {
+    ) -> IntoMakeServiceWithConnectInfo<RouterService<B>, C> {
         self.router.into_make_service_with_connect_info()
     }
 }
@@ -569,7 +561,7 @@ pub trait RouterExt<S, B>: private::Sealed + Sized {
 impl<S, B> RouterExt<S, B> for Router<S, B>
 where
     B: HttpBody + Send + 'static,
-    S: Send + Sync + 'static,
+    S: Clone + Send + Sync + 'static,
 {
     #[tracing::instrument(skip_all)]
     fn into_api(self) -> ApiRouter<S, B> {

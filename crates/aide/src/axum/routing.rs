@@ -134,7 +134,7 @@ macro_rules! method_router_top_level {
             I: OperationInput,
             O: OperationOutput,
             B: Send + Sync + 'static,
-            S: Send + Sync + 'static,
+            S: Clone + Send + Sync + 'static,
             T: 'static,
         {
             let mut router = ApiMethodRouter::new(routing::$name(handler));
@@ -166,7 +166,7 @@ macro_rules! method_router_top_level {
             I: OperationInput,
             O: OperationOutput,
             B: Send + Sync + 'static,
-            S: Send + Sync + 'static,
+            S: Clone + Send + Sync + 'static,
             T: 'static,
             F: FnOnce(TransformOperation) -> TransformOperation,
         {
@@ -227,7 +227,7 @@ fn set_inferred_response(
 
 impl<S, B> ApiMethodRouter<S, B, Infallible>
 where
-    S: Send + Sync + 'static,
+    S: Clone + Send + Sync + 'static,
     B: Send + Sync + 'static,
 {
     method_router_chain_method!(delete, delete_with);
