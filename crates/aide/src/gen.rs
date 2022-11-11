@@ -20,7 +20,7 @@ pub fn in_context<R, F>(cb: F) -> R
 where
     F: FnOnce(&mut GenContext) -> R,
 {
-    GEN_CTX.with(|ctx| cb(&mut *ctx.borrow_mut()))
+    GEN_CTX.with(|ctx| cb(&mut ctx.borrow_mut()))
 }
 
 /// Register an error handler in the current thread-local context.

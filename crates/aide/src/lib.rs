@@ -1,6 +1,6 @@
 //! # Aide
 //!
-//! `aide` is an code-first [Open API](https://www.openapis.org/) documentation
+//! `aide` is a code-first [Open API](https://www.openapis.org/) documentation
 //! generator library. It aims for tight integrations with frameworks and
 //! following their conventions, while tries to be out
 //! of the way when it is not needed.
