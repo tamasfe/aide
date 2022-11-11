@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.6.4 - 2022-11-11
+
+[d1ef18a](d1ef18a99f4dd4f3426f6f3d03b4c4f7383ba036)...[1fc8da3](1fc8da3d8d2c9fe3e5d670c0171c18aefbdf290e)
+
+### Bug Fixes
+
+- Loosen requirements ([1fc8da3](1fc8da3d8d2c9fe3e5d670c0171c18aefbdf290e))
+
 ## 0.6.3 - 2022-10-31
 
 [c40ddaf](c40ddaf106c87dfe55a2d3fc316f85108d4c9029)...[d1ef18a](d1ef18a99f4dd4f3426f6f3d03b4c4f7383ba036)
