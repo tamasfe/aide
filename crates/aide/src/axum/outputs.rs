@@ -1,5 +1,6 @@
 use crate::openapi::{MediaType, Operation, Response, SchemaObject};
-use axum::{response::Html, Form, Json};
+use axum::{extract::rejection::JsonRejection, response::Html, Form, Json};
+use http::StatusCode;
 use indexmap::IndexMap;
 use schemars::{
     schema::{InstanceType, SingleOrVec},
@@ -39,7 +40,11 @@ where
         operation: &mut Operation,
     ) -> Vec<(Option<u16>, Response)> {
         if let Some(res) = Self::operation_response(ctx, operation) {
-            Vec::from([(Some(200), res)])
+            [
+                &[(Some(200), res)],
+                JsonRejection::inferred_responses(ctx, operation).as_slice(),
+            ]
+            .concat()
         } else {
             Vec::new()
         }
@@ -121,4 +126,32 @@ impl<T> OperationOutput for Html<T> {
             Vec::new()
         }
     }
+}
+
+impl OperationOutput for JsonRejection {
+    type Inner = Self;
+
+    fn operation_response(ctx: &mut GenContext, operation: &mut Operation) -> Option<Response> {
+        Json::<String>::operation_response(ctx, operation)
+    }
+
+    fn inferred_responses(
+        ctx: &mut crate::gen::GenContext,
+        operation: &mut Operation,
+    ) -> Vec<(Option<u16>, Response)> {
+        if let Some(res) = Self::operation_response(ctx, operation) {
+            Vec::from([
+                rejection_response(StatusCode::BAD_REQUEST, &res),
+                rejection_response(StatusCode::PAYLOAD_TOO_LARGE, &res),
+                rejection_response(StatusCode::UNSUPPORTED_MEDIA_TYPE, &res),
+                rejection_response(StatusCode::UNPROCESSABLE_ENTITY, &res),
+            ])
+        } else {
+            Vec::new()
+        }
+    }
+}
+
+fn rejection_response(status_code: StatusCode, response: &Response) -> (Option<u16>, Response) {
+    (Some(status_code.as_u16()), response.clone())
 }
