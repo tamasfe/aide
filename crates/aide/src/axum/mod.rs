@@ -175,15 +175,7 @@ use crate::{
     util::merge_paths,
     OperationOutput,
 };
-use axum::{
-    body::{Body, HttpBody},
-    extract::connect_info::IntoMakeServiceWithConnectInfo,
-    handler::Handler,
-    http::Request,
-    response::IntoResponse,
-    routing::{IntoMakeService, Route},
-    Router, RouterService,
-};
+use axum::{body::{Body, HttpBody}, extract::connect_info::IntoMakeServiceWithConnectInfo, handler::Handler, http::Request, response::IntoResponse, routing::{IntoMakeService, Route}, Router, RouterService};
 use indexmap::IndexMap;
 use tower_layer::Layer;
 use tower_service::Service;
@@ -300,6 +292,12 @@ where
     #[tracing::instrument(skip_all)]
     pub fn finish_api(mut self, api: &mut OpenApi) -> Router<S, B> {
         self.merge_api(api);
+        self.router
+    }
+
+    /// Get the underlying [`axum::Router`]
+    #[tracing::instrument(skip_all)]
+    pub fn inner(self) -> Router<S, B> {
         self.router
     }
 
