@@ -132,7 +132,7 @@ impl OperationOutput for JsonRejection {
     type Inner = Self;
 
     fn operation_response(ctx: &mut GenContext, operation: &mut Operation) -> Option<Response> {
-        Json::<String>::operation_response(ctx, operation)
+        String::operation_response(ctx, operation)
     }
 
     fn inferred_responses(
