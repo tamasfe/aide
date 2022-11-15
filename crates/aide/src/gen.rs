@@ -72,7 +72,7 @@ pub fn extract_schemas(extract: bool) {
 ///
 /// Some frameworks might use `204` for empty responses, whereas
 /// others will set `200`.
-/// 
+///
 /// The default value depends on the framework feature.
 pub fn inferred_empty_response_status(status: u16) {
     in_context(|ctx| {
@@ -127,7 +127,6 @@ pub struct GenContext {
 
 impl GenContext {
     fn new() -> Self {
-
         cfg_if! {
             if #[cfg(feature = "axum")] {
                 let no_content_status = 200;

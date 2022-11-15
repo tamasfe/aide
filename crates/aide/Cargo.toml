@@ -31,6 +31,7 @@ cfg-if = "1.0.0"
 [features]
 macros = ["dep:aide-macros"]
 axum = ["dep:axum", "bytes", "http", "dep:tower-layer", "dep:tower-service"]
+redoc = []
 axum-ws = ["axum/ws"]
 axum-multipart = ["axum/multipart"]
 axum-extra = ["axum", "dep:axum-extra"]

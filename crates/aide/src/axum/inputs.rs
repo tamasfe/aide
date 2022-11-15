@@ -6,8 +6,8 @@ use crate::{
     operation::{add_parameters, set_body},
 };
 use axum::extract::{
-    BodyStream, ConnectInfo, Extension, Form, Host, Json, MatchedPath,
-    OriginalUri, Path, Query, RawBody, RawQuery, State,
+    BodyStream, ConnectInfo, Extension, Form, Host, Json, MatchedPath, OriginalUri, Path, Query,
+    RawBody, RawQuery, State,
 };
 use indexmap::IndexMap;
 use schemars::{

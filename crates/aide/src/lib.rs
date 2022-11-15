@@ -130,6 +130,9 @@ pub mod util;
 #[cfg(feature = "axum")]
 pub mod axum;
 
+#[cfg(feature = "redoc")]
+pub mod redoc;
+
 pub use error::Error;
 pub use operation::{OperationInput, OperationOutput};
 
