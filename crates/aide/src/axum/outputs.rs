@@ -141,10 +141,10 @@ impl OperationOutput for JsonRejection {
     ) -> Vec<(Option<u16>, Response)> {
         if let Some(res) = Self::operation_response(ctx, operation) {
             Vec::from([
-                rejection_response(StatusCode::BAD_REQUEST, &res),
+                // rejection_response(StatusCode::BAD_REQUEST, &res),
                 rejection_response(StatusCode::PAYLOAD_TOO_LARGE, &res),
                 rejection_response(StatusCode::UNSUPPORTED_MEDIA_TYPE, &res),
-                rejection_response(StatusCode::UNPROCESSABLE_ENTITY, &res),
+                // rejection_response(StatusCode::UNPROCESSABLE_ENTITY, &res),
             ])
         } else {
             Vec::new()
