@@ -8,12 +8,19 @@ use crate::{
     openapi::{Operation, PathItem, ReferenceOr, Response, StatusCode},
     Error,
 };
+use axum::body::HttpBody;
+use axum::routing::Route;
 use axum::{
     body::Body,
     handler::Handler,
     routing::{self, MethodRouter},
+    BoxError,
 };
+use bytes::Bytes;
+use http::Request;
 use indexmap::IndexMap;
+use tower_layer::Layer;
+use tower_service::Service;
 
 use crate::{
     gen::in_context,
@@ -238,6 +245,34 @@ where
     method_router_chain_method!(post, post_with);
     method_router_chain_method!(put, put_with);
     method_router_chain_method!(trace, trace_with);
+
+    /// This method wraps a layer around the [`ApiMethodRouter`]
+    /// For further information see [`axum::routing::method_routing::MethodRouter::layer`]
+    pub fn layer<L, NewReqBody, NewResBody, NewError>(
+        mut self,
+        layer: L,
+    ) -> ApiMethodRouter<S, NewReqBody, NewError>
+    where
+        L: Layer<Route<B, Infallible>> + Clone + Send + 'static,
+        L::Service: Service<
+                Request<NewReqBody>,
+                Response = http::response::Response<NewResBody>,
+                Error = NewError,
+            > + Clone
+            + Send
+            + 'static,
+        <L::Service as Service<Request<NewReqBody>>>::Future: Send + 'static,
+        NewResBody: 'static,
+        NewReqBody: 'static,
+        NewError: 'static,
+        NewResBody: HttpBody<Data = Bytes> + Send + 'static,
+        NewResBody::Error: Into<BoxError>,
+    {
+        ApiMethodRouter {
+            router: self.router.layer(layer),
+            operations: self.operations,
+        }
+    }
 }
 
 method_router_top_level!(delete, delete_with);
