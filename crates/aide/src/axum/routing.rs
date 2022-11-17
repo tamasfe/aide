@@ -249,7 +249,7 @@ where
     /// This method wraps a layer around the [`ApiMethodRouter`]
     /// For further information see [`axum::routing::method_routing::MethodRouter::layer`]
     pub fn layer<L, NewReqBody, NewResBody, NewError>(
-        mut self,
+        self,
         layer: L,
     ) -> ApiMethodRouter<S, NewReqBody, NewError>
     where
