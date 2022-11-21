@@ -31,11 +31,12 @@ async fn main() {
 
     let mut api = OpenApi::default();
 
-    let app = ApiRouter::with_state(state.clone())
-        .nest("/todo", todo_routes(state.clone()))
-        .nest("/docs", docs_routes(state))
+    let app = ApiRouter::new()
+        .nest_api_service("/todo", todo_routes(state.clone()))
+        .nest_api_service("/docs", docs_routes(state.clone()))
         .finish_api_with(&mut api, api_docs)
-        .layer(Extension(Arc::new(api)));
+        .layer(Extension(Arc::new(api)))
+        .with_state(state);
 
     println!("Example docs are accessible at http://127.0.0.1:3000/docs");
 

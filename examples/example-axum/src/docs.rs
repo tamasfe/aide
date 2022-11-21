@@ -3,7 +3,7 @@ use std::sync::Arc;
 use aide::{
     axum::{
         routing::{get, get_with},
-        ApiRouter, IntoApiResponse,
+        ApiRouter, ApiRouterService, IntoApiResponse,
     },
     openapi::OpenApi,
 };
@@ -15,7 +15,7 @@ use axum::{
 
 use crate::{extractors::Json, state::AppState};
 
-pub fn docs_routes(state: AppState) -> ApiRouter<AppState> {
+pub fn docs_routes(state: AppState) -> ApiRouterService {
     // We infer the return types for these routes
     // as an example.
     //
@@ -24,13 +24,14 @@ pub fn docs_routes(state: AppState) -> ApiRouter<AppState> {
     // with a 200 status.
     aide::gen::infer_responses(true);
 
-    let router = ApiRouter::with_state(state)
+    let router = ApiRouter::new()
         .api_route_with(
             "/",
             get_with(serve_redoc, |op| op.description("This documentation page.")),
             |p| p.security_requirement("ApiKey"),
         )
-        .route("/private/api.json", get(serve_docs));
+        .route("/private/api.json", get(serve_docs))
+        .with_state(state);
 
     // Afterwards we disable response inference because
     // it might be incorrect for other routes.

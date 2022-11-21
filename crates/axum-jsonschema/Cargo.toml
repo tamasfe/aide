@@ -10,7 +10,7 @@ description = "Request JSON schema validation for axum"
 readme = "README.md"
 
 [dependencies]
-aide = { version = "0.7.0", path = "../aide", optional = true, features = [
+aide = { version = "0.8.0-rc.1", path = "../aide", optional = true, features = [
     "axum",
 ] }
 async-trait = "0.1.57"
