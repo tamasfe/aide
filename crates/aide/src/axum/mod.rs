@@ -209,16 +209,64 @@ pub struct ApiRouter<S = (), B = Body> {
     router: Router<S, B>,
 }
 
-#[allow(clippy::mismatching_type_param_order)]
-impl<B> ApiRouter<(), B>
+/// A wrapper over [`axum::RouterService`] that
+/// stores API documentation-specific features.
+#[must_use]
+#[derive(Debug)]
+pub struct ApiRouterService<B = Body> {
+    paths: IndexMap<String, PathItem>,
+    router_service: RouterService<B>,
+}
+
+impl<B> Clone for ApiRouterService<B> {
+    fn clone(&self) -> Self {
+        Self {
+            paths: self.paths.clone(),
+            router_service: self.router_service.clone(),
+        }
+    }
+}
+
+impl<B> ApiRouterService<B>
 where
     B: HttpBody + Send + 'static,
 {
-    /// Create a new router with no state.
+    /// Convert the router into a `MakeService` and no state.
     ///
-    /// See [`axum::Router::new`] for details.
-    pub fn new() -> Self {
-        Self::with_state(())
+    /// See [`axum::routing::RouterService::into_make_service()`] for details.
+    pub fn into_make_service(self) -> IntoMakeService<RouterService<B>> {
+        self.router_service.into_make_service()
+    }
+    /// Convert the router into a `MakeService` which stores information about the incoming connection
+    /// and has no state.
+    ///
+    /// See [`axum::routing::RouterService::into_make_service_with_connect_info()`] for details.
+    pub fn into_make_service_with_connect_info<C>(
+        self,
+    ) -> axum::extract::connect_info::IntoMakeServiceWithConnectInfo<RouterService<B>, C> {
+        self.router_service.into_make_service_with_connect_info()
+    }
+}
+
+impl<B> Service<Request<B>> for ApiRouterService<B>
+where
+    B: HttpBody + Send + 'static,
+{
+    type Response = axum::response::Response;
+    type Error = Infallible;
+    type Future = axum::routing::future::RouteFuture<B, Infallible>;
+
+    #[inline]
+    fn poll_ready(
+        &mut self,
+        cx: &mut std::task::Context<'_>,
+    ) -> std::task::Poll<Result<(), Self::Error>> {
+        self.router_service.poll_ready(cx)
+    }
+
+    #[inline]
+    fn call(&mut self, req: Request<B>) -> Self::Future {
+        self.router_service.call(req)
     }
 }
 
@@ -237,13 +285,23 @@ where
     B: HttpBody + Send + 'static,
     S: Clone + Send + Sync + 'static,
 {
-    /// Create a new router with state.
+    /// Create a new router.
+    ///
+    /// See [`axum::Router::new`] for details.
+    pub fn new() -> Self {
+        Self {
+            paths: IndexMap::new(),
+            router: Router::new(),
+        }
+    }
+
+    /// Add state to the router.
     ///
     /// See [`axum::Router::with_state`] for details.
-    pub fn with_state(state: S) -> Self {
-        Self {
+    pub fn with_state(self, state: S) -> ApiRouterService<B> {
+        ApiRouterService::<B> {
             paths: IndexMap::default(),
-            router: Router::with_state(state),
+            router_service: self.router.with_state(state),
         }
     }
 
@@ -402,10 +460,7 @@ where
     ///
     /// The generated documentations are nested as well.
     #[tracing::instrument(skip_all)]
-    pub fn nest<S2>(mut self, mut path: &str, router: ApiRouter<S2, B>) -> Self
-    where
-        S2: Clone + Send + Sync + 'static,
-    {
+    pub fn nest(mut self, mut path: &str, router: ApiRouter<S, B>) -> Self {
         self.router = self.router.nest(path, router.router);
 
         path = path.trim_end_matches('/');
@@ -420,7 +475,24 @@ where
         self
     }
 
-    /// See [`axum::Router::nest_service`] for details.
+    /// Alternative to [`nest_service`](Self::nest_service()) which besides nesting the service nests
+    /// the generated documentation as well.
+    pub fn nest_api_service(mut self, mut path: &str, router_service: ApiRouterService<B>) -> Self {
+        path = path.trim_end_matches('/');
+        self.paths.extend(
+            router_service
+                .paths
+                .into_iter()
+                .map(|(route, path_item)| (path.to_string() + &route, path_item)),
+        );
+        self.router = self
+            .router
+            .nest_service(path, router_service.router_service);
+        self
+    }
+
+    /// See [`axum::Router::nest_service`] for details. Use [`nest_api_service`](Self::nest_api_service())
+    /// to pass on the API documentation from the nested service as well.
     #[tracing::instrument(skip_all)]
     pub fn nest_service<T, S2>(mut self, path: &str, svc: T) -> Self
     where
@@ -438,12 +510,11 @@ where
     /// If an another [`ApiRouter`] is provided, the generated documentations
     /// are merged as well..
     #[tracing::instrument(skip_all)]
-    pub fn merge<S2, R>(mut self, other: R) -> Self
+    pub fn merge<R>(mut self, other: R) -> Self
     where
-        R: Into<ApiRouter<S2, B>>,
-        S2: Clone + Send + Sync + 'static,
+        R: Into<ApiRouter<S, B>>,
     {
-        let other: ApiRouter<S2, B> = other.into();
+        let other: ApiRouter<S, B> = other.into();
 
         self.paths.extend(other.paths);
         self.router = self.router.merge(other.router);
@@ -502,7 +573,12 @@ where
         self.router = self.router.fallback_service(svc);
         self
     }
+}
 
+impl<B> ApiRouter<(), B>
+where
+    B: HttpBody + Send + 'static,
+{
     /// See [`axum::Router::into_make_service`] for details.
     #[tracing::instrument(skip_all)]
     #[must_use]
@@ -632,9 +708,12 @@ mod private {
 mod tests {
     use crate::axum::ApiRouter;
 
+    use super::ApiRouterService;
+
     #[test]
     fn test_nesting_with_different_state() {
-        let _app: ApiRouter<usize> =
-            ApiRouter::with_state(1_usize).nest("/", ApiRouter::with_state(1_isize));
+        let _app: ApiRouterService = ApiRouter::new()
+            .nest_api_service("/", ApiRouter::new().with_state(1_isize))
+            .with_state(1_usize);
     }
 }

@@ -1,7 +1,7 @@
 use aide::{
     axum::{
         routing::{get_with, post_with, put_with},
-        ApiRouter, IntoApiResponse,
+        ApiRouter, ApiRouterService, IntoApiResponse,
     },
     transform::TransformOperation,
 };
@@ -18,8 +18,8 @@ use crate::{extractors::Json, state::AppState};
 
 use super::TodoItem;
 
-pub fn todo_routes(state: AppState) -> ApiRouter<AppState> {
-    ApiRouter::with_state(state)
+pub fn todo_routes(state: AppState) -> ApiRouterService {
+    ApiRouter::new()
         .api_route(
             "/",
             post_with(create_todo, create_todo_docs).get_with(list_todos, list_todos_docs),
@@ -29,6 +29,7 @@ pub fn todo_routes(state: AppState) -> ApiRouter<AppState> {
             get_with(get_todo, get_todo_docs).delete_with(delete_todo, delete_todo_docs),
         )
         .api_route("/:id/complete", put_with(complete_todo, complete_todo_docs))
+        .with_state(state)
 }
 
 /// New Todo details.
