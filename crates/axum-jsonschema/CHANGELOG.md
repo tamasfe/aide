@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.0-rc.1 - 2022-11-21
+
+[7ac93de](7ac93def5f638a204c04993d376cb3082cede136)...[7a314c7](7a314c73284f088947b70a75454de9d0080aec79)
+
+### Miscellaneous Tasks
+
+- Axum dependency update ([7a314c7](7a314c73284f088947b70a75454de9d0080aec79))
+
 ## 0.2.0 - 2022-09-08
 
 [2d799fb](2d799fbd926f30d588047ea1e24a9cccb3698496)...[eef015a](eef015aedd398a98d03589527a13837b2c33a6aa)

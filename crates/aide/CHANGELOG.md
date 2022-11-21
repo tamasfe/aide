@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.8.0-rc.1 - 2022-11-21
+
+[dd4b615](dd4b615887f803d3ad4cdbf770a030be082e1e53)...[f9f325d](f9f325d6005bf51e5cb1ab6224dbf122d0ef6402)
+
+### Features
+
+- Update to axum 0.6.0-rc.5 ([659bdf5](659bdf51ef8b094019ffd493be91f1598cb5b646)), BREAKING CHANGE:Require using `nest_api_service` instead of `nest_service` or `nest` to propagate
+the API documentation. Also propagate changes to `with_state` from axum 0.6.0-rc.5.
+
 ## 0.7.1 - 2022-11-17
 
 [337d911](337d9119796579fe650c003107d2260452f623d6)...[dd4b615](dd4b615887f803d3ad4cdbf770a030be082e1e53)
