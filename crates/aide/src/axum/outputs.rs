@@ -1,4 +1,7 @@
-use crate::openapi::{MediaType, Operation, Response, SchemaObject};
+use crate::{
+    gen::in_context,
+    openapi::{MediaType, Operation, Response, SchemaObject},
+};
 use axum::{extract::rejection::JsonRejection, response::Html, Form, Json};
 use http::StatusCode;
 use indexmap::IndexMap;
@@ -40,11 +43,19 @@ where
         operation: &mut Operation,
     ) -> Vec<(Option<u16>, Response)> {
         if let Some(res) = Self::operation_response(ctx, operation) {
-            [
-                &[(Some(200), res)],
-                JsonRejection::inferred_responses(ctx, operation).as_slice(),
-            ]
-            .concat()
+            let success_response = [(Some(200), res)];
+
+            in_context(|ctx| {
+                if ctx.all_error_responses {
+                    [
+                        &success_response,
+                        JsonRejection::inferred_responses(ctx, operation).as_slice(),
+                    ]
+                    .concat()
+                } else {
+                    Vec::from(success_response)
+                }
+            })
         } else {
             Vec::new()
         }

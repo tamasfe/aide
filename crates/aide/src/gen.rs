@@ -72,7 +72,7 @@ pub fn extract_schemas(extract: bool) {
 ///
 /// Some frameworks might use `204` for empty responses, whereas
 /// others will set `200`.
-/// 
+///
 /// The default value depends on the framework feature.
 pub fn inferred_empty_response_status(status: u16) {
     in_context(|ctx| {
@@ -88,6 +88,13 @@ pub fn inferred_empty_response_status(status: u16) {
 pub fn infer_responses(infer: bool) {
     in_context(|ctx| {
         ctx.infer_responses = infer;
+    });
+}
+
+/// Output All error responses based on axum.
+pub fn all_error_responses(infer: bool) {
+    in_context(|ctx| {
+        ctx.all_error_responses = infer;
     });
 }
 
@@ -112,6 +119,8 @@ pub struct GenContext {
 
     pub(crate) infer_responses: bool,
 
+    pub(crate) all_error_responses: bool,
+
     /// Extract schemas.
     pub(crate) extract_schemas: bool,
 
@@ -127,7 +136,6 @@ pub struct GenContext {
 
 impl GenContext {
     fn new() -> Self {
-
         cfg_if! {
             if #[cfg(feature = "axum")] {
                 let no_content_status = 200;
@@ -141,6 +149,7 @@ impl GenContext {
                 SchemaSettings::draft07().with(|s| s.inline_subschemas = true),
             ),
             infer_responses: false,
+            all_error_responses: false,
             extract_schemas: false,
             show_error: default_error_filter,
             error_handler: None,
