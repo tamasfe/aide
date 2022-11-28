@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.8.0 - 2022-11-28
+
+[f9f325d](f9f325d6005bf51e5cb1ab6224dbf122d0ef6402)...[5ff1cb3](5ff1cb36d1457cb2b26492b2b2cf6548cd23d93c)
+
+### Features
+
+- Impl OperationOutput for axum Rejections by yassun4dev ([4b666e1](4b666e13c4bce143e8cf740117f8644a0741f782)), Suggestion:impl OperationOutput for Rejections.
+- Axum 0.6.0 ([5a06b52](5a06b52b11626104c64f4a7ba6220a4e6a1d84ab))
+- Vendor Redoc ([53787e6](53787e60357bd97b777989d5c62a697ee646b085))
+
 ## 0.8.0-rc.1 - 2022-11-21
 
 [dd4b615](dd4b615887f803d3ad4cdbf770a030be082e1e53)...[f9f325d](f9f325d6005bf51e5cb1ab6224dbf122d0ef6402)
