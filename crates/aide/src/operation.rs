@@ -50,6 +50,24 @@ pub trait OperationInput {
     /// There are reusable helpers in [`aide::operation`](crate::operation)
     /// to help with both boilerplate and error detection.
     fn operation_input(ctx: &mut GenContext, operation: &mut Operation) {}
+
+    /// Inferred early responses are used to document early returns for
+    /// extractors, guards inside handlers. For example these could represent
+    /// JSON parsing errors, authentication failures.
+    ///
+    /// The function is supposed to return `(status code, response)` pairs,
+    /// if the status code is not specified, the response is assumed to be
+    /// a default response.
+    ///
+    /// It's important for the implementation to be idempotent.
+    /// 
+    /// See [`OperationOutput::inferred_responses`] for more details.
+    fn inferred_early_responses(
+        ctx: &mut GenContext,
+        operation: &mut Operation,
+    ) -> Vec<(Option<u16>, Response)> {
+        Vec::new()
+    }
 }
 
 impl OperationInput for () {}

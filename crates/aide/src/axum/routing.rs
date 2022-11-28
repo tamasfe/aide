@@ -116,6 +116,14 @@ macro_rules! method_router_chain_method {
                     for (code, res) in O::inferred_responses(ctx, &mut operation) {
                         set_inferred_response(ctx, &mut operation, code, res);
                     }
+
+                    // On conflict, input early responses potentially overwrite
+                    // output inferred responses on purpose, as they
+                    // are stronger in a sense that the request won't
+                    // even reach the handler body.
+                    for (code, res) in I::inferred_early_responses(ctx, &mut operation) {
+                        set_inferred_response(ctx, &mut operation, code, res);
+                    }
                 }
             });
 
@@ -152,6 +160,14 @@ macro_rules! method_router_top_level {
                 for (code, res) in O::inferred_responses(ctx, &mut operation) {
                     set_inferred_response(ctx, &mut operation, code, res);
                 }
+
+                // On conflict, input early responses potentially overwrite
+                // output inferred responses on purpose, as they
+                // are stronger in a sense that the request won't
+                // even reach the handler body.
+                for (code, res) in I::inferred_early_responses(ctx, &mut operation) {
+                    set_inferred_response(ctx, &mut operation, code, res);
+                }
             });
 
             router.operations.insert(stringify!($name), operation);
@@ -184,6 +200,14 @@ macro_rules! method_router_top_level {
 
                 if ctx.infer_responses {
                     for (code, res) in O::inferred_responses(ctx, &mut operation) {
+                        set_inferred_response(ctx, &mut operation, code, res);
+                    }
+
+                    // On conflict, input early responses potentially overwrite
+                    // output inferred responses on purpose, as they
+                    // are stronger in a sense that the request won't
+                    // even reach the handler body.
+                    for (code, res) in I::inferred_early_responses(ctx, &mut operation) {
                         set_inferred_response(ctx, &mut operation, code, res);
                     }
                 }
