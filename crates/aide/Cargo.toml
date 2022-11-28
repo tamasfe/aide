@@ -1,6 +1,6 @@
 [package]
 name = "aide"
-version = "0.8.0-rc.1"
+version = "0.8.0"
 authors = ["tamasfe"]
 edition = "2021"
 keywords = ["generate", "api", "openapi", "documentation", "specification"]
@@ -21,14 +21,15 @@ aide-macros = { version = "0.6.0", path = "../aide-macros", optional = true }
 bytes = { version = "1", optional = true }
 http = { version = "0.2", optional = true }
 
-axum = { version = "0.6.0-rc.5", optional = true }
-axum-extra = { version = "0.4.0-rc.2", optional = true }
+axum = { version = "0.6.0", optional = true }
+axum-extra = { version = "0.4.0", optional = true }
 tower-layer = { version = "0.3", optional = true }
 tower-service = { version = "0.3", optional = true }
 cfg-if = "1.0.0"
 
 
 [features]
+default = ["axum"]
 macros = ["dep:aide-macros"]
 axum = ["dep:axum", "bytes", "http", "dep:tower-layer", "dep:tower-service"]
 redoc = []

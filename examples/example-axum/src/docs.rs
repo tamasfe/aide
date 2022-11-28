@@ -3,7 +3,7 @@ use std::sync::Arc;
 use aide::{
     axum::{
         routing::{get, get_with},
-        ApiRouter, ApiRouterService, IntoApiResponse,
+        ApiRouter, IntoApiResponse,
     },
     openapi::OpenApi,
 };
@@ -15,7 +15,7 @@ use axum::{
 
 use crate::{extractors::Json, state::AppState};
 
-pub fn docs_routes(state: AppState) -> ApiRouterService {
+pub fn docs_routes(state: AppState) -> ApiRouter {
     // We infer the return types for these routes
     // as an example.
     //

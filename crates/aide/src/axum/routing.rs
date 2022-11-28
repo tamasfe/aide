@@ -140,7 +140,7 @@ macro_rules! method_router_top_level {
             H: Handler<T, S, B> + OperationHandler<I, O>,
             I: OperationInput,
             O: OperationOutput,
-            B: Send + Sync + 'static,
+            B: HttpBody + Send + Sync + 'static,
             S: Clone + Send + Sync + 'static,
             T: 'static,
         {
@@ -172,7 +172,7 @@ macro_rules! method_router_top_level {
             H: Handler<T, S, B> + OperationHandler<I, O>,
             I: OperationInput,
             O: OperationOutput,
-            B: Send + Sync + 'static,
+            B: axum::body::HttpBody + Send + Sync + 'static,
             S: Clone + Send + Sync + 'static,
             T: 'static,
             F: FnOnce(TransformOperation) -> TransformOperation,
@@ -235,7 +235,7 @@ fn set_inferred_response(
 impl<S, B> ApiMethodRouter<S, B, Infallible>
 where
     S: Clone + Send + Sync + 'static,
-    B: Send + Sync + 'static,
+    B: HttpBody + Send + Sync + 'static,
 {
     method_router_chain_method!(delete, delete_with);
     method_router_chain_method!(get, get_with);
@@ -263,7 +263,7 @@ where
             + 'static,
         <L::Service as Service<Request<NewReqBody>>>::Future: Send + 'static,
         NewResBody: 'static,
-        NewReqBody: 'static,
+        NewReqBody: HttpBody + 'static,
         NewError: 'static,
         NewResBody: HttpBody<Data = Bytes> + Send + 'static,
         NewResBody::Error: Into<BoxError>,

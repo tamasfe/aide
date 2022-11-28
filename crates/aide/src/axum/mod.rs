@@ -182,7 +182,7 @@ use axum::{
     http::Request,
     response::IntoResponse,
     routing::{IntoMakeService, Route},
-    Router, RouterService,
+    Router,
 };
 use indexmap::IndexMap;
 use tower_layer::Layer;
@@ -209,46 +209,7 @@ pub struct ApiRouter<S = (), B = Body> {
     router: Router<S, B>,
 }
 
-/// A wrapper over [`axum::RouterService`] that
-/// stores API documentation-specific features.
-#[must_use]
-#[derive(Debug)]
-pub struct ApiRouterService<B = Body> {
-    paths: IndexMap<String, PathItem>,
-    router_service: RouterService<B>,
-}
-
-impl<B> Clone for ApiRouterService<B> {
-    fn clone(&self) -> Self {
-        Self {
-            paths: self.paths.clone(),
-            router_service: self.router_service.clone(),
-        }
-    }
-}
-
-impl<B> ApiRouterService<B>
-where
-    B: HttpBody + Send + 'static,
-{
-    /// Convert the router into a `MakeService` and no state.
-    ///
-    /// See [`axum::routing::RouterService::into_make_service()`] for details.
-    pub fn into_make_service(self) -> IntoMakeService<RouterService<B>> {
-        self.router_service.into_make_service()
-    }
-    /// Convert the router into a `MakeService` which stores information about the incoming connection
-    /// and has no state.
-    ///
-    /// See [`axum::routing::RouterService::into_make_service_with_connect_info()`] for details.
-    pub fn into_make_service_with_connect_info<C>(
-        self,
-    ) -> axum::extract::connect_info::IntoMakeServiceWithConnectInfo<RouterService<B>, C> {
-        self.router_service.into_make_service_with_connect_info()
-    }
-}
-
-impl<B> Service<Request<B>> for ApiRouterService<B>
+impl<B> Service<Request<B>> for ApiRouter<(), B>
 where
     B: HttpBody + Send + 'static,
 {
@@ -261,12 +222,12 @@ where
         &mut self,
         cx: &mut std::task::Context<'_>,
     ) -> std::task::Poll<Result<(), Self::Error>> {
-        self.router_service.poll_ready(cx)
+        self.router.poll_ready(cx)
     }
 
     #[inline]
     fn call(&mut self, req: Request<B>) -> Self::Future {
-        self.router_service.call(req)
+        self.router.call(req)
     }
 }
 
@@ -298,10 +259,10 @@ where
     /// Add state to the router.
     ///
     /// See [`axum::Router::with_state`] for details.
-    pub fn with_state(self, state: S) -> ApiRouterService<B> {
-        ApiRouterService::<B> {
-            paths: IndexMap::default(),
-            router_service: self.router.with_state(state),
+    pub fn with_state<S2>(self, state: S) -> ApiRouter<S2, B> {
+        ApiRouter {
+            paths: self.paths,
+            router: self.router.with_state(state),
         }
     }
 
@@ -477,24 +438,37 @@ where
 
     /// Alternative to [`nest_service`](Self::nest_service()) which besides nesting the service nests
     /// the generated documentation as well.
-    pub fn nest_api_service(mut self, mut path: &str, router_service: ApiRouterService<B>) -> Self {
-        path = path.trim_end_matches('/');
-        self.paths.extend(
-            router_service
-                .paths
-                .into_iter()
-                .map(|(route, path_item)| (path.to_string() + &route, path_item)),
-        );
-        self.router = self
-            .router
-            .nest_service(path, router_service.router_service);
+    pub fn nest_api_service<T>(
+        mut self,
+        mut path: &str,
+        service: impl Into<ServiceOrApiRouter<B, T>>,
+    ) -> Self
+    where
+        T: Service<Request<B>, Error = Infallible> + Clone + Send + 'static,
+        T::Response: IntoResponse,
+        T::Future: Send + 'static,
+    {
+        match service.into() {
+            ServiceOrApiRouter::Router(router) => {
+                path = path.trim_end_matches('/');
+                self.paths.extend(
+                    router
+                        .paths
+                        .into_iter()
+                        .map(|(route, path_item)| (path.to_string() + &route, path_item)),
+                );
+                self.router = self.router.nest_service(path, router.router);
+            }
+            ServiceOrApiRouter::Service(service) => {
+                self.router = self.router.nest_service(path, service);
+            }
+        }
         self
     }
 
     /// See [`axum::Router::nest_service`] for details. Use [`nest_api_service`](Self::nest_api_service())
     /// to pass on the API documentation from the nested service as well.
-    #[tracing::instrument(skip_all)]
-    pub fn nest_service<T, S2>(mut self, path: &str, svc: T) -> Self
+    pub fn nest_service<T>(mut self, path: &str, svc: T) -> Self
     where
         T: Service<Request<B>, Error = Infallible> + Clone + Send + 'static,
         T::Response: IntoResponse,
@@ -509,7 +483,6 @@ where
     ///
     /// If an another [`ApiRouter`] is provided, the generated documentations
     /// are merged as well..
-    #[tracing::instrument(skip_all)]
     pub fn merge<R>(mut self, other: R) -> Self
     where
         R: Into<ApiRouter<S, B>>,
@@ -522,14 +495,14 @@ where
     }
 
     /// See [`axum::Router::layer`] for details.
-    #[tracing::instrument(skip_all)]
-    pub fn layer<L, NewReqBody: 'static>(self, layer: L) -> ApiRouter<S, NewReqBody>
+    pub fn layer<L, NewReqBody>(self, layer: L) -> ApiRouter<S, NewReqBody>
     where
         L: Layer<Route<B>> + Clone + Send + 'static,
         L::Service: Service<Request<NewReqBody>> + Clone + Send + 'static,
         <L::Service as Service<Request<NewReqBody>>>::Response: IntoResponse + 'static,
         <L::Service as Service<Request<NewReqBody>>>::Error: Into<Infallible> + 'static,
         <L::Service as Service<Request<NewReqBody>>>::Future: Send + 'static,
+        NewReqBody: HttpBody + 'static,
     {
         ApiRouter {
             paths: self.paths,
@@ -538,7 +511,6 @@ where
     }
 
     /// See [`axum::Router::route_layer`] for details.
-    #[tracing::instrument(skip_all)]
     pub fn route_layer<L>(mut self, layer: L) -> Self
     where
         L: Layer<Route<B>> + Clone + Send + 'static,
@@ -552,7 +524,6 @@ where
     }
 
     /// See [`axum::Router::fallback`] for details.
-    #[tracing::instrument(skip_all)]
     pub fn fallback<H, T>(mut self, handler: H) -> Self
     where
         H: Handler<T, S, B>,
@@ -563,7 +534,6 @@ where
     }
 
     /// See [`axum::Router::fallback_service`] for details.
-    #[tracing::instrument(skip_all)]
     pub fn fallback_service<T>(mut self, svc: T) -> Self
     where
         T: Service<Request<B>, Error = Infallible> + Clone + Send + 'static,
@@ -582,7 +552,7 @@ where
     /// See [`axum::Router::into_make_service`] for details.
     #[tracing::instrument(skip_all)]
     #[must_use]
-    pub fn into_make_service(self) -> IntoMakeService<RouterService<B>> {
+    pub fn into_make_service(self) -> IntoMakeService<Router<(), B>> {
         self.router.into_make_service()
     }
 
@@ -591,7 +561,7 @@ where
     #[must_use]
     pub fn into_make_service_with_connect_info<C>(
         self,
-    ) -> IntoMakeServiceWithConnectInfo<RouterService<B>, C> {
+    ) -> IntoMakeServiceWithConnectInfo<Router<(), B>, C> {
         self.router.into_make_service_with_connect_info()
     }
 }
@@ -653,12 +623,12 @@ where
 impl<S, B> private::Sealed for Router<S, B> {}
 
 #[doc(hidden)]
-pub enum ServiceOrApiRouter<S, B, T> {
+pub enum ServiceOrApiRouter<B, T> {
     Service(T),
-    Router(ApiRouter<S, B>),
+    Router(ApiRouter<(), B>),
 }
 
-impl<T, S, B> From<T> for ServiceOrApiRouter<S, B, T>
+impl<T, B> From<T> for ServiceOrApiRouter<B, T>
 where
     T: Service<Request<B>, Error = Infallible> + Clone + Send + 'static,
     T::Response: IntoResponse,
@@ -669,8 +639,8 @@ where
     }
 }
 
-impl<S, B> From<ApiRouter<S, B>> for ServiceOrApiRouter<S, B, DefinitelyNotService> {
-    fn from(v: ApiRouter<S, B>) -> Self {
+impl<B> From<ApiRouter<(), B>> for ServiceOrApiRouter<B, DefinitelyNotService> {
+    fn from(v: ApiRouter<(), B>) -> Self {
         Self::Router(v)
     }
 }
@@ -708,11 +678,9 @@ mod private {
 mod tests {
     use crate::axum::ApiRouter;
 
-    use super::ApiRouterService;
-
     #[test]
     fn test_nesting_with_different_state() {
-        let _app: ApiRouterService = ApiRouter::new()
+        let _app: ApiRouter = ApiRouter::new()
             .nest_api_service("/", ApiRouter::new().with_state(1_isize))
             .with_state(1_usize);
     }

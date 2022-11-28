@@ -1,7 +1,7 @@
 use aide::{
     axum::{
         routing::{get_with, post_with, put_with},
-        ApiRouter, ApiRouterService, IntoApiResponse,
+        ApiRouter, IntoApiResponse,
     },
     transform::TransformOperation,
 };
@@ -18,7 +18,7 @@ use crate::{extractors::Json, state::AppState};
 
 use super::TodoItem;
 
-pub fn todo_routes(state: AppState) -> ApiRouterService {
+pub fn todo_routes(state: AppState) -> ApiRouter {
     ApiRouter::new()
         .api_route(
             "/",
