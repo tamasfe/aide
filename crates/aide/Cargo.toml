@@ -29,7 +29,6 @@ cfg-if = "1.0.0"
 
 
 [features]
-default = ["axum"]
 macros = ["dep:aide-macros"]
 axum = ["dep:axum", "bytes", "http", "dep:tower-layer", "dep:tower-service"]
 redoc = []

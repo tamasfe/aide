@@ -172,8 +172,9 @@ use std::{convert::Infallible, future::Future, mem, pin::Pin};
 use crate::{
     gen::{self, in_context},
     openapi::{Components, OpenApi, PathItem, ReferenceOr, SchemaObject},
+    operation::OperationHandler,
     util::merge_paths,
-    OperationOutput,
+    OperationInput, OperationOutput,
 };
 use axum::{
     body::{Body, HttpBody},
@@ -672,6 +673,26 @@ impl<B> Service<Request<B>> for DefinitelyNotService {
 
 mod private {
     pub trait Sealed {}
+}
+
+/// A trait that extens [`axum::handler::Handler`] with API operation
+/// details.
+/// 
+/// Just like axum's `Handler`, it is automatically implemented
+/// for the appropriate types.
+pub trait AxumOperationHandler<I, O, T, S, B>: Handler<T, S, B> + OperationHandler<I, O>
+where
+    I: OperationInput,
+    O: OperationOutput,
+{
+}
+
+impl<H, I, O, T, S, B> AxumOperationHandler<I, O, T, S, B> for H
+where
+    H: Handler<T, S, B> + OperationHandler<I, O>,
+    I: OperationInput,
+    O: OperationOutput,
+{
 }
 
 #[cfg(test)]

@@ -6,6 +6,7 @@ publish = false
 
 [dependencies]
 aide = { path = "../../crates/aide", features = [
+    "redoc",
     "axum",
     "axum-extra",
     "macros",

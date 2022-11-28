@@ -68,34 +68,43 @@
 //! ```
 
 /// A wrapper to embed [Redoc](https://redocly.com/) in your app.
+#[must_use]
 pub struct Redoc {
+    title: String,
     spec_url: String,
 }
 
 impl Redoc {
     /// Create a new [`Redoc`] wrapper with the given spec url.
-    pub fn new<S: ToString>(spec_url: S) -> Self {
+    pub fn new(spec_url: impl Into<String>) -> Self {
         Self {
-            spec_url: spec_url.to_string(),
+            title: "Redoc".into(),
+            spec_url: spec_url.into(),
         }
     }
 
+    /// Set the title of the Redoc page.
+    pub fn with_title(mut self, title: &str) -> Self {
+        self.title = title.into();
+        self
+    }
+
     /// Build the redoc-ui html page.
+    #[must_use]
     pub fn html(&self) -> String {
         format!(
-            r#"
-<!-- HTML for static distribution bundle build -->
-<!DOCTYPE html>
+            r#"<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8">
-    <title>Redoc</title>
-    <script src="https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js"> </script>
+    <title>{title}</title>
   </head>
 
   <body>
     <div id="redoc-container"></div>
     <script>
+       {redoc_js}
+
        Redoc.init("{spec_url}", {{
             scrollYOffset: 50
        }}, document.getElementById('redoc-container'))
@@ -103,6 +112,8 @@ impl Redoc {
   </body>
 </html>
 "#,
+            redoc_js = include_str!("../../res/redoc/redoc.standalone.js"),
+            title = self.title,
             spec_url = self.spec_url
         )
     }
@@ -110,21 +121,49 @@ impl Redoc {
 
 #[cfg(feature = "axum")]
 mod axum_impl {
-    use crate::axum::routing::{get, ApiMethodRouter};
+    use crate::axum::{
+        routing::{get, ApiMethodRouter},
+        AxumOperationHandler,
+    };
     use axum::response::Html;
 
     impl super::Redoc {
         /// Returns an [`ApiMethodRouter`] to expose the Redoc UI.
         ///
-        /// ## Example
-        /// ```rust, no_run
-        ///     ApiRouter::new()
-        ///         .route("/docs", Redoc::new("/openapi.json").axum_route())
-        ///         .route("/openapi.json", get(route::openapi::serve_api))
+        /// # Examples
+        ///
+        /// ```
+        /// # use aide::axum::{ApiRouter, routing::get};
+        /// # use aide::redoc::Redoc;
+        /// ApiRouter::new()
+        ///     .route("/docs", Redoc::new("/openapi.json").axum_route());
         /// ```
         pub fn axum_route(&self) -> ApiMethodRouter {
+            get(self.axum_handler())
+        }
+
+        /// Returns an axum [`Handler`](axum::handler::Handler) that can be used
+        /// with API routes.
+        ///
+        /// # Examples
+        ///
+        /// ```
+        /// # use aide::axum::{ApiRouter, routing::get_with};
+        /// # use aide::redoc::Redoc;
+        /// ApiRouter::<()>::new().api_route(
+        ///     "/docs",
+        ///     get_with(Redoc::new("/openapi.json").axum_handler(), |op| {
+        ///         op.description("This documentation page.")
+        ///     }),
+        /// );
+        /// ```
+        #[must_use]
+        pub fn axum_handler<S, B>(&self) -> impl AxumOperationHandler<(), Html<String>, ((),), S, B>
+        where
+            B: axum::body::HttpBody + Send + 'static,
+        {
             let html = self.html();
-            get(move || async { Html(html) })
+            move || async move { Html(html) }
         }
     }
 }
