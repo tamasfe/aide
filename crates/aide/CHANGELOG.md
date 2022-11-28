@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.8.1 - 2022-11-28
+
+[5ff1cb3](5ff1cb36d1457cb2b26492b2b2cf6548cd23d93c)...[a2981e1](a2981e1b65831c945df540820721e60910086443)
+
+### Features
+
+- Inferred responses for operation input ([a2981e1](a2981e1b65831c945df540820721e60910086443))
+
 ## 0.8.0 - 2022-11-28
 
 [f9f325d](f9f325d6005bf51e5cb1ab6224dbf122d0ef6402)...[5ff1cb3](5ff1cb36d1457cb2b26492b2b2cf6548cd23d93c)
