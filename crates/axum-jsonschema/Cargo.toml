@@ -1,6 +1,6 @@
 [package]
 name = "axum-jsonschema"
-version = "0.4.0-rc.1"
+version = "0.4.0"
 edition = "2021"
 authors = ["tamasfe"]
 keywords = ["web", "axum", "json"]
