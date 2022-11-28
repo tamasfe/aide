@@ -91,6 +91,13 @@ pub fn infer_responses(infer: bool) {
     });
 }
 
+/// Output All error responses based on axum.
+pub fn all_error_responses(infer: bool) {
+    in_context(|ctx| {
+        ctx.all_error_responses = infer;
+    });
+}
+
 /// Reset the state of the thread-local context.
 ///
 /// Currently clears:
@@ -111,6 +118,8 @@ pub struct GenContext {
     pub schema: SchemaGenerator,
 
     pub(crate) infer_responses: bool,
+
+    pub(crate) all_error_responses: bool,
 
     /// Extract schemas.
     pub(crate) extract_schemas: bool,
@@ -140,6 +149,7 @@ impl GenContext {
                 SchemaSettings::draft07().with(|s| s.inline_subschemas = true),
             ),
             infer_responses: false,
+            all_error_responses: false,
             extract_schemas: false,
             show_error: default_error_filter,
             error_handler: None,
