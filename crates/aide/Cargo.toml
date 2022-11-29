@@ -1,6 +1,6 @@
 [package]
 name = "aide"
-version = "0.8.1"
+version = "0.8.2"
 authors = ["tamasfe"]
 edition = "2021"
 keywords = ["generate", "api", "openapi", "documentation", "specification"]
@@ -36,11 +36,7 @@ axum-ws = ["axum/ws"]
 axum-multipart = ["axum/multipart"]
 axum-extra = ["axum", "dep:axum-extra"]
 axum-extra-cookie = ["axum", "axum-extra", "axum-extra/cookie"]
-axum-extra-cookie-private = [
-    "axum",
-    "axum-extra",
-    "axum-extra/cookie-private",
-]
+axum-extra-cookie-private = ["axum", "axum-extra", "axum-extra/cookie-private"]
 axum-extra-form = ["axum", "axum-extra", "axum-extra/form"]
 axum-extra-query = ["axum", "axum-extra", "axum-extra/query"]
 
