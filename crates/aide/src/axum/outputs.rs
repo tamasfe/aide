@@ -1,7 +1,4 @@
-use crate::{
-    gen::in_context,
-    openapi::{MediaType, Operation, Response, SchemaObject},
-};
+use crate::openapi::{MediaType, Operation, Response, SchemaObject};
 use axum::{
     extract::rejection::{FormRejection, JsonRejection},
     response::Html,
@@ -49,17 +46,15 @@ where
         if let Some(res) = Self::operation_response(ctx, operation) {
             let success_response = [(Some(200), res)];
 
-            in_context(|ctx| {
-                if ctx.all_error_responses {
-                    [
-                        &success_response,
-                        JsonRejection::inferred_responses(ctx, operation).as_slice(),
-                    ]
-                    .concat()
-                } else {
-                    Vec::from(success_response)
-                }
-            })
+            if ctx.all_error_responses {
+                [
+                    &success_response,
+                    JsonRejection::inferred_responses(ctx, operation).as_slice(),
+                ]
+                .concat()
+            } else {
+                Vec::from(success_response)
+            }
         } else {
             Vec::new()
         }
@@ -99,17 +94,15 @@ where
         if let Some(res) = Self::operation_response(ctx, operation) {
             let success_response = [(Some(200), res)];
 
-            in_context(|ctx| {
-                if ctx.all_error_responses {
-                    [
-                        &success_response,
-                        FormRejection::inferred_responses(ctx, operation).as_slice(),
-                    ]
-                    .concat()
-                } else {
-                    Vec::from(success_response)
-                }
-            })
+            if ctx.all_error_responses {
+                [
+                    &success_response,
+                    FormRejection::inferred_responses(ctx, operation).as_slice(),
+                ]
+                .concat()
+            } else {
+                Vec::from(success_response)
+            }
         } else {
             Vec::new()
         }
