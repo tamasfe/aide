@@ -677,7 +677,7 @@ mod private {
 
 /// A trait that extens [`axum::handler::Handler`] with API operation
 /// details.
-/// 
+///
 /// Just like axum's `Handler`, it is automatically implemented
 /// for the appropriate types.
 pub trait AxumOperationHandler<I, O, T, S, B>: Handler<T, S, B> + OperationHandler<I, O>
@@ -697,12 +697,43 @@ where
 
 #[cfg(test)]
 mod tests {
-    use crate::axum::ApiRouter;
+    use crate::axum::{routing, ApiRouter};
+    use axum::extract::State;
+
+    async fn test_handler1(State(_): State<TestState>) {}
+    async fn test_handler2(State(_): State<u8>) {}
+
+    #[derive(Clone, Copy)]
+    struct TestState {
+        field1: u8,
+    }
 
     #[test]
-    fn test_nesting_with_different_state() {
+    fn test_nesting_with_nondefault_state() {
         let _app: ApiRouter = ApiRouter::new()
             .nest_api_service("/", ApiRouter::new().with_state(1_isize))
             .with_state(1_usize);
+    }
+
+    #[test]
+    fn test_method_router_with_state() {
+        let app: ApiRouter<TestState> =
+            ApiRouter::new().api_route("/", routing::get(test_handler1));
+        let app_with_state: ApiRouter = app.with_state(TestState { field1: 0 });
+        // Only after state is given `into_make_service()` can be invoked.
+        let _service = app_with_state.into_make_service();
+    }
+
+    #[test]
+    fn test_router_with_different_states() {
+        let state = TestState { field1: 0 };
+        let app: ApiRouter = ApiRouter::new()
+            .api_route("/test1", routing::get(test_handler1))
+            .api_route(
+                "/test2",
+                routing::get(test_handler2).with_state(state.field1.clone()),
+            )
+            .with_state(state);
+        let _service = app.into_make_service();
     }
 }
