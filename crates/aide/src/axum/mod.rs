@@ -204,10 +204,19 @@ pub mod routing;
 /// A wrapper over [`axum::Router`] that adds
 /// API documentation-specific features.
 #[must_use]
-#[derive(Debug, Clone)]
+#[derive(Debug)]
 pub struct ApiRouter<S = (), B = Body> {
     paths: IndexMap<String, PathItem>,
     router: Router<S, B>,
+}
+
+impl<S, B> Clone for ApiRouter<S, B> {
+    fn clone(&self) -> Self {
+        Self {
+            paths: self.paths.clone(),
+            router: self.router.clone(),
+        }
+    }
 }
 
 impl<B> Service<Request<B>> for ApiRouter<(), B>
