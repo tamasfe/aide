@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.1 - 2022-11-29
+
+[5ff1cb3](5ff1cb36d1457cb2b26492b2b2cf6548cd23d93c)...[dd1c33b](dd1c33b1a5825eeac4463a190c5b7d1737784ff2)
+
+### Miscellaneous Tasks
+
+- Bump aide version ([dd1c33b](dd1c33b1a5825eeac4463a190c5b7d1737784ff2))
+
 ## 0.4.0 - 2022-11-28
 
 [7a314c7](7a314c73284f088947b70a75454de9d0080aec79)...[5ff1cb3](5ff1cb36d1457cb2b26492b2b2cf6548cd23d93c)

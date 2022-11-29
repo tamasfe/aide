@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.9.0 - 2022-11-29
+
+[a2981e1](a2981e1b65831c945df540820721e60910086443)...[e6c5b46](e6c5b46ed9ff1226cfc4d8c183e8b6c773308c0f)
+
+### Bug Fixes
+
+- Remove recursive borrows, fixes #21 ([76705a4](76705a4f12702497aa9380fc89e1ffa995913162))
+- Remove Clone restriction on Router generics, fixes #19 ([4c41fa0](4c41fa0f7d2f559bb49b4b7f9a20cbfa5167248e))
+- `nest_api_service` will no longer accept arbitrary services. ([e6c5b46](e6c5b46ed9ff1226cfc4d8c183e8b6c773308c0f))
+
+### Features
+
+- Match more closely axum's API for MethodRouter ([73b5f74](73b5f74c005d811fb224cf7a4271caa1aac9eab3))
+
+### Miscellaneous Tasks
+
+- Update crate version ([4540c20](4540c20d7f9f62c788fa64cbe8c05c5863854c28))
+
 ## 0.8.1 - 2022-11-28
 
 [5ff1cb3](5ff1cb36d1457cb2b26492b2b2cf6548cd23d93c)...[a2981e1](a2981e1b65831c945df540820721e60910086443)
