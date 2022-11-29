@@ -42,14 +42,16 @@ impl<S, B, E> From<ApiMethodRouter<S, B, E>> for MethodRouter<S, B, E> {
     }
 }
 
-impl<S, B, E> ApiMethodRouter<S, B, E> {
-    fn new(router: MethodRouter<S, B, E>) -> Self {
+impl<S, B, E> From<MethodRouter<S, B, E>> for ApiMethodRouter<S, B, E> {
+    fn from(router: MethodRouter<S, B, E>) -> Self {
         Self {
             operations: IndexMap::default(),
             router,
         }
     }
+}
 
+impl<S, B, E> ApiMethodRouter<S, B, E> {
     pub(crate) fn take_path_item(&mut self) -> PathItem {
         let mut path = PathItem::default();
 
@@ -152,7 +154,7 @@ macro_rules! method_router_top_level {
             S: Clone + Send + Sync + 'static,
             T: 'static,
         {
-            let mut router = ApiMethodRouter::new(routing::$name(handler));
+            let mut router = ApiMethodRouter::from(routing::$name(handler));
             let mut operation = Operation::default();
             in_context(|ctx| {
                 I::operation_input(ctx, &mut operation);
@@ -193,7 +195,7 @@ macro_rules! method_router_top_level {
             T: 'static,
             F: FnOnce(TransformOperation) -> TransformOperation,
         {
-            let mut router = ApiMethodRouter::new(routing::$name(handler));
+            let mut router = ApiMethodRouter::from(routing::$name(handler));
             let mut operation = Operation::default();
             in_context(|ctx| {
                 I::operation_input(ctx, &mut operation);
@@ -295,6 +297,28 @@ where
         ApiMethodRouter {
             router: self.router.layer(layer),
             operations: self.operations,
+        }
+    }
+}
+
+impl<S, B, E> ApiMethodRouter<S, B, E>
+where
+    B: HttpBody + Send + 'static,
+    S: Clone,
+{
+    /// Create a new, clean [`ApiMethodRouter`] based on [`MethodRouter::new()`](axum::routing::MethodRouter).
+    pub fn new() -> Self {
+        Self {
+            operations: IndexMap::default(),
+            router: MethodRouter::<S, B, E>::new(),
+        }
+    }
+    /// See [axum::routing::MethodRouter] and [axum::extract::State] for more information.
+    pub fn with_state<S2>(self, state: S) -> ApiMethodRouter<S2, B, E> {
+        let router = self.router.with_state(state);
+        ApiMethodRouter::<S2, B, E> {
+            operations: self.operations,
+            router,
         }
     }
 }
