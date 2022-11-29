@@ -448,31 +448,28 @@ where
 
     /// Alternative to [`nest_service`](Self::nest_service()) which besides nesting the service nests
     /// the generated documentation as well.
-    pub fn nest_api_service<T>(
+    /// 
+    /// Due to Rust's limitations, currently this function will not
+    /// accept arbitrary services but only types that can be
+    /// converted into an [`ApiRouter`].
+    /// 
+    /// Thus the primary and probably the only use-case
+    /// of this function is nesting routers with different states.
+    pub fn nest_api_service(
         mut self,
         mut path: &str,
-        service: impl Into<ServiceOrApiRouter<B, T>>,
-    ) -> Self
-    where
-        T: Service<Request<B>, Error = Infallible> + Clone + Send + 'static,
-        T::Response: IntoResponse,
-        T::Future: Send + 'static,
-    {
-        match service.into() {
-            ServiceOrApiRouter::Router(router) => {
-                path = path.trim_end_matches('/');
-                self.paths.extend(
-                    router
-                        .paths
-                        .into_iter()
-                        .map(|(route, path_item)| (path.to_string() + &route, path_item)),
-                );
-                self.router = self.router.nest_service(path, router.router);
-            }
-            ServiceOrApiRouter::Service(service) => {
-                self.router = self.router.nest_service(path, service);
-            }
-        }
+        service: impl Into<ApiRouter<(), B>>,
+    ) -> Self {
+        let router: ApiRouter<(), B> = service.into();
+
+        path = path.trim_end_matches('/');
+        self.paths.extend(
+            router
+                .paths
+                .into_iter()
+                .map(|(route, path_item)| (path.to_string() + &route, path_item)),
+        );
+        self.router = self.router.nest_service(path, router.router);
         self
     }
 
@@ -705,6 +702,7 @@ where
 }
 
 #[cfg(test)]
+#[allow(clippy::unused_async)]
 mod tests {
     use crate::axum::{routing, ApiRouter};
     use axum::extract::State;
@@ -740,7 +738,7 @@ mod tests {
             .api_route("/test1", routing::get(test_handler1))
             .api_route(
                 "/test2",
-                routing::get(test_handler2).with_state(state.field1.clone()),
+                routing::get(test_handler2).with_state(state.field1),
             )
             .with_state(state);
         let _service = app.into_make_service();

@@ -313,13 +313,23 @@ where
             router: MethodRouter::<S, B, E>::new(),
         }
     }
-    /// See [axum::routing::MethodRouter] and [axum::extract::State] for more information.
+    /// See [`axum::routing::MethodRouter`] and [`axum::extract::State`] for more information.
     pub fn with_state<S2>(self, state: S) -> ApiMethodRouter<S2, B, E> {
         let router = self.router.with_state(state);
         ApiMethodRouter::<S2, B, E> {
             operations: self.operations,
             router,
         }
+    }
+}
+
+impl<S, B, E> Default for ApiMethodRouter<S, B, E>
+where
+    B: HttpBody + Send + 'static,
+    S: Clone,
+{
+    fn default() -> Self {
+        Self::new()
     }
 }
 
