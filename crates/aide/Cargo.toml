@@ -39,6 +39,7 @@ axum-extra-cookie = ["axum", "axum-extra", "axum-extra/cookie"]
 axum-extra-cookie-private = ["axum", "axum-extra", "axum-extra/cookie-private"]
 axum-extra-form = ["axum", "axum-extra", "axum-extra/form"]
 axum-extra-query = ["axum", "axum-extra", "axum-extra/query"]
+skip_serializing_defaults = []
 
 [dev-dependencies]
 serde = { version = "1.0.144", features = ["derive"] }
