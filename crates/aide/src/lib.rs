@@ -92,6 +92,7 @@
 //! - `axum`
 //! - `axum-ws`
 //! - `axum-multipart`
+//! - `axum-headers`
 //!
 //! `axum-extra` and its features gates:
 //!
@@ -113,7 +114,8 @@
     clippy::module_name_repetitions,
     clippy::wildcard_imports,
     clippy::too_many_lines,
-    clippy::single_match_else
+    clippy::single_match_else,
+    clippy::manual_let_else
 )]
 
 #[macro_use]

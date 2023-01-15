@@ -1,7 +1,8 @@
 #![allow(unused_imports)]
 use crate::{
     openapi::{
-        Header, MediaType, Operation, ReferenceOr, RequestBody, Response, SchemaObject, StatusCode,
+        self, Header, MediaType, Operation, Parameter, ParameterData, ReferenceOr, RequestBody,
+        Response, SchemaObject, StatusCode,
     },
     operation::{add_parameters, set_body},
 };
@@ -30,6 +31,40 @@ impl OperationInput for OriginalUri {}
 impl OperationInput for RawBody {}
 impl OperationInput for RawQuery {}
 impl OperationInput for Host {}
+
+#[cfg(feature = "axum-headers")]
+impl<T> OperationInput for axum::TypedHeader<T>
+where
+    T: axum::headers::Header,
+{
+    fn operation_input(ctx: &mut crate::gen::GenContext, operation: &mut Operation) {
+        let s = ctx.schema.subschema_for::<String>();
+        add_parameters(
+            ctx,
+            operation,
+            [Parameter::Header {
+                parameter_data: ParameterData {
+                    name: T::name().to_string(),
+                    description: None,
+                    required: true,
+                    format: crate::openapi::ParameterSchemaOrContent::Schema(
+                        openapi::SchemaObject {
+                            json_schema: s,
+                            example: None,
+                            external_docs: None,
+                        },
+                    ),
+                    extensions: Default::default(),
+                    deprecated: None,
+                    example: None,
+                    examples: IndexMap::default(),
+                    explode: None,
+                },
+                style: openapi::HeaderStyle::Simple,
+            }],
+        );
+    }
+}
 
 impl<T> OperationInput for Json<T>
 where

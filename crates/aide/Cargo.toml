@@ -30,12 +30,13 @@ cfg-if = "1.0.0"
 
 
 [features]
-default = ["axum", "serde_qs"]
+default = ["axum", "axum-headers", "serde_qs"]
 macros = ["dep:aide-macros"]
 redoc = []
 skip_serializing_defaults = []
 
 axum = ["dep:axum", "bytes", "http", "dep:tower-layer", "dep:tower-service", "serde_qs?/axum"]
+axum-headers = ["axum/headers"]
 axum-ws = ["axum/ws"]
 axum-multipart = ["axum/multipart"]
 axum-extra = ["axum", "dep:axum-extra"]

@@ -247,6 +247,28 @@ pub fn parameters_from_schema(
                     });
                 }
                 ParamLocation::Header => {
+                    params.push(Parameter::Header {
+                        parameter_data: ParameterData {
+                            name: name.clone(),
+                            description: s.metadata.as_ref().and_then(|m| m.description.clone()),
+                            required: obj.required.contains(name),
+                            format: crate::openapi::ParameterSchemaOrContent::Schema(
+                                openapi::SchemaObject {
+                                    json_schema: s.into(),
+                                    example: None,
+                                    external_docs: None,
+                                },
+                            ),
+                            extensions: Default::default(),
+                            deprecated: None,
+                            example: None,
+                            examples: IndexMap::default(),
+                            explode: None,
+                        },
+                        style: openapi::HeaderStyle::Simple,
+                    });
+                }
+                ParamLocation::Cookie => {
                     params.push(Parameter::Cookie {
                         parameter_data: ParameterData {
                             name: name.clone(),
@@ -266,28 +288,6 @@ pub fn parameters_from_schema(
                             explode: None,
                         },
                         style: openapi::CookieStyle::Form,
-                    });
-                }
-                ParamLocation::Cookie => {
-                    params.push(Parameter::Path {
-                        parameter_data: ParameterData {
-                            name: name.clone(),
-                            description: s.metadata.as_ref().and_then(|m| m.description.clone()),
-                            required: obj.required.contains(name),
-                            format: crate::openapi::ParameterSchemaOrContent::Schema(
-                                openapi::SchemaObject {
-                                    json_schema: s.into(),
-                                    example: None,
-                                    external_docs: None,
-                                },
-                            ),
-                            extensions: Default::default(),
-                            deprecated: None,
-                            example: None,
-                            examples: IndexMap::default(),
-                            explode: None,
-                        },
-                        style: openapi::PathStyle::Simple,
                     });
                 }
             }

@@ -169,6 +169,30 @@ impl Parameter {
             } => parameter_data,
         }
     }
+
+    /// Returns the `parameter_data` field of this [ParameterData] by mutable reference.
+    pub fn parameter_data_mut(&mut self) -> &mut ParameterData {
+        match self {
+            Parameter::Query {
+                parameter_data,
+                allow_reserved: _,
+                style: _,
+                allow_empty_value: _,
+            } => parameter_data,
+            Parameter::Header {
+                parameter_data,
+                style: _,
+            } => parameter_data,
+            Parameter::Path {
+                parameter_data,
+                style: _,
+            } => parameter_data,
+            Parameter::Cookie {
+                parameter_data,
+                style: _,
+            } => parameter_data,
+        }
+    }
 }
 
 struct SkipSerializeIfDefault;

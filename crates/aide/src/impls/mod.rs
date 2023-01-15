@@ -18,35 +18,19 @@ mod http;
 #[cfg(feature = "serde_qs")]
 mod serde_qs;
 
-impl<T, E> OperationInput for Option<T>
-where
-    T: OperationInput,
-{
-    fn operation_input(ctx: &mut crate::gen::GenContext, operation: &mut Operation) {
-        T::operation_input(ctx, operation)
-    }
-
-    fn inferred_early_responses(
-        ctx: &mut crate::gen::GenContext,
-        operation: &mut Operation,
-    ) -> Vec<(Option<u16>, Response)> {
-        T::operation_input(ctx, operation)
-    }
-}
-
 impl<T, E> OperationInput for Result<T, E>
 where
     T: OperationInput,
 {
     fn operation_input(ctx: &mut crate::gen::GenContext, operation: &mut Operation) {
-        T::operation_input(ctx, operation)
+        T::operation_input(ctx, operation);
     }
 
     fn inferred_early_responses(
         ctx: &mut crate::gen::GenContext,
         operation: &mut Operation,
     ) -> Vec<(Option<u16>, Response)> {
-        T::operation_input(ctx, operation)
+        T::inferred_early_responses(ctx, operation)
     }
 }
 
@@ -79,7 +63,32 @@ where
     T: OperationInput,
 {
     fn operation_input(ctx: &mut crate::gen::GenContext, operation: &mut Operation) {
+        // Make parameters proudced by T optional if T is wrapped in an Option.
+        // TODO: we should probably do this for the body as well.
+        let mut temp_op = Operation::default();
+        T::operation_input(ctx, &mut temp_op);
         T::operation_input(ctx, operation);
+
+        if temp_op.parameters.is_empty() {
+            return;
+        }
+
+        for param in &mut operation.parameters {
+            if let Some(param) = param.as_item_mut() {
+                let new_param = temp_op.parameters.iter().any(|p| {
+                    let p = match p.as_item() {
+                        Some(p) => p,
+                        None => return false,
+                    };
+
+                    p.parameter_data_ref().name == param.parameter_data_ref().name
+                });
+
+                if new_param {
+                    param.parameter_data_mut().required = false;
+                }
+            }
+        }
     }
 }
 
