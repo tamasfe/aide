@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.10.0 - 2023-01-15
+
+[e6c5b46](e6c5b46ed9ff1226cfc4d8c183e8b6c773308c0f)...[7ce7ffd](7ce7ffd40d9c66fbf29db5e310b4795819ab8bae)
+
+### Bug Fixes
+
+- Several fixes ([ac6549a](ac6549ad8b15d0ccc0e2e3cebcbde64b3f55ae31))
+- Redoc router state ([daaf060](daaf060f5c22b63b986e327792ae5b367b4db578))
+
+### Features
+
+- Add skip_serializing_defaults feature ([3ffc96b](3ffc96b166e7abdbc1c56e823edb7e60fae86745))
+- Added axum serde_qs support ([3e0e810](3e0e8107e3eea25e5c6f8280030b58013cfbf034))
+- Add support for Option and Result inputs ([6156f77](6156f77637ee09b02ba99b61df02dee9fb53c693))
+
+### Miscellaneous Tasks
+
+- Removed temporary default features ([a7e5835](a7e5835542cab8eec82ad389cac7834ccdd5bc2a))
+
 ## 0.9.0 - 2022-11-29
 
 [a2981e1](a2981e1b65831c945df540820721e60910086443)...[e6c5b46](e6c5b46ed9ff1226cfc4d8c183e8b6c773308c0f)
