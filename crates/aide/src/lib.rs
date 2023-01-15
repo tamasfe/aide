@@ -83,6 +83,7 @@
 //!
 //! - `bytes`
 //! - `http`
+//! - `serde_qs` (when used with `axum`)
 //!
 //! ### axum integration
 //!

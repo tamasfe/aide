@@ -15,6 +15,9 @@ mod bytes;
 #[cfg(feature = "http")]
 mod http;
 
+#[cfg(feature = "serde_qs")]
+mod serde_qs;
+
 impl<T, E> OperationOutput for Result<T, E>
 where
     T: OperationOutput,
