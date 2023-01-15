@@ -138,7 +138,10 @@ mod axum_impl {
         /// ApiRouter::new()
         ///     .route("/docs", Redoc::new("/openapi.json").axum_route());
         /// ```
-        pub fn axum_route(&self) -> ApiMethodRouter {
+        pub fn axum_route<S>(&self) -> ApiMethodRouter<S>
+        where
+            S: Clone + Send + Sync +'static,
+        {
             get(self.axum_handler())
         }
 
