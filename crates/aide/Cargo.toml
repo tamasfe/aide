@@ -30,7 +30,6 @@ cfg-if = "1.0.0"
 
 
 [features]
-default = ["axum", "axum-headers", "serde_qs"]
 macros = ["dep:aide-macros"]
 redoc = []
 skip_serializing_defaults = []
