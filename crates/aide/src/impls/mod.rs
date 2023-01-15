@@ -18,6 +18,38 @@ mod http;
 #[cfg(feature = "serde_qs")]
 mod serde_qs;
 
+impl<T, E> OperationInput for Option<T>
+where
+    T: OperationInput,
+{
+    fn operation_input(ctx: &mut crate::gen::GenContext, operation: &mut Operation) {
+        T::operation_input(ctx, operation)
+    }
+
+    fn inferred_early_responses(
+        ctx: &mut crate::gen::GenContext,
+        operation: &mut Operation,
+    ) -> Vec<(Option<u16>, Response)> {
+        T::operation_input(ctx, operation)
+    }
+}
+
+impl<T, E> OperationInput for Result<T, E>
+where
+    T: OperationInput,
+{
+    fn operation_input(ctx: &mut crate::gen::GenContext, operation: &mut Operation) {
+        T::operation_input(ctx, operation)
+    }
+
+    fn inferred_early_responses(
+        ctx: &mut crate::gen::GenContext,
+        operation: &mut Operation,
+    ) -> Vec<(Option<u16>, Response)> {
+        T::operation_input(ctx, operation)
+    }
+}
+
 impl<T, E> OperationOutput for Result<T, E>
 where
     T: OperationOutput,
