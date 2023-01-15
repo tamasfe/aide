@@ -28,6 +28,7 @@ use axum::{
     BoxError,
 };
 use http::{Request, StatusCode};
+use itertools::Itertools;
 use jsonschema::{
     output::{BasicOutput, ErrorDescription, OutputUnit},
     JSONSchema,
@@ -38,6 +39,7 @@ use schemars::{
 };
 use serde::{de::DeserializeOwned, Serialize};
 use serde_json::{Map, Value};
+use serde_path_to_error::Segment;
 
 /// Wrapper type over [`axum::Json`] that validates
 /// requests and responds with a more helpful validation
@@ -94,16 +96,9 @@ where
             return Err(JsonSchemaRejection::Schema(errors));
         }
 
-        match serde_json::from_value(value) {
+        match serde_path_to_error::deserialize(value) {
             Ok(v) => Ok(Json(v)),
-            Err(error) => {
-                tracing::error!(
-                    %error,
-                    type_name = type_name::<T>(),
-                    "schema validation passed but serde failed"
-                );
-                Err(JsonSchemaRejection::Serde(error))
-            }
+            Err(error) => Err(JsonSchemaRejection::Serde(error)),
         }
     }
 }
@@ -143,7 +138,7 @@ pub enum JsonSchemaRejection {
     /// A rejection returned by [`axum::Json`].
     Json(JsonRejection),
     /// A serde error.
-    Serde(serde_json::Error),
+    Serde(serde_path_to_error::Error<serde_json::Error>),
     /// A schema validation error.
     Schema(VecDeque<OutputUnit<ErrorDescription>>),
 }
@@ -151,11 +146,35 @@ pub enum JsonSchemaRejection {
 /// The response that is returned by default.
 #[derive(Debug, Serialize)]
 struct JsonSchemaErrorResponse {
-    /// The error reason.
-    pub error: String,
-    /// Additional error schema validation errors.
+    error: String,
+    #[serde(flatten)]
+    extra: AdditionalError,
+}
+
+#[derive(Debug, Serialize)]
+#[serde(tag = "type", rename_all = "snake_case")]
+enum AdditionalError {
+    Json,
+    Deserialization(DeserializationResponse),
+    Schema(SchemaResponse),
+}
+
+#[derive(Debug, Serialize)]
+struct DeserializationResponse {
+    deserialization_error: VecDeque<PathError>,
+}
+
+#[derive(Debug, Serialize)]
+struct SchemaResponse {
+    schema_validation: VecDeque<PathError>,
+}
+
+#[derive(Debug, Serialize)]
+struct PathError {
+    instance_location: String,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub schema_validation: Option<VecDeque<OutputUnit<ErrorDescription>>>,
+    keyword_location: Option<String>,
+    error: String,
 }
 
 impl From<JsonSchemaRejection> for JsonSchemaErrorResponse {
@@ -163,15 +182,38 @@ impl From<JsonSchemaRejection> for JsonSchemaErrorResponse {
         match rejection {
             JsonSchemaRejection::Json(v) => Self {
                 error: v.to_string(),
-                schema_validation: None,
+                extra: AdditionalError::Json,
             },
-            JsonSchemaRejection::Serde(_) => Self {
-                error: "invalid request".to_string(),
-                schema_validation: None,
+            JsonSchemaRejection::Serde(s) => Self {
+                error: "deserialization failed".to_string(),
+                extra: AdditionalError::Deserialization(DeserializationResponse {
+                    deserialization_error: VecDeque::from([PathError {
+                        // keys and index seperated by a '/'
+                        // enum is ignored because it doesn't exist in json
+                        instance_location: std::iter::once(String::new())
+                            .chain(s.path().iter().map(|s| match s {
+                                Segment::Map { key } => key.to_string(),
+                                Segment::Seq { index } => index.to_string(),
+                                _ => "?".to_string(),
+                            }))
+                            .join("/"),
+                        keyword_location: None,
+                        error: s.into_inner().to_string(),
+                    }]),
+                }),
             },
             JsonSchemaRejection::Schema(s) => Self {
                 error: "request schema validation failed".to_string(),
-                schema_validation: Some(s),
+                extra: AdditionalError::Schema(SchemaResponse {
+                    schema_validation: s
+                        .into_iter()
+                        .map(|v| PathError {
+                            instance_location: v.instance_location().to_string(),
+                            keyword_location: Some(v.keyword_location().to_string()),
+                            error: v.error_description().to_string(),
+                        })
+                        .collect(),
+                }),
             },
         }
     }
