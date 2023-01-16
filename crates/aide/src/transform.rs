@@ -52,7 +52,7 @@ use crate::{
     gen::GenContext,
     openapi::{
         Components, Contact, Info, License, OpenApi, Operation, Parameter, PathItem, ReferenceOr,
-        Response, SecurityScheme, StatusCode, Tag,
+        Response, SecurityScheme, Server, StatusCode, Tag,
     },
     OperationInput,
 };
@@ -101,6 +101,13 @@ impl<'t> TransformOpenApi<'t> {
         self
     }
 
+    /// Set the version.
+    #[tracing::instrument(skip_all)]
+    pub fn version(self, version: &str) -> Self {
+        self.api.info.version = version.into();
+        self
+    }
+
     /// Set API contact information.
     #[tracing::instrument(skip_all)]
     pub fn contact(self, contact: Contact) -> Self {
@@ -126,6 +133,13 @@ impl<'t> TransformOpenApi<'t> {
     #[tracing::instrument(skip_all)]
     pub fn tag(self, tag: Tag) -> Self {
         self.api.tags.push(tag);
+        self
+    }
+
+    /// Add a server to the documentation.
+    #[tracing::instrument(skip_all)]
+    pub fn server(self, server: Server) -> Self {
+        self.api.servers.push(server);
         self
     }
 
