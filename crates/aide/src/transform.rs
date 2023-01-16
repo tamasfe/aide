@@ -198,20 +198,31 @@ impl<'t> TransformOpenApi<'t> {
 
     /// Add a global security requirement.
     #[tracing::instrument(skip_all)]
-    pub fn security_requirement(mut self, security_scheme: &str) -> Self {
-        if self
-            .inner_mut()
-            .security
-            .iter()
-            .any(|s| s.contains_key(security_scheme))
-        {
+    pub fn security_requirement(self, security_scheme: &str) -> Self {
+        self.security_requirement_multi([security_scheme])
+    }
+
+    /// Add multiple global security requirement.
+    #[tracing::instrument(skip_all)]
+    pub fn security_requirement_multi<'a, I>(mut self, security_schemes: I) -> Self
+    where
+        I: IntoIterator<Item = &'a str> + Clone,
+    {
+        if self.inner_mut().security.iter().any(|s| {
+            s.len() == security_schemes.clone().into_iter().count()
+                && security_schemes
+                    .clone()
+                    .into_iter()
+                    .all(|security_scheme| s.contains_key(security_scheme))
+        }) {
             return self;
         }
 
-        self.inner_mut().security.push(IndexMap::from_iter([(
-            security_scheme.to_string(),
-            Vec::new(),
-        )]));
+        self.inner_mut().security.push(IndexMap::from_iter(
+            security_schemes
+                .into_iter()
+                .map(|security_scheme| (security_scheme.to_string(), Vec::new())),
+        ));
 
         self
     }
@@ -222,27 +233,48 @@ impl<'t> TransformOpenApi<'t> {
     /// it will be added.
     #[tracing::instrument(skip_all)]
     #[allow(clippy::missing_panics_doc)]
-    pub fn security_requirement_scopes<I, S>(mut self, security_scheme: &str, scopes: I) -> Self
+    pub fn security_requirement_scopes<I, S>(self, security_scheme: &str, scopes: I) -> Self
     where
         I: IntoIterator<Item = S>,
         S: Into<String>,
     {
-        match self
-            .inner_mut()
-            .security
-            .iter_mut()
-            .find(|s| s.contains_key(security_scheme))
-        {
-            Some(s) => s
-                .first_mut()
-                .unwrap()
-                .1
-                .extend(scopes.into_iter().map(Into::into)),
+        self.security_requirement_multi_scopes([security_scheme], scopes)
+    }
+
+    /// Add required scopes to multi global security requirement.
+    ///
+    /// If the scheme requirement does not exist,
+    /// it will be added.
+    #[tracing::instrument(skip_all)]
+    #[allow(clippy::missing_panics_doc)]
+    pub fn security_requirement_multi_scopes<'a, I, IS, S>(
+        mut self,
+        security_schemes: I,
+        scopes: IS,
+    ) -> Self
+    where
+        I: IntoIterator<Item = &'a str> + Clone,
+        IS: IntoIterator<Item = S>,
+        S: Into<String>,
+    {
+        match self.inner_mut().security.iter_mut().find(|s| {
+            s.len() == security_schemes.clone().into_iter().count()
+                && security_schemes
+                    .clone()
+                    .into_iter()
+                    .all(|security_scheme| s.contains_key(security_scheme))
+        }) {
+            Some(s) => {
+                let scopes: Vec<String> = scopes.into_iter().map(Into::into).collect();
+                s.iter_mut().for_each(|(_, s)| s.extend(scopes.clone()))
+            }
             None => {
-                self.inner_mut().security.push(IndexMap::from_iter([(
-                    security_scheme.to_string(),
-                    scopes.into_iter().map(Into::into).collect(),
-                )]));
+                let scopes: Vec<String> = scopes.into_iter().map(Into::into).collect();
+                self.inner_mut().security.push(IndexMap::from_iter(
+                    security_schemes
+                        .into_iter()
+                        .map(|security_scheme| (security_scheme.to_string(), scopes.clone())),
+                ));
             }
         };
 
@@ -359,8 +391,18 @@ impl<'t> TransformPathItem<'t> {
     /// Add a security requirement for all operations.
     #[tracing::instrument(skip_all)]
     pub fn security_requirement(self, security_scheme: &str) -> Self {
+        self.security_requirement_multi([security_scheme])
+    }
+
+    /// Add multi security requirement for all operations.
+    #[tracing::instrument(skip_all)]
+    pub fn security_requirement_multi<'a, I>(self, security_schemes: I) -> Self
+    where
+        I: IntoIterator<Item = &'a str> + Clone,
+    {
         for (_, op) in iter_operations_mut(self.path) {
-            let _ = TransformOperation::new(op).security_requirement(security_scheme);
+            let _ =
+                TransformOperation::new(op).security_requirement_multi(security_schemes.clone());
         }
 
         self
@@ -377,11 +419,30 @@ impl<'t> TransformPathItem<'t> {
         I: IntoIterator<Item = S>,
         S: Into<String>,
     {
+        self.security_requirement_multi_scopes([security_scheme], scopes)
+    }
+
+    /// Add required scopes to a security requirement for all operations.
+    ///
+    /// If the scheme requirement does not exist,
+    /// it will be added.
+    #[tracing::instrument(skip_all)]
+    #[allow(clippy::missing_panics_doc)]
+    pub fn security_requirement_multi_scopes<'a, I, IS, S>(
+        self,
+        security_schemes: I,
+        scopes: IS,
+    ) -> Self
+    where
+        I: IntoIterator<Item = &'a str> + Clone,
+        IS: IntoIterator<Item = S>,
+        S: Into<String>,
+    {
         let scopes: Vec<String> = scopes.into_iter().map(Into::into).collect();
 
         for (_, op) in iter_operations_mut(self.path) {
             let _ = TransformOperation::new(op)
-                .security_requirement_scopes(security_scheme, scopes.clone());
+                .security_requirement_multi_scopes(security_schemes.clone(), scopes.clone());
         }
 
         self
@@ -787,19 +848,30 @@ impl<'t> TransformOperation<'t> {
     /// Add a security requirement to the operation.
     #[tracing::instrument(skip_all, fields(operation_id = ?self.operation.operation_id))]
     pub fn security_requirement(self, security_scheme: &str) -> Self {
-        if self
-            .operation
-            .security
-            .iter()
-            .any(|s| s.contains_key(security_scheme))
-        {
+        self.security_requirement_multi([security_scheme])
+    }
+
+    /// Add multi security requirement to the operation.
+    #[tracing::instrument(skip_all, fields(operation_id = ?self.operation.operation_id))]
+    pub fn security_requirement_multi<'a, I>(self, security_schemes: I) -> Self
+    where
+        I: IntoIterator<Item = &'a str> + Clone,
+    {
+        if self.operation.security.iter().any(|s| {
+            s.len() == security_schemes.clone().into_iter().count()
+                && security_schemes
+                    .clone()
+                    .into_iter()
+                    .all(|security_scheme| s.contains_key(security_scheme))
+        }) {
             return self;
         }
 
-        self.operation.security.push(IndexMap::from_iter([(
-            security_scheme.to_string(),
-            Vec::new(),
-        )]));
+        self.operation.security.push(IndexMap::from_iter(
+            security_schemes
+                .into_iter()
+                .map(|security_scheme| (security_scheme.to_string(), Vec::new())),
+        ));
 
         self
     }
@@ -815,22 +887,42 @@ impl<'t> TransformOperation<'t> {
         I: IntoIterator<Item = S>,
         S: Into<String>,
     {
-        match self
-            .operation
-            .security
-            .iter_mut()
-            .find(|s| s.contains_key(security_scheme))
-        {
-            Some(s) => s
-                .first_mut()
-                .unwrap()
-                .1
-                .extend(scopes.into_iter().map(Into::into)),
+        self.security_requirement_multi_scopes([security_scheme], scopes)
+    }
+    /// Add required scopes to multi security requirement.
+    ///
+    /// If the scheme requirement does not exist,
+    /// it will be added.
+    #[tracing::instrument(skip_all, fields(operation_id = ?self.operation.operation_id))]
+    #[allow(clippy::missing_panics_doc)]
+    pub fn security_requirement_multi_scopes<'a, I, IS, S>(
+        self,
+        security_schemes: I,
+        scopes: IS,
+    ) -> Self
+    where
+        I: IntoIterator<Item = &'a str> + Clone,
+        IS: IntoIterator<Item = S>,
+        S: Into<String>,
+    {
+        match self.operation.security.iter_mut().find(|s| {
+            s.len() == security_schemes.clone().into_iter().count()
+                && security_schemes
+                    .clone()
+                    .into_iter()
+                    .all(|security_scheme| s.contains_key(security_scheme))
+        }) {
+            Some(s) => {
+                let scopes: Vec<String> = scopes.into_iter().map(Into::into).collect();
+                s.iter_mut().for_each(|(_, s)| s.extend(scopes.clone()))
+            }
             None => {
-                self.operation.security.push(IndexMap::from_iter([(
-                    security_scheme.to_string(),
-                    scopes.into_iter().map(Into::into).collect(),
-                )]));
+                let scopes: Vec<String> = scopes.into_iter().map(Into::into).collect();
+                self.operation.security.push(IndexMap::from_iter(
+                    security_schemes
+                        .into_iter()
+                        .map(|security_scheme| (security_scheme.to_string(), scopes.clone())),
+                ));
             }
         };
 
