@@ -4,9 +4,9 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize, Default, PartialEq, schemars::JsonSchema)]
 pub struct OpenApi {
-    #[serde(with = "serde_version")]
-    #[schemars(with = "&'static str")]
-    pub openapi: &'static str,
+    #[serde(with = "openapi_version")]
+    #[schemars(with = "String")]
+    pub openapi: String,
     /// REQUIRED. Provides metadata about the API.
     /// The metadata MAY be used by tooling as required.
     pub info: Info,
@@ -84,14 +84,50 @@ impl OpenApi {
     }
 }
 
-mod serde_version {
+mod openapi_version {
     use serde::{Deserializer, Serialize, Serializer};
 
-    pub fn serialize<S: Serializer>(_: &'static str, ser: S) -> Result<S::Ok, S::Error> {
+    pub fn serialize<S: Serializer, I: ToString>(_: &I, ser: S) -> Result<S::Ok, S::Error> {
         "3.1.0".serialize(ser)
     }
 
-    pub fn deserialize<'de, D: Deserializer<'de>>(_ser: D) -> Result<&'static str, D::Error> {
-        Ok("3.1.0")
+    pub fn deserialize<'de, D: Deserializer<'de>>(_ser: D) -> Result<String, D::Error> {
+        Ok("3.1.0".to_string())
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use crate::openapi::OpenApi;
+    use serde_json::json;
+
+    #[test]
+    fn test_openapi_version_from_value() {
+        let j = json!({
+            "info": {
+                "title": "hello",
+                "version": "3.3.3",
+                "description": "bla"
+            },
+            "openapi": "3.0.0"
+        });
+
+        let s: OpenApi = serde_json::from_value(j).unwrap();
+        assert_eq!(s.openapi, "3.1.0".to_string());
+    }
+
+    #[test]
+    fn test_openapi_version_from_str() {
+        let j = r#"{
+            "info": {
+                "title": "hello",
+                "version": "3.3.3",
+                "description": "bla"
+            },
+            "openapi": "3.0.0"
+        }"#;
+
+        let s: OpenApi = serde_json::from_str(j).unwrap();
+        assert_eq!(s.openapi, "3.1.0".to_string());
     }
 }
