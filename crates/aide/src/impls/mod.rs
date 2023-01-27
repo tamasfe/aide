@@ -417,9 +417,44 @@ impl<'a> OperationOutput for Cow<'a, [u8]> {
 
 // Empty blanket impls for tuples.
 //
-// In axum these are (StatusCode, Value),
+// In axum these are commonly (StatusCode, Value),
 // we keep it more broad as other frameworks
-// could implement (u16, Value) instead for example.
+// could implement (u16, Value) instead for example,
+// or any combination that is compatible, like:
+// - `(StatusCode, impl IntoResponse)`
+// - `(Parts, impl IntoResponse)`
+// - `(Response<()>, impl IntoResponse)`
+// - `(T1, .., Tn, impl IntoResponse)` where `T1` to `Tn` all implement `IntoResponseParts`.
+// - `(StatusCode, T1, .., Tn, impl IntoResponse)` where `T1` to `Tn` all implement `IntoResponseParts`.
+// - `(Parts, T1, .., Tn, impl IntoResponse)` where `T1` to `Tn` all implement `IntoResponseParts`.
+// - `(Response<()>, T1, .., Tn, impl IntoResponse)` where `T1` to `Tn` all implement `IntoResponseParts`.
+
 impl<T1, T2> OperationOutput for (T1, T2) {
+    type Inner = Infallible;
+}
+impl<T1, T2, T3> OperationOutput for (T1, T2, T3) {
+    type Inner = Infallible;
+}
+impl<T1, T2, T3, T4> OperationOutput for (T1, T2, T3, T4) {
+    type Inner = Infallible;
+}
+impl<T1, T2, T3, T4, T5> OperationOutput for (T1, T2, T3, T4, T5) {
+    type Inner = Infallible;
+}
+impl<T1, T2, T3, T4, T5, T6> OperationOutput for (T1, T2, T3, T4, T5, T6) {
+    type Inner = Infallible;
+}
+impl<T1, T2, T3, T4, T5, T6, T7> OperationOutput for (T1, T2, T3, T4, T5, T6, T7) {
+    type Inner = Infallible;
+}
+impl<T1, T2, T3, T4, T5, T6, T7, T8> OperationOutput for (T1, T2, T3, T4, T5, T6, T7, T8) {
+    type Inner = Infallible;
+}
+impl<T1, T2, T3, T4, T5, T6, T7, T8, T9> OperationOutput for (T1, T2, T3, T4, T5, T6, T7, T8, T9) {
+    type Inner = Infallible;
+}
+impl<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> OperationOutput
+    for (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10)
+{
     type Inner = Infallible;
 }
