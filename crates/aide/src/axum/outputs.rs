@@ -1,7 +1,7 @@
 use crate::openapi::{MediaType, Operation, Response, SchemaObject};
 use axum::{
     extract::rejection::{FormRejection, JsonRejection},
-    response::Html,
+    response::{Html, Redirect},
     Form, Json,
 };
 use http::StatusCode;
@@ -198,4 +198,14 @@ impl OperationOutput for FormRejection {
 
 fn rejection_response(status_code: StatusCode, response: &Response) -> (Option<u16>, Response) {
     (Some(status_code.as_u16()), response.clone())
+}
+
+impl OperationOutput for Redirect {
+    type Inner = Self;
+    fn operation_response(_ctx: &mut GenContext, _operation: &mut Operation) -> Option<Response> {
+        Some(Response {
+            description: "A redirect to the described URL".to_string(),
+            ..Default::default()
+        })
+    }
 }
