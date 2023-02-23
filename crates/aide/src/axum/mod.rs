@@ -276,6 +276,19 @@ where
         }
     }
 
+    /// Transform the contained [`PathItem`]s.
+    ///
+    /// This method accepts a transform function to edit each [`PathItem`] provided by this router.
+    pub fn with_path_items(
+        mut self,
+        mut transform: impl FnMut(TransformPathItem) -> TransformPathItem,
+    ) -> Self {
+        for (_, item) in self.paths.iter_mut() {
+            let _ = transform(TransformPathItem::new(item));
+        }
+        self
+    }
+
     /// Create a route to the given method router and include it in
     /// the API documentation.
     ///
@@ -448,11 +461,11 @@ where
 
     /// Alternative to [`nest_service`](Self::nest_service()) which besides nesting the service nests
     /// the generated documentation as well.
-    /// 
+    ///
     /// Due to Rust's limitations, currently this function will not
     /// accept arbitrary services but only types that can be
     /// converted into an [`ApiRouter`].
-    /// 
+    ///
     /// Thus the primary and probably the only use-case
     /// of this function is nesting routers with different states.
     pub fn nest_api_service(
