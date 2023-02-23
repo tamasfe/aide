@@ -126,6 +126,7 @@ mod axum_impl {
         AxumOperationHandler,
     };
     use axum::response::Html;
+    use once_cell::race::OnceBox;
 
     impl super::Redoc {
         /// Returns an [`ApiMethodRouter`] to expose the Redoc UI.
@@ -140,7 +141,7 @@ mod axum_impl {
         /// ```
         pub fn axum_route<S>(&self) -> ApiMethodRouter<S>
         where
-            S: Clone + Send + Sync +'static,
+            S: Clone + Send + Sync + 'static,
         {
             get(self.axum_handler())
         }
@@ -161,11 +162,16 @@ mod axum_impl {
         /// );
         /// ```
         #[must_use]
-        pub fn axum_handler<S, B>(&self) -> impl AxumOperationHandler<(), Html<String>, ((),), S, B>
+        pub fn axum_handler<S, B>(
+            &self,
+        ) -> impl AxumOperationHandler<(), Html<&'static str>, ((),), S, B>
         where
             B: axum::body::HttpBody + Send + 'static,
         {
             let html = self.html();
+            static HTML: OnceBox<String> = OnceBox::new();
+
+            let html = HTML.get_or_init(|| Box::new(html)).as_str();
             move || async move { Html(html) }
         }
     }
