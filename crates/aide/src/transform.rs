@@ -752,7 +752,7 @@ impl<'t> TransformOperation<'t> {
                 let responses = self.operation.responses.as_mut().unwrap();
                 if responses
                     .responses
-                    .insert(StatusCode::Code(N), ReferenceOr::Item(res))
+                    .insert(StatusCode::Range(N), ReferenceOr::Item(res))
                     .is_some()
                 {
                     ctx.error(Error::ResponseExists(StatusCode::Range(N)));
