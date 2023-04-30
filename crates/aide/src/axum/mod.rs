@@ -276,6 +276,19 @@ where
         }
     }
 
+    /// Transform the contained [`PathItem`]s.
+    ///
+    /// This method accepts a transform function to edit each [`PathItem`] provided by this router.
+    pub fn with_path_items(
+        mut self,
+        mut transform: impl FnMut(TransformPathItem) -> TransformPathItem,
+    ) -> Self {
+        for (_, item) in self.paths.iter_mut() {
+            let _ = transform(TransformPathItem::new(item));
+        }
+        self
+    }
+
     /// Create a route to the given method router and include it in
     /// the API documentation.
     ///
