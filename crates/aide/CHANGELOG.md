@@ -1,5 +1,32 @@
 # Changelog
 
+## 0.11.0 - 2023-04-30
+
+[7ce7ffd](7ce7ffd40d9c66fbf29db5e310b4795819ab8bae)...[5aff6d1](5aff6d18e2b262d65c884bc3f45641e7622d5994)
+
+### Bug Fixes
+
+- Add support for Redirect axum response ([f9a67f8](f9a67f80f36a67ee8d2c9f1d5851c537ff3041c9))
+- Fix typo in response_range() method ([f949aed](f949aedcad1d89cd5dd1f680c8d5292d55b1da1f))
+- Fixed api_route_with overriding existing routes ([#40](https://github.com/tamasfe/aide/issues/40)) ([879e436](879e436e3506c85d4b3cf12012acaf76501d82ba))
+
+### Features
+
+- Add `with_path_items` method to `ApiRouter` ([090b5f0](090b5f04f3d0eaa33c75fdf96009264bb78770d0))
+- Implement `merge` on ApiMethodRouter ([e6e9af3](e6e9af320757130074ca9cd537d342b5496d527d))
+- Introduce security_requirement_multi ([ca5bc4e](ca5bc4e8dd05aed2facb274b7a2f11d48c02ad59))
+- Add version and server methods ([54783f5](54783f5b2ad91f8527ba12ae21b26fbc1d794a8d))
+- Add more blanket tuple impls of OperationOutput ([#37](https://github.com/tamasfe/aide/issues/37)) ([461cd5f](461cd5f9f9e9f4363b17d79b883530c0d60b546e))
+- Add with_path_items method to ApiRouter ([#47](https://github.com/tamasfe/aide/issues/47)) ([47acb19](47acb1965b43508f616a7e3cb5bc37e9e36007c2))
+- Implement `merge` on `ApiMethodRouter` ([#52](https://github.com/tamasfe/aide/issues/52)) ([2c3e9be](2c3e9be02faeeb2b160c2a844f9539222ded51c3))
+- Added support for jwt_authorizer ([#42](https://github.com/tamasfe/aide/issues/42)) ([277fb47](277fb47ecc0edeee95708df3cfd52b1a5d5f34ed))
+- Add support for axum-sqlx-tx ([6646dca](6646dca21176a47f72e85df568f2544a223c408c))
+
+### Miscellaneous Tasks
+
+- Updated axum-extra and added output for cookie jars ([#53](https://github.com/tamasfe/aide/issues/53)) ([bef5ff2](bef5ff26446493974490558858083897ee0b1dbf))
+- Dependency updates and clippy fixes ([5aff6d1](5aff6d18e2b262d65c884bc3f45641e7622d5994))
+
 ## 0.10.0 - 2023-01-15
 
 [e6c5b46](e6c5b46ed9ff1226cfc4d8c183e8b6c773308c0f)...[7ce7ffd](7ce7ffd40d9c66fbf29db5e310b4795819ab8bae)

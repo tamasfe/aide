@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.6.0 - 2023-04-30
+
+[7ce7ffd](7ce7ffd40d9c66fbf29db5e310b4795819ab8bae)...[5aff6d1](5aff6d18e2b262d65c884bc3f45641e7622d5994)
+
+### Miscellaneous Tasks
+
+- Dependency updates and clippy fixes ([5aff6d1](5aff6d18e2b262d65c884bc3f45641e7622d5994))
+
+### Security
+
+- Introduce security_requirement_multi ([ca5bc4e](ca5bc4e8dd05aed2facb274b7a2f11d48c02ad59))
+
 ## 0.4.1 - 2022-11-29
 
 [5ff1cb3](5ff1cb36d1457cb2b26492b2b2cf6548cd23d93c)...[dd1c33b](dd1c33b1a5825eeac4463a190c5b7d1737784ff2)
