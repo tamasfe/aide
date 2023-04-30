@@ -1,6 +1,6 @@
 [package]
 name = "aide-macros"
-version = "0.6.0"
+version = "0.7.0"
 authors = ["tamasfe"]
 edition = "2021"
 license = "MIT OR Apache-2.0"
@@ -10,7 +10,7 @@ description = "Macros for the Aide library"
 proc-macro = true
 
 [dependencies]
-darling = "0.14.1"
+darling = "0.20.0"
 proc-macro2 = "1.0.43"
 quote = "1.0.21"
-syn = "1.0.99"
+syn = "2.0.15"

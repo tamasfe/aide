@@ -232,11 +232,12 @@ impl<'t> TransformOpenApi<'t> {
             return self;
         }
 
-        self.inner_mut().security.push(IndexMap::from_iter(
+        self.inner_mut().security.push(
             security_schemes
                 .into_iter()
-                .map(|security_scheme| (security_scheme.to_string(), Vec::new())),
-        ));
+                .map(|security_scheme| (security_scheme.to_string(), Vec::new()))
+                .collect(),
+        );
 
         self
     }
@@ -280,15 +281,16 @@ impl<'t> TransformOpenApi<'t> {
         }) {
             Some(s) => {
                 let scopes: Vec<String> = scopes.into_iter().map(Into::into).collect();
-                s.iter_mut().for_each(|(_, s)| s.extend(scopes.clone()))
+                s.iter_mut().for_each(|(_, s)| s.extend(scopes.clone()));
             }
             None => {
                 let scopes: Vec<String> = scopes.into_iter().map(Into::into).collect();
-                self.inner_mut().security.push(IndexMap::from_iter(
+                self.inner_mut().security.push(
                     security_schemes
                         .into_iter()
-                        .map(|security_scheme| (security_scheme.to_string(), scopes.clone())),
-                ));
+                        .map(|security_scheme| (security_scheme.to_string(), scopes.clone()))
+                        .collect(),
+                );
             }
         };
 
@@ -881,11 +883,12 @@ impl<'t> TransformOperation<'t> {
             return self;
         }
 
-        self.operation.security.push(IndexMap::from_iter(
+        self.operation.security.push(
             security_schemes
                 .into_iter()
-                .map(|security_scheme| (security_scheme.to_string(), Vec::new())),
-        ));
+                .map(|security_scheme| (security_scheme.to_string(), Vec::new()))
+                .collect(),
+        );
 
         self
     }
@@ -928,15 +931,16 @@ impl<'t> TransformOperation<'t> {
         }) {
             Some(s) => {
                 let scopes: Vec<String> = scopes.into_iter().map(Into::into).collect();
-                s.iter_mut().for_each(|(_, s)| s.extend(scopes.clone()))
+                s.iter_mut().for_each(|(_, s)| s.extend(scopes.clone()));
             }
             None => {
                 let scopes: Vec<String> = scopes.into_iter().map(Into::into).collect();
-                self.operation.security.push(IndexMap::from_iter(
+                self.operation.security.push(
                     security_schemes
                         .into_iter()
-                        .map(|security_scheme| (security_scheme.to_string(), scopes.clone())),
-                ));
+                        .map(|security_scheme| (security_scheme.to_string(), scopes.clone()))
+                        .collect(),
+                );
             }
         };
 
