@@ -312,13 +312,18 @@ where
         mut method_router: ApiMethodRouter<S, B>,
         transform: impl FnOnce(TransformPathItem) -> TransformPathItem,
     ) -> Self {
-        let mut p = method_router.take_path_item();
+        in_context(|ctx| {
+            let mut p = method_router.take_path_item();
+            let t = transform(TransformPathItem::new(&mut p));
 
-        let t = transform(TransformPathItem::new(&mut p));
-
-        if !t.hidden {
-            self.paths.insert(path.into(), p);
-        }
+            if !t.hidden {
+                if let Some(path_item) = self.paths.get_mut(path) {
+                    merge_paths(ctx, path, path_item, p);
+                } else {
+                    self.paths.insert(path.into(), p);
+                }
+            }
+        });
 
         self.router = self.router.route(path, method_router.router);
         self
@@ -448,11 +453,11 @@ where
 
     /// Alternative to [`nest_service`](Self::nest_service()) which besides nesting the service nests
     /// the generated documentation as well.
-    /// 
+    ///
     /// Due to Rust's limitations, currently this function will not
     /// accept arbitrary services but only types that can be
     /// converted into an [`ApiRouter`].
-    /// 
+    ///
     /// Thus the primary and probably the only use-case
     /// of this function is nesting routers with different states.
     pub fn nest_api_service(
@@ -709,6 +714,7 @@ mod tests {
 
     async fn test_handler1(State(_): State<TestState>) {}
     async fn test_handler2(State(_): State<u8>) {}
+    async fn test_handler3() {}
 
     #[derive(Clone, Copy)]
     struct TestState {
@@ -742,5 +748,20 @@ mod tests {
             )
             .with_state(state);
         let _service = app.into_make_service();
+    }
+
+    #[test]
+    fn test_api_route_with_same_router_different_methods() {
+        let app: ApiRouter = ApiRouter::new()
+            .api_route_with("/test1", routing::post(test_handler3), |t| t)
+            .api_route_with("/test1", routing::get(test_handler3), |t| t);
+
+        let item = app
+            .paths
+            .get("/test1")
+            .expect("should contain handler for /test1");
+
+        assert!(item.get.is_some());
+        assert!(item.post.is_some());
     }
 }
