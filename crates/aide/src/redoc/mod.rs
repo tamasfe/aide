@@ -125,6 +125,7 @@ mod axum_impl {
         routing::{get, ApiMethodRouter},
         AxumOperationHandler,
     };
+    use crate::redoc::get_static_str;
     use axum::response::Html;
 
     impl super::Redoc {
@@ -140,7 +141,7 @@ mod axum_impl {
         /// ```
         pub fn axum_route<S>(&self) -> ApiMethodRouter<S>
         where
-            S: Clone + Send + Sync +'static,
+            S: Clone + Send + Sync + 'static,
         {
             get(self.axum_handler())
         }
@@ -161,12 +162,28 @@ mod axum_impl {
         /// );
         /// ```
         #[must_use]
-        pub fn axum_handler<S, B>(&self) -> impl AxumOperationHandler<(), Html<String>, ((),), S, B>
+        pub fn axum_handler<S, B>(
+            &self,
+        ) -> impl AxumOperationHandler<(), Html<&'static str>, ((),), S, B>
         where
             B: axum::body::HttpBody + Send + 'static,
         {
             let html = self.html();
+            // This string will be used during the entire lifetime of the program
+            // so it's safe to leak it
+            // we can't use once_cell::sync::Lazy because it will cache the first access to the function,
+            // so you won't be able to have multiple instances of Redoc
+            // e.g. /v1/docs and /v2/docs
+            // Without caching we will have to clone whole html string on each request
+            // which will use 3GiBs of RAM for 200+ concurrent requests
+            let html: &'static str = get_static_str(html);
+
             move || async move { Html(html) }
         }
     }
+}
+
+fn get_static_str(string: String) -> &'static str {
+    let static_str = Box::leak(string.into_boxed_str());
+    static_str
 }
