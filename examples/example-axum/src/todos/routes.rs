@@ -65,7 +65,7 @@ async fn create_todo(
 
 fn create_todo_docs(op: TransformOperation) -> TransformOperation {
     op.description("Create a new incomplete Todo item.")
-        .response::<204, Json<TodoCreated>>()
+        .response::<201, Json<TodoCreated>>()
 }
 
 #[derive(Serialize, JsonSchema)]

@@ -321,6 +321,17 @@ where
             router,
         }
     }
+
+    /// See [`axum::routing::MethodRouter::merge`] for more information.
+    pub fn merge<M>(mut self, other: M) -> Self
+    where
+        M: Into<ApiMethodRouter<S, B, E>>
+    {
+        let other = other.into();
+        self.operations.extend(other.operations);
+        self.router = self.router.merge(other.router);
+        self
+    }
 }
 
 impl<S, B, E> Default for ApiMethodRouter<S, B, E>

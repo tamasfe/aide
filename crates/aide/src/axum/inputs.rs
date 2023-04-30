@@ -402,3 +402,43 @@ mod extra {
 
 #[cfg(feature = "axum-sqlx-tx")]
 impl<DB: sqlx::Database> OperationInput for axum_sqlx_tx::Tx<DB> {}
+
+#[cfg(feature = "jwt-authorizer")]
+mod jwt_authorizer {
+    use super::*;
+    use crate::OperationInput;
+    use ::jwt_authorizer::JwtClaims;
+
+    impl<T> OperationInput for JwtClaims<T> {
+        fn operation_input(
+            ctx: &mut crate::gen::GenContext,
+            operation: &mut crate::openapi::Operation,
+        ) {
+            let s = ctx.schema.subschema_for::<String>();
+            add_parameters(
+                ctx,
+                operation,
+                [Parameter::Header {
+                    parameter_data: ParameterData {
+                        name: "Authorization".to_string(),
+                        description: Some("Jwt Bearer token".to_string()),
+                        required: true,
+                        format: crate::openapi::ParameterSchemaOrContent::Schema(
+                            openapi::SchemaObject {
+                                json_schema: s,
+                                example: None,
+                                external_docs: None,
+                            },
+                        ),
+                        extensions: Default::default(),
+                        deprecated: None,
+                        example: None,
+                        examples: IndexMap::default(),
+                        explode: None,
+                    },
+                    style: openapi::HeaderStyle::Simple,
+                }],
+            );
+        }
+    }
+}
