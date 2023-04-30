@@ -209,3 +209,19 @@ impl OperationOutput for Redirect {
         })
     }
 }
+
+#[cfg(feature = "axum-extra")]
+#[allow(unused_imports)]
+mod extra {
+    use axum_extra::extract;
+
+    use super::*;
+    use crate::operation::OperationOutput;
+
+
+    #[cfg(feature = "axum-extra-cookie")]
+    impl OperationOutput for extract::CookieJar { type Inner = (); }
+
+    #[cfg(feature = "axum-extra-cookie-private")]
+    impl OperationOutput for extract::PrivateCookieJar { type Inner = (); }
+}
