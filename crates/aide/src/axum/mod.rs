@@ -186,6 +186,7 @@ use axum::{
     Router,
 };
 use indexmap::IndexMap;
+use indexmap::map::Entry;
 use tower_layer::Layer;
 use tower_service::Service;
 
@@ -513,8 +514,12 @@ where
         R: Into<ApiRouter<S, B>>,
     {
         let other: ApiRouter<S, B> = other.into();
-
-        self.paths.extend(other.paths);
+        for (key, path) in other.paths {
+            match self.paths.entry(key) {
+                Entry::Occupied(mut o) => { o.get_mut().merge_with(path); }
+                Entry::Vacant(v) => { v.insert(path); }
+            }
+        }
         self.router = self.router.merge(other.router);
         self
     }

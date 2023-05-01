@@ -3,6 +3,7 @@ use std::marker::PhantomData;
 use crate::{openapi::*, util::*};
 use indexmap::IndexMap;
 use serde::{Deserialize, Deserializer, Serialize};
+use tracing::warn;
 
 /// Describes the operations available on a single path.
 /// A Path Item MAY be empty, due to ACL constraints.
@@ -62,7 +63,7 @@ pub struct PathItem {
 
 impl PathItem {
     /// Returns an iterator of references to the [Operation]s in the [PathItem].
-    pub fn iter(&self) -> impl Iterator<Item = (&str, &'_ Operation)> {
+    pub fn iter(&self) -> impl Iterator<Item=(&str, &'_ Operation)> {
         vec![
             ("get", &self.get),
             ("put", &self.put),
@@ -73,8 +74,47 @@ impl PathItem {
             ("patch", &self.patch),
             ("trace", &self.trace),
         ]
-        .into_iter()
-        .filter_map(|(method, maybe_op)| maybe_op.as_ref().map(|op| (method, op)))
+            .into_iter()
+            .filter_map(|(method, maybe_op)| maybe_op.as_ref().map(|op| (method, op)))
+    }
+
+    /// Merges two path items as well as it can. Global settings will likely conflict. Conflicts always favor self.
+    pub fn merge(mut self, other: Self) -> Self {
+        self.merge_with(other);
+        self
+    }
+
+    /// Merges self with other path item as well as it can. Global settings will likely conflict. Conflicts always favor self.
+    pub fn merge_with(&mut self, mut other: Self) {
+        self.servers.append(&mut other.servers);
+
+        self.parameters.append(&mut other.parameters);
+
+        for (k, ext) in other.extensions {
+            self.extensions.entry(k.clone()).and_modify(|_| warn!("Conflict on merging extension {}", k)).or_insert(ext);
+        }
+        macro_rules! merge {
+            ($id:ident) => {
+                if let Some($id) = other.$id {
+                    if self.$id.is_some() {
+                        warn!("Conflict on merging {}, ignoring duplicate", stringify!($id));
+                    } else {
+                        let _ = self.$id.insert($id);
+                    }
+                }
+            }
+        }
+        merge!(reference);
+        merge!(summary);
+        merge!(description);
+        merge!(get);
+        merge!(put);
+        merge!(post);
+        merge!(delete);
+        merge!(options);
+        merge!(head);
+        merge!(patch);
+        merge!(trace);
     }
 }
 
@@ -95,10 +135,10 @@ impl IntoIterator for PathItem {
             ("patch", self.patch),
             ("trace", self.trace),
         ]
-        .into_iter()
-        .filter_map(|(method, maybe_op)| maybe_op.map(|op| (method, op)))
-        .collect::<Vec<_>>()
-        .into_iter()
+            .into_iter()
+            .filter_map(|(method, maybe_op)| maybe_op.map(|op| (method, op)))
+            .collect::<Vec<_>>()
+            .into_iter()
     }
 }
 
@@ -136,8 +176,8 @@ impl IntoIterator for Paths {
 fn deserialize_paths<'de, D>(
     deserializer: D,
 ) -> Result<IndexMap<String, ReferenceOr<PathItem>>, D::Error>
-where
-    D: Deserializer<'de>,
+    where
+        D: Deserializer<'de>,
 {
     deserializer.deserialize_map(PredicateVisitor(
         |key: &String| key.starts_with('/'),
