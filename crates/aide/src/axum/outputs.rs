@@ -1,15 +1,11 @@
 use crate::openapi::{MediaType, Operation, Response, SchemaObject};
-use axum::{
-    extract::rejection::{FormRejection, JsonRejection},
-    response::{Html, Redirect},
-    Form, Json,
-};
+use axum::{extract::rejection::{FormRejection, JsonRejection}, response::{Html, Redirect}, Form, Json, BoxError};
+use axum::response::sse::Event;
+use futures::Stream;
 use http::StatusCode;
 use indexmap::IndexMap;
-use schemars::{
-    schema::{InstanceType, SingleOrVec},
-    JsonSchema,
-};
+use schemars::{schema::{InstanceType, SingleOrVec}, JsonSchema, schema_for};
+use serde_json::Value;
 
 use crate::{gen::GenContext, operation::OperationOutput};
 
@@ -231,6 +227,41 @@ impl OperationOutput for Redirect {
             description: "A redirect to the described URL".to_string(),
             ..Default::default()
         })
+    }
+}
+
+impl<S, E> OperationOutput for axum::response::Sse<S> where
+    S: Stream<Item = Result<Event, E>> + Send + 'static,
+    E: Into<BoxError>, {
+    type Inner = String;
+
+    fn operation_response(ctx: &mut GenContext, _operation: &mut Operation) -> Option<Response> {
+        Some(Response {
+            description: "An SSE event stream".into(),
+            content: IndexMap::from_iter([(
+                "text/event-stream".into(),
+                MediaType {
+                    schema: Some(SchemaObject {
+                        json_schema: String::json_schema(&mut ctx.schema),
+                        external_docs: None,
+                        example: None,
+                    }),
+                    ..Default::default()
+                },
+            )]),
+            ..Default::default()
+        })
+    }
+
+    fn inferred_responses(
+        ctx: &mut crate::gen::GenContext,
+        operation: &mut Operation,
+    ) -> Vec<(Option<u16>, Response)> {
+        if let Some(res) = Self::operation_response(ctx, operation) {
+            vec![(Some(200), res)]
+        } else {
+            Vec::new()
+        }
     }
 }
 
