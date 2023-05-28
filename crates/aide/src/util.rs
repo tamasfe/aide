@@ -234,3 +234,14 @@ mod spec {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_path_colon_params() {
+        assert_eq!(path_colon_params("/users/:id"), "/users/{id}");
+        assert_eq!(path_colon_params("/users/:id/addresses/:address-id"), "/users/{id}/addresses/{address-id}");        
+    }
+}
