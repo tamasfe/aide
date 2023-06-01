@@ -136,7 +136,7 @@ mod axum_impl {
         /// ```
         /// # use aide::axum::{ApiRouter, routing::get};
         /// # use aide::redoc::Redoc;
-        /// ApiRouter::new()
+        /// ApiRouter::<()>::new()
         ///     .route("/docs", Redoc::new("/openapi.json").axum_route());
         /// ```
         pub fn axum_route<S>(&self) -> ApiMethodRouter<S>
