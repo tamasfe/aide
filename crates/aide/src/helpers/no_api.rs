@@ -1,0 +1,92 @@
+use derive_more::{AsMut, AsRef, Deref, DerefMut};
+use serde::{Deserialize, Serialize};
+
+use crate::{OperationInput, OperationOutput};
+
+#[derive(
+    Copy,
+    Clone,
+    Debug,
+    Ord,
+    PartialOrd,
+    Eq,
+    PartialEq,
+    Hash,
+    Serialize,
+    Deserialize,
+    Deref,
+    DerefMut,
+    AsRef,
+    AsMut,
+)]
+pub struct NoApi<T>(pub T);
+
+impl<T> NoApi<T> {
+    pub fn into_inner(self) -> T {
+        self.0
+    }
+}
+
+impl<T> OperationInput for NoApi<T> {}
+
+impl<T> OperationOutput for NoApi<T> {
+    type Inner = ();
+}
+
+#[cfg(feature = "axum")]
+mod axum {
+    use axum::async_trait;
+    use axum::extract::{FromRequest, FromRequestParts};
+    use axum::response::{IntoResponse, IntoResponseParts, Response, ResponseParts};
+    use http::request::Parts;
+    use http::Request;
+
+    use crate::NoApi;
+
+    impl<T> IntoResponse for NoApi<T>
+    where
+        T: IntoResponse,
+    {
+        fn into_response(self) -> Response {
+            self.0.into_response()
+        }
+    }
+
+    impl<T> IntoResponseParts for NoApi<T>
+    where
+        T: IntoResponseParts,
+    {
+        type Error = T::Error;
+
+        fn into_response_parts(self, res: ResponseParts) -> Result<ResponseParts, Self::Error> {
+            self.0.into_response_parts(res)
+        }
+    }
+
+    #[async_trait]
+    impl<T, S> FromRequestParts<S> for NoApi<T>
+    where
+        T: FromRequestParts<S>,
+        S: Send + Sync,
+    {
+        type Rejection = T::Rejection;
+
+        async fn from_request_parts(parts: &mut Parts, state: &S) -> Result<Self, Self::Rejection> {
+            Ok(Self(T::from_request_parts(parts, state).await?))
+        }
+    }
+
+    #[async_trait]
+    impl<T, S, B> FromRequest<S, B> for NoApi<T>
+    where
+        T: FromRequest<S, B>,
+        S: Send + Sync,
+        B: Send + 'static,
+    {
+        type Rejection = <T>::Rejection;
+
+        async fn from_request(req: Request<B>, state: &S) -> Result<Self, Self::Rejection> {
+            Ok(Self(<T>::from_request(req, state).await?))
+        }
+    }
+}
