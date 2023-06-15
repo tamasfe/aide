@@ -7,10 +7,64 @@ use crate::gen::GenContext;
 use crate::openapi::{Operation, Response};
 use crate::{OperationInput, OperationOutput};
 
+/// Trait that allows implementing a custom Api definition for any type.
+/// Two approaches are possible:
+///
+/// 1. Simple Type override for concrete types
+/// ```
+/// # use aide::{ApiOverride, OperationInput, WithApi};
+/// # #[derive(Eq, PartialEq, Debug)] struct SomeType;
+///
+/// #[derive(Debug)]
+/// struct MyApiOverride;
+///
+/// impl ApiOverride for MyApiOverride {
+///     type Target = SomeType;
+/// }
+///
+/// impl OperationInput for MyApiOverride {
+///     // override stuff
+///     // can be done with OperationOutput as well
+/// }
+///
+/// async fn my_handler(WithApi(ty, ..): WithApi<MyApiOverride>) -> bool {
+///     assert_eq!(ty, SomeType);
+///     true
+/// }
+/// ```
+///
+/// 2. Generic Type Override
+/// ```
+/// # use std::marker::PhantomData;
+/// # use aide::{ApiOverride, OperationInput, WithApi};
+/// # #[derive(Eq, PartialEq, Debug)] struct SomeType;
+/// # #[derive(Eq, PartialEq, Debug)] struct CustomXML<T>(T);
+///
+/// #[derive(Debug)]
+/// struct MyCustomXML<T>(PhantomData<T>);
+///
+/// impl<T> ApiOverride for MyCustomXML<T> {
+///     type Target = CustomXML<T>;
+/// }
+///
+/// impl<T> OperationInput for MyCustomXML<T> {
+///     // override stuff with access to T
+///     // can be done with OperationOutput as well
+/// }
+///
+/// async fn my_handler(WithApi(ty, ..): WithApi<MyCustomXML<SomeType>>) -> bool {
+///     assert_eq!(ty, CustomXML(SomeType));
+///     true
+/// }
+/// ```
 pub trait ApiOverride {
+    /// The type that is being overriden
     type Target;
 }
 
+/// Allows non [OperationInput] or [OperationOutput] types to be used in aide handlers with a provided documentation.  
+/// For types that already implement [OperationInput] or [OperationOutput] it overrides the documentation with the provided one.
+/// See [ApiOverride] on how to implement such an override
 #[derive(
     Copy,
     Clone,
@@ -33,7 +87,7 @@ pub struct WithApi<T>(
     #[deref]
     #[deref_mut]
     pub T::Target,
-    PhantomData<T>,
+    pub PhantomData<T>,
 )
 where
     T: ApiOverride;
@@ -42,6 +96,7 @@ impl<T> WithApi<T>
 where
     T: ApiOverride,
 {
+    /// Unwraps [self] into its inner type
     pub fn into_inner(self) -> T::Target {
         self.0
     }

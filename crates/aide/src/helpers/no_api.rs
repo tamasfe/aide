@@ -1,8 +1,16 @@
-use derive_more::{AsMut, AsRef, Deref, DerefMut};
+use derive_more::{AsMut, AsRef, Deref, DerefMut, From};
 use serde::{Deserialize, Serialize};
 
 use crate::{OperationInput, OperationOutput};
 
+/// Allows non [OperationInput] or [OperationOutput] types to be used in aide handlers with a default empty documentation.  
+/// For types that already implement [OperationInput] or [OperationOutput] it overrides the documentation and hides it.
+/// ```ignore
+/// pub async fn my_sqlx_tx_endpoint(
+///     NoApi(mut tx): NoApi<Tx<sqlx::Any>> // allows usage of the TX
+/// ) -> NoApi<Json<YourResult>> // Hides the API of the return type
+/// # {}
+/// ```
 #[derive(
     Copy,
     Clone,
@@ -18,10 +26,12 @@ use crate::{OperationInput, OperationOutput};
     DerefMut,
     AsRef,
     AsMut,
+    From,
 )]
 pub struct NoApi<T>(pub T);
 
 impl<T> NoApi<T> {
+    /// Unwraps [self] into its inner type
     pub fn into_inner(self) -> T {
         self.0
     }
