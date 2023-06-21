@@ -141,3 +141,6 @@ pub use operation::{OperationInput, OperationOutput};
 
 #[cfg(feature = "macros")]
 pub use aide_macros::OperationIo;
+
+#[cfg(feature = "swagger-ui")]
+pub mod swagger_ui;
