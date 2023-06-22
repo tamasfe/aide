@@ -78,6 +78,7 @@
 //! No features are enabled by default.
 //!
 //! - `macros`: additional helper macros
+//! - `swagger-ui`: helper to serve both SwaggerUI and the OpenApi definition
 //!
 //! ### Third-party trait implementations
 //!
