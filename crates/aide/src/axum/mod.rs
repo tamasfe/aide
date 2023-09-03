@@ -283,7 +283,7 @@ where
         mut self,
         mut transform: impl FnMut(TransformPathItem) -> TransformPathItem,
     ) -> Self {
-        for (_, item) in self.paths.iter_mut() {
+        for (_, item) in &mut self.paths {
             let _ = transform(TransformPathItem::new(item));
         }
         self

@@ -340,14 +340,14 @@ impl<'t> TransformPathItem<'t> {
 
     /// Provide a summary for the path.
     #[tracing::instrument(skip_all)]
-    pub fn summary(mut self, desc: &str) -> Self {
+    pub fn summary(self, desc: &str) -> Self {
         self.path.summary = Some(desc.into());
         self
     }
 
     /// Provide a description for the path.
     #[tracing::instrument(skip_all)]
-    pub fn description(mut self, desc: &str) -> Self {
+    pub fn description(self, desc: &str) -> Self {
         self.path.description = Some(desc.into());
         self
     }
@@ -494,21 +494,21 @@ impl<'t> TransformOperation<'t> {
 
     /// Specify the operation ID.
     #[tracing::instrument(skip_all, fields(operation_id = ?self.operation.operation_id))]
-    pub fn id(mut self, name: &str) -> Self {
+    pub fn id(self, name: &str) -> Self {
         self.operation.operation_id = Some(name.into());
         self
     }
 
     /// Provide a summary for the operation.
     #[tracing::instrument(skip_all, fields(operation_id = ?self.operation.operation_id))]
-    pub fn summary(mut self, desc: &str) -> Self {
+    pub fn summary(self, desc: &str) -> Self {
         self.operation.summary = Some(desc.into());
         self
     }
 
     /// Provide a description for the operation.
     #[tracing::instrument(skip_all, fields(operation_id = ?self.operation.operation_id))]
-    pub fn description(mut self, desc: &str) -> Self {
+    pub fn description(self, desc: &str) -> Self {
         self.operation.description = Some(desc.into());
         self
     }
@@ -608,7 +608,7 @@ impl<'t> TransformOperation<'t> {
     /// it does not already have one.
     #[tracing::instrument(skip_all, fields(operation_id = ?self.operation.operation_id))]
     #[allow(clippy::missing_panics_doc)]
-    pub fn default_response<R>(mut self) -> Self
+    pub fn default_response<R>(self) -> Self
     where
         R: OperationOutput,
     {
@@ -639,7 +639,7 @@ impl<'t> TransformOperation<'t> {
     /// to modify the generated documentation.
     #[tracing::instrument(skip_all, fields(operation_id = ?self.operation.operation_id))]
     #[allow(clippy::missing_panics_doc)]
-    pub fn default_response_with<R, F>(mut self, transform: F) -> Self
+    pub fn default_response_with<R, F>(self, transform: F) -> Self
     where
         R: OperationOutput,
         F: FnOnce(TransformResponse<R::Inner>) -> TransformResponse<R::Inner>,
@@ -673,7 +673,7 @@ impl<'t> TransformOperation<'t> {
     /// Add a response to the operation with the given status code.
     #[tracing::instrument(skip_all, fields(operation_id = ?self.operation.operation_id))]
     #[allow(clippy::missing_panics_doc)]
-    pub fn response<const N: u16, R>(mut self) -> Self
+    pub fn response<const N: u16, R>(self) -> Self
     where
         R: OperationOutput,
     {
@@ -705,7 +705,7 @@ impl<'t> TransformOperation<'t> {
     /// to modify the generated documentation.
     #[tracing::instrument(skip_all, fields(operation_id = ?self.operation.operation_id))]
     #[allow(clippy::missing_panics_doc)]
-    pub fn response_with<const N: u16, R, F>(mut self, transform: F) -> Self
+    pub fn response_with<const N: u16, R, F>(self, transform: F) -> Self
     where
         R: OperationOutput,
         F: FnOnce(TransformResponse<R::Inner>) -> TransformResponse<R::Inner>,
@@ -741,7 +741,7 @@ impl<'t> TransformOperation<'t> {
     /// Note that the range is `100`-based, so for the range `2xx`, `2` must be provided.
     #[tracing::instrument(skip_all, fields(operation_id = ?self.operation.operation_id))]
     #[allow(clippy::missing_panics_doc)]
-    pub fn response_range<const N: u16, R>(mut self) -> Self
+    pub fn response_range<const N: u16, R>(self) -> Self
     where
         R: OperationOutput,
     {
@@ -775,7 +775,7 @@ impl<'t> TransformOperation<'t> {
     /// to modify the generated documentation.
     #[tracing::instrument(skip_all, fields(operation_id = ?self.operation.operation_id))]
     #[allow(clippy::missing_panics_doc)]
-    pub fn response_range_with<const N: u16, R, F>(mut self, transform: F) -> Self
+    pub fn response_range_with<const N: u16, R, F>(self, transform: F) -> Self
     where
         R: OperationOutput,
         F: FnOnce(TransformResponse<R::Inner>) -> TransformResponse<R::Inner>,
@@ -1054,7 +1054,7 @@ impl<'t, T> TransformResponse<'t, T> {
 
     /// Provide or override the description of the response.
     #[tracing::instrument(skip_all)]
-    pub fn description(mut self, desc: &str) -> Self {
+    pub fn description(self, desc: &str) -> Self {
         self.response.description = desc.into();
         self
     }
