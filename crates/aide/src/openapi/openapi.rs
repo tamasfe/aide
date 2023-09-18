@@ -1,3 +1,5 @@
+use std::borrow::Cow;
+
 use crate::openapi::*;
 use indexmap::IndexMap;
 use serde::{Deserialize, Serialize};
@@ -6,7 +8,7 @@ use serde::{Deserialize, Serialize};
 pub struct OpenApi {
     #[serde(with = "serde_version")]
     #[schemars(with = "&'static str")]
-    pub openapi: &'static str,
+    pub openapi: Cow<'static, str>,
     /// REQUIRED. Provides metadata about the API.
     /// The metadata MAY be used by tooling as required.
     pub info: Info,
@@ -85,13 +87,35 @@ impl OpenApi {
 }
 
 mod serde_version {
-    use serde::{Deserializer, Serialize, Serializer};
+    use std::borrow::Cow;
 
-    pub fn serialize<S: Serializer>(_: &'static str, ser: S) -> Result<S::Ok, S::Error> {
-        "3.1.0".serialize(ser)
+    use serde::{Deserialize, Deserializer, Serialize, Serializer};
+
+    pub fn serialize<S: Serializer>(_: &Cow<'static, str>, ser: S) -> Result<S::Ok, S::Error> {
+        Cow::Borrowed("3.1.0").serialize(ser)
     }
 
-    pub fn deserialize<'de, D: Deserializer<'de>>(_ser: D) -> Result<&'static str, D::Error> {
-        Ok("3.1.0")
+    pub fn deserialize<'de, D: Deserializer<'de>>(de: D) -> Result<Cow<'static, str>, D::Error> {
+        <&'de str>::deserialize(de).and_then(|s| match s == "3.1.0" {
+            true => Ok(Cow::Owned("3.1.0".to_owned())),
+            false => Err(serde::de::Error::custom("expected 3.1.0")),
+        })
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::openapi::OpenApi;
+
+    #[test]
+    fn test_default_openapi_deserialize() {
+        let mut api = OpenApi::default();
+        api.openapi = std::borrow::Cow::Borrowed("3.1.0");
+
+        let json = serde_json::to_string(&api).unwrap();
+
+        let deser_api = serde_json::from_str::<OpenApi>(&json).unwrap();
+
+        assert_eq!(api, deser_api);
     }
 }
