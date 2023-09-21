@@ -400,9 +400,6 @@ mod extra {
     }
 }
 
-#[cfg(feature = "axum-sqlx-tx")]
-impl<DB: sqlx::Database> OperationInput for axum_sqlx_tx::Tx<DB> {}
-
 #[cfg(feature = "jwt-authorizer")]
 mod jwt_authorizer {
     use super::*;

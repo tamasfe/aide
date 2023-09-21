@@ -31,7 +31,7 @@ use crate::{OperationInput, OperationOutput};
 pub struct NoApi<T>(pub T);
 
 impl<T> NoApi<T> {
-    /// Unwraps [self] into its inner type
+    /// Unwraps [Self] into its inner type
     pub fn into_inner(self) -> T {
         self.0
     }

@@ -96,7 +96,7 @@ impl<T> WithApi<T>
 where
     T: ApiOverride,
 {
-    /// Unwraps [self] into its inner type
+    /// Unwraps [Self] into its inner type
     pub fn into_inner(self) -> T::Target {
         self.0
     }
