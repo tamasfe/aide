@@ -2,7 +2,7 @@
 
 ## 0.12.0 - 2023-09-23
 
-[07e4cf2](07e4cf2fcbb1ba29dcf5787affba18b30d2d2bd1)...[07e4cf2](07e4cf2fcbb1ba29dcf5787affba18b30d2d2bd1)
+[a873e38](a873e3832fdc3d17e91dc63ec07e6e8ae41a9b25)...[a873e38](a873e3832fdc3d17e91dc63ec07e6e8ae41a9b25)
 
 ### Bug Fixes
 
