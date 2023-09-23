@@ -1,32 +1,4 @@
-//! # Aide Axum Sqlx Tx
-//!
-//! Aide Axum Salx Tx is a re-export of the crate axum-sqlx-tx to be used in aide requests  
-//!
-//!
-//! ## Features
-//! - `default` or `sqlx-07`: uses `axum-sqlx-tx:0.6.0` and is compatible with `sqlx:0.7`
-//! - `sqlx-06`: overrides default sqlx-07 and uses `axum-sqlx-tx:0.5.0` and is compatible with `sqlx:0.6`
-//!
-#![cfg_attr(
-    all(feature = "sqlx-07", feature = "postgres"),
-    doc = r##"
-## Example
-
-```
-# use aide_axum_sqlx_tx::Tx;
-# use sqlx::{Postgres, query};
-
-async fn get_hello_world(
-     mut tx: Tx<Postgres>,
- ) -> Result<String, String> {
-    let (res,): (String,) = sqlx::query_as("select 'hello world'")
-    .fetch_one(&mut *tx) // deref mut
-    .await.map_err(|err|err.to_string())?;
-    Ok(res)
- }
-```
-"##
-)]
+#![doc = include_str!("../README.md")]
 
 #[cfg(all(feature = "sqlx-07", feature = "sqlx-06"))]
 compile_error!(

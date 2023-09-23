@@ -2,7 +2,7 @@
 
 ## 0.7.0 - 2023-09-23
 
-[77d4a37](77d4a377b01ca69f5ac374b6e0c57d2c53453707)...[77d4a37](77d4a377b01ca69f5ac374b6e0c57d2c53453707)
+[f5c9494](f5c94941f74c8cfcd21981fba5aed4e53cd9e8bd)...[f5c9494](f5c94941f74c8cfcd21981fba5aed4e53cd9e8bd)
 
 ### Features
 
@@ -15,10 +15,6 @@
 - Axum dependency update ([7a314c7](7a314c73284f088947b70a75454de9d0080aec79))
 - Bump aide version ([dd1c33b](dd1c33b1a5825eeac4463a190c5b7d1737784ff2))
 - Dependency updates and clippy fixes ([5aff6d1](5aff6d18e2b262d65c884bc3f45641e7622d5994))
-
-### Security
-
-- Introduce security_requirement_multi ([ca5bc4e](ca5bc4e8dd05aed2facb274b7a2f11d48c02ad59))
 
 ## 0.6.0 - 2023-04-30
 
