@@ -3,6 +3,12 @@ name = "aide-axum-sqlx-tx"
 version = "0.12.0"
 edition = "2021"
 resolver = "2"
+authors = ["Wicpar"]
+keywords = ["web", "axum", "json"]
+repository = "https://github.com/tamasfe/aide"
+license = "MIT OR Apache-2.0"
+description = "axum-sqlx-tx for aide"
+readme = "README.md"
 
 [dependencies]
 sqlx-06 = { package = "axum-sqlx-tx", version = "0.5.0", optional = true }

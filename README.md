@@ -28,6 +28,12 @@ A JSON request validation library for [axum](https://github.com/tokio-rs/axum).
 
 Read the [docs](https://docs.rs/axum-jsonschema/latest/axum_jsonschema/).
 
+### [aide-axum-sqlx-tx](./crates/aide-axum-sqlx-tx/README.md)
+
+⚠️ the axum-sqlx-tx feature is deprecated and replaced by this crate
+
+Drop in replacement for `axum-sqlx-tx` compatible with aide.
+
 ## Contributing
 
 All contributions are welcome! Make sure to read [CONTRIBUTING.md](./CONTRIBUTING.md).
