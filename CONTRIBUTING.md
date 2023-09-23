@@ -29,6 +29,15 @@ and no one is already working on the same thing.
 
 If you are unsure, feel free to open an [issue](https://github.com/tamasfe/aide/issues) or start a [discussion](https://github.com/tamasfe/aide/discussions)!
 
+# Changelogs
+
+Changelogs are generated as follows using [git-cliff](https://git-cliff.org/docs/) (`cargo install git-cliff`), replace <crate> by the crate name (ie. aide) and <version by the next version>.
+Make sure you delete the old `# Changelog` title in the changelog file.
+
+```sh
+git cliff --config "crates/<crate>/cliff.toml" --include-path "crates/<crate>/**/*" --unreleased --tag <version> --prepend crates/<crate>/CHANGELOG.md
+```
+
 # License
 
 All contributions are licensed under MIT or Apache-2.0 at your option.
