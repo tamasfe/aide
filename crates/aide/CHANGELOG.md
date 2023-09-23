@@ -2,7 +2,7 @@
 
 ## 0.12.0 - 2023-09-23
 
-[31aae3e](31aae3e72e0ec91f874d2471ba56f3b602b1e053)...[31aae3e](31aae3e72e0ec91f874d2471ba56f3b602b1e053)
+[b8ef557](b8ef557288dac5e010b03505216ebfac293c5c88)...[b8ef557](b8ef557288dac5e010b03505216ebfac293c5c88)
 
 ### Bug Fixes
 
@@ -67,7 +67,6 @@ the API documentation. Also propagate changes to `with_state` from axum 0.6.0-rc
 
 - Hide tower- optional dependencies ([152cb06](152cb06e0a9428d53290240b739aab383daa8614))
 - Extend extract_schemas docs ([0b6232d](0b6232d81a1362e7fa1340765f43a5628ca86895))
-- Axum example cleanup ([5be6efd](5be6efd844ba5b287da4848a1595d74eb8647fd9))
 - Update crate version ([4540c20](4540c20d7f9f62c788fa64cbe8c05c5863854c28))
 - Removed temporary default features ([a7e5835](a7e5835542cab8eec82ad389cac7834ccdd5bc2a))
 - Updated axum-extra and added output for cookie jars ([#53](https://github.com/tamasfe/aide/issues/53)) ([bef5ff2](bef5ff26446493974490558858083897ee0b1dbf))
