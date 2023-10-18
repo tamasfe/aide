@@ -284,6 +284,13 @@ impl OperationInput for axum::extract::ws::WebSocketUpgrade {
     }
 }
 
+#[cfg(feature = "axum-ws")]
+impl OperationInput for axum_tungstenite::WebSocketUpgrade {
+    fn operation_input(ctx: &mut crate::gen::GenContext, operation: &mut Operation) {
+        axum::extract::ws::WebSocketUpgrade::operation_input(ctx, operation)
+    }
+}
+
 #[cfg(feature = "axum-multipart")]
 impl OperationInput for axum::extract::Multipart {
     fn operation_input(ctx: &mut crate::gen::GenContext, operation: &mut Operation) {
