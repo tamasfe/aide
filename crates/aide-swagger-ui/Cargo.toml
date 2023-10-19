@@ -1,0 +1,18 @@
+[package]
+name = "aide-swagger-ui"
+version = "0.12.0"
+edition = "2021"
+resolver = "2"
+authors = ["Wicpar"]
+keywords = ["web", "axum", "aide", "swagger"]
+repository = "https://github.com/tamasfe/aide"
+license = "MIT OR Apache-2.0"
+description = "swagger-ui for aide"
+readme = "README.md"
+
+[dependencies]
+aide = { version = "0.12.0", path = "../aide" }
+
+[dev-dependencies]
+
+[features]
