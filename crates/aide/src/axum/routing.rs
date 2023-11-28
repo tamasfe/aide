@@ -8,15 +8,12 @@ use crate::{
     openapi::{Operation, PathItem, ReferenceOr, Response, StatusCode},
     Error,
 };
-use axum::body::HttpBody;
+use axum::body::{Body, HttpBody};
 use axum::routing::Route;
 use axum::{
-    body::Body,
     handler::Handler,
     routing::{self, MethodRouter},
-    BoxError,
 };
-use bytes::Bytes;
 use http::Request;
 use indexmap::IndexMap;
 use tower_layer::Layer;
@@ -31,19 +28,19 @@ use crate::{
 /// A wrapper over [`axum::routing::MethodRouter`] that adds
 /// API documentation-specific features.
 #[must_use]
-pub struct ApiMethodRouter<S = (), B = Body, E = Infallible> {
+pub struct ApiMethodRouter<S = (), E = Infallible> {
     pub(crate) operations: IndexMap<&'static str, Operation>,
-    pub(crate) router: MethodRouter<S, B, E>,
+    pub(crate) router: MethodRouter<S, E>,
 }
 
-impl<S, B, E> From<ApiMethodRouter<S, B, E>> for MethodRouter<S, B, E> {
-    fn from(router: ApiMethodRouter<S, B, E>) -> Self {
+impl<S, E> From<ApiMethodRouter<S, E>> for MethodRouter<S, E> {
+    fn from(router: ApiMethodRouter<S, E>) -> Self {
         router.router
     }
 }
 
-impl<S, B, E> From<MethodRouter<S, B, E>> for ApiMethodRouter<S, B, E> {
-    fn from(router: MethodRouter<S, B, E>) -> Self {
+impl<S, E> From<MethodRouter<S, E>> for ApiMethodRouter<S, E> {
+    fn from(router: MethodRouter<S, E>) -> Self {
         Self {
             operations: IndexMap::default(),
             router,
@@ -51,7 +48,7 @@ impl<S, B, E> From<MethodRouter<S, B, E>> for ApiMethodRouter<S, B, E> {
     }
 }
 
-impl<S, B, E> ApiMethodRouter<S, B, E> {
+impl<S, E> ApiMethodRouter<S, E> {
     pub(crate) fn take_path_item(&mut self) -> PathItem {
         let mut path = PathItem::default();
 
@@ -76,25 +73,14 @@ impl<S, B, E> ApiMethodRouter<S, B, E> {
 macro_rules! method_router_chain_method {
     ($name:ident, $name_with:ident) => {
         #[doc = concat!("Route `", stringify!($name) ,"` requests to the given handler. See [`axum::routing::MethodRouter::", stringify!($name) , "`] for more details.")]
-        pub fn $name<H, I, O, T>(mut self, handler: H) -> Self
+        pub fn $name<H, I, O, T>(self, handler: H) -> Self
         where
-            H: Handler<T, S, B> + OperationHandler<I, O>,
+            H: Handler<T, S> + OperationHandler<I, O>,
             I: OperationInput,
             O: OperationOutput,
-            B: Send + 'static,
             T: 'static,
         {
-            let mut operation = Operation::default();
-            in_context(|ctx| {
-                I::operation_input(ctx, &mut operation);
-
-                for (code, res) in O::inferred_responses(ctx, &mut operation) {
-                    set_inferred_response(ctx, &mut operation, code, res);
-                }
-            });
-            self.operations.insert(stringify!($name), operation);
-            self.router = self.router.$name(handler);
-            self
+            self.$name_with(handler, |t| t)
         }
 
         #[doc = concat!("Route `", stringify!($name) ,"` requests to the given handler. See [`axum::routing::MethodRouter::", stringify!($name) , "`] for more details.")]
@@ -103,10 +89,9 @@ macro_rules! method_router_chain_method {
         /// see [`crate::axum`] for more details.
         pub fn $name_with<H, I, O, T, F>(mut self, handler: H, transform: F) -> Self
         where
-            H: Handler<T, S, B> + OperationHandler<I, O>,
+            H: Handler<T, S> + OperationHandler<I, O>,
             I: OperationInput,
             O: OperationOutput,
-            B: Send + 'static,
             T: 'static,
             F: FnOnce(TransformOperation) -> TransformOperation,
         {
@@ -145,36 +130,15 @@ macro_rules! method_router_top_level {
     ($name:ident, $name_with:ident) => {
         #[doc = concat!("Route `", stringify!($name) ,"` requests to the given handler. See [`axum::routing::", stringify!($name) , "`] for more details.")]
         #[tracing::instrument(skip_all)]
-        pub fn $name<H, I, O, T, B, S>(handler: H) -> ApiMethodRouter<S, B, Infallible>
+        pub fn $name<H, I, O, T, S>(handler: H) -> ApiMethodRouter<S, Infallible>
         where
-            H: Handler<T, S, B> + OperationHandler<I, O>,
+            H: Handler<T, S> + OperationHandler<I, O>,
             I: OperationInput,
             O: OperationOutput,
-            B: HttpBody + Send + Sync + 'static,
             S: Clone + Send + Sync + 'static,
             T: 'static,
         {
-            let mut router = ApiMethodRouter::from(routing::$name(handler));
-            let mut operation = Operation::default();
-            in_context(|ctx| {
-                I::operation_input(ctx, &mut operation);
-
-                for (code, res) in O::inferred_responses(ctx, &mut operation) {
-                    set_inferred_response(ctx, &mut operation, code, res);
-                }
-
-                // On conflict, input early responses potentially overwrite
-                // output inferred responses on purpose, as they
-                // are stronger in a sense that the request won't
-                // even reach the handler body.
-                for (code, res) in I::inferred_early_responses(ctx, &mut operation) {
-                    set_inferred_response(ctx, &mut operation, code, res);
-                }
-            });
-
-            router.operations.insert(stringify!($name), operation);
-
-            router
+            $crate::axum::routing::$name_with(handler, |t| t)
         }
 
         #[doc = concat!("Route `", stringify!($name) ,"` requests to the given handler. See [`axum::routing::", stringify!($name) , "`] for more details.")]
@@ -182,15 +146,14 @@ macro_rules! method_router_top_level {
         /// This method additionally accepts a transform function,
         /// see [`crate::axum`] for more details.
         #[tracing::instrument(skip_all)]
-        pub fn $name_with<H, I, O, T, B, S, F>(
+        pub fn $name_with<H, I, O, T, S, F>(
             handler: H,
             transform: F,
-        ) -> ApiMethodRouter<S, B, Infallible>
+        ) -> ApiMethodRouter<S, Infallible>
         where
-            H: Handler<T, S, B> + OperationHandler<I, O>,
+            H: Handler<T, S> + OperationHandler<I, O>,
             I: OperationInput,
             O: OperationOutput,
-            B: axum::body::HttpBody + Send + Sync + 'static,
             S: Clone + Send + Sync + 'static,
             T: 'static,
             F: FnOnce(TransformOperation) -> TransformOperation,
@@ -258,10 +221,9 @@ fn set_inferred_response(
     }
 }
 
-impl<S, B> ApiMethodRouter<S, B, Infallible>
+impl<S> ApiMethodRouter<S, Infallible>
 where
     S: Clone + Send + Sync + 'static,
-    B: HttpBody + Send + Sync + 'static,
 {
     method_router_chain_method!(delete, delete_with);
     method_router_chain_method!(get, get_with);
@@ -274,25 +236,16 @@ where
 
     /// This method wraps a layer around the [`ApiMethodRouter`]
     /// For further information see [`axum::routing::method_routing::MethodRouter::layer`]
-    pub fn layer<L, NewReqBody, NewResBody, NewError>(
-        self,
-        layer: L,
-    ) -> ApiMethodRouter<S, NewReqBody, NewError>
+    pub fn layer<L, NewError>(self, layer: L) -> ApiMethodRouter<S, NewError>
     where
-        L: Layer<Route<B, Infallible>> + Clone + Send + 'static,
-        L::Service: Service<
-                Request<NewReqBody>,
-                Response = http::response::Response<NewResBody>,
-                Error = NewError,
-            > + Clone
+        L: Layer<Route<Infallible>> + Clone + Send + 'static,
+        L::Service: Service<Request<Body>, Response = http::response::Response<Body>, Error = NewError>
+            + Clone
             + Send
             + 'static,
-        <L::Service as Service<Request<NewReqBody>>>::Future: Send + 'static,
-        NewResBody: 'static,
-        NewReqBody: HttpBody + 'static,
+        <L::Service as Service<Request<Body>>>::Future: Send + 'static,
+        Body: HttpBody + 'static,
         NewError: 'static,
-        NewResBody: HttpBody<Data = Bytes> + Send + 'static,
-        NewResBody::Error: Into<BoxError>,
     {
         ApiMethodRouter {
             router: self.router.layer(layer),
@@ -301,22 +254,21 @@ where
     }
 }
 
-impl<S, B, E> ApiMethodRouter<S, B, E>
+impl<S, E> ApiMethodRouter<S, E>
 where
-    B: HttpBody + Send + 'static,
     S: Clone,
 {
     /// Create a new, clean [`ApiMethodRouter`] based on [`MethodRouter::new()`](axum::routing::MethodRouter).
     pub fn new() -> Self {
         Self {
             operations: IndexMap::default(),
-            router: MethodRouter::<S, B, E>::new(),
+            router: MethodRouter::<S, E>::new(),
         }
     }
     /// See [`axum::routing::MethodRouter`] and [`axum::extract::State`] for more information.
-    pub fn with_state<S2>(self, state: S) -> ApiMethodRouter<S2, B, E> {
+    pub fn with_state<S2>(self, state: S) -> ApiMethodRouter<S2, E> {
         let router = self.router.with_state(state);
-        ApiMethodRouter::<S2, B, E> {
+        ApiMethodRouter::<S2, E> {
             operations: self.operations,
             router,
         }
@@ -325,7 +277,7 @@ where
     /// See [`axum::routing::MethodRouter::merge`] for more information.
     pub fn merge<M>(mut self, other: M) -> Self
     where
-        M: Into<ApiMethodRouter<S, B, E>>
+        M: Into<ApiMethodRouter<S, E>>,
     {
         let other = other.into();
         self.operations.extend(other.operations);
@@ -334,9 +286,8 @@ where
     }
 }
 
-impl<S, B, E> Default for ApiMethodRouter<S, B, E>
+impl<S, E> Default for ApiMethodRouter<S, E>
 where
-    B: HttpBody + Send + 'static,
     S: Clone,
 {
     fn default() -> Self {

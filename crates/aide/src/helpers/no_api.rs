@@ -3,8 +3,8 @@ use serde::{Deserialize, Serialize};
 
 use crate::{OperationInput, OperationOutput};
 
-/// Allows non [OperationInput] or [OperationOutput] types to be used in aide handlers with a default empty documentation.  
-/// For types that already implement [OperationInput] or [OperationOutput] it overrides the documentation and hides it.
+/// Allows non [`OperationInput`] or [`OperationOutput`] types to be used in aide handlers with a default empty documentation.  
+/// For types that already implement [`OperationInput`] or [`OperationOutput`] it overrides the documentation and hides it.
 /// ```ignore
 /// pub async fn my_sqlx_tx_endpoint(
 ///     NoApi(mut tx): NoApi<Tx<sqlx::Any>> // allows usage of the TX
@@ -45,9 +45,9 @@ impl<T> OperationOutput for NoApi<T> {
 
 #[cfg(feature = "axum")]
 mod axum {
-    use axum::async_trait;
     use axum::extract::{FromRequest, FromRequestParts};
     use axum::response::{IntoResponse, IntoResponseParts, Response, ResponseParts};
+    use axum::{async_trait, body::Body};
     use http::request::Parts;
     use http::Request;
 
@@ -87,15 +87,14 @@ mod axum {
     }
 
     #[async_trait]
-    impl<T, S, B> FromRequest<S, B> for NoApi<T>
+    impl<T, S> FromRequest<S> for NoApi<T>
     where
-        T: FromRequest<S, B>,
+        T: FromRequest<S>,
         S: Send + Sync,
-        B: Send + 'static,
     {
         type Rejection = <T>::Rejection;
 
-        async fn from_request(req: Request<B>, state: &S) -> Result<Self, Self::Rejection> {
+        async fn from_request(req: Request<Body>, state: &S) -> Result<Self, Self::Rejection> {
             Ok(Self(<T>::from_request(req, state).await?))
         }
     }

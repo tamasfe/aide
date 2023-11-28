@@ -6,9 +6,12 @@ use crate::{
     },
     operation::{add_parameters, set_body},
 };
-use axum::extract::{
-    BodyStream, ConnectInfo, Extension, Form, Host, Json, MatchedPath, OriginalUri, Path, Query,
-    RawBody, RawQuery, State,
+use axum::{
+    body::Body,
+    extract::{
+        ConnectInfo, Extension, Form, Host, Json, MatchedPath, OriginalUri, Path, Query, RawQuery,
+        State,
+    },
 };
 use indexmap::IndexMap;
 use schemars::{
@@ -24,11 +27,10 @@ use crate::{
 
 impl<T> OperationInput for Extension<T> {}
 impl<T> OperationInput for State<T> {}
-impl OperationInput for BodyStream {}
 impl<T> OperationInput for ConnectInfo<T> {}
 impl OperationInput for MatchedPath {}
 impl OperationInput for OriginalUri {}
-impl OperationInput for RawBody {}
+impl OperationInput for Body {}
 impl OperationInput for RawQuery {}
 impl OperationInput for Host {}
 

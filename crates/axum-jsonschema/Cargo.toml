@@ -1,6 +1,6 @@
 [package]
 name = "axum-jsonschema"
-version = "0.7.0"
+version = "0.8.0"
 edition = "2021"
 authors = ["tamasfe"]
 keywords = ["web", "axum", "json"]
@@ -10,14 +10,14 @@ description = "Request JSON schema validation for axum"
 readme = "README.md"
 
 [dependencies]
-aide = { version = "0.12.0", path = "../aide", optional = true, features = [
+aide = { version = "0.13.0", path = "../aide", optional = true, features = [
     "axum",
 ] }
 async-trait = "0.1.57"
-axum = { version = "0.6.0", default-features = false, features = ["json"] }
-http = "0.2.8"
-http-body = "0.4.5"
-itertools = "0.10.5"
+axum = { version = "0.7.1", default-features = false, features = ["json"] }
+http = "1.0.0"
+http-body = "1.0.0"
+itertools = "0.12.0"
 jsonschema = { version = "0.17.0", default-features = false }
 schemars = { version = "0.8.10", default-features = false }
 serde = { version = "1.0.144", features = ["derive"] }

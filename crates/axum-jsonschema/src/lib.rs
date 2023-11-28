@@ -23,9 +23,9 @@ use std::{
 
 use async_trait::async_trait;
 use axum::{
+    body::Body,
     extract::{rejection::JsonRejection, FromRequest},
     response::IntoResponse,
-    BoxError,
 };
 use http::{Request, StatusCode};
 use itertools::Itertools;
@@ -47,18 +47,15 @@ use serde_path_to_error::Segment;
 pub struct Json<T>(pub T);
 
 #[async_trait]
-impl<S, B, T> FromRequest<S, B> for Json<T>
+impl<S, T> FromRequest<S> for Json<T>
 where
-    B: http_body::Body + Send + 'static,
-    B::Data: Send,
-    B::Error: Into<BoxError>,
     S: Send + Sync,
     T: DeserializeOwned + JsonSchema + 'static,
 {
     type Rejection = JsonSchemaRejection;
 
     /// Perform the extraction.
-    async fn from_request(req: Request<B>, state: &S) -> Result<Self, Self::Rejection> {
+    async fn from_request(req: Request<Body>, state: &S) -> Result<Self, Self::Rejection> {
         let value: Value = match axum::Json::from_request(req, state).await {
             Ok(j) => j.0,
             Err(error) => {
