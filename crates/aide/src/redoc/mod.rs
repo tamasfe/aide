@@ -52,18 +52,20 @@
 //!         },
 //!         ..OpenApi::default()
 //!     };
+//! 
+//!     let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
 //!
-//!     axum::Server::bind(&"0.0.0.0:3000".parse().unwrap())
-//!         .serve(
-//!             app
-//!                 // Generate the documentation.
-//!                 .finish_api(&mut api)
-//!                 // Expose the documentation to the handlers.
-//!                 .layer(Extension(api))
-//!                 .into_make_service(),
-//!         )
-//!         .await
-//!         .unwrap();
+//!     axum::serve(
+//!         listener,
+//!         app
+//!             // Generate the documentation.
+//!             .finish_api(&mut api)
+//!             // Expose the documentation to the handlers.
+//!             .layer(Extension(api))
+//!             .into_make_service(),
+//!     )
+//!     .await
+//!     .unwrap();
 //! }
 //! ```
 
@@ -162,12 +164,9 @@ mod axum_impl {
         /// );
         /// ```
         #[must_use]
-        pub fn axum_handler<S, B>(
+        pub fn axum_handler<S>(
             &self,
-        ) -> impl AxumOperationHandler<(), Html<&'static str>, ((),), S, B>
-        where
-            B: axum::body::HttpBody + Send + 'static,
-        {
+        ) -> impl AxumOperationHandler<(), Html<&'static str>, ((),), S> {
             let html = self.html();
             // This string will be used during the entire lifetime of the program
             // so it's safe to leak it

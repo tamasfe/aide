@@ -29,10 +29,9 @@
 //! async fn main() {
 //!     let app = Router::new().route("/hello", post(hello_user));
 //!
-//!     axum::Server::bind(&"0.0.0.0:3000".parse().unwrap())
-//!         .serve(app.into_make_service())
-//!         .await
-//!         .unwrap();
+//!     let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
+//!
+//!     axum::serve(listener, app).await.unwrap();
 //! }
 //! ```
 //!
@@ -86,17 +85,19 @@
 //!         ..OpenApi::default()
 //!     };
 //!
-//!     axum::Server::bind(&"0.0.0.0:3000".parse().unwrap())
-//!         .serve(
-//!             app
-//!                 // Generate the documentation.
-//!                 .finish_api(&mut api)
-//!                 // Expose the documentation to the handlers.
-//!                 .layer(Extension(api))
-//!                 .into_make_service(),
-//!         )
-//!         .await
-//!         .unwrap();
+//!     let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
+//!
+//!     axum::serve(
+//!         listener,
+//!         app
+//!             // Generate the documentation.
+//!             .finish_api(&mut api)
+//!             // Expose the documentation to the handlers.
+//!             .layer(Extension(api))
+//!             .into_make_service(),
+//!     )
+//!     .await
+//!     .unwrap();
 //! }
 //! ```
 //!
@@ -177,7 +178,7 @@ use crate::{
     OperationInput, OperationOutput,
 };
 use axum::{
-    body::{Body, HttpBody},
+    body::Body,
     extract::connect_info::IntoMakeServiceWithConnectInfo,
     handler::Handler,
     http::Request,
@@ -206,12 +207,12 @@ pub mod routing;
 /// API documentation-specific features.
 #[must_use]
 #[derive(Debug)]
-pub struct ApiRouter<S = (), B = Body> {
+pub struct ApiRouter<S = ()> {
     paths: IndexMap<String, PathItem>,
-    router: Router<S, B>,
+    router: Router<S>,
 }
 
-impl<S, B> Clone for ApiRouter<S, B> {
+impl<S> Clone for ApiRouter<S> {
     fn clone(&self) -> Self {
         Self {
             paths: self.paths.clone(),
@@ -220,41 +221,34 @@ impl<S, B> Clone for ApiRouter<S, B> {
     }
 }
 
-impl<B> Service<Request<B>> for ApiRouter<(), B>
-where
-    B: HttpBody + Send + 'static,
-{
+impl Service<Request<Body>> for ApiRouter<()> {
     type Response = axum::response::Response;
     type Error = Infallible;
-    type Future = axum::routing::future::RouteFuture<B, Infallible>;
+    type Future = axum::routing::future::RouteFuture<Infallible>;
 
     #[inline]
     fn poll_ready(
         &mut self,
         cx: &mut std::task::Context<'_>,
     ) -> std::task::Poll<Result<(), Self::Error>> {
-        self.router.poll_ready(cx)
+        <axum::Router as Service<Request<Body>>>::poll_ready(&mut self.router, cx)
     }
 
     #[inline]
-    fn call(&mut self, req: Request<B>) -> Self::Future {
+    fn call(&mut self, req: Request<Body>) -> Self::Future {
         self.router.call(req)
     }
 }
 
 #[allow(clippy::mismatching_type_param_order)]
-impl<B> Default for ApiRouter<(), B>
-where
-    B: HttpBody + Send + 'static,
-{
+impl Default for ApiRouter<()> {
     fn default() -> Self {
         Self::new()
     }
 }
 
-impl<S, B> ApiRouter<S, B>
+impl<S> ApiRouter<S>
 where
-    B: HttpBody + Send + 'static,
     S: Clone + Send + Sync + 'static,
 {
     /// Create a new router.
@@ -270,7 +264,7 @@ where
     /// Add state to the router.
     ///
     /// See [`axum::Router::with_state`] for details.
-    pub fn with_state<S2>(self, state: S) -> ApiRouter<S2, B> {
+    pub fn with_state<S2>(self, state: S) -> ApiRouter<S2> {
         ApiRouter {
             paths: self.paths,
             router: self.router.with_state(state),
@@ -297,7 +291,7 @@ where
     ///
     /// See [`axum::Router::route`] for details.
     #[tracing::instrument(skip_all, fields(%path))]
-    pub fn api_route(mut self, path: &str, mut method_router: ApiMethodRouter<S, B>) -> Self {
+    pub fn api_route(mut self, path: &str, mut method_router: ApiMethodRouter<S>) -> Self {
         in_context(|ctx| {
             let new_path_item = method_router.take_path_item();
 
@@ -323,7 +317,7 @@ where
     pub fn api_route_with(
         mut self,
         path: &str,
-        mut method_router: ApiMethodRouter<S, B>,
+        mut method_router: ApiMethodRouter<S>,
         transform: impl FnOnce(TransformPathItem) -> TransformPathItem,
     ) -> Self {
         in_context(|ctx| {
@@ -346,7 +340,7 @@ where
     /// Turn this router into an [`axum::Router`] while merging
     /// generated documentation into the provided [`OpenApi`].
     #[tracing::instrument(skip_all)]
-    pub fn finish_api(mut self, api: &mut OpenApi) -> Router<S, B> {
+    pub fn finish_api(mut self, api: &mut OpenApi) -> Router<S> {
         self.merge_api(api);
         self.router
     }
@@ -357,7 +351,7 @@ where
     /// This method accepts a transform function to edit
     /// the generated API documentation with.
     #[tracing::instrument(skip_all)]
-    pub fn finish_api_with<F>(mut self, api: &mut OpenApi, transform: F) -> Router<S, B>
+    pub fn finish_api_with<F>(mut self, api: &mut OpenApi, transform: F) -> Router<S>
     where
         F: FnOnce(TransformOpenApi) -> TransformOpenApi,
     {
@@ -420,16 +414,15 @@ where
 }
 
 /// Existing methods extended with api-specifics.
-impl<S, B> ApiRouter<S, B>
+impl<S> ApiRouter<S>
 where
-    B: HttpBody + Send + 'static,
     S: Clone + Send + Sync + 'static,
 {
     /// See [`axum::Router::route`] for details.
     ///
     /// This method accepts [`ApiMethodRouter`] but does not generate API documentation.
     #[tracing::instrument(skip_all)]
-    pub fn route(mut self, path: &str, method_router: impl Into<ApiMethodRouter<S, B>>) -> Self {
+    pub fn route(mut self, path: &str, method_router: impl Into<ApiMethodRouter<S>>) -> Self {
         self.router = self.router.route(path, method_router.into().router);
         self
     }
@@ -438,7 +431,7 @@ where
     #[tracing::instrument(skip_all)]
     pub fn route_service<T>(mut self, path: &str, service: T) -> Self
     where
-        T: Service<Request<B>, Error = Infallible> + Clone + Send + 'static,
+        T: Service<Request<Body>, Error = Infallible> + Clone + Send + 'static,
         T::Response: IntoResponse,
         T::Future: Send + 'static,
     {
@@ -450,7 +443,7 @@ where
     ///
     /// The generated documentations are nested as well.
     #[tracing::instrument(skip_all)]
-    pub fn nest(mut self, mut path: &str, router: ApiRouter<S, B>) -> Self {
+    pub fn nest(mut self, mut path: &str, router: ApiRouter<S>) -> Self {
         self.router = self.router.nest(path, router.router);
 
         path = path.trim_end_matches('/');
@@ -474,12 +467,8 @@ where
     ///
     /// Thus the primary and probably the only use-case
     /// of this function is nesting routers with different states.
-    pub fn nest_api_service(
-        mut self,
-        mut path: &str,
-        service: impl Into<ApiRouter<(), B>>,
-    ) -> Self {
-        let router: ApiRouter<(), B> = service.into();
+    pub fn nest_api_service(mut self, mut path: &str, service: impl Into<ApiRouter<()>>) -> Self {
+        let router: ApiRouter<()> = service.into();
 
         path = path.trim_end_matches('/');
         self.paths.extend(
@@ -496,7 +485,7 @@ where
     /// to pass on the API documentation from the nested service as well.
     pub fn nest_service<T>(mut self, path: &str, svc: T) -> Self
     where
-        T: Service<Request<B>, Error = Infallible> + Clone + Send + 'static,
+        T: Service<Request<Body>, Error = Infallible> + Clone + Send + 'static,
         T::Response: IntoResponse,
         T::Future: Send + 'static,
     {
@@ -511,9 +500,9 @@ where
     /// are merged as well..
     pub fn merge<R>(mut self, other: R) -> Self
     where
-        R: Into<ApiRouter<S, B>>,
+        R: Into<ApiRouter<S>>,
     {
-        let other: ApiRouter<S, B> = other.into();
+        let other: ApiRouter<S> = other.into();
 
         for (key, path) in other.paths {
             match self.paths.entry(key) {
@@ -530,14 +519,13 @@ where
     }
 
     /// See [`axum::Router::layer`] for details.
-    pub fn layer<L, NewReqBody>(self, layer: L) -> ApiRouter<S, NewReqBody>
+    pub fn layer<L>(self, layer: L) -> ApiRouter<S>
     where
-        L: Layer<Route<B>> + Clone + Send + 'static,
-        L::Service: Service<Request<NewReqBody>> + Clone + Send + 'static,
-        <L::Service as Service<Request<NewReqBody>>>::Response: IntoResponse + 'static,
-        <L::Service as Service<Request<NewReqBody>>>::Error: Into<Infallible> + 'static,
-        <L::Service as Service<Request<NewReqBody>>>::Future: Send + 'static,
-        NewReqBody: HttpBody + 'static,
+        L: Layer<Route> + Clone + Send + 'static,
+        L::Service: Service<Request<Body>> + Clone + Send + 'static,
+        <L::Service as Service<Request<Body>>>::Response: IntoResponse + 'static,
+        <L::Service as Service<Request<Body>>>::Error: Into<Infallible> + 'static,
+        <L::Service as Service<Request<Body>>>::Future: Send + 'static,
     {
         ApiRouter {
             paths: self.paths,
@@ -548,11 +536,11 @@ where
     /// See [`axum::Router::route_layer`] for details.
     pub fn route_layer<L>(mut self, layer: L) -> Self
     where
-        L: Layer<Route<B>> + Clone + Send + 'static,
-        L::Service: Service<Request<B>> + Clone + Send + 'static,
-        <L::Service as Service<Request<B>>>::Response: IntoResponse + 'static,
-        <L::Service as Service<Request<B>>>::Error: Into<Infallible> + 'static,
-        <L::Service as Service<Request<B>>>::Future: Send + 'static,
+        L: Layer<Route> + Clone + Send + 'static,
+        L::Service: Service<Request<Body>> + Clone + Send + 'static,
+        <L::Service as Service<Request<Body>>>::Response: IntoResponse + 'static,
+        <L::Service as Service<Request<Body>>>::Error: Into<Infallible> + 'static,
+        <L::Service as Service<Request<Body>>>::Future: Send + 'static,
     {
         self.router = self.router.route_layer(layer);
         self
@@ -561,7 +549,7 @@ where
     /// See [`axum::Router::fallback`] for details.
     pub fn fallback<H, T>(mut self, handler: H) -> Self
     where
-        H: Handler<T, S, B>,
+        H: Handler<T, S>,
         T: 'static,
     {
         self.router = self.router.fallback(handler);
@@ -571,7 +559,7 @@ where
     /// See [`axum::Router::fallback_service`] for details.
     pub fn fallback_service<T>(mut self, svc: T) -> Self
     where
-        T: Service<Request<B>, Error = Infallible> + Clone + Send + 'static,
+        T: Service<Request<Body>, Error = Infallible> + Clone + Send + 'static,
         T::Response: IntoResponse,
         T::Future: Send + 'static,
     {
@@ -580,14 +568,11 @@ where
     }
 }
 
-impl<B> ApiRouter<(), B>
-where
-    B: HttpBody + Send + 'static,
-{
+impl ApiRouter<()> {
     /// See [`axum::Router::into_make_service`] for details.
     #[tracing::instrument(skip_all)]
     #[must_use]
-    pub fn into_make_service(self) -> IntoMakeService<Router<(), B>> {
+    pub fn into_make_service(self) -> IntoMakeService<Router<()>> {
         self.router.into_make_service()
     }
 
@@ -596,13 +581,13 @@ where
     #[must_use]
     pub fn into_make_service_with_connect_info<C>(
         self,
-    ) -> IntoMakeServiceWithConnectInfo<Router<(), B>, C> {
+    ) -> IntoMakeServiceWithConnectInfo<Router<()>, C> {
         self.router.into_make_service_with_connect_info()
     }
 }
 
-impl<S, B> From<Router<S, B>> for ApiRouter<S, B> {
-    fn from(router: Router<S, B>) -> Self {
+impl<S> From<Router<S>> for ApiRouter<S> {
+    fn from(router: Router<S>) -> Self {
         ApiRouter {
             paths: IndexMap::new(),
             router,
@@ -610,8 +595,8 @@ impl<S, B> From<Router<S, B>> for ApiRouter<S, B> {
     }
 }
 
-impl<S, B> From<ApiRouter<S, B>> for Router<S, B> {
-    fn from(api: ApiRouter<S, B>) -> Self {
+impl<S> From<ApiRouter<S>> for Router<S> {
+    fn from(api: ApiRouter<S>) -> Self {
         api.router
     }
 }
@@ -628,44 +613,43 @@ pub trait IntoApiResponse: IntoResponse + OperationOutput {}
 impl<T> IntoApiResponse for T where T: IntoResponse + OperationOutput {}
 
 /// Convenience extension trait for [`axum::Router`].
-pub trait RouterExt<S, B>: private::Sealed + Sized {
+pub trait RouterExt<S>: private::Sealed + Sized {
     /// Turn the router into an [`ApiRouter`] to enable
     /// automatic generation of API documentation.
-    fn into_api(self) -> ApiRouter<S, B>;
+    fn into_api(self) -> ApiRouter<S>;
     /// Add an API route, see [`ApiRouter::api_route`](crate::axum::ApiRouter::api_route)
     /// for details.
     ///
     /// This method additionally turns the router into an [`ApiRouter`].
-    fn api_route(self, path: &str, method_router: ApiMethodRouter<S, B>) -> ApiRouter<S, B>;
+    fn api_route(self, path: &str, method_router: ApiMethodRouter<S>) -> ApiRouter<S>;
 }
 
-impl<S, B> RouterExt<S, B> for Router<S, B>
+impl<S> RouterExt<S> for Router<S>
 where
-    B: HttpBody + Send + 'static,
     S: Clone + Send + Sync + 'static,
 {
     #[tracing::instrument(skip_all)]
-    fn into_api(self) -> ApiRouter<S, B> {
+    fn into_api(self) -> ApiRouter<S> {
         ApiRouter::from(self)
     }
 
     #[tracing::instrument(skip_all)]
-    fn api_route(self, path: &str, method_router: ApiMethodRouter<S, B>) -> ApiRouter<S, B> {
+    fn api_route(self, path: &str, method_router: ApiMethodRouter<S>) -> ApiRouter<S> {
         ApiRouter::from(self).api_route(path, method_router)
     }
 }
 
-impl<S, B> private::Sealed for Router<S, B> {}
+impl<S> private::Sealed for Router<S> {}
 
 #[doc(hidden)]
-pub enum ServiceOrApiRouter<B, T> {
+pub enum ServiceOrApiRouter<T> {
     Service(T),
-    Router(ApiRouter<(), B>),
+    Router(ApiRouter<()>),
 }
 
-impl<T, B> From<T> for ServiceOrApiRouter<B, T>
+impl<T> From<T> for ServiceOrApiRouter<T>
 where
-    T: Service<Request<B>, Error = Infallible> + Clone + Send + 'static,
+    T: Service<Request<Body>, Error = Infallible> + Clone + Send + 'static,
     T::Response: IntoResponse,
     T::Future: Send + 'static,
 {
@@ -674,8 +658,8 @@ where
     }
 }
 
-impl<B> From<ApiRouter<(), B>> for ServiceOrApiRouter<B, DefinitelyNotService> {
-    fn from(v: ApiRouter<(), B>) -> Self {
+impl From<ApiRouter<()>> for ServiceOrApiRouter<DefinitelyNotService> {
+    fn from(v: ApiRouter<()>) -> Self {
         Self::Router(v)
     }
 }
@@ -685,7 +669,7 @@ impl<B> From<ApiRouter<(), B>> for ServiceOrApiRouter<B, DefinitelyNotService> {
 #[doc(hidden)]
 pub enum DefinitelyNotService {}
 
-impl<B> Service<Request<B>> for DefinitelyNotService {
+impl Service<Request<Body>> for DefinitelyNotService {
     type Response = String;
 
     type Error = Infallible;
@@ -700,7 +684,7 @@ impl<B> Service<Request<B>> for DefinitelyNotService {
         unreachable!()
     }
 
-    fn call(&mut self, _req: Request<B>) -> Self::Future {
+    fn call(&mut self, _req: Request<Body>) -> Self::Future {
         unreachable!()
     }
 }
@@ -714,16 +698,16 @@ mod private {
 ///
 /// Just like axum's `Handler`, it is automatically implemented
 /// for the appropriate types.
-pub trait AxumOperationHandler<I, O, T, S, B>: Handler<T, S, B> + OperationHandler<I, O>
+pub trait AxumOperationHandler<I, O, T, S>: Handler<T, S> + OperationHandler<I, O>
 where
     I: OperationInput,
     O: OperationOutput,
 {
 }
 
-impl<H, I, O, T, S, B> AxumOperationHandler<I, O, T, S, B> for H
+impl<H, I, O, T, S> AxumOperationHandler<I, O, T, S> for H
 where
-    H: Handler<T, S, B> + OperationHandler<I, O>,
+    H: Handler<T, S> + OperationHandler<I, O>,
     I: OperationInput,
     O: OperationOutput,
 {

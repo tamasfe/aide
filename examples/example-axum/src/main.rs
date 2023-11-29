@@ -11,6 +11,7 @@ use errors::AppError;
 use extractors::Json;
 use state::AppState;
 use todos::routes::todo_routes;
+use tokio::net::TcpListener;
 use uuid::Uuid;
 
 pub mod docs;
@@ -40,10 +41,9 @@ async fn main() {
 
     println!("Example docs are accessible at http://127.0.0.1:3000/docs");
 
-    axum::Server::bind(&"0.0.0.0:3000".parse().unwrap())
-        .serve(app.into_make_service())
-        .await
-        .unwrap();
+    let listener = TcpListener::bind("0.0.0.0:3000").await.unwrap();
+
+    axum::serve(listener, app).await.unwrap();
 }
 
 fn api_docs(api: TransformOpenApi) -> TransformOpenApi {

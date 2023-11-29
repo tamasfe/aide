@@ -42,13 +42,10 @@ pub fn on_error(handler: impl Fn(Error) + 'static) {
 /// Collect common schemas in the thread-local context,
 /// then store them under `#/components/schemas` the next
 /// time generated content is merged into [`OpenApi`].
-/// This feature is disabled by default.
+/// This feature is enabled by default.
 ///
 /// This will automatically clear the schemas stored
 /// in the context when they are merged into the documentation.
-///
-/// **warning**: This might cause name conflicts that are not detected!
-/// For more information see <https://github.com/GREsau/schemars/issues/62>.
 ///
 /// [`OpenApi`]: crate::openapi::OpenApi
 pub fn extract_schemas(extract: bool) {
@@ -83,15 +80,17 @@ pub fn inferred_empty_response_status(status: u16) {
 /// Infer responses based on request handler
 /// return types.
 ///
-/// This is disabled by default to avoid incorrect
-/// documentation.
+/// This is enabled by default.
 pub fn infer_responses(infer: bool) {
     in_context(|ctx| {
         ctx.infer_responses = infer;
     });
 }
 
-/// Output All error responses based on axum.
+/// Output all theoretically possbile error responses
+/// including framework-specific ones.
+///
+/// This is disabled by default.
 pub fn all_error_responses(infer: bool) {
     in_context(|ctx| {
         ctx.all_error_responses = infer;
@@ -146,11 +145,11 @@ impl GenContext {
 
         Self {
             schema: SchemaGenerator::new(
-                SchemaSettings::draft07().with(|s| s.inline_subschemas = true),
+                SchemaSettings::draft07().with(|s| s.inline_subschemas = false),
             ),
-            infer_responses: false,
+            infer_responses: true,
             all_error_responses: false,
-            extract_schemas: false,
+            extract_schemas: true,
             show_error: default_error_filter,
             error_handler: None,
             no_content_status,

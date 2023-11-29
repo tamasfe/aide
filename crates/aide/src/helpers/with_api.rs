@@ -62,9 +62,9 @@ pub trait ApiOverride {
     type Target;
 }
 
-/// Allows non [OperationInput] or [OperationOutput] types to be used in aide handlers with a provided documentation.  
-/// For types that already implement [OperationInput] or [OperationOutput] it overrides the documentation with the provided one.
-/// See [ApiOverride] on how to implement such an override
+/// Allows non [`OperationInput`] or [`OperationOutput`] types to be used in aide handlers with a provided documentation.  
+/// For types that already implement [`OperationInput`] or [`OperationOutput`] it overrides the documentation with the provided one.
+/// See [`ApiOverride`] on how to implement such an override
 #[derive(
     Copy,
     Clone,
@@ -107,7 +107,7 @@ where
     T: OperationInput + ApiOverride,
 {
     fn operation_input(ctx: &mut GenContext, operation: &mut Operation) {
-        T::operation_input(ctx, operation)
+        T::operation_input(ctx, operation);
     }
 
     fn inferred_early_responses(
@@ -139,9 +139,9 @@ where
 #[cfg(feature = "axum")]
 mod axum {
     use crate::helpers::with_api::ApiOverride;
-    use axum::async_trait;
     use axum::extract::{FromRequest, FromRequestParts};
     use axum::response::{IntoResponse, IntoResponseParts, Response, ResponseParts};
+    use axum::{async_trait, body::Body};
     use http::request::Parts;
     use http::Request;
 
@@ -187,18 +187,17 @@ mod axum {
     }
 
     #[async_trait]
-    impl<T, S, B> FromRequest<S, B> for WithApi<T>
+    impl<T, S> FromRequest<S> for WithApi<T>
     where
         T: ApiOverride,
-        T::Target: FromRequest<S, B>,
+        T::Target: FromRequest<S>,
         S: Send + Sync,
-        B: Send + 'static,
     {
-        type Rejection = <T::Target as FromRequest<S, B>>::Rejection;
+        type Rejection = <T::Target as FromRequest<S>>::Rejection;
 
-        async fn from_request(req: Request<B>, state: &S) -> Result<Self, Self::Rejection> {
+        async fn from_request(req: Request<Body>, state: &S) -> Result<Self, Self::Rejection> {
             Ok(Self(
-                <T::Target as FromRequest<S, B>>::from_request(req, state).await?,
+                <T::Target as FromRequest<S>>::from_request(req, state).await?,
                 Default::default(),
             ))
         }
