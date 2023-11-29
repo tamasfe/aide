@@ -8,8 +8,8 @@ use crate::{
     openapi::{Operation, PathItem, ReferenceOr, Response, StatusCode},
     Error,
 };
-use axum::body::{Body, HttpBody};
-use axum::routing::Route;
+use axum::routing::{MethodFilter, Route};
+use axum::{body::Body, response::IntoResponse};
 use axum::{
     handler::Handler,
     routing::{self, MethodRouter},
@@ -31,6 +31,15 @@ use crate::{
 pub struct ApiMethodRouter<S = (), E = Infallible> {
     pub(crate) operations: IndexMap<&'static str, Operation>,
     pub(crate) router: MethodRouter<S, E>,
+}
+
+impl<S, E> Clone for ApiMethodRouter<S, E> {
+    fn clone(&self) -> Self {
+        Self {
+            operations: self.operations.clone(),
+            router: self.router.clone(),
+        }
+    }
 }
 
 impl<S, E> From<ApiMethodRouter<S, E>> for MethodRouter<S, E> {
@@ -233,48 +242,21 @@ where
     method_router_chain_method!(post, post_with);
     method_router_chain_method!(put, put_with);
     method_router_chain_method!(trace, trace_with);
-
-    /// This method wraps a layer around the [`ApiMethodRouter`]
-    /// For further information see [`axum::routing::method_routing::MethodRouter::layer`]
-    pub fn layer<L, NewError>(self, layer: L) -> ApiMethodRouter<S, NewError>
-    where
-        L: Layer<Route<Infallible>> + Clone + Send + 'static,
-        L::Service: Service<Request<Body>, Response = http::response::Response<Body>, Error = NewError>
-            + Clone
-            + Send
-            + 'static,
-        <L::Service as Service<Request<Body>>>::Future: Send + 'static,
-        Body: HttpBody + 'static,
-        NewError: 'static,
-    {
-        ApiMethodRouter {
-            router: self.router.layer(layer),
-            operations: self.operations,
-        }
-    }
 }
 
 impl<S, E> ApiMethodRouter<S, E>
 where
     S: Clone,
 {
-    /// Create a new, clean [`ApiMethodRouter`] based on [`MethodRouter::new()`](axum::routing::MethodRouter).
+    /// Create a new, empty [`ApiMethodRouter`] based on [`MethodRouter::new()`](axum::routing::MethodRouter).
     pub fn new() -> Self {
         Self {
             operations: IndexMap::default(),
             router: MethodRouter::<S, E>::new(),
         }
     }
-    /// See [`axum::routing::MethodRouter`] and [`axum::extract::State`] for more information.
-    pub fn with_state<S2>(self, state: S) -> ApiMethodRouter<S2, E> {
-        let router = self.router.with_state(state);
-        ApiMethodRouter::<S2, E> {
-            operations: self.operations,
-            router,
-        }
-    }
 
-    /// See [`axum::routing::MethodRouter::merge`] for more information.
+    /// See [`axum::routing::MethodRouter::merge`].
     pub fn merge<M>(mut self, other: M) -> Self
     where
         M: Into<ApiMethodRouter<S, E>>,
@@ -283,6 +265,70 @@ where
         self.operations.extend(other.operations);
         self.router = self.router.merge(other.router);
         self
+    }
+
+    /// See [`axum::routing::method_routing::MethodRouter::layer`].
+    pub fn layer<L, NewError>(self, layer: L) -> ApiMethodRouter<S, NewError>
+    where
+        L: Layer<Route<E>> + Clone + Send + 'static,
+        L::Service: Service<Request<Body>> + Clone + Send + 'static,
+        <L::Service as Service<Request<Body>>>::Response: IntoResponse + 'static,
+        <L::Service as Service<Request<Body>>>::Error: Into<NewError> + 'static,
+        <L::Service as Service<Request<Body>>>::Future: Send + 'static,
+        E: 'static,
+        S: 'static,
+        NewError: 'static,
+    {
+        ApiMethodRouter {
+            router: self.router.layer(layer),
+            operations: self.operations,
+        }
+    }
+
+    /// See [`axum::routing::method_routing::MethodRouter::with_state`].
+    pub fn with_state<S2>(self, state: S) -> ApiMethodRouter<S2, E> {
+        ApiMethodRouter {
+            router: self.router.with_state(state),
+            operations: self.operations,
+        }
+    }
+
+    /// See [`axum::routing::method_routing::MethodRouter::on_service`].
+    pub fn on_service<T>(mut self, filter: MethodFilter, svc: T) -> Self
+    where
+        T: Service<Request<Body>, Error = E> + Clone + Send + 'static,
+        T::Response: IntoResponse + 'static,
+        T::Future: Send + 'static,
+    {
+        self.router = self.router.on_service(filter, svc);
+        self
+    }
+
+    /// See [`axum::routing::method_routing::MethodRouter::fallback_service`].
+    pub fn fallback_service<T>(mut self, svc: T) -> Self
+    where
+        T: Service<Request<Body>, Error = E> + Clone + Send + 'static,
+        T::Response: IntoResponse + 'static,
+        T::Future: Send + 'static,
+    {
+        self.router = self.router.fallback_service(svc);
+        self
+    }
+
+    /// See [`axum::routing::method_routing::MethodRouter::route_layer`].
+    pub fn route_layer<L>(self, layer: L) -> ApiMethodRouter<S, E>
+    where
+        L: Layer<Route<E>> + Clone + Send + 'static,
+        L::Service: Service<Request<Body>, Error = E> + Clone + Send + 'static,
+        <L::Service as Service<Request<Body>>>::Response: IntoResponse + 'static,
+        <L::Service as Service<Request<Body>>>::Future: Send + 'static,
+        E: 'static,
+        S: 'static,
+    {
+        ApiMethodRouter {
+            router: self.router.route_layer(layer),
+            operations: self.operations,
+        }
     }
 }
 
