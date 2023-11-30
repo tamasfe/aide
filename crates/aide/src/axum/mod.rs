@@ -183,7 +183,7 @@ use axum::{
     handler::Handler,
     http::Request,
     response::IntoResponse,
-    routing::{IntoMakeService, Route},
+    routing::{IntoMakeService, Route, RouterAsService, RouterIntoService},
     Router,
 };
 use indexmap::map::Entry;
@@ -458,7 +458,7 @@ where
         self
     }
 
-    /// Alternative to [`nest_service`](Self::nest_service()) which besides nesting the service nests
+    /// Alternative to [`nest_service`](Self::nest_service) which besides nesting the service nests
     /// the generated documentation as well.
     ///
     /// Due to Rust's limitations, currently this function will not
@@ -565,6 +565,22 @@ where
     {
         self.router = self.router.fallback_service(svc);
         self
+    }
+
+    /// See [`axum::Router::as_service`] for details.
+    ///
+    /// Using this method will not generate API documentation.
+    #[must_use]
+    pub fn as_service<B>(&mut self) -> RouterAsService<'_, B, S> {
+        self.router.as_service()
+    }
+
+    /// See [`axum::Router::into_service`] for details.
+    ///
+    /// Using this method will not generate API documentation.
+    #[must_use]
+    pub fn into_service<B>(self) -> RouterIntoService<B, S> {
+        self.router.into_service()
     }
 }
 
