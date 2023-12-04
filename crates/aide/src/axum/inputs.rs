@@ -35,9 +35,9 @@ impl OperationInput for RawQuery {}
 impl OperationInput for Host {}
 
 #[cfg(feature = "axum-headers")]
-impl<T> OperationInput for axum::TypedHeader<T>
+impl<T> OperationInput for axum_extra::typed_header::TypedHeader<T>
 where
-    T: axum::headers::Header,
+    T: axum_extra::headers::Header,
 {
     fn operation_input(ctx: &mut crate::gen::GenContext, operation: &mut Operation) {
         let s = ctx.schema.subschema_for::<String>();
