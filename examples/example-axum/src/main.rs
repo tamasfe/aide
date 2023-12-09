@@ -36,7 +36,7 @@ async fn main() {
         .nest_api_service("/todo", todo_routes(state.clone()))
         .nest_api_service("/docs", docs_routes(state.clone()))
         .finish_api_with(&mut api, api_docs)
-        .layer(Extension(Arc::new(api)))
+        .layer(Extension(Arc::new(api))) // Arc is very important here or you will face massive memory and performance issues
         .with_state(state);
 
     println!("Example docs are accessible at http://127.0.0.1:3000/docs");
