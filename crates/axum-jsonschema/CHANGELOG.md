@@ -1,20 +1,12 @@
 # Changelog
 
-## 0.7.0 - 2023-09-23
+## 0.8.0 - 2023-12-09
 
-[f5c9494](f5c94941f74c8cfcd21981fba5aed4e53cd9e8bd)...[f5c9494](f5c94941f74c8cfcd21981fba5aed4e53cd9e8bd)
+[c140078](c1400784d2ad09e7e48380fc2879da5b2d1515e3)...[d05b1fd](d05b1fdaa37f551ec96a4ebd57be23438fbcc18c)
 
 ### Features
 
-- Support aide 0.6.0 ([eef015a](eef015aedd398a98d03589527a13837b2c33a6aa))
-- Axum 0.6.0 ([5a06b52](5a06b52b11626104c64f4a7ba6220a4e6a1d84ab))
-
-### Miscellaneous Tasks
-
-- Cargo meta ([2d799fb](2d799fbd926f30d588047ea1e24a9cccb3698496))
-- Axum dependency update ([7a314c7](7a314c73284f088947b70a75454de9d0080aec79))
-- Bump aide version ([dd1c33b](dd1c33b1a5825eeac4463a190c5b7d1737784ff2))
-- Dependency updates and clippy fixes ([5aff6d1](5aff6d18e2b262d65c884bc3f45641e7622d5994))
+- Axum 0.7 support ([16de786](16de786abeb99514d4e408e98693be7cd5b5ee1a))
 
 ## 0.6.0 - 2023-04-30
 

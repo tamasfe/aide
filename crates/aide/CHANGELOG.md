@@ -1,5 +1,31 @@
 # Changelog
 
+## 0.13.0 - 2023-12-09
+
+[77d4a37](77d4a377b01ca69f5ac374b6e0c57d2c53453707)...[413003e](413003eec52dfe4ed14fa6fec19ae8dee01a9c86)
+
+### Bug Fixes
+
+- Fixed doctest ([07e4cf2](07e4cf2fcbb1ba29dcf5787affba18b30d2d2bd1))
+- Re-enabled axum-headers feature (was a breaking change) ([ff47ee6](ff47ee6801b3aea227c03eb8791e2e933371c7e8))
+
+### Documentation
+
+- Added readme ([a4a1bff](a4a1bff8df6bd5e7377982b22828e847c8277df4))
+- Linked readme to docs.rs ([1297626](12976263acdac24f82e084b3c9d50b7e74863791))
+
+### Features
+
+- Added `UseApi` and `into_api::<T>()` which is made to use existing types for documenting types that do not implement aide types ([c3087b8](c3087b8ed0de75fe122ae9ed8a4e65164a738db0))
+- Axum 0.7 support ([16de786](16de786abeb99514d4e408e98693be7cd5b5ee1a))
+- BREAKING, infer responses and disable schema inlining by default ([808a48b](808a48bc524b47e0cbf20264dd8c62f16554f2f9))
+- Sync axum router differences ([66c88fc](66c88fc24f4bab6bf2b9452b6575314f8336bfb6))
+- Moved TypedHeaders from axum to axum_extra ([61c7aef](61c7aef71b647b51c3269fd45b045be6773c206a))
+
+### Miscellaneous Tasks
+
+- Added crates metadata ([b245f08](b245f088dbe6288b6004d513f70bb56bcec5fbfb))
+
 ## 0.12.0 - 2023-09-23
 
 [b8ef557](b8ef557288dac5e010b03505216ebfac293c5c88)...[b8ef557](b8ef557288dac5e010b03505216ebfac293c5c88)
