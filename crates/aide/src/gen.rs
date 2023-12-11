@@ -59,6 +59,7 @@ pub fn extract_schemas(extract: bool) {
         } else {
             ctx.schema = SchemaGenerator::new(SchemaSettings::draft07().with(|s| {
                 s.inline_subschemas = true;
+                s.definitions_path = "#/components/schemas/".into();
             }));
             ctx.extract_schemas = false;
         }
@@ -144,9 +145,10 @@ impl GenContext {
         }
 
         Self {
-            schema: SchemaGenerator::new(
-                SchemaSettings::draft07().with(|s| s.inline_subschemas = false),
-            ),
+            schema: SchemaGenerator::new(SchemaSettings::draft07().with(|s| {
+                s.inline_subschemas = false;
+                s.definitions_path = "#/components/schemas/".into();
+            })),
             infer_responses: true,
             all_error_responses: false,
             extract_schemas: true,
