@@ -50,18 +50,7 @@ pub fn on_error(handler: impl Fn(Error) + 'static) {
 /// [`OpenApi`]: crate::openapi::OpenApi
 pub fn extract_schemas(extract: bool) {
     in_context(|ctx| {
-        if extract {
-            ctx.schema = SchemaGenerator::new(SchemaSettings::draft07().with(|s| {
-                s.inline_subschemas = false;
-                s.definitions_path = "#/components/schemas/".into();
-            }));
-            ctx.extract_schemas = true;
-        } else {
-            ctx.schema = SchemaGenerator::new(SchemaSettings::draft07().with(|s| {
-                s.inline_subschemas = true;
-            }));
-            ctx.extract_schemas = false;
-        }
+        ctx.set_extract_schemas(extract)
     });
 }
 
@@ -143,21 +132,35 @@ impl GenContext {
             }
         }
 
-        Self {
-            schema: SchemaGenerator::new(
-                SchemaSettings::draft07().with(|s| s.inline_subschemas = false),
-            ),
+        let mut this = Self {
+            schema: SchemaGenerator::new(SchemaSettings::draft07()),
             infer_responses: true,
             all_error_responses: false,
             extract_schemas: true,
             show_error: default_error_filter,
             error_handler: None,
             no_content_status,
-        }
+        };
+        this.set_extract_schemas(true);
+        this
     }
 
     pub(crate) fn reset_error_filter(&mut self) {
         self.show_error = default_error_filter;
+    }
+    fn set_extract_schemas(&mut self, extract: bool) {
+        if extract {
+            self.schema = SchemaGenerator::new(SchemaSettings::draft07().with(|s| {
+                s.inline_subschemas = false;
+                s.definitions_path = "#/components/schemas/".into();
+            }));
+            self.extract_schemas = true;
+        } else {
+            self.schema = SchemaGenerator::new(SchemaSettings::draft07().with(|s| {
+                s.inline_subschemas = true;
+            }));
+            self.extract_schemas = false;
+        }
     }
 
     /// Add an error in the current context.
