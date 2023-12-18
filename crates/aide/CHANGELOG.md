@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.13.1 - 2023-12-18
+
+[24ffb72](24ffb728f63530e03fd60945db1a1da52c6821a5)...[3fed0f6](3fed0f6d5f2b2aa8cb7f9dfda738c652c8894fd8)
+
+### Bug Fixes
+
+- Fix inconsistency in extracting schema and cause redoc to crash ([f2beabc](f2beabcefb6e88186e10b8a117f8da020a63f670))
+
+### Miscellaneous Tasks
+
+- Bump version to 0.13.1 ([3fed0f6](3fed0f6d5f2b2aa8cb7f9dfda738c652c8894fd8))
+
 ## 0.13.0 - 2023-12-09
 
 [77d4a37](77d4a377b01ca69f5ac374b6e0c57d2c53453707)...[413003e](413003eec52dfe4ed14fa6fec19ae8dee01a9c86)
