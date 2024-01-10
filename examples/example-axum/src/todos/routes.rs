@@ -5,11 +5,8 @@ use aide::{
     },
     transform::TransformOperation,
 };
-use axum::{
-    extract::{Path, State},
-    http::StatusCode,
-    response::IntoResponse,
-};
+use axum::{extract::State, http::StatusCode, response::IntoResponse};
+use axum_jsonschema::Path;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
@@ -29,6 +26,7 @@ pub fn todo_routes(state: AppState) -> ApiRouter {
             get_with(get_todo, get_todo_docs).delete_with(delete_todo, delete_todo_docs),
         )
         .api_route("/:id/complete", put_with(complete_todo, complete_todo_docs))
+        .api_route("/search/:query", get_with(search_todo, search_todo_docs))
         .with_state(state)
 }
 
@@ -144,4 +142,34 @@ async fn complete_todo(
 
 fn complete_todo_docs(op: TransformOperation) -> TransformOperation {
     op.description("Complete a Todo.").response::<204, ()>()
+}
+
+#[derive(Deserialize, JsonSchema)]
+struct SearchTodo {
+    /// The search query.
+    #[validate(length(min = 3))]
+    query: String,
+}
+
+async fn search_todo(
+    State(app): State<AppState>,
+    Path(search): Path<SearchTodo>,
+) -> impl IntoApiResponse {
+    Json(TodoList {
+        todo_ids: app
+            .todos
+            .lock()
+            .unwrap()
+            .iter()
+            .filter_map(|todo| match todo.1.description.contains(&search.query) {
+                true => Some(todo.0.clone()),
+                false => None,
+            })
+            .collect::<Vec<_>>(),
+    })
+}
+
+fn search_todo_docs(op: TransformOperation) -> TransformOperation {
+    op.description("List all Todo items matching the search query.")
+        .response::<200, Json<TodoList>>()
 }

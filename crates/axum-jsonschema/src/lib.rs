@@ -41,6 +41,10 @@ use serde::{de::DeserializeOwned, Serialize};
 use serde_json::{Map, Value};
 use serde_path_to_error::Segment;
 
+mod extract;
+
+pub use extract::path::Path;
+
 /// Wrapper type over [`axum::Json`] that validates
 /// requests and responds with a more helpful validation
 /// message.
@@ -110,7 +114,7 @@ where
 }
 
 thread_local! {
-    static CONTEXT: RefCell<SchemaContext> = RefCell::new(SchemaContext::new());
+    pub(crate) static CONTEXT: RefCell<SchemaContext> = RefCell::new(SchemaContext::new());
 }
 
 struct SchemaContext {
@@ -134,6 +138,8 @@ impl SchemaContext {
 pub enum JsonSchemaRejection {
     /// A rejection returned by [`axum::Json`].
     Json(JsonRejection),
+    /// A rejection returned by [`axum::extract::RawPathParams`].
+    Path(axum::extract::rejection::RawPathParamsRejection),
     /// A serde error.
     Serde(serde_path_to_error::Error<serde_json::Error>),
     /// A schema validation error.
@@ -152,6 +158,7 @@ struct JsonSchemaErrorResponse {
 #[serde(tag = "type", rename_all = "snake_case")]
 enum AdditionalError {
     Json,
+    Path,
     Deserialization(DeserializationResponse),
     Schema(SchemaResponse),
 }
@@ -180,6 +187,10 @@ impl From<JsonSchemaRejection> for JsonSchemaErrorResponse {
             JsonSchemaRejection::Json(v) => Self {
                 error: v.to_string(),
                 extra: AdditionalError::Json,
+            },
+            JsonSchemaRejection::Path(p) => Self {
+                error: p.to_string(),
+                extra: AdditionalError::Path,
             },
             JsonSchemaRejection::Serde(s) => Self {
                 error: "deserialization failed".to_string(),
