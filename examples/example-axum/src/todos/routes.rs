@@ -6,7 +6,7 @@ use aide::{
     transform::TransformOperation,
 };
 use axum::{extract::State, http::StatusCode, response::IntoResponse};
-use axum_jsonschema::Path;
+use axum_jsonschema::extract::Path;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;

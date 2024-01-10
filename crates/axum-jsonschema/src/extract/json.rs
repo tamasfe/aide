@@ -1,8 +1,11 @@
 use std::any::{type_name, TypeId};
 
 use async_trait::async_trait;
-use axum::{extract::FromRequestParts, response::IntoResponse};
-use http::request::Parts;
+use axum::{
+    body::Body,
+    extract::{FromRequest, Request},
+    response::IntoResponse,
+};
 use jsonschema::{output::BasicOutput, JSONSchema};
 use schemars::JsonSchema;
 use serde::de::DeserializeOwned;
@@ -12,32 +15,27 @@ use crate::CONTEXT;
 
 use super::SerdeSchemaRejection;
 
-/// Extractor with similar behaviour to [`axum::extract::Path`]
-/// but it validates requests with a more helpful validation
+/// Wrapper type over [`axum::Json`] that validates
+/// requests and responds with a more helpful validation
 /// message.
-pub struct Path<T>(pub T);
+pub struct Json<T>(pub T);
 
 #[async_trait]
-impl<S, T> FromRequestParts<S> for Path<T>
+impl<S, T> FromRequest<S> for Json<T>
 where
     S: Send + Sync,
     T: DeserializeOwned + JsonSchema + 'static,
 {
-    type Rejection = PathRejection;
+    type Rejection = JsonRejection;
 
     /// Perform the extraction.
-    async fn from_request_parts(parts: &mut Parts, state: &S) -> Result<Self, Self::Rejection> {
-        let raw_parrams = match axum::extract::RawPathParams::from_request_parts(parts, state).await
-        {
-            Ok(p) => p,
-            Err(e) => return Err(PathRejection::Path(e)),
+    async fn from_request(req: Request<Body>, state: &S) -> Result<Self, Self::Rejection> {
+        let value: Value = match axum::Json::from_request(req, state).await {
+            Ok(j) => j.0,
+            Err(error) => {
+                return Err(JsonRejection::Json(error));
+            }
         };
-        let value = Value::Object(
-            raw_parrams
-                .into_iter()
-                .map(|p| (p.0.to_owned(), Value::String(p.1.to_owned())))
-                .collect::<Map<_, _>>(),
-        );
 
         let validation_result = CONTEXT.with(|ctx| {
             let ctx = &mut *ctx.borrow_mut();
@@ -66,33 +64,33 @@ where
         });
 
         if let Err(errors) = validation_result {
-            return Err(PathRejection::SerdeSchema(SerdeSchemaRejection::Schema(
+            return Err(JsonRejection::SerdeSchema(SerdeSchemaRejection::Schema(
                 errors,
             )));
         }
 
         match serde_path_to_error::deserialize(value) {
-            Ok(v) => Ok(Path(v)),
-            Err(error) => Err(PathRejection::SerdeSchema(SerdeSchemaRejection::Serde(
+            Ok(v) => Ok(Json(v)),
+            Err(error) => Err(JsonRejection::SerdeSchema(SerdeSchemaRejection::Serde(
                 error,
             ))),
         }
     }
 }
 
-/// Rejection for [`Path`].
+/// Rejection for [`Json`].
 #[derive(Debug)]
-pub enum PathRejection {
-    /// A rejection returned by [`axum::extract::RawPathParams`].
-    Path(axum::extract::rejection::RawPathParamsRejection),
+pub enum JsonRejection {
+    /// A rejection returned by [`axum::Json`].
+    Json(axum::extract::rejection::JsonRejection),
     /// A serde or schema-validation error.
     SerdeSchema(SerdeSchemaRejection),
 }
 
-impl IntoResponse for PathRejection {
+impl IntoResponse for JsonRejection {
     fn into_response(self) -> axum::response::Response {
         match self {
-            Self::Path(e) => e.into_response(),
+            Self::Json(e) => e.into_response(),
             Self::SerdeSchema(e) => e.into_response(),
         }
     }
@@ -102,7 +100,7 @@ impl IntoResponse for PathRejection {
 mod impl_aide {
     use super::*;
 
-    impl<T> aide::OperationInput for Path<T>
+    impl<T> aide::OperationInput for Json<T>
     where
         T: JsonSchema,
     {
@@ -110,7 +108,28 @@ mod impl_aide {
             ctx: &mut aide::gen::GenContext,
             operation: &mut aide::openapi::Operation,
         ) {
-            axum::extract::Path::<T>::operation_input(ctx, operation);
+            axum::Json::<T>::operation_input(ctx, operation);
+        }
+    }
+
+    impl<T> aide::OperationOutput for Json<T>
+    where
+        T: JsonSchema,
+    {
+        type Inner = <axum::Json<T> as aide::OperationOutput>::Inner;
+
+        fn operation_response(
+            ctx: &mut aide::gen::GenContext,
+            op: &mut aide::openapi::Operation,
+        ) -> Option<aide::openapi::Response> {
+            axum::Json::<T>::operation_response(ctx, op)
+        }
+
+        fn inferred_responses(
+            ctx: &mut aide::gen::GenContext,
+            operation: &mut aide::openapi::Operation,
+        ) -> Vec<(Option<u16>, aide::openapi::Response)> {
+            axum::Json::<T>::inferred_responses(ctx, operation)
         }
     }
 }
