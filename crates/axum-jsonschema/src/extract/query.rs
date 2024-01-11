@@ -73,7 +73,7 @@ where
     }
 }
 
-/// Rejection for [`Path`].
+/// Rejection for [`Query`].
 #[derive(Debug)]
 pub enum QueryRejection {
     /// A rejection returned by [`axum::extract::Query`].
