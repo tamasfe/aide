@@ -6,7 +6,7 @@ use aide::{
     transform::TransformOperation,
 };
 use axum::{extract::State, http::StatusCode, response::IntoResponse};
-use axum_jsonschema::extract::{Path, Query};
+use axum_jsonschema::extract::{Form, Path, Query};
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
@@ -26,6 +26,7 @@ pub fn todo_routes(state: AppState) -> ApiRouter {
             get_with(get_todo, get_todo_docs).delete_with(delete_todo, delete_todo_docs),
         )
         .api_route("/:id/complete", put_with(complete_todo, complete_todo_docs))
+        .api_route("/:id/set", post_with(set_todo, set_todo_docs))
         .api_route("/search/:query", get_with(search_todo, search_todo_docs))
         .with_state(state)
 }
@@ -180,4 +181,31 @@ async fn search_todo(
 fn search_todo_docs(op: TransformOperation) -> TransformOperation {
     op.description("List all Todo items matching the search query.")
         .response::<200, Json<TodoList>>()
+}
+
+#[derive(Deserialize, JsonSchema)]
+struct SetTodo {
+    /// The description of the item.
+    #[validate(length(min = 3))]
+    description: String,
+    /// Item state.
+    complete: bool,
+}
+
+async fn set_todo(
+    State(app): State<AppState>,
+    Path(todo): Path<SelectTodo>,
+    Form(set_todo): Form<SetTodo>,
+) -> impl IntoApiResponse {
+    if let Some(todo) = app.todos.lock().unwrap().get_mut(&todo.id) {
+        todo.description = set_todo.description;
+        todo.complete = set_todo.complete;
+        StatusCode::NO_CONTENT
+    } else {
+        StatusCode::NOT_FOUND
+    }
+}
+
+fn set_todo_docs(op: TransformOperation) -> TransformOperation {
+    op.description("Set a Todo.").response::<204, ()>()
 }
