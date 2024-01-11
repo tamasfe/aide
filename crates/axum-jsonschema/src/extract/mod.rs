@@ -1,8 +1,10 @@
 mod json;
 mod path;
+mod query;
 
 pub use json::*;
 pub use path::*;
+pub use query::*;
 
 use std::collections::VecDeque;
 

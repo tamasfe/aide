@@ -6,7 +6,7 @@ use aide::{
     transform::TransformOperation,
 };
 use axum::{extract::State, http::StatusCode, response::IntoResponse};
-use axum_jsonschema::extract::Path;
+use axum_jsonschema::extract::{Path, Query};
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
@@ -151,9 +151,17 @@ struct SearchTodo {
     query: String,
 }
 
+#[derive(Deserialize, JsonSchema)]
+struct SelectTodoQuery {
+    /// The search query.
+    #[serde(rename = "id")]
+    _id: Option<Uuid>,
+}
+
 async fn search_todo(
     State(app): State<AppState>,
     Path(search): Path<SearchTodo>,
+    Query(_id): Query<SelectTodoQuery>,
 ) -> impl IntoApiResponse {
     Json(TodoList {
         todo_ids: app
