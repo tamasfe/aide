@@ -12,8 +12,8 @@ use crate::CONTEXT;
 
 use super::SerdeSchemaRejection;
 
-/// Extractor with similar behaviour to [`axum::extract::Query`]
-/// but it validates requests with a more helpful validation
+/// Wrapper type over [`axum::extract::Query`] that validates
+/// requests and responds with a more helpful validation
 /// message.
 pub struct Query<T>(pub T);
 
