@@ -12,8 +12,8 @@ use crate::CONTEXT;
 
 use super::SerdeSchemaRejection;
 
-/// Extractor with similar behaviour to [`axum::extract::Path`]
-/// but it validates requests with a more helpful validation
+/// Wrapper type over [`axum::extract::Path`] that validates
+/// requests and responds with a more helpful validation
 /// message.
 pub struct Path<T>(pub T);
 
@@ -27,17 +27,10 @@ where
 
     /// Perform the extraction.
     async fn from_request_parts(parts: &mut Parts, state: &S) -> Result<Self, Self::Rejection> {
-        let raw_parrams = match axum::extract::RawPathParams::from_request_parts(parts, state).await
-        {
-            Ok(p) => p,
-            Err(e) => return Err(PathRejection::Path(e)),
-        };
-        let value = Value::Object(
-            raw_parrams
-                .into_iter()
-                .map(|p| (p.0.to_owned(), Value::String(p.1.to_owned())))
-                .collect::<Map<_, _>>(),
-        );
+        let value: Value = axum::extract::Path::from_request_parts(parts, state)
+            .await
+            .map_err(|e| PathRejection::Path(e))?
+            .0;
 
         let validation_result = CONTEXT.with(|ctx| {
             let ctx = &mut *ctx.borrow_mut();
@@ -83,8 +76,8 @@ where
 /// Rejection for [`Path`].
 #[derive(Debug)]
 pub enum PathRejection {
-    /// A rejection returned by [`axum::extract::RawPathParams`].
-    Path(axum::extract::rejection::RawPathParamsRejection),
+    /// A rejection returned by [`axum::extract::Path`].
+    Path(axum::extract::rejection::PathRejection),
     /// A serde or schema-validation error.
     SerdeSchema(SerdeSchemaRejection),
 }
