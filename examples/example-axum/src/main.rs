@@ -7,8 +7,8 @@ use aide::{
 };
 use axum::{http::StatusCode, Extension};
 use docs::docs_routes;
-use errors::AppError;
-use extractors::Json;
+// use errors::AppError;
+// use extractors::Json;
 use state::AppState;
 use todos::routes::todo_routes;
 use tokio::net::TcpListener;
@@ -64,13 +64,13 @@ fn api_docs(api: TransformOpenApi) -> TransformOpenApi {
                 extensions: Default::default(),
             },
         )
-        .default_response_with::<Json<AppError>, _>(|res| {
-            res.example(AppError {
-                error: "some error happened".to_string(),
-                error_details: None,
-                error_id: Uuid::nil(),
-                // This is not visible.
-                status: StatusCode::IM_A_TEAPOT,
-            })
-        })
+        // .default_response_with::<Json<AppError>, _>(|res| {
+        //     res.example(AppError {
+        //         error: "some error happened".to_string(),
+        //         error_details: None,
+        //         error_id: Uuid::nil(),
+        //         // This is not visible.
+        //         status: StatusCode::IM_A_TEAPOT,
+        //     })
+        // })
 }
