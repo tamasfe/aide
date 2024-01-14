@@ -116,6 +116,7 @@ impl Scalar {
                 <script>
                   var configuration = {{
                     theme: 'purple',
+                    customCss: `{scalar_css}`,
                     spec: {{
                         url: '{spec_url}'
                     }}
@@ -131,6 +132,7 @@ impl Scalar {
             </html>
 "#,
             scalar_js = include_str!("../../res/scalar/scalar.standalone.min.js"),
+            scalar_css = include_str!("../../res/scalar/rust-theme.css"),
             title = self.title,
             spec_url = self.spec_url
         )
