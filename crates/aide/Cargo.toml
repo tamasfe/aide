@@ -36,6 +36,7 @@ jwt-authorizer = { version = "0.13", default-features = false, optional = true }
 [features]
 macros = ["dep:aide-macros"]
 redoc = []
+scalar = []
 skip_serializing_defaults = []
 
 axum = ["dep:axum", "bytes", "http", "dep:tower-layer", "dep:tower-service", "serde_qs?/axum"]

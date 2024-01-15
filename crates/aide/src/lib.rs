@@ -137,6 +137,9 @@ mod helpers;
 #[cfg(feature = "redoc")]
 pub mod redoc;
 
+#[cfg(feature = "scalar")]
+pub mod scalar;
+
 pub use helpers::{no_api::NoApi, with_api::ApiOverride, with_api::WithApi, use_api::UseApi};
 
 pub use error::Error;

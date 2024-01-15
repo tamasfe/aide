@@ -7,6 +7,7 @@ use aide::{
     },
     openapi::OpenApi,
     redoc::Redoc,
+    scalar::Scalar,
 };
 use axum::{response::IntoResponse, Extension};
 
@@ -21,9 +22,19 @@ pub fn docs_routes(state: AppState) -> ApiRouter {
     // with a 200 status.
     aide::gen::infer_responses(true);
 
-    let router = ApiRouter::new()
+    let router: ApiRouter = ApiRouter::new()
         .api_route_with(
             "/",
+            get_with(
+                Scalar::new("/docs/private/api.json")
+                    .with_title("Aide Axum")
+                    .axum_handler(),
+                |op| op.description("This documentation page."),
+            ),
+            |p| p.security_requirement("ApiKey"),
+        )
+        .api_route_with(
+            "/redoc",
             get_with(
                 Redoc::new("/docs/private/api.json")
                     .with_title("Aide Axum")
