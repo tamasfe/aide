@@ -644,15 +644,9 @@ impl<'t> TransformOperation<'t> {
         R: OperationOutput,
         F: FnOnce(TransformResponse<R::Inner>) -> TransformResponse<R::Inner>,
     {
-        if self.operation.responses.is_none() {
-            self.operation.responses = Some(Default::default());
-        } else {
-            tracing::trace!("operation already has a default response");
-        }
-
         in_context(|ctx| {
             if let Some(mut res) = R::operation_response(ctx, self.operation) {
-                let responses = self.operation.responses.as_mut().unwrap();
+                let responses = self.operation.responses.get_or_insert_with(Default::default);
                 if responses.default.is_none() {
                     let t = transform(TransformResponse::new(&mut res));
 

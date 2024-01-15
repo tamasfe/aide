@@ -290,7 +290,7 @@ where
     /// As opposed to [`route`](crate::axum::ApiRouter::route), this method only accepts an [`ApiMethodRouter`].
     ///
     /// See [`axum::Router::route`] for details.
-    #[tracing::instrument(skip_all, fields(%path))]
+    #[tracing::instrument(skip_all, fields(% path))]
     pub fn api_route(mut self, path: &str, mut method_router: ApiMethodRouter<S>) -> Self {
         in_context(|ctx| {
             let new_path_item = method_router.take_path_item();
@@ -355,12 +355,17 @@ where
     where
         F: FnOnce(TransformOpenApi) -> TransformOpenApi,
     {
-        self.merge_api(api);
-        let _ = transform(TransformOpenApi::new(api));
+        self.merge_api_with(api, transform);
         self.router
     }
 
     fn merge_api(&mut self, api: &mut OpenApi) {
+        self.merge_api_with(api, |x| x)
+    }
+    fn merge_api_with<F>(&mut self, api: &mut OpenApi, transform: F)
+    where
+        F: FnOnce(TransformOpenApi) -> TransformOpenApi,
+    {
         if api.paths.is_none() {
             api.paths = Some(Default::default());
         }
@@ -377,17 +382,15 @@ where
             })
             .collect();
 
+        let _ = transform(TransformOpenApi::new(api));
+
         let needs_reset =
             in_context(|ctx| {
                 if !ctx.extract_schemas {
                     return false;
                 }
 
-                if api.components.is_none() {
-                    api.components = Some(Components::default());
-                }
-
-                let components = api.components.as_mut().unwrap();
+                let components = api.components.get_or_insert_with(Default::default);
 
                 components
                     .schemas
@@ -626,6 +629,7 @@ impl<S> From<ApiRouter<S>> for Router<S> {
 /// that implement [`IntoResponse`] and [`OperationOutput`],
 /// it should not be implemented manually.
 pub trait IntoApiResponse: IntoResponse + OperationOutput {}
+
 impl<T> IntoApiResponse for T where T: IntoResponse + OperationOutput {}
 
 /// Convenience extension trait for [`axum::Router`].
@@ -736,7 +740,9 @@ mod tests {
     use axum::extract::State;
 
     async fn test_handler1(State(_): State<TestState>) {}
+
     async fn test_handler2(State(_): State<u8>) {}
+
     async fn test_handler3() {}
 
     #[derive(Clone, Copy)]
