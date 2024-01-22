@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.13.2 - 2024-01-22
+
+[3fed0f6](3fed0f6d5f2b2aa8cb7f9dfda738c652c8894fd8)...[ed3e3f7](ed3e3f76c7bdce39d7aea30fe7fdad4ac544e96c)
+
+### Features
+
+- Add scalar integration (alternative to Redoc) ([#104](https://github.com/tamasfe/aide/issues/104)) ([a26533e](a26533e94e50699d6157f45617f6f67cbe9df92f))
+
+### Miscellaneous Tasks
+
+- Updated CHANGELOG.md ([be3b6d7](be3b6d77c21d94e67d45428f534db75c6be3bd98))
+- Bumped version ([ed3e3f7](ed3e3f76c7bdce39d7aea30fe7fdad4ac544e96c))
+
 ## 0.13.1 - 2023-12-18
 
 [24ffb72](24ffb728f63530e03fd60945db1a1da52c6821a5)...[3fed0f6](3fed0f6d5f2b2aa8cb7f9dfda738c652c8894fd8)
