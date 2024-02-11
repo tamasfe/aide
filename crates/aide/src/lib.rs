@@ -140,10 +140,13 @@ pub mod redoc;
 #[cfg(feature = "scalar")]
 pub mod scalar;
 
-pub use helpers::{no_api::NoApi, with_api::ApiOverride, with_api::WithApi, use_api::UseApi};
+pub use helpers::{no_api::NoApi, use_api::UseApi, with_api::ApiOverride, with_api::WithApi};
 
 pub use error::Error;
 pub use operation::{OperationInput, OperationOutput};
 
 #[cfg(feature = "macros")]
 pub use aide_macros::OperationIo;
+
+#[cfg(feature = "axum-typed-multipart")]
+pub mod axum_typed_multipart;
