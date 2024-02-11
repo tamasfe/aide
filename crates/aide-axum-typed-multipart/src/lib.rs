@@ -6,18 +6,19 @@ use aide::{
     operation::set_body,
     OperationInput,
 };
-use axum::{async_trait, extract::multipart::Field};
-use axum_typed_multipart::{FieldData, TryFromField, TypedMultipartError};
+use axum::{
+    async_trait,
+    extract::{multipart::Field, FromRequest, Request},
+};
+use axum_typed_multipart::{TryFromField, TryFromMultipart};
 use indexmap::IndexMap;
 use schemars::JsonSchema;
 
 #[derive(Debug)]
-pub struct ApiFieldData<T>(FieldData<T>);
+pub struct TypedMultipart<T>(pub axum_typed_multipart::TypedMultipart<T>);
 
-pub struct TypedMultipart<T>(axum_typed_multipart::TypedMultipart<T>);
-
-impl<T> Deref for ApiFieldData<T> {
-    type Target = FieldData<T>;
+impl<T> Deref for TypedMultipart<T> {
+    type Target = axum_typed_multipart::TypedMultipart<T>;
 
     fn deref(&self) -> &Self::Target {
         &self.0
@@ -25,22 +26,16 @@ impl<T> Deref for ApiFieldData<T> {
 }
 
 #[async_trait]
-impl<T: TryFromField> TryFromField for ApiFieldData<T> {
-    async fn try_from_field(
-        field: Field<'_>,
-        limit_bytes: Option<usize>,
-    ) -> Result<Self, TypedMultipartError> {
-        Ok(Self(FieldData::try_from_field(field, limit_bytes).await?))
-    }
-}
+impl<T, S> FromRequest<S> for TypedMultipart<T>
+where
+    T: TryFromMultipart,
+    S: Send + Sync,
+{
+    type Rejection = axum_typed_multipart::TypedMultipartError;
 
-impl<T: JsonSchema> JsonSchema for ApiFieldData<T> {
-    fn schema_name() -> String {
-        T::schema_name()
-    }
-
-    fn json_schema(gen: &mut schemars::gen::SchemaGenerator) -> schemars::schema::Schema {
-        T::json_schema(gen)
+    async fn from_request(req: Request, state: &S) -> Result<Self, Self::Rejection> {
+        let a = axum_typed_multipart::TypedMultipart::from_request(req, state).await?;
+        return Ok(Self(a));
     }
 }
 
@@ -75,5 +70,38 @@ where
                 extensions: IndexMap::default(),
             },
         );
+    }
+}
+
+#[derive(Debug)]
+pub struct FieldData<T>(pub axum_typed_multipart::FieldData<T>);
+
+impl<T> Deref for FieldData<T> {
+    type Target = axum_typed_multipart::FieldData<T>;
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
+#[async_trait]
+impl<T: TryFromField> TryFromField for FieldData<T> {
+    async fn try_from_field(
+        field: Field<'_>,
+        limit_bytes: Option<usize>,
+    ) -> Result<Self, axum_typed_multipart::TypedMultipartError> {
+        Ok(Self(
+            axum_typed_multipart::FieldData::try_from_field(field, limit_bytes).await?,
+        ))
+    }
+}
+
+impl<T: JsonSchema> JsonSchema for FieldData<T> {
+    fn schema_name() -> String {
+        T::schema_name()
+    }
+
+    fn json_schema(gen: &mut schemars::gen::SchemaGenerator) -> schemars::schema::Schema {
+        T::json_schema(gen)
     }
 }
