@@ -406,7 +406,7 @@ mod extra {
 mod jwt_authorizer {
     use super::*;
     use crate::OperationInput;
-    use jwt_authorizer::JwtClaims;
+    use ::jwt_authorizer::JwtClaims;
 
     impl<T> OperationInput for JwtClaims<T> {
         fn operation_input(
@@ -439,40 +439,5 @@ mod jwt_authorizer {
                 }],
             );
         }
-    }
-}
-
-#[cfg(feature = "axum-typed-multipart")]
-impl<T> OperationInput for axum_typed_multipart::TypedMultipart<T>
-where
-    T: JsonSchema,
-{
-    fn operation_input(ctx: &mut crate::gen::GenContext, operation: &mut Operation) {
-        let schema = ctx.schema.subschema_for::<T>().into_object();
-        let resolved_schema = ctx.resolve_schema(&schema);
-
-        set_body(
-            ctx,
-            operation,
-            RequestBody {
-                description: resolved_schema
-                    .metadata
-                    .as_ref()
-                    .and_then(|m| m.description.clone()),
-                content: IndexMap::from_iter([(
-                    "multipart/form-data".into(),
-                    MediaType {
-                        schema: Some(SchemaObject {
-                            json_schema: schema.into(),
-                            example: None,
-                            external_docs: None,
-                        }),
-                        ..Default::default()
-                    },
-                )]),
-                required: true,
-                extensions: IndexMap::default(),
-            },
-        );
     }
 }

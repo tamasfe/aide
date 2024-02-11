@@ -1,0 +1,17 @@
+[package]
+name = "aide-axum-typed-multipart"
+version = "0.1.0"
+edition = "2021"
+authors = ["emonadeo"]
+keywords = ["web", "axum", "multipart"]
+repository = "https://github.com/tamasfe/aide"
+license = "MIT OR Apache-2.0"
+description = "Type safe multipart/form-data handling for axum and aide"
+readme = "README.md"
+
+[dependencies]
+aide = { version = "0.13", path = "../aide" }
+axum = "0.7.4"
+axum_typed_multipart = { version = "0.11.0" }
+indexmap = "2.2.2"
+schemars = "0.8.16"
