@@ -16,6 +16,8 @@ use axum_typed_multipart::{TryFromField, TryFromMultipart};
 use indexmap::IndexMap;
 use schemars::JsonSchema;
 
+/// Drop-in replacement for [`axum_typed_multipart::TypedMultipart`](https://docs.rs/axum_typed_multipart/0.11.0/axum_typed_multipart/struct.TypedMultipart.html)
+/// that implements [`OperationInput`](https://docs.rs/aide/latest/aide/operation/trait.OperationInput.html)
 #[derive(Debug)]
 pub struct TypedMultipart<T>(pub axum_typed_multipart::TypedMultipart<T>);
 
@@ -75,6 +77,8 @@ where
     }
 }
 
+/// Drop-in replacement for [`axum_typed_multipart::FieldData`](https://docs.rs/axum_typed_multipart/0.11.0/axum_typed_multipart/struct.FieldData.html)
+/// that implements [`JsonSchema`](https://docs.rs/schemars/0.8.16/schemars/trait.JsonSchema.html)
 #[derive(Debug)]
 pub struct FieldData<T>(pub axum_typed_multipart::FieldData<T>);
 

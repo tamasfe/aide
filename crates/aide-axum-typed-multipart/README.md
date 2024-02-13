@@ -1,6 +1,6 @@
 # aide-axum-typed-multipart
 
-Wrapper around [axum_typed_multipart](https://crates.io/crates/axum_typed_multipart)
+Wrapper around [`axum_typed_multipart`](https://docs.rs/axum_typed_multipart/0.11.0/axum_typed_multipart/)
 to generate documentation for multipart requests.
 
 ## Example
