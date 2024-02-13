@@ -29,6 +29,14 @@ pub fn todo_routes(state: AppState) -> ApiRouter {
             get_with(get_todo, get_todo_docs).delete_with(delete_todo, delete_todo_docs),
         )
         .api_route("/:id/complete", put_with(complete_todo, complete_todo_docs))
+        .api_route(
+            "/:id/depends-on/:depends_on_id",
+            put_with(depends_on_todo, depends_on_todo_docs),
+        )
+        .api_route(
+            "/:id/depends-on-with-struct/:depends_on_id",
+            put_with(depends_on_todo_struct, depends_on_todo_struct_docs),
+        )
         .with_state(state)
 }
 
@@ -90,6 +98,14 @@ struct SelectTodo {
     id: Uuid,
 }
 
+#[derive(Deserialize, JsonSchema)]
+struct SelectDependentTodos {
+    /// The ID of the Todo.
+    id: Uuid,
+    /// The ID of the Todo that this Todo depends on.
+    depends_on_id: Uuid,
+}
+
 async fn get_todo(
     State(app): State<AppState>,
     Path(todo): Path<SelectTodo>,
@@ -144,4 +160,28 @@ async fn complete_todo(
 
 fn complete_todo_docs(op: TransformOperation) -> TransformOperation {
     op.description("Complete a Todo.").response::<204, ()>()
+}
+
+async fn depends_on_todo(
+    State(_app): State<AppState>,
+    Path((_todo_id, _todo_depends_on_id)): Path<(Uuid, Uuid)>,
+) -> impl IntoApiResponse {
+    todo!()
+}
+
+fn depends_on_todo_docs(op: TransformOperation) -> TransformOperation {
+    op.description("Todo depends on another Todo.")
+        .response::<204, ()>()
+}
+
+async fn depends_on_todo_struct(
+    State(app): State<AppState>,
+    Path(todos): Path<SelectDependentTodos>,
+) -> impl IntoApiResponse {
+    todo!()
+}
+
+fn depends_on_todo_struct_docs(op: TransformOperation) -> TransformOperation {
+    op.description("Todo depends on another Todo.")
+        .response::<204, ()>()
 }
