@@ -32,7 +32,11 @@ Read the [docs](https://docs.rs/axum-jsonschema/latest/axum_jsonschema/).
 
 ⚠️ the axum-sqlx-tx feature is deprecated and replaced by this crate
 
-Drop in replacement for `axum-sqlx-tx` compatible with aide.
+Drop-in replacement for `axum-sqlx-tx` compatible with aide.
+
+### [aide-axum-typed-multipart](./crates/aide-axum-typed-multipart/README.md)
+
+Drop-in replacement for `axum-typed-multipart` compatible with aide.
 
 ## Contributing
 
