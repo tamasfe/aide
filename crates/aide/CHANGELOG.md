@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.13.3 - 2024-03-06
+
+[ed3e3f7](ed3e3f76c7bdce39d7aea30fe7fdad4ac544e96c)...[f473a8c](f473a8c98e1b41c8d67a4d25141ac12d57c5182a)
+
+### Bug Fixes
+
+- Updated jwt-authorizer dependency version ([#121](https://github.com/tamasfe/aide/issues/121)) ([5a3a5b9](5a3a5b987c929a9ffdd9509ca424ecfacbce6930)), Co-authored-by:Kirill Kinduk <k.kinduk@kefirgames.com>
+
+### Miscellaneous Tasks
+
+- Updated CHANGELOG.md ([6a3ca01](6a3ca0107409797baf31f0ebf30724b39e880f7e))
+
+# Changelog
+
 ## 0.13.2 - 2024-01-22
 
 [3fed0f6](3fed0f6d5f2b2aa8cb7f9dfda738c652c8894fd8)...[ed3e3f7](ed3e3f76c7bdce39d7aea30fe7fdad4ac544e96c)
