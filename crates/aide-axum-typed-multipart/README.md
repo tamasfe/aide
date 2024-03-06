@@ -7,7 +7,8 @@ to generate documentation for multipart requests.
 
 ```rust
 use aide_axum_typed_multipart::{FieldData, TypedMultipart};
-use axum::{body::Bytes, http::StatusCode};
+use axum::{http::StatusCode};
+use bytes::Bytes;
 use axum_typed_multipart::TryFromMultipart;
 use schemars::JsonSchema;
 
@@ -19,7 +20,7 @@ struct MyMultipart {
     image: FieldData<Bytes>,
 }
 
-async fn post_hello_world(TypedMultipart<MyMultipart>) -> StatusCode {
+async fn post_hello_world(_: TypedMultipart<MyMultipart>) -> StatusCode {
     // do something
     return StatusCode::OK;
 }
