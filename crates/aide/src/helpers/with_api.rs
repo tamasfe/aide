@@ -10,6 +10,7 @@ use crate::openapi::{Operation, Response};
 use crate::{OperationInput, OperationOutput};
 
 /// Trait that allows implementing a custom Api definition for any type.
+///
 /// Two approaches are possible:
 ///
 /// 1. Simple Type override for concrete types
@@ -65,6 +66,7 @@ pub trait ApiOverride {
 }
 
 /// Allows non [`OperationInput`] or [`OperationOutput`] types to be used in aide handlers with a provided documentation.
+///
 /// For types that already implement [`OperationInput`] or [`OperationOutput`] it overrides the documentation with the provided one.
 /// See [`ApiOverride`] on how to implement such an override
 #[derive(Copy, Clone, Debug, Ord, PartialOrd, Eq, PartialEq, Hash, Serialize, Deserialize)]

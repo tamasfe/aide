@@ -26,6 +26,7 @@ impl<T> IntoApi for T {
 }
 
 /// Allows non [`OperationInput`] or [`OperationOutput`] types to be used in aide handlers with the api documentation of [A].
+///
 /// For types that already implement [`OperationInput`] or [`OperationOutput`] it overrides the documentation with the provided one.
 #[derive(Copy, Clone, Debug, Ord, PartialOrd, Eq, PartialEq, Hash, Serialize, Deserialize)]
 pub struct UseApi<T, A>(pub T, pub PhantomData<A>);
