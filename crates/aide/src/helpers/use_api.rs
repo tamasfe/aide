@@ -1,6 +1,8 @@
-use std::marker::PhantomData;
+use std::{
+    marker::PhantomData,
+    ops::{Deref, DerefMut},
+};
 
-use derive_more::{AsMut, AsRef, Deref, DerefMut};
 use serde::{Deserialize, Serialize};
 
 use crate::gen::GenContext;
@@ -25,41 +27,45 @@ impl<T> IntoApi for T {
 
 /// Allows non [`OperationInput`] or [`OperationOutput`] types to be used in aide handlers with the api documentation of [A].
 /// For types that already implement [`OperationInput`] or [`OperationOutput`] it overrides the documentation with the provided one.
-#[derive(
-    Copy,
-    Clone,
-    Debug,
-    Ord,
-    PartialOrd,
-    Eq,
-    PartialEq,
-    Hash,
-    Serialize,
-    Deserialize,
-    Deref,
-    DerefMut,
-    AsRef,
-    AsMut,
-)]
-pub struct UseApi<T, A>(
-    #[as_ref]
-    #[as_mut]
-    #[deref]
-    #[deref_mut]
-    pub T,
-    pub PhantomData<A>,
-);
-
-impl<T, A> From<T> for UseApi<T, A> {
-    fn from(value: T) -> Self {
-        Self(value, Default::default())
-    }
-}
+#[derive(Copy, Clone, Debug, Ord, PartialOrd, Eq, PartialEq, Hash, Serialize, Deserialize)]
+pub struct UseApi<T, A>(pub T, pub PhantomData<A>);
 
 impl<T, A> UseApi<T, A> {
     /// Unwraps [Self] into its inner type
     pub fn into_inner(self) -> T {
         self.0
+    }
+}
+
+impl<T, A> Deref for UseApi<T, A> {
+    type Target = T;
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
+impl<T, A> DerefMut for UseApi<T, A> {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.0
+    }
+}
+
+impl<T, A> AsRef<T> for UseApi<T, A> {
+    fn as_ref(&self) -> &T {
+        &self.0
+    }
+}
+
+impl<T, A> AsMut<T> for UseApi<T, A> {
+    fn as_mut(&mut self) -> &mut T {
+        &mut self.0
+    }
+}
+
+impl<T, A> From<T> for UseApi<T, A> {
+    fn from(value: T) -> Self {
+        Self(value, Default::default())
     }
 }
 

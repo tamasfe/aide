@@ -1,6 +1,8 @@
-use std::marker::PhantomData;
+use std::{
+    marker::PhantomData,
+    ops::{Deref, DerefMut},
+};
 
-use derive_more::{AsMut, AsRef, Deref, DerefMut};
 use serde::{Deserialize, Serialize};
 
 use crate::gen::GenContext;
@@ -62,33 +64,11 @@ pub trait ApiOverride {
     type Target;
 }
 
-/// Allows non [`OperationInput`] or [`OperationOutput`] types to be used in aide handlers with a provided documentation.  
+/// Allows non [`OperationInput`] or [`OperationOutput`] types to be used in aide handlers with a provided documentation.
 /// For types that already implement [`OperationInput`] or [`OperationOutput`] it overrides the documentation with the provided one.
 /// See [`ApiOverride`] on how to implement such an override
-#[derive(
-    Copy,
-    Clone,
-    Debug,
-    Ord,
-    PartialOrd,
-    Eq,
-    PartialEq,
-    Hash,
-    Serialize,
-    Deserialize,
-    Deref,
-    DerefMut,
-    AsRef,
-    AsMut,
-)]
-pub struct WithApi<T>(
-    #[as_ref]
-    #[as_mut]
-    #[deref]
-    #[deref_mut]
-    pub T::Target,
-    pub PhantomData<T>,
-)
+#[derive(Copy, Clone, Debug, Ord, PartialOrd, Eq, PartialEq, Hash, Serialize, Deserialize)]
+pub struct WithApi<T>(pub T::Target, pub PhantomData<T>)
 where
     T: ApiOverride;
 
@@ -99,6 +79,44 @@ where
     /// Unwraps [Self] into its inner type
     pub fn into_inner(self) -> T::Target {
         self.0
+    }
+}
+
+impl<T> Deref for WithApi<T>
+where
+    T: ApiOverride,
+{
+    type Target = T::Target;
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
+impl<T> DerefMut for WithApi<T>
+where
+    T: ApiOverride,
+{
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.0
+    }
+}
+
+impl<T> AsRef<T::Target> for WithApi<T>
+where
+    T: ApiOverride,
+{
+    fn as_ref(&self) -> &T::Target {
+        &self.0
+    }
+}
+
+impl<T> AsMut<T::Target> for WithApi<T>
+where
+    T: ApiOverride,
+{
+    fn as_mut(&mut self) -> &mut T::Target {
+        &mut self.0
     }
 }
 
