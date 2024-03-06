@@ -2,6 +2,8 @@
   - [Crates](#crates)
     - [aide](#aide-1)
     - [axum-jsonschema](#axum-jsonschema)
+    - [aide-axum-sqlx-tx](#aide-axum-sqlx-tx)
+    - [aide-axum-typed-multipart](#aide-axum-typed-multipart)
   - [Contributing](#contributing)
   - [License](#license)
   - [Similar Libraries](#similar-libraries)
@@ -30,9 +32,14 @@ Read the [docs](https://docs.rs/axum-jsonschema/latest/axum_jsonschema/).
 
 ### [aide-axum-sqlx-tx](./crates/aide-axum-sqlx-tx/README.md)
 
-⚠️ the axum-sqlx-tx feature is deprecated and replaced by this crate
+> [!IMPORTANT]   
+> the `axum-sqlx-tx` feature is deprecated and replaced by this crate.
 
-Drop in replacement for `axum-sqlx-tx` compatible with aide.
+Drop-in replacement for [`axum-sqlx-tx`](https://crates.io/crates/axum-sqlx-tx) compatible with aide.
+
+### [aide-axum-typed-multipart](./crates/aide-axum-typed-multipart/README.md)
+
+Drop-in replacement for [`axum-typed-multipart`](https://crates.io/crates/axum_typed_multipart) compatible with aide.
 
 ## Contributing
 
