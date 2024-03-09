@@ -16,6 +16,8 @@
   },
   "devDependencies": {
     "@nuxtjs/i18n": "^8.1.1",
-    "@nuxtjs/tailwindcss": "^6.11.4"
+    "@nuxtjs/tailwindcss": "^6.11.4",
+    "typescript": "^5.4.2",
+    "vue-tsc": "^1"
   }
 }

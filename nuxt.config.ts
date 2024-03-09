@@ -11,4 +11,8 @@ export default defineNuxtConfig({
     "@nuxtjs/i18n",
     "@nuxtjs/tailwindcss",
   ],
+  typescript: {
+    strict: true,
+    typeCheck: true,
+  },
 })
