@@ -17,12 +17,14 @@ export default defineNuxtConfig({
   },
   modules: [
     "@nuxtjs/i18n",
+    "@nuxtjs/seo",
     "@nuxtjs/tailwindcss",
   ],
   ssr: true,
   runtimeConfig: {
     public: {},
   },
+  site: {},
   typescript: {
     strict: true,
     typeCheck: true,
