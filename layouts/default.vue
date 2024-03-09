@@ -1,5 +1,5 @@
 <template>
-  <div class="text-lg">
+  <div>
     <div>header</div>
     <slot />
   </div>
