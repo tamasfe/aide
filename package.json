@@ -19,6 +19,6 @@
     "@nuxtjs/seo": "2.0.0-rc.8",
     "@nuxtjs/tailwindcss": "^6.11.4",
     "typescript": "^5.4.2",
-    "vue-tsc": "^1"
+    "vue-tsc": "^1.8.27"
   }
 }
