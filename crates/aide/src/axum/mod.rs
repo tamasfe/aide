@@ -713,7 +713,7 @@ mod private {
     pub trait Sealed {}
 }
 
-/// A trait that extens [`axum::handler::Handler`] with API operation
+/// A trait that extends [`axum::handler::Handler`] with API operation
 /// details.
 ///
 /// Just like axum's `Handler`, it is automatically implemented

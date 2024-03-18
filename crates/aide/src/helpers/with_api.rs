@@ -61,7 +61,7 @@ use crate::{OperationInput, OperationOutput};
 /// }
 /// ```
 pub trait ApiOverride {
-    /// The type that is being overriden
+    /// The type that is being overridden
     type Target;
 }
 
