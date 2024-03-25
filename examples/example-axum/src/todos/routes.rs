@@ -81,7 +81,6 @@ async fn list_todos(State(app): State<AppState>) -> impl IntoApiResponse {
 
 fn list_todos_docs(op: TransformOperation) -> TransformOperation {
     op.description("List all Todo items.")
-        .response::<200, Json<TodoList>>()
 }
 
 #[derive(Deserialize, JsonSchema)]
