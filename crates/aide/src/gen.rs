@@ -76,7 +76,7 @@ pub fn infer_responses(infer: bool) {
     });
 }
 
-/// Output all theoretically possbile error responses
+/// Output all theoretically possible error responses
 /// including framework-specific ones.
 ///
 /// This is disabled by default.

@@ -185,7 +185,7 @@ impl From<JsonSchemaRejection> for JsonSchemaErrorResponse {
                 error: "deserialization failed".to_string(),
                 extra: AdditionalError::Deserialization(DeserializationResponse {
                     deserialization_error: VecDeque::from([PathError {
-                        // keys and index seperated by a '/'
+                        // keys and index separated by a '/'
                         // enum is ignored because it doesn't exist in json
                         instance_location: std::iter::once(String::new())
                             .chain(s.path().iter().map(|s| match s {

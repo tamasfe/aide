@@ -1,0 +1,9 @@
+[default]
+extend-ignore-re = [
+    "ff32ba0",
+]
+
+[files]
+extend-exclude = [
+    "crates/aide/res/**/*.js",
+]
