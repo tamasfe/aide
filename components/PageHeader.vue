@@ -1,5 +1,5 @@
 <template>
-  <div class="header__wrapper flex justify-center w-full fixed bg-black h-[52px] top-0 left-0">
+  <div class="header__wrapper flex justify-center w-full fixed bg-black h-[52px] top-0 left-0 z-[998]">
     <div class="flex place-content-between w-full max-w-[1296px] px-[32px] items-center">
       <div>
         <img src="/girobet-logo.svg" alt="Girobet logo">
