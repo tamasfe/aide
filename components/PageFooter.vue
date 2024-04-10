@@ -26,35 +26,35 @@
 
           <NuxtLink to="/" class="font-montserrat text-white text-base mb-[18px]">
             Crash
-          </NuxtLink >
-          <NuxtLink  to="/" class="font-montserrat text-white text-base mb-[18px]">
+          </NuxtLink>
+          <NuxtLink to="/" class="font-montserrat text-white text-base mb-[18px]">
             Double
-          </NuxtLink >
-          <NuxtLink  to="/" class="font-montserrat text-white text-base mb-[18px]">
+          </NuxtLink>
+          <NuxtLink to="/" class="font-montserrat text-white text-base mb-[18px]">
             Blaze Mirror
-          </NuxtLink >
-          <NuxtLink  to="/" class="font-montserrat text-white text-base mb-[18px]">
+          </NuxtLink>
+          <NuxtLink to="/" class="font-montserrat text-white text-base mb-[18px]">
             Fairness
-          </NuxtLink >
-          <NuxtLink  to="/" class="font-montserrat text-white text-base mb-[18px]">
+          </NuxtLink>
+          <NuxtLink to="/" class="font-montserrat text-white text-base mb-[18px]">
             VIP Club
-          </NuxtLink >
+          </NuxtLink>
         </div>
         <div class="flex flex-col pt-1">
           <h5 class="font-montserrat text-white opacity-60 mb-[34px] text-xl font-semibold">Helpful links</h5>
 
           <NuxtLink to="/" class="font-montserrat text-white text-base mb-[18px]">
             Terms of Services
-          </NuxtLink >
+          </NuxtLink>
           <NuxtLink to="/" class="font-montserrat text-white text-base mb-[18px]">
             Privacy Policy
-          </NuxtLink >
+          </NuxtLink>
           <NuxtLink to="/" class="font-montserrat text-white text-base mb-[18px]">
             Bonus Terms
-          </NuxtLink >
+          </NuxtLink>
           <NuxtLink to="/" class="font-montserrat text-white text-base mb-[18px]">
             FAQ
-          </NuxtLink >
+          </NuxtLink>
         </div>
         <div class="flex flex-col pt-1">
           <h5 class="font-montserrat text-white opacity-60 mb-[34px] text-xl font-semibold">Helpful links</h5>

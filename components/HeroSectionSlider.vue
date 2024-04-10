@@ -21,8 +21,7 @@
       </button>
 
       <div class="flex gap-x-2 absolute w-full max-w-[240px] bottom-[39px] left-[50%] translate-x-[-50%]">
-        <div v-for="slide in maxSlides" class="carousel__selector flex-1 h-[2px] bg-[#FFE33A] opacity-40" :class="{ active: activeSlide === slide - 1}">
-        </div>
+        <div v-for="slide in maxSlides" class="carousel__selector flex-1 h-[2px] bg-[#FFE33A] opacity-40" :class="{ active: activeSlide === slide - 1}"></div>
       </div>
     </div>
   </div>
