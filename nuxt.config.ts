@@ -8,6 +8,9 @@ export default defineNuxtConfig({
     },
     rootId: "app",
   },
+  css:[
+    '~/assets/styles/global.scss'
+  ],
   debug: false,
   devtools: {
     enabled: true,
@@ -15,12 +18,21 @@ export default defineNuxtConfig({
   i18n: {
     vueI18n: "./i18n.config.ts",
   },
+  storybook: {
+    url: 'http://localhost:6006',
+    storybookRoute: '/__storybook__',
+    port: 6006,
+  },
   modules: [
     "@nuxtjs/i18n",
     "@nuxtjs/seo",
     "@nuxtjs/tailwindcss",
+    '@storybook-vue/nuxt-storybook',
   ],
   ssr: true,
+  ogImage: {
+    enabled: false
+  },
   runtimeConfig: {
     public: {},
   },

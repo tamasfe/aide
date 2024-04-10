@@ -1,6 +1,9 @@
 <template>
-  <div>
-    <div class="font-medium">header</div>
-    <slot />
+  <div class="bg-body-bg min-h-screen">
+    <PageHeader />
+    <div class="mt-[50px]">
+      <slot/>
+    </div>
+    <PageFooter />
   </div>
 </template>
