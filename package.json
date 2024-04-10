@@ -10,15 +10,15 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "nuxt": "^3.10.3",
+    "nuxt": "^3.11.2",
     "vue": "^3.4.21",
     "vue-router": "^4.3.0"
   },
   "devDependencies": {
-    "@nuxtjs/i18n": "^8.1.1",
+    "@nuxtjs/i18n": "^8.3.0",
     "@nuxtjs/seo": "2.0.0-rc.8",
     "@nuxtjs/tailwindcss": "^6.11.4",
-    "typescript": "^5.4.2",
+    "typescript": "^5.4.4",
     "vue-tsc": "^1.8.27"
   }
 }
