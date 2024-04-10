@@ -14,10 +14,10 @@
       </div>
 
       <button class="flex items-center absolute h-full bottom-0 left-0" @click="onPreviousSlide()">
-        <IconsSliderChevroneLeft />
+        <IconsSliderChevronLeft />
       </button>
       <button class="flex items-center absolute h-full bottom-0 right-0" @click="onNextSlide()">
-        <IconsSliderChevroneRight />
+        <IconsSliderChevronRight />
       </button>
 
       <div class="flex gap-x-2 absolute w-full max-w-[240px] bottom-[39px] left-[50%] translate-x-[-50%]">
