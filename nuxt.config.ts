@@ -12,10 +12,8 @@ export default defineNuxtConfig({
   devtools: {
     enabled: true,
   },
-  i18n: {
-    vueI18n: "./i18n.config.ts",
-  },
   modules: [
+    "@nuxt/eslint",
     "@nuxtjs/i18n",
     "@nuxtjs/seo",
     "@nuxtjs/tailwindcss",
@@ -24,9 +22,29 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {},
   },
-  site: {},
   typescript: {
     strict: true,
     typeCheck: true,
   },
+  // @nuxtjs/eslint
+  eslint: {
+    config: {
+      stylistic: {
+        arrowParens: false,
+        blockSpacing: true,
+        braceStyle: "stroustrup",
+        commaDangle: "always-multiline",
+        jsx: false,
+        quoteProps: "as-needed",
+        quotes: "double",
+        semi: true,
+      },
+    },
+  },
+  // @nuxtjs/i18n
+  i18n: {
+    vueI18n: "./i18n.config.ts",
+  },
+  // @nuxtjs/seo
+  site: {},
 })
