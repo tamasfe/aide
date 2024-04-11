@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 
-import HeroSectionSlider from '../components/HeroSectionSlider.vue';
+import HeroSectionSlider from '../components/sliders/HeroSectionSlider.vue';
 
 const meta = {
   title: 'Sliders/HeroSectionSlider',
