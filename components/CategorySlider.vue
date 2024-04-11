@@ -21,7 +21,7 @@
         <NuxtLink v-for="slide in props.slides" :to="slide.link"  class="inline-block select-none snap-start w-[161px] h-full mr-[18px] rounded last:mr-0">
           <div class="relative w-full h-full bg-contain bg-repeat" :style="{backgroundImage: `url(${slide.imageUrl})`}">
             <div class="absolute left-[6px] top-[6px] py-[5px] px-[8px] text-white text-xs font-montserrat font-bold bg-[#00B439] rounded">
-              RTP: {{ slide.rtp }}%
+              {{ slide.label }}
             </div>
           </div>
         </NuxtLink>

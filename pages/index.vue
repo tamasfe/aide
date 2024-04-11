@@ -94,87 +94,87 @@ const categories = [
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'NEW'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'NEW'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'NEW'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       }
     ]
   },
@@ -184,87 +184,87 @@ const categories = [
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       }
     ]
   },
@@ -274,87 +274,87 @@ const categories = [
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       }
     ]
   },
@@ -364,87 +364,87 @@ const categories = [
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       }
     ]
   },
@@ -454,87 +454,87 @@ const categories = [
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       }
     ]
   },
@@ -544,87 +544,87 @@ const categories = [
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       }
     ]
   },
@@ -634,87 +634,87 @@ const categories = [
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       },
       {
         imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
         link: "/",
-        rtp: 884
+        label: 'RTP: 884%'
       }
     ]
   },
