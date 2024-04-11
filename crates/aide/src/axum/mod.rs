@@ -172,20 +172,21 @@ use std::{convert::Infallible, future::Future, mem, pin::Pin};
 
 use crate::{
     gen::{self, in_context},
-    openapi::{Components, OpenApi, PathItem, ReferenceOr, SchemaObject},
+    openapi::{OpenApi, PathItem, ReferenceOr, SchemaObject},
     operation::OperationHandler,
     util::merge_paths,
     OperationInput, OperationOutput,
 };
 use axum::{
     body::Body,
-    extract::connect_info::IntoMakeServiceWithConnectInfo,
     handler::Handler,
     http::Request,
     response::IntoResponse,
     routing::{IntoMakeService, Route, RouterAsService, RouterIntoService},
     Router,
 };
+#[cfg(not(feature = "axum-wasm"))]
+use axum::extract::connect_info::IntoMakeServiceWithConnectInfo;
 use indexmap::map::Entry;
 use indexmap::IndexMap;
 use tower_layer::Layer;
@@ -598,6 +599,7 @@ impl ApiRouter<()> {
     /// See [`axum::Router::into_make_service_with_connect_info`] for details.
     #[tracing::instrument(skip_all)]
     #[must_use]
+    #[cfg(not(feature = "axum-wasm"))]
     pub fn into_make_service_with_connect_info<C>(
         self,
     ) -> IntoMakeServiceWithConnectInfo<Router<()>, C> {
