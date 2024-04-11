@@ -1,25 +1,26 @@
 <template>
   <div class="flex flex-col items-center w-full min-h-screen">
     <div class="w-full max-w-[1296px] px-[32px]">
-      <div class="w-full flex justify-center pt-4">
-        <HeroSectionSlider :slides="slides"/>
+      <div class="w-full pt-4">
+        <SlidersHeroSectionSlider :slides="slides" />
       </div>
       <div class="mt-8">
-        <GlobalSearchBar v-model="search"/>
+        <GlobalSearchBar v-model="search" />
       </div>
       <div class="flex mt-[22px] gap-x-4">
         <PartialsTextChip v-for="chip in chips" :icon="chip.icon" :label="chip.label" />
       </div>
       <div class="mt-8">
-        <CategorySlider v-for="category in categories" :slides="category.slides" :title="category.title"/>
+        <SlidersCategorySlider v-for="category in categories" :slides="category.slides" :title="category.title" />
       </div>
+    </div>
+    <div class="w-full mt-8 py-10 flex justify-center bg-[#232630]">
+      <SlidersProvidersSlider :slides="providers" />
     </div>
   </div>
 </template>
 
 <script setup>
-import HeroSectionSlider from '~/components/HeroSectionSlider.vue';
-
 const { locale } = useI18n();
 
 let search = ref('')
@@ -719,6 +720,75 @@ const categories = [
     ]
   },
 ]
+
+const providers = [
+  {
+    title: 'Platipus',
+    gamesCount: 109,
+    link: '/'
+  },
+  {
+    title: 'Platipus',
+    gamesCount: 109,
+    link: '/'
+  },
+  {
+    title: 'Platipus',
+    gamesCount: 109,
+    link: '/'
+  },
+  {
+    title: 'Platipus',
+    gamesCount: 109,
+    link: '/'
+  },
+  {
+    title: 'Platipus',
+    gamesCount: 109,
+    link: '/'
+  },
+  {
+    title: 'Platipus',
+    gamesCount: 109,
+    link: '/'
+  },
+  {
+    title: 'Platipus',
+    gamesCount: 109,
+    link: '/'
+  },
+  {
+    title: 'Platipus',
+    gamesCount: 109,
+    link: '/'
+  },
+  {
+    title: 'Platipus',
+    gamesCount: 109,
+    link: '/'
+  },
+  {
+    title: 'Platipus',
+    gamesCount: 109,
+    link: '/'
+  },
+  {
+    title: 'Platipus',
+    gamesCount: 109,
+    link: '/'
+  },
+  {
+    title: 'Platipus',
+    gamesCount: 109,
+    link: '/'
+  },
+  {
+    title: 'Platipus',
+    gamesCount: 109,
+    link: '/'
+  },
+]
+
 
 const chips = [
   {
