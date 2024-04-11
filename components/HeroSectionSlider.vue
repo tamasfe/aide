@@ -15,7 +15,7 @@
       </button>
 
       <div class="flex gap-x-2 absolute w-full max-w-[240px] bottom-[39px] left-[50%] translate-x-[-50%]">
-        <div v-for="slide in maxSlides" class="transition-opacity flex-1 h-[2px] bg-[#FFE33A] opacity-40" :class="{ 'opacity-100': activeSlide === slide - 1}"></div>
+        <div v-for="(slide, index) in props.slides" class="transition-opacity flex-1 h-[2px] bg-[#FFE33A] opacity-40" :class="{ 'opacity-100': activeSlide === index}"></div>
       </div>
     </div>
   </div>
@@ -23,16 +23,14 @@
 
 <script setup lang="ts">
 const props = defineProps<{
-  slides?: Array<any>
+  slides: Array<any>
 }>()
 
 let activeSlide:Ref<number> = ref(0);
-let maxSlides:Ref<number> = ref(0);
 let slideElements:NodeListOf<Element>;
 
 onMounted(() => {
   slideElements = document.querySelectorAll('.carousel__item');
-  maxSlides.value = slideElements.length;
 })
 
 const onNextSlide = () => {
@@ -40,7 +38,7 @@ const onNextSlide = () => {
   slideElements[activeSlide.value].scrollIntoView(false)
 }
 const onPreviousSlide = () => {
-  activeSlide.value - 1 >= 0 ? activeSlide.value-- : activeSlide.value = maxSlides.value - 1
+  activeSlide.value - 1 >= 0 ? activeSlide.value-- : activeSlide.value = props.slides.length - 1
   slideElements[activeSlide.value].scrollIntoView(false)
 }
 </script>
