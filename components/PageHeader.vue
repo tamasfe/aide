@@ -5,8 +5,8 @@
         <img src="/girobet-logo.svg" alt="Girobet logo">
       </div>
       <div class="flex gap-x-4">
-        <PartialsButtonComponent variant="text" text="LOG IN" />
-        <PartialsButtonComponent variant="solid" text="REGISTER"/>
+        <PartialsButtonComponent variant="text" :label="'LOG IN'" />
+        <PartialsButtonComponent variant="solid" :label="'REGISTER'"/>
       </div>
     </div>
   </div>
