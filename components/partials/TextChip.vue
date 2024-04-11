@@ -1,10 +1,7 @@
 <template>
   <div class="flex justify-start">
     <div class="flex relative rounded-full px-3 py-2 bg-[#2F323C] text-white font-semibold font-montserrat text-sm hover:brightness-90  transition-all cursor-pointer">
-      <img
-        class="w-[14px] mr-2"
-        :src="icon"
-      >
+      <span class="mr-1">{{ icon }}</span>
       {{ label }}
     </div>
   </div>

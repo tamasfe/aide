@@ -10,6 +10,9 @@
       <div class="flex mt-[22px] gap-x-4">
         <PartialsTextChip v-for="chip in chips" :icon="chip.icon" :label="chip.label" />
       </div>
+      <div class="mt-8">
+        <CategorySlider v-for="category in categories" :slides="category.slides" :title="category.title"/>
+      </div>
     </div>
   </div>
 </template>
@@ -34,27 +37,708 @@ const slides = [
     imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
     link: "/"
   },
+  {
+    imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+    link: "/"
+  },
+  {
+    imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+    link: "/"
+  },
+  {
+    imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+    link: "/"
+  },
+  {
+    imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+    link: "/"
+  },
+  {
+    imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+    link: "/"
+  },
+  {
+    imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+    link: "/"
+  },
+  {
+    imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+    link: "/"
+  },
+  {
+    imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+    link: "/"
+  },
+  {
+    imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+    link: "/"
+  },
+  {
+    imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+    link: "/"
+  },
+  {
+    imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+    link: "/"
+  },
+  {
+    imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+    link: "/"
+  },
+]
+
+const categories = [
+  {
+    title: '👍 Top Games',
+    slides: [
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      }
+    ]
+  },
+  {
+    title: '💎 Trending Games',
+    slides: [
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      }
+    ]
+  },
+  {
+    title: '🥇 New Games',
+    slides: [
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      }
+    ]
+  },
+  {
+    title: '🔥 Hot Games - 24H',
+    slides: [
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      }
+    ]
+  },
+  {
+    title: '❄ Cold Games - 24H',
+    slides: [
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      }
+    ]
+  },
+  {
+    title: '🏆 Megaways',
+    slides: [
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      }
+    ]
+  },
+  {
+    title: '😈 Slots',
+    slides: [
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      },
+      {
+        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
+        link: "/",
+        rtp: 884
+      }
+    ]
+  },
 ]
 
 const chips = [
   {
-    icon: 'https://placehold.co/14',
+    icon: '🛸',
     label: 'Aviator'
   },
   {
-    icon: 'https://placehold.co/14',
+    icon: '💣',
     label: 'Mines'
   },
   {
-    icon: 'https://placehold.co/14',
+    icon: '🍀',
     label: 'Fortune'
   },
   {
-    icon: 'https://placehold.co/14',
+    icon: '🎰',
     label: 'Casino'
   },
   {
-    icon: 'https://placehold.co/14',
+    icon: '🎥',
     label: 'Casino (Live)'
   }
 ]

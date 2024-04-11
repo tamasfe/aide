@@ -20,7 +20,7 @@ export const TextChipStory: Story = {
     template: '<TextChip v-bind="args" />',
   }),
   args: {
-    icon: 'https://placehold.co/14',
+    icon: '🛸',
     label: 'Aviator'
   },
 };

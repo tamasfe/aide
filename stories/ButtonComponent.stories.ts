@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 
 import ButtonComponent from '../components/partials/ButtonComponent.vue';
+import SliderChevronLeft from '../components/Icons/SliderChevronLeft.vue';
 
 const meta = {
   title: 'Partials/ButtonComponent',
@@ -8,12 +9,13 @@ const meta = {
   tags: ['autodocs'],
   argTypes: {
     variant: {
-      options: ['solid', 'text'], // An array of serializable values
+      options: ['solid', 'text', 'round'], // An array of serializable values
       control: {
         type: 'select',
         labels: {
-          solid: 'Solid',
+          solid: 'solid',
           text: 'text',
+          round: 'round'
         },
       },
     },
@@ -31,11 +33,11 @@ type Story = StoryObj<typeof meta>
 
 export const ButtonComponentStory: Story = {
   render: (args) => ({
-    components: { ButtonComponent },
+    components: { ButtonComponent, SliderChevronLeft },
     setup() {
       return { args };
     },
-    template: '<ButtonComponent v-bind="args" />',
+    template: '<ButtonComponent v-bind="args" :color="args.variant === `text` && !args.color ? `#000` : args.color"> <SliderChevronLeft v-if="args.variant === `round`" class="h-6" :color="`#fff`"/> </ButtonComponent>',
   }),
   args: {
     variant: 'solid',
