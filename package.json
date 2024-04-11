@@ -21,6 +21,7 @@
     "@nuxtjs/tailwindcss": "^6.11.4",
     "@storybook-vue/nuxt": "^0.2.6",
     "@storybook-vue/nuxt-storybook": "0.0.1-latest.7",
+    "@storybook/addon-essentials": "^8.0.6",
     "@storybook/addon-interactions": "^8.0.6",
     "@storybook/addon-links": "^8.0.6",
     "@storybook/builder-vite": "^8.0.6",

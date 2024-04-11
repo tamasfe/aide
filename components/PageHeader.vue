@@ -5,12 +5,8 @@
         <img src="/girobet-logo.svg" alt="Girobet logo">
       </div>
       <div class="flex gap-x-4">
-        <button class="text-base text-white font-montserrat font-bold">
-          LOG IN
-        </button>
-        <button class="text-base text-[#161421] px-[24px] py-[7px] bg-[#FFE649] rounded font-bold font-montserrat">
-          REGISTER
-        </button>
+        <PartialsButtonComponent variant="text" text="LOG IN" />
+        <PartialsButtonComponent variant="solid" text="REGISTER"/>
       </div>
     </div>
   </div>
