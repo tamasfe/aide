@@ -5,5 +5,6 @@
       <slot/>
     </div>
     <PageFooter />
+    <AuthModal v-if="true"/>
   </div>
 </template>

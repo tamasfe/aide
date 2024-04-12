@@ -22,9 +22,12 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps<{
-  slides: Array<any>
-}>()
+const props = defineProps({
+  slides: {
+    type: Array<any>,
+    default: []
+  }
+})
 
 let activeSlide:Ref<number> = ref(0);
 let slideElements:NodeListOf<Element>;
@@ -43,7 +46,7 @@ const onPreviousSlide = () => {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .scrollbar-hide {
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -53,9 +56,7 @@ const onPreviousSlide = () => {
     display: none;
 }
 
-.carousel {
-  &__wrapper {
-    -webkit-overflow-scrolling: touch;
-  }
+.carousel__wrapper {
+  -webkit-overflow-scrolling: touch;
 }
 </style>

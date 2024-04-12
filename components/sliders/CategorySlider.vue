@@ -73,7 +73,7 @@ const onPreviousSlide = () => {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .scrollbar-hide {
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -83,9 +83,7 @@ const onPreviousSlide = () => {
     display: none;
 }
 
-.carousel {
-  &__wrapper {
-    -webkit-overflow-scrolling: touch;
-  }
+.carousel__wrapper {
+  -webkit-overflow-scrolling: touch;
 }
 </style>
