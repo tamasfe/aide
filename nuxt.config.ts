@@ -23,11 +23,15 @@ export default defineNuxtConfig({
     storybookRoute: '/__storybook__',
     port: 6006,
   },
+  pinia: {
+    storesDirs: ['./store/**',],
+  },
   modules: [
     "@nuxtjs/i18n",
     "@nuxtjs/seo",
     "@nuxtjs/tailwindcss",
     '@storybook-vue/nuxt-storybook',
+    '@pinia/nuxt'
   ],
   ssr: true,
   ogImage: {

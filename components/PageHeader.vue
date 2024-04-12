@@ -8,14 +8,20 @@
         <img src="/girobet-logo.svg" alt="Girobet logo">
       </div>
       <div class="flex gap-x-4">
-        <PartialsButtonComponent variant="text" :label="'LOG IN'" />
-        <PartialsButtonComponent variant="solid" :label="'REGISTER'"/>
+        <PartialsButtonComponent variant="text" :label="'LOG IN'" @click="openAuthModal('login')"/>
+        <PartialsButtonComponent variant="solid" :label="'REGISTER'" @click="openAuthModal('register')"/>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+const store = useTriggersStore()
+
+const openAuthModal = (type:string = 'register') => {
+  store.setAuthModalType(type)
+  store.setAuthModalState(true)
+}
 </script>
 
 <style scoped>
