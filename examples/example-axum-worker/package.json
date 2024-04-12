@@ -1,0 +1,11 @@
+{
+	"name": "example-axum-worker",
+	"version": "0.0.0",
+	"private": true,
+	"scripts": {
+		"dev": "wrangler dev --env dev"
+	},
+	"devDependencies": {
+		"wrangler": "^3.49.0"
+	}
+}

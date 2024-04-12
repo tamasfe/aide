@@ -1,0 +1,9 @@
+name = "worker-rust"
+main = "build/worker/shim.mjs"
+compatibility_date = "2024-04-08"
+
+[dev]
+port = 3000
+
+[env.dev]
+build = { command = "cargo install -q worker-build && worker-build --dev" }

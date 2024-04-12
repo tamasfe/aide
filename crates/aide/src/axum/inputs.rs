@@ -9,10 +9,14 @@ use crate::{
 use axum::{
     body::Body,
     extract::{
-        ConnectInfo, Extension, Form, Host, Json, MatchedPath, OriginalUri, Path, Query, RawQuery,
+        Extension, Form, Host, Json, MatchedPath, OriginalUri, Path, Query, RawQuery,
         State,
     },
 };
+
+#[cfg(not(feature = "axum-wasm"))]
+use axum::extract::ConnectInfo;
+
 use indexmap::IndexMap;
 use schemars::{
     schema::{ArrayValidation, InstanceType, Schema, SingleOrVec},
@@ -27,6 +31,8 @@ use crate::{
 
 impl<T> OperationInput for Extension<T> {}
 impl<T> OperationInput for State<T> {}
+
+#[cfg(not(feature = "axum-wasm"))]
 impl<T> OperationInput for ConnectInfo<T> {}
 impl OperationInput for MatchedPath {}
 impl OperationInput for OriginalUri {}
