@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.13.4 - 2024-04-14
+
+[f473a8c](f473a8c98e1b41c8d67a4d25141ac12d57c5182a)...[bd273ad](bd273ad63df2245384a7b7e5951003aa60c53d72)
+
+### Bug Fixes
+
+- Replace derive_more derives with manual implementations for compile time improvements ([#123](https://github.com/tamasfe/aide/issues/123)) ([353313a](353313a84583c9471ac5f004d9eb344c24977cb8))
+- Updated serde_qs to 0.13 ([bd273ad](bd273ad63df2245384a7b7e5951003aa60c53d72))
+
+### Features
+
+- Added wasm support ([42d1b7c](42d1b7ca72344c0b06e3fa323397da86681a91bb)), Co-authored-by:Dominik Lenz <dominikalexanerlenz@gmail.com>
+
 ## 0.13.3 - 2024-03-06
 
 [ed3e3f7](ed3e3f76c7bdce39d7aea30fe7fdad4ac544e96c)...[f473a8c](f473a8c98e1b41c8d67a4d25141ac12d57c5182a)
@@ -11,8 +24,6 @@
 ### Miscellaneous Tasks
 
 - Updated CHANGELOG.md ([6a3ca01](6a3ca0107409797baf31f0ebf30724b39e880f7e))
-
-# Changelog
 
 ## 0.13.2 - 2024-01-22
 
