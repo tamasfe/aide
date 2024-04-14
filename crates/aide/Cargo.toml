@@ -1,6 +1,6 @@
 [package]
 name = "aide"
-version = "0.13.3"
+version = "0.13.4"
 authors = ["tamasfe"]
 edition = "2021"
 keywords = ["generate", "api", "openapi", "documentation", "specification"]
@@ -29,7 +29,7 @@ cfg-if = "1.0.0"
 
 
 # custom axum extractors
-serde_qs = { version = "0.12.0", optional = true }
+serde_qs = { version = "0.13", optional = true }
 jwt-authorizer = { version = "0.14", default-features = false, optional = true }
 
 [features]
