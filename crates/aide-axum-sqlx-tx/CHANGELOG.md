@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.13.1 - 2024-04-14
+
+[24ffb72](24ffb728f63530e03fd60945db1a1da52c6821a5)...[58bb773](58bb77328e2083569c6e832ca9cde245aa6296ae)
+
+### Bug Fixes
+
+- Updated axum-sqlx-tx version ([58bb773](58bb77328e2083569c6e832ca9cde245aa6296ae))
+
 ## 0.13.0 - 2023-12-09
 
 [4e1e218](4e1e218478fc22b1ec91054915a2b75dd3a12eb1)...[d05b1fd](d05b1fdaa37f551ec96a4ebd57be23438fbcc18c)
