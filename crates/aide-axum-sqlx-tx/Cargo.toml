@@ -1,6 +1,6 @@
 [package]
 name = "aide-axum-sqlx-tx"
-version = "0.13.0"
+version = "0.13.1"
 edition = "2021"
 resolver = "2"
 authors = ["Wicpar"]
@@ -12,12 +12,12 @@ readme = "README.md"
 
 [dependencies]
 sqlx-06 = { package = "axum-sqlx-tx", version = "0.5.0", optional = true }
-sqlx-07 = { package = "axum-sqlx-tx", version = "0.6.0", optional = true }
+sqlx-07 = { package = "axum-sqlx-tx", version = "0.8.0", optional = true }
 aide = { version = "0.13", path = "../aide" }
 
 [dev-dependencies]
 sqlx = { version = "^0.7", features = ["postgres"] }
-sqlx-07 = { package = "axum-sqlx-tx", version = "0.6.0", features = ["postgres"] }
+sqlx-07 = { package = "axum-sqlx-tx", version = "0.8.0", features = ["postgres"] }
 
 [features]
 default = ["sqlx-07"]
