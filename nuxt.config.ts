@@ -20,9 +20,6 @@ export default defineNuxtConfig({
     storybookRoute: "/__storybook__",
     port: 6006,
   },
-  pinia: {
-    storesDirs: ["./store/**"],
-  },
   modules: [
     "@nuxt/eslint",
     "@nuxtjs/i18n",
@@ -31,13 +28,11 @@ export default defineNuxtConfig({
     "@storybook-vue/nuxt-storybook",
     "@pinia/nuxt",
   ],
-  ssr: true,
-  ogImage: {
-    enabled: false,
-  },
   runtimeConfig: {
     public: {},
   },
+  site: {},
+  ssr: true,
   typescript: {
     strict: true,
     typeCheck: true,
@@ -62,5 +57,26 @@ export default defineNuxtConfig({
     vueI18n: "./i18n.config.ts",
   },
   // @nuxtjs/seo
-  site: {},
+  linkChecker: {
+    enabled: false
+  },
+  ogImage: {
+    enabled: false
+  },
+  robots: {
+    enabled: false
+  },
+  schemaOrg: {
+    enabled: false
+  },
+  seoExperiments: {
+    enabled: false
+  },
+  sitemap: {
+    enabled: false
+  },
+  // @pinia/nuxt
+  pinia: {
+    storesDirs: ["./store/**"],
+  },
 });
