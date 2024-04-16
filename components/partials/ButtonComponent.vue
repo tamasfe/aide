@@ -20,7 +20,7 @@
     class="text-sm md:text-base text-[#161421] bg-[#FFE649] rounded font-bold font-montserrat transition-all hover:brightness-90 disabled:brightness-50"
     :class="{
       'px-3 py-[7px] md:px-[24px] md:py-[7px]': !big && !small,
-      'py-[5px] md:py-[14px] px-3 min-w-[246px]': big,
+      'py-[14px] px-3 min-w-[246px]': big,
       'py-[5px] px-[6px] md:py-[7px] md:px-3 min-w-auto': small,
     }"
     :style="{

@@ -2,12 +2,12 @@
   <Transition>
     <div v-if="store.getAuthModalOpen" class="flex justify-center items-center fixed left-0 top-0 size-full z-[999]">
       <div class="absolute left-0 top-0 size-full bg-[#0C0D0D] opacity-90 z-[-1]" @click="store.setAuthModalState(false)"></div>
-      <div class="relative w-full max-w-[552px] rounded-xl bg-[#1C1E28] overflow-hidden">
+      <div class="relative w-full h-full md:h-auto md:max-w-[552px] rounded-xl bg-[#1C1E28] overflow-hidden">
         <img src="/auth-banner.png">
         <div class="flex items-center justify-center absolute right-6 top-6 size-[32px] rounded bg-[#2B2740] bg-opacity-40 hover:bg-opacity-100 cursor-pointer" @click="store.setAuthModalState(false)">
           <img src="/icons/cross.svg">
         </div>
-        <div v-if="store.getAuthModalType === 'register'" class="flex flex-col justify-center items-center py-8 px-16">
+        <div v-if="store.getAuthModalType === 'register'" class="flex flex-col justify-center items-center py-8 px-5 md:px-16">
           <img src="/girobet-logo.svg" class="mb-8">
           <div class="w-full last:mb-0">
             <PartialsInputField
