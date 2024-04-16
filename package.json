@@ -33,6 +33,7 @@
     "@storybook/vue3": "^8.0.8",
     "eslint": "^9.0.0",
     "storybook": "^8.0.8",
+    "tailwindcss": "^3.4.3",
     "typescript": "^5.4.5",
     "vue-tsc": "^1.8.27"
   }

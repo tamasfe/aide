@@ -1,16 +1,17 @@
-module.exports = {
+import type { Config } from "tailwindcss";
+
+export default <Partial<Config>>{
   content: [
     "./pages/**/*.vue",
     "./components/**/*.vue",
   ],
-  darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
       fontFamily: {
         montserrat: ["Montserrat"],
       },
       colors: {
-        "body-bg": "#1C1E28",
+        "body-bg": "#1c1e28",
       },
     },
   },
