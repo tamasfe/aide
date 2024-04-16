@@ -37,19 +37,17 @@
               Suggested Games
             </h2>
             <div class="size-full">
-              <TransitionGroup name="list" tag="div">
-                <NuxtLink to="/" v-for="item in categories[selectedTab].items" class="w-full flex px-6 py-3 hover:bg-[#232630] transition">
-                  <div class="w-[80px] h-[110px] bg-black rounded"></div>
-                  <div class="flex flex-col flex-1 justify-center pl-4">
-                    <p class="text-white font-montserrat font-semibold mb-1">
-                      {{ item.title }}
-                    </p>
-                    <p class="text-white font-montserrat text-opacity-70 m-0">
-                      {{ item.subtitle }}
-                    </p>
-                  </div>
-                </NuxtLink>
-              </TransitionGroup>
+              <NuxtLink to="/" v-for="item in categories[selectedTab].items" class="w-full flex px-6 py-3 hover:bg-[#232630] transition">
+                <div class="w-[80px] h-[110px] bg-black rounded"></div>
+                <div class="flex flex-col flex-1 justify-center pl-4">
+                  <p class="text-white font-montserrat font-semibold mb-1">
+                    {{ item.title }}
+                  </p>
+                  <p class="text-white font-montserrat text-opacity-70 m-0">
+                    {{ item.subtitle }}
+                  </p>
+                </div>
+              </NuxtLink>
             </div>
           </div>
         </label>

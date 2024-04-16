@@ -30,13 +30,6 @@
 
 <script setup>
 const { locale } = useI18n();
-const store = useTriggersStore();
-
-useHead({
-  bodyAttrs: {
-    class: [store.getStopScroll ? 'stop-scrolling' : ''],
-  },
-});
 
 let search = ref('')
 
@@ -828,10 +821,3 @@ const chips = [
   }
 ]
 </script>
-
-<style scoped>
-.stop-scrolling {
-  height: 100%;
-  overflow: hidden;
-}
-</style>

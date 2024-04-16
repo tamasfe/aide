@@ -25,3 +25,8 @@
 .applyScrollbarHide::-webkit-scrollbar {
   display: none;
 }
+
+.stop-scrolling {
+  height: 100vh;
+  overflow: hidden;
+}

@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-body-bg max-h-screen">
+  <div class="bg-body-bg min-h-screen">
     <PageHeader />
     <div :class="{ 'mt-[50px]': !store.getPromoNotificationOpen, 'mt-[100px]': store.getPromoNotificationOpen}">
       <slot/>
