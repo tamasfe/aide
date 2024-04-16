@@ -5,7 +5,7 @@
       class="w-full max-w-[1232px] transition-[top] duration-500 z-[997]"
       :class="{
         'relative': focus,
-        'scroll-mt-[103px]': !store.getPromoNotificationOpen,
+        'scroll-mt-[115px]': store.getPromoNotificationOpen,
         'scroll-mt-[65px]': !store.getPromoNotificationOpen
       }"
     >

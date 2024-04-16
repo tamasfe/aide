@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-body-bg max-h-screen overflow-y-scroll" :class="{'stop-scrolling': store.getStopScroll}">
+  <div class="bg-body-bg max-h-screen">
     <PageHeader />
     <div :class="{ 'mt-[50px]': !store.getPromoNotificationOpen, 'mt-[100px]': store.getPromoNotificationOpen}">
       <slot/>
@@ -13,10 +13,3 @@
 <script setup lang="ts">
 const store = useTriggersStore();
 </script>
-
-<style scoped>
-.stop-scrolling {
-  height: 100%;
-  overflow: hidden;
-}
-</style>
