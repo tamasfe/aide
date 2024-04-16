@@ -1,44 +1,44 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
+import type { Meta, StoryObj } from "@storybook/vue3";
 
-import HeroSectionSlider from '../components/sliders/HeroSectionSlider.vue';
+import HeroSectionSlider from "../components/sliders/HeroSectionSlider.vue";
 
 const meta = {
-  title: 'Sliders/HeroSectionSlider',
+  title: "Sliders/HeroSectionSlider",
   component: HeroSectionSlider,
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   argTypes: {
     slides: {
       control: {
-        type: 'object',
+        type: "object",
       },
     },
   },
-} satisfies Meta<typeof HeroSectionSlider>
+} satisfies Meta<typeof HeroSectionSlider>;
 
-export default meta
-type Story = StoryObj<typeof meta>
+export default meta;
+type Story = StoryObj<typeof meta>;
 
 export const HeroSectionSliderStory: Story = {
-  render: (args) => ({
+  render: args => ({
     components: { HeroSectionSlider },
     setup() {
       return { args };
     },
-    template: '<HeroSectionSlider v-bind="args" />',
+    template: "<HeroSectionSlider v-bind=\"args\" />",
   }),
   args: {
     slides: [
       {
-        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
-        link: "/"
+        imageUrl: "https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png",
+        link: "/",
       },
       {
-        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
-        link: "/"
+        imageUrl: "https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png",
+        link: "/",
       },
       {
-        imageUrl: 'https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png',
-        link: "/"
+        imageUrl: "https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png",
+        link: "/",
       },
     ],
   },

@@ -8,32 +8,32 @@ export default defineNuxtConfig({
     },
     rootId: "app",
   },
-  css:[
-    '~/assets/styles/global.css'
+  css: [
+    "~/assets/styles/global.css",
   ],
   debug: false,
   devtools: {
     enabled: true,
   },
   storybook: {
-    url: 'http://localhost:6006',
-    storybookRoute: '/__storybook__',
+    url: "http://localhost:6006",
+    storybookRoute: "/__storybook__",
     port: 6006,
   },
   pinia: {
-    storesDirs: ['./store/**',],
+    storesDirs: ["./store/**"],
   },
   modules: [
     "@nuxt/eslint",
     "@nuxtjs/i18n",
     "@nuxtjs/seo",
     "@nuxtjs/tailwindcss",
-    '@storybook-vue/nuxt-storybook',
-    '@pinia/nuxt'
+    "@storybook-vue/nuxt-storybook",
+    "@pinia/nuxt",
   ],
   ssr: true,
   ogImage: {
-    enabled: false
+    enabled: false,
   },
   runtimeConfig: {
     public: {},

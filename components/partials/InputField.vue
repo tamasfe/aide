@@ -1,10 +1,10 @@
 <template>
   <div class="relative w-full">
     <input
+      v-model="model"
       class="peer w-full pb-2 pt-7 px-4 rounded bg-[#2F323C] outline-none text-white font-montserrat autofill:bg-[#2F323C] autofill:text-white"
       :type="type"
       placeholder=" "
-      v-model="model"
     >
     <label
       for="input"
@@ -19,13 +19,13 @@
 defineProps({
   type: {
     type: String,
-    default: '',
-    required: true
+    default: "",
+    required: true,
   },
   label: {
     type: String,
-    default: '',
-    required: true
+    default: "",
+    required: true,
   },
   invalid: {
     type: Boolean,
@@ -33,12 +33,12 @@ defineProps({
   },
   required: {
     type: Boolean,
-    default: false
+    default: false,
   },
-  value: String
-})
+  value: String,
+});
 
-let model = defineModel()
+const model = defineModel();
 </script>
 
 <style scoped>

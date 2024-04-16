@@ -6,27 +6,31 @@
       :class="{
         'relative': focus,
         'scroll-mt-[115px]': store.getPromoNotificationOpen,
-        'scroll-mt-[65px]': !store.getPromoNotificationOpen
+        'scroll-mt-[65px]': !store.getPromoNotificationOpen,
       }"
     >
       <input
-        class=" w-full max-w-[1232px] rounded-full bg-[#2F323C] hover:brightness-90 transition-all text-sm font-montserrat text-white font-semibold p-[10px] outline-none pl-[36px] placeholder:text-white placeholder:opacity-80"
-        :class="{'shadow-2xl': focus}"
         id="globalSearchInput"
+        v-model="model"
+        class=" w-full max-w-[1232px] rounded-full bg-[#2F323C] hover:brightness-90 transition-all text-sm font-montserrat text-white font-semibold p-[10px] outline-none pl-[36px] placeholder:text-white placeholder:opacity-80"
+        :class="{ 'shadow-2xl': focus }"
         type="text"
         placeholder="Search for an account or provider by name"
-        v-model="model"
         @focus="focus = true"
         @click="onSearchClick()"
       >
-      <IconsSearchIcon class="absolute left-[10px] top-[12px]"/>
+      <IconsSearchIcon class="absolute left-[10px] top-[12px]" />
       <Transition>
-        <label for="globalSearchInput" v-if="focus" class="absolute flex flex-col w-full h-[calc(100vh-195px)] bg-[#2F323C] mt-[15px] rounded-lg overflow-hidden z-[998]">
+        <label
+          v-if="focus"
+          for="globalSearchInput"
+          class="absolute flex flex-col w-full h-[calc(100vh-195px)] bg-[#2F323C] mt-[15px] rounded-lg overflow-hidden z-[998]"
+        >
           <div class="w-full flex gap-x-4 px-6 border-b-[2px] border-opacity-10 border-b-[#D9D9D9]">
             <div
               v-for="(category, index) in categories"
               class="px-[5px] py-4 text-white font-montserrat text-xs font-semibold text-opacity-60 hover:brightness-90 cursor-pointer mb-[-2px] border-b-[2px] border-opacity-0 hover:text-opacity-100 hover:border-opacity-100 border-b-[#FFE33A] transition duration-300"
-              :class="{'text-opacity-100 border-b-[#FFE33A] border-opacity-100': index === selectedTab }"
+              :class="{ 'text-opacity-100 border-b-[#FFE33A] border-opacity-100': index === selectedTab }"
               @click="onTabClick(index)"
             >
               {{ category.title }}
@@ -37,8 +41,12 @@
               Suggested Games
             </h2>
             <div class="size-full">
-              <NuxtLink to="/" v-for="item in categories[selectedTab].items" class="w-full flex px-6 py-3 hover:bg-[#232630] transition">
-                <div class="w-[80px] h-[110px] bg-black rounded"></div>
+              <NuxtLink
+                v-for="item in categories[selectedTab].items"
+                to="/"
+                class="w-full flex px-6 py-3 hover:bg-[#232630] transition"
+              >
+                <div class="w-[80px] h-[110px] bg-black rounded" />
                 <div class="flex flex-col flex-1 justify-center pl-4">
                   <p class="text-white font-montserrat font-semibold mb-1">
                     {{ item.title }}
@@ -58,7 +66,7 @@
         v-if="focus"
         class="fixed left-0 top-0 size-full bg-[#0C0D0D] bg-opacity-65 z-[996] transition duration-500 cursor-pointer"
         @click="focus = false; store.setStopScrollState(false)"
-      ></div>
+      />
     </Transition>
   </div>
 </template>
@@ -70,199 +78,199 @@ const store = useTriggersStore();
 
 const categories = [
   {
-    title: 'All',
+    title: "All",
     items: [
       {
-        title: 'Fortune double',
-        subtitle: 'Giro Originals',
-        imageUrl: ''
+        title: "Fortune double",
+        subtitle: "Giro Originals",
+        imageUrl: "",
       },
       {
-        title: 'Fortune double',
-        subtitle: 'Giro Originals',
-        imageUrl: ''
+        title: "Fortune double",
+        subtitle: "Giro Originals",
+        imageUrl: "",
       },
       {
-        title: 'Fortune double',
-        subtitle: 'Giro Originals',
-        imageUrl: ''
+        title: "Fortune double",
+        subtitle: "Giro Originals",
+        imageUrl: "",
       },
       {
-        title: 'Fortune double',
-        subtitle: 'Giro Originals',
-        imageUrl: ''
+        title: "Fortune double",
+        subtitle: "Giro Originals",
+        imageUrl: "",
       },
       {
-        title: 'Fortune double',
-        subtitle: 'Giro Originals',
-        imageUrl: ''
+        title: "Fortune double",
+        subtitle: "Giro Originals",
+        imageUrl: "",
       },
       {
-        title: 'Fortune double',
-        subtitle: 'Giro Originals',
-        imageUrl: ''
+        title: "Fortune double",
+        subtitle: "Giro Originals",
+        imageUrl: "",
       },
       {
-        title: 'Fortune double',
-        subtitle: 'Giro Originals',
-        imageUrl: ''
+        title: "Fortune double",
+        subtitle: "Giro Originals",
+        imageUrl: "",
       },
       {
-        title: 'Fortune double',
-        subtitle: 'Giro Originals',
-        imageUrl: ''
-      }
-    ]
+        title: "Fortune double",
+        subtitle: "Giro Originals",
+        imageUrl: "",
+      },
+    ],
   },
   {
-    title: 'Slots',
+    title: "Slots",
     items: [
       {
-        title: 'Fortune double 2',
-        subtitle: 'Giro Originals',
-        imageUrl: ''
+        title: "Fortune double 2",
+        subtitle: "Giro Originals",
+        imageUrl: "",
       },
       {
-        title: 'Fortune double 2',
-        subtitle: 'Giro Originals',
-        imageUrl: ''
+        title: "Fortune double 2",
+        subtitle: "Giro Originals",
+        imageUrl: "",
       },
       {
-        title: 'Fortune double 2',
-        subtitle: 'Giro Originals',
-        imageUrl: ''
+        title: "Fortune double 2",
+        subtitle: "Giro Originals",
+        imageUrl: "",
       },
       {
-        title: 'Fortune double 2',
-        subtitle: 'Giro Originals',
-        imageUrl: ''
+        title: "Fortune double 2",
+        subtitle: "Giro Originals",
+        imageUrl: "",
       },
       {
-        title: 'Fortune double 2',
-        subtitle: 'Giro Originals',
-        imageUrl: ''
+        title: "Fortune double 2",
+        subtitle: "Giro Originals",
+        imageUrl: "",
       },
       {
-        title: 'Fortune double 2',
-        subtitle: 'Giro Originals',
-        imageUrl: ''
+        title: "Fortune double 2",
+        subtitle: "Giro Originals",
+        imageUrl: "",
       },
       {
-        title: 'Fortune double 2',
-        subtitle: 'Giro Originals',
-        imageUrl: ''
+        title: "Fortune double 2",
+        subtitle: "Giro Originals",
+        imageUrl: "",
       },
       {
-        title: 'Fortune double 2',
-        subtitle: 'Giro Originals',
-        imageUrl: ''
-      }
-    ]
+        title: "Fortune double 2",
+        subtitle: "Giro Originals",
+        imageUrl: "",
+      },
+    ],
   },
   {
-    title: 'Live Casino',
+    title: "Live Casino",
     items: [
       {
-        title: 'Fortune double 3',
-        subtitle: 'Giro Originals',
-        imageUrl: ''
+        title: "Fortune double 3",
+        subtitle: "Giro Originals",
+        imageUrl: "",
       },
       {
-        title: 'Fortune double 3',
-        subtitle: 'Giro Originals',
-        imageUrl: ''
+        title: "Fortune double 3",
+        subtitle: "Giro Originals",
+        imageUrl: "",
       },
       {
-        title: 'Fortune double 3',
-        subtitle: 'Giro Originals',
-        imageUrl: ''
+        title: "Fortune double 3",
+        subtitle: "Giro Originals",
+        imageUrl: "",
       },
       {
-        title: 'Fortune double 3',
-        subtitle: 'Giro Originals',
-        imageUrl: ''
+        title: "Fortune double 3",
+        subtitle: "Giro Originals",
+        imageUrl: "",
       },
       {
-        title: 'Fortune double 3',
-        subtitle: 'Giro Originals',
-        imageUrl: ''
+        title: "Fortune double 3",
+        subtitle: "Giro Originals",
+        imageUrl: "",
       },
       {
-        title: 'Fortune double 3',
-        subtitle: 'Giro Originals',
-        imageUrl: ''
+        title: "Fortune double 3",
+        subtitle: "Giro Originals",
+        imageUrl: "",
       },
       {
-        title: 'Fortune double 3',
-        subtitle: 'Giro Originals',
-        imageUrl: ''
+        title: "Fortune double 3",
+        subtitle: "Giro Originals",
+        imageUrl: "",
       },
       {
-        title: 'Fortune double 3',
-        subtitle: 'Giro Originals',
-        imageUrl: ''
-      }
-    ]
+        title: "Fortune double 3",
+        subtitle: "Giro Originals",
+        imageUrl: "",
+      },
+    ],
   },
   {
-    title: 'Originals',
+    title: "Originals",
     items: [
       {
-        title: 'Fortune double',
-        subtitle: 'Giro Originals',
-        imageUrl: ''
+        title: "Fortune double",
+        subtitle: "Giro Originals",
+        imageUrl: "",
       },
       {
-        title: 'Fortune double',
-        subtitle: 'Giro Originals',
-        imageUrl: ''
+        title: "Fortune double",
+        subtitle: "Giro Originals",
+        imageUrl: "",
       },
       {
-        title: 'Fortune double',
-        subtitle: 'Giro Originals',
-        imageUrl: ''
+        title: "Fortune double",
+        subtitle: "Giro Originals",
+        imageUrl: "",
       },
       {
-        title: 'Fortune double',
-        subtitle: 'Giro Originals',
-        imageUrl: ''
+        title: "Fortune double",
+        subtitle: "Giro Originals",
+        imageUrl: "",
       },
       {
-        title: 'Fortune double',
-        subtitle: 'Giro Originals',
-        imageUrl: ''
+        title: "Fortune double",
+        subtitle: "Giro Originals",
+        imageUrl: "",
       },
       {
-        title: 'Fortune double',
-        subtitle: 'Giro Originals',
-        imageUrl: ''
+        title: "Fortune double",
+        subtitle: "Giro Originals",
+        imageUrl: "",
       },
       {
-        title: 'Fortune double',
-        subtitle: 'Giro Originals',
-        imageUrl: ''
+        title: "Fortune double",
+        subtitle: "Giro Originals",
+        imageUrl: "",
       },
       {
-        title: 'Fortune double',
-        subtitle: 'Giro Originals',
-        imageUrl: ''
-      }
-    ]
-  }
+        title: "Fortune double",
+        subtitle: "Giro Originals",
+        imageUrl: "",
+      },
+    ],
+  },
 ];
 
-let selectedTab:Ref<number> = ref(0);
+const selectedTab: Ref<number> = ref(0);
 
-const inputWrapper:Ref = ref(null);
+const inputWrapper: Ref = ref(null);
 
 const onSearchClick = () => {
-  store.setStopScrollState(true)
-  inputWrapper.value.scrollIntoView({ behavior: "smooth" })
-}
+  store.setStopScrollState(true);
+  inputWrapper.value.scrollIntoView({ behavior: "smooth" });
+};
 
-const onTabClick = (index:number = 0) => {
-  selectedTab.value = index
-}
+const onTabClick = (index: number = 0) => {
+  selectedTab.value = index;
+};
 </script>
 
 <style scroped>

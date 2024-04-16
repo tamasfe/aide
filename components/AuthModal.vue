@@ -1,34 +1,49 @@
 <template>
   <Transition>
-    <div v-if="store.getAuthModalOpen" class="flex justify-center items-center fixed left-0 top-0 size-full z-[999]">
-      <div class="absolute left-0 top-0 size-full bg-[#0C0D0D] opacity-90 z-[-1]" @click="store.setAuthModalState(false)"></div>
+    <div
+      v-if="store.getAuthModalOpen"
+      class="flex justify-center items-center fixed left-0 top-0 size-full z-[999]"
+    >
+      <div
+        class="absolute left-0 top-0 size-full bg-[#0C0D0D] opacity-90 z-[-1]"
+        @click="store.setAuthModalState(false)"
+      />
       <div class="relative w-full h-full md:h-auto md:max-w-[552px] rounded-xl bg-[#1C1E28] overflow-hidden">
         <img src="/auth-banner.png">
-        <div class="flex items-center justify-center absolute right-6 top-6 size-[32px] rounded bg-[#2B2740] bg-opacity-40 hover:bg-opacity-100 cursor-pointer" @click="store.setAuthModalState(false)">
+        <div
+          class="flex items-center justify-center absolute right-6 top-6 size-[32px] rounded bg-[#2B2740] bg-opacity-40 hover:bg-opacity-100 cursor-pointer"
+          @click="store.setAuthModalState(false)"
+        >
           <img src="/icons/cross.svg">
         </div>
-        <div v-if="store.getAuthModalType === 'register'" class="flex flex-col justify-center items-center py-8 px-5 md:px-16">
-          <img src="/girobet-logo.svg" class="mb-8">
+        <div
+          v-if="store.getAuthModalType === 'register'"
+          class="flex flex-col justify-center items-center py-8 px-5 md:px-16"
+        >
+          <img
+            src="/girobet-logo.svg"
+            class="mb-8"
+          >
           <div class="w-full last:mb-0">
             <PartialsInputField
-              class="mb-4"
               v-model="form.email.value"
+              class="mb-4"
               :label="form.email.label"
               :type="form.email.type"
               :invalid="form.email.invalid"
               :required="form.email.required"
             />
             <PartialsInputField
-              class="mb-4"
               v-model="form.password.value"
+              class="mb-4"
               :label="form.password.label"
               :type="form.password.type"
               :invalid="form.password.invalid"
               :required="form.password.required"
             />
             <PartialsInputField
-              class="mb-4"
               v-model="form.cpf.value"
+              class="mb-4"
               :label="form.cpf.label"
               :type="form.cpf.type"
               :invalid="form.cpf.invalid"
@@ -45,28 +60,42 @@
           </div>
 
           <div class="inline w-full text-center text-white text-sm mb-4">
-            By signing up 
-            <NuxtLink to="/" class="text-[#FFE33A]">
+            By signing up
+            <NuxtLink
+              to="/"
+              class="text-[#FFE33A]"
+            >
               you agree to our terms and conditions
             </NuxtLink>
           </div>
 
-          <PartialsButtonComponent :label="'CREATE ACCOUNT'" :type="'solid'" big class="w-full"/>
+          <PartialsButtonComponent
+            :label="'CREATE ACCOUNT'"
+            :type="'solid'"
+            big
+            class="w-full"
+          />
         </div>
-        <div v-if="store.getAuthModalType === 'login'" class="flex flex-col justify-center items-center py-8 px-16">
-          <img src="/girobet-logo.svg" class="mb-8">
+        <div
+          v-if="store.getAuthModalType === 'login'"
+          class="flex flex-col justify-center items-center py-8 px-16"
+        >
+          <img
+            src="/girobet-logo.svg"
+            class="mb-8"
+          >
           <div class="w-full last:mb-0">
             <PartialsInputField
-              class="mb-4"
               v-model="form.email.value"
+              class="mb-4"
               :label="form.email.label"
               :type="form.email.type"
               :invalid="form.email.invalid"
               :required="form.email.required"
             />
             <PartialsInputField
-              class="mb-4"
               v-model="form.password.value"
+              class="mb-4"
               :label="form.password.label"
               :type="form.password.type"
               :invalid="form.password.invalid"
@@ -80,11 +109,19 @@
             </NuxtLink>
           </div>
 
-          <PartialsButtonComponent :label="'LOG IN'" :type="'solid'" big class="w-full"/>
-        
+          <PartialsButtonComponent
+            :label="'LOG IN'"
+            :type="'solid'"
+            big
+            class="w-full"
+          />
+
           <div class="inline w-full text-center text-white text-sm mt-4">
-            Don't have an account yet? 
-            <NuxtLink to="/" class="text-[#FFE33A]">
+            Don't have an account yet?
+            <NuxtLink
+              to="/"
+              class="text-[#FFE33A]"
+            >
               Create a free account
             </NuxtLink>
           </div>
@@ -95,38 +132,38 @@
 </template>
 
 <script setup lang="ts">
-let form = reactive({
+const form = reactive({
   email: {
-    label: 'Email',
-    type: 'email',
-    value: '',
+    label: "Email",
+    type: "email",
+    value: "",
     required: true,
-    invalid: false
+    invalid: false,
   },
   password: {
-    label: 'Password',
-    type: 'password',
-    value: '',
+    label: "Password",
+    type: "password",
+    value: "",
     required: true,
-    invalid: false
+    invalid: false,
   },
   cpf: {
-    label: 'CPF',
-    type: 'text',
-    value: '',
+    label: "CPF",
+    type: "text",
+    value: "",
     required: true,
-    invalid: false
+    invalid: false,
   },
   phone: {
-    label: 'Phone',
-    type: 'phone',
-    value: '',
+    label: "Phone",
+    type: "phone",
+    value: "",
     required: true,
-    invalid: false
+    invalid: false,
   },
-})
+});
 
-const store = useTriggersStore()
+const store = useTriggersStore();
 </script>
 
 <style scoped>

@@ -5,7 +5,7 @@
     :class="{
       'px-0 py-0 md:px-[24px] md:py-[7px]': !big && !small,
       'py-[5px] md:py-[14px] min-w-[246px]': big,
-      'py-[5px] px-[6px] md:py-[7px] md:px-3 min-w-auto': small
+      'py-[5px] px-[6px] md:py-[7px] md:px-3 min-w-auto': small,
     }"
     :style="{
       color: color,
@@ -14,7 +14,7 @@
   >
     {{ label }}
   </button>
-  
+
   <button
     v-else-if="variant === 'solid'"
     class="text-sm md:text-base text-[#161421] bg-[#FFE649] rounded font-bold font-montserrat transition-all hover:brightness-90 disabled:brightness-50"
@@ -25,7 +25,7 @@
     }"
     :style="{
       color: color,
-      backgroundColor: background
+      backgroundColor: background,
     }"
     :disabled="disabled"
   >
@@ -36,7 +36,7 @@
     v-else-if="variant === 'round'"
     class="flex justify-center items-center w-8 h-8 text-white bg-[#42424D] rounded-full transition-all hover:brightness-90 disabled:brightness-50"
     :style="{
-      backgroundColor: background
+      backgroundColor: background,
     }"
     :disabled="disabled"
   >
@@ -48,28 +48,28 @@
 defineProps({
   variant: {
     type: String,
-    default: 'solid'
+    default: "solid",
   },
   label: String,
   big: {
     type: [Boolean, String],
-    default: false
+    default: false,
   },
   small: {
     type: [Boolean, String],
-    default: false
+    default: false,
   },
   background: {
     type: String,
-    default: ''
+    default: "",
   },
   color: {
     type: String,
-    default: ''
+    default: "",
   },
   disabled: {
     type: Boolean,
-    default: false
-  }
-})
+    default: false,
+  },
+});
 </script>
