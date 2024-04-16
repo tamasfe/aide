@@ -4,12 +4,14 @@ export const useTriggersStore = defineStore('globalTriggers', {
   state: () => ({
      openAuthModal: false,
      authModalType: 'register',
-     showPromoNotification: true
+     showPromoNotification: true,
+     blockScroll: false
   }),
   getters: {
     getAuthModalOpen: (state) => state.openAuthModal,
     getAuthModalType: (state) => state.authModalType,
-    getPromoNotificationOpen: (state) => state.showPromoNotification
+    getPromoNotificationOpen: (state) => state.showPromoNotification,
+    getStopScroll: (state) => state.blockScroll
   },
   actions: {
     setAuthModalState(modalShow) {
@@ -20,6 +22,9 @@ export const useTriggersStore = defineStore('globalTriggers', {
     },
     setPromoNotificationState(notificationShow) {
       this.showPromoNotification = notificationShow
+    },
+    setStopScrollState(blockScroll) {
+      this.blockScroll = blockScroll
     }
   },
 })

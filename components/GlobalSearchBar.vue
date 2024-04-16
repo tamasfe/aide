@@ -6,7 +6,7 @@
       :class="{
         'relative': focus,
         'scroll-mt-[103px]': !store.getPromoNotificationOpen,
-        'scroll-mt-[74px]': !store.getPromoNotificationOpen
+        'scroll-mt-[65px]': !store.getPromoNotificationOpen
       }"
     >
       <input
@@ -21,7 +21,7 @@
       >
       <IconsSearchIcon class="absolute left-[10px] top-[12px]"/>
       <Transition>
-        <label for="globalSearchInput" v-if="focus" class="absolute flex flex-col w-full h-[400px] bg-[#2F323C] mt-6 rounded-lg z-[998]">
+        <label for="globalSearchInput" v-if="focus" class="absolute flex flex-col w-full h-[calc(100vh-195px)] bg-[#2F323C] mt-[15px] rounded-lg overflow-hidden z-[998]">
           <div class="w-full flex gap-x-4 px-6 border-b-[2px] border-opacity-10 border-b-[#D9D9D9]">
             <div
               v-for="(category, index) in categories"
@@ -56,7 +56,11 @@
       </Transition>
     </div>
     <Transition>
-      <div v-if="focus" class="fixed left-0 top-0 size-full bg-[#0C0D0D] bg-opacity-65 z-[996] transition duration-500 cursor-pointer" @click="focus = false"></div>
+      <div
+        v-if="focus"
+        class="fixed left-0 top-0 size-full bg-[#0C0D0D] bg-opacity-65 z-[996] transition duration-500 cursor-pointer"
+        @click="focus = false; store.setStopScrollState(false)"
+      ></div>
     </Transition>
   </div>
 </template>
@@ -254,6 +258,7 @@ let selectedTab:Ref<number> = ref(0);
 const inputWrapper:Ref = ref(null);
 
 const onSearchClick = () => {
+  store.setStopScrollState(true)
   inputWrapper.value.scrollIntoView({ behavior: "smooth" })
 }
 
