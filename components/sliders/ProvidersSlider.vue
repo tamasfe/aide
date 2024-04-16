@@ -21,7 +21,7 @@
         <NuxtLink
           v-for="slide in props.slides"
           :to="slide.link"
-          class="select-none snap-start h-full pr-4 first:pl-4 xl:first:pl-0 xl:pr-0 xl:mr-[18px] rounded last:mr-0"
+          class="inline-block select-none snap-start h-full pr-4 first:pl-4 xl:first:pl-0 xl:pr-0 xl:mr-[18px] rounded last:mr-0"
         >
           <div class="inline-flex flex-col w-[233px]">
             <div class="flex justify-center w-full flex-1 p-[26px] bg-[#2D313E]">

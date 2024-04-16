@@ -86,12 +86,8 @@
         </div>
       </div>
       <div class="flex justify-start md:justify-end items-start basis-1/4">
-        <div class="flex items-center rounded px-[14px] py-[9px] bg-[#2F323C] text-white hover:cursor-pointer select-none">
-          <img src="/flags/us.png" alt="US flag">
-          <span class="mx-2">
-            English
-          </span>
-          <img src="/icons/chevron-down.svg" alt="chevron icon">
+        <div class="w-full max-w-[138px]">
+          <PartialsDropdownSelect v-model="model" :items="lang"/>
         </div>
       </div>
     </div>
@@ -111,4 +107,26 @@
 </template>
 
 <script setup lang="ts">
+let model = ref({
+  label: 'English',
+  flag: 'us',
+  value: 'en'
+})
+const lang = [
+  {
+    label: 'English',
+    flag: 'us',
+    value: 'en'
+  },
+  {
+    label: 'Brazil',
+    flag: 'br',
+    value: 'br'
+  },
+  {
+    label: 'Spain',
+    flag: 'es',
+    value: 'es'
+  }
+]
 </script>

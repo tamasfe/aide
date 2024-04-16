@@ -23,7 +23,7 @@
           :to="slide.link"
           class="inline-block select-none snap-start h-full pr-4 first:pl-4 xl:first:pl-0 xl:pr-0 xl:mr-[18px] overflow-hidden last:mr-0"
         >
-          <div class="w-[161px] relative h-full bg-contain bg-repeat" :style="{backgroundImage: `url(${slide.imageUrl})`}">
+          <div class="w-[161px] relative h-full bg-contain bg-repeat rounded" :style="{backgroundImage: `url(${slide.imageUrl})`}">
             <div class="absolute left-[6px] top-[6px] py-[5px] px-[8px] text-white text-xs font-montserrat font-bold bg-[#00B439] rounded">
               {{ slide.label }}
             </div>
