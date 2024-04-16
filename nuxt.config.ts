@@ -15,9 +15,6 @@ export default defineNuxtConfig({
   devtools: {
     enabled: true,
   },
-  i18n: {
-    vueI18n: "./i18n.config.ts",
-  },
   storybook: {
     url: 'http://localhost:6006',
     storybookRoute: '/__storybook__',
