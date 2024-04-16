@@ -9,7 +9,7 @@ export default defineNuxtConfig({
     rootId: "app",
   },
   css:[
-    '~/assets/styles/global.scss'
+    '~/assets/styles/global.css'
   ],
   debug: false,
   devtools: {

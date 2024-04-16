@@ -1,7 +1,7 @@
 <template>
   <div class="flex justify-center w-full">
     <div class="relative flex w-full max-w-[1232px] h-[472px] overflow-y-hidden">
-      <div class="w-full carousel__wrapper snap-x snap-mandatory scrollbar-hide overflow-y-hidden overflow-x-scroll whitespace-nowrap scroll-smooth rounded">
+      <div class="w-full carousel__wrapper snap-x snap-mandatory applyScrollbarHide overflow-y-hidden overflow-x-scroll whitespace-nowrap scroll-smooth rounded">
         <NuxtLink v-for="slide in props.slides" :to="slide.link" class="carousel__item inline-block select-none snap-start w-full h-full">
           <div class="w-full h-full bg-contain bg-repeat" :style="{backgroundImage: `url(${slide.imageUrl})`}"></div>
         </NuxtLink>
@@ -47,15 +47,6 @@ const onPreviousSlide = () => {
 </script>
 
 <style scoped>
-.scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-}
-
-.scrollbar-hide::-webkit-scrollbar {
-    display: none;
-}
-
 .carousel__wrapper {
   -webkit-overflow-scrolling: touch;
 }

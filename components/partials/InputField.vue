@@ -49,22 +49,6 @@ input:-webkit-autofill {
   -webkit-text-fill-color: #fff;
 }
 
-.select__container::-webkit-scrollbar {
-  width: 8px;
-}
-
-.select__container::-webkit-scrollbar-track {
-  background: #262931;
-  border-radius: 2px;
-  border: 3px solid #2F323C;
-}
-
-.select__container::-webkit-scrollbar-thumb {
-  background: #363944;
-  border-radius: 4px;
-  border: 2px solid #262931;
-}
-
 .v-enter-active,
 .v-leave-active {
   transition: all 0.35s ease;

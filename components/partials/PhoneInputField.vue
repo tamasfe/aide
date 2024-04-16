@@ -28,7 +28,7 @@
         @input="(event) => emit('change', (event.target as HTMLTextAreaElement).value + model)"
       >
       <Transition>
-        <div v-if="showSelect" class="select__container absolute w-full max-h-[140px] bottom-full bg-[#2F323C] border border-[#3d404d] rounded shadow-2xl overflow-hidden overflow-y-auto">
+        <div v-if="showSelect" class="applyCustomScroll absolute w-full max-h-[140px] bottom-full bg-[#2F323C] border border-[#3d404d] rounded shadow-2xl overflow-hidden overflow-y-auto">
           <div
             v-for="country in filteredCountries"
             class="flex items-center text-sm font-semibold font-montserrat border-b border-b-[#3d404d] py-4 px-2 text-white hover:bg-[#3d404d] cursor-pointer select-none"
@@ -1587,22 +1587,6 @@ input:-webkit-autofill {
   -moz-box-shadow: 0 0 0 100px #2F323C inset;
   box-shadow: 0 0 0 100px #2F323C inset;
   -webkit-text-fill-color: #fff;
-}
-
-.select__container::-webkit-scrollbar {
-  width: 8px;
-}
-
-.select__container::-webkit-scrollbar-track {
-  background: #262931;
-  border-radius: 2px;
-  border: 3px solid #2F323C;
-}
-
-.select__container::-webkit-scrollbar-thumb {
-  background: #363944;
-  border-radius: 4px;
-  border: 2px solid #262931;
 }
 
 .v-enter-active,

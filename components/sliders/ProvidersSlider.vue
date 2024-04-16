@@ -13,10 +13,10 @@
           <PartialsButtonComponent class="ml-4" :background="'#42424D'" :color="'#B8BDCB'" small :label="'VIEW ALL'"/>
         </div>
       </div>
-      
+
       <div
         ref="slideWrapper"
-        class="w-full h-[184px] carousel__wrapper snap-x snap-mandatory scrollbar-hide overflow-y-hidden overflow-x-scroll whitespace-nowrap scroll-smooth rounded"
+        class="w-full h-[184px] carousel__wrapper snap-x snap-mandatory applyScrollbarHide overflow-y-hidden overflow-x-scroll whitespace-nowrap scroll-smooth rounded"
       >
         <NuxtLink v-for="slide in props.slides" :to="slide.link" class="inline-flex flex-col select-none snap-start w-[233px] h-full mr-[18px] rounded last:mr-0">
           <div class="flex justify-center w-full flex-1 p-[26px] bg-[#2D313E]">
@@ -34,8 +34,7 @@
 
 <script setup lang="ts">
 const props = defineProps<{
-  slides: Array<any>,
-  title: String
+  slides: Array<any>
 }>()
 
 const slideWrapper:Ref = ref(null)
@@ -76,15 +75,6 @@ const onPreviousSlide = () => {
 </script>
 
 <style scoped>
-.scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-}
-
-.scrollbar-hide::-webkit-scrollbar {
-    display: none;
-}
-
 .carousel__wrapper {
   -webkit-overflow-scrolling: touch;
 }

@@ -16,7 +16,7 @@
       
       <div
         ref="slideWrapper"
-        class="w-full h-[217px] carousel__wrapper snap-x snap-mandatory scrollbar-hide overflow-y-hidden overflow-x-scroll whitespace-nowrap scroll-smooth rounded"
+        class="w-full h-[217px] carousel__wrapper snap-x snap-mandatory applyScrollbarHide overflow-y-hidden overflow-x-scroll whitespace-nowrap scroll-smooth rounded"
       >
         <NuxtLink v-for="slide in props.slides" :to="slide.link"  class="inline-block select-none snap-start w-[161px] h-full mr-[18px] rounded last:mr-0">
           <div class="relative w-full h-full bg-contain bg-repeat" :style="{backgroundImage: `url(${slide.imageUrl})`}">
@@ -74,15 +74,6 @@ const onPreviousSlide = () => {
 </script>
 
 <style scoped>
-.scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-}
-
-.scrollbar-hide::-webkit-scrollbar {
-    display: none;
-}
-
 .carousel__wrapper {
   -webkit-overflow-scrolling: touch;
 }

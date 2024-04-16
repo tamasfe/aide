@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 
 import ButtonComponent from '../components/partials/ButtonComponent.vue';
-import SliderChevronLeft from '../components/icons/SliderChevronLeft.vue';
 
 const meta = {
   title: 'Partials/ButtonComponent',
@@ -33,7 +32,7 @@ type Story = StoryObj<typeof meta>
 
 export const ButtonComponentStory: Story = {
   render: (args) => ({
-    components: { ButtonComponent, SliderChevronLeft },
+    components: { ButtonComponent },
     setup() {
       return { args };
     },
