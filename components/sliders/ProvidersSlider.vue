@@ -1,13 +1,13 @@
 <template>
   <div class="flex justify-center w-full mb-8">
-    <div class="relative flex flex-col w-full max-w-[1232px] overflow-y-hidden">
-      <div class="flex place-content-between mb-4">
+    <div class="relative flex flex-col w-full max-w-[1232px]  overflow-y-hidden">
+      <div class="flex place-content-between mb-4 px-4 xl:px-0">
         <h1 class="font-montserrat text-2xl font-bold text-white">👾 Providers</h1>
         <div class="flex items-center gap-x-2">
-          <PartialsButtonComponent :variant="'round'" @click="onPreviousSlide()" :disabled="disablePrev">
+          <PartialsButtonComponent class="hidden md:flex" :variant="'round'" @click="onPreviousSlide()" :disabled="disablePrev">
             <IconsSliderChevronLeft class="h-6" :color="'#fff'"/>
           </PartialsButtonComponent>
-          <PartialsButtonComponent :variant="'round'" @click="onNextSlide()" :disabled="disableNext">
+          <PartialsButtonComponent class="hidden md:flex" :variant="'round'" @click="onNextSlide()" :disabled="disableNext">
             <IconsSliderChevronRight class="h-6" :color="'#fff'"/>
           </PartialsButtonComponent>
           <PartialsButtonComponent class="ml-4" :background="'#42424D'" :color="'#B8BDCB'" small :label="'VIEW ALL'"/>
@@ -18,13 +18,19 @@
         ref="slideWrapper"
         class="w-full h-[184px] carousel__wrapper snap-x snap-mandatory applyScrollbarHide overflow-y-hidden overflow-x-scroll whitespace-nowrap scroll-smooth rounded"
       >
-        <NuxtLink v-for="slide in props.slides" :to="slide.link" class="inline-flex flex-col select-none snap-start w-[233px] h-full mr-[18px] rounded last:mr-0">
-          <div class="flex justify-center w-full flex-1 p-[26px] bg-[#2D313E]">
-            <img src="/providers/platipus.svg">
-          </div>
-          <div class="bg-[#42424D] p-[14px] text-white text-center font-montserrat text-sm">
-            <p>{{ slide.title }}</p>
-            <p>({{ slide.gamesCount }} games)</p>
+        <NuxtLink
+          v-for="slide in props.slides"
+          :to="slide.link"
+          class="select-none snap-start h-full pr-4 first:pl-4 xl:first:pl-0 xl:pr-0 xl:mr-[18px] rounded last:mr-0"
+        >
+          <div class="inline-flex flex-col w-[233px]">
+            <div class="flex justify-center w-full flex-1 p-[26px] bg-[#2D313E]">
+              <img src="/providers/platipus.svg">
+            </div>
+            <div class="bg-[#42424D] p-[14px] text-white text-center font-montserrat text-sm">
+              <p>{{ slide.title }}</p>
+              <p>({{ slide.gamesCount }} games)</p>
+            </div>
           </div>
         </NuxtLink>
       </div>

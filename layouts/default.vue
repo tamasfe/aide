@@ -1,10 +1,14 @@
 <template>
   <div class="bg-body-bg min-h-screen">
     <PageHeader />
-    <div class="mt-[50px]">
+    <div :class="{ 'mt-[50px]': !store.getPromoNotificationOpen, 'mt-[100px]': store.getPromoNotificationOpen}">
       <slot/>
     </div>
     <PageFooter />
     <AuthModal v-if="true"/>
   </div>
 </template>
+
+<script setup lang="ts">
+const store = useTriggersStore();
+</script>

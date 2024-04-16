@@ -2,8 +2,12 @@
   <div class="relative w-full">
     <div
       ref="inputWrapper"
-      class="w-full max-w-[1232px] transition-[top] duration-500 z-[997] scroll-mt-[74px]"
-      :class="{'relative': focus}"
+      class="w-full max-w-[1232px] transition-[top] duration-500 z-[997]"
+      :class="{
+        'relative': focus,
+        'scroll-mt-[103px]': !store.getPromoNotificationOpen,
+        'scroll-mt-[74px]': !store.getPromoNotificationOpen
+      }"
     >
       <input
         class=" w-full max-w-[1232px] rounded-full bg-[#2F323C] hover:brightness-90 transition-all text-sm font-montserrat text-white font-semibold p-[10px] outline-none pl-[36px] placeholder:text-white placeholder:opacity-80"
@@ -60,6 +64,7 @@
 <script setup lang="ts">
 const model = defineModel();
 const focus = ref(false);
+const store = useTriggersStore();
 
 const categories = [
   {

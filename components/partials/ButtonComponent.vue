@@ -1,11 +1,11 @@
 <template>
   <button
     v-if="variant === 'text'"
-    class="text-base text-white font-montserrat font-bold transition-all hover:brightness-90"
+    class="text-sm md:text-base text-white font-montserrat font-bold transition-all hover:brightness-90"
     :class="{
-      'px-[24px] py-[7px]': !big && !small,
-      'py-[14px] min-w-[246px]': big,
-      'py-[7px] px-3 min-w-auto': small
+      'px-0 py-0 md:px-[24px] md:py-[7px]': !big && !small,
+      'py-[5px] md:py-[14px] min-w-[246px]': big,
+      'py-[5px] px-[6px] md:py-[7px] md:px-3 min-w-auto': small
     }"
     :style="{
       color: color,
@@ -17,11 +17,11 @@
   
   <button
     v-else-if="variant === 'solid'"
-    class="text-base text-[#161421] bg-[#FFE649] rounded font-bold font-montserrat transition-all hover:brightness-90 disabled:brightness-50"
+    class="text-sm md:text-base text-[#161421] bg-[#FFE649] rounded font-bold font-montserrat transition-all hover:brightness-90 disabled:brightness-50"
     :class="{
-      'px-[24px] py-[7px]': !big && !small,
-      'py-[14px] min-w-[246px]': big,
-      'py-[5px] px-3 min-w-auto': small,
+      'px-3 py-[7px] md:px-[24px] md:py-[7px]': !big && !small,
+      'py-[5px] md:py-[14px] px-3 min-w-[246px]': big,
+      'py-[5px] px-[6px] md:py-[7px] md:px-3 min-w-auto': small,
     }"
     :style="{
       color: color,
