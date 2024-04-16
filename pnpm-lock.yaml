@@ -29,8 +29,8 @@ devDependencies:
     specifier: 2.0.0-rc.10
     version: 2.0.0-rc.10(@lezer/common@1.2.1)(@nuxt/devtools@1.1.5)(@unhead/shared@1.9.5)(@vue/compiler-core@3.4.23)(h3@1.11.1)(nuxt@3.11.2)(postcss@8.4.38)(rollup@4.14.3)(unhead@1.9.5)(vite@5.2.9)(vue@3.4.23)(webpack@5.91.0)
   '@nuxtjs/storybook':
-    specifier: ^7.0.2
-    version: 7.0.2(nuxt@3.11.2)(rollup@4.14.3)(vite@5.2.9)
+    specifier: ^8.0.0
+    version: 8.0.0(eslint@9.0.0)(nuxt@3.11.2)(react-dom@18.2.0)(react@18.2.0)(rollup@4.14.3)(vite@5.2.9)(vue-tsc@1.8.27)(vue@3.4.23)
   '@nuxtjs/tailwindcss':
     specifier: ^6.11.4
     version: 6.11.4(rollup@4.14.3)
@@ -2664,33 +2664,6 @@ packages:
       - rollup
       - supports-color
 
-  /@nuxt/kit@3.9.1(rollup@4.14.3):
-    resolution: {integrity: sha512-QvwZ4QmxmKEnGXXwhLapfogW8enIX30GD7nbmasAkcDIf4GdP2IWUwhd068mrXMbzdZupRLV1J5E74Dr516o5g==}
-    engines: {node: ^14.18.0 || >=16.10.0}
-    dependencies:
-      '@nuxt/schema': 3.9.1(rollup@4.14.3)
-      c12: 1.10.0
-      consola: 3.2.3
-      defu: 6.1.4
-      globby: 14.0.1
-      hash-sum: 2.0.0
-      ignore: 5.3.1
-      jiti: 1.21.0
-      knitwork: 1.1.0
-      mlly: 1.6.1
-      pathe: 1.1.2
-      pkg-types: 1.0.3
-      scule: 1.3.0
-      semver: 7.6.0
-      ufo: 1.5.3
-      unctx: 2.3.1
-      unimport: 3.7.1(rollup@4.14.3)
-      untyped: 1.4.2
-    transitivePeerDependencies:
-      - rollup
-      - supports-color
-    dev: true
-
   /@nuxt/schema@3.11.2(rollup@4.14.3):
     resolution: {integrity: sha512-Z0bx7N08itD5edtpkstImLctWMNvxTArsKXzS35ZuqyAyKBPcRjO1CU01slH0ahO30Gg9kbck3/RKNZPwfOjJg==}
     engines: {node: ^14.18.0 || >=16.10.0}
@@ -2709,26 +2682,6 @@ packages:
     transitivePeerDependencies:
       - rollup
       - supports-color
-
-  /@nuxt/schema@3.9.1(rollup@4.14.3):
-    resolution: {integrity: sha512-GmALRLYo2vPMS1lMpUkUrUuEgTMCL1ZWyqA+zPKJ9/Rh2rrQgIvFyClqUl4txQoCZl038njP5cW0nOe2Oe0HKg==}
-    engines: {node: ^14.18.0 || >=16.10.0}
-    dependencies:
-      '@nuxt/ui-templates': 1.3.3
-      consola: 3.2.3
-      defu: 6.1.4
-      hookable: 5.5.3
-      pathe: 1.1.2
-      pkg-types: 1.0.3
-      scule: 1.3.0
-      std-env: 3.7.0
-      ufo: 1.5.3
-      unimport: 3.7.1(rollup@4.14.3)
-      untyped: 1.4.2
-    transitivePeerDependencies:
-      - rollup
-      - supports-color
-    dev: true
 
   /@nuxt/telemetry@2.5.4(rollup@4.14.3):
     resolution: {integrity: sha512-KH6wxzsNys69daSO0xUv0LEBAfhwwjK1M+0Cdi1/vxmifCslMIY7lN11B4eywSfscbyVPAYJvANyc7XiVPImBQ==}
@@ -2978,19 +2931,45 @@ packages:
       - webpack
     dev: true
 
-  /@nuxtjs/storybook@7.0.2(nuxt@3.11.2)(rollup@4.14.3)(vite@5.2.9):
-    resolution: {integrity: sha512-pnx1XYGjezrNiat8/qfiwl5vo5wu/qGUx+XNfOxfmnRUzhEgFneS8aS13cMm6e4j0pFjZQoJd1CC4q2aPdchKw==}
+  /@nuxtjs/storybook@8.0.0(eslint@9.0.0)(nuxt@3.11.2)(react-dom@18.2.0)(react@18.2.0)(rollup@4.14.3)(vite@5.2.9)(vue-tsc@1.8.27)(vue@3.4.23):
+    resolution: {integrity: sha512-ryYMnHMoWbEbbapmD7mLH1Xpe0AGvj3IAAqN3QO7+sg/wYB1Jqj505QauHAUEb9RNtzVJdfCMlUfAmvJz8TD2g==}
     dependencies:
       '@nuxt/devtools-kit': 1.1.5(nuxt@3.11.2)(rollup@4.14.3)(vite@5.2.9)
-      '@nuxt/kit': 3.9.1(rollup@4.14.3)
-      chalk: 4.1.2
+      '@nuxt/kit': 3.11.2(rollup@4.14.3)
+      '@storybook-vue/nuxt': 0.2.6(eslint@9.0.0)(nuxt@3.11.2)(react-dom@18.2.0)(react@18.2.0)(rollup@4.14.3)(vite@5.2.9)(vue-tsc@1.8.27)(vue@3.4.23)
+      chalk: 5.3.0
       defu: 6.1.4
       get-port-please: 3.1.2
+      storybook: 8.0.8(react-dom@18.2.0)(react@18.2.0)
     transitivePeerDependencies:
+      - '@babel/preset-env'
+      - '@preact/preset-vite'
+      - '@types/node'
+      - bufferutil
+      - encoding
+      - eslint
+      - less
+      - lightningcss
+      - meow
       - nuxt
+      - optionator
+      - react
+      - react-dom
       - rollup
+      - sass
+      - stylelint
+      - stylus
+      - sugarss
       - supports-color
+      - terser
+      - uWebSockets.js
+      - utf-8-validate
       - vite
+      - vite-plugin-glimmerx
+      - vls
+      - vti
+      - vue
+      - vue-tsc
     dev: true
 
   /@nuxtjs/tailwindcss@6.11.4(rollup@4.14.3):

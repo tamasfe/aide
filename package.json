@@ -19,7 +19,7 @@
     "@nuxt/eslint": "^0.3.7",
     "@nuxtjs/i18n": "^8.3.0",
     "@nuxtjs/seo": "2.0.0-rc.10",
-    "@nuxtjs/storybook": "^7.0.2",
+    "@nuxtjs/storybook": "^8.0.0",
     "@nuxtjs/tailwindcss": "^6.11.4",
     "@storybook-vue/nuxt": "^0.2.6",
     "@storybook-vue/nuxt-storybook": "0.0.1-latest.7",
