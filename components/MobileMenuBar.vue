@@ -1,8 +1,9 @@
 <template>
-  <div class="fixed place-content-between bottom-0 left-0 flex md:hidden items-center w-full bg-[#2F323C] z-[998] h-[60px] p-[10px]">
+  <div class="fixed place-content-between bottom-0 left-0 flex md:hidden items-center w-full bg-[#2F323C] z-[999] h-[60px] p-[10px]">
     <NuxtLink
       to="/"
-      class="flex flex-col items-center"
+      class="flex flex-col items-center w-[50px]"
+      @click.prevent="store.setSideMenuType('menu'); store.setSideMenuState(true)"
     >
       <img
         src="/icons/menu-burger.svg"
@@ -12,7 +13,7 @@
     </NuxtLink>
     <NuxtLink
       to="/"
-      class="flex flex-col items-center"
+      class="flex flex-col items-center w-[50px]"
     >
       <img
         src="/icons/hot.svg"
@@ -22,7 +23,8 @@
     </NuxtLink>
     <NuxtLink
       to="/"
-      class="flex flex-col items-center"
+      class="flex flex-col items-center w-[50px]"
+      @click.prevent="store.setSideMenuType('search'); store.setSideMenuState(true)"
     >
       <img
         src="/icons/search-mobile.svg"
@@ -32,7 +34,7 @@
     </NuxtLink>
     <NuxtLink
       to="/"
-      class="flex flex-col items-center"
+      class="flex flex-col items-center w-[50px]"
     >
       <img
         src="/icons/messages.svg"
@@ -42,7 +44,7 @@
     </NuxtLink>
     <NuxtLink
       to="/"
-      class="flex flex-col items-center"
+      class="flex flex-col items-center w-[50px]"
     >
       <img
         src="/icons/gift.svg"
@@ -54,4 +56,5 @@
 </template>
 
 <script setup lang="ts">
+const store = useTriggersStore();
 </script>

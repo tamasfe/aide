@@ -78,7 +78,7 @@
         </div>
         <div
           v-if="store.getAuthModalType === 'login'"
-          class="flex flex-col justify-center items-center py-8 px-16"
+          class="flex flex-col justify-center items-center py-8 px-5 md:px-16"
         >
           <img
             src="/girobet-logo.svg"
