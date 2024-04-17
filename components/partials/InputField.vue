@@ -1,14 +1,23 @@
 <template>
-  <div class="relative w-full">
+  <div class="relative w-full flex">
     <input
       v-model="model"
-      class="peer w-full pb-2 pt-7 px-4 rounded bg-[#2F323C] outline-none text-white font-montserrat autofill:bg-[#2F323C] autofill:text-white"
+      class="peer w-full px-4 rounded bg-[#2F323C] outline-none text-white font-montserrat autofill:bg-[#2F323C] autofill:text-white"
+      :class="{'pb-2 pt-7 px-4': label, 'pb-4 pt-4 px-4': !label, 'pl-8': prefix}"
       :type="type"
       placeholder=" "
     >
+    <div class="absolute left-0 top-0 h-full flex items-center">
+      <span v-if="prefix" class="text-white font-semibold px-3 align-middle pb-[2px]">
+        <slot name="prefix"></slot>
+      </span>
+    </div>
+
     <label
+      v-if="label"
       for="input"
-      class="peer-focus:text-xs peer-focus:-translate-y-[20px] absolute left-4 top-1/2 -translate-y-[20px] text-xs peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-base font-montserrat text-white after:content-['*'] after:align-sup after:text-[#FFE33A] transition-all"
+      class="peer-focus:text-xs peer-focus:-translate-y-[20px] text-white absolute left-4 top-1/2 -translate-y-[20px] text-xs peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-base font-montserrat transition-all"
+      :class="{'after:content-[`*`] after:align-sup after:text-[#FFE33A]': required}"
     >
       {{ label }}
     </label>
@@ -36,6 +45,10 @@ defineProps({
     default: false,
   },
   value: String,
+  prefix: {
+    type: Boolean,
+    default: false
+  }
 });
 
 const model = defineModel();
