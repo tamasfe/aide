@@ -7,6 +7,7 @@
     <PageFooter />
     <MobileMenuBar />
     <AuthModal v-if="true" />
+    <SideMenu />
   </div>
 </template>
 

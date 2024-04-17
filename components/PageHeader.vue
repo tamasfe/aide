@@ -24,6 +24,11 @@
       <div class="flex gap-x-4">
         <PartialsButtonComponent
           variant="text"
+          :label="'MENU'"
+          @click="store.setSideMenuType('menu'); store.setSideMenuState(true)"
+        />
+        <PartialsButtonComponent
+          variant="text"
           :label="'LOG IN'"
           @click="openAuthModal('login')"
         />

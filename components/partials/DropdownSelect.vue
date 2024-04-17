@@ -22,8 +22,9 @@
       <div
         v-if="showDropdown"
         ref="itemsWrapper"
-        class="absolute top-full w-full mt-2 hover:cursor-pointer select-none rounded overflow-hidden"
-      >
+        class="absolute w-full hover:cursor-pointer select-none rounded overflow-hidden"
+        :class="{'top-full mt-2': !openTop, 'bottom-full mb-2': openTop}"
+        >
         <div
           v-for="item in items"
           class="w-full flex items-center px-[14px] py-[9px] bg-[#2F323C] hover:bg-[#232630] text-white"
@@ -43,7 +44,7 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps(["modelValue", "items"]);
+const props = defineProps(["modelValue", "items", "openTop"]);
 const emit = defineEmits(["update:modelValue"]);
 
 const itemsWrapper: Ref = ref(null);
