@@ -19,7 +19,7 @@
     v-else-if="variant === 'solid'"
     class="text-sm md:text-base text-[#161421] bg-[#FFE649] rounded font-bold font-montserrat transition-all hover:brightness-90 disabled:brightness-50"
     :class="{
-      'px-3 py-[7px] md:px-[24px] md:py-[7px]': !big && !small,
+      'px-3 py-[7px] md:px-4 md:py-[7px]': !big && !small,
       'py-[14px] px-3 min-w-[246px]': big,
       'py-[5px] px-[6px] md:py-[7px] md:px-3 min-w-auto': small,
     }"
@@ -35,6 +35,17 @@
   <button
     v-else-if="variant === 'round'"
     class="flex justify-center items-center w-8 h-8 text-white bg-[#42424D] rounded-full transition-all hover:brightness-90 disabled:brightness-50"
+    :style="{
+      backgroundColor: background,
+    }"
+    :disabled="disabled"
+  >
+    <slot />
+  </button>
+
+  <button
+    v-else-if="variant === 'square'"
+    class="flex justify-center items-center w-[34px] h-[34px] text-white bg-[#42424D] rounded transition-all hover:brightness-90 disabled:brightness-50"
     :style="{
       backgroundColor: background,
     }"

@@ -15,11 +15,14 @@
       </div>
     </div>
     <div class="flex place-content-between w-full max-w-[1296px] py-[9px] px-4 md:px-[32px] items-center h-[52px]">
-      <div>
+      <div class="flex">
         <img
           src="/girobet-logo.svg"
           alt="Girobet logo"
         >
+      </div>
+      <div v-if="authStore.getAuthorizationState" class="hidden md:flex flex-1 mx-6">
+        <GlobalSearchBar v-model="search" class="w-full max-w-[369px]"/>
       </div>
       <div class="flex gap-x-4">
         <PartialsButtonComponent
@@ -28,11 +31,32 @@
           @click="store.setSideMenuType('menu'); store.setSideMenuState(true)"
         />
         <PartialsButtonComponent
+          v-if="authStore.getAuthorizationState"
+          variant="square"
+          @click="openAuthModal('login')"
+        >
+          <img src="/icons/notification.svg" class="w-5 h-5">
+        </PartialsButtonComponent>
+        <PartialsButtonComponent
+          v-if="authStore.getAuthorizationState"
+          variant="square"
+          @click="openAuthModal('login')"
+        >
+          <img src="/icons/profile.svg" class="w-5 h-5">
+        </PartialsButtonComponent>
+        <PartialsButtonComponent
+          v-if="authStore.getAuthorizationState"
+          variant="solid"
+          :label="'DEPOSIT'"
+        />
+        <PartialsButtonComponent
+          v-if="!authStore.getAuthorizationState"
           variant="text"
           :label="'LOG IN'"
           @click="openAuthModal('login')"
         />
         <PartialsButtonComponent
+          v-if="!authStore.getAuthorizationState"
           variant="solid"
           :label="'REGISTER'"
           @click="openAuthModal('register')"
@@ -44,6 +68,9 @@
 
 <script setup lang="ts">
 const store = useTriggersStore();
+const authStore = useAuthStore();
+
+let search = ref('');
 
 const closePromoNotification = () => {
   store.setPromoNotificationState(false);

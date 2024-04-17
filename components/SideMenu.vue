@@ -12,8 +12,9 @@
           <img src="/icons/cross.svg" class="w-[14px]">
         </div>
       </div>
+      <SideDepositForm v-if="store.getSideMenuType === 'menu' && authStore.getAuthorizationState"></SideDepositForm>
       <Transition name="fade-left">
-        <div v-if="store.getSideMenuType === 'menu'" class="w-full overflow-y-auto">
+        <div v-if="store.getSideMenuType === 'menu'">
           <PartialsAccordion :label="'menu item'">
             <NuxtLink to="/" class="inline-flex px-3 py-[10px] text-white hover:bg-[#171922] transition">
               <img src="/icons/side-menu/settings.svg" class="mr-3">
@@ -149,9 +150,12 @@
 </template>
 
 <script setup lang="ts">
-const store = useTriggersStore()
+const store = useTriggersStore();
+const authStore = useAuthStore();
 
-const searchModel = ref('')
+
+const searchModel = ref('');
+const depositModel = ref('');
 
 const langModel = ref({
   label: "English",
