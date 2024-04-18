@@ -40,7 +40,6 @@
         <PartialsButtonComponent
           v-if="authStore.getAuthorizationState"
           variant="square"
-          @click="openAuthModal('login')"
         >
           <img
             src="/icons/notification.svg"
@@ -50,7 +49,6 @@
         <PartialsButtonComponent
           v-if="authStore.getAuthorizationState"
           variant="square"
-          @click="openAuthModal('login')"
         >
           <img
             src="/icons/profile.svg"
@@ -60,6 +58,7 @@
         <PartialsButtonComponent
           v-if="authStore.getAuthorizationState"
           variant="solid"
+          :color="'secondary'"
         >
           DEPOSIT
         </PartialsButtonComponent>
