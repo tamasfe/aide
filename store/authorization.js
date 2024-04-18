@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 
 export const useAuthStore = defineStore("authorization", {
   state: () => ({
-    isAuthorized: false
+    isAuthorized: false,
   }),
   getters: {
     getAuthorizationState: state => state.isAuthorized,

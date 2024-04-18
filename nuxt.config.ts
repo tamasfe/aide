@@ -58,22 +58,22 @@ export default defineNuxtConfig({
   },
   // @nuxtjs/seo
   linkChecker: {
-    enabled: false
+    enabled: false,
   },
   ogImage: {
-    enabled: false
+    enabled: false,
   },
   robots: {
-    enabled: false
+    enabled: false,
   },
   schemaOrg: {
-    enabled: false
+    enabled: false,
   },
   seoExperiments: {
-    enabled: false
+    enabled: false,
   },
   sitemap: {
-    enabled: false
+    enabled: false,
   },
   // @pinia/nuxt
   pinia: {

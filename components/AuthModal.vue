@@ -59,7 +59,7 @@
             />
           </div>
 
-          <div class="inline w-full text-center text-white text-sm mb-4">
+          <div class="inline w-full text-center text-primary-text text-sm mb-4">
             By signing up
             <NuxtLink
               to="/"
@@ -70,11 +70,12 @@
           </div>
 
           <PartialsButtonComponent
-            :label="'CREATE ACCOUNT'"
             :type="'solid'"
             big
             class="w-full"
-          />
+          >
+            CREATE ACCOUNT
+          </PartialsButtonComponent>
         </div>
         <div
           v-if="store.getAuthModalType === 'login'"
@@ -110,11 +111,12 @@
           </div>
 
           <PartialsButtonComponent
-            :label="'LOG IN'"
             :type="'solid'"
             big
             class="w-full"
-          />
+          >
+            LOG IN
+          </PartialsButtonComponent>
 
           <div class="inline w-full text-center text-white text-sm mt-4">
             Don't have an account yet?

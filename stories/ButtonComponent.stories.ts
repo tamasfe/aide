@@ -36,13 +36,12 @@ export const ButtonComponentStory: Story = {
     setup() {
       return { args };
     },
-    template: "<ButtonComponent v-bind=\"args\" :color=\"args.variant === `text` && !args.color ? `#000` : args.color\"> <SliderChevronLeft v-if=\"args.variant === `round`\" class=\"h-6\" :color=\"`#fff`\"/> </ButtonComponent>",
+    template: "<ButtonComponent v-bind=\"args\" :color=\"args.variant === `text` && !args.color ? `#000` : args.color\"> <SliderChevronLeft v-if=\"args.variant === `round`\" class=\"h-6\" :color=\"`#fff`\"/> <span v-if=\"args.variant !== `round` && args.variant !== `square`\">Button</span> </ButtonComponent>",
   }),
   args: {
     variant: "solid",
     background: "",
-    color: "",
-    label: "Button",
+    textColor: "",
     big: false,
     small: false,
   },

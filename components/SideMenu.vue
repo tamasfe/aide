@@ -1,89 +1,195 @@
 <template>
   <Transition name="fade">
-    <div v-if="store.showSideMenu" class="fixed size-full left-0 top-0 bg-black bg-opacity-35 transition-all duration-300 z-[998]" @click="store.setSideMenuState(false)"></div>
+    <div
+      v-if="store.showSideMenu"
+      class="fixed size-full left-0 top-0 bg-black bg-opacity-35 transition-all duration-300 z-[998]"
+      @click="store.setSideMenuState(false)"
+    />
   </Transition>
   <Transition>
-    <div v-if="store.showSideMenu" class="applyCustomScroll flex flex-col fixed left-0 top-0 h-full w-full max-w-full md:max-w-[345px] bg-[#1C1E28] transition-all duration-300 z-[998] overflow-hidden">
+    <div
+      v-if="store.showSideMenu"
+      class="applyCustomScroll flex flex-col fixed left-0 top-0 h-full w-full max-w-full md:max-w-[345px] bg-[#1C1E28] transition-all duration-300 z-[998] overflow-hidden"
+    >
       <div class="flex items-center w-full py-[18px] px-3 border-b border-opacity-15 border-b-white">
         <div class="flex-1">
           <img src="/girobet-logo.svg">
         </div>
-        <div class="p-[9px] bg-[#2B2740] rounded cursor-pointer" @click="store.setSideMenuState(false)">
-          <img src="/icons/cross.svg" class="w-[14px]">
+        <div
+          class="p-[9px] bg-[#2B2740] rounded cursor-pointer"
+          @click="store.setSideMenuState(false)"
+        >
+          <img
+            src="/icons/cross.svg"
+            class="w-[14px]"
+          >
         </div>
       </div>
-      <SideDepositForm v-if="store.getSideMenuType === 'menu' && authStore.getAuthorizationState"></SideDepositForm>
+      <SideDepositForm v-if="store.getSideMenuType === 'menu' && authStore.getAuthorizationState" />
       <Transition name="fade-left">
         <div v-if="store.getSideMenuType === 'menu'">
           <PartialsAccordion :label="'menu item'">
-            <NuxtLink to="/" class="inline-flex px-3 py-[10px] text-white hover:bg-[#171922] transition">
-              <img src="/icons/side-menu/settings.svg" class="mr-3">
+            <NuxtLink
+              to="/"
+              class="inline-flex px-3 py-[10px] text-white hover:bg-[#171922] transition"
+            >
+              <img
+                src="/icons/side-menu/settings.svg"
+                class="mr-3"
+              >
               Menu sub-item
             </NuxtLink>
-            <NuxtLink to="/" class="inline-flex px-3 py-[10px] text-white hover:bg-[#171922] transition">
-              <img src="/icons/side-menu/settings.svg" class="mr-3">
+            <NuxtLink
+              to="/"
+              class="inline-flex px-3 py-[10px] text-white hover:bg-[#171922] transition"
+            >
+              <img
+                src="/icons/side-menu/settings.svg"
+                class="mr-3"
+              >
               Menu sub-item
             </NuxtLink>
-            <NuxtLink to="/" class="inline-flex px-3 py-[10px] text-white hover:bg-[#171922] transition">
-              <img src="/icons/side-menu/settings.svg" class="mr-3">
+            <NuxtLink
+              to="/"
+              class="inline-flex px-3 py-[10px] text-white hover:bg-[#171922] transition"
+            >
+              <img
+                src="/icons/side-menu/settings.svg"
+                class="mr-3"
+              >
               Menu sub-item
             </NuxtLink>
-            <NuxtLink to="/" class="inline-flex px-3 py-[10px] text-white hover:bg-[#171922] transition">
-              <img src="/icons/side-menu/settings.svg" class="mr-3">
+            <NuxtLink
+              to="/"
+              class="inline-flex px-3 py-[10px] text-white hover:bg-[#171922] transition"
+            >
+              <img
+                src="/icons/side-menu/settings.svg"
+                class="mr-3"
+              >
               Menu sub-item
             </NuxtLink>
-            <NuxtLink to="/" class="inline-flex px-3 py-[10px] text-white hover:bg-[#171922] transition">
-              <img src="/icons/side-menu/settings.svg" class="mr-3">
+            <NuxtLink
+              to="/"
+              class="inline-flex px-3 py-[10px] text-white hover:bg-[#171922] transition"
+            >
+              <img
+                src="/icons/side-menu/settings.svg"
+                class="mr-3"
+              >
               Menu sub-item
             </NuxtLink>
           </PartialsAccordion>
           <PartialsAccordion :label="'menu item'">
-            <NuxtLink to="/" class="inline-flex px-3 py-[10px] text-white hover:bg-[#171922] transition">
-              <img src="/icons/side-menu/settings.svg" class="mr-3">
+            <NuxtLink
+              to="/"
+              class="inline-flex px-3 py-[10px] text-white hover:bg-[#171922] transition"
+            >
+              <img
+                src="/icons/side-menu/settings.svg"
+                class="mr-3"
+              >
               Menu sub-item
             </NuxtLink>
-            <NuxtLink to="/" class="inline-flex px-3 py-[10px] text-white hover:bg-[#171922] transition">
-              <img src="/icons/side-menu/settings.svg" class="mr-3">
+            <NuxtLink
+              to="/"
+              class="inline-flex px-3 py-[10px] text-white hover:bg-[#171922] transition"
+            >
+              <img
+                src="/icons/side-menu/settings.svg"
+                class="mr-3"
+              >
               Menu sub-item
             </NuxtLink>
-            <NuxtLink to="/" class="inline-flex px-3 py-[10px] text-white hover:bg-[#171922] transition">
-              <img src="/icons/side-menu/settings.svg" class="mr-3">
+            <NuxtLink
+              to="/"
+              class="inline-flex px-3 py-[10px] text-white hover:bg-[#171922] transition"
+            >
+              <img
+                src="/icons/side-menu/settings.svg"
+                class="mr-3"
+              >
               Menu sub-item
             </NuxtLink>
-            <NuxtLink to="/" class="inline-flex px-3 py-[10px] text-white hover:bg-[#171922] transition">
-              <img src="/icons/side-menu/settings.svg" class="mr-3">
+            <NuxtLink
+              to="/"
+              class="inline-flex px-3 py-[10px] text-white hover:bg-[#171922] transition"
+            >
+              <img
+                src="/icons/side-menu/settings.svg"
+                class="mr-3"
+              >
               Menu sub-item
             </NuxtLink>
-            <NuxtLink to="/" class="inline-flex px-3 py-[10px] text-white hover:bg-[#171922] transition">
-              <img src="/icons/side-menu/settings.svg" class="mr-3">
+            <NuxtLink
+              to="/"
+              class="inline-flex px-3 py-[10px] text-white hover:bg-[#171922] transition"
+            >
+              <img
+                src="/icons/side-menu/settings.svg"
+                class="mr-3"
+              >
               Menu sub-item
             </NuxtLink>
           </PartialsAccordion>
           <PartialsAccordion :label="'menu item'">
-            <NuxtLink to="/" class="inline-flex px-3 py-[10px] text-white hover:bg-[#171922] transition">
-              <img src="/icons/side-menu/settings.svg" class="mr-3">
+            <NuxtLink
+              to="/"
+              class="inline-flex px-3 py-[10px] text-white hover:bg-[#171922] transition"
+            >
+              <img
+                src="/icons/side-menu/settings.svg"
+                class="mr-3"
+              >
               Menu sub-item
             </NuxtLink>
-            <NuxtLink to="/" class="inline-flex px-3 py-[10px] text-white hover:bg-[#171922] transition">
-              <img src="/icons/side-menu/settings.svg" class="mr-3">
+            <NuxtLink
+              to="/"
+              class="inline-flex px-3 py-[10px] text-white hover:bg-[#171922] transition"
+            >
+              <img
+                src="/icons/side-menu/settings.svg"
+                class="mr-3"
+              >
               Menu sub-item
             </NuxtLink>
-            <NuxtLink to="/" class="inline-flex px-3 py-[10px] text-white hover:bg-[#171922] transition">
-              <img src="/icons/side-menu/settings.svg" class="mr-3">
+            <NuxtLink
+              to="/"
+              class="inline-flex px-3 py-[10px] text-white hover:bg-[#171922] transition"
+            >
+              <img
+                src="/icons/side-menu/settings.svg"
+                class="mr-3"
+              >
               Menu sub-item
             </NuxtLink>
-            <NuxtLink to="/" class="inline-flex px-3 py-[10px] text-white hover:bg-[#171922] transition">
-              <img src="/icons/side-menu/settings.svg" class="mr-3">
+            <NuxtLink
+              to="/"
+              class="inline-flex px-3 py-[10px] text-white hover:bg-[#171922] transition"
+            >
+              <img
+                src="/icons/side-menu/settings.svg"
+                class="mr-3"
+              >
               Menu sub-item
             </NuxtLink>
-            <NuxtLink to="/" class="inline-flex px-3 py-[10px] text-white hover:bg-[#171922] transition">
-              <img src="/icons/side-menu/settings.svg" class="mr-3">
+            <NuxtLink
+              to="/"
+              class="inline-flex px-3 py-[10px] text-white hover:bg-[#171922] transition"
+            >
+              <img
+                src="/icons/side-menu/settings.svg"
+                class="mr-3"
+              >
               Menu sub-item
             </NuxtLink>
           </PartialsAccordion>
         </div>
 
-        <div v-else-if="store.getSideMenuType === 'search'" class="w-full flex flex-col">
+        <div
+          v-else-if="store.getSideMenuType === 'search'"
+          class="w-full flex flex-col"
+        >
           <div class="relative w-full pt-5 px-3 pb-1">
             <input
               v-model="searchModel"
@@ -98,49 +204,52 @@
               class="flex flex-col w-full h-full mt-[15px] rounded-lg overflow-hidden z-[998]"
             >
               <div class="w-full flex gap-x-4 px-6 border-b-[2px] border-opacity-10 border-b-[#D9D9D9]">
-                  <div
-                    v-for="(category, index) in categories"
-                    class="px-[5px] py-4 text-white font-montserrat text-xs font-semibold text-opacity-60 hover:brightness-90 cursor-pointer mb-[-2px] border-b-[2px] border-opacity-0 hover:text-opacity-100 hover:border-opacity-100 border-b-[#FFE33A] transition duration-300"
-                    :class="{ 'text-opacity-100 border-b-[#FFE33A] border-opacity-100': index === selectedTab }"
-                    @click="onTabClick(index)"
-                  >
-                    {{ category.title }}
-                  </div>
+                <div
+                  v-for="(category, index) in categories"
+                  class="px-[5px] py-4 text-white font-montserrat text-xs font-semibold text-opacity-60 hover:brightness-90 cursor-pointer mb-[-2px] border-b-[2px] border-opacity-0 hover:text-opacity-100 hover:border-opacity-100 border-b-[#FFE33A] transition duration-300"
+                  :class="{ 'text-opacity-100 border-b-[#FFE33A] border-opacity-100': index === selectedTab }"
+                  @click="onTabClick(index)"
+                >
+                  {{ category.title }}
+                </div>
               </div>
               <div class="flex-1 overflow-y-auto applyCustomScroll overflow-auto">
-                  <h2 class="p-3 py-5 text-xl text-white font-montserrat font-semibold">
-                    Suggested Games
-                  </h2>
-                  <div class="size-full">
-                    <NuxtLink
-                      v-for="item in categories[selectedTab].items"
-                      to="/"
-                      class="w-full flex px-3 py-3 hover:bg-[#232630] transition"
-                    >
-                      <div class="w-[80px] h-[110px] bg-black rounded" />
-                      <div class="flex flex-col flex-1 justify-center pl-4">
-                        <p class="text-white font-montserrat font-semibold mb-1">
-                          {{ item.title }}
-                        </p>
-                        <p class="text-white font-montserrat text-opacity-70 m-0">
-                          {{ item.subtitle }}
-                        </p>
-                      </div>
-                    </NuxtLink>
-                  </div>
+                <h2 class="p-3 py-5 text-xl text-white font-montserrat font-semibold">
+                  Suggested Games
+                </h2>
+                <div class="size-full">
+                  <NuxtLink
+                    v-for="item in categories[selectedTab].items"
+                    to="/"
+                    class="w-full flex px-3 py-3 hover:bg-[#232630] transition"
+                  >
+                    <div class="w-[80px] h-[110px] bg-black rounded" />
+                    <div class="flex flex-col flex-1 justify-center pl-4">
+                      <p class="text-white font-montserrat font-semibold mb-1">
+                        {{ item.title }}
+                      </p>
+                      <p class="text-white font-montserrat text-opacity-70 m-0">
+                        {{ item.subtitle }}
+                      </p>
+                    </div>
+                  </NuxtLink>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </Transition>
-      
-      <div class="flex-1"></div>
+
+      <div class="flex-1" />
       <Transition name="fade-left">
-        <div v-if="store.getSideMenuType === 'menu'" class="w-full px-3 pt-10 pb-[75px] md:pb-10">
+        <div
+          v-if="store.getSideMenuType === 'menu'"
+          class="w-full px-3 pt-10 pb-[75px] md:pb-10"
+        >
           <PartialsDropdownSelect
             v-model="langModel"
             :items="lang"
-            :openTop="true"
+            :open-top="true"
             class="w-full"
           />
         </div>
@@ -153,9 +262,7 @@
 const store = useTriggersStore();
 const authStore = useAuthStore();
 
-
-const searchModel = ref('');
-const depositModel = ref('');
+const searchModel = ref("");
 
 const langModel = ref({
   label: "English",
@@ -364,9 +471,9 @@ const categories = [
   },
 ];
 
-const selectedTab:Ref<number> = ref(0);
+const selectedTab: Ref<number> = ref(0);
 
-const onTabClick = (index:number = 0) => {
+const onTabClick = (index: number = 0) => {
   selectedTab.value = index;
 };
 </script>

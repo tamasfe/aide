@@ -23,8 +23,8 @@
         v-if="showDropdown"
         ref="itemsWrapper"
         class="absolute w-full hover:cursor-pointer select-none rounded overflow-hidden"
-        :class="{'top-full mt-2': !openTop, 'bottom-full mb-2': openTop}"
-        >
+        :class="{ 'top-full mt-2': !openTop, 'bottom-full mb-2': openTop }"
+      >
         <div
           v-for="item in items"
           class="w-full flex items-center px-[14px] py-[9px] bg-[#2F323C] hover:bg-[#232630] text-white"

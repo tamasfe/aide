@@ -21,46 +21,63 @@
           alt="Girobet logo"
         >
       </div>
-      <div v-if="authStore.getAuthorizationState" class="hidden md:flex flex-1 mx-6">
-        <GlobalSearchBar v-model="search" class="w-full max-w-[369px]"/>
+      <div
+        v-if="authStore.getAuthorizationState"
+        class="hidden md:flex flex-1 mx-6"
+      >
+        <GlobalSearchBar
+          v-model="search"
+          class="w-full max-w-[369px]"
+        />
       </div>
       <div class="flex gap-x-4">
         <PartialsButtonComponent
           variant="text"
-          :label="'MENU'"
           @click="store.setSideMenuType('menu'); store.setSideMenuState(true)"
-        />
-        <PartialsButtonComponent
-          v-if="authStore.getAuthorizationState"
-          variant="square"
-          @click="openAuthModal('login')"
         >
-          <img src="/icons/notification.svg" class="w-5 h-5">
+          MENU
         </PartialsButtonComponent>
         <PartialsButtonComponent
           v-if="authStore.getAuthorizationState"
           variant="square"
-          @click="openAuthModal('login')"
         >
-          <img src="/icons/profile.svg" class="w-5 h-5">
+          <img
+            src="/icons/notification.svg"
+            class="w-5 h-5"
+          >
+        </PartialsButtonComponent>
+        <PartialsButtonComponent
+          v-if="authStore.getAuthorizationState"
+          variant="square"
+        >
+          <img
+            src="/icons/profile.svg"
+            class="w-5 h-5"
+          >
         </PartialsButtonComponent>
         <PartialsButtonComponent
           v-if="authStore.getAuthorizationState"
           variant="solid"
-          :label="'DEPOSIT'"
-        />
+          :color="'secondary'"
+        >
+          DEPOSIT
+        </PartialsButtonComponent>
         <PartialsButtonComponent
           v-if="!authStore.getAuthorizationState"
           variant="text"
           :label="'LOG IN'"
           @click="openAuthModal('login')"
-        />
+        >
+          LOG IN
+        </PartialsButtonComponent>
         <PartialsButtonComponent
           v-if="!authStore.getAuthorizationState"
           variant="solid"
-          :label="'REGISTER'"
+          :color="'secondary'"
           @click="openAuthModal('register')"
-        />
+        >
+          REGISTER
+        </PartialsButtonComponent>
       </div>
     </div>
   </div>
@@ -70,7 +87,7 @@
 const store = useTriggersStore();
 const authStore = useAuthStore();
 
-let search = ref('');
+const search = ref("");
 
 const closePromoNotification = () => {
   store.setPromoNotificationState(false);
@@ -90,6 +107,6 @@ const openAuthModal = (type: string = "register") => {
   bottom: 0;
   height: 1px;
   width: 100%;
-  background-color: rgba(255,255,255, 0.15);
+  background-color: rgba(255, 255, 255, 0.15);
 }
 </style>
