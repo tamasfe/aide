@@ -18,22 +18,22 @@ export const useTriggersStore = defineStore("globalTriggers", {
     getSideMenuType: state => state.sideMenuType,
   },
   actions: {
-    setAuthModalState(modalShow) {
+    setAuthModalState(modalShow: boolean) {
       this.openAuthModal = modalShow;
     },
-    setAuthModalType(modalType) {
+    setAuthModalType(modalType: string) {
       this.authModalType = modalType;
     },
-    setPromoNotificationState(notificationShow) {
+    setPromoNotificationState(notificationShow: boolean) {
       this.showPromoNotification = notificationShow;
     },
-    setStopScrollState(blockScroll) {
+    setStopScrollState(blockScroll: boolean) {
       this.blockScroll = blockScroll;
     },
-    setSideMenuState(showSideMenu) {
+    setSideMenuState(showSideMenu: boolean) {
       this.showSideMenu = showSideMenu;
     },
-    setSideMenuType(sideMenuType) {
+    setSideMenuType(sideMenuType: string) {
       this.sideMenuType = sideMenuType;
     },
   },
