@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col items-center w-full min-h-screen">
     <div class="w-full max-w-[1296px] px-[32px]">
-      <GameFrame/>
+      <GameFrame />
     </div>
 
     <div class="w-full max-w-[1296px] px-[32px] mt-[62px] mb-20">
@@ -20,7 +20,10 @@
       </div>
       <div class="flex gap-x-8 flex-col md:flex-row">
         <div class="md:max-w-[161px]">
-          <img src="/images/placeholder-game.png" class="w-full mb-4 md:mb-0">
+          <img
+            src="/images/placeholder-game.png"
+            class="w-full mb-4 md:mb-0"
+          >
         </div>
         <div class="flex-1 p-6 md:p-8 rounded-xl bg-[#232630]">
           <p class="text-white font-montserrat mb-8">
@@ -31,7 +34,10 @@
           <h2 class="text-2xl font-montserrat text-white font-semibold mb-7">About Mines</h2>
 
           <div class="flex flex-col mb-8">
-            <p v-for="item in 5" class="inline-flex border-b-[2px] border-b-[#1c1e28] p-5">
+            <p
+              v-for="item in 5"
+              class="inline-flex border-b-[2px] border-b-[#1c1e28] p-5"
+            >
               <span class="text-white font-montserrat font-semibold text-opacity-60 basis-1/2">
                 Game
               </span>
@@ -46,7 +52,7 @@
 
             <p class="text-white font-montserrat mb-4">
               Get ready to enjoy the most thrilling adaptation of one of the classic games in history with Mines! Explore the minefield and search for diamonds while avoiding dangerous explosives. Here, you'll discover your mining skills with various difficulty levels - an ideal experience for both beginners and those interested in higher risk!
-            Do you have what it takes to find valuable treasures? Play Mines on GiroBet and find out!
+              Do you have what it takes to find valuable treasures? Play Mines on GiroBet and find out!
             </p>
 
             <ul class="text-white font-montserrat list-decimal pl-10">
@@ -55,9 +61,7 @@
             </ul>
           </div>
 
-          <div class="flex justify-start">
-
-          </div>
+          <div class="flex justify-start" />
         </div>
       </div>
     </div>

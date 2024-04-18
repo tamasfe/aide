@@ -12,6 +12,13 @@ export default <Partial<Config>>{
       },
       colors: {
         "body-bg": "#1c1e28",
+        "button-base": "#2F323C",
+        "button-hover": "#42424D",
+        "button-base-text": "#B8BDCB",
+        "button-secondary": "#FFE649",
+        "button-secondary-text": "#161421",
+        "text-button": "#fff",
+        "primary-text": "#fff",
       },
     },
   },

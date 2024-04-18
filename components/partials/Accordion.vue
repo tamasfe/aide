@@ -1,13 +1,23 @@
 <template>
   <div class="w-full flex flex-col">
-    <div class="w-full flex px-3 py-6 text-white font-semibold font-montserrat capitalize hover:bg-[#171922] cursor-pointer" @click="triggered = !triggered">
+    <div
+      class="w-full flex px-3 py-6 text-white font-semibold font-montserrat capitalize hover:bg-[#171922] cursor-pointer"
+      @click="triggered = !triggered"
+    >
       <span class="flex-1">
         {{ label }}
       </span>
-      <img src="/icons/chevron-down.svg" class="transition w-4" :class="{'rotate-180': triggered}">
+      <img
+        src="/icons/chevron-down.svg"
+        class="transition w-4"
+        :class="{ 'rotate-180': triggered }"
+      >
     </div>
     <Transition>
-      <div v-if="triggered" class="w-full flex flex-col overflow-hidden transition-all">
+      <div
+        v-if="triggered"
+        class="w-full flex flex-col overflow-hidden transition-all"
+      >
         <slot />
       </div>
     </Transition>
@@ -15,14 +25,14 @@
 </template>
 
 <script setup>
-let triggered = ref(false);
+const triggered = ref(false);
 
 defineProps({
   label: {
     type: String,
-    default: ''
-  }
-})
+    default: "",
+  },
+});
 </script>
 
 <style scoped>

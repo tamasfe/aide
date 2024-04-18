@@ -1,52 +1,18 @@
 <template>
   <button
-    v-if="variant === 'text'"
-    class="text-sm md:text-base text-white font-montserrat font-bold transition-all hover:brightness-90"
+    class="flex justify-center items-center text-xs md:text-base font-montserrat font-bold transition-all hover:brightness-90 rounded disabled:brightness-75"
     :class="{
-      'px-0 py-0 md:px-[24px] md:py-[7px]': !big && !small,
-      'py-[5px] md:py-[14px] min-w-[246px]': big,
-      'py-[5px] px-[6px] md:py-[7px] md:px-3 min-w-auto': small,
+      'py-[7px] px-[12px]': !big && !small && variant !== 'round',
+      'py-[5px] md:p-[14px]': big,
+      'py-[5px] px-[6px] md:p-[7px]': small,
+      'text-text-button': variant === 'text',
+      'text-button-base-text bg-button-base': color === 'base' && variant !== 'text',
+      'text-button-secondary-text bg-button-secondary': color === 'secondary' && variant !== 'text',
+      'w-8 h-8 rounded-full pt-0 pb-0 pr-0 pl-0': variant === 'round',
+      'w-8 h-8': variant === 'square',
     }"
     :style="{
-      color: color,
-    }"
-    :disabled="disabled"
-  >
-    {{ label }}
-  </button>
-
-  <button
-    v-else-if="variant === 'solid'"
-    class="text-sm md:text-base text-[#161421] bg-[#FFE649] rounded font-bold font-montserrat transition-all hover:brightness-90 disabled:brightness-50"
-    :class="{
-      'px-3 py-[7px] md:px-4 md:py-[7px]': !big && !small,
-      'py-[14px] px-3 min-w-[246px]': big,
-      'py-[5px] px-[6px] md:py-[7px] md:px-3 min-w-auto': small,
-    }"
-    :style="{
-      color: color,
-      backgroundColor: background,
-    }"
-    :disabled="disabled"
-  >
-    {{ label }}
-  </button>
-
-  <button
-    v-else-if="variant === 'round'"
-    class="flex justify-center items-center w-8 h-8 text-white bg-[#42424D] rounded-full transition-all hover:brightness-90 disabled:brightness-50"
-    :style="{
-      backgroundColor: background,
-    }"
-    :disabled="disabled"
-  >
-    <slot />
-  </button>
-
-  <button
-    v-else-if="variant === 'square'"
-    class="flex justify-center items-center w-[34px] h-[34px] text-white bg-[#42424D] rounded transition-all hover:brightness-90 disabled:brightness-50"
-    :style="{
+      color: textColor,
       backgroundColor: background,
     }"
     :disabled="disabled"
@@ -61,7 +27,6 @@ defineProps({
     type: String,
     default: "solid",
   },
-  label: String,
   big: {
     type: [Boolean, String],
     default: false,
@@ -74,9 +39,13 @@ defineProps({
     type: String,
     default: "",
   },
-  color: {
+  textColor: {
     type: String,
     default: "",
+  },
+  color: {
+    type: String,
+    default: "base",
   },
   disabled: {
     type: Boolean,

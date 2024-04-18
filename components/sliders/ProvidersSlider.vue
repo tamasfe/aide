@@ -29,10 +29,11 @@
           <PartialsButtonComponent
             class="ml-4"
             :background="'#42424D'"
-            :color="'#B8BDCB'"
+            :text-color="'#B8BDCB'"
             small
-            :label="'VIEW ALL'"
-          />
+          >
+            VIEW ALL
+          </PartialsButtonComponent>
         </div>
       </div>
 

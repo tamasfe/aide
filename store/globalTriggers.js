@@ -7,7 +7,7 @@ export const useTriggersStore = defineStore("globalTriggers", {
     showPromoNotification: true,
     blockScroll: false,
     showSideMenu: false,
-    sideMenuType: 'search',
+    sideMenuType: "search",
   }),
   getters: {
     getAuthModalOpen: state => state.openAuthModal,
@@ -15,7 +15,7 @@ export const useTriggersStore = defineStore("globalTriggers", {
     getPromoNotificationOpen: state => state.showPromoNotification,
     getStopScroll: state => state.blockScroll,
     getShowSideMenu: state => state.showSideMenu,
-    getSideMenuType: state => state.sideMenuType
+    getSideMenuType: state => state.sideMenuType,
   },
   actions: {
     setAuthModalState(modalShow) {
@@ -31,10 +31,10 @@ export const useTriggersStore = defineStore("globalTriggers", {
       this.blockScroll = blockScroll;
     },
     setSideMenuState(showSideMenu) {
-      this.showSideMenu = showSideMenu
+      this.showSideMenu = showSideMenu;
     },
     setSideMenuType(sideMenuType) {
-      this.sideMenuType = sideMenuType
-    }
+      this.sideMenuType = sideMenuType;
+    },
   },
 });

@@ -1,26 +1,57 @@
 <template>
   <div class="w-full">
     <div class="w-full py-6 px-3">
-      <PartialsInputField v-model="depositModel" class="mb-2" :label="''" type="text" :prefix="true">
-        <template v-slot:prefix>
+      <PartialsInputField
+        v-model="depositModel"
+        class="mb-2"
+        :label="''"
+        type="text"
+        :prefix="true"
+      >
+        <template #prefix>
           $
         </template>
       </PartialsInputField>
       <div class="w-full flex gap-x-2 mb-2">
-        <PartialsButtonComponent :label="'$10.00'" :type="'solid'" class="w-full pt-4 pb-4" :background="'#40444F'"
-          :color="'#fff'" />
-        <PartialsButtonComponent :label="'$50.00'" :type="'solid'" class="w-full pt-4 pb-4" :background="'#40444F'"
-          :color="'#fff'" />
-        <PartialsButtonComponent :label="'$100.00'" :type="'solid'" class="w-full pt-4 pb-4" :background="'#40444F'"
-          :color="'#fff'" />
+        <PartialsButtonComponent
+          :type="'solid'"
+          class="w-full pt-4 pb-4"
+          :background="'#40444F'"
+          :text-color="'#fff'"
+        >
+          $10.00
+        </PartialsButtonComponent>
+        <PartialsButtonComponent
+          :type="'solid'"
+          class="w-full pt-4 pb-4"
+          :background="'#40444F'"
+          :text-color="'#fff'"
+        >
+          $50.00
+        </PartialsButtonComponent>
+        <PartialsButtonComponent
+          :type="'solid'"
+          class="w-full pt-4 pb-4"
+          :background="'#40444F'"
+          :text-color="'#fff'"
+        >
+          $100.00
+        </PartialsButtonComponent>
       </div>
-      <PartialsButtonComponent :label="'QUICK DEPOSIT'" :type="'solid'" big class="w-full" />
+      <PartialsButtonComponent
+        :type="'solid'"
+        :color="'secondary'"
+        big
+        class="w-full"
+      >
+        QUICK DEPOSIT
+      </PartialsButtonComponent>
     </div>
   </div>
 </template>
 
 <script setup>
-const depositModel = ref('');
+const depositModel = ref("");
 </script>
 
 <style scoped>

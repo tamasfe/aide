@@ -29,10 +29,11 @@
           <PartialsButtonComponent
             class="ml-4"
             :background="'#42424D'"
-            :color="'#B8BDCB'"
+            :text-color="'#B8BDCB'"
             small
-            :label="'VIEW ALL'"
-          />
+          >
+            VIEW ALL
+          </PartialsButtonComponent>
         </div>
       </div>
 
@@ -49,7 +50,9 @@
             class="w-[161px] relative h-full bg-contain bg-repeat rounded"
             :style="{ backgroundImage: `url(${slide.imageUrl})` }"
           >
-            <div class="absolute left-[6px] top-[6px] py-[5px] px-[8px] text-white text-xs font-montserrat font-bold bg-[#00B439] rounded">
+            <div
+              class="absolute left-[6px] top-[6px] py-[5px] px-[8px] text-white text-xs font-montserrat font-bold bg-[#00B439] rounded"
+            >
               {{ slide.label }}
             </div>
           </div>
