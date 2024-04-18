@@ -8,6 +8,7 @@
     <MobileMenuBar />
     <AuthModal v-if="true" />
     <SideMenu />
+    <NotificationsGlobalNotificationsWrapper />
   </div>
 </template>
 
