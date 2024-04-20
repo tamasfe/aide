@@ -12,7 +12,7 @@
       <div class="absolute right-3 top-3 p-2 cursor-pointer hover:bg-green-600 rounded transition" @click="show = false">
         <img src="/icons/cross.svg">
       </div>
-      <div class="text-white font-montserrat font-semibold">
+      <div class="text-white font-montserrat font-semibold text-sm md:text-base">
         {{ notification.title }}
       </div>
       <div class="mt-2 text-sm text-white font-montserrat">
