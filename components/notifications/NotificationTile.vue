@@ -2,7 +2,7 @@
   <Transition>
     <li
       v-if="show"
-      class="block list-none relative w-full rounded p-4 pr-10 shadow-2xl"
+      class="block list-none relative w-full rounded p-4 pr-10 shadow-2xl mt-2"
       :class="{
         'bg-green-500': notification.type === 'success',
         'bg-red-600': notification.type === 'error',
