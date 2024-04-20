@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed place-content-between bottom-0 left-0 flex md:hidden items-center w-full bg-[#2F323C] z-[999] h-[60px] p-[10px]">
+  <div class="fixed place-content-between bottom-0 left-0 flex md:hidden items-center w-full bg-side-menu-bg z-[999] h-[60px] p-[10px]">
     <NuxtLink
       to="/"
       class="flex flex-col items-center w-[50px]"

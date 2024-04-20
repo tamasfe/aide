@@ -12,7 +12,7 @@
       <input
         id="globalSearchInput"
         v-model="model"
-        class=" w-full max-w-[1232px] rounded-full bg-[#2F323C] hover:brightness-90 transition-all text-sm font-montserrat text-white font-semibold p-[10px] outline-none pl-[36px] placeholder:text-white placeholder:opacity-80"
+        class=" w-full max-w-[1232px] rounded-full bg-search-bg hover:brightness-90 transition-all text-sm font-montserrat text-search-text font-semibold p-[10px] outline-none pl-[36px] placeholder:text-white placeholder:opacity-80"
         :class="{ 'shadow-2xl': focus }"
         type="text"
         placeholder="Search for an account or provider by name"
@@ -24,13 +24,13 @@
         <label
           v-if="focus"
           for="globalSearchInput"
-          class="absolute flex flex-col w-full h-[calc(100vh-195px)] bg-[#2F323C] mt-[15px] rounded-lg overflow-hidden z-[998]"
+          class="absolute flex flex-col w-full h-[calc(100vh-195px)] bg-search-bg mt-[15px] rounded-lg overflow-hidden z-[998]"
         >
-          <div class="w-full flex gap-x-4 px-6 border-b-[2px] border-opacity-10 border-b-[#D9D9D9]">
+          <div class="w-full flex gap-x-4 px-6 border-b-[2px] border-opacity-10 border-b-search-divider">
             <div
               v-for="(category, index) in categories"
-              class="px-[5px] py-4 text-white font-montserrat text-xs font-semibold text-opacity-60 hover:brightness-90 cursor-pointer mb-[-2px] border-b-[2px] border-opacity-0 hover:text-opacity-100 hover:border-opacity-100 border-b-[#FFE33A] transition duration-300"
-              :class="{ 'text-opacity-100 border-b-[#FFE33A] border-opacity-100': index === selectedTab }"
+              class="px-[5px] py-4 text-white font-montserrat text-xs font-semibold text-opacity-60 hover:brightness-90 cursor-pointer mb-[-2px] border-b-[2px] border-opacity-0 hover:text-opacity-100 hover:border-opacity-100 border-b-search-selected-tab transition duration-300"
+              :class="{ 'text-opacity-100 border-b-search-selected-tab border-opacity-100': index === selectedTab }"
               @click="onTabClick(index)"
             >
               {{ category.title }}
@@ -44,7 +44,7 @@
               <NuxtLink
                 v-for="item in categories[selectedTab].items"
                 to="/"
-                class="w-full flex px-6 py-3 hover:bg-[#232630] transition"
+                class="w-full flex px-6 py-3 hover:bg-search-result-hover transition"
               >
                 <div class="w-[80px] h-[110px] bg-black rounded" />
                 <div class="flex flex-col flex-1 justify-center pl-4">
@@ -64,7 +64,7 @@
     <Transition>
       <div
         v-if="focus"
-        class="fixed left-0 top-0 size-full bg-[#0C0D0D] bg-opacity-65 z-[996] transition duration-500 cursor-pointer"
+        class="fixed left-0 top-0 size-full bg-black bg-opacity-65 z-[996] transition duration-500 cursor-pointer"
         @click="focus = false; store.setStopScrollState(false)"
       />
     </Transition>

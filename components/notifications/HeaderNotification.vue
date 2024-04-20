@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="store.getPromoNotificationOpen"
-    class="relative flex w-full p-3 bg-[#A38BD7] text-white text-center"
+    class="relative flex w-full p-3 bg-header-notification-bg text-header-notification-text text-center"
   >
     <span class="flex-1">
       Refer a friend and earn <strong>R$ 5,00</strong> of REAL balance for each friend you invite 💥

@@ -1,7 +1,7 @@
 <template>
   <div class="w-full flex flex-col">
     <div
-      class="w-full flex px-3 py-6 text-white font-semibold font-montserrat capitalize hover:bg-[#171922] cursor-pointer"
+      class="w-full flex px-3 py-6 text-accordion-text font-semibold font-montserrat capitalize hover:bg-accordion-hover-bg cursor-pointer"
       @click="triggered = !triggered"
     >
       <span class="flex-1">

@@ -5,13 +5,13 @@
       class="flex justify-center items-center fixed left-0 top-0 size-full z-[999]"
     >
       <div
-        class="absolute left-0 top-0 size-full bg-[#0C0D0D] opacity-90 z-[-1]"
+        class="absolute left-0 top-0 size-full bg-black opacity-90 z-[-1]"
         @click="store.setAuthModalState(false)"
-      />
-      <div class="relative w-full h-full md:h-auto md:max-w-[552px] rounded-xl bg-[#1C1E28] overflow-hidden">
+      ></div>
+      <div class="relative w-full h-full md:h-auto md:max-w-[552px] rounded-xl bg-auth-modal-bg overflow-hidden">
         <img src="/auth-banner.png">
         <div
-          class="flex items-center justify-center absolute right-6 top-6 size-[32px] rounded bg-[#2B2740] bg-opacity-40 hover:bg-opacity-100 cursor-pointer"
+          class="flex items-center justify-center absolute right-6 top-6 size-[32px] rounded bg-auth-modal-close-button bg-opacity-40 hover:bg-opacity-100 cursor-pointer"
           @click="store.setAuthModalState(false)"
         >
           <img src="/icons/cross.svg">
@@ -66,11 +66,11 @@
             />
           </div>
 
-          <div class="inline w-full text-center text-primary-text text-sm mb-4">
+          <div class="inline w-full text-center text-auth-modal-text text-sm mb-4">
             By signing up
             <NuxtLink
               to="/"
-              class="text-[#FFE33A]"
+              class="text-auth-modal-highlight"
             >
               you agree to our terms and conditions
             </NuxtLink>
@@ -118,7 +118,7 @@
             />
           </div>
 
-          <div class="inline w-full text-right text-white text-sm mb-4">
+          <div class="inline w-full text-right text-auth-modal-text text-sm mb-4">
             <NuxtLink to="/">
               Forgot password?
             </NuxtLink>
@@ -135,11 +135,11 @@
             LOG IN
           </PartialsButtonComponent>
 
-          <div class="inline w-full text-center text-white text-sm mt-4">
+          <div class="inline w-full text-center text-auth-modal-text text-sm mt-4">
             Don't have an account yet?
             <NuxtLink
               to="/"
-              class="text-[#FFE33A]"
+              class="text-auth-modal-highlight"
             >
               Create a free account
             </NuxtLink>

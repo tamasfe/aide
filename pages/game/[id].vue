@@ -25,7 +25,7 @@
             class="w-full mb-4 md:mb-0"
           >
         </div>
-        <div class="flex-1 p-6 md:p-8 rounded-xl bg-[#232630]">
+        <div class="flex-1 p-6 md:p-8 rounded-xl bg-body-secondary-bg">
           <p class="text-white font-montserrat mb-8">
             Get ready to enjoy the most thrilling adaptation of one of the classic games in history with Mines! Explore the minefield and search for diamonds while avoiding dangerous explosives. Here, you'll discover your mining skills with various difficulty levels - an ideal experience for both beginners and those interested in higher risk!
             Do you have what it takes to find valuable treasures? Play Mines on GiroBet and find out!
@@ -36,7 +36,7 @@
           <div class="flex flex-col mb-8">
             <p
               v-for="item in 5"
-              class="inline-flex border-b-[2px] border-b-[#1c1e28] p-5"
+              class="inline-flex border-b-[2px] border-b-game-title-border p-5"
             >
               <span class="text-white font-montserrat font-semibold text-opacity-60 basis-1/2">
                 Game
@@ -76,7 +76,7 @@
       </div>
     </div>
 
-    <div class="w-full mt-8 py-10 flex justify-center bg-[#232630]">
+    <div class="w-full mt-8 py-10 flex justify-center bg-body-secondary-bg">
       <SlidersProvidersSlider :slides="providers" />
     </div>
   </div>
