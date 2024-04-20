@@ -3,20 +3,20 @@
     <div class="relative w-full mb-1">
       <input
         v-model="model"
-        class="peer w-full pb-2 pt-7 px-4 rounded bg-[#2F323C] outline-none text-white font-montserrat autofill:bg-[#2F323C] autofill:text-white border hover:border-[#FFE33A]"
-        :class="{ 'pb-2 pt-7 px-4': label, 'pb-4 pt-4 px-4': !label, 'border-red-600': invalid,  'border-[#2F323C]': !invalid }"
+        class="peer w-full pb-2 pt-7 px-4 rounded bg-input-bg outline-none text-white font-montserrat border hover:border-input-hover-border"
+        :class="{ 'pb-2 pt-7 px-4': label, 'pb-4 pt-4 px-4': !label, 'border-input-error': invalid,  'border-input-bg': !invalid }"
         type="tel"
         placeholder=" "
         @input="(event) => emit('change', countryModel + (event.target as HTMLTextAreaElement).value)"
       >
       <label
         for="input"
-        class="peer-focus:text-xs peer-focus:-translate-y-[20px] absolute left-4 top-1/2 -translate-y-[20px] text-xs peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-base font-montserrat text-white after:content-['*'] after:align-sup after:text-[#FFE33A] transition-all"
+        class="peer-focus:text-xs peer-focus:-translate-y-[20px] absolute left-4 top-1/2 -translate-y-[20px] text-xs peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-base font-montserrat text-input-label after:content-['*'] after:align-sup after:text-input-required-mark transition-all"
       >
         {{ label }}
       </label>
 
-      <div class="w-[93px] h-full absolute right-0 top-0 border border-l-0 rounded-r" :class="{ 'border-red-600': invalid,  'border-[#2F323C]': !invalid }">
+      <div class="w-[93px] h-full absolute right-0 top-0 border border-l-0 rounded-r" :class="{ 'border-input-error': invalid,  'border-input-bg': !invalid }">
         <div class="absolute top-[30px] -translate-y-1/2 left-3">
           <span :class="'fi fi-' + selectedCountryCode.toLowerCase()" />
         </div>
@@ -24,7 +24,7 @@
         <input
           v-model="countryModel"
           type="text"
-          class="w-full h-full outline-none text-sm font-semibold font-montserrat py-4 pl-9 pr-2 bg-[#2F323C] text-white border-l border-l-[#4E5159] rounded-r"
+          class="w-full h-full outline-none text-sm font-semibold font-montserrat py-4 pl-9 pr-2 bg-input-bg text-white border-l border-l-input-divider rounded-r"
           @focus="onPhoneFocus()"
           @blur="onPhoneBlur()"
           @input="(event) => emit('change', (event.target as HTMLTextAreaElement).value + model)"
@@ -32,11 +32,11 @@
         <Transition>
           <div
             v-if="showSelect"
-            class="applyCustomScroll absolute w-full max-h-[140px] bottom-full bg-[#2F323C] border border-[#3d404d] rounded shadow-2xl overflow-hidden overflow-y-auto"
+            class="applyCustomScroll absolute w-full max-h-[140px] bottom-full bg-input-bg border border-input-select-border rounded shadow-2xl overflow-hidden overflow-y-auto"
           >
             <div
               v-for="country in filteredCountries"
-              class="flex items-center text-sm font-semibold font-montserrat border-b border-b-[#3d404d] py-4 px-2 text-white hover:bg-[#3d404d] cursor-pointer select-none"
+              class="flex items-center text-sm font-semibold font-montserrat border-b border-b-input-select-border py-4 px-2 text-white hover:bg-input-select-hover-bg cursor-pointer select-none"
               @click="selectCountry(country)"
             >
               <span class="mr-1 w-5">
@@ -50,7 +50,7 @@
     </div>
 
     <div class="w-full inline-flex flex-col">
-      <p v-for="error in errors" class="font-montserrat text-red-600 text-xs">
+      <p v-for="error in errors" class="font-montserrat text-input-error text-xs">
         {{ error }}
       </p>
     </div>

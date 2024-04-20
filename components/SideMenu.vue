@@ -9,14 +9,14 @@
   <Transition>
     <div
       v-if="store.showSideMenu"
-      class="applyCustomScroll flex flex-col fixed left-0 top-0 h-full w-full max-w-full md:max-w-[345px] bg-[#1C1E28] transition-all duration-300 z-[998] overflow-hidden"
+      class="applyCustomScroll flex flex-col fixed left-0 top-0 h-full w-full max-w-full md:max-w-[345px] bg-side-menu-bg transition-all duration-300 z-[998] overflow-hidden"
     >
       <div class="flex items-center w-full py-[18px] px-3 border-b border-opacity-15 border-b-white">
         <div class="flex-1">
           <img src="/girobet-logo.svg">
         </div>
         <div
-          class="p-[9px] bg-[#2B2740] rounded cursor-pointer"
+          class="p-[9px] bg-side-menu-close-button rounded cursor-pointer"
           @click="store.setSideMenuState(false)"
         >
           <img
@@ -31,7 +31,7 @@
           <PartialsAccordion :label="'menu item'">
             <NuxtLink
               to="/"
-              class="inline-flex px-3 py-[10px] text-white hover:bg-[#171922] transition"
+              class="inline-flex px-3 py-[10px] text-white hover:bg-side-menu-item-hover transition"
             >
               <img
                 src="/icons/side-menu/settings.svg"
@@ -41,7 +41,7 @@
             </NuxtLink>
             <NuxtLink
               to="/"
-              class="inline-flex px-3 py-[10px] text-white hover:bg-[#171922] transition"
+              class="inline-flex px-3 py-[10px] text-white hover:bg-side-menu-item-hover transition"
             >
               <img
                 src="/icons/side-menu/settings.svg"
@@ -51,7 +51,7 @@
             </NuxtLink>
             <NuxtLink
               to="/"
-              class="inline-flex px-3 py-[10px] text-white hover:bg-[#171922] transition"
+              class="inline-flex px-3 py-[10px] text-white hover:bg-side-menu-item-hover transition"
             >
               <img
                 src="/icons/side-menu/settings.svg"
@@ -61,7 +61,7 @@
             </NuxtLink>
             <NuxtLink
               to="/"
-              class="inline-flex px-3 py-[10px] text-white hover:bg-[#171922] transition"
+              class="inline-flex px-3 py-[10px] text-white hover:bg-side-menu-item-hover transition"
             >
               <img
                 src="/icons/side-menu/settings.svg"
@@ -71,59 +71,7 @@
             </NuxtLink>
             <NuxtLink
               to="/"
-              class="inline-flex px-3 py-[10px] text-white hover:bg-[#171922] transition"
-            >
-              <img
-                src="/icons/side-menu/settings.svg"
-                class="mr-3"
-              >
-              Menu sub-item
-            </NuxtLink>
-          </PartialsAccordion>
-          <PartialsAccordion :label="'menu item'">
-            <NuxtLink
-              to="/"
-              class="inline-flex px-3 py-[10px] text-white hover:bg-[#171922] transition"
-            >
-              <img
-                src="/icons/side-menu/settings.svg"
-                class="mr-3"
-              >
-              Menu sub-item
-            </NuxtLink>
-            <NuxtLink
-              to="/"
-              class="inline-flex px-3 py-[10px] text-white hover:bg-[#171922] transition"
-            >
-              <img
-                src="/icons/side-menu/settings.svg"
-                class="mr-3"
-              >
-              Menu sub-item
-            </NuxtLink>
-            <NuxtLink
-              to="/"
-              class="inline-flex px-3 py-[10px] text-white hover:bg-[#171922] transition"
-            >
-              <img
-                src="/icons/side-menu/settings.svg"
-                class="mr-3"
-              >
-              Menu sub-item
-            </NuxtLink>
-            <NuxtLink
-              to="/"
-              class="inline-flex px-3 py-[10px] text-white hover:bg-[#171922] transition"
-            >
-              <img
-                src="/icons/side-menu/settings.svg"
-                class="mr-3"
-              >
-              Menu sub-item
-            </NuxtLink>
-            <NuxtLink
-              to="/"
-              class="inline-flex px-3 py-[10px] text-white hover:bg-[#171922] transition"
+              class="inline-flex px-3 py-[10px] text-white hover:bg-side-menu-item-hover transition"
             >
               <img
                 src="/icons/side-menu/settings.svg"
@@ -135,7 +83,7 @@
           <PartialsAccordion :label="'menu item'">
             <NuxtLink
               to="/"
-              class="inline-flex px-3 py-[10px] text-white hover:bg-[#171922] transition"
+              class="inline-flex px-3 py-[10px] text-white hover:bg-side-menu-item-hover transition"
             >
               <img
                 src="/icons/side-menu/settings.svg"
@@ -145,7 +93,7 @@
             </NuxtLink>
             <NuxtLink
               to="/"
-              class="inline-flex px-3 py-[10px] text-white hover:bg-[#171922] transition"
+              class="inline-flex px-3 py-[10px] text-white hover:bg-side-menu-item-hover transition"
             >
               <img
                 src="/icons/side-menu/settings.svg"
@@ -155,7 +103,7 @@
             </NuxtLink>
             <NuxtLink
               to="/"
-              class="inline-flex px-3 py-[10px] text-white hover:bg-[#171922] transition"
+              class="inline-flex px-3 py-[10px] text-white hover:bg-side-menu-item-hover transition"
             >
               <img
                 src="/icons/side-menu/settings.svg"
@@ -165,7 +113,7 @@
             </NuxtLink>
             <NuxtLink
               to="/"
-              class="inline-flex px-3 py-[10px] text-white hover:bg-[#171922] transition"
+              class="inline-flex px-3 py-[10px] text-white hover:bg-side-menu-item-hover transition"
             >
               <img
                 src="/icons/side-menu/settings.svg"
@@ -175,7 +123,59 @@
             </NuxtLink>
             <NuxtLink
               to="/"
-              class="inline-flex px-3 py-[10px] text-white hover:bg-[#171922] transition"
+              class="inline-flex px-3 py-[10px] text-white hover:bg-side-menu-item-hover transition"
+            >
+              <img
+                src="/icons/side-menu/settings.svg"
+                class="mr-3"
+              >
+              Menu sub-item
+            </NuxtLink>
+          </PartialsAccordion>
+          <PartialsAccordion :label="'menu item'">
+            <NuxtLink
+              to="/"
+              class="inline-flex px-3 py-[10px] text-white hover:bg-side-menu-item-hover transition"
+            >
+              <img
+                src="/icons/side-menu/settings.svg"
+                class="mr-3"
+              >
+              Menu sub-item
+            </NuxtLink>
+            <NuxtLink
+              to="/"
+              class="inline-flex px-3 py-[10px] text-white hover:bg-side-menu-item-hover transition"
+            >
+              <img
+                src="/icons/side-menu/settings.svg"
+                class="mr-3"
+              >
+              Menu sub-item
+            </NuxtLink>
+            <NuxtLink
+              to="/"
+              class="inline-flex px-3 py-[10px] text-white hover:bg-side-menu-item-hover transition"
+            >
+              <img
+                src="/icons/side-menu/settings.svg"
+                class="mr-3"
+              >
+              Menu sub-item
+            </NuxtLink>
+            <NuxtLink
+              to="/"
+              class="inline-flex px-3 py-[10px] text-white hover:bg-side-menu-item-hover transition"
+            >
+              <img
+                src="/icons/side-menu/settings.svg"
+                class="mr-3"
+              >
+              Menu sub-item
+            </NuxtLink>
+            <NuxtLink
+              to="/"
+              class="inline-flex px-3 py-[10px] text-white hover:bg-side-menu-item-hover transition"
             >
               <img
                 src="/icons/side-menu/settings.svg"
@@ -193,7 +193,7 @@
           <div class="relative w-full pt-5 px-3 pb-1">
             <input
               v-model="searchModel"
-              class=" w-full rounded-full bg-[#2F323C] hover:brightness-90 transition-all text-sm font-montserrat text-white font-semibold p-[10px] outline-none pl-[36px] placeholder:text-white placeholder:opacity-80"
+              class=" w-full rounded-full bg-side-menu-search hover:brightness-90 transition-all text-sm font-montserrat text-white font-semibold p-[10px] outline-none pl-[36px] placeholder:text-white placeholder:opacity-80"
               type="text"
               placeholder="Search for an account or provider by name"
             >
@@ -203,11 +203,11 @@
             <div
               class="flex flex-col w-full h-full mt-[15px] rounded-lg overflow-hidden z-[998]"
             >
-              <div class="w-full flex gap-x-4 px-6 border-b-[2px] border-opacity-10 border-b-[#D9D9D9]">
+              <div class="w-full flex gap-x-4 px-6 border-b-[2px] border-opacity-10 border-b-side-menu-search-tab">
                 <div
                   v-for="(category, index) in categories"
-                  class="px-[5px] py-4 text-white font-montserrat text-xs font-semibold text-opacity-60 hover:brightness-90 cursor-pointer mb-[-2px] border-b-[2px] border-opacity-0 hover:text-opacity-100 hover:border-opacity-100 border-b-[#FFE33A] transition duration-300"
-                  :class="{ 'text-opacity-100 border-b-[#FFE33A] border-opacity-100': index === selectedTab }"
+                  class="px-[5px] py-4 text-white font-montserrat text-xs font-semibold text-opacity-60 hover:brightness-90 cursor-pointer mb-[-2px] border-b-[2px] border-opacity-0 hover:text-opacity-100 hover:border-opacity-100 border-b-side-menu-search-selected-tab transition duration-300"
+                  :class="{ 'text-opacity-100 border-b-side-menu-search-selected-tab border-opacity-100': index === selectedTab }"
                   @click="onTabClick(index)"
                 >
                   {{ category.title }}
@@ -221,7 +221,7 @@
                   <NuxtLink
                     v-for="item in categories[selectedTab].items"
                     to="/"
-                    class="w-full flex px-3 py-3 hover:bg-[#232630] transition"
+                    class="w-full flex px-3 py-3 hover:bg-side-menu-search-result-hover transition"
                   >
                     <div class="w-[80px] h-[110px] bg-black rounded" />
                     <div class="flex flex-col flex-1 justify-center pl-4">

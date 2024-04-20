@@ -22,7 +22,7 @@
         />
       </div>
     </div>
-    <div class="mt-8 w-full p-[42px] min-h-[182px] bg-[#232630]" />
+    <div class="mt-8 w-full p-[42px] min-h-[182px] bg-body-secondary-bg" />
     <div class="w-full max-w-[1296px]">
       <div class="mt-8 xl:px-[32px]">
         <SlidersCategorySlider
@@ -32,7 +32,7 @@
         />
       </div>
     </div>
-    <div class="w-full mt-8 py-10 flex justify-center bg-[#232630]">
+    <div class="w-full mt-8 py-10 flex justify-center bg-body-secondary-bg">
       <SlidersProvidersSlider :slides="providers" />
     </div>
   </div>

@@ -147,7 +147,7 @@
       </div>
     </div>
 
-    <div class="w-full bg-[#232630] py-[45px] flex justify-center">
+    <div class="w-full bg-body-secondary-bg py-[45px] flex justify-center">
       <img
         src="/partners-logos.png"
         alt="placeholder"

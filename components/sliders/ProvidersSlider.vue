@@ -47,10 +47,10 @@
           class="inline-block select-none snap-start h-full pr-4 first:pl-4 xl:first:pl-0 xl:pr-0 xl:mr-[18px] rounded last:mr-0"
         >
           <div class="inline-flex flex-col w-[233px]">
-            <div class="flex justify-center w-full flex-1 p-[26px] bg-[#2D313E]">
+            <div class="flex justify-center w-full flex-1 p-[26px] bg-providers-slider-logo-bg">
               <img src="/providers/platipus.svg">
             </div>
-            <div class="bg-[#42424D] p-[14px] text-white text-center font-montserrat text-sm">
+            <div class="bg-providers-title-bg p-[14px] text-providers-title text-center font-montserrat text-sm">
               <p>{{ slide.title }}</p>
               <p>({{ slide.gamesCount }} games)</p>
             </div>

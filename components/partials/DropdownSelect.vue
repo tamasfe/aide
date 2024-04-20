@@ -1,7 +1,7 @@
 <template>
   <div class="relative w-full">
     <div
-      class="flex items-center rounded px-[14px] py-[9px] bg-[#2F323C] text-white hover:cursor-pointer select-none"
+      class="flex items-center rounded px-[14px] py-[9px] bg-dropdown-bg text-dropdown-text hover:cursor-pointer select-none"
       @click="showDropdown = !showDropdown"
     >
       <span
@@ -27,7 +27,7 @@
       >
         <div
           v-for="item in items"
-          class="w-full flex items-center px-[14px] py-[9px] bg-[#2F323C] hover:bg-[#232630] text-white"
+          class="w-full flex items-center px-[14px] py-[9px] bg-dropdown-bg hover:bg-dropdown-hover-bg text-dropdown-text"
           @click="emit('update:modelValue', item); showDropdown = false"
         >
           <span

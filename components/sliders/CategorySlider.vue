@@ -51,7 +51,7 @@
             :style="{ backgroundImage: `url(${slide.imageUrl})` }"
           >
             <div
-              class="absolute left-[6px] top-[6px] py-[5px] px-[8px] text-white text-xs font-montserrat font-bold bg-[#00B439] rounded"
+              class="absolute left-[6px] top-[6px] py-[5px] px-[8px] text-game-preview-label-text text-xs font-montserrat font-bold bg-game-preview-label-bg rounded"
             >
               {{ slide.label }}
             </div>
