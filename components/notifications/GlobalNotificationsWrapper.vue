@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed right-0 bottom-0 flex flex-col w-full max-w-[350px] p-3 gap-y-2">
+  <div class="fixed right-0 bottom-0 max-h-full w-full max-w-[350px] p-3 gap-y-2 z-[998] overflow-y-auto applyScrollbarHide">
     <button class="bg-green-500 w-full p-1 rounded text-white" @click="addTestNotification()">Spawn test notification</button>
     <NotificationsNotificationTile v-for="notification in getNotificationsList" :notification="notification"/>
   </div>
