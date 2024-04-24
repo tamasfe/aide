@@ -15,17 +15,12 @@ export default defineNuxtConfig({
   devtools: {
     enabled: true,
   },
-  storybook: {
-    url: "http://localhost:6006",
-    storybookRoute: "/__storybook__",
-    port: 6006,
-  },
   modules: [
     "@nuxt/eslint",
     "@nuxtjs/i18n",
     "@nuxtjs/seo",
+    "@nuxtjs/storybook",
     "@nuxtjs/tailwindcss",
-    "@storybook-vue/nuxt-storybook",
     "@pinia/nuxt",
   ],
   runtimeConfig: {
