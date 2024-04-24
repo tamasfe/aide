@@ -15,17 +15,17 @@ importers:
         specifier: ^3.11.2
         version: 3.11.2(@parcel/watcher@2.4.1)(@types/node@20.12.7)(@unocss/reset@0.59.4)(encoding@0.1.13)(eslint@9.1.1)(floating-vue@5.2.2(@nuxt/kit@3.11.2(rollup@4.16.4))(vue@3.4.25(typescript@5.4.5)))(fuse.js@7.0.0)(ioredis@5.4.1)(optionator@0.9.3)(rollup@4.16.4)(sass@1.75.0)(terser@5.30.4)(typescript@5.4.5)(unocss@0.59.4(@unocss/webpack@0.59.4(rollup@4.16.4)(webpack@5.91.0(esbuild@0.20.2)))(postcss@8.4.38)(rollup@4.16.4)(vite@5.2.10(@types/node@20.12.7)(sass@1.75.0)(terser@5.30.4)))(vite@5.2.10(@types/node@20.12.7)(sass@1.75.0)(terser@5.30.4))(vue-tsc@1.8.27(typescript@5.4.5))
       vue:
-        specifier: ^3.4.23
+        specifier: ^3.4.25
         version: 3.4.25(typescript@5.4.5)
       vue-router:
-        specifier: ^4.3.0
+        specifier: ^4.3.2
         version: 4.3.2(vue@3.4.25(typescript@5.4.5))
     devDependencies:
       '@nuxt/eslint':
-        specifier: ^0.3.7
+        specifier: ^0.3.9
         version: 0.3.9(eslint@9.1.1)(nuxt@3.11.2(@parcel/watcher@2.4.1)(@types/node@20.12.7)(@unocss/reset@0.59.4)(encoding@0.1.13)(eslint@9.1.1)(floating-vue@5.2.2(@nuxt/kit@3.11.2(rollup@4.16.4))(vue@3.4.25(typescript@5.4.5)))(fuse.js@7.0.0)(ioredis@5.4.1)(optionator@0.9.3)(rollup@4.16.4)(sass@1.75.0)(terser@5.30.4)(typescript@5.4.5)(unocss@0.59.4(@unocss/webpack@0.59.4(rollup@4.16.4)(webpack@5.91.0(esbuild@0.20.2)))(postcss@8.4.38)(rollup@4.16.4)(vite@5.2.10(@types/node@20.12.7)(sass@1.75.0)(terser@5.30.4)))(vite@5.2.10(@types/node@20.12.7)(sass@1.75.0)(terser@5.30.4))(vue-tsc@1.8.27(typescript@5.4.5)))(rollup@4.16.4)(typescript@5.4.5)(vite@5.2.10(@types/node@20.12.7)(sass@1.75.0)(terser@5.30.4))
       '@nuxtjs/i18n':
-        specifier: ^8.3.0
+        specifier: ^8.3.1
         version: 8.3.1(rollup@4.16.4)(vue@3.4.25(typescript@5.4.5))
       '@nuxtjs/seo':
         specifier: 2.0.0-rc.10
@@ -34,10 +34,10 @@ importers:
         specifier: github:nuxt-modules/storybook
         version: https://codeload.github.com/nuxt-modules/storybook/tar.gz/b2bdbada7608ac84dda4d0e636c4011c6f7a320a(@babel/preset-env@7.24.4(@babel/core@7.24.4))(@types/node@20.12.7)(encoding@0.1.13)(eslint@9.1.1)(nuxt@3.11.2(@parcel/watcher@2.4.1)(@types/node@20.12.7)(@unocss/reset@0.59.4)(encoding@0.1.13)(eslint@9.1.1)(floating-vue@5.2.2(@nuxt/kit@3.11.2(rollup@4.16.4))(vue@3.4.25(typescript@5.4.5)))(fuse.js@7.0.0)(ioredis@5.4.1)(optionator@0.9.3)(rollup@4.16.4)(sass@1.75.0)(terser@5.30.4)(typescript@5.4.5)(unocss@0.59.4(@unocss/webpack@0.59.4(rollup@4.16.4)(webpack@5.91.0(esbuild@0.20.2)))(postcss@8.4.38)(rollup@4.16.4)(vite@5.2.10(@types/node@20.12.7)(sass@1.75.0)(terser@5.30.4)))(vite@5.2.10(@types/node@20.12.7)(sass@1.75.0)(terser@5.30.4))(vue-tsc@1.8.27(typescript@5.4.5)))(optionator@0.9.3)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(rollup@4.16.4)(sass@1.75.0)(terser@5.30.4)(vite@5.2.10(@types/node@20.12.7)(sass@1.75.0)(terser@5.30.4))(vue-tsc@1.8.27(typescript@5.4.5))(vue@3.4.25(typescript@5.4.5))
       '@nuxtjs/tailwindcss':
-        specifier: ^6.11.4
+        specifier: ^6.12.0
         version: 6.12.0(rollup@4.16.4)
       eslint:
-        specifier: ^9.0.0
+        specifier: ^9.1.1
         version: 9.1.1
       tailwindcss:
         specifier: ^3.4.3
