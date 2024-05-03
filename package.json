@@ -14,11 +14,11 @@
   "dependencies": {
     "@pinia/nuxt": "^0.5.1",
     "nuxt": "^3.11.2",
-    "vue": "^3.4.25",
+    "vue": "^3.4.26",
     "vue-router": "^4.3.2"
   },
   "devDependencies": {
-    "@nuxt/eslint": "^0.3.9",
+    "@nuxt/eslint": "^0.3.10",
     "@nuxtjs/i18n": "^8.3.1",
     "@nuxtjs/seo": "2.0.0-rc.10",
     "@nuxtjs/storybook": "github:nuxt-modules/storybook",
