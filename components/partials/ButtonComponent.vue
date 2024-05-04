@@ -1,8 +1,8 @@
 <template>
   <button
-    class="flex justify-center items-center text-xs md:text-base font-montserrat font-bold transition-all hover:brightness-90 rounded disabled:brightness-75"
+    class="flex justify-center items-center text-xs md:text-sm font-montserrat font-semibold transition-all hover:brightness-110 rounded disabled:brightness-75"
     :class="{
-      'py-[7px] px-[12px]': !big && !small && variant !== 'round' && variant !== 'square',
+      'py-[7px] px-[24px]': !big && !small && variant !== 'round' && variant !== 'square',
       'py-[14px] md:p-[14px]': big,
       'py-[5px] px-[6px] md:p-[7px]': small,
       'text-text-button': variant === 'text',

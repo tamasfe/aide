@@ -1,20 +1,25 @@
 <template>
   <div class="flex flex-col items-center w-full min-h-screen">
     <div class="w-full max-w-[1296px]">
-      <div class="w-full xl:px-[32px] xl:pt-4">
+      <div class="w-full xl:px-8 xl:pt-4">
         <SlidersHeroSectionSlider :slides="slides" />
       </div>
-      <div class="mt-8 px-4 md:px-[32px]">
+      <div class="mt-8 px-4 lg:px-8">
         <GlobalSearchBar v-model="search" />
       </div>
-      <div class="flex flex-wrap mt-[22px] gap-x-4 gap-y-4 px-4 md:px-[32px]">
-        <PartialsTextChip
-          v-for="chip in chips"
-          :icon="chip.icon"
-          :label="chip.label"
-        />
+      <div class="w-full relative">
+        <div class="md:flex md:flex-wrap w-full h-9 mt-[22px] gap-x-4 gap-y-4 pl-4 lg:pl-8 pr-0 md:pr-8 overflow-y-hidden overflow-x-scroll md:overflow-y-visible md:overflow-x-visible whitespace-nowrap md:whitespace-normal scroll-smooth snap-x snap-mandatory applyScrollbarHide">
+          <PartialsTextChip
+            class="inline-block snap-start first:pl-4 md:first:pl-0 mr-3 md:mr-0 select-none"
+            v-for="chip in chips"
+            :icon="chip.icon"
+            :label="chip.label"
+          />
+        </div>
+        <div class="absolute block md:hidden w-8 right-0 top-0 h-full bg-gradient-to-r from-transparent to-body-bg"></div>
       </div>
-      <div class="mt-8 xl:px-[32px]">
+      
+      <div class="mt-8 xl:px-8">
         <SlidersCategorySlider
           v-for="category in categories.slice(0, 2)"
           :slides="category.slides"
@@ -24,7 +29,7 @@
     </div>
     <div class="mt-8 w-full p-[42px] min-h-[182px] bg-body-secondary-bg" />
     <div class="w-full max-w-[1296px]">
-      <div class="mt-8 xl:px-[32px]">
+      <div class="mt-8 xl:px-8">
         <SlidersCategorySlider
           v-for="category in categories.slice(2, categories.length)"
           :slides="category.slides"
@@ -44,46 +49,6 @@
 const search = ref("");
 
 const slides = [
-  {
-    imageUrl: "https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png",
-    link: "/",
-  },
-  {
-    imageUrl: "https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png",
-    link: "/",
-  },
-  {
-    imageUrl: "https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png",
-    link: "/",
-  },
-  {
-    imageUrl: "https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png",
-    link: "/",
-  },
-  {
-    imageUrl: "https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png",
-    link: "/",
-  },
-  {
-    imageUrl: "https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png",
-    link: "/",
-  },
-  {
-    imageUrl: "https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png",
-    link: "/",
-  },
-  {
-    imageUrl: "https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png",
-    link: "/",
-  },
-  {
-    imageUrl: "https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png",
-    link: "/",
-  },
-  {
-    imageUrl: "https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png",
-    link: "/",
-  },
   {
     imageUrl: "https://www.toptal.com/designers/subtlepatterns/uploads/moroccan-flower-dark.png",
     link: "/",

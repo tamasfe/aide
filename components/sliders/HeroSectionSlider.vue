@@ -15,13 +15,13 @@
       </div>
 
       <button
-        class="flex items-center absolute h-full bottom-0 left-0"
+        class="hidden md:flex items-center absolute h-full bottom-0 left-0"
         @click="onPreviousSlide()"
       >
         <IconsSliderChevronLeft />
       </button>
       <button
-        class="flex items-center absolute h-full bottom-0 right-0"
+        class="hidden md:flex items-center absolute h-full bottom-0 right-0"
         @click="onNextSlide()"
       >
         <IconsSliderChevronRight />
@@ -30,7 +30,7 @@
       <div class="flex gap-x-2 absolute w-full px-8 md:px-0 md:max-w-[240px] bottom-5 md:bottom-[39px] left-[50%] translate-x-[-50%]">
         <div
           v-for="(slide, index) in props.slides"
-          class="transition-opacity flex-1 h-[2px] bg-[#FFE33A]"
+          class="transition-opacity flex-1 h-[3px] bg-[#FFE33A]"
           :class="{ 'opacity-100': activeSlide === index, 'opacity-40': activeSlide !== index }"
         />
       </div>

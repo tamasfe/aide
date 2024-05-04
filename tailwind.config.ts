@@ -43,7 +43,7 @@ export default <Partial<Config>>{
         "search-divider": "#D9D9D9",
         "search-selected-tab": "#FFE33A",
         "search-result-hover": "#232630",
-        "side-menu-bg": "#2F323C",
+        "side-menu-bg": "#1C1E28",
         "side-menu-item-hover": "#171922",
         "side-menu-search": "#2F323C",
         "side-menu-close-button": "#2B2740",

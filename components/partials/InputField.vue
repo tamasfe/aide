@@ -3,7 +3,7 @@
     <div class="relative w-full flex mb-1">
       <input
         v-model="model"
-        class="peer w-full px-4 rounded bg-input-bg outline-none text-input-text font-montserrat transition-all border hover:border-input-hover-border"
+        class="peer w-full px-4 rounded text-sm bg-input-bg outline-none text-input-text font-montserrat transition-all border hover:border-input-hover-border"
         :class="{ 'pb-2 pt-7 px-4': label, 'pb-4 pt-4 px-4': !label, 'pl-8': prefix, 'border-input-error': invalid,  'border-input-bg': !invalid }"
         :type="type"
         placeholder=" "
@@ -21,7 +21,7 @@
       <label
         v-if="label"
         for="input"
-        class="peer-focus:text-xs peer-focus:-translate-y-[20px] text-input-label absolute left-4 top-1/2 -translate-y-[20px] text-xs peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-base font-montserrat transition-all"
+        class="peer-focus:text-xs peer-focus:-translate-y-[20px] text-input-label absolute left-4 top-1/2 -translate-y-[20px] text-xs peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-sm font-montserrat transition-all"
         :class="{ 'after:content-[`*`] after:align-sup after:text-input-required-mark': required }"
       >
         {{ label }}

@@ -19,6 +19,7 @@
       </div>
       <div class="flex gap-x-4">
         <PartialsButtonComponent
+        class="hidden md:flex"
           variant="text"
           @click="store.setSideMenuType('menu'); store.setSideMenuState(true)"
         >

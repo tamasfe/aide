@@ -16,7 +16,7 @@
           <img src="/girobet-logo.svg">
         </div>
         <div
-          class="p-[9px] bg-side-menu-close-button rounded cursor-pointer"
+          class="p-[9px] md:hidden bg-side-menu-close-button rounded cursor-pointer"
           @click="store.setSideMenuState(false)"
         >
           <img

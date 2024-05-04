@@ -18,7 +18,7 @@
         </div>
         <div
           v-if="store.getAuthModalType === 'register'"
-          class="flex flex-col justify-center items-center py-8 px-5 md:px-16"
+          class="flex flex-col justify-center items-center py-8 px-5 md:px-12"
         >
           <img
             src="/girobet-logo.svg"
@@ -27,7 +27,7 @@
           <div class="w-full last:mb-0">
             <PartialsInputField
               v-model="form.email.value"
-              class="mb-4"
+              class="mb-2"
               :label="form.email.label"
               :type="form.email.type"
               :invalid="form.email.invalid"
@@ -37,7 +37,7 @@
             />
             <PartialsInputField
               v-model="form.password.value"
-              class="mb-4"
+              class="mb-2"
               :label="form.password.label"
               :type="form.password.type"
               :invalid="form.password.invalid"
@@ -47,7 +47,7 @@
             />
             <PartialsInputField
               v-model="form.cpf.value"
-              class="mb-4"
+              class="mb-2"
               :label="form.cpf.label"
               :type="form.cpf.type"
               :invalid="form.cpf.invalid"
@@ -57,7 +57,7 @@
             />
 
             <PartialsPhoneInputField
-              class="mb-4"
+              class="mb-2"
               :label="form.phone.label"
               :invalid="form.phone.invalid"
               :required="form.phone.rules.required.value"
@@ -66,7 +66,7 @@
             />
           </div>
 
-          <div class="inline w-full text-center text-auth-modal-text text-sm mb-4">
+          <div class="inline w-full text-center text-auth-modal-text text-sm mt-1 mb-4">
             By signing up
             <NuxtLink
               to="/"
@@ -89,7 +89,7 @@
         </div>
         <div
           v-if="store.getAuthModalType === 'login'"
-          class="flex flex-col justify-center items-center py-8 px-5 md:px-16"
+          class="flex flex-col justify-center items-center py-8 px-5 md:px-12"
         >
           <img
             src="/girobet-logo.svg"
@@ -98,7 +98,7 @@
           <div class="w-full last:mb-0">
             <PartialsInputField
               v-model="form.email.value"
-              class="mb-4"
+              class="mb-2"
               :label="form.email.label"
               :type="form.email.type"
               :invalid="form.email.invalid"
@@ -108,7 +108,7 @@
             />
             <PartialsInputField
               v-model="form.password.value"
-              class="mb-4"
+              class="mb-2"
               :label="form.password.label"
               :type="form.password.type"
               :invalid="form.password.invalid"
