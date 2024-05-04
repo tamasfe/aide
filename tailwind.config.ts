@@ -50,6 +50,7 @@ export default <Partial<Config>>{
         "side-menu-search-tab": "#D9D9D9",
         "side-menu-search-selected-tab": "#FFE33A",
         "side-menu-search-result-hover": "#232630",
+        "mobile-bottom-menu": '#2F323C',
         "header-notification-bg": "#A38BD7",
         "header-notification-text": "#fff",
         "accordion-hover-bg": "#171922",

@@ -28,7 +28,7 @@
       <SideDepositForm v-if="store.getSideMenuType === 'menu' && authStore.getAuthorizationState" />
       <Transition name="fade-left">
         <div v-if="store.getSideMenuType === 'menu'">
-          <PartialsAccordion :label="'menu item'">
+          <PartialsAccordion :label="'menu item'" class="border-b border-b-white border-opacity-15">
             <NuxtLink
               to="/"
               class="inline-flex px-3 py-[10px] text-white hover:bg-side-menu-item-hover transition"
@@ -80,7 +80,7 @@
               Menu sub-item
             </NuxtLink>
           </PartialsAccordion>
-          <PartialsAccordion :label="'menu item'">
+          <PartialsAccordion :label="'menu item'" class="border-b border-b-white border-opacity-15">
             <NuxtLink
               to="/"
               class="inline-flex px-3 py-[10px] text-white hover:bg-side-menu-item-hover transition"
@@ -132,7 +132,7 @@
               Menu sub-item
             </NuxtLink>
           </PartialsAccordion>
-          <PartialsAccordion :label="'menu item'">
+          <PartialsAccordion :label="'menu item'" class="border-b border-b-white border-opacity-15">
             <NuxtLink
               to="/"
               class="inline-flex px-3 py-[10px] text-white hover:bg-side-menu-item-hover transition"
@@ -197,7 +197,13 @@
               type="text"
               placeholder="Search for an account or provider by name"
             >
-            <IconsSearchIcon class="absolute left-[10px] top-[12px] mt-5 mx-3 mb-1" />
+            <IconsSearchIcon class="absolute left-[10px] top-3 mt-5 mx-3 mb-1" />
+            <div
+              class="absolute h-full w-4 p-[2px] right-[10px] top-3 mt-5 mx-3 cursor-pointer"
+              @click="searchModel = ''"
+            >
+              <img class="w-full" src="/icons/cross.svg">
+            </div>
           </div>
           <div class="w-full pb-[60px]">
             <div

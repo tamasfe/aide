@@ -1,9 +1,9 @@
 <template>
-  <div class="fixed place-content-between bottom-0 left-0 flex md:hidden items-center w-full bg-side-menu-bg z-[999] h-[60px] p-[10px]">
+  <div class="fixed place-content-between bottom-0 left-0 flex md:hidden items-center w-full bg-mobile-bottom-menu z-[999] h-[60px] p-[10px]">
     <NuxtLink
       to="/"
       class="flex flex-col items-center w-[50px]"
-      @click.prevent="store.setSideMenuType('menu'); store.setSideMenuState(true)"
+      @click.prevent="onMenuClick('menu')"
     >
       <img
         src="/icons/menu-burger.svg"
@@ -24,7 +24,7 @@
     <NuxtLink
       to="/"
       class="flex flex-col items-center w-[50px]"
-      @click.prevent="store.setSideMenuType('search'); store.setSideMenuState(true)"
+      @click.prevent="onMenuClick('search')"
     >
       <img
         src="/icons/search-mobile.svg"
@@ -57,4 +57,15 @@
 
 <script setup lang="ts">
 const store = useTriggersStore();
+
+const onMenuClick = (type: string) => {
+  const currentType = store.getSideMenuType
+
+  if(currentType === type) {
+    store.setSideMenuState(!store.getShowSideMenu);
+  } else {
+    store.setSideMenuType(type);
+    store.getShowSideMenu ? store.setSideMenuState(true) : store.setSideMenuState(!store.getShowSideMenu);
+  }
+}
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div class="relative w-full">
+  <div class="relative w-full" id="dropdownWrapper">
     <div
       class="flex items-center rounded px-[14px] py-[9px] bg-dropdown-bg text-dropdown-text hover:cursor-pointer select-none"
       @click="showDropdown = !showDropdown"
@@ -50,6 +50,22 @@ const emit = defineEmits(["update:modelValue"]);
 const itemsWrapper: Ref = ref(null);
 
 const showDropdown = ref(false);
+
+const onCLickOutside = (event: MouseEvent) => {
+    const wrapper = document.querySelector('#dropdownWrapper');
+    const isVisible = wrapper?.contains(event.target as Node);
+    if (!isVisible) {
+      showDropdown.value = false;
+    }
+  }
+
+onMounted(() => {
+  document.addEventListener('click', onCLickOutside);
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener('click', onCLickOutside, false)
+})
 </script>
 
 <style scoped>

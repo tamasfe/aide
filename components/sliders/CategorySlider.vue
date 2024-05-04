@@ -39,15 +39,15 @@
 
       <div
         ref="slideWrapper"
-        class="w-full h-[217px] carousel__wrapper snap-x snap-mandatory applyScrollbarHide overflow-y-hidden overflow-x-scroll whitespace-nowrap scroll-smooth"
+        class="w-full h-auto md:h-[217px] carousel__wrapper snap-x snap-mandatory applyScrollbarHide overflow-y-hidden overflow-x-scroll whitespace-nowrap scroll-smooth"
       >
         <NuxtLink
           v-for="slide in props.slides"
           :to="slide.link"
-          class="inline-block select-none snap-start h-full pr-4 first:pl-4 xl:first:pl-0 xl:pr-0 xl:mr-[18px] overflow-hidden last:mr-0"
+          class="inline-block select-none snap-start h-[45vw] md:h-full pr-4 first:pl-4 xl:first:pl-0 xl:pr-0 xl:mr-[18px] overflow-hidden last:mr-0"
         >
           <div
-            class="w-[161px] relative h-full bg-repeat rounded placeholder-bg bg-[length:100%] hover:bg-[length:105%] bg-center transition-all"
+            class="w-[35vw] md:w-[161px] relative h-full bg-repeat rounded placeholder-bg bg-[length:100%] hover:bg-[length:105%] bg-center transition-all"
           >
             <div
               class="absolute left-[6px] top-[6px] py-[5px] px-[8px] text-game-preview-label-text text-xs font-montserrat font-bold bg-game-preview-label-bg rounded"
