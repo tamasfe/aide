@@ -1,12 +1,12 @@
 <template>
-  <div class="fixed place-content-between bottom-0 left-0 flex md:hidden items-center w-full bg-side-menu-bg z-[999] h-[60px] p-[10px]">
+  <div class="fixed place-content-between bottom-0 left-0 flex md:hidden items-center w-full bg-mobile-bottom-menu z-[999] h-[60px] p-[10px]">
     <NuxtLink
       to="/"
       class="flex flex-col items-center w-[50px]"
-      @click.prevent="store.setSideMenuType('menu'); store.setSideMenuState(true)"
+      @click.prevent="onMenuClick('menu')"
     >
       <img
-        src="/icons/menu-burger.svg"
+        src="~/assets/images/icons/bottom-menu/menu-burger.svg"
         class="w-[24px] mb-1"
       >
       <span class="text-xs font-montserrat font-semibold text-white">Menu</span>
@@ -16,7 +16,7 @@
       class="flex flex-col items-center w-[50px]"
     >
       <img
-        src="/icons/hot.svg"
+        src="~/assets/images/icons/bottom-menu/hot.svg"
         class="w-[24px] mb-1"
       >
       <span class="text-xs font-montserrat font-semibold text-white">Hot</span>
@@ -24,10 +24,10 @@
     <NuxtLink
       to="/"
       class="flex flex-col items-center w-[50px]"
-      @click.prevent="store.setSideMenuType('search'); store.setSideMenuState(true)"
+      @click.prevent="onMenuClick('search')"
     >
       <img
-        src="/icons/search-mobile.svg"
+        src="~/assets/images/icons/bottom-menu/search-mobile.svg"
         class="w-[24px] mb-1"
       >
       <span class="text-xs font-montserrat font-semibold text-white">Search</span>
@@ -37,7 +37,7 @@
       class="flex flex-col items-center w-[50px]"
     >
       <img
-        src="/icons/messages.svg"
+        src="~/assets/images/icons/bottom-menu/messages.svg"
         class="w-[24px] mb-1"
       >
       <span class="text-xs font-montserrat font-semibold text-white">Support</span>
@@ -47,7 +47,7 @@
       class="flex flex-col items-center w-[50px]"
     >
       <img
-        src="/icons/gift.svg"
+        src="~/assets/images/icons/bottom-menu/gift.svg"
         class="w-[24px] mb-1"
       >
       <span class="text-xs font-montserrat font-semibold text-white">Promos</span>
@@ -57,4 +57,15 @@
 
 <script setup lang="ts">
 const store = useTriggersStore();
+
+const onMenuClick = (type: string) => {
+  const currentType = store.getSideMenuType
+
+  if(currentType === type) {
+    store.setSideMenuState(!store.getShowSideMenu);
+  } else {
+    store.setSideMenuType(type);
+    store.getShowSideMenu ? store.setSideMenuState(true) : store.setSideMenuState(!store.getShowSideMenu);
+  }
+}
 </script>

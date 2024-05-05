@@ -5,26 +5,39 @@
       class="w-full max-w-[1232px] transition-[top] duration-500 z-[997]"
       :class="{
         'relative': focus,
-        'scroll-mt-[115px]': store.getPromoNotificationOpen,
-        'scroll-mt-[65px]': !store.getPromoNotificationOpen,
+        'scroll-mt-[108px]': store.getPromoNotificationOpen,
+        'scroll-mt-[58px]': !store.getPromoNotificationOpen,
       }"
     >
-      <input
-        id="globalSearchInput"
-        v-model="model"
-        class=" w-full max-w-[1232px] rounded-full bg-search-bg hover:brightness-90 transition-all text-sm font-montserrat text-search-text font-semibold p-[10px] outline-none pl-[36px] placeholder:text-white placeholder:opacity-80"
-        :class="{ 'shadow-2xl': focus }"
-        type="text"
-        placeholder="Search for an account or provider by name"
-        @focus="focus = true"
-        @click="onSearchClick()"
-      >
-      <IconsSearchIcon class="absolute left-[10px] top-[12px]" />
+      <div class="w-full relative">
+        <input
+          id="globalSearchInput"
+          v-model="model"
+          class=" w-full max-w-[1232px] rounded-full bg-search-bg hover:brightness-90 transition-all text-sm font-montserrat text-search-text font-medium p-[10px] outline-none px-[36px] placeholder:text-white placeholder:opacity-80"
+          :class="{ 'shadow-2xl': focus }"
+          type="text"
+          placeholder="Search for an account or provider by name"
+          @focus="focus = true"
+          @click="onSearchClick()"
+        >
+        <IconsSearchIcon class="absolute left-[10px] top-[12px]" />
+        <div
+          class="absolute h-full w-4 p-[2px] right-[12px] top-3 cursor-pointer"
+          @click="focus = false; model = ''"
+        >
+          <img class="w-full" src="~/assets/images/icons/cross.svg">
+        </div>
+      </div>
+      
       <Transition>
         <label
           v-if="focus"
           for="globalSearchInput"
-          class="absolute flex flex-col w-full h-[calc(100vh-195px)] bg-search-bg mt-[15px] rounded-lg overflow-hidden z-[998]"
+          class="absolute flex flex-col w-full  bg-search-bg mt-[15px] rounded-lg overflow-hidden z-[998]"
+          :class="{
+            'h-[calc(100vh-240px)]': store.getPromoNotificationOpen,
+            'h-[calc(100vh-195px)]': !store.getPromoNotificationOpen,
+          }"
         >
           <div class="w-full flex gap-x-4 px-6 border-b-[2px] border-opacity-10 border-b-search-divider">
             <div

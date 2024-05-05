@@ -1,7 +1,7 @@
 <template>
   <div class="flex justify-center w-full">
     <div class="relative flex w-full max-w-[1232px] h-[200px] md:h-[472px] overflow-y-hidden">
-      <div class="w-full carousel__wrapper snap-x snap-mandatory applyScrollbarHide overflow-y-hidden overflow-x-scroll whitespace-nowrap scroll-smooth rounded">
+      <div ref="sliderWrapper" class="w-full carousel__wrapper snap-x snap-mandatory applyScrollbarHide overflow-y-hidden overflow-x-scroll whitespace-nowrap scroll-smooth rounded">
         <NuxtLink
           v-for="slide in props.slides"
           :to="slide.link"
@@ -15,23 +15,24 @@
       </div>
 
       <button
-        class="flex items-center absolute h-full bottom-0 left-0"
+        class="hidden md:flex items-center absolute h-full bottom-0 left-0"
         @click="onPreviousSlide()"
       >
         <IconsSliderChevronLeft />
       </button>
       <button
-        class="flex items-center absolute h-full bottom-0 right-0"
+        class="hidden md:flex items-center absolute h-full bottom-0 right-0"
         @click="onNextSlide()"
       >
         <IconsSliderChevronRight />
       </button>
 
-      <div class="flex gap-x-2 absolute w-full px-8 md:px-0 md:max-w-[240px] bottom-5 md:bottom-[39px] left-[50%] translate-x-[-50%]">
+      <div class="flex gap-x-2 absolute w-[90%] px-8 md:px-0 md:max-w-[50%] justify-center bottom-5 md:bottom-[39px] left-[50%] translate-x-[-50%]">
         <div
           v-for="(slide, index) in props.slides"
-          class="transition-opacity flex-1 h-[2px] bg-[#FFE33A]"
+          class="transition-opacity flex-1 h-[3px] bg-[#FFE33A] max-w-16"
           :class="{ 'opacity-100': activeSlide === index, 'opacity-40': activeSlide !== index }"
+          @click="onPaginationClick(index)"
         />
       </div>
     </div>
@@ -46,12 +47,18 @@ const props = defineProps({
   },
 });
 
+const sliderWrapper: Ref = ref(null);
 const activeSlide: Ref<number> = ref(0);
 let slideElements: NodeListOf<Element>;
 
 onMounted(() => {
   slideElements = document.querySelectorAll(".carousel__item");
+  sliderWrapper.value.addEventListener('scroll', calcActiveSlide)
 });
+
+onBeforeUnmount(() => {
+  sliderWrapper.value.removeEventListener('scroll', calcActiveSlide)
+})
 
 const onNextSlide = () => {
   activeSlide.value + 1 < slideElements.length ? activeSlide.value++ : activeSlide.value = 0;
@@ -61,6 +68,17 @@ const onPreviousSlide = () => {
   activeSlide.value - 1 >= 0 ? activeSlide.value-- : activeSlide.value = props.slides.length - 1;
   slideElements[activeSlide.value].scrollIntoView(false);
 };
+
+const calcActiveSlide = (event: Event) => {
+  if(event.target){
+    console.log(sliderWrapper.value.scrollLeft, sliderWrapper.value.clientWidth);
+    activeSlide.value = +(sliderWrapper.value.scrollLeft / sliderWrapper.value.clientWidth).toFixed(0)
+  }
+}
+
+const onPaginationClick = (index: number) => {
+  slideElements[index].scrollIntoView(false)
+}
 </script>
 
 <style scoped>

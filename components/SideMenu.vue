@@ -13,14 +13,14 @@
     >
       <div class="flex items-center w-full py-[18px] px-3 border-b border-opacity-15 border-b-white">
         <div class="flex-1">
-          <img src="/girobet-logo.svg">
+          <img src="~/assets/images/logo/girobet-logo.svg">
         </div>
         <div
-          class="p-[9px] bg-side-menu-close-button rounded cursor-pointer"
+          class="p-[9px] md:hidden bg-side-menu-close-button rounded cursor-pointer"
           @click="store.setSideMenuState(false)"
         >
           <img
-            src="/icons/cross.svg"
+            src="~/assets/images/icons/cross.svg"
             class="w-[14px]"
           >
         </div>
@@ -28,13 +28,13 @@
       <SideDepositForm v-if="store.getSideMenuType === 'menu' && authStore.getAuthorizationState" />
       <Transition name="fade-left">
         <div v-if="store.getSideMenuType === 'menu'">
-          <PartialsAccordion :label="'menu item'">
+          <PartialsAccordion :label="'menu item'" class="border-b border-b-white border-opacity-15">
             <NuxtLink
               to="/"
               class="inline-flex px-3 py-[10px] text-white hover:bg-side-menu-item-hover transition"
             >
               <img
-                src="/icons/side-menu/settings.svg"
+                src="~/assets/images/icons/side-menu/settings.svg"
                 class="mr-3"
               >
               Menu sub-item
@@ -44,7 +44,7 @@
               class="inline-flex px-3 py-[10px] text-white hover:bg-side-menu-item-hover transition"
             >
               <img
-                src="/icons/side-menu/settings.svg"
+                src="~/assets/images/icons/side-menu/settings.svg"
                 class="mr-3"
               >
               Menu sub-item
@@ -54,7 +54,7 @@
               class="inline-flex px-3 py-[10px] text-white hover:bg-side-menu-item-hover transition"
             >
               <img
-                src="/icons/side-menu/settings.svg"
+                src="~/assets/images/icons/side-menu/settings.svg"
                 class="mr-3"
               >
               Menu sub-item
@@ -64,7 +64,7 @@
               class="inline-flex px-3 py-[10px] text-white hover:bg-side-menu-item-hover transition"
             >
               <img
-                src="/icons/side-menu/settings.svg"
+                src="~/assets/images/icons/side-menu/settings.svg"
                 class="mr-3"
               >
               Menu sub-item
@@ -74,71 +74,19 @@
               class="inline-flex px-3 py-[10px] text-white hover:bg-side-menu-item-hover transition"
             >
               <img
-                src="/icons/side-menu/settings.svg"
-                class="mr-3"
-              >
-              Menu sub-item
-            </NuxtLink>
-          </PartialsAccordion>
-          <PartialsAccordion :label="'menu item'">
-            <NuxtLink
-              to="/"
-              class="inline-flex px-3 py-[10px] text-white hover:bg-side-menu-item-hover transition"
-            >
-              <img
-                src="/icons/side-menu/settings.svg"
-                class="mr-3"
-              >
-              Menu sub-item
-            </NuxtLink>
-            <NuxtLink
-              to="/"
-              class="inline-flex px-3 py-[10px] text-white hover:bg-side-menu-item-hover transition"
-            >
-              <img
-                src="/icons/side-menu/settings.svg"
-                class="mr-3"
-              >
-              Menu sub-item
-            </NuxtLink>
-            <NuxtLink
-              to="/"
-              class="inline-flex px-3 py-[10px] text-white hover:bg-side-menu-item-hover transition"
-            >
-              <img
-                src="/icons/side-menu/settings.svg"
-                class="mr-3"
-              >
-              Menu sub-item
-            </NuxtLink>
-            <NuxtLink
-              to="/"
-              class="inline-flex px-3 py-[10px] text-white hover:bg-side-menu-item-hover transition"
-            >
-              <img
-                src="/icons/side-menu/settings.svg"
-                class="mr-3"
-              >
-              Menu sub-item
-            </NuxtLink>
-            <NuxtLink
-              to="/"
-              class="inline-flex px-3 py-[10px] text-white hover:bg-side-menu-item-hover transition"
-            >
-              <img
-                src="/icons/side-menu/settings.svg"
+                src="~/assets/images/icons/side-menu/settings.svg"
                 class="mr-3"
               >
               Menu sub-item
             </NuxtLink>
           </PartialsAccordion>
-          <PartialsAccordion :label="'menu item'">
+          <PartialsAccordion :label="'menu item'" class="border-b border-b-white border-opacity-15">
             <NuxtLink
               to="/"
               class="inline-flex px-3 py-[10px] text-white hover:bg-side-menu-item-hover transition"
             >
               <img
-                src="/icons/side-menu/settings.svg"
+                src="~/assets/images/icons/side-menu/settings.svg"
                 class="mr-3"
               >
               Menu sub-item
@@ -148,7 +96,7 @@
               class="inline-flex px-3 py-[10px] text-white hover:bg-side-menu-item-hover transition"
             >
               <img
-                src="/icons/side-menu/settings.svg"
+                src="~/assets/images/icons/side-menu/settings.svg"
                 class="mr-3"
               >
               Menu sub-item
@@ -158,7 +106,7 @@
               class="inline-flex px-3 py-[10px] text-white hover:bg-side-menu-item-hover transition"
             >
               <img
-                src="/icons/side-menu/settings.svg"
+                src="~/assets/images/icons/side-menu/settings.svg"
                 class="mr-3"
               >
               Menu sub-item
@@ -168,7 +116,7 @@
               class="inline-flex px-3 py-[10px] text-white hover:bg-side-menu-item-hover transition"
             >
               <img
-                src="/icons/side-menu/settings.svg"
+                src="~/assets/images/icons/side-menu/settings.svg"
                 class="mr-3"
               >
               Menu sub-item
@@ -178,7 +126,59 @@
               class="inline-flex px-3 py-[10px] text-white hover:bg-side-menu-item-hover transition"
             >
               <img
-                src="/icons/side-menu/settings.svg"
+                src="~/assets/images/icons/side-menu/settings.svg"
+                class="mr-3"
+              >
+              Menu sub-item
+            </NuxtLink>
+          </PartialsAccordion>
+          <PartialsAccordion :label="'menu item'" class="border-b border-b-white border-opacity-15">
+            <NuxtLink
+              to="/"
+              class="inline-flex px-3 py-[10px] text-white hover:bg-side-menu-item-hover transition"
+            >
+              <img
+                src="~/assets/images/icons/side-menu/settings.svg"
+                class="mr-3"
+              >
+              Menu sub-item
+            </NuxtLink>
+            <NuxtLink
+              to="/"
+              class="inline-flex px-3 py-[10px] text-white hover:bg-side-menu-item-hover transition"
+            >
+              <img
+                src="~/assets/images/icons/side-menu/settings.svg"
+                class="mr-3"
+              >
+              Menu sub-item
+            </NuxtLink>
+            <NuxtLink
+              to="/"
+              class="inline-flex px-3 py-[10px] text-white hover:bg-side-menu-item-hover transition"
+            >
+              <img
+                src="~/assets/images/icons/side-menu/settings.svg"
+                class="mr-3"
+              >
+              Menu sub-item
+            </NuxtLink>
+            <NuxtLink
+              to="/"
+              class="inline-flex px-3 py-[10px] text-white hover:bg-side-menu-item-hover transition"
+            >
+              <img
+                src="~/assets/images/icons/side-menu/settings.svg"
+                class="mr-3"
+              >
+              Menu sub-item
+            </NuxtLink>
+            <NuxtLink
+              to="/"
+              class="inline-flex px-3 py-[10px] text-white hover:bg-side-menu-item-hover transition"
+            >
+              <img
+                src="~/assets/images/icons/side-menu/settings.svg"
                 class="mr-3"
               >
               Menu sub-item
@@ -197,7 +197,13 @@
               type="text"
               placeholder="Search for an account or provider by name"
             >
-            <IconsSearchIcon class="absolute left-[10px] top-[12px] mt-5 mx-3 mb-1" />
+            <IconsSearchIcon class="absolute left-[10px] top-3 mt-5 mx-3 mb-1" />
+            <div
+              class="absolute h-full w-4 p-[2px] right-[10px] top-3 mt-5 mx-3 cursor-pointer"
+              @click="searchModel = ''"
+            >
+              <img class="w-full" src="~/assets/images/icons/cross.svg">
+            </div>
           </div>
           <div class="w-full pb-[60px]">
             <div

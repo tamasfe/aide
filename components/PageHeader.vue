@@ -4,7 +4,7 @@
     <div class="flex place-content-between w-full max-w-[1296px] py-[9px] px-4 md:px-[32px] items-center h-[52px]">
       <div class="flex">
         <img
-          src="/girobet-logo.svg"
+          src="~/assets/images/logo/girobet-logo.svg"
           alt="Girobet logo"
         >
       </div>
@@ -19,6 +19,7 @@
       </div>
       <div class="flex gap-x-4">
         <PartialsButtonComponent
+          class="hidden md:flex"
           variant="text"
           @click="store.setSideMenuType('menu'); store.setSideMenuState(true)"
         >
@@ -29,7 +30,7 @@
           variant="square"
         >
           <img
-            src="/icons/notification.svg"
+            src="~/assets/images/icons/notification.svg"
             class="w-5 h-5"
           >
         </PartialsButtonComponent>
@@ -38,7 +39,7 @@
           variant="square"
         >
           <img
-            src="/icons/profile.svg"
+            src="~/assets/images/icons/profile.svg"
             class="w-5 h-5"
           >
         </PartialsButtonComponent>
@@ -77,6 +78,7 @@ const authStore = useAuthStore();
 const search = ref("");
 
 const openAuthModal = (type: string = "register") => {
+  store.setCloseOutsideState(false)
   store.setAuthModalType(type);
   store.setAuthModalState(true);
 };

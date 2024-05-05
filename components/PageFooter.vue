@@ -4,69 +4,57 @@
       <div class="flex flex-col basis-1/4">
         <div class="mb-6">
           <img
-            src="/girobet-logo.svg"
+            src="~/assets/images/logo/girobet-logo.svg"
             class="w-[162px]"
             alt="Girobet logo"
           >
         </div>
         <div class="flex gap-x-[24px] items-center">
           <a href="#">
-            <img
-              src="/socials/telegram.svg"
-              alt="Telegram socials link"
-            >
+            <IconsSocialsTelegram class="fill-white hover:fill-[#FFE33A] transition-all"/>
           </a>
           <a href="#">
-            <img
-              src="/socials/inst.svg"
-              alt="Instagram socials link"
-            >
+            <IconsSocialsInstagram class="fill-white hover:fill-[#FFE33A] transition-all"/>
           </a>
           <a href="#">
-            <img
-              src="/socials/twitter.svg"
-              alt="Twitter socials link"
-            >
+            <IconsSocialsTwitter class="fill-white hover:fill-[#FFE33A] transition-all"/>
           </a>
           <a href="#">
-            <img
-              src="/socials/tiktok.svg"
-              alt="Tiktok socials link"
-            >
+            <IconsSocialsTikTok class="fill-white hover:fill-[#FFE33A] transition-all"/>
           </a>
         </div>
       </div>
-      <div class="flex flex-col md:flex-row place-content-between basis-2/4 mt-[50px] md:mt-0">
+      <div class="flex flex-col md:flex-row md:flex-wrap place-content-between basis-2/4 mt-[50px] md:mt-0">
         <div class="flex flex-col pt-1">
           <h5 class="font-montserrat text-white opacity-60 mb-[34px] text-xl font-semibold">Helpful links</h5>
 
           <NuxtLink
             to="/"
-            class="font-montserrat text-white text-base mb-[18px]"
+            class="font-montserrat text-white text-base mb-[18px] hover:underline"
           >
             Crash
           </NuxtLink>
           <NuxtLink
             to="/"
-            class="font-montserrat text-white text-base mb-[18px]"
+            class="font-montserrat text-white text-base mb-[18px] hover:underline"
           >
             Double
           </NuxtLink>
           <NuxtLink
             to="/"
-            class="font-montserrat text-white text-base mb-[18px]"
+            class="font-montserrat text-white text-base mb-[18px] hover:underline"
           >
             Blaze Mirror
           </NuxtLink>
           <NuxtLink
             to="/"
-            class="font-montserrat text-white text-base mb-[18px]"
+            class="font-montserrat text-white text-base mb-[18px] hover:underline"
           >
             Fairness
           </NuxtLink>
           <NuxtLink
             to="/"
-            class="font-montserrat text-white text-base mb-[18px]"
+            class="font-montserrat text-white text-base mb-[18px] hover:underline"
           >
             VIP Club
           </NuxtLink>
@@ -76,25 +64,25 @@
 
           <NuxtLink
             to="/"
-            class="font-montserrat text-white text-base mb-[18px]"
+            class="font-montserrat text-white text-base mb-[18px] hover:underline"
           >
             Terms of Services
           </NuxtLink>
           <NuxtLink
             to="/"
-            class="font-montserrat text-white text-base mb-[18px]"
+            class="font-montserrat text-white text-base mb-[18px] hover:underline"
           >
             Privacy Policy
           </NuxtLink>
           <NuxtLink
             to="/"
-            class="font-montserrat text-white text-base mb-[18px]"
+            class="font-montserrat text-white text-base mb-[18px] hover:underline"
           >
             Bonus Terms
           </NuxtLink>
           <NuxtLink
             to="/"
-            class="font-montserrat text-white text-base mb-[18px]"
+            class="font-montserrat text-white text-base mb-[18px] hover:underline"
           >
             FAQ
           </NuxtLink>
@@ -108,7 +96,7 @@
             </p>
             <a
               href="mailto:example.email@gmail.com"
-              class="font-montserrat text-white text-base"
+              class="font-montserrat text-white text-base hover:underline"
             >
               example.email@gmail.com
             </a>
@@ -119,7 +107,7 @@
             </p>
             <a
               href="mailto:example.email@gmail.com"
-              class="font-montserrat text-white text-base"
+              class="font-montserrat text-white text-base hover:underline"
             >
               example.email@gmail.com
             </a>
@@ -130,7 +118,7 @@
             </p>
             <a
               href="mailto:example.email@gmail.com"
-              class="font-montserrat text-white text-base"
+              class="font-montserrat text-white text-base hover:underline"
             >
               example.email@gmail.com
             </a>
@@ -149,7 +137,7 @@
 
     <div class="w-full bg-body-secondary-bg py-[45px] flex justify-center">
       <img
-        src="/partners-logos.png"
+        src="~/assets/images/placeholders/partners-logos.png"
         alt="placeholder"
       >
     </div>
@@ -157,7 +145,7 @@
       <p class="inline-block w-full max-w-[1296px] mb-[24px] md:mb-[32px] font-montserrat text-white text-sm opacity-35">
         GiroBet is the first multi-currency online casino where you can play with Bitcoin and other cryptocurrencies, as well as a range of traditional currencies, including rubles, dollars and euros. BitStarz is operated by Dama N.V., registered at Scharlooweg 39, Willemstad, Curacao, registration number 152125, in accordance with the laws of Curacao. Dama N.V. operates under license 8048/JAZ2020-13 issued by Antlephone N.V., authorized by the Government of Curacao. Friolion Ltd. registered at Leandrou, 12A 3086, Limassol, Cyprus, registration number HE 419102, in accordance with the laws of the Republic of Cyprus. Friolion Ltd. is part of the DAMA group of companies. The DAMA group of companies operates under licenses from Curacao (8048/JAZ2020-13). All payments through the Paysafe system are made through Dama N.V. It is the sole responsibility of the player to become familiar with the online casino laws applicable in a particular jurisdiction
       </p>
-      <p class="text-white opacity-55 font-montserrat text-sm md:text-medium">
+      <p class="text-white opacity-55 font-montserrat text-xs md:text-medium">
         © {{ new Date().getFullYear() }} GiroBet All rights reserved.
       </p>
     </div>
