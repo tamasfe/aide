@@ -10,7 +10,7 @@
       class="p-2 md:p-1 cursor-pointer"
       @click="closePromoNotification()"
     >
-      <img src="/icons/cross.svg">
+      <img src="~/assets/images/icons/cross.svg">
     </div>
   </div>
 </template>

@@ -114,6 +114,6 @@ const onPreviousSlide = () => {
 /* TODO: Remove when get images from BE */
 
 .placeholder-bg {
-  background-image: url(~/assets/images/dragonsmoney.webp);
+  background-image: url(~/assets/images/placeholders/dragonsmoney.webp);
 }
 </style>

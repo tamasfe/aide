@@ -48,7 +48,7 @@
         >
           <div class="group inline-flex flex-col w-[233px]">
             <div class="flex justify-center w-full flex-1 p-[26px] bg-providers-slider-logo-bg">
-              <img class="group-hover:scale-105 transition-all" src="/providers/platipus.svg">
+              <img class="group-hover:scale-105 transition-all" src="~/assets/images/providers/platipus.svg">
             </div>
             <div class="bg-providers-title-bg p-[14px] text-providers-title text-center font-montserrat text-sm">
               <p>{{ slide.title }}</p>

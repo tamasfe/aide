@@ -21,7 +21,7 @@
       <div class="flex gap-x-8 flex-col md:flex-row">
         <div class="md:max-w-[161px]">
           <img
-            src="/images/placeholder-game.png"
+            src="~/assets/images/placeholders/placeholder-game.png"
             class="w-full mb-4 md:mb-0"
           >
         </div>

@@ -4,7 +4,7 @@
       <div class="flex flex-col basis-1/4">
         <div class="mb-6">
           <img
-            src="/girobet-logo.svg"
+            src="~/assets/images/logo/girobet-logo.svg"
             class="w-[162px]"
             alt="Girobet logo"
           >
@@ -137,7 +137,7 @@
 
     <div class="w-full bg-body-secondary-bg py-[45px] flex justify-center">
       <img
-        src="/partners-logos.png"
+        src="~/assets/images/placeholders/partners-logos.png"
         alt="placeholder"
       >
     </div>

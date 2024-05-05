@@ -4,6 +4,7 @@ export const useTriggersStore = defineStore("globalTriggers", {
   state: () => ({
     openAuthModal: false,
     authModalType: "register",
+    allowAuthModalCloseOutside: true,
     showPromoNotification: true,
     blockScroll: false,
     showSideMenu: false,
@@ -16,6 +17,7 @@ export const useTriggersStore = defineStore("globalTriggers", {
     getStopScroll: state => state.blockScroll,
     getShowSideMenu: state => state.showSideMenu,
     getSideMenuType: state => state.sideMenuType,
+    getCloseOutsideState: state => state.allowAuthModalCloseOutside
   },
   actions: {
     setAuthModalState(modalShow: boolean) {
@@ -36,5 +38,8 @@ export const useTriggersStore = defineStore("globalTriggers", {
     setSideMenuType(sideMenuType: string) {
       this.sideMenuType = sideMenuType;
     },
+    setCloseOutsideState(allow: boolean) {
+      this.allowAuthModalCloseOutside = allow
+    }
   },
 });

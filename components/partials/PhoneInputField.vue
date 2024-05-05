@@ -6,23 +6,25 @@
         class="peer w-full pb-2 pt-7 px-4 rounded text-sm bg-input-bg outline-none text-white font-montserrat border transition-all hover:border-input-hover-border"
         :class="{ 'pb-2 pt-7 px-4': label, 'pb-4 pt-4 px-4': !label, 'border-input-error': invalid,  'border-input-bg': !invalid }"
         type="tel"
+        id="phoneInput"
         placeholder=" "
         @input="(event) => emit('change', countryModel + (event.target as HTMLTextAreaElement).value)"
       >
       <label
-        for="input"
+        for="phoneInput"
         class="peer-focus:text-xs peer-focus:-translate-y-[20px] absolute left-4 top-1/2 -translate-y-[20px] text-xs peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-sm font-montserrat text-input-label after:content-['*'] after:align-sup after:text-input-required-mark after:ml-1 transition-all"
       >
         {{ label }}
       </label>
 
       <div class="w-[93px] h-full peer-hover:border-input-hover-border absolute right-0 top-0 border border-l-0 rounded-r transition-all" :class="{ 'border-input-error': invalid,  'border-input-bg': !invalid }">
-        <div class="absolute top-[28px] -translate-y-1/2 left-3">
+        <label for="phoneCode" class="absolute top-[28px] -translate-y-1/2 left-3">
           <span :class="'fi fi-' + selectedCountryCode.toLowerCase()" />
-        </div>
+        </label>
 
         <input
           v-model="countryModel"
+          id="phoneCode"
           type="text"
           class="w-full h-full outline-none text-sm font-medium font-montserrat py-4 pl-9 pr-2 bg-input-bg text-white border-l border-l-input-divider rounded-r"
           @focus="onPhoneFocus()"
@@ -32,11 +34,16 @@
         <Transition>
           <div
             v-if="showSelect"
-            class="applyCustomScroll absolute w-full max-h-[140px] bottom-full bg-input-bg border border-input-select-border rounded shadow-2xl overflow-hidden overflow-y-auto"
+            class="applyCustomScroll absolute w-full max-h-[185px] mb-1 bg-input-bg border border-input-select-border rounded shadow-2xl overflow-hidden overflow-y-auto z-[999]"
+            ref="phoneCodeWrapper"
+            :class="{
+              'bottom-full' : openDirection === 'top',
+              'top-full' : openDirection === 'bottom',
+            }"
           >
             <div
               v-for="country in filteredCountries"
-              class="flex items-center text-sm font-semibold font-montserrat border-b border-b-input-select-border py-4 px-2 text-white hover:bg-input-select-hover-bg cursor-pointer select-none"
+              class="flex items-center text-sm font-normal font-montserrat border-b border-b-input-select-border p-2 text-white hover:bg-input-select-hover-bg cursor-pointer select-none"
               @click="selectCountry(country)"
             >
               <span class="mr-1 w-5">
@@ -87,6 +94,7 @@ const emit = defineEmits(["change"]);
 const model = ref("");
 const countryModel = ref("+1");
 const showSelect = ref(false);
+const phoneCodeWrapper: Ref = ref(null);
 
 onMounted(() => {
   model.value = props.value;
@@ -1589,6 +1597,20 @@ const filteredCountries = computed(() => {
 
   return find.length ? find : countryCodes;
 });
+
+const openDirection = computed(() => {
+  let style = 'bottom';
+  let element = phoneCodeWrapper.value;
+  if(element) {
+    if (window.innerHeight - element.getBoundingClientRect().bottom < 185){
+      style = 'top'
+    }
+  }
+
+  return style
+}); 
+
+
 
 const selectedCountryCode = computed(() => {
   const find = countryCodes.find(el => el.dial_code === countryModel.value);

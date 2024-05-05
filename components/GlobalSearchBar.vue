@@ -13,7 +13,7 @@
         <input
           id="globalSearchInput"
           v-model="model"
-          class=" w-full max-w-[1232px] rounded-full bg-search-bg hover:brightness-90 transition-all text-sm font-montserrat text-search-text font-medium p-[10px] outline-none pl-[36px] placeholder:text-white placeholder:opacity-80"
+          class=" w-full max-w-[1232px] rounded-full bg-search-bg hover:brightness-90 transition-all text-sm font-montserrat text-search-text font-medium p-[10px] outline-none px-[36px] placeholder:text-white placeholder:opacity-80"
           :class="{ 'shadow-2xl': focus }"
           type="text"
           placeholder="Search for an account or provider by name"
@@ -25,7 +25,7 @@
           class="absolute h-full w-4 p-[2px] right-[12px] top-3 cursor-pointer"
           @click="focus = false; model = ''"
         >
-          <img class="w-full" src="/icons/cross.svg">
+          <img class="w-full" src="~/assets/images/icons/cross.svg">
         </div>
       </div>
       

@@ -6,7 +6,7 @@
       @click.prevent="onMenuClick('menu')"
     >
       <img
-        src="/icons/menu-burger.svg"
+        src="~/assets/images/icons/bottom-menu/menu-burger.svg"
         class="w-[24px] mb-1"
       >
       <span class="text-xs font-montserrat font-semibold text-white">Menu</span>
@@ -16,7 +16,7 @@
       class="flex flex-col items-center w-[50px]"
     >
       <img
-        src="/icons/hot.svg"
+        src="~/assets/images/icons/bottom-menu/hot.svg"
         class="w-[24px] mb-1"
       >
       <span class="text-xs font-montserrat font-semibold text-white">Hot</span>
@@ -27,7 +27,7 @@
       @click.prevent="onMenuClick('search')"
     >
       <img
-        src="/icons/search-mobile.svg"
+        src="~/assets/images/icons/bottom-menu/search-mobile.svg"
         class="w-[24px] mb-1"
       >
       <span class="text-xs font-montserrat font-semibold text-white">Search</span>
@@ -37,7 +37,7 @@
       class="flex flex-col items-center w-[50px]"
     >
       <img
-        src="/icons/messages.svg"
+        src="~/assets/images/icons/bottom-menu/messages.svg"
         class="w-[24px] mb-1"
       >
       <span class="text-xs font-montserrat font-semibold text-white">Support</span>
@@ -47,7 +47,7 @@
       class="flex flex-col items-center w-[50px]"
     >
       <img
-        src="/icons/gift.svg"
+        src="~/assets/images/icons/bottom-menu/gift.svg"
         class="w-[24px] mb-1"
       >
       <span class="text-xs font-montserrat font-semibold text-white">Promos</span>

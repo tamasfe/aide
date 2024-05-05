@@ -6,7 +6,7 @@
     </div>
     <PageFooter />
     <MobileMenuBar />
-    <AuthModal v-if="true" />
+    <AuthModal />
     <SideMenu />
     <NotificationsGlobalNotificationsWrapper />
   </div>

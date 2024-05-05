@@ -8,7 +8,7 @@
         {{ label }}
       </span>
       <img
-        src="/icons/chevron-down.svg"
+        src="~/assets/images/icons/chevron-down.svg"
         class="transition w-4"
         :class="{ 'rotate-180': triggered }"
       >
