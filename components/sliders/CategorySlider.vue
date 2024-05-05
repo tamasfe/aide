@@ -44,7 +44,7 @@
         <NuxtLink
           v-for="slide in props.slides"
           :to="slide.link"
-          class="inline-block select-none snap-start h-[45vw] md:h-full pr-4 first:pl-4 xl:first:pl-0 xl:pr-0 xl:mr-[18px] overflow-hidden last:mr-0"
+          class="inline-block select-none snap-start h-[45vw] md:h-full px-2 overflow-hidden last:mr-0"
         >
           <div
             class="w-[35vw] md:w-[161px] relative h-full bg-repeat rounded placeholder-bg bg-[length:100%] hover:bg-[length:105%] bg-center transition-all"
@@ -92,14 +92,14 @@ const checkStartOrEnd = () => {
 };
 
 const onNextSlide = () => {
-  slideWrapper.value.scrollLeft += slideWrapper.value.children[0].clientWidth;
+  slideWrapper.value.scrollLeft += slideWrapper.value.clientWidth / 2 + 14;
   setTimeout(() => {
     checkStartOrEnd();
   }, 350);
 };
 
 const onPreviousSlide = () => {
-  slideWrapper.value.scrollLeft -= slideWrapper.value.children[0].clientWidth;
+  slideWrapper.value.scrollLeft -= slideWrapper.value.clientWidth / 2;
   setTimeout(() => {
     checkStartOrEnd();
   }, 350);
