@@ -27,10 +27,10 @@
         <IconsSliderChevronRight />
       </button>
 
-      <div class="flex gap-x-2 absolute w-full px-8 md:px-0 md:max-w-[240px] bottom-5 md:bottom-[39px] left-[50%] translate-x-[-50%]">
+      <div class="flex gap-x-2 absolute w-[90%] px-8 md:px-0 md:max-w-[50%] justify-center bottom-5 md:bottom-[39px] left-[50%] translate-x-[-50%]">
         <div
           v-for="(slide, index) in props.slides"
-          class="transition-opacity flex-1 h-[3px] bg-[#FFE33A]"
+          class="transition-opacity flex-1 h-[3px] bg-[#FFE33A] max-w-16"
           :class="{ 'opacity-100': activeSlide === index, 'opacity-40': activeSlide !== index }"
           @click="onPaginationClick(index)"
         />
