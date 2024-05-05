@@ -32,7 +32,7 @@
             :text-color="'#B8BDCB'"
             small
           >
-            VIEW ALL
+            {{ $t('viewAll') }}
           </PartialsButtonComponent>
         </div>
       </div>

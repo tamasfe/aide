@@ -53,10 +53,9 @@
         <PartialsButtonComponent
           v-if="!authStore.getAuthorizationState"
           variant="text"
-          :label="'LOG IN'"
           @click="openAuthModal('login')"
         >
-          LOG IN
+          {{ $t('login') }}
         </PartialsButtonComponent>
         <PartialsButtonComponent
           v-if="!authStore.getAuthorizationState"
@@ -64,7 +63,7 @@
           :color="'secondary'"
           @click="openAuthModal('register')"
         >
-          REGISTER
+        {{ $t('signup') }}
         </PartialsButtonComponent>
       </div>
     </div>

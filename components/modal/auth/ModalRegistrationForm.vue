@@ -2,17 +2,17 @@
   <div class="flex flex-col justify-center items-center py-8 px-5 md:px-12">
     <img src="~/assets/images/logo/girobet-logo.svg" class="mb-8">
     <div class="w-full last:mb-0">
-      <PartialsInputField v-model="form.email.value" class="mb-2" :label="form.email.label" :type="form.email.type"
+      <PartialsInputField v-model="form.email.value" class="mb-2" :label="$t('authEmail')" :type="form.email.type"
         :invalid="form.email.invalid" :required="form.email.rules.required.value" :errors="form.email.errors"
         @change="validateFormField(form.email)" />
-      <PartialsInputField v-model="form.password.value" class="mb-2" :label="form.password.label"
+      <PartialsInputField v-model="form.password.value" class="mb-2" :label="$t('authPassword')"
         :type="form.password.type" :invalid="form.password.invalid" :required="form.password.rules.required.value"
         :errors="form.password.errors" @change="validateFormField(form.password)" />
-      <PartialsInputField v-model="form.cpf.value" class="mb-2" :label="form.cpf.label" :type="form.cpf.type"
+      <PartialsInputField v-model="form.cpf.value" class="mb-2" :label="$t('authCPF')" :type="form.cpf.type"
         :invalid="form.cpf.invalid" :required="form.cpf.rules.required.value" :errors="form.cpf.errors"
         @change="validateFormField(form.cpf)" />
 
-      <PartialsPhoneInputField class="mb-2" :label="form.phone.label" :invalid="form.phone.invalid"
+      <PartialsPhoneInputField class="mb-2" :label="$t('authPhone')" :invalid="form.phone.invalid"
         :required="form.phone.rules.required.value" :errors="form.phone.errors"
         @change="e => { form.phone.value = e; validateFormField(form.phone) }" />
 
@@ -20,15 +20,15 @@
     </div>
 
     <div class="inline w-full text-center text-auth-modal-text text-sm mt-1 mb-4">
-      By signing up
+      {{ $t('signUpAgree') }}
       <NuxtLink to="/" class="text-auth-modal-highlight">
-        you agree to our terms and conditions
+        {{ $t('signUpAgreeLink') }}
       </NuxtLink>
     </div>
 
     <PartialsButtonComponent :type="'solid'" big class="w-full" :disabled="formInvalid" :color="'secondary'"
       @click="validateRegistrationFormFields()">
-      CREATE ACCOUNT
+      {{ $t('createAccount') }}
     </PartialsButtonComponent>
   </div>
 </template>

@@ -2,10 +2,10 @@
   <div class="flex flex-col justify-center items-center py-8 px-5 md:px-12">
     <img src="~/assets/images/logo/girobet-logo.svg" class="mb-8">
     <div class="w-full last:mb-0">
-      <PartialsInputField v-model="form.email.value" class="mb-2" :label="form.email.label" :type="form.email.type"
+      <PartialsInputField v-model="form.email.value" class="mb-2" :label="$t('authEmail')" :type="form.email.type"
         :invalid="form.email.invalid" :required="form.email.rules.required.value" :errors="form.email.errors"
         @change="validateFormField(form.email)" />
-      <PartialsInputField v-model="form.password.value" class="mb-2" :label="form.password.label"
+      <PartialsInputField v-model="form.password.value" class="mb-2" :label="$t('authPassword')"
         :type="form.password.type" :invalid="form.password.invalid" :required="form.password.rules.required.value"
         :errors="form.password.errors" @change="validateFormField(form.password)" />
     </div>

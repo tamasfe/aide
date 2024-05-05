@@ -16,7 +16,7 @@
           class=" w-full max-w-[1232px] rounded-full bg-search-bg hover:brightness-90 transition-all text-sm font-montserrat text-search-text font-medium p-[10px] outline-none px-[36px] placeholder:text-white placeholder:opacity-80"
           :class="{ 'shadow-2xl': focus }"
           type="text"
-          placeholder="Search for an account or provider by name"
+          :placeholder="$t('searchPlaceholder')"
           @focus="focus = true"
           @click="onSearchClick()"
         >

@@ -195,7 +195,7 @@
               v-model="searchModel"
               class=" w-full rounded-full bg-side-menu-search hover:brightness-90 transition-all text-sm font-montserrat text-white font-semibold p-[10px] outline-none pl-[36px] placeholder:text-white placeholder:opacity-80"
               type="text"
-              placeholder="Search for an account or provider by name"
+              :placeholder="$t('searchPlaceholder')"
             >
             <IconsSearchIcon class="absolute left-[10px] top-3 mt-5 mx-3 mb-1" />
             <div
@@ -221,7 +221,7 @@
               </div>
               <div class="flex-1 overflow-y-auto applyCustomScroll overflow-auto">
                 <h2 class="p-3 py-5 text-xl text-white font-montserrat font-semibold">
-                  Suggested Games
+                  {{ $t('suggestedGames') }}
                 </h2>
                 <div class="size-full">
                   <NuxtLink
