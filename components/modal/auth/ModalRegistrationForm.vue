@@ -15,6 +15,8 @@
       <PartialsPhoneInputField class="mb-2" :label="form.phone.label" :invalid="form.phone.invalid"
         :required="form.phone.rules.required.value" :errors="form.phone.errors"
         @change="e => { form.phone.value = e; validateFormField(form.phone) }" />
+
+        {{ form.phone.value }}
     </div>
 
     <div class="inline w-full text-center text-auth-modal-text text-sm mt-1 mb-4">

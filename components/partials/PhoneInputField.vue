@@ -8,7 +8,9 @@
         type="tel"
         id="phoneInput"
         placeholder=" "
-        @input="(event) => emit('change', countryModel + (event.target as HTMLTextAreaElement).value)"
+        v-maska
+        data-maska="(###) ###-####"
+        @input="(event) => emit('change', countryModel + mask.unmasked((event.target as HTMLTextAreaElement).value))"
       >
       <label
         for="phoneInput"
@@ -26,10 +28,10 @@
           v-model="countryModel"
           id="phoneCode"
           type="text"
-          class="w-full h-full outline-none text-sm font-medium font-montserrat py-4 pl-9 pr-2 bg-input-bg text-white border-l border-l-input-divider rounded-r"
+          class="w-full h-[calc(100%-2px)] outline-none text-sm font-medium font-montserrat py-4 pl-9 pr-2 mt-[1px] bg-input-bg text-white border-l border-l-input-divider rounded-r"
           @focus="onPhoneFocus()"
           @blur="onPhoneBlur()"
-          @input="(event) => emit('change', (event.target as HTMLTextAreaElement).value + model)"
+          @input="(event) => emit('change', (event.target as HTMLTextAreaElement).value + mask.unmasked(model))"
         >
         <Transition>
           <div
@@ -65,6 +67,8 @@
 </template>
 
 <script setup lang="ts">
+import { Mask } from "maska"
+
 const props = defineProps({
   label: {
     type: String,
@@ -95,6 +99,8 @@ const model = ref("");
 const countryModel = ref("+1");
 const showSelect = ref(false);
 const phoneCodeWrapper: Ref = ref(null);
+
+const mask = new Mask({ mask: "(###) ###-####" })
 
 onMounted(() => {
   model.value = props.value;

@@ -44,7 +44,7 @@
         <NuxtLink
           v-for="slide in props.slides"
           :to="slide.link"
-          class="inline-block select-none snap-start h-[45vw] md:h-full px-2 xl:first:pl-0 overflow-hidden last:mr-0"
+          class="inline-block select-none snap-start h-[45vw] md:h-full px-2 xl:first:pl-0 xl:last:pr-0 overflow-hidden last:mr-0"
         >
           <div
             class="w-[35vw] md:w-[161px] relative h-full bg-repeat rounded placeholder-bg bg-[length:100%] hover:bg-[length:105%] bg-center transition-all"
