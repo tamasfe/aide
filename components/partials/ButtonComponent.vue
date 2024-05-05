@@ -17,7 +17,8 @@
     }"
     :disabled="disabled"
   >
-    <slot />
+    <slot v-if="!loading"/>
+    <PartialsLoadingSpinner v-else/>
   </button>
 </template>
 
@@ -51,5 +52,9 @@ defineProps({
     type: Boolean,
     default: false,
   },
+  loading: {
+    type: Boolean,
+    default: false
+  }
 });
 </script>
