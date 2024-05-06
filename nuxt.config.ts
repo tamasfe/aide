@@ -26,7 +26,12 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {},
   },
-  site: {},
+  site: {
+    url: 'https://example.com',
+    name: 'Awesome Site',
+    description: 'Welcome to my awesome site!',
+    defaultLocale: 'en', // not needed if you have @nuxtjs/i18n installed
+  },
   ssr: true,
   typescript: {
     strict: true,
@@ -49,29 +54,30 @@ export default defineNuxtConfig({
   },
   // @nuxtjs/i18n
   i18n: {
-    vueI18n: "./i18n.config.ts",
-  },
-  // @nuxtjs/seo
-  linkChecker: {
-    enabled: false,
-  },
-  ogImage: {
-    enabled: false,
-  },
-  robots: {
-    enabled: false,
-  },
-  schemaOrg: {
-    enabled: false,
-  },
-  seoExperiments: {
-    enabled: false,
-  },
-  sitemap: {
-    enabled: false,
+    langDir: "locales/",
+    locales: [
+      {
+        iso: "en-US",
+        code: "en",
+        file: "en.json",
+      },
+      {
+        iso: "pt-BR",
+        code: "pt",
+        file: "pt.json",
+      },
+    ],
+    detectBrowserLanguage: false,
+    strategy: "no_prefix",
+    lazy: false,
+    defaultLocale: "en",
+    vueI18n: './i18n.config.ts',
   },
   // @pinia/nuxt
   pinia: {
     storesDirs: ["./store/**"],
   },
+  build: {
+    transpile: ['applicationinsights']
+  }
 });
