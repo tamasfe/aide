@@ -1,0 +1,21 @@
+export default {
+  welcome: "Welcome",
+  login: "LOG IN",
+  signup: "REGISTER",
+  searchPlaceholder: "Search for an account or provider by name",
+  suggestedGames: "Suggested Games",
+  viewAll: "VIEW ALL",
+  helpfulLinks: "Helpful links",
+  emails: "Emails",
+  support: "Support",
+  legal: "Legal",
+  partners: "Partners",
+  authEmail: "Email",
+  authPassword: "Password",
+  authCPF: "CPF",
+  authPhone: "Phone",
+  signUpAgree: "By signing up ",
+  signUpAgreeLink: "you agree to our terms and conditions",
+  createAccount: "CREATE ACCOUNT",
+  girobetAbout: "GiroBet is the first multi-currency online casino where you can play with Bitcoin and other cryptocurrencies, as well as a range of traditional currencies, including rubles, dollars and euros. BitStarz is operated by Dama N.V., registered at Scharlooweg 39, Willemstad, Curacao, registration number 152125, in accordance with the laws of Curacao. Dama N.V. operates under license 8048/JAZ2020-13 issued by Antlephone N.V., authorized by the Government of Curacao. Friolion Ltd. registered at Leandrou, 12A 3086, Limassol, Cyprus, registration number HE 419102, in accordance with the laws of the Republic of Cyprus. Friolion Ltd. is part of the DAMA group of companies. The DAMA group of companies operates under licenses from Curacao (8048/JAZ2020-13). All payments through the Paysafe system are made through Dama N.V. It is the sole responsibility of the player to become familiar with the online casino laws applicable in a particular jurisdiction"
+}
