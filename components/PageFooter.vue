@@ -26,7 +26,9 @@
       </div>
       <div class="flex flex-col md:flex-row md:flex-wrap place-content-between basis-2/4 mt-[50px] md:mt-0">
         <div class="flex flex-col pt-1">
-          <h5 class="font-montserrat text-white opacity-60 mb-[34px] text-xl font-semibold">Helpful links</h5>
+          <h5 class="font-montserrat text-white opacity-60 mb-[34px] text-xl font-semibold">
+            {{ $t('helpfulLinks') }}
+          </h5>
 
           <NuxtLink
             to="/"
@@ -60,7 +62,9 @@
           </NuxtLink>
         </div>
         <div class="flex flex-col pt-1">
-          <h5 class="font-montserrat text-white opacity-60 mb-[34px] text-xl font-semibold">Helpful links</h5>
+          <h5 class="font-montserrat text-white opacity-60 mb-[34px] text-xl font-semibold">
+            {{ $t('helpfulLinks') }}
+          </h5>
 
           <NuxtLink
             to="/"
@@ -88,11 +92,13 @@
           </NuxtLink>
         </div>
         <div class="flex flex-col pt-1">
-          <h5 class="font-montserrat text-white opacity-60 mb-[34px] text-xl font-semibold">Emails</h5>
+          <h5 class="font-montserrat text-white opacity-60 mb-[34px] text-xl font-semibold">
+            {{ $t('emails') }}
+          </h5>
 
           <div class="mb-[18px]">
             <p class="font-montserrat text-white opacity-35 mb-2 text-base font-semibold">
-              Support
+              {{ $t('support') }}
             </p>
             <a
               href="mailto:example.email@gmail.com"
@@ -103,7 +109,7 @@
           </div>
           <div class="mb-[18px]">
             <p class="font-montserrat text-white opacity-35 mb-2 text-base font-semibold">
-              Legal
+              {{ $t('legal') }}
             </p>
             <a
               href="mailto:example.email@gmail.com"
@@ -114,7 +120,7 @@
           </div>
           <div class="mb-[18px]">
             <p class="font-montserrat text-white opacity-35 mb-2 text-base font-semibold">
-              Partners
+              {{ $t('partners') }}
             </p>
             <a
               href="mailto:example.email@gmail.com"
@@ -143,7 +149,7 @@
     </div>
     <div class="flex flex-col items-start px-4 md:px-[32px] py-[32px] md:py-[42px] mb-[60px] md:mb-0">
       <p class="inline-block w-full max-w-[1296px] mb-[24px] md:mb-[32px] font-montserrat text-white text-sm opacity-35">
-        GiroBet is the first multi-currency online casino where you can play with Bitcoin and other cryptocurrencies, as well as a range of traditional currencies, including rubles, dollars and euros. BitStarz is operated by Dama N.V., registered at Scharlooweg 39, Willemstad, Curacao, registration number 152125, in accordance with the laws of Curacao. Dama N.V. operates under license 8048/JAZ2020-13 issued by Antlephone N.V., authorized by the Government of Curacao. Friolion Ltd. registered at Leandrou, 12A 3086, Limassol, Cyprus, registration number HE 419102, in accordance with the laws of the Republic of Cyprus. Friolion Ltd. is part of the DAMA group of companies. The DAMA group of companies operates under licenses from Curacao (8048/JAZ2020-13). All payments through the Paysafe system are made through Dama N.V. It is the sole responsibility of the player to become familiar with the online casino laws applicable in a particular jurisdiction
+        {{ $t('girobetAbout') }}
       </p>
       <p class="text-white opacity-55 font-montserrat text-xs md:text-medium">
         © {{ new Date().getFullYear() }} GiroBet All rights reserved.
