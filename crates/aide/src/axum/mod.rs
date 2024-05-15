@@ -715,6 +715,14 @@ mod private {
     pub trait Sealed {}
 }
 
+impl<I, O, L, H, T, S> OperationHandler<I, O> for axum::handler::Layered<L, H, T, S>
+where
+    H: OperationHandler<I, O>,
+    I: OperationInput,
+    O: OperationOutput,
+{
+}
+
 /// A trait that extends [`axum::handler::Handler`] with API operation
 /// details.
 ///
@@ -739,7 +747,7 @@ where
 #[allow(clippy::unused_async)]
 mod tests {
     use crate::axum::{routing, ApiRouter};
-    use axum::extract::State;
+    use axum::{extract::State, handler::Handler};
 
     async fn test_handler1(State(_): State<TestState>) {}
 
@@ -794,5 +802,13 @@ mod tests {
 
         assert!(item.get.is_some());
         assert!(item.post.is_some());
+    }
+
+    #[test]
+    fn test_layered_handler() {
+        let _app: ApiRouter = ApiRouter::new().api_route(
+            "/test-route",
+            routing::get(test_handler3.layer(tower_layer::Identity::new())),
+        );
     }
 }
