@@ -19,7 +19,6 @@ export default defineNuxtConfig({
     "@nuxt/eslint",
     "@nuxtjs/i18n",
     "@nuxtjs/seo",
-    // "@nuxtjs/storybook",
     "@nuxtjs/tailwindcss",
     "@pinia/nuxt",
   ],
