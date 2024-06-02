@@ -11,9 +11,6 @@ export default defineNuxtConfig({
   build: {
     transpile: ["applicationinsights"],
   },
-  css: [
-    "~/assets/styles/global.css",
-  ],
   debug: false,
   devtools: {
     enabled: true,
