@@ -8,6 +8,9 @@ export default defineNuxtConfig({
     },
     rootId: "app",
   },
+  build: {
+    transpile: ["applicationinsights"],
+  },
   css: [
     "~/assets/styles/global.css",
   ],
@@ -26,10 +29,10 @@ export default defineNuxtConfig({
     public: {},
   },
   site: {
-    url: 'https://example.com',
-    name: 'Awesome Site',
-    description: 'Welcome to my awesome site!',
-    defaultLocale: 'en', // not needed if you have @nuxtjs/i18n installed
+    url: "https://girobet.vip",
+    name: "GiroBet",
+    // description: "Welcome to my awesome site!", // TODO
+    // defaultLocale: "en", // TODO not needed if you have @nuxtjs/i18n installed
   },
   ssr: true,
   typescript: {
@@ -70,13 +73,10 @@ export default defineNuxtConfig({
     strategy: "no_prefix",
     lazy: false,
     defaultLocale: "en",
-    vueI18n: './i18n.config.ts',
+    vueI18n: "./i18n.config.ts",
   },
   // @pinia/nuxt
   pinia: {
     storesDirs: ["./store/**"],
   },
-  build: {
-    transpile: ['applicationinsights']
-  }
 });

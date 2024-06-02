@@ -1,6 +1,6 @@
-// https://i18n.nuxtjs.org/docs/getting-started/usage
-// https://vue-i18n.intlify.dev/guide/advanced/composition
+// https://vue-i18n.intlify.dev/guide/essentials/started.html
+
 export default defineI18nConfig(() => ({
-  legacy: false,
   locale: "en",
+  legacy: false,
 }));
