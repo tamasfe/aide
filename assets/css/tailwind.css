@@ -1,3 +1,50 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  /* background */
+  --giro-bg: #100D28;
+  --giro-bg-subtle: #131232;
+  --giro-bg-emphasis: #272646;
+
+  /* text */
+  --giro-text: #FFFFFF;
+  --giro-text-subtle: #7B82C0;
+  --giro-text-emphasis: #C4C7E2;
+  --giro-button-text-primary: #000000;
+  --giro-button-text-secondary: #7B82C0;
+  --giro-button-text-emphasis: #000000;
+
+  /* buttons */
+  --giro-button-primary: linear-gradient(to bottom, #FFC441, #FFE600);
+  --giro-button-primary-hover: #FFE00C;
+  --giro-button-secondary: #272646;
+  --giro-button-secondary-hover: #333256;
+  --giro-button-emphasis: linear-gradient(to bottom, #20CD19, #9BFC33);
+  --giro-button-emphasis-hover: #81F22E;
+
+  /* borders */
+  --giro-border-btn-primary: linear-gradient(to bottom, #FFD918, #FFEFAC);
+  --giro-border-btn-emphasis: linear-gradient(to bottom, #59F53C, #C8FF7D);
+  --giro-border-focus: #1F18EE;
+
+  /* shadows */
+  --giro-shadow-btn-emphasis: #28D01B;
+  --giro-shadow-btn-primary: #BFA61F;
+
+  /* spacing */
+  --giro-border-radius: 8px;
+  --giro-padding-button: 6px 16px 6px 16px;
+  --giro-padding-button-big: 10px 64px 10px 64px;
+
+  /* font */
+  --giro-font-size: 16px;
+}
+
+@layer base {
+  * {
+    @apply text-base;
+    color: inherit;
+  }
+}
