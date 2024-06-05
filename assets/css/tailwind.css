@@ -39,7 +39,7 @@
   --giro-padding-button-big: 10px 64px 10px 64px;
 
   /* font */
-  --giro-font-size: 16px;
+  --giro-font-size: 1rem;
 }
 
 @layer base {
