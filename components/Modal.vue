@@ -57,8 +57,36 @@ const close = () => {
 
 const size = computed(() => {
   if (props.size) {
-    if (props.size === "full") return "w-full";
-    return `max-w-${props.size}`;
+    switch (props.size) {
+      case "full":
+        return "max-w-full";
+      case "sm":
+        return "max-w-sm";
+      case "md":
+        return "max-w-md";
+      case "lg":
+        return "max-w-lg";
+      case "xl":
+        return "max-w-xl";
+      case "2xl":
+        return "max-w-2xl";
+      case "3xl":
+        return "max-w-3xl";
+      case "4xl":
+        return "max-w-4xl";
+      case "5xl":
+        return "max-w-5xl";
+      case "6xl":
+        return "max-w-6xl";
+      case "7xl":
+        return "max-w-7xl";
+      case "8xl":
+        return "max-w-8xl";
+      case "9xl":
+        return "max-w-9xl";
+      case "10xl":
+        return "max-w-10xl";
+    }
   }
   return "max-w-lg";
 });
