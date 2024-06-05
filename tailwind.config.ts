@@ -3,6 +3,9 @@ import type { Config } from "tailwindcss";
 export default <Partial<Config>>{
   content: ["./pages/**/*.vue", "./components/**/*.vue"],
   theme: {
+    fontSize: {
+      base: "var(--giro-font-size)",
+    },
     extend: {
       colors: {
         default: "var(--giro-bg)",
@@ -69,10 +72,6 @@ export default <Partial<Config>>{
       padding: {
         button: "var(--giro-padding-button)",
         "button-big": "var(--giro-padding-button-big)",
-      },
-
-      fontSize: {
-        base: "var(--giro-font-size)",
       },
     },
   },
