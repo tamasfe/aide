@@ -27,7 +27,7 @@
   /* borders */
   --giro-border-btn-primary: linear-gradient(to bottom, #FFD918, #FFEFAC);
   --giro-border-btn-emphasis: linear-gradient(to bottom, #59F53C, #C8FF7D);
-  --giro-border-focus: #1F18EE;
+  --giro-border-focus: #3D448B;
 
   /* shadows */
   --giro-shadow-btn-emphasis: #28D01B;
@@ -44,7 +44,17 @@
 
 @layer base {
   * {
-    @apply text-base;
     color: inherit;
+
+    input::placeholder {
+      color: var(--giro-text-emphasis);
+    }
+
+    body {
+      background-color: var(--giro-bg);
+      height: 100vh;
+      color: var(--giro-text);
+      font-size: var(--giro-font-size);
+    }
   }
 }

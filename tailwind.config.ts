@@ -50,6 +50,10 @@ export default <Partial<Config>>{
         focus: "var(--giro-border-focus)",
       },
 
+      outlineColor: {
+        focus: "var(--giro-border-focus)",
+      },
+
       boxShadow: {
         "btn-emphasis": "var(--giro-shadow-btn-emphasis)",
         "btn-primary": "var(--giro-shadow-btn-primary)",

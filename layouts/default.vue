@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Button } from "#components";
+import { Button, Input, GridPage } from "#components";
 
 const modalsOpen = reactive<any>({
   modal1: false,
@@ -11,15 +11,43 @@ const modalsOpen = reactive<any>({
 const toggleModal = (key: any) => {
   modalsOpen[key] = !modalsOpen[key];
 };
+
+const name = ref("John Doe");
 </script>
 
 <template>
-  <div class="h-screen bg-default text-default">
+  <div>
     <TestModal v-model:opened="modalsOpen.modal1" size="lg" slide-out-left />
     <TestModal v-model:opened="modalsOpen.modal2" size="sm" slide-out-right />
     <TestModal v-model:opened="modalsOpen.modal3" size="xl" />
     <TestModal v-model:opened="modalsOpen.modal4" size="xl" center />
     <div class="p-6 flex flex-col sm:flex-row items-center gap-4 bg-subtle">
+      <Input
+        v-model="name"
+        wrapper-class="bg-emphasis"
+        input-class="placeholder:text-subtle"
+        title="Name"
+        placeholder="Enter your name"
+      >
+        <template #prefix>
+          <!-- magnifying glass icon -->
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-[24px] w-[24px] text-subtle"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M21 21l-5.2-5.2"
+            />
+            <circle cx="10" cy="10" r="8" />
+          </svg>
+        </template>
+      </Input>
       <Button variant="primary" @click="toggleModal('modal1')">Primary</Button>
       <Button variant="secondary" @click="toggleModal('modal2')"
         >Secondary</Button
@@ -34,6 +62,18 @@ const toggleModal = (key: any) => {
       >
       <Button variant="secondary" big>SOMETHING </Button>
       <Button variant="emphasis" big shadow border>DEPOSIT</Button>
+    </div>
+    <div class="p-6">
+      <GridPage :data="['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']">
+        <template #options>
+          <Button variant="secondary"> See all </Button>
+        </template>
+        <template #default="{ data }">
+          <div class="bg-subtle p-4 rounded-default h-52">
+            {{ data }}
+          </div>
+        </template>
+      </GridPage>
     </div>
     <slot />
   </div>
