@@ -45,16 +45,25 @@
 @layer base {
   * {
     color: inherit;
+  }
 
-    input::placeholder {
-      color: var(--giro-text-emphasis);
-    }
+  body {
+    background-color: var(--giro-bg);
+    height: 100vh;
+    color: var(--giro-text);
+    font-size: var(--giro-font-size);
+  }
 
-    body {
-      background-color: var(--giro-bg);
-      height: 100vh;
-      color: var(--giro-text);
-      font-size: var(--giro-font-size);
-    }
+  input::placeholder {
+    color: var(--giro-text-emphasis);
+  }
+}
+
+.giro__hide-scroll {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+  &::-webkit-scrollbar {
+    display: none;
   }
 }

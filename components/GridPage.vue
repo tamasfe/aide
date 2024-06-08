@@ -11,7 +11,7 @@ const props = defineProps<{
   columns: number;
 }>();
 
-const { data } = toRefs(props);
+const { data, columns } = toRefs(props);
 
 const carousel = ref<InstanceType<typeof Carousel> | null>(null);
 
@@ -31,13 +31,6 @@ const previousPage = () => {
   emit("click:previousPage");
 };
 
-const columns = computed(() => {
-  if (md.value) {
-    return props.columns;
-  }
-  return 3;
-});
-
 const maxSlides = computed(() => {
   return Math.ceil(data.value.length / columns.value);
 });
@@ -45,14 +38,13 @@ const maxSlides = computed(() => {
 
 <template>
   <div class="flex flex-col gap-y-4 py-2">
-    {{ maxSlides }}
     <div class="flex items-center justify-between">
       <div class="flex items-center gap-x-2">
         <div class="text-[24px] font-bold">
           <slot name="title" />
         </div>
         <div
-          class="hidden sm:flex items-center gap-x-4 text-3xl font-bold cursor-pointer"
+          class="hidden md:flex items-center gap-x-4 text-3xl font-bold cursor-pointer"
         >
           <div @click="previousPage">
             {{ `<` }}
@@ -64,7 +56,7 @@ const maxSlides = computed(() => {
       </div>
       <slot name="options" />
     </div>
-    <Carousel ref="carousel">
+    <Carousel v-if="md" ref="carousel">
       <div
         v-for="(_, slide) in maxSlides"
         :key="slide"
@@ -79,5 +71,23 @@ const maxSlides = computed(() => {
         </div>
       </div>
     </Carousel>
+    <div
+      v-else
+      class="flex items-center gap-4 overflow-auto hide-scroll giro__hide-scroll"
+    >
+      <div
+        v-for="(datapoint, index) in data"
+        :key="index"
+        class="giro__grid-page-item"
+      >
+        <slot name="default" :data="datapoint" />
+      </div>
+    </div>
   </div>
 </template>
+
+<style scoped>
+.giro__grid-page-item {
+  flex: 0 0 auto;
+}
+</style>

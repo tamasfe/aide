@@ -72,7 +72,7 @@ const name = ref("John Doe");
         <template #options>
           <Button variant="secondary"> See all </Button>
         </template>
-        <template #default="{ data }">
+        <template #default>
           <div class="bg-subtle rounded-default h-[300px] overflow-hidden">
             <img
               src="https://picsum.photos/200/300"
@@ -82,24 +82,24 @@ const name = ref("John Doe");
           </div>
         </template>
       </GridPage>
-      <!-- <GridPage -->
-      <!--   :data="['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']" -->
-      <!--   :columns="6" -->
-      <!-- > -->
-      <!--   <template #title> 🔥 Hot games today </template> -->
-      <!--   <template #options> -->
-      <!--     <Button variant="secondary"> See all </Button> -->
-      <!--   </template> -->
-      <!--   <template> -->
-      <!--     <div class="bg-subtle rounded-default h-[300px] overflow-hidden"> -->
-      <!--       <img -->
-      <!--         src="https://picsum.photos/200/300" -->
-      <!--         alt="" -->
-      <!--         class="w-full h-full object-cover rounded-default transition-transform transform hover:scale-105" -->
-      <!--       /> -->
-      <!--     </div> -->
-      <!--   </template> -->
-      <!-- </GridPage> -->
+      <GridPage
+        :data="['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']"
+        :columns="6"
+      >
+        <template #title> 🔥 Hot games today </template>
+        <template #options>
+          <Button variant="secondary"> See all </Button>
+        </template>
+        <template #default>
+          <div class="bg-subtle rounded-default h-[300px] overflow-hidden">
+            <img
+              src="https://picsum.photos/200/300"
+              alt=""
+              class="w-full h-full object-cover rounded-default transition-transform transform hover:scale-105"
+            />
+          </div>
+        </template>
+      </GridPage>
     </div>
     <slot />
   </div>

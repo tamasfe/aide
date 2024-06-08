@@ -70,8 +70,8 @@ defineExpose({
 
 <template>
   <div class="relative">
-    <div class="carousel">
-      <div class="carousel__container gap-4" ref="container">
+    <div class="giro__carousel">
+      <div class="giro__carousel-container gap-4" ref="container">
         <slot />
       </div>
     </div>
@@ -79,16 +79,16 @@ defineExpose({
 </template>
 
 <style scoped>
-.carousel {
+.giro__carousel {
   overflow: hidden;
 }
 
-.carousel__container {
+.giro__carousel-container {
   display: flex;
   transition: transform 0.5s;
 }
 
-::v-deep .carousel__container > * {
+:deep(.giro__carousel-container > *) {
   flex: 0 0 100%;
 }
 </style>
