@@ -70,7 +70,7 @@ const name = ref("John Doe");
       >
         <template #title> ⭐ Popular </template>
         <template #options>
-          <Button variant="secondary"> See all </Button>
+          <Button class="bg-subtle text-subtle"> See all </Button>
         </template>
         <template #default>
           <div class="bg-subtle rounded-default h-[300px] overflow-hidden">

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const props = defineProps<{
   disabled?: boolean;
-  variant: "primary" | "secondary" | "emphasis";
+  variant?: "primary" | "secondary" | "emphasis";
   big?: boolean;
   shadow?: boolean;
   border?: boolean;
@@ -15,8 +15,10 @@ const getVariantClass = computed(() => {
       return "bg-button-secondary hover:bg-button-secondary-hover text-button-secondary";
     case "emphasis":
       return "bg-button-emphasis hover:bg-button-emphasis-hover text-button-emphasis";
-    default:
+    case "primary":
       return "bg-button-primary hover:bg-button-primary-hover text-button-primary";
+    default:
+      return "";
   }
 });
 
