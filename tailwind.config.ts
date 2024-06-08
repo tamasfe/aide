@@ -31,6 +31,7 @@ export default <Partial<Config>>{
           emphasis: "var(--giro-button-emphasis)",
           "emphasis-hover": "var(--giro-button-emphasis-hover)",
         },
+        info: "var(--giro-bg-info)",
       },
 
       backgroundImage: {
@@ -63,6 +64,7 @@ export default <Partial<Config>>{
         default: "var(--giro-text)",
         subtle: "var(--giro-text-subtle)",
         emphasis: "var(--giro-text-emphasis)",
+        info: "var(--giro-text-info)",
         button: {
           primary: "var(--giro-button-text-primary)",
           secondary: "var(--giro-button-text-secondary)",

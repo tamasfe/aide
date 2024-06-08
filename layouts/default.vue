@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Button, Input, GridPage } from "#components";
+import { Button, Input, GridPage, Notice } from "#components";
 
 const modalsOpen = reactive<any>({
   modal1: false,
@@ -13,10 +13,22 @@ const toggleModal = (key: any) => {
 };
 
 const name = ref("John Doe");
+const refferalNoticeOpen = ref(true);
 </script>
 
 <template>
   <div>
+    <Transition name="slide">
+      <Notice
+        v-if="refferalNoticeOpen"
+        class="w-full"
+        variant="info"
+        @close="() => (refferalNoticeOpen = false)"
+      >
+        Refer a friend and earn R$ 5,00 of REAL balance for each friend you
+        invite
+      </Notice>
+    </Transition>
     <TestModal v-model:opened="modalsOpen.modal1" size="lg" slide-out-left />
     <TestModal v-model:opened="modalsOpen.modal2" size="sm" slide-out-right />
     <TestModal v-model:opened="modalsOpen.modal3" size="xl" />
@@ -124,5 +136,36 @@ const name = ref("John Doe");
       </GridPage>
     </div>
     <slot />
+    <!-- PUblic mobile sticky footer -->
+    <div
+      class="block sm:hidden sticky bottom-0 left-0 w-full bg-subtle text-subtle"
+    >
+      <div
+        class="flex items-center justify-between p-4 text-emphasis font-semibold"
+      >
+        <div class="flex-1">Menu</div>
+        <div class="flex-1">Hot</div>
+        <div class="flex-1">Search</div>
+        <div class="flex-1">Support</div>
+        <div class="flex-1">Promos</div>
+      </div>
+    </div>
   </div>
 </template>
+
+<style scoped>
+.slide-enter-active,
+.slide-leave-active {
+  transition: transform 0.3s;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  transform: translateY(-100%);
+}
+
+.slide-enter-to,
+.slide-leave-from {
+  transform: translateY(0);
+}
+</style>

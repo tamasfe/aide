@@ -1,7 +1,7 @@
 <!-- TODO: Add server side rendering support -->
 <script setup lang="ts">
 import { breakpointsTailwind, useBreakpoints } from "@vueuse/core";
-import Carousel from "./Carousel.vue";
+import { Carousel } from "#components";
 
 const breakpoints = useBreakpoints(breakpointsTailwind);
 const md = breakpoints.greaterOrEqual("md");

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import X from "@/components/Icons/X.vue";
+import { IconsX as X } from "#components";
 
 const props = defineProps<{
   opened: boolean;

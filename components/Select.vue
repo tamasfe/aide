@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import CaretUp from "./Icons/CaretUp.vue";
-import CaretDown from "./Icons/CaretDown.vue";
+import {
+  IconsCaretUp as CaretUp,
+  IconsCaretDown as CaretDown,
+} from "#components";
 import { autoUpdate, hide, size, useFloating } from "@floating-ui/vue";
 import { onClickOutside } from "@vueuse/core";
 

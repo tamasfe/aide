@@ -7,11 +7,13 @@
   --giro-bg: #100D28;
   --giro-bg-subtle: #131232;
   --giro-bg-emphasis: #272646;
+  --giro-bg-info: #55288B;
 
   /* text */
   --giro-text: #FFFFFF;
   --giro-text-subtle: #7B82C0;
   --giro-text-emphasis: #C4C7E2;
+  --giro-text-info: #9F6DDE;
   --giro-button-text-primary: #000000;
   --giro-button-text-secondary: #7B82C0;
   --giro-button-text-emphasis: #000000;
