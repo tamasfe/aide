@@ -22,6 +22,29 @@ const name = ref("John Doe");
     <TestModal v-model:opened="modalsOpen.modal3" size="xl" />
     <TestModal v-model:opened="modalsOpen.modal4" size="xl" center />
     <div class="p-6 flex flex-col sm:flex-row items-center gap-4 bg-subtle">
+      <Select
+        v-model="name"
+        wrapper-class="bg-emphasis"
+        input-class="placeholder:text-subtle"
+        title="Name"
+        placeholder="Enter your name"
+        error="You cannot do that sir"
+        :options="[
+          {
+            title: 'John Doe',
+            value: 'John Doe',
+          },
+          {
+            title: 'Jane Doe',
+            value: 'Jane Doe',
+          },
+          {
+            title: 'John Smith',
+            value: 'John Smith',
+          },
+        ]"
+      >
+      </Select>
       <Input
         v-model="name"
         wrapper-class="bg-emphasis"
@@ -30,7 +53,6 @@ const name = ref("John Doe");
         placeholder="Enter your name"
       >
         <template #prefix>
-          <!-- magnifying glass icon -->
           <svg
             xmlns="http://www.w3.org/2000/svg"
             class="h-[24px] w-[24px] text-subtle"
@@ -88,7 +110,7 @@ const name = ref("John Doe");
       >
         <template #title> 🔥 Hot games today </template>
         <template #options>
-          <Button variant="secondary"> See all </Button>
+          <Button class="bg-subtle text-subtle"> See all </Button>
         </template>
         <template #default>
           <div class="bg-subtle rounded-default h-[300px] overflow-hidden">

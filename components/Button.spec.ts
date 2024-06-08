@@ -57,7 +57,7 @@ describe("components/Button.vue", () => {
       },
     });
     expect(wrapper.classes()).toContain("p-button-big");
-    expect(wrapper.classes()).toContain("font-[700]");
+    expect(wrapper.classes()).toContain("font-bold");
   });
 
   it("should render shadow", () => {

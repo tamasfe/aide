@@ -130,7 +130,7 @@ const size = computed(() => {
   </Teleport>
 </template>
 
-<style lang="postcss">
+<style lang="postcss" scoped>
 .giro__modal-fade-enter-active {
   transition: all 150ms ease-in-out;
 

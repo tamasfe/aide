@@ -13,6 +13,7 @@
     "test": "vitest --coverage"
   },
   "dependencies": {
+    "@floating-ui/vue": "^1.0.6",
     "@pinia/nuxt": "^0.5.1",
     "@vueuse/core": "^10.10.0",
     "nuxt": "^3.11.2",
