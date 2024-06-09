@@ -1,5 +1,6 @@
-<!-- IMPROVE ANIMATION LOGIC -->
 <script setup lang="ts">
+import { InputWrapper } from "#components";
+
 const props = defineProps<{
   modelValue: string;
   inputClass?: string;
@@ -25,82 +26,43 @@ const modelValue = computed({
 });
 
 const inputId = Math.random().toString(36).substring(7);
-const label = ref<HTMLLabelElement | null>(null);
-const input = ref<HTMLDivElement | null>(null);
+const wrapper = ref<InstanceType<typeof InputWrapper> | null>(null);
 
 const onBlur = (evt: FocusEvent) => {
-  if (label.value && modelValue.value === "") {
-    const left = input.value?.offsetLeft;
-    const top = input.value?.offsetTop;
-    if (left) {
-      label.value.style.transform = `translate(${left}px, ${top}px)`;
-    }
-  }
-  emit("focus", evt);
-};
-
-const onFocus = (evt: FocusEvent) => {
-  if (label.value) {
-    label.value.style.transform = `translate(0, -100%)`;
+  if (wrapper.value && modelValue.value === "") {
+    wrapper.value.onBlur(evt);
   }
   emit("blur", evt);
 };
 
-const labelStyle = ref({
-  transform: "translate(0, -100%)",
-});
-
-onMounted(() => {
-  if (!modelValue.value && label.value) {
-    const left = input.value?.offsetLeft;
-    const top = input.value?.offsetTop;
-    if (left) {
-      label.value.style.transform = `translate(${left}px, ${top}px)`;
-    }
+const onFocus = (evt: FocusEvent) => {
+  if (wrapper.value) {
+    wrapper.value.onFocus(evt);
   }
-});
+  emit("focus", evt);
+};
 </script>
 
 <template>
-  <div class="relative">
-    <label
-      ref="label"
-      v-if="title"
-      :for="inputId"
-      class="text-subtle giro__input-label"
-      :style="labelStyle"
-      >{{ title }}</label
-    >
-    <div
-      class="flex items-center gap-4 rounded-default p-[8px] sm:p-[16px] focus:bg-white focus-within:outline outline-2 outline-focus w-full"
-      :class="wrapperClass"
-    >
+  <InputWrapper ref="wrapper" v-bind="props" animate>
+    <template #prefix>
       <slot name="prefix" />
-      <input
-        :id="inputId"
-        ref="input"
-        class="flex-1 bg-inherit border-none outline-none text-[18px] font-[500] focus:placeholder:text-subtle w-full"
-        v-model="modelValue"
-        :class="inputClass"
-        :disabled="disabled"
-        :readonly="readonly"
-        @input="emit('input', $event)"
-        @change="emit('change', $event)"
-        @focus="onFocus"
-        @blur="onBlur"
-      />
+    </template>
+    <input
+      :id="inputId"
+      ref="input"
+      class="flex-1 bg-inherit border-none outline-none text-[18px] font-[500] focus:placeholder:text-subtle w-full"
+      v-model="modelValue"
+      :class="inputClass"
+      :disabled="disabled"
+      :readonly="readonly"
+      @input="emit('input', $event)"
+      @change="emit('change', $event)"
+      @focus="onFocus"
+      @blur="onBlur"
+    />
+    <template #suffix>
       <slot name="suffix" />
-    </div>
-    <div v-if="error" class="text-red-400">{{ error }}</div>
-  </div>
+    </template>
+  </InputWrapper>
 </template>
-<style scoped>
-.giro__input-label {
-  transition:
-    transform 0.2s,
-    font-size 0.2s;
-  position: absolute;
-  left: 0;
-  top: 0;
-}
-</style>

@@ -12,8 +12,21 @@ const toggleModal = (key: any) => {
   modalsOpen[key] = !modalsOpen[key];
 };
 
-const name = ref("John Doe");
+const name = ref("10000");
 const refferalNoticeOpen = ref(true);
+const wrapper = ref();
+
+const onFocus = (evt: FocusEvent) => {
+  if (wrapper.value) {
+    wrapper.value.onFocus(evt);
+  }
+};
+
+const onBlur = (evt: FocusEvent) => {
+  if (wrapper.value) {
+    wrapper.value.onBlur(evt);
+  }
+};
 </script>
 
 <template>
@@ -33,7 +46,17 @@ const refferalNoticeOpen = ref(true);
     <TestModal v-model:opened="modalsOpen.modal2" size="sm" slide-out-right />
     <TestModal v-model:opened="modalsOpen.modal3" size="xl" />
     <TestModal v-model:opened="modalsOpen.modal4" size="xl" center />
-    <div class="p-6 flex flex-col sm:flex-row items-center gap-4 bg-subtle">
+    <div class="p-6 flex flex-col items-center gap-4 bg-subtle">
+      <InputWrapper ref="wrapper" title="Hello">
+        <template #default>
+          <input
+            @focus="onFocus"
+            @blur="onBlur"
+            class="bg-emphasis"
+            v-model="name"
+          />
+        </template>
+      </InputWrapper>
       <Select
         v-model="name"
         wrapper-class="bg-emphasis"
@@ -60,26 +83,11 @@ const refferalNoticeOpen = ref(true);
       <Input
         v-model="name"
         wrapper-class="bg-emphasis"
-        input-class="placeholder:text-subtle"
-        title="Name"
-        placeholder="Enter your name"
+        input-class="text-default text-xl font-bold"
+        title="Deposit"
       >
         <template #prefix>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-[24px] w-[24px] text-subtle"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M21 21l-5.2-5.2"
-            />
-            <circle cx="10" cy="10" r="8" />
-          </svg>
+          <IconsRS />
         </template>
       </Input>
       <Button variant="primary" @click="toggleModal('modal1')">Primary</Button>
