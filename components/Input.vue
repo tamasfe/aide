@@ -44,7 +44,7 @@ const onFocus = (evt: FocusEvent) => {
 </script>
 
 <template>
-  <InputWrapper ref="wrapper" v-bind="props" animate>
+  <InputWrapper ref="wrapper" v-bind="props">
     <template #prefix>
       <slot name="prefix" />
     </template>

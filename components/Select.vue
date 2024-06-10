@@ -1,28 +1,38 @@
 <script setup lang="ts">
+import { InputWrapper } from "#components";
 import {
-  IconsCaretUp as CaretUp,
-  IconsCaretDown as CaretDown,
-} from "#components";
-import { autoUpdate, hide, size, useFloating } from "@floating-ui/vue";
-import { onClickOutside } from "@vueuse/core";
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectItemIndicator,
+  SelectItemText,
+  SelectPortal,
+  SelectRoot,
+  SelectScrollDownButton,
+  SelectScrollUpButton,
+  SelectTrigger,
+  SelectValue,
+  SelectViewport,
+} from "radix-vue";
 
 type SelectOption = {
-  value: number | string | boolean;
+  value: string;
   title: string;
 };
 
+defineOptions({
+  inheritAttrs: false,
+});
+
 const props = defineProps<{
-  modelValue: string | number | boolean;
+  modelValue?: string;
   inputClass?: string;
   wrapperClass?: string;
   title?: string;
   error?: string;
   disabled?: boolean;
-  placeholder?: string;
-  options: SelectOption[];
+  options?: SelectOption[];
 }>();
-
-const { options } = toRefs(props);
 
 const emit = defineEmits(["update:modelValue", "change", "focus", "blur"]);
 
@@ -31,129 +41,100 @@ const modelValue = computed({
   set: (value) => emit("update:modelValue", value),
 });
 
-const opened = ref(false);
-const wrapper = ref<HTMLElement | null>(null);
-const floating = ref<HTMLElement | null>(null);
-
-const borderRadiusClass = computed(() => {
-  return opened.value ? "rounded-t-default" : "rounded-default";
-});
-
-const cursorClass = computed(() => {
-  return props.disabled ? "cursor-not-allowed" : "cursor-pointer";
-});
-
-const selectTitle = computed(() => {
-  const option = options.value.find(
-    (option) => option.value === modelValue.value,
-  );
-  return option?.title || props.placeholder || "Select";
-});
-
-const { floatingStyles, update } = useFloating(wrapper, floating, {
-  middleware: [
-    hide(),
-    size({
-      apply({ rects, elements }) {
-        Object.assign(elements.floating.style, {
-          width: `${rects.reference.width}px`,
-          zIndex: "9999",
-          overflow: "auto",
-          maxHeight: "300px",
-        });
-      },
-    }),
-  ],
-});
-
-const open = () => {
-  if (props.disabled) {
-    return;
-  }
-  opened.value = true;
-  emit("focus");
-};
-
-const close = () => {
-  opened.value = false;
-  emit("blur");
-};
-
-const selectOption = (option: SelectOption) => {
-  modelValue.value = option.value;
-  emit("change", option.value);
-  close();
-};
-
-onClickOutside(floating, (event) => {
-  if (!opened.value) {
-    return;
-  }
-
-  if (wrapper.value?.contains(event.target as Node)) {
-    event.stopPropagation();
-  }
-
-  close();
-});
-
-let cleanup: (() => void) | undefined = undefined;
-
-watch(opened, (newValue) => {
-  if (newValue) {
-    nextTick(() => {
-      if (wrapper.value && floating.value) {
-        cleanup = autoUpdate(wrapper.value, floating.value, update);
-      }
-    });
-  } else if (cleanup) {
-    cleanup();
-  }
+const selectedOption = computed(() => {
+  return props.options?.find((option) => option.value === modelValue.value);
 });
 </script>
 
 <template>
-  <div ref="wrapper" :class="cursorClass" @click="open">
-    <label v-if="title" class="text-subtle">{{ title }}</label>
-    <div
-      class="flex items-center gap-4 p-[8px] sm:p-[16px] focus:bg-white w-full"
-      :class="[wrapperClass, borderRadiusClass]"
-    >
-      <slot name="prefix" />
-      <span
-        class="flex-1 text-[18px] text-emphasis font-medium"
-        :class="inputClass"
+  <SelectRoot v-model="modelValue" v-slot="{ open }">
+    <SelectTrigger asChild>
+      <InputWrapper
+        class="cursor-pointer"
+        v-bind="$attrs"
+        :wrapper-class="props.wrapperClass"
+        :title="props.title"
+        :error="props.error"
+        :disabled="props.disabled"
+        :modelValue="modelValue"
+        :aria-label="title"
       >
-        {{ selectTitle }}
-      </span>
-      <div>
-        <div v-if="opened">
-          <CaretUp />
-        </div>
-        <div v-else>
-          <CaretDown />
-        </div>
-      </div>
-    </div>
-    <div v-if="error" class="text-red-400">{{ error }}</div>
-    <div
-      v-if="opened"
-      ref="floating"
-      :style="floatingStyles"
-      class="absolute rounded-b-default bg-emphasis"
-    >
-      <div class="flex flex-col">
-        <div v-for="option in options">
-          <div
-            class="p-[8px] sm:p-[16px] cursor-pointer text-[18px] text-subtle hover:bg-subtle hover:text-emphasis font-medium"
-            @click.stop="selectOption(option)"
+        <template #prefix>
+          <slot name="prefix" />
+        </template>
+        <template #default>
+          <SelectValue class="text-[18px] font-medium">
+            {{ selectedOption?.title }}
+          </SelectValue>
+        </template>
+        <template #suffix>
+          <IconsCaretUp v-if="open" />
+          <IconsCaretDown v-else />
+        </template>
+      </InputWrapper>
+    </SelectTrigger>
+
+    <SelectPortal>
+      <transition name="giro__select-fade">
+        <SelectContent
+          class="bg-emphasis giro__select-content rounded-b-default"
+          position="popper"
+          :side-offset="-10"
+          align="start"
+          side="bottom"
+        >
+          <SelectScrollUpButton
+            class="flex items-center justify-center h-[18px] bg-emphasis cursor-default font-bold"
           >
-            <slot name="option" :option="option">
-              {{ option.title }}
-            </slot>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+            ^
+          </SelectScrollUpButton>
+          <SelectViewport class="pt-2">
+            <SelectGroup class="flex flex-col text-[18px] font-medium">
+              <SelectItem
+                v-for="(option, index) in options"
+                :key="index"
+                class="cursor-pointer outline-none px-4 py-2 text-subtle hover:text-emphasis hover:bg-subtle"
+                :value="option.value"
+              >
+                <slot name="option" :option="option">
+                  <div class="flex items-center justify-between">
+                    <SelectItemText>
+                      {{ option.title }}
+                    </SelectItemText>
+                    <SelectItemIndicator> true </SelectItemIndicator>
+                  </div>
+                </slot>
+              </SelectItem>
+            </SelectGroup>
+          </SelectViewport>
+          <SelectScrollDownButton
+            class="flex items-center justify-center h-[18px] bg-emphasis cursor-default font-bold"
+          >
+            v
+          </SelectScrollDownButton>
+        </SelectContent>
+      </transition>
+    </SelectPortal>
+  </SelectRoot>
 </template>
+<style>
+.giro__select-content {
+  width: var(--radix-select-trigger-width);
+  max-height: var(--radix-select-content-available-height);
+}
+
+.giro__select-fade-enter-active,
+.giro__select-fade-leave-active {
+  transition: opacity 0.25s;
+}
+
+.giro__select-fade-enter-from,
+.giro__select-fade-leave-to {
+  opacity: 0;
+}
+
+.giro__select-fade-enter-to,
+.giro__select-fade-leave-from {
+  opacity: 1;
+}
+</style>

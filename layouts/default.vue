@@ -13,20 +13,9 @@ const toggleModal = (key: any) => {
 };
 
 const name = ref("10000");
+const selectValue = ref<string>();
 const refferalNoticeOpen = ref(true);
 const wrapper = ref();
-
-const onFocus = (evt: FocusEvent) => {
-  if (wrapper.value) {
-    wrapper.value.onFocus(evt);
-  }
-};
-
-const onBlur = (evt: FocusEvent) => {
-  if (wrapper.value) {
-    wrapper.value.onBlur(evt);
-  }
-};
 </script>
 
 <template>
@@ -47,49 +36,116 @@ const onBlur = (evt: FocusEvent) => {
     <TestModal v-model:opened="modalsOpen.modal3" size="xl" />
     <TestModal v-model:opened="modalsOpen.modal4" size="xl" center />
     <div class="p-6 flex flex-col items-center gap-4 bg-subtle">
-      <InputWrapper ref="wrapper" title="Hello">
+      <InputWrapper ref="wrapper" class="w-full">
         <template #default>
-          <input
-            @focus="onFocus"
-            @blur="onBlur"
-            class="bg-emphasis"
-            v-model="name"
-          />
+          <div class="bg-emphasis text-subtle">test 123123123123123123123</div>
         </template>
       </InputWrapper>
-      <Select
-        v-model="name"
-        wrapper-class="bg-emphasis"
-        input-class="placeholder:text-subtle"
-        title="Name"
-        placeholder="Enter your name"
-        error="You cannot do that sir"
-        :options="[
-          {
-            title: 'John Doe',
-            value: 'John Doe',
-          },
-          {
-            title: 'Jane Doe',
-            value: 'Jane Doe',
-          },
-          {
-            title: 'John Smith',
-            value: 'John Smith',
-          },
-        ]"
-      >
-      </Select>
-      <Input
-        v-model="name"
-        wrapper-class="bg-emphasis"
-        input-class="text-default text-xl font-bold"
-        title="Deposit"
-      >
-        <template #prefix>
-          <IconsRS />
-        </template>
-      </Input>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
+        <Select
+          v-model="selectValue"
+          wrapper-class="bg-emphasis"
+          input-class="placeholder:text-subtle"
+          title="Name"
+          placeholder="Enter your name"
+          :options="[
+            {
+              title: 'John Doe',
+              value: 'John Doe',
+            },
+            {
+              title: 'Jane Doe',
+              value: 'Jane Doe',
+            },
+            {
+              title: 'John Smith',
+              value: 'John Smith',
+            },
+            {
+              title: 'Jane Smith',
+              value: 'Jane Smith',
+            },
+            {
+              title: 'John Doe',
+              value: 'John Doe',
+            },
+            {
+              title: 'Jane Doe',
+              value: 'Jane Doe',
+            },
+            {
+              title: 'John Smith',
+              value: 'John Smith',
+            },
+            {
+              title: 'Jane Smith',
+              value: 'Jane Smith',
+            },
+            {
+              title: 'John Doe',
+              value: 'John Doe',
+            },
+            {
+              title: 'Jane Doe',
+              value: 'Jane Doe',
+            },
+            {
+              title: 'John Smith',
+              value: 'John Smith',
+            },
+            {
+              title: 'Jane Smith',
+              value: 'Jane Smith',
+            },
+            {
+              title: 'John Doe',
+              value: 'John Doe',
+            },
+            {
+              title: 'Jane Doe',
+              value: 'Jane Doe',
+            },
+            {
+              title: 'John Smith',
+              value: 'John Smith',
+            },
+            {
+              title: 'Jane Smith',
+              value: 'Jane Smith',
+            },
+            {
+              title: 'John Doe',
+              value: 'John Doe',
+            },
+            {
+              title: 'Jane Doe',
+              value: 'Jane Doe',
+            },
+            {
+              title: 'John Smith',
+              value: 'John Smith',
+            },
+            {
+              title: 'Jane Smith',
+              value: 'Jane Smith',
+            },
+          ]"
+        >
+          <template #prefix>
+            <IconsRS />
+          </template>
+        </Select>
+        <Input
+          v-model="name"
+          wrapper-class="bg-emphasis"
+          input-class="text-default text-xl font-bold"
+          title="Deposit"
+        >
+          <template #prefix>
+            <IconsRS />
+          </template>
+        </Input>
+      </div>
       <Button variant="primary" @click="toggleModal('modal1')">Primary</Button>
       <Button variant="secondary" @click="toggleModal('modal2')"
         >Secondary</Button

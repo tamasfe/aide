@@ -7,7 +7,6 @@ const props = defineProps<{
   placeholder?: string;
   wrapperClass?: string;
   modelValue?: string;
-  animate?: boolean;
 }>();
 
 const emit = defineEmits([
@@ -23,13 +22,13 @@ const label = ref<HTMLLabelElement | null>(null);
 const container = ref<HTMLDivElement | null>(null);
 
 const labelToPlaceholder = () => {
-  if (label.value && props.animate && !props.modelValue) {
+  if (label.value && !props.modelValue) {
     label.value.classList.remove("giro__input-label-position");
   }
 };
 
 const labelToTop = () => {
-  if (label.value && props.animate && props.modelValue) {
+  if (label.value && props.modelValue) {
     label.value.classList.add("giro__input-label-position");
   }
 };
@@ -44,24 +43,16 @@ const onFocus = (evt: FocusEvent) => {
   emit("blur", evt);
 };
 
-const labelClass = computed(() => {
-  if (props.modelValue && props.animate) {
-    return "giro__input-label giro__input-label-position";
-  } else if (props.modelValue) {
-    return "hidden";
-  } else if (props.animate) {
-    return "giro__input-label";
-  } else {
-    return "giro__input-placeholder";
-  }
+const labelPositionClass = computed(() => {
+  return props.modelValue ? "giro__input-label-position" : "";
 });
 
-const wrapperPaddingClass = computed(() =>
-  props.animate ? "px-[18px]" : "p-[18px]",
+const defaultSlotWrapperClass = computed(() =>
+  props.title ? "pt-[28px] pb-[6px]" : "",
 );
 
-const labelWrapperClass = computed(() =>
-  props.animate ? "pt-[28px] pb-[6px]" : "",
+const wrapperPaddingClass = computed(() =>
+  props.title ? "px-[18px]" : "p-[18px]",
 );
 
 defineExpose({
@@ -71,26 +62,23 @@ defineExpose({
 </script>
 
 <template>
-  <div
-    ref="container"
-    class="giro__input-container bg-emphasis rounded-default focus-within:outline outline-2 outline-focus"
-  >
+  <div ref="container" class="giro__input-container rounded-default">
     <div
-      class="flex items-center gap-4 rounded-default w-full"
+      class="flex items-center gap-4 rounded-default w-full bg-emphasis focus-within:outline outline-2 outline-focus min-h-16"
       :class="[wrapperClass, wrapperPaddingClass]"
     >
       <slot name="prefix" />
-      <div class="relative h-full">
+      <div class="relative h-full flex-1">
         <label
           ref="label"
           v-if="title"
           :for="inputId"
-          class="text-subtle font-medium"
-          :class="labelClass"
+          class="text-subtle font-medium giro__input-placeholder"
+          :class="labelPositionClass"
         >
           {{ title }}
         </label>
-        <div :class="labelWrapperClass">
+        <div class="h-full" :class="defaultSlotWrapperClass">
           <slot />
         </div>
       </div>
@@ -100,35 +88,19 @@ defineExpose({
   </div>
 </template>
 <style lang="postcss" scoped>
-/* Duplicate styling check for rm */
 .giro__input-placeholder {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  left: 0;
-  font-size: 18px;
-  pointer-events: none;
-}
-
-.giro__input-container:focus-within .giro__input-placeholder {
-  display: none;
-}
-
-.giro__input-label {
-  transition: all 0.2s;
+  transition: transform 0.25s cubic-bezier(0.25, 0, 0.25, 1);
   position: absolute;
   font-size: 18px;
   pointer-events: none;
   top: 50%;
+  transform-origin: left top;
   transform: translateY(-50%);
   left: 0;
 }
 
-.giro__input-container:focus-within .giro__input-label,
+.giro__input-container:focus-within .giro__input-placeholder,
 .giro__input-label-position {
-  @apply text-sm;
-  top: 10%;
-  transform: translateY(0);
-  left: 0;
+  transform: translateY(-24px) scale(0.75);
 }
 </style>
