@@ -11,6 +11,7 @@ const props = defineProps<{
   readonly?: boolean;
   placeholder?: string;
   blurScreen?: boolean;
+  scrollIntoView?: boolean;
 }>();
 
 const emit = defineEmits([
@@ -64,7 +65,14 @@ const onFocus = (evt: FocusEvent) => {
     wrapper.value.onFocus(evt);
   }
   emit("focus", evt);
-  if (props.blurScreen) {
+  if (props.blurScreen && props.scrollIntoView) {
+    wrapper.value?.$el?.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+      inline: "center",
+    });
+    overlay();
+  } else if (props.blurScreen) {
     overlay();
   }
 };

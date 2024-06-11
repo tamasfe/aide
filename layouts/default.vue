@@ -141,6 +141,7 @@ const wrapper = ref();
           input-class="text-default text-xl font-bold"
           title="Deposit"
           blurScreen
+          scrollIntoView
         >
           <template #prefix>
             <IconsRS />
