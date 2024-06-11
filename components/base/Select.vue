@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { InputWrapper } from "#components";
+import { BaseInputWrapper } from "#components";
 import {
   SelectContent,
   SelectGroup,
@@ -49,7 +49,7 @@ const selectedOption = computed(() => {
 <template>
   <SelectRoot v-model="modelValue" v-slot="{ open }">
     <SelectTrigger asChild>
-      <InputWrapper
+      <BaseInputWrapper
         class="cursor-pointer"
         v-bind="$attrs"
         :wrapper-class="props.wrapperClass"
@@ -71,7 +71,7 @@ const selectedOption = computed(() => {
           <IconsCaretUp v-if="open" />
           <IconsCaretDown v-else />
         </template>
-      </InputWrapper>
+      </BaseInputWrapper>
     </SelectTrigger>
 
     <SelectPortal>

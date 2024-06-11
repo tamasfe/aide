@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Modal } from "#components";
+import { BaseModal } from "#components";
 
 const emit = defineEmits(["update:opened"]);
 
@@ -16,9 +16,9 @@ const opened = computed({
 </script>
 
 <template>
-  <Modal v-model:opened="opened" v-bind="$attrs">
+  <BaseModal v-model:opened="opened" v-bind="$attrs">
     <template #title>
-      <h1 class="font-bold">Modal Title</h1>
+      <h1 class="font-bold">BaseModal Title</h1>
     </template>
     <div class="flex items-center justify-center">
       Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum
@@ -34,5 +34,5 @@ const opened = computed({
       velit enim. Voluptate laboris sint cupidatat ullamco ut ea consectetur et
       est culpa et culpa duis.
     </div>
-  </Modal>
+  </BaseModal>
 </template>

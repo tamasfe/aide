@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { InputWrapper } from "#components";
+import { BaseInputWrapper } from "#components";
 
 const props = defineProps<{
   modelValue: string;
@@ -28,7 +28,7 @@ const modelValue = computed({
 });
 
 const inputId = Math.random().toString(36).substring(7);
-const wrapper = ref<InstanceType<typeof InputWrapper> | null>(null);
+const wrapper = ref<InstanceType<typeof BaseInputWrapper> | null>(null);
 
 // check if this can be used as plugin, composable or utility
 // overlay and hideOverlay
@@ -79,7 +79,7 @@ const onFocus = (evt: FocusEvent) => {
 </script>
 
 <template>
-  <InputWrapper ref="wrapper" v-bind="props">
+  <BaseInputWrapper ref="wrapper" v-bind="props">
     <template #prefix>
       <slot name="prefix" />
     </template>
@@ -99,5 +99,5 @@ const onFocus = (evt: FocusEvent) => {
     <template #suffix>
       <slot name="suffix" />
     </template>
-  </InputWrapper>
+  </BaseInputWrapper>
 </template>

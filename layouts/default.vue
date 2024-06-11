@@ -1,5 +1,11 @@
 <script setup lang="ts">
-import { Button, Input, GridPage, Notice } from "#components";
+import {
+  BaseButton,
+  BaseInput,
+  GridPage,
+  BaseNotice,
+  BaseSelect,
+} from "#components";
 
 const modalsOpen = reactive<any>({
   modal1: false,
@@ -14,7 +20,7 @@ const toggleModal = (key: any) => {
 
 const name = ref("10000");
 const selectValue = ref<string>();
-const refferalNoticeOpen = ref(true);
+const refferalBaseNoticeOpen = ref(true);
 const wrapper = ref();
 </script>
 
@@ -22,26 +28,26 @@ const wrapper = ref();
   <div>
     <div class="sticky top-0 left-0 w-full z-[10]">
       <Transition name="slide">
-        <Notice
-          v-if="refferalNoticeOpen"
+        <BaseNotice
+          v-if="refferalBaseNoticeOpen"
           class="w-full"
           variant="info"
-          @close="() => (refferalNoticeOpen = false)"
+          @close="() => (refferalBaseNoticeOpen = false)"
         >
           Refer a friend and earn R$ 5,00 of REAL balance for each friend you
           invite
-        </Notice>
+        </BaseNotice>
       </Transition>
       <div
         class="bg-subtle flex items-center justify-between px-4 sm:px-10 py-4"
       >
         <IconsLogo />
         <div class="flex items-center gap-4">
-          <Button variant="secondary" @click="toggleModal('modal3')"
-            >Login</Button
+          <BaseButton variant="secondary" @click="toggleModal('modal3')"
+            >Login</BaseButton
           >
-          <Button variant="primary" @click="toggleModal('modal3')"
-            >Register</Button
+          <BaseButton variant="primary" @click="toggleModal('modal3')"
+            >Register</BaseButton
           >
         </div>
       </div>
@@ -51,13 +57,13 @@ const wrapper = ref();
     <TestModal v-model:opened="modalsOpen.modal3" size="xl" />
     <TestModal v-model:opened="modalsOpen.modal4" size="xl" center />
     <div class="p-6 flex flex-col items-center gap-4 bg-subtle">
-      <InputWrapper ref="wrapper" class="w-full">
+      <BaseInputWrapper ref="wrapper" class="w-full">
         <template #default>
           <div class="bg-emphasis text-subtle">test 123123123123123123123</div>
         </template>
-      </InputWrapper>
+      </BaseInputWrapper>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
-        <Select
+        <BaseSelect
           v-model="selectValue"
           wrapper-class="bg-emphasis"
           input-class="placeholder:text-subtle"
@@ -149,8 +155,8 @@ const wrapper = ref();
           <template #prefix>
             <IconsRS />
           </template>
-        </Select>
-        <Input
+        </BaseSelect>
+        <BaseInput
           v-model="name"
           wrapper-class="bg-emphasis"
           input-class="text-default text-xl font-bold"
@@ -161,22 +167,29 @@ const wrapper = ref();
           <template #prefix>
             <IconsRS />
           </template>
-        </Input>
+        </BaseInput>
       </div>
-      <Button variant="primary" @click="toggleModal('modal1')">Primary</Button>
-      <Button variant="secondary" @click="toggleModal('modal2')"
-        >Secondary</Button
+      <BaseButton variant="primary" @click="toggleModal('modal1')"
+        >Primary</BaseButton
       >
-      <Button variant="emphasis" @click="toggleModal('modal3')"
-        >Emphasis</Button
+      <BaseButton variant="secondary" @click="toggleModal('modal2')"
+        >Secondary</BaseButton
+      >
+      <BaseButton variant="emphasis" @click="toggleModal('modal3')"
+        >Emphasis</BaseButton
       >
     </div>
     <div class="p-6 flex flex-col sm:flex-row items-center gap-4 bg-subtle">
-      <Button variant="primary" big shadow border @click="toggleModal('modal4')"
-        >START</Button
+      <BaseButton
+        variant="primary"
+        big
+        shadow
+        border
+        @click="toggleModal('modal4')"
+        >START</BaseButton
       >
-      <Button variant="secondary" big>SOMETHING </Button>
-      <Button variant="emphasis" big shadow border>DEPOSIT</Button>
+      <BaseButton variant="secondary" big>SOMETHING </BaseButton>
+      <BaseButton variant="emphasis" big shadow border>DEPOSIT</BaseButton>
     </div>
     <div class="grid grid-cols-1 gap-4 p-6">
       <GridPage
@@ -185,7 +198,7 @@ const wrapper = ref();
       >
         <template #title> ⭐ Popular </template>
         <template #options>
-          <Button class="bg-subtle text-subtle"> See all </Button>
+          <BaseButton class="bg-subtle text-subtle"> See all </BaseButton>
         </template>
         <template #default>
           <div class="bg-subtle rounded-default h-[300px] overflow-hidden">
@@ -203,7 +216,7 @@ const wrapper = ref();
       >
         <template #title> 🔥 Hot games today </template>
         <template #options>
-          <Button class="bg-subtle text-subtle"> See all </Button>
+          <BaseButton class="bg-subtle text-subtle"> See all </BaseButton>
         </template>
         <template #default>
           <div class="bg-subtle rounded-default h-[300px] overflow-hidden">

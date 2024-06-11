@@ -1,11 +1,11 @@
 import { describe, it, expect } from "vitest";
 import { mount } from "@vue/test-utils";
 
-import { Button } from "#components";
+import { BaseButton } from "#components";
 
-describe("components/Button.vue", () => {
+describe("components/BaseButton.vue", () => {
   it("should render primary button", () => {
-    const wrapper = mount(Button, {
+    const wrapper = mount(BaseButton, {
       slots: {
         default: "Hello world",
       },
@@ -19,7 +19,7 @@ describe("components/Button.vue", () => {
   });
 
   it("should render secondary button", () => {
-    const wrapper = mount(Button, {
+    const wrapper = mount(BaseButton, {
       slots: {
         default: "Hello world",
       },
@@ -33,7 +33,7 @@ describe("components/Button.vue", () => {
   });
 
   it("should render emphasis button", () => {
-    const wrapper = mount(Button, {
+    const wrapper = mount(BaseButton, {
       slots: {
         default: "Hello world",
       },
@@ -47,7 +47,7 @@ describe("components/Button.vue", () => {
   });
 
   it("should render big button", () => {
-    const wrapper = mount(Button, {
+    const wrapper = mount(BaseButton, {
       slots: {
         default: "Hello world",
       },
@@ -61,7 +61,7 @@ describe("components/Button.vue", () => {
   });
 
   it("should render shadow", () => {
-    const primary = mount(Button, {
+    const primary = mount(BaseButton, {
       slots: {
         default: "Hello world",
       },
@@ -70,7 +70,7 @@ describe("components/Button.vue", () => {
         shadow: true,
       },
     });
-    const emphasis = mount(Button, {
+    const emphasis = mount(BaseButton, {
       slots: {
         default: "Hello world",
       },
@@ -84,7 +84,7 @@ describe("components/Button.vue", () => {
   });
 
   it("renders with prefix and suffix slots", () => {
-    const wrapper = mount(Button, {
+    const wrapper = mount(BaseButton, {
       slots: {
         prefix: '<div class="prefix">Prefix</div>',
         default: "Click me",
@@ -107,7 +107,7 @@ describe("components/Button.vue", () => {
   });
 
   it("emits click event", () => {
-    const wrapper = mount(Button, {
+    const wrapper = mount(BaseButton, {
       slots: {
         default: "Click me",
       },
