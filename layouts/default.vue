@@ -3,8 +3,9 @@ import {
   BaseButton,
   BaseInput,
   GridPage,
-  BaseNotice,
+  HeaderMobile,
   BaseSelect,
+  MenuMobile,
 } from "#components";
 
 const modalsOpen = reactive<any>({
@@ -20,38 +21,12 @@ const toggleModal = (key: any) => {
 
 const name = ref("10000");
 const selectValue = ref<string>();
-const refferalBaseNoticeOpen = ref(true);
 const wrapper = ref();
 </script>
 
 <template>
   <div>
-    <div class="sticky top-0 left-0 w-full z-[10]">
-      <Transition name="slide">
-        <BaseNotice
-          v-if="refferalBaseNoticeOpen"
-          class="w-full"
-          variant="info"
-          @close="() => (refferalBaseNoticeOpen = false)"
-        >
-          Refer a friend and earn R$ 5,00 of REAL balance for each friend you
-          invite
-        </BaseNotice>
-      </Transition>
-      <div
-        class="bg-subtle flex items-center justify-between px-4 sm:px-10 py-4"
-      >
-        <IconsLogo />
-        <div class="flex items-center gap-4">
-          <BaseButton variant="secondary" @click="toggleModal('modal3')"
-            >Login</BaseButton
-          >
-          <BaseButton variant="primary" @click="toggleModal('modal3')"
-            >Register</BaseButton
-          >
-        </div>
-      </div>
-    </div>
+    <HeaderMobile />
     <TestModal v-model:opened="modalsOpen.modal1" size="lg" slide-out-left />
     <TestModal v-model:opened="modalsOpen.modal2" size="sm" slide-out-right />
     <TestModal v-model:opened="modalsOpen.modal3" size="xl" />
@@ -230,20 +205,7 @@ const wrapper = ref();
       </GridPage>
     </div>
     <slot />
-    <!-- PUblic mobile sticky footer -->
-    <div
-      class="block sm:hidden sticky bottom-0 left-0 w-full bg-subtle text-subtle"
-    >
-      <div
-        class="flex items-center justify-between p-4 text-emphasis font-semibold"
-      >
-        <div class="flex-1">Menu</div>
-        <div class="flex-1">Hot</div>
-        <div class="flex-1">Search</div>
-        <div class="flex-1">Support</div>
-        <div class="flex-1">Promos</div>
-      </div>
-    </div>
+    <MenuMobile />
   </div>
 </template>
 
