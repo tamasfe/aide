@@ -7,6 +7,7 @@ const props = defineProps<{
   placeholder?: string;
   wrapperClass?: string;
   modelValue?: string;
+  blurScreen?: boolean;
 }>();
 
 const emit = defineEmits([
@@ -48,11 +49,11 @@ const labelPositionClass = computed(() => {
 });
 
 const defaultSlotWrapperClass = computed(() =>
-  props.title ? "pt-[28px] pb-[6px]" : "",
+  props.title ? "pt-[24px] pb-[4px] sm:pt-[28px] sm:pb-[6px]" : "",
 );
 
 const wrapperPaddingClass = computed(() =>
-  props.title ? "px-[18px]" : "p-[18px]",
+  props.title ? "px-[16px] sm:px-[18px]" : "px-[16px] py-[8px] sm:p-[18px]",
 );
 
 defineExpose({

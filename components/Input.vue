@@ -10,6 +10,7 @@ const props = defineProps<{
   disabled?: boolean;
   readonly?: boolean;
   placeholder?: string;
+  blurScreen?: boolean;
 }>();
 
 const emit = defineEmits([
@@ -28,11 +29,32 @@ const modelValue = computed({
 const inputId = Math.random().toString(36).substring(7);
 const wrapper = ref<InstanceType<typeof InputWrapper> | null>(null);
 
+const overlay = () => {
+  if (wrapper.value) {
+    const div = document.createElement("div");
+    div.classList.add("giro__overlay");
+    wrapper.value.$el.style.zIndex = "3";
+    wrapper.value.$el.parentElement?.appendChild(div);
+  }
+};
+
+const hideOverlay = () => {
+  if (wrapper.value) {
+    wrapper.value.$el.style.zIndex = "";
+    const overlay =
+      wrapper.value.$el.parentElement?.querySelector(".giro__overlay");
+    overlay?.remove();
+  }
+};
+
 const onBlur = (evt: FocusEvent) => {
   if (wrapper.value && modelValue.value === "") {
     wrapper.value.onBlur(evt);
   }
   emit("blur", evt);
+  if (props.blurScreen) {
+    hideOverlay();
+  }
 };
 
 const onFocus = (evt: FocusEvent) => {
@@ -40,6 +62,9 @@ const onFocus = (evt: FocusEvent) => {
     wrapper.value.onFocus(evt);
   }
   emit("focus", evt);
+  if (props.blurScreen) {
+    overlay();
+  }
 };
 </script>
 

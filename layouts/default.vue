@@ -140,6 +140,7 @@ const wrapper = ref();
           wrapper-class="bg-emphasis"
           input-class="text-default text-xl font-bold"
           title="Deposit"
+          blurScreen
         >
           <template #prefix>
             <IconsRS />

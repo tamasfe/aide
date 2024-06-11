@@ -117,24 +117,3 @@ const selectedOption = computed(() => {
     </SelectPortal>
   </SelectRoot>
 </template>
-<style>
-.giro__select-content {
-  width: var(--radix-select-trigger-width);
-  max-height: var(--radix-select-content-available-height);
-}
-
-.giro__select-fade-enter-active,
-.giro__select-fade-leave-active {
-  transition: opacity 0.25s;
-}
-
-.giro__select-fade-enter-from,
-.giro__select-fade-leave-to {
-  opacity: 0;
-}
-
-.giro__select-fade-enter-to,
-.giro__select-fade-leave-from {
-  opacity: 1;
-}
-</style>
