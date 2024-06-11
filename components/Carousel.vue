@@ -52,11 +52,15 @@ const prev = () => {
 
 const transform = () => {
   if (container.value) {
-    items.value[currentIndex.value].scrollIntoView({
-      behavior: "smooth",
-      block: "nearest",
-      inline: "start",
-    });
+    // check why isn't it working browser related or?
+    // items.value[currentIndex.value].scrollIntoView({
+    //   behavior: "smooth",
+    //   block: "nearest",
+    //   inline: "start",
+    // });
+    container.value.style.transform = `translateX(-${
+      currentIndex.value * items.value[currentIndex.value].clientWidth
+    }px)`;
   }
 };
 

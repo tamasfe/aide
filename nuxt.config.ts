@@ -23,6 +23,7 @@ export default defineNuxtConfig({
     "@nuxtjs/tailwindcss",
     "@pinia/nuxt",
     "@nuxt/test-utils/module",
+    "@nuxtjs/device",
   ],
   runtimeConfig: {
     public: {},

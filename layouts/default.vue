@@ -20,17 +20,32 @@ const wrapper = ref();
 
 <template>
   <div>
-    <Transition name="slide">
-      <Notice
-        v-if="refferalNoticeOpen"
-        class="w-full"
-        variant="info"
-        @close="() => (refferalNoticeOpen = false)"
+    <div class="sticky top-0 left-0 w-full z-[10]">
+      <Transition name="slide">
+        <Notice
+          v-if="refferalNoticeOpen"
+          class="w-full"
+          variant="info"
+          @close="() => (refferalNoticeOpen = false)"
+        >
+          Refer a friend and earn R$ 5,00 of REAL balance for each friend you
+          invite
+        </Notice>
+      </Transition>
+      <div
+        class="bg-subtle flex items-center justify-between px-4 sm:px-10 py-4"
       >
-        Refer a friend and earn R$ 5,00 of REAL balance for each friend you
-        invite
-      </Notice>
-    </Transition>
+        <IconsLogo />
+        <div class="flex items-center gap-4">
+          <Button variant="secondary" @click="toggleModal('modal3')"
+            >Login</Button
+          >
+          <Button variant="primary" @click="toggleModal('modal3')"
+            >Register</Button
+          >
+        </div>
+      </div>
+    </div>
     <TestModal v-model:opened="modalsOpen.modal1" size="lg" slide-out-left />
     <TestModal v-model:opened="modalsOpen.modal2" size="sm" slide-out-right />
     <TestModal v-model:opened="modalsOpen.modal3" size="xl" />

@@ -1,10 +1,8 @@
 <!-- TODO: Add server side rendering support -->
 <script setup lang="ts">
-import { breakpointsTailwind, useBreakpoints } from "@vueuse/core";
 import { Carousel } from "#components";
 
-const breakpoints = useBreakpoints(breakpointsTailwind);
-const md = breakpoints.greaterOrEqual("md");
+const { isMobile } = useDevice();
 
 const props = defineProps<{
   data: any[];
@@ -44,7 +42,8 @@ const maxSlides = computed(() => {
           <slot name="title" />
         </div>
         <div
-          class="hidden md:flex items-center gap-x-4 text-3xl font-bold cursor-pointer"
+          v-if="maxSlides > 1 && !isMobile"
+          class="flex items-center gap-x-4 text-3xl font-bold cursor-pointer"
         >
           <div @click="previousPage">
             {{ `<` }}
@@ -56,7 +55,7 @@ const maxSlides = computed(() => {
       </div>
       <slot name="options" />
     </div>
-    <Carousel v-if="md" ref="carousel">
+    <Carousel v-if="!isMobile" ref="carousel">
       <div
         v-for="(_, slide) in maxSlides"
         :key="slide"
