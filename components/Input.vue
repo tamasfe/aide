@@ -29,6 +29,8 @@ const modelValue = computed({
 const inputId = Math.random().toString(36).substring(7);
 const wrapper = ref<InstanceType<typeof InputWrapper> | null>(null);
 
+// check if this can be used as plugin, composable or utility
+// overlay and hideOverlay
 const overlay = () => {
   if (wrapper.value) {
     const div = document.createElement("div");
