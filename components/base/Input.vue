@@ -1,18 +1,24 @@
 <script setup lang="ts">
 import { BaseInputWrapper } from "#components";
 
-const props = defineProps<{
+export type InputProps = {
   modelValue: string;
   inputClass?: string;
   wrapperClass?: string;
   title?: string;
-  error?: string;
   disabled?: boolean;
   readonly?: boolean;
   placeholder?: string;
   blurScreen?: boolean;
   scrollIntoView?: boolean;
-}>();
+  type?: string;
+  required?: boolean;
+};
+
+const props = withDefaults(defineProps<InputProps>(), {
+  type: "text",
+  required: false,
+});
 
 const emit = defineEmits([
   "update:modelValue",
@@ -76,21 +82,37 @@ const onFocus = (evt: FocusEvent) => {
     overlay();
   }
 };
+
+const placeholder = computed(() => {
+  return props.title ? undefined : props.placeholder;
+});
 </script>
 
 <template>
-  <BaseInputWrapper ref="wrapper" v-bind="props">
+  <BaseInputWrapper
+    ref="wrapper"
+    class="relative"
+    :title="title"
+    :wrapperClass="wrapperClass"
+    :disabled="disabled"
+    :placeholder="placeholder"
+    :modelValue="modelValue"
+  >
     <template #prefix>
       <slot name="prefix" />
     </template>
     <input
       :id="inputId"
       ref="input"
-      class="flex-1 bg-inherit border-none outline-none text-[18px] font-[500] focus:placeholder:text-subtle w-full"
+      class="flex-1 bg-inherit border-none outline-none text-[18px] font-[500] placeholder:text-subtle w-full"
       v-model="modelValue"
       :class="inputClass"
       :disabled="disabled"
       :readonly="readonly"
+      :placeholder="placeholder"
+      :type="type"
+      :required="required"
+      :aria-required="required"
       @input="emit('input', $event)"
       @change="emit('change', $event)"
       @focus="onFocus"

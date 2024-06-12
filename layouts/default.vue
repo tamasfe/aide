@@ -1,12 +1,5 @@
 <script setup lang="ts">
-import {
-  BaseButton,
-  BaseInput,
-  GridPage,
-  HeaderMobile,
-  BaseSelect,
-  MenuMobile,
-} from "#components";
+import { BaseButton, GridPage, MainHeader, MenuMobile } from "#components";
 
 const modalsOpen = reactive<any>({
   modal1: false,
@@ -18,132 +11,17 @@ const modalsOpen = reactive<any>({
 const toggleModal = (key: any) => {
   modalsOpen[key] = !modalsOpen[key];
 };
-
-const name = ref("10000");
-const selectValue = ref<string>();
-const wrapper = ref();
 </script>
 
 <template>
   <div>
-    <HeaderMobile />
+    <MainHeader />
     <TestModal v-model:opened="modalsOpen.modal1" size="lg" slide-out-left />
     <TestModal v-model:opened="modalsOpen.modal2" size="sm" slide-out-right />
     <TestModal v-model:opened="modalsOpen.modal3" size="xl" />
     <TestModal v-model:opened="modalsOpen.modal4" size="xl" center />
     <div class="p-6 flex flex-col items-center gap-4 bg-subtle">
-      <BaseInputWrapper ref="wrapper" class="w-full">
-        <template #default>
-          <div class="bg-emphasis text-subtle">test 123123123123123123123</div>
-        </template>
-      </BaseInputWrapper>
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
-        <BaseSelect
-          v-model="selectValue"
-          wrapper-class="bg-emphasis"
-          input-class="placeholder:text-subtle"
-          title="Name"
-          placeholder="Enter your name"
-          :options="[
-            {
-              title: 'John Doe',
-              value: 'John Doe',
-            },
-            {
-              title: 'Jane Doe',
-              value: 'Jane Doe',
-            },
-            {
-              title: 'John Smith',
-              value: 'John Smith',
-            },
-            {
-              title: 'Jane Smith',
-              value: 'Jane Smith',
-            },
-            {
-              title: 'John Doe',
-              value: 'John Doe',
-            },
-            {
-              title: 'Jane Doe',
-              value: 'Jane Doe',
-            },
-            {
-              title: 'John Smith',
-              value: 'John Smith',
-            },
-            {
-              title: 'Jane Smith',
-              value: 'Jane Smith',
-            },
-            {
-              title: 'John Doe',
-              value: 'John Doe',
-            },
-            {
-              title: 'Jane Doe',
-              value: 'Jane Doe',
-            },
-            {
-              title: 'John Smith',
-              value: 'John Smith',
-            },
-            {
-              title: 'Jane Smith',
-              value: 'Jane Smith',
-            },
-            {
-              title: 'John Doe',
-              value: 'John Doe',
-            },
-            {
-              title: 'Jane Doe',
-              value: 'Jane Doe',
-            },
-            {
-              title: 'John Smith',
-              value: 'John Smith',
-            },
-            {
-              title: 'Jane Smith',
-              value: 'Jane Smith',
-            },
-            {
-              title: 'John Doe',
-              value: 'John Doe',
-            },
-            {
-              title: 'Jane Doe',
-              value: 'Jane Doe',
-            },
-            {
-              title: 'John Smith',
-              value: 'John Smith',
-            },
-            {
-              title: 'Jane Smith',
-              value: 'Jane Smith',
-            },
-          ]"
-        >
-          <template #prefix>
-            <IconsRS />
-          </template>
-        </BaseSelect>
-        <BaseInput
-          v-model="name"
-          wrapper-class="bg-emphasis"
-          input-class="text-default text-xl font-bold"
-          title="Deposit"
-          blurScreen
-          scrollIntoView
-        >
-          <template #prefix>
-            <IconsRS />
-          </template>
-        </BaseInput>
-      </div>
+      <SimpleForm />
       <BaseButton variant="primary" @click="toggleModal('modal1')"
         >Primary</BaseButton
       >

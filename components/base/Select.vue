@@ -20,19 +20,22 @@ type SelectOption = {
   title: string;
 };
 
-defineOptions({
-  inheritAttrs: false,
-});
-
-const props = defineProps<{
+export type SelectProps = {
   modelValue?: string;
   inputClass?: string;
   wrapperClass?: string;
   title?: string;
-  error?: string;
   disabled?: boolean;
   options?: SelectOption[];
-}>();
+  autocomplete?: string;
+  placeholder?: string;
+};
+
+defineOptions({
+  inheritAttrs: false,
+});
+
+const props = defineProps<SelectProps>();
 
 const emit = defineEmits(["update:modelValue", "change", "focus", "blur"]);
 
@@ -44,26 +47,38 @@ const modelValue = computed({
 const selectedOption = computed(() => {
   return props.options?.find((option) => option.value === modelValue.value);
 });
+
+const placeholder = computed(() =>
+  props.title ? undefined : props.placeholder || "Select",
+);
 </script>
 
 <template>
-  <SelectRoot v-model="modelValue" v-slot="{ open }">
+  <SelectRoot
+    v-model="modelValue"
+    v-slot="{ open }"
+    :autocomplete="autocomplete"
+  >
     <SelectTrigger asChild>
       <BaseInputWrapper
         class="cursor-pointer"
         v-bind="$attrs"
-        :wrapper-class="props.wrapperClass"
-        :title="props.title"
-        :error="props.error"
-        :disabled="props.disabled"
-        :modelValue="modelValue"
+        :wrapper-class="wrapperClass"
+        :title="title"
+        :disabled="disabled"
+        :model-value="modelValue"
         :aria-label="title"
+        :aria-expanded="open"
       >
         <template #prefix>
           <slot name="prefix" />
         </template>
         <template #default>
-          <SelectValue class="text-[18px] font-medium">
+          <SelectValue
+            class="text-[18px] font-medium"
+            :class="[selectedOption ? 'text-default' : 'text-subtle']"
+            :placeholder="placeholder"
+          >
             {{ selectedOption?.title }}
           </SelectValue>
         </template>

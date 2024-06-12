@@ -1,14 +1,13 @@
 <script setup lang="ts">
-const props = defineProps<{
+export type InputWrapperProps = {
   title?: string;
-  error?: string;
   disabled?: boolean;
-  readonly?: boolean;
   placeholder?: string;
   wrapperClass?: string;
   modelValue?: string;
-  blurScreen?: boolean;
-}>();
+};
+
+const props = defineProps<InputWrapperProps>();
 
 const emit = defineEmits([
   "update:modelValue",
@@ -85,7 +84,6 @@ defineExpose({
       </div>
       <slot name="suffix" />
     </div>
-    <div v-if="error" class="text-red-400">{{ error }}</div>
   </div>
 </template>
 <style lang="postcss" scoped>

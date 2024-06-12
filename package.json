@@ -15,11 +15,14 @@
   "dependencies": {
     "@floating-ui/vue": "^1.0.6",
     "@pinia/nuxt": "^0.5.1",
+    "@vee-validate/zod": "^4.13.1",
     "@vueuse/core": "^10.10.0",
     "nuxt": "^3.11.2",
     "radix-vue": "^1.8.3",
+    "vee-validate": "^4.13.1",
     "vue": "^3.4.27",
-    "vue-router": "^4.3.3"
+    "vue-router": "^4.3.3",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@nuxt/eslint": "^0.3.13",
