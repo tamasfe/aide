@@ -15,6 +15,8 @@ const validationSchema = toTypedSchema(
       .min(1, { message: "This is required" })
       .min(8, { message: "Too short" }),
     country: zod.string().min(1, { message: "This is required" }),
+    number: zod.number({ message: "Please enter valid number "}).min(1, { message: "This is required" }),
+    region: zod.string().min(1, { message: "This is required" }),
   }),
 );
 const { handleSubmit, errors } = useForm({
@@ -23,6 +25,10 @@ const { handleSubmit, errors } = useForm({
 const { value: email } = useField("email");
 const { value: password } = useField("password");
 const { value: country } = useField("country");
+const { value: number } = useField("number");
+const { value: region } = useField("region",{}, {
+  initialValue: "1",
+});
 
 const onSubmit = handleSubmit((values) => {
   alert(JSON.stringify(values, null, 2));
@@ -69,8 +75,6 @@ const onSubmit = handleSubmit((values) => {
       placeholder="Deposit"
       :error="errors.email"
       hint="Please enter your email"
-      blur-screen
-      scroll-into-view
     >
       <template #prefix>
         <IconsRS />
@@ -85,8 +89,35 @@ const onSubmit = handleSubmit((values) => {
       placeholder="Deposit"
       :error="errors.password"
       hint="Please enter your password"
-      blur-screen
-      scroll-into-view
+    >
+      <template #prefix>
+        <IconsRS />
+      </template>
+    </FormControl>
+    <FormControl
+      type="number"
+      v-model="number"
+      v-model:region="region"
+      :options="[
+        {
+          title: 'USA (+1)',
+          value: '1',
+        },
+        {
+          title: 'CA (+1)',
+          value: '1',
+        },
+        {
+          title: 'DE (+49)',
+          value: '49',
+        }
+      ]"
+      title="Number"
+      wrapper-class="bg-emphasis"
+      input-class="text-default text-xl font-bold"
+      placeholder="Number"
+      :error="errors.number || errors.region"
+      hint="Please enter your number"
     >
       <template #prefix>
         <IconsRS />

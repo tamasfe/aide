@@ -2,7 +2,7 @@
 import { BaseInputWrapper } from "#components";
 
 export type InputProps = {
-  modelValue: string;
+  modelValue?: string;
   inputClass?: string;
   wrapperClass?: string;
   title?: string;
@@ -35,6 +35,7 @@ const modelValue = computed({
 
 const inputId = Math.random().toString(36).substring(7);
 const wrapper = ref<InstanceType<typeof BaseInputWrapper> | null>(null);
+const input = ref<HTMLInputElement | null>(null);
 
 // check if this can be used as plugin, composable or utility
 // overlay and hideOverlay
@@ -83,8 +84,25 @@ const onFocus = (evt: FocusEvent) => {
   }
 };
 
+const focus = () => {
+  if (input.value) {
+    input.value.focus();
+  }
+};
+
+const blur = () => {
+  if (input.value) {
+    input.value.blur();
+  }
+};
+
 const placeholder = computed(() => {
   return props.title ? undefined : props.placeholder;
+});
+
+defineExpose({
+  focus,
+  blur,
 });
 </script>
 

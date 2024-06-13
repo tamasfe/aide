@@ -29,13 +29,13 @@ const { opened } = toRefs(props);
 
 const animationName = computed(() => {
   if (props.slideOutLeft) {
-    return "robust-ui-modal__slide-left";
+    return "giro__modal-slide-left";
   }
   if (props.slideOutRight) {
-    return "robust-ui-modal__slide-right";
+    return "giro__modal-slide-right";
   }
 
-  return "robust-ui-modal__fade";
+  return "giro__modal-fade";
 });
 
 const positionClass = computed(() => {
@@ -106,7 +106,7 @@ const size = computed(() => {
           @click.self="close"
         ></div>
         <div
-          class="giro__modal-box bg-subtle text-emphasis rounded-default p-[32px] flex flex-col gap-y-4"
+          class="giro__modal-box bg-emphasis text-emphasis rounded-default p-[32px] flex flex-col gap-y-4"
           :class="[positionClass, size]"
           @click.stop
         >
