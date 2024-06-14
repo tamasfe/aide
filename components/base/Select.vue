@@ -3,6 +3,7 @@ import { BaseInputWrapper } from "#components";
 import {
   SelectContent,
   SelectGroup,
+  SelectIcon,
   SelectItem,
   SelectItemIndicator,
   SelectItemText,
@@ -61,7 +62,8 @@ const placeholder = computed(() =>
   >
     <SelectTrigger asChild>
       <BaseInputWrapper
-        class="cursor-pointer"
+        class="cursor-pointer focus:outline outline-focus outline-2"
+        tabindex="0"
         v-bind="$attrs"
         :wrapper-class="wrapperClass"
         :title="title"
@@ -83,8 +85,12 @@ const placeholder = computed(() =>
           </SelectValue>
         </template>
         <template #suffix>
-          <IconsCaretUp v-if="open" />
-          <IconsCaretDown v-else />
+          <slot name="suffix" :open="open">
+            <SelectIcon>
+              <IconsCaretUp v-if="open" />
+              <IconsCaretDown v-else />
+            </SelectIcon>
+          </slot>
         </template>
       </BaseInputWrapper>
     </SelectTrigger>
@@ -108,7 +114,7 @@ const placeholder = computed(() =>
               <SelectItem
                 v-for="(option, index) in options"
                 :key="index"
-                class="cursor-pointer outline-none px-4 py-2 text-subtle hover:text-emphasis hover:bg-subtle"
+                class="cursor-pointer outline-none px-4 py-2 text-subtle hover:text-emphasis hover:bg-subtle focus:bg-subtle"
                 :value="option.value"
               >
                 <slot name="option" :option="option">

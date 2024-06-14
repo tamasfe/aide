@@ -35,12 +35,12 @@ const labelToTop = () => {
 
 const onBlur = (evt: FocusEvent) => {
   labelToPlaceholder();
-  emit("focus", evt);
+  emit("blur", evt);
 };
 
 const onFocus = (evt: FocusEvent) => {
   labelToTop();
-  emit("blur", evt);
+  emit("focus", evt);
 };
 
 const labelPositionClass = computed(() => {

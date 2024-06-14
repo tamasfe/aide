@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { BaseInput, BaseSelect } from "#components";
 import type { InputProps } from "./base/Input.vue";
+import type { NumberProps } from "./base/Number.vue";
 import type { SelectProps } from "./base/Select.vue";
 
 defineOptions({
@@ -20,6 +21,10 @@ type TextControl = {
 type SelectControl = {
   type: "select";
 } & SelectProps;
+
+type NumberControl = {
+  type: "number";
+} & NumberProps;
 
 // vue doens't support auto type detecta :(
 const props = withDefaults(defineProps<FormControlProps>(), {
@@ -41,7 +46,7 @@ const controlAttrs = computed(() => {
 const isInput = computed(() => {
   const inputs = {
     text: true,
-    number: true,
+    number: false,
     password: true,
     email: true,
     tel: true,
@@ -69,6 +74,14 @@ const isInput = computed(() => {
         <slot name="prefix" />
       </template>
     </BaseSelect>
+    <BaseNumber
+      v-else-if="type === 'number'"
+      v-bind="controlAttrs as NumberControl"
+    >
+      <template v-if="$slots.suffix" #suffix>
+        <slot name="suffix" />
+      </template>
+    </BaseNumber>
     <div v-if="error" class="text-red-400">{{ error }}</div>
     <div v-if="hint" class="text-emphasis text-sm font-medium">
       Info: {{ hint }}

@@ -54,7 +54,7 @@ const getShadowClass = computed(() => {
 <template>
   <button
     :disabled="disabled"
-    class="rounded-default"
+    class="rounded-default outline-none"
     :class="[getVariantClass, getSizeClass, getBorderClass, getShadowClass]"
   >
     <div class="flex items-center gap-x-2">
