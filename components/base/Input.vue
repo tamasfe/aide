@@ -43,7 +43,7 @@ const overlay = () => {
   if (wrapper.value) {
     const div = document.createElement("div");
     div.classList.add("giro__overlay");
-    wrapper.value.$el.style.zIndex = "3";
+    wrapper.value.$el.style.zIndex = "12";
     wrapper.value.$el.parentElement?.appendChild(div);
   }
 };
@@ -72,14 +72,14 @@ const onFocus = (evt: FocusEvent) => {
     wrapper.value.onFocus(evt);
   }
   emit("focus", evt);
-  if (props.blurScreen && props.scrollIntoView) {
+  if (props.scrollIntoView) {
     wrapper.value?.$el?.scrollIntoView({
       behavior: "smooth",
       block: "center",
       inline: "center",
     });
-    overlay();
-  } else if (props.blurScreen) {
+  }
+  if (props.blurScreen) {
     overlay();
   }
 };
