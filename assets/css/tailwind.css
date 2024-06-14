@@ -4,10 +4,10 @@
 
 :root {
   /* background */
-  --giro-bg: #100D28;
-  --giro-bg-subtle: #131232;
-  --giro-bg-emphasis: #272646;
-  --giro-bg-info: #55288B;
+  --giro-bg: 16, 13, 40;
+  --giro-bg-subtle: 19, 18, 50;
+  --giro-bg-emphasis: 39, 38, 70;
+  --giro-bg-info: 85, 40, 139;
 
   /* text */
   --giro-text: #FFFFFF;
@@ -50,7 +50,7 @@
   }
 
   body {
-    background-color: var(--giro-bg);
+    background-color: rgb(var(--giro-bg));
     height: 100vh;
     color: var(--giro-text);
     font-size: var(--giro-font-size);

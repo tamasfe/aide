@@ -20,9 +20,10 @@ export default <Partial<Config>>{
     },
     extend: {
       colors: {
-        default: "var(--giro-bg)",
-        emphasis: "var(--giro-bg-emphasis)",
-        subtle: "var(--giro-bg-subtle)",
+        default: "rgba(var(--giro-bg), <alpha-value>)",
+        emphasis: "rgba(var(--giro-bg-emphasis), <alpha-value>)",
+        subtle: "rgba(var(--giro-bg-subtle), <alpha-value>)",
+        info: "rgba(var(--giro-bg-info), <alpha-value>)",
         button: {
           primary: "var(--giro-button-primary)",
           "primary-hover": "var(--giro-button-primary-hover)",
@@ -31,7 +32,6 @@ export default <Partial<Config>>{
           emphasis: "var(--giro-button-emphasis)",
           "emphasis-hover": "var(--giro-button-emphasis-hover)",
         },
-        info: "var(--giro-bg-info)",
       },
 
       backgroundImage: {

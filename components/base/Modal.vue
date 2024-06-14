@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { IconsX as X } from "#components";
+import { useScrollLock } from "@vueuse/core";
 
 const props = defineProps<{
   opened: boolean;
@@ -90,6 +91,38 @@ const size = computed(() => {
   }
   return "max-w-lg";
 });
+
+const escape = (e: KeyboardEvent) => {
+  if (e.key === "Escape" && opened.value) {
+    e.preventDefault();
+    e.stopPropagation();
+    close();
+  }
+};
+
+let scrollLocked: ReturnType<typeof useScrollLock> | null = null;
+
+watch(opened, () => {
+  if (scrollLocked) {
+    scrollLocked.value = opened.value;
+  }
+
+  if (opened) {
+    window.addEventListener("keydown", escape);
+  } else {
+    window.removeEventListener("keydown", escape);
+  }
+});
+
+onMounted(() => {
+  scrollLocked = useScrollLock(document.documentElement);
+});
+
+onUnmounted(() => {
+  if (scrollLocked) {
+    scrollLocked.value = false;
+  }
+});
 </script>
 
 <template>
@@ -106,7 +139,7 @@ const size = computed(() => {
           @click.self="close"
         ></div>
         <div
-          class="giro__modal-box bg-emphasis text-emphasis rounded-default p-[32px] flex flex-col gap-y-4"
+          class="giro__modal-box bg-emphasis/85 backdrop-blur-lg text-emphasis rounded-default p-[32px] flex flex-col gap-y-4"
           :class="[positionClass, size]"
           @click.stop
         >
