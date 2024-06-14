@@ -11,7 +11,6 @@ const emit = defineEmits(["update:modelValue"]);
 
 const input = ref<InstanceType<typeof BaseInput> | null>(null);
 const content = ref<InstanceType<typeof PopoverContent> | null>(null);
-const closeElement = ref<HTMLElement | null>(null);
 
 const modelValue = computed({
   get: () => props.modelValue,
@@ -49,19 +48,21 @@ const onOpenAutoFocus = (e: Event) => {
 };
 
 const onClickOutside = (e: CustomEvent) => {
+  if (!opened.value) return;
   const element = e.target as HTMLElement;
-  if (element !== closeElement.value && input.value?.$el.contains(element)) {
-    e.preventDefault();
-  }
+  if (!input.value?.$el.contains(element)) return;
+  e.preventDefault();
 };
 
 const openPopover = (e: Event) => {
+  if (opened.value) return;
   e.preventDefault();
   input.value?.focus();
   opened.value = true;
 };
 
-const close = () => {
+const close = (e: Event) => {
+  e.stopPropagation();
   opened.value = false;
 };
 
@@ -94,7 +95,7 @@ onMounted(() => {
         input-class="text-default text-[18px]"
         placeholder="Search"
         type="search"
-        @click="openPopover"
+        @focus="openPopover"
       >
         <template #prefix>
           <!-- magnifying glass icon -->
@@ -113,7 +114,6 @@ onMounted(() => {
         <template #suffix>
           <div
             v-if="opened"
-            ref="closeElement"
             class="font-bold text-xl cursor-pointer"
             aria-label="Close"
             @click="close"
@@ -134,6 +134,7 @@ onMounted(() => {
         @click-outside="onClickOutside"
         @focus-outside="onClickOutside"
         @pointer-down-outside="onClickOutside"
+        @interact-outside="onClickOutside"
       >
         <slot />
       </PopoverContent>
