@@ -1,7 +1,12 @@
 <script setup lang="ts">
 import { BaseInput } from "#components";
 import { useScrollLock } from "@vueuse/core";
-import { PopoverAnchor, PopoverContent, PopoverRoot } from "radix-vue";
+import {
+  PopoverAnchor,
+  PopoverContent,
+  PopoverPortal,
+  PopoverRoot,
+} from "radix-vue";
 
 const props = defineProps<{
   modelValue?: string;
@@ -130,6 +135,7 @@ onMounted(() => {
         side="bottom"
         :side-offset="25"
         :collision-boundary="input?.$el"
+        update-position-strategy="optimized"
         @open-auto-focus="onOpenAutoFocus"
         @click-outside="onClickOutside"
         @focus-outside="onClickOutside"
