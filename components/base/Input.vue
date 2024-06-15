@@ -132,7 +132,6 @@ defineExpose({
       autocomplete="on"
       @input="emit('input', $event)"
       @change="emit('change', $event)"
-      @focus="onFocus"
       @blur="onBlur"
     >
     <template #suffix>

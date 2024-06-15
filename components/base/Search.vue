@@ -59,9 +59,8 @@ const onClickOutside = (e: CustomEvent) => {
   e.preventDefault();
 };
 
-const openPopover = (e: Event) => {
+const openPopover = () => {
   if (opened.value) return;
-  e.preventDefault();
   input.value?.focus();
   opened.value = true;
 };

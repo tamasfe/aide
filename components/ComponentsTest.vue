@@ -16,12 +16,10 @@ const toggleModal = (key: any) => {
     <TestModal
       v-model:opened="modalsOpen.modal1"
       size="lg"
-      slide-out-left
     />
     <TestModal
       v-model:opened="modalsOpen.modal2"
       size="sm"
-      slide-out-right
     />
     <TestModal
       v-model:opened="modalsOpen.modal3"

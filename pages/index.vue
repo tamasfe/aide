@@ -25,7 +25,7 @@ const search = ref("");
                   src="https://picsum.photos/200/300"
                   alt=""
                   class="w-full h-full object-cover rounded-default transition-transform transform hover:scale-105"
-                />
+                >
               </div>
             </template>
           </GridPage>
@@ -45,7 +45,7 @@ const search = ref("");
               src="https://picsum.photos/200/300"
               alt=""
               class="w-full h-full object-cover rounded-default transition-transform transform hover:scale-105"
-            />
+            >
           </div>
         </template>
       </GridPage>
@@ -63,7 +63,7 @@ const search = ref("");
               src="https://picsum.photos/200/300"
               alt=""
               class="w-full h-full object-cover rounded-default transition-transform transform hover:scale-105"
-            />
+            >
           </div>
         </template>
       </GridPage>
