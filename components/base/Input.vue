@@ -58,9 +58,7 @@ const hideOverlay = () => {
 };
 
 const onBlur = (evt: FocusEvent) => {
-  if (wrapper.value && modelValue.value === "") {
-    wrapper.value.onBlur(evt);
-  }
+  input.value?.blur();
   emit("blur", evt);
   if (props.blurScreen) {
     hideOverlay();
@@ -68,9 +66,7 @@ const onBlur = (evt: FocusEvent) => {
 };
 
 const onFocus = (evt: FocusEvent) => {
-  if (wrapper.value) {
-    wrapper.value.onFocus(evt);
-  }
+  input.value?.focus();
   emit("focus", evt);
   if (props.scrollIntoView) {
     wrapper.value?.$el?.scrollIntoView({
@@ -115,6 +111,8 @@ defineExpose({
     :disabled="disabled"
     :placeholder="placeholder"
     :modelValue="modelValue"
+    @focus="onFocus"
+    @blur="onBlur"
   >
     <template #prefix>
       <slot name="prefix" />
@@ -131,6 +129,7 @@ defineExpose({
       :type="type"
       :required="required"
       :aria-required="required"
+      autocomplete="on"
       @input="emit('input', $event)"
       @change="emit('change', $event)"
       @focus="onFocus"

@@ -87,6 +87,8 @@ const onSubmit = handleSubmit((values) => {
       wrapper-class="bg-emphasis"
       input-class="text-default text-xl font-bold"
       placeholder="Deposit"
+      blur-screen
+      scroll-into-view
       :error="errors.password"
       hint="Please enter your password"
     >

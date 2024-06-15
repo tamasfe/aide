@@ -33,14 +33,14 @@ const labelToTop = () => {
   }
 };
 
-const onBlur = (evt: FocusEvent) => {
+const onBlur = () => {
   labelToPlaceholder();
-  emit("blur", evt);
+  emit("blur");
 };
 
-const onFocus = (evt: FocusEvent) => {
+const onFocus = () => {
   labelToTop();
-  emit("focus", evt);
+  emit("focus");
 };
 
 const labelPositionClass = computed(() => {
@@ -62,7 +62,11 @@ defineExpose({
 </script>
 
 <template>
-  <div ref="container" class="giro__input-container rounded-default">
+  <div
+    ref="container"
+    class="giro__input-container rounded-default"
+    @click="onFocus"
+  >
     <div
       class="flex items-center gap-4 rounded-default w-full bg-emphasis focus-within:outline outline-2 outline-focus min-h-16"
       :class="[wrapperClass, wrapperPaddingClass]"
