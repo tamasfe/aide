@@ -70,7 +70,7 @@ describe("components/BaseInputWrapper.vue", () => {
   it("should emit prefix slot", () => {
     const wrapper = mount(BaseInputWrapper, {
       slots: {
-        prefix: '<div class="prefix">Prefix</div>',
+        prefix: "<div class=\"prefix\">Prefix</div>",
         default: "<input />",
       },
     });
@@ -83,7 +83,7 @@ describe("components/BaseInputWrapper.vue", () => {
   it("should emit suffix slot", () => {
     const wrapper = mount(BaseInputWrapper, {
       slots: {
-        suffix: '<div class="suffix">Suffix</div>',
+        suffix: "<div class=\"suffix\">Suffix</div>",
         default: "<input />",
       },
     });

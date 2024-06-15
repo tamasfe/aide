@@ -86,9 +86,9 @@ describe("components/BaseButton.vue", () => {
   it("renders with prefix and suffix slots", () => {
     const wrapper = mount(BaseButton, {
       slots: {
-        prefix: '<div class="prefix">Prefix</div>',
+        prefix: `<div class="prefix">Prefix</div>`,
         default: "Click me",
-        suffix: '<div class="suffix">Suffix</div>',
+        suffix: `<div class="suffix">Suffix</div>`,
       },
       props: {
         variant: "primary",

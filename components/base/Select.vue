@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { BaseInputWrapper } from "#components";
 import {
   SelectContent,
   SelectGroup,
@@ -15,6 +14,7 @@ import {
   SelectValue,
   SelectViewport,
 } from "radix-vue";
+import { BaseInputWrapper } from "#components";
 
 type SelectOption = {
   value: string;
@@ -42,11 +42,11 @@ const emit = defineEmits(["update:modelValue", "change", "focus", "blur"]);
 
 const modelValue = computed({
   get: () => props.modelValue,
-  set: (value) => emit("update:modelValue", value),
+  set: value => emit("update:modelValue", value),
 });
 
 const selectedOption = computed(() => {
-  return props.options?.find((option) => option.value === modelValue.value);
+  return props.options?.find(option => option.value === modelValue.value);
 });
 
 const placeholder = computed(() =>
@@ -56,11 +56,11 @@ const placeholder = computed(() =>
 
 <template>
   <SelectRoot
-    v-model="modelValue"
     v-slot="{ open }"
+    v-model="modelValue"
     :autocomplete="autocomplete"
   >
-    <SelectTrigger asChild>
+    <SelectTrigger as-child>
       <BaseInputWrapper
         class="cursor-pointer focus:outline outline-focus outline-2"
         tabindex="0"
@@ -85,7 +85,10 @@ const placeholder = computed(() =>
           </SelectValue>
         </template>
         <template #suffix>
-          <slot name="suffix" :open="open">
+          <slot
+            name="suffix"
+            :open="open"
+          >
             <SelectIcon>
               <IconsCaretUp v-if="open" />
               <IconsCaretDown v-else />
@@ -117,7 +120,10 @@ const placeholder = computed(() =>
                 class="cursor-pointer outline-none px-4 py-2 text-subtle hover:text-emphasis hover:bg-subtle focus:bg-subtle"
                 :value="option.value"
               >
-                <slot name="option" :option="option">
+                <slot
+                  name="option"
+                  :option="option"
+                >
                   <div class="flex items-center justify-between">
                     <SelectItemText>
                       {{ option.title }}

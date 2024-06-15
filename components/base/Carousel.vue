@@ -8,7 +8,7 @@ const currentIndex = ref(0);
 
 const handleTouchStart = (e: TouchEvent) => {
   const touch = e.touches[0];
-  let x = touch.clientX;
+  const x = touch.clientX;
 
   const handleTouchEnd = () => {
     container.value?.removeEventListener("touchmove", handleTouchMove);
@@ -17,11 +17,12 @@ const handleTouchStart = (e: TouchEvent) => {
 
   const handleTouchMove = (e: TouchEvent) => {
     const touch = e.touches[0];
-    let dx = touch.clientX - x;
+    const dx = touch.clientX - x;
     if (dx > 100) {
       prev();
       handleTouchEnd();
-    } else if (dx < -100) {
+    }
+    else if (dx < -100) {
       next();
       handleTouchEnd();
     }
@@ -75,7 +76,10 @@ defineExpose({
 <template>
   <div class="relative">
     <div class="giro__carousel">
-      <div class="giro__carousel-container gap-4" ref="container">
+      <div
+        ref="container"
+        class="giro__carousel-container gap-4"
+      >
         <slot />
       </div>
     </div>

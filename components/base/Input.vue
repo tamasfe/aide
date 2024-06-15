@@ -30,7 +30,7 @@ const emit = defineEmits([
 
 const modelValue = computed({
   get: () => props.modelValue,
-  set: (value) => emit("update:modelValue", value),
+  set: value => emit("update:modelValue", value),
 });
 
 const inputId = Math.random().toString(36).substring(7);
@@ -51,8 +51,8 @@ const overlay = () => {
 const hideOverlay = () => {
   if (wrapper.value) {
     wrapper.value.$el.style.zIndex = "";
-    const overlay =
-      wrapper.value.$el.parentElement?.querySelector(".giro__overlay");
+    const overlay
+      = wrapper.value.$el.parentElement?.querySelector(".giro__overlay");
     overlay?.remove();
   }
 };
@@ -107,10 +107,10 @@ defineExpose({
     ref="wrapper"
     class="relative"
     :title="title"
-    :wrapperClass="wrapperClass"
+    :wrapper-class="wrapperClass"
     :disabled="disabled"
     :placeholder="placeholder"
-    :modelValue="modelValue"
+    :model-value="modelValue"
     @focus="onFocus"
     @blur="onBlur"
   >
@@ -120,8 +120,8 @@ defineExpose({
     <input
       :id="inputId"
       ref="input"
-      class="flex-1 bg-inherit border-none outline-none text-[18px] font-[500] placeholder:text-subtle w-full"
       v-model="modelValue"
+      class="flex-1 bg-inherit border-none outline-none text-[18px] font-[500] placeholder:text-subtle w-full"
       :class="inputClass"
       :disabled="disabled"
       :readonly="readonly"
@@ -134,7 +134,7 @@ defineExpose({
       @change="emit('change', $event)"
       @focus="onFocus"
       @blur="onBlur"
-    />
+    >
     <template #suffix>
       <slot name="suffix" />
     </template>

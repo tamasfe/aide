@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { BaseInput } from "#components";
 import { useScrollLock } from "@vueuse/core";
 import {
   PopoverAnchor,
@@ -7,6 +6,7 @@ import {
   PopoverPortal,
   PopoverRoot,
 } from "radix-vue";
+import { BaseInput } from "#components";
 
 const props = defineProps<{
   modelValue?: string;
@@ -38,8 +38,8 @@ const overlay = () => {
 const hideOverlay = () => {
   if (input.value) {
     input.value.$el.style.zIndex = "";
-    const overlay =
-      input.value.$el.parentElement?.querySelector(".giro__overlay");
+    const overlay
+      = input.value.$el.parentElement?.querySelector(".giro__overlay");
     overlay?.remove();
   }
 };
@@ -76,7 +76,8 @@ let scrollLocked: ReturnType<typeof useScrollLock> | null = null;
 watch(opened, (value) => {
   if (value) {
     overlay();
-  } else {
+  }
+  else {
     hideOverlay();
     input.value?.blur();
   }
@@ -91,7 +92,10 @@ onMounted(() => {
 </script>
 
 <template>
-  <PopoverRoot v-model:open="opened" class="outline-none">
+  <PopoverRoot
+    v-model:open="opened"
+    class="outline-none"
+  >
     <PopoverAnchor as-child>
       <BaseInput
         ref="input"
@@ -113,7 +117,7 @@ onMounted(() => {
           >
             <path
               d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z"
-            ></path>
+            />
           </svg>
         </template>
         <template #suffix>

@@ -16,7 +16,10 @@ const opened = computed({
 </script>
 
 <template>
-  <BaseModal v-model:opened="opened" v-bind="$attrs">
+  <BaseModal
+    v-model:opened="opened"
+    v-bind="$attrs"
+  >
     <template #title>
       <h1 class="font-bold">BaseModal Title</h1>
     </template>

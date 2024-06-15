@@ -1,17 +1,17 @@
 <!-- TODO: Add server side rendering support -->
 <script setup lang="ts">
-import { Carousel } from "#components";
+import { BaseCarousel } from "#components";
 
 const { isMobile } = useDevice();
 
 const props = defineProps<{
-  data: any[];
+  data: unknown[];
   columns: number;
 }>();
 
 const { data, columns } = toRefs(props);
 
-const carousel = ref<InstanceType<typeof Carousel> | null>(null);
+const carousel = ref<InstanceType<typeof BaseCarousel> | null>(null);
 
 const emit = defineEmits(["click:nextPage", "click:previousPage"]);
 
@@ -55,13 +55,20 @@ const maxSlides = computed(() => {
       </div>
       <slot name="options" />
     </div>
-    <Carousel v-if="!isMobile" ref="carousel">
+    <BaseCarousel
+      v-if="!isMobile"
+      ref="carousel"
+    >
       <div
         v-for="(_, slide) in maxSlides"
         :key="slide"
         class="flex items-center gap-4"
       >
-        <div v-for="(_, col) in columns" :key="col" class="flex-1">
+        <div
+          v-for="(_, col) in columns"
+          :key="col"
+          class="flex-1"
+        >
           <slot
             v-if="data[slide * columns + col]"
             name="default"
@@ -69,7 +76,7 @@ const maxSlides = computed(() => {
           />
         </div>
       </div>
-    </Carousel>
+    </BaseCarousel>
     <div
       v-else
       class="flex items-center gap-4 overflow-auto hide-scroll giro__hide-scroll"
@@ -79,7 +86,10 @@ const maxSlides = computed(() => {
         :key="index"
         class="giro__grid-page-item"
       >
-        <slot name="default" :data="datapoint" />
+        <slot
+          name="default"
+          :data="datapoint"
+        />
       </div>
     </div>
   </div>

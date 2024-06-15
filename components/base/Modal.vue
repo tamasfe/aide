@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { IconsX as X } from "#components";
 import { useScrollLock } from "@vueuse/core";
+import { IconsX as X } from "#components";
 
 const props = defineProps<{
   opened: boolean;
@@ -42,11 +42,14 @@ const animationName = computed(() => {
 const positionClass = computed(() => {
   if (props.slideOutLeft) {
     return "absolute left-0 top-0 bottom-0 h-full min-h-0";
-  } else if (props.slideOutRight) {
+  }
+  else if (props.slideOutRight) {
     return "absolute right-0 top-0 bottom-0 h-full min-h-0 ";
-  } else if (props.center) {
+  }
+  else if (props.center) {
     return "mx-auto min-h-0 self-center";
-  } else {
+  }
+  else {
     return "mx-auto h-full min-h-0";
   }
 });
@@ -107,9 +110,10 @@ watch(opened, () => {
     scrollLocked.value = opened.value;
   }
 
-  if (opened) {
+  if (opened.value) {
     window.addEventListener("keydown", escape);
-  } else {
+  }
+  else {
     window.removeEventListener("keydown", escape);
   }
 });
@@ -137,7 +141,7 @@ onUnmounted(() => {
         <div
           class="absolute top-0 left-0 right-0 bottom-0 bg-black/40 z-[-1]"
           @click.self="close"
-        ></div>
+        />
         <div
           class="giro__modal-box bg-emphasis/85 backdrop-blur-lg text-emphasis rounded-default p-[32px] flex flex-col gap-y-4"
           :class="[positionClass, size]"
@@ -151,7 +155,10 @@ onUnmounted(() => {
               <slot name="title" />
             </div>
             <slot name="suffix">
-              <div class="cursor-pointer" @click="close">
+              <div
+                class="cursor-pointer"
+                @click="close"
+              >
                 <X :size="32" />
               </div>
             </slot>

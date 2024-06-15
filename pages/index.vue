@@ -7,7 +7,7 @@ const search = ref("");
     <div class="p-6 flex flex-col items-center gap-4 bg-subtle">
       <SimpleForm />
     </div>
-    <Tests />
+    <ComponentTest />
     <div class="grid grid-cols-1 gap-4 p-6">
       <BaseSearch v-model="search">
         <template #default>
@@ -25,7 +25,7 @@ const search = ref("");
                   src="https://picsum.photos/200/300"
                   alt=""
                   class="w-full h-full object-cover rounded-default transition-transform transform hover:scale-105"
-                />
+                >
               </div>
             </template>
           </GridPage>
@@ -45,7 +45,7 @@ const search = ref("");
               src="https://picsum.photos/200/300"
               alt=""
               class="w-full h-full object-cover rounded-default transition-transform transform hover:scale-105"
-            />
+            >
           </div>
         </template>
       </GridPage>
@@ -63,7 +63,7 @@ const search = ref("");
               src="https://picsum.photos/200/300"
               alt=""
               class="w-full h-full object-cover rounded-default transition-transform transform hover:scale-105"
-            />
+            >
           </div>
         </template>
       </GridPage>

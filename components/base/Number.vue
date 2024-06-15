@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { BaseInput } from "#components";
 import {
   SelectContent,
   SelectGroup,
@@ -11,6 +10,7 @@ import {
   SelectValue,
   SelectViewport,
 } from "radix-vue";
+import { BaseInput } from "#components";
 
 type SelectOption = {
   value: string;
@@ -47,16 +47,16 @@ const input = ref<InstanceType<typeof BaseInput>>();
 
 const modelValue = computed({
   get: () => props.modelValue,
-  set: (value) => emit("update:modelValue", value),
+  set: value => emit("update:modelValue", value),
 });
 
 const region = computed({
   get: () => props.region,
-  set: (value) => emit("update:region", value),
+  set: value => emit("update:region", value),
 });
 
 const selectedOption = computed(() => {
-  return props.options?.find((option) => option.value === props.region);
+  return props.options?.find(option => option.value === props.region);
 });
 
 const placeholder = computed(() =>
@@ -72,14 +72,14 @@ const onCloseAutoFocus = (e: Event) => {
 <template>
   <BaseInput
     ref="input"
+    v-model="modelValue"
     class="relative"
     type="number"
     :title="title"
-    :wrapperClass="wrapperClass"
+    :wrapper-class="wrapperClass"
     :input-class="inputClass"
     :disabled="disabled"
     :placeholder="placeholder"
-    v-model="modelValue"
   >
     <template #prefix>
       <SelectRoot v-model="region">
@@ -112,7 +112,10 @@ const onCloseAutoFocus = (e: Event) => {
                     class="cursor-pointer outline-none px-4 py-2 text-subtle hover:text-emphasis hover:bg-subtle focus:bg-subtle"
                     :value="option.value"
                   >
-                    <slot name="option" :option="option">
+                    <slot
+                      name="option"
+                      :option="option"
+                    >
                       <SelectItemText>
                         {{ option.title }}
                       </SelectItemText>

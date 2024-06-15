@@ -74,15 +74,18 @@ defineExpose({
       <slot name="prefix" />
       <div class="relative h-full flex-1">
         <label
-          ref="label"
           v-if="title"
+          ref="label"
           :for="inputId"
           class="text-subtle font-medium giro__input-placeholder"
           :class="labelPositionClass"
         >
           {{ title }}
         </label>
-        <div class="h-full" :class="defaultSlotWrapperClass">
+        <div
+          class="h-full"
+          :class="defaultSlotWrapperClass"
+        >
           <slot />
         </div>
       </div>
@@ -90,6 +93,7 @@ defineExpose({
     </div>
   </div>
 </template>
+
 <style lang="postcss" scoped>
 .giro__input-placeholder {
   transition: transform 0.25s cubic-bezier(0.25, 0, 0.25, 1);

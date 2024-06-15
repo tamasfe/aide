@@ -15,7 +15,7 @@ const validationSchema = toTypedSchema(
       .min(1, { message: "This is required" })
       .min(8, { message: "Too short" }),
     country: zod.string().min(1, { message: "This is required" }),
-    number: zod.number({ message: "Please enter valid number "}).min(1, { message: "This is required" }),
+    number: zod.number({ message: "Please enter valid number " }).min(1, { message: "This is required" }),
     region: zod.string().min(1, { message: "This is required" }),
   }),
 );
@@ -26,7 +26,7 @@ const { value: email } = useField("email");
 const { value: password } = useField("password");
 const { value: country } = useField("country");
 const { value: number } = useField("number");
-const { value: region } = useField("region",{}, {
+const { value: region } = useField("region", {}, {
   initialValue: "1",
 });
 
@@ -34,14 +34,15 @@ const onSubmit = handleSubmit((values) => {
   alert(JSON.stringify(values, null, 2));
 });
 </script>
+
 <template>
   <form
     class="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full"
     @submit="onSubmit"
   >
     <FormControl
-      type="select"
       v-model="country"
+      type="select"
       wrapper-class="bg-emphasis"
       input-class="placeholder:text-subtle"
       placeholder="Enter your name"
@@ -67,8 +68,8 @@ const onSubmit = handleSubmit((values) => {
       </template>
     </FormControl>
     <FormControl
-      type="email"
       v-model="email"
+      type="email"
       title="Email"
       wrapper-class="bg-emphasis"
       input-class="text-default text-xl font-bold"
@@ -81,8 +82,8 @@ const onSubmit = handleSubmit((values) => {
       </template>
     </FormControl>
     <FormControl
-      type="password"
       v-model="password"
+      type="password"
       title="Password"
       wrapper-class="bg-emphasis"
       input-class="text-default text-xl font-bold"
@@ -97,9 +98,9 @@ const onSubmit = handleSubmit((values) => {
       </template>
     </FormControl>
     <FormControl
-      type="number"
       v-model="number"
       v-model:region="region"
+      type="number"
       :options="[
         {
           title: 'USA (+1)',
@@ -112,7 +113,7 @@ const onSubmit = handleSubmit((values) => {
         {
           title: 'DE (+49)',
           value: '49',
-        }
+        },
       ]"
       title="Number"
       wrapper-class="bg-emphasis"
@@ -134,4 +135,4 @@ const onSubmit = handleSubmit((values) => {
       REGISTER
     </BaseButton>
   </form>
-</template
+</template>
