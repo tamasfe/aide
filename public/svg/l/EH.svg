@@ -1,0 +1,15 @@
+<svg width="32" height="24" viewBox="0 0 32 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_270_67359)">
+<rect width="32" height="24" fill="white"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M0 0H32V24H0V0Z" fill="#F7FCFF"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M0 0V8H32V0H0Z" fill="#272727"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M0 16V24H32V16H0Z" fill="#5EAA22"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M0 0L16 12L0 24V0Z" fill="#E31D1C"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M21.6878 15.4771C21.6878 15.4771 19.4131 14.1023 19.4131 11.8305C19.4131 9.55872 21.6878 8.36357 21.6878 8.36357C20.6696 7.71755 17.1391 8.63953 17.1391 11.9045C17.1391 15.1695 20.6365 15.7728 21.6878 15.4771ZM23.5284 11.3125L22.2045 10.0721L22.6617 11.6557L21.3806 12.2626L22.9541 12.7748L23.6374 14.489L23.9363 12.9022L25.4905 13.2454L24.3145 12.097L24.7123 10.8717L23.5284 11.3125Z" fill="#E31D1C"/>
+</g>
+<defs>
+<clipPath id="clip0_270_67359">
+<rect width="32" height="24" fill="white"/>
+</clipPath>
+</defs>
+</svg>

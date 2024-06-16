@@ -763,11 +763,6 @@ export const getCountryCodes = (): CountryCode[] => {
       code: "NL",
     },
     {
-      name: "Netherlands Antilles",
-      dial_code: "+599",
-      code: "AN",
-    },
-    {
       name: "New Caledonia",
       dial_code: "+687",
       code: "NC",

@@ -32,7 +32,7 @@ const { value: region } = useField(
   "region",
   {},
   {
-    initialValue: "1",
+    initialValue: "US+1",
   },
 );
 
@@ -51,7 +51,7 @@ const onSubmit = handleSubmit((values) => {
       type="select"
       wrapper-class="bg-emphasis"
       input-class="placeholder:text-subtle"
-      placeholder="Enter your name"
+      placeholder="Select your country"
       hint="Please select your country"
       :error="errors.country"
       :options="[
@@ -107,20 +107,6 @@ const onSubmit = handleSubmit((values) => {
       v-model="number"
       v-model:region="region"
       type="tel"
-      :options="[
-        {
-          title: 'USA (+1)',
-          value: '1',
-        },
-        {
-          title: 'CA (+1)',
-          value: '1',
-        },
-        {
-          title: 'DE (+49)',
-          value: '49',
-        },
-      ]"
       title="Number"
       wrapper-class="bg-emphasis"
       input-class="text-default text-xl font-bold"

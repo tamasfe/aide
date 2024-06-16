@@ -1,5 +1,7 @@
 <script setup lang="ts">
 const search = ref("");
+const random = (min: number, max: number) =>
+  Math.floor(Math.random() * (max - min + 1) + min);
 </script>
 
 <template>
@@ -22,7 +24,7 @@ const search = ref("");
             <template #default>
               <div class="bg-subtle rounded-default h-[300px] overflow-hidden">
                 <img
-                  src="https://picsum.photos/200/300"
+                  :src="`https://picsum.photos/200/300?random=${random(0, 100)}`"
                   alt=""
                   class="w-full h-full object-cover rounded-default transition-transform transform hover:scale-105"
                 >
@@ -42,7 +44,7 @@ const search = ref("");
         <template #default>
           <div class="bg-subtle rounded-default h-[300px] overflow-hidden">
             <img
-              src="https://picsum.photos/200/300"
+              :src="`https://picsum.photos/200/300?random=${random(0, 100)}`"
               alt=""
               class="w-full h-full object-cover rounded-default transition-transform transform hover:scale-105"
             >
@@ -60,7 +62,7 @@ const search = ref("");
         <template #default>
           <div class="bg-subtle rounded-default h-[300px] overflow-hidden">
             <img
-              src="https://picsum.photos/200/300"
+              :src="`https://picsum.photos/200/300?random=${random(0, 100)}`"
               alt=""
               class="w-full h-full object-cover rounded-default transition-transform transform hover:scale-105"
             >
