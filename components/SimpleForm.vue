@@ -15,7 +15,9 @@ const validationSchema = toTypedSchema(
       .min(1, { message: "This is required" })
       .min(8, { message: "Too short" }),
     country: zod.string().min(1, { message: "This is required" }),
-    number: zod.number({ message: "Please enter valid number " }).min(1, { message: "This is required" }),
+    number: zod
+      .number({ message: "Please enter valid number " })
+      .min(1, { message: "This is required" }),
     region: zod.string().min(1, { message: "This is required" }),
   }),
 );
@@ -26,9 +28,13 @@ const { value: email } = useField("email");
 const { value: password } = useField("password");
 const { value: country } = useField("country");
 const { value: number } = useField("number");
-const { value: region } = useField("region", {}, {
-  initialValue: "1",
-});
+const { value: region } = useField(
+  "region",
+  {},
+  {
+    initialValue: "1",
+  },
+);
 
 const onSubmit = handleSubmit((values) => {
   alert(JSON.stringify(values, null, 2));
@@ -100,7 +106,7 @@ const onSubmit = handleSubmit((values) => {
     <FormControl
       v-model="number"
       v-model:region="region"
-      type="number"
+      type="tel"
       :options="[
         {
           title: 'USA (+1)',

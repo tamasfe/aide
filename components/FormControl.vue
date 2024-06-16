@@ -46,10 +46,10 @@ const controlAttrs = computed(() => {
 const isInput = computed(() => {
   const inputs = {
     text: true,
-    number: false,
+    number: true,
     password: true,
     email: true,
-    tel: true,
+    tel: false,
     search: true,
     select: false,
   };
@@ -89,7 +89,7 @@ const isInput = computed(() => {
       </template>
     </BaseSelect>
     <BaseNumber
-      v-else-if="type === 'number'"
+      v-else-if="type === 'tel'"
       v-bind="controlAttrs as NumberControl"
     >
       <template

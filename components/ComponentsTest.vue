@@ -13,13 +13,14 @@ const toggleModal = (key: any) => {
 
 <template>
   <div>
-    <TestModal
+    <TestDrawer
       v-model:opened="modalsOpen.modal1"
       size="lg"
     />
-    <TestModal
+    <TestDrawer
       v-model:opened="modalsOpen.modal2"
       size="sm"
+      position="right"
     />
     <TestModal
       v-model:opened="modalsOpen.modal3"

@@ -14,13 +14,13 @@ const opened = computed({
 </script>
 
 <template>
-  <BaseDialog
+  <BaseDrawer
     v-model:opened="opened"
     v-bind="$attrs"
   >
     <template #title>
       <h1 class="font-bold flex sm:block items-center justify-center">
-        Dialog Title
+        Drawer Title
       </h1>
     </template>
     <template #description>
@@ -54,5 +54,5 @@ const opened = computed({
         DO SOMETHING
       </BaseButton>
     </div>
-  </BaseDialog>
+  </BaseDrawer>
 </template>
