@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import {
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogOverlay,
-  DialogPortal,
-  DialogRoot,
+  Dialog,
+  DialogPanel,
   DialogTitle,
-} from "radix-vue";
+  DialogDescription,
+  TransitionRoot,
+  TransitionChild,
+} from "@headlessui/vue";
 
 const emit = defineEmits(["update:opened"]);
 
@@ -89,61 +88,97 @@ const size = computed(() => {
   return "max-w-lg";
 });
 
+const closeModal = () => {
+  opened.value = false;
+};
+
 defineOptions({
   inheritAttrs: false,
 });
 </script>
 
 <template>
-  <DialogRoot
-    v-model:open="opened"
-    modal
-  >
-    <DialogPortal>
-      <DialogOverlay
-        class="fixed top-0 left-0 right-0 bottom-0 bg-black/40 z-[13]"
-      />
-      <Transition name="giro__modal-fade">
-        <DialogContent
-          class="fixed top-0 left-0 right-0 bottom-0 rounded-default bg-emphasis/85 backdrop-blur-lg p-[32px] outline-none z-[100] sm:my-20"
-          v-bind="$attrs"
+  <Teleport to="body">
+    <TransitionRoot
+      appear
+      :show="opened"
+      as="template"
+    >
+      <Dialog
+        v-model:open="opened"
+        as="div"
+        class="relative z-10"
+        @close="closeModal"
+      >
+        <TransitionChild
+          as="template"
+          enter="duration-350 ease-out"
+          enter-from="opacity-0"
+          enter-to="opacity-100"
+          leave="duration-350 ease-in"
+          leave-from="opacity-100"
+          leave-to="opacity-0"
+        >
+          <div class="fixed inset-0 bg-black/40 z-[0]" />
+        </TransitionChild>
+
+        <div
+          class="fixed inset-0 overflow-y-auto sm:p-12"
           :class="[positionClass, size]"
         >
-          <DialogTitle class="text-xl font-semibold pb-4">
-            <slot name="title" />
-          </DialogTitle>
-          <DialogDescription>
-            <slot name="description" />
-          </DialogDescription>
-          <slot />
-          <DialogClose
-            class="absolute top-[20px] right-[20px] inline-flex h-[25px] w-[25px] outline-none"
-            aria-label="Close"
+          <TransitionChild
+            as="template"
+            enter="duration-300 ease-out"
+            enter-from="opacity-0 scale-95"
+            enter-to="opacity-100 scale-100"
+            leave="duration-200 ease-in"
+            leave-from="opacity-100 scale-100"
+            leave-to="opacity-0 scale-95"
           >
-            X
-          </DialogClose>
-        </DialogContent>
-      </Transition>
-    </DialogPortal>
-  </DialogRoot>
+            <DialogPanel
+              class="bg-emphasis/85 backdrop-blur-lg rounded-default p-6 flex flex-col gap-4"
+              v-bind="$attrs"
+            >
+              <DialogTitle
+                as="h3"
+                class="text-lg font-medium leading-6"
+              >
+                <div class="relative">
+                  <slot name="title" />
+                  <button
+                    type="button"
+                    class="absolute top-0 right-0 rounded-md text-emphasis hover:text-default"
+                    @click="closeModal"
+                  >
+                    <span class="sr-only">Close</span>
+                    <span class="text-2xl">X</span>
+                  </button>
+                </div>
+              </DialogTitle>
+              <DialogDescription>
+                <slot name="description" />
+              </DialogDescription>
+              <slot>
+                <div class="mt-2">
+                  <p class="text-sm text-gray-500">
+                    Your payment has been successfully submitted. We’ve sent you
+                    an email with all of the details of your order.
+                  </p>
+                </div>
+                <div class="mt-4">
+                  <button
+                    type="button"
+                    class="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                    @click="closeModal"
+                  >
+                    Got it, thanks!
+                  </button>
+                </div>
+              </slot>
+            </DialogPanel>
+          </TransitionChild>
+        </div>
+      </Dialog>
+    </TransitionRoot>
+  </Teleport>
 </template>
-
-<style scoped>
-.giro__modal-fade-enter-active {
-  transition: all 150ms ease-in-out;
-}
-
-.giro__modal-fade-leave-active {
-  transition: all 150ms ease-in-out;
-}
-
-.giro__modal-fade-enter-from,
-.giro__modal-fade-leave-to {
-  opacity: 0;
-}
-
-.giro__modal-fade-enter-to,
-.giro__modal-fade-leave-from {
-  opacity: 1;
-}
-</style>

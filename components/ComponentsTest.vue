@@ -24,11 +24,11 @@ const toggleModal = (key: any) => {
     />
     <TestModal
       v-model:opened="modalsOpen.modal3"
-      size="xl"
+      size="lg"
     />
     <TestModal
       v-model:opened="modalsOpen.modal4"
-      size="xl"
+      size="lg"
       center
     />
     <div class="p-6 flex flex-col sm:flex-row items-center gap-4 bg-subtle">

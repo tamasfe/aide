@@ -38,12 +38,12 @@ const countryCodes = getCountryCodes();
 
 const modelValue = computed({
   get: () => props.modelValue,
-  set: (value) => emit("update:modelValue", value),
+  set: value => emit("update:modelValue", value),
 });
 
 const region = computed({
   get: () => props.region,
-  set: (value) => emit("update:region", value),
+  set: value => emit("update:region", value),
 });
 
 const getCountryCodeValue = (option: CountryCode) => {
@@ -52,7 +52,7 @@ const getCountryCodeValue = (option: CountryCode) => {
 
 const selectedOption = computed(() => {
   return countryCodes.find(
-    (option) => getCountryCodeValue(option) === region.value,
+    option => getCountryCodeValue(option) === region.value,
   );
 });
 
@@ -75,9 +75,15 @@ const placeholder = computed(() =>
   >
     <template #prefix>
       <Listbox v-model="region">
-        <div class="relative outline-none" :class="$attrs.class">
+        <div
+          class="relative outline-none"
+          :class="$attrs.class"
+        >
           <ListboxButton class="outline-none">
-            <div v-if="selectedOption" class="flex items-center gap-2">
+            <div
+              v-if="selectedOption"
+              class="flex items-center gap-2"
+            >
               <BaseFlag
                 :key="selectedOption.code"
                 :code="selectedOption.code"
@@ -108,9 +114,15 @@ const placeholder = computed(() =>
                   class="cursor-pointer outline-none px-5 py-2 text-subtle focus:bg-subtle"
                   :class="[active ? 'bg-subtle text-emphasis' : '']"
                 >
-                  <slot name="option" :option="option">
+                  <slot
+                    name="option"
+                    :option="option"
+                  >
                     <div class="flex items-center justify-between">
-                      <BaseFlag :code="option.code" size="l" />
+                      <BaseFlag
+                        :code="option.code"
+                        size="l"
+                      />
                       <span class="text-[18px]">
                         {{ option.dial_code }}
                       </span>
