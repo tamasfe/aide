@@ -91,6 +91,7 @@ const isInput = computed(() => {
     <BaseNumber
       v-else-if="type === 'tel'"
       v-bind="controlAttrs as NumberControl"
+      type="number"
     >
       <template
         v-if="$slots.suffix"

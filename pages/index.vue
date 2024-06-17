@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const search = ref("");
+const person = ref();
 const random = (min: number, max: number) =>
   Math.floor(Math.random() * (max - min + 1) + min);
 </script>
@@ -8,6 +9,57 @@ const random = (min: number, max: number) =>
   <div>
     <div class="p-6 flex flex-col items-center gap-4 bg-subtle">
       <SimpleForm />
+      <BaseSelectNew
+        v-model="person"
+        class="w-full"
+        placeholder="New select"
+        :options="[
+          {
+            title: 'John Doe',
+            value: 'john-doe',
+          },
+          {
+            title: 'Jane Doe',
+            value: 'jane-doe',
+          },
+          {
+            title: 'John Smith',
+            value: 'john-smith',
+          },
+          {
+            title: 'Jane Smith',
+            value: 'jane-smith',
+          },
+          {
+            title: 'John Johnson',
+            value: 'john-johnson',
+          },
+          {
+            title: 'Jane Johnson',
+            value: 'jane-johnson',
+          },
+          {
+            title: 'John Brown',
+            value: 'john-brown',
+          },
+          {
+            title: 'Jane Brown',
+            value: 'jane-brown',
+          },
+          {
+            title: 'John White',
+            value: 'john-white',
+          },
+          {
+            title: 'Jane White',
+            value: 'jane-white',
+          },
+        ]"
+      >
+        <template #prefix>
+          <IconsRS />
+        </template>
+      </BaseSelectNew>
     </div>
     <ComponentsTest />
     <div class="grid grid-cols-1 gap-4 p-6">

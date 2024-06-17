@@ -42,10 +42,7 @@ const onSubmit = handleSubmit((values) => {
 </script>
 
 <template>
-  <form
-    class="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full"
-    @submit="onSubmit"
-  >
+  <form class="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full" @submit="onSubmit">
     <FormControl
       v-model="country"
       type="select"
@@ -69,9 +66,6 @@ const onSubmit = handleSubmit((values) => {
         },
       ]"
     >
-      <template #prefix>
-        <IconsRS />
-      </template>
     </FormControl>
     <FormControl
       v-model="email"
@@ -83,9 +77,6 @@ const onSubmit = handleSubmit((values) => {
       :error="errors.email"
       hint="Please enter your email"
     >
-      <template #prefix>
-        <IconsRS />
-      </template>
     </FormControl>
     <FormControl
       v-model="password"
@@ -99,9 +90,6 @@ const onSubmit = handleSubmit((values) => {
       :error="errors.password"
       hint="Please enter your password"
     >
-      <template #prefix>
-        <IconsRS />
-      </template>
     </FormControl>
     <FormControl
       v-model="number"
@@ -114,9 +102,6 @@ const onSubmit = handleSubmit((values) => {
       :error="errors.number || errors.region"
       hint="Please enter your number"
     >
-      <template #prefix>
-        <IconsRS />
-      </template>
     </FormControl>
     <BaseButton
       class="col-span-full flex justify-center"

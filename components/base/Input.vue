@@ -41,6 +41,11 @@ const input = ref<HTMLInputElement | null>(null);
 // overlay and hideOverlay
 const overlay = () => {
   if (wrapper.value) {
+    const existing
+      = wrapper.value.$el.parentElement?.querySelector(".giro__overlay");
+    if (existing) {
+      return;
+    }
     const div = document.createElement("div");
     div.classList.add("giro__overlay");
     wrapper.value.$el.style.zIndex = "12";

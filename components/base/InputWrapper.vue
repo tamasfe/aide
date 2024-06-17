@@ -4,7 +4,7 @@ export type InputWrapperProps = {
   disabled?: boolean;
   placeholder?: string;
   wrapperClass?: string;
-  modelValue?: string;
+  modelValue?: unknown;
 };
 
 const props = defineProps<InputWrapperProps>();
