@@ -70,15 +70,6 @@
   }
 }
 
-.giro__select-content {
-  width: var(--radix-select-trigger-width);
-  max-height: var(--radix-select-content-available-height);
-}
-
-.giro__popover-content {
-  width: var(--radix-popover-trigger-width);
-}
-
 .giro__select-fade-enter-active,
 .giro__select-fade-leave-active {
   transition: opacity 0.25s;

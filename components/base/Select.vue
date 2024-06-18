@@ -1,28 +1,20 @@
 <script setup lang="ts">
 import {
-  SelectContent,
-  SelectGroup,
-  SelectIcon,
-  SelectItem,
-  SelectItemIndicator,
-  SelectItemText,
-  SelectPortal,
-  SelectRoot,
-  SelectScrollDownButton,
-  SelectScrollUpButton,
-  SelectTrigger,
-  SelectValue,
-  SelectViewport,
-} from "radix-vue";
+  Listbox,
+  ListboxButton,
+  ListboxOptions,
+  ListboxOption,
+} from "@headlessui/vue";
+
 import { BaseInputWrapper } from "#components";
 
 type SelectOption = {
-  value: string;
+  value: number | string | boolean;
   title: string;
 };
 
 export type SelectProps = {
-  modelValue?: string;
+  modelValue?: SelectOption["value"];
   inputClass?: string;
   wrapperClass?: string;
   title?: string;
@@ -45,102 +37,100 @@ const modelValue = computed({
   set: value => emit("update:modelValue", value),
 });
 
-const selectedOption = computed(() => {
-  return props.options?.find(option => option.value === modelValue.value);
-});
-
 const placeholder = computed(() =>
   props.title ? undefined : props.placeholder || "Select",
 );
+
+const selectedOption = computed(() => {
+  return props.options?.find(option => option.value === modelValue.value);
+});
 </script>
 
 <template>
-  <SelectRoot
+  <Listbox
     v-slot="{ open }"
     v-model="modelValue"
-    :autocomplete="autocomplete"
   >
-    <SelectTrigger as-child>
-      <BaseInputWrapper
-        class="cursor-pointer focus:outline outline-focus outline-2"
-        tabindex="0"
-        v-bind="$attrs"
-        :wrapper-class="wrapperClass"
-        :title="title"
-        :disabled="disabled"
-        :model-value="modelValue"
-        :aria-label="title"
-        :aria-expanded="open"
-      >
-        <template #prefix>
-          <slot name="prefix" />
-        </template>
-        <template #default>
-          <SelectValue
-            class="text-[18px] font-medium"
-            :class="[selectedOption ? 'text-default' : 'text-subtle']"
-            :placeholder="placeholder"
-          >
-            {{ selectedOption?.title }}
-          </SelectValue>
-        </template>
-        <template #suffix>
-          <slot
-            name="suffix"
-            :open="open"
-          >
-            <SelectIcon>
-              <IconsCaretUp v-if="open" />
-              <IconsCaretDown v-else />
-            </SelectIcon>
-          </slot>
-        </template>
-      </BaseInputWrapper>
-    </SelectTrigger>
-
-    <SelectPortal>
-      <transition name="giro__select-fade">
-        <SelectContent
-          class="bg-emphasis giro__select-content rounded-b-default"
-          position="popper"
-          :side-offset="-10"
-          align="start"
-          side="bottom"
+    <div
+      class="relative outline-none rounded-default"
+      :class="$attrs.class"
+    >
+      <ListboxButton class="w-full outline-none">
+        <BaseInputWrapper
+          class="cursor-pointer focus:outline outline-focus outline-2"
+          :class="[open ? 'outline' : '']"
+          tabindex="0"
+          v-bind="$attrs"
+          :wrapper-class="wrapperClass"
+          :title="title"
+          :disabled="disabled"
+          :model-value="modelValue"
+          :aria-label="title"
+          :aria-expanded="open"
         >
-          <SelectScrollUpButton
-            class="flex items-center justify-center h-[18px] bg-emphasis cursor-default font-bold"
+          <template #prefix>
+            <slot name="prefix" />
+          </template>
+          <template #default>
+            <span
+              class="text-[18px] font-medium flex items-start"
+              :class="[modelValue ? 'text-default' : 'text-subtle']"
+            >
+              {{ selectedOption?.title || placeholder }}
+            </span>
+          </template>
+          <template #suffix>
+            <slot
+              name="suffix"
+              :open="open"
+            >
+              <SelectIcon>
+                <IconsCaretUp v-if="open" />
+                <IconsCaretDown v-else />
+              </SelectIcon>
+            </slot>
+          </template>
+        </BaseInputWrapper>
+      </ListboxButton>
+
+      <transition name="giro__select-fade">
+        <ListboxOptions
+          class="absolute giro__select-options max-h-60 w-full overflow-auto rounded-b-default bg-emphasis text-[18px] outline-none"
+        >
+          <ListboxOption
+            v-for="option in options"
+            v-slot="{ selected, active }"
+            :key="option.title"
+            :value="option.value"
+            as="template"
           >
-            ^
-          </SelectScrollUpButton>
-          <SelectViewport class="pt-2">
-            <SelectGroup class="flex flex-col text-[18px] font-medium">
-              <SelectItem
-                v-for="(option, index) in options"
-                :key="index"
-                class="cursor-pointer outline-none px-4 py-2 text-subtle hover:text-emphasis hover:bg-subtle focus:bg-subtle"
-                :value="option.value"
+            <li
+              class="cursor-pointer outline-none px-4 py-2 text-subtle focus:bg-subtle"
+              :class="[active ? 'bg-subtle text-emphasis' : '']"
+            >
+              <slot
+                name="option"
+                :option="option"
               >
-                <slot
-                  name="option"
-                  :option="option"
-                >
-                  <div class="flex items-center justify-between">
-                    <SelectItemText>
-                      {{ option.title }}
-                    </SelectItemText>
-                    <SelectItemIndicator> true </SelectItemIndicator>
-                  </div>
-                </slot>
-              </SelectItem>
-            </SelectGroup>
-          </SelectViewport>
-          <SelectScrollDownButton
-            class="flex items-center justify-center h-[18px] bg-emphasis cursor-default font-bold"
-          >
-            v
-          </SelectScrollDownButton>
-        </SelectContent>
+                <div class="flex items-center justify-between">
+                  <span>
+                    {{ option.title }}
+                  </span>
+                  <span v-if="selected"> true </span>
+                </div>
+              </slot>
+            </li>
+          </ListboxOption>
+        </ListboxOptions>
       </transition>
-    </SelectPortal>
-  </SelectRoot>
+    </div>
+  </Listbox>
 </template>
+
+<style scoped lang="postcss">
+.giro__select-options {
+  top: calc(100% - 5px);
+  left: 0;
+  z-index: 1;
+}
+</style>
