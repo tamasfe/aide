@@ -63,7 +63,10 @@ const random = (min: number, max: number) =>
     </div>
     <ComponentsTest />
     <div class="grid grid-cols-1 gap-4 p-6">
-      <BaseSearch v-model="search">
+      <BaseSearch
+        v-model="search"
+        class="w-full"
+      >
         <template #default>
           <GridPage
             :data="['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']"
