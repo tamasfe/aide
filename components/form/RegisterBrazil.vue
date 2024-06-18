@@ -45,7 +45,7 @@ const onSubmit = handleSubmit((values) => {
 
 <template>
   <form
-    class="flex flex-col items-center gap-5 w-full"
+    class="flex flex-col items-center gap-4 w-full"
     @submit="onSubmit"
   >
     <FormControl
@@ -85,7 +85,7 @@ const onSubmit = handleSubmit((values) => {
       input-class="text-default"
       :error="errors.number || errors.region"
     />
-    <p class="text-sm text-emphasis py-6">
+    <p class="text-sm text-emphasis sm:py-2">
       By signing up you agree to our
       <button
         type="button"
@@ -102,7 +102,7 @@ const onSubmit = handleSubmit((values) => {
     >
       Create Account
     </BaseButton>
-    <p class="text-emphasis py-6">
+    <p class="text-emphasis sm:py-2">
       Have an account already?
       <button
         type="button"
