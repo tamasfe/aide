@@ -16,6 +16,7 @@
     "@floating-ui/vue": "^1.0.6",
     "@headlessui/vue": "^1.7.22",
     "@nuxt/image": "^1.7.0",
+    "@phosphor-icons/vue": "^2.2.1",
     "@pinia/nuxt": "^0.5.1",
     "@vee-validate/zod": "^4.13.1",
     "@vueuse/core": "^10.10.0",

@@ -90,7 +90,7 @@ const placeholder = computed(() =>
                 size="l"
               />
               <span
-                class="text-[18px] font-bold"
+                class="text-[18px]"
                 :class="[selectedOption ? 'text-default' : 'text-subtle']"
                 :placeholder="placeholder"
               >

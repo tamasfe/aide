@@ -7,6 +7,7 @@ import {
   TransitionRoot,
   TransitionChild,
 } from "@headlessui/vue";
+import { PhX } from "@phosphor-icons/vue";
 
 const emit = defineEmits(["update:opened"]);
 
@@ -123,7 +124,7 @@ defineOptions({
         </TransitionChild>
 
         <div
-          class="fixed inset-0 overflow-y-auto sm:p-12"
+          class="fixed inset-0 sm:p-12"
           :class="[positionClass, size]"
         >
           <TransitionChild
@@ -136,45 +137,37 @@ defineOptions({
             leave-to="opacity-0 scale-95"
           >
             <DialogPanel
-              class="bg-emphasis/85 backdrop-blur-lg rounded-default p-6 flex flex-col gap-4"
               v-bind="$attrs"
+              class="bg-emphasis/85 backdrop-blur-lg rounded-default flex flex-col gap-4 h-full"
             >
+              <button
+                type="button"
+                class="absolute top-0 right-0 rounded-md text-emphasis hover:text-default p-4"
+                @click="closeModal"
+              >
+                <span class="sr-only">Close</span>
+                <div
+                  class="p-2 bg-emphasis/50 backdrop-blur-lg rounded-default"
+                >
+                  <PhX
+                    :size="28"
+                    class="relative z-[10]"
+                  />
+                </div>
+              </button>
               <DialogTitle
+                v-if="$slots.title"
                 as="h3"
                 class="text-lg font-medium leading-6"
               >
                 <div class="relative">
                   <slot name="title" />
-                  <button
-                    type="button"
-                    class="absolute top-0 right-0 rounded-md text-emphasis hover:text-default"
-                    @click="closeModal"
-                  >
-                    <span class="sr-only">Close</span>
-                    <span class="text-2xl">X</span>
-                  </button>
                 </div>
               </DialogTitle>
-              <DialogDescription>
+              <DialogDescription v-if="$slots.description">
                 <slot name="description" />
               </DialogDescription>
-              <slot>
-                <div class="mt-2">
-                  <p class="text-sm text-gray-500">
-                    Your payment has been successfully submitted. We’ve sent you
-                    an email with all of the details of your order.
-                  </p>
-                </div>
-                <div class="mt-4">
-                  <button
-                    type="button"
-                    class="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                    @click="closeModal"
-                  >
-                    Got it, thanks!
-                  </button>
-                </div>
-              </slot>
+              <slot />
             </DialogPanel>
           </TransitionChild>
         </div>
@@ -182,3 +175,9 @@ defineOptions({
     </TransitionRoot>
   </Teleport>
 </template>
+
+<style scoped lang="postcss">
+.giro__dialog {
+  @apply p-6;
+}
+</style>

@@ -70,6 +70,9 @@ export default <Partial<Config>>{
           secondary: "var(--giro-button-text-secondary)",
           emphasis: "var(--giro-button-text-emphasis)",
         },
+        brand: {
+          yellow: "var(--giro-brand-yellow)",
+        },
       },
 
       fill: {

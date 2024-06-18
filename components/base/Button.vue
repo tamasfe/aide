@@ -23,7 +23,7 @@ const getVariantClass = computed(() => {
 });
 
 const getSizeClass = computed(() =>
-  big.value ? "p-button-big font-bold" : "p-button font-semibold",
+  big.value ? "p-button-big font-bold text-[20px]" : "p-button font-semibold",
 );
 
 const getBorderClass = computed(() => {
