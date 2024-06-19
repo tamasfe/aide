@@ -138,19 +138,19 @@ defineOptions({
           >
             <DialogPanel
               v-bind="$attrs"
-              class="bg-emphasis/85 backdrop-blur-lg rounded-default flex flex-col gap-4 h-full"
+              class="bg-emphasis/85 backdrop-blur-lg sm:rounded-default flex flex-col gap-4 h-full"
             >
               <button
                 type="button"
-                class="absolute top-0 right-0 rounded-md text-emphasis hover:text-default p-4"
+                class="absolute top-0 right-0 rounded-md text-emphasis hover:text-default p-2 outline-none"
                 @click="closeModal"
               >
                 <span class="sr-only">Close</span>
                 <div
-                  class="p-2 bg-emphasis/50 backdrop-blur-lg rounded-default"
+                  class="p-1 bg-emphasis/50 backdrop-blur-lg rounded-default"
                 >
                   <PhX
-                    :size="28"
+                    :size="24"
                     class="relative z-[10]"
                   />
                 </div>

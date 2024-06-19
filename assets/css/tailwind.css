@@ -39,7 +39,7 @@
   /* spacing */
   --giro-border-radius: 8px;
   --giro-padding-button: 6px 16px 6px 16px;
-  --giro-padding-button-big: 10px 64px 10px 64px;
+  --giro-padding-button-big: 6px 64px 6px 64px;
 
   /* font */
   --giro-font-size: 1rem;

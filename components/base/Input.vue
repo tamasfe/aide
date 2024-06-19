@@ -126,7 +126,7 @@ defineExpose({
       :id="inputId"
       ref="input"
       v-model="modelValue"
-      class="flex-1 bg-inherit border-none outline-none text-[18px] font-[500] placeholder:text-subtle w-full"
+      class="flex-1 bg-inherit border-none outline-none font-medium placeholder:text-subtle w-full"
       :class="inputClass"
       :disabled="disabled"
       :readonly="readonly"

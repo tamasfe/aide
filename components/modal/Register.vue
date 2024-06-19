@@ -17,7 +17,7 @@ const opened = computed({
     v-model:opened="opened"
     size="3xl"
   >
-    <div class="flex flex-col gap-4 rounded-default overflow-hidden">
+    <div class="flex flex-col gap-4 overflow-auto h-full">
       <div class="w-full h-32">
         <NuxtImg
           src="/assets/images/wheel.png"

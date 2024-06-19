@@ -6,6 +6,7 @@ import {
   ListboxOption,
 } from "@headlessui/vue";
 
+import { PhCaretDown, PhCaretUp } from "@phosphor-icons/vue";
 import { BaseInputWrapper } from "#components";
 
 type SelectOption = {
@@ -52,7 +53,7 @@ const selectedOption = computed(() => {
     v-model="modelValue"
   >
     <div
-      class="relative outline-none rounded-default"
+      class="relative outline-none rounded-default h-max"
       :class="$attrs.class"
     >
       <ListboxButton class="w-full outline-none">
@@ -73,7 +74,7 @@ const selectedOption = computed(() => {
           </template>
           <template #default>
             <span
-              class="text-[18px] font-medium flex items-start"
+              class="font-medium flex items-start"
               :class="[modelValue ? 'text-default' : 'text-subtle']"
             >
               {{ selectedOption?.title || placeholder }}
@@ -85,8 +86,14 @@ const selectedOption = computed(() => {
               :open="open"
             >
               <SelectIcon>
-                <IconsCaretUp v-if="open" />
-                <IconsCaretDown v-else />
+                <PhCaretUp
+                  v-if="open"
+                  :size="24"
+                />
+                <PhCaretDown
+                  v-else
+                  :size="24"
+                />
               </SelectIcon>
             </slot>
           </template>
@@ -95,7 +102,7 @@ const selectedOption = computed(() => {
 
       <transition name="giro__select-fade">
         <ListboxOptions
-          class="absolute giro__select-options max-h-60 w-full overflow-auto rounded-b-default bg-emphasis text-[18px] outline-none"
+          class="absolute giro__select-options max-h-60 w-full overflow-auto rounded-b-default bg-emphasis outline-none"
         >
           <ListboxOption
             v-for="option in options"

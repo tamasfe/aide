@@ -47,12 +47,13 @@ const labelPositionClass = computed(() => {
   return props.modelValue ? "giro__input-label-position" : "";
 });
 
-const defaultSlotWrapperClass = computed(() =>
-  props.title ? "pt-[24px] pb-[4px] sm:pt-[28px] sm:pb-[6px]" : "",
-);
+const defaultSlotWrapperClass = computed(() => (props.title ? "pt-4" : ""));
 
+// magic numbers because of the padding
+// of the input when label is present
+// check if it can be improved
 const wrapperPaddingClass = computed(() =>
-  props.title ? "px-[16px] sm:px-[18px]" : "px-[16px] py-[8px] sm:p-[18px]",
+  props.title ? "py-0.5 sm:py-1.5" : "py-[0.813rem] sm:py-[1.063rem]",
 );
 
 defineExpose({
@@ -68,11 +69,14 @@ defineExpose({
     @click="onFocus"
   >
     <div
-      class="flex items-center gap-4 rounded-default w-full bg-emphasis focus-within:outline outline-2 outline-focus min-h-16"
+      class="flex items-center gap-4 rounded-default w-full bg-emphasis focus-within:outline outline-2 outline-focus min-h-12 px-3"
       :class="[wrapperClass, wrapperPaddingClass]"
     >
       <slot name="prefix" />
-      <div class="relative h-full flex-1">
+      <div
+        class="relative h-full flex-1"
+        :class="defaultSlotWrapperClass"
+      >
         <label
           v-if="title"
           ref="label"
@@ -82,10 +86,7 @@ defineExpose({
         >
           {{ title }}
         </label>
-        <div
-          class="h-full"
-          :class="defaultSlotWrapperClass"
-        >
+        <div class="h-full">
           <slot />
         </div>
       </div>
@@ -98,7 +99,6 @@ defineExpose({
 .giro__input-placeholder {
   transition: transform 0.25s cubic-bezier(0.25, 0, 0.25, 1);
   position: absolute;
-  font-size: 18px;
   pointer-events: none;
   top: 50%;
   transform-origin: left top;
@@ -108,6 +108,6 @@ defineExpose({
 
 .giro__input-container:focus-within .giro__input-placeholder,
 .giro__input-label-position {
-  transform: translateY(-24px) scale(0.75);
+  transform: translateY(-20px) scale(0.75);
 }
 </style>

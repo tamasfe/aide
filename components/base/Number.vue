@@ -76,7 +76,7 @@ const placeholder = computed(() =>
     <template #prefix>
       <Listbox v-model="region">
         <div
-          class="relative outline-none"
+          class="relative outline-none inline-flex items-center"
           :class="$attrs.class"
         >
           <ListboxButton class="outline-none">
@@ -90,7 +90,6 @@ const placeholder = computed(() =>
                 size="l"
               />
               <span
-                class="text-[18px]"
                 :class="[selectedOption ? 'text-default' : 'text-subtle']"
                 :placeholder="placeholder"
               >
@@ -101,7 +100,7 @@ const placeholder = computed(() =>
 
           <transition name="giro__select-fade">
             <ListboxOptions
-              class="absolute giro__select-options max-h-60 w-40 overflow-auto rounded-b-default bg-emphasis text-[18px] outline-none"
+              class="absolute giro__select-options max-h-60 w-40 overflow-auto rounded-b-default bg-emphasis outline-none"
             >
               <ListboxOption
                 v-for="option in countryCodes"
@@ -123,7 +122,7 @@ const placeholder = computed(() =>
                         :code="option.code"
                         size="l"
                       />
-                      <span class="text-[18px]">
+                      <span>
                         {{ option.dial_code }}
                       </span>
                     </div>
