@@ -5,9 +5,16 @@ const props = defineProps<{
   opened: boolean;
 }>();
 
+const { isDesktop } = useDevice();
+
 const opened = computed({
   get: () => props.opened,
   set: (value: boolean) => emit("update:opened", value),
+});
+
+const imageSrc = computed(() => {
+  const name = isDesktop ? "wheel-desktop" : "wheel";
+  return `/assets/images/${name}.png`;
 });
 </script>
 
@@ -32,7 +39,7 @@ const opened = computed({
           </p>
         </div>
         <NuxtImg
-          src="/assets/images/wheel.png"
+          :src="imageSrc"
           alt="Wheel"
           class="object-cover w-full h-full sm:rounded-l-default"
         />
