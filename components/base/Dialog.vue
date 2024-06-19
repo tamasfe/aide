@@ -127,6 +127,16 @@ defineOptions({
           class="fixed inset-0 sm:p-12"
           :class="[positionClass, size]"
         >
+          <button
+            type="button"
+            class="absolute top-0 right-0 rounded-md text-emphasis hover:text-default p-2 outline-none z-10"
+            @click="closeModal"
+          >
+            <span class="sr-only">Close</span>
+            <div class="p-1 bg-emphasis/50 backdrop-blur-lg rounded-default">
+              <PhX :size="24" />
+            </div>
+          </button>
           <TransitionChild
             as="template"
             enter="duration-300 ease-out"
@@ -140,21 +150,6 @@ defineOptions({
               v-bind="$attrs"
               class="bg-emphasis/85 backdrop-blur-lg sm:rounded-default flex flex-col gap-4 h-full"
             >
-              <button
-                type="button"
-                class="absolute top-0 right-0 rounded-md text-emphasis hover:text-default p-2 outline-none"
-                @click="closeModal"
-              >
-                <span class="sr-only">Close</span>
-                <div
-                  class="p-1 bg-emphasis/50 backdrop-blur-lg rounded-default"
-                >
-                  <PhX
-                    :size="24"
-                    class="relative z-[10]"
-                  />
-                </div>
-              </button>
               <DialogTitle
                 v-if="$slots.title"
                 as="h3"

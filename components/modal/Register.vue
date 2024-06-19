@@ -18,7 +18,17 @@ const opened = computed({
     size="3xl"
   >
     <div class="flex flex-col gap-4 overflow-auto h-full">
-      <div class="w-full h-32">
+      <div class="relative w-full h-40">
+        <div
+          class="absolute top-1/2 -translate-y-1/2 left-4 text-lg font-bold italic flex flex-col"
+        >
+          <span class="text-brand-yellow text-sm">EXCLUSIVE</span>
+          <span class="font-extrabold text-xl">PRE-RELEASE</span>
+          <span class="font-extrabold text-xl">FROM WILDJACK</span>
+          <span class="font-extrabold">
+            <span class="text-brand-yellow">+100</span> FREE SPINS
+          </span>
+        </div>
         <NuxtImg
           src="/assets/images/wheel.png"
           alt="Wheel"
