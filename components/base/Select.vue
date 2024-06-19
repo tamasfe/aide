@@ -85,16 +85,14 @@ const selectedOption = computed(() => {
               name="suffix"
               :open="open"
             >
-              <SelectIcon>
-                <PhCaretUp
-                  v-if="open"
-                  :size="24"
-                />
-                <PhCaretDown
-                  v-else
-                  :size="24"
-                />
-              </SelectIcon>
+              <PhCaretUp
+                v-if="open"
+                :size="24"
+              />
+              <PhCaretDown
+                v-else
+                :size="24"
+              />
             </slot>
           </template>
         </BaseInputWrapper>

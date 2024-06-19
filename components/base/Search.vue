@@ -3,7 +3,7 @@ import { useScrollLock } from "@vueuse/core";
 
 import { Popover, PopoverPanel } from "@headlessui/vue";
 
-import { PhMagnifyingGlass } from "@phosphor-icons/vue";
+import { PhMagnifyingGlass, PhX } from "@phosphor-icons/vue";
 import { BaseInput } from "#components";
 
 const props = defineProps<{
@@ -100,14 +100,15 @@ defineOptions({
         />
       </template>
       <template #suffix>
-        <div
+        <button
           v-if="opened"
-          class="font-bold text-xl cursor-pointer"
+          type="button"
+          class="font-bold text-xl cursor-pointer outline-none"
           aria-label="Close"
           @click="close"
         >
-          X
-        </div>
+          <PhX :size="24" />
+        </button>
       </template>
     </BaseInput>
     <div
