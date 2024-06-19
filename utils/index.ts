@@ -1209,3 +1209,20 @@ export const getCountryCodes = (): CountryCode[] => {
     },
   ];
 };
+
+export const overlay = (element: HTMLElement) => {
+  const existing = element.parentElement?.querySelector(".giro__overlay");
+  if (existing) {
+    return;
+  }
+  const div = document.createElement("div");
+  div.classList.add("giro__overlay");
+  element.style.zIndex = "12";
+  element.parentElement?.appendChild(div);
+};
+
+export const hideOverlay = (element: HTMLElement) => {
+  element.style.zIndex = "";
+  const overlay = element.parentElement?.querySelector(".giro__overlay");
+  overlay?.remove();
+};

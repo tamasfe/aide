@@ -100,7 +100,7 @@ const placeholder = computed(() =>
 
           <transition name="giro__select-fade">
             <ListboxOptions
-              class="absolute giro__select-options max-h-60 w-40 overflow-auto rounded-b-default bg-emphasis outline-none"
+              class="absolute giro__select-options max-h-60 w-40 overflow-auto rounded-b-default bg-subtle outline-none"
             >
               <ListboxOption
                 v-for="option in countryCodes"
@@ -110,7 +110,7 @@ const placeholder = computed(() =>
                 as="template"
               >
                 <li
-                  class="cursor-pointer outline-none px-5 py-2 text-subtle focus:bg-subtle"
+                  class="cursor-pointer outline-none px-3 py-2 text-subtle focus:bg-subtle"
                   :class="[active ? 'bg-subtle text-emphasis' : '']"
                 >
                   <slot
@@ -139,8 +139,8 @@ const placeholder = computed(() =>
 
 <style scoped lang="postcss">
 .giro__select-options {
-  top: calc(100% + 10px);
-  left: -18px;
+  top: calc(100% + 4px);
+  left: -12px;
   z-index: 1;
 }
 </style>

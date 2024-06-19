@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import { PhEye } from "@phosphor-icons/vue";
 import { BaseInputWrapper } from "#components";
 
-export type InputProps = {
+export type PasswordProps = {
   modelValue?: string;
   inputClass?: string;
   wrapperClass?: string;
@@ -11,12 +12,10 @@ export type InputProps = {
   placeholder?: string;
   blurScreen?: boolean;
   scrollIntoView?: boolean;
-  type?: string;
   required?: boolean;
 };
 
-const props = withDefaults(defineProps<InputProps>(), {
-  type: "text",
+const props = withDefaults(defineProps<PasswordProps>(), {
   required: false,
 });
 
@@ -38,6 +37,7 @@ const wrapper = ref<InstanceType<typeof BaseInputWrapper> | null>(null);
 const input = ref<HTMLInputElement | null>(null);
 
 const onBlur = (evt: FocusEvent) => {
+  console.log("onBlur");
   const el: HTMLElement | undefined = wrapper.value?.$el;
   if (el?.contains(evt.relatedTarget as Node)) {
     return;
@@ -49,8 +49,7 @@ const onBlur = (evt: FocusEvent) => {
   }
 };
 
-const onFocus = (evt: FocusEvent) => {
-  input.value?.focus();
+const onInputFocus = (evt: FocusEvent) => {
   emit("focus", evt);
   if (props.scrollIntoView) {
     wrapper.value?.$el?.scrollIntoView({
@@ -62,6 +61,11 @@ const onFocus = (evt: FocusEvent) => {
   if (props.blurScreen && wrapper.value) {
     overlay(wrapper.value.$el);
   }
+};
+
+const onFocus = (evt: FocusEvent) => {
+  input.value?.focus();
+  onInputFocus(evt);
 };
 
 const focus = () => {
@@ -79,6 +83,14 @@ const blur = () => {
 const placeholder = computed(() => {
   return props.title ? undefined : props.placeholder;
 });
+
+const type = ref("password");
+
+const changeInputType = (evt: Event) => {
+  evt.preventDefault();
+  evt.stopPropagation();
+  type.value = type.value === "password" ? "text" : "password";
+};
 
 defineExpose({
   focus,
@@ -117,9 +129,23 @@ defineExpose({
       @input="emit('input', $event)"
       @change="emit('change', $event)"
       @blur="onBlur"
+      @focus="onInputFocus"
     >
     <template #suffix>
-      <slot name="suffix" />
+      <slot name="suffix">
+        <button
+          type="button"
+          class="outline-none"
+          aria-label="Toggle password visibility"
+          @click="changeInputType"
+          @blur="onBlur"
+        >
+          <PhEye
+            class="text-subtle"
+            :size="24"
+          />
+        </button>
+      </slot>
     </template>
   </BaseInputWrapper>
 </template>

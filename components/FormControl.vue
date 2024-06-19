@@ -2,6 +2,7 @@
 import type { InputProps } from "./base/Input.vue";
 import type { NumberProps } from "./base/Number.vue";
 import type { SelectProps } from "./base/Select.vue";
+import type { PasswordProps } from "./base/Password.vue";
 import { BaseInput, BaseSelect } from "#components";
 
 defineOptions({
@@ -26,6 +27,10 @@ type NumberControl = {
   type: "number";
 } & NumberProps;
 
+type PasswordControl = {
+  type: "password";
+} & PasswordProps;
+
 // vue doens't support auto type detecta :(
 const props = withDefaults(defineProps<FormControlProps>(), {
   type: "text",
@@ -47,7 +52,7 @@ const isInput = computed(() => {
   const inputs = {
     text: true,
     number: true,
-    password: true,
+    password: false,
     email: true,
     tel: false,
     search: true,
@@ -100,6 +105,17 @@ const isInput = computed(() => {
         <slot name="suffix" />
       </template>
     </BaseNumber>
+    <BasePassword
+      v-else-if="type === 'password'"
+      v-bind="controlAttrs as PasswordControl"
+    >
+      <template
+        v-if="$slots.prefix"
+        #prefix
+      >
+        <slot name="prefix" />
+      </template>
+    </BasePassword>
     <div
       v-if="error"
       class="text-red-400"
