@@ -27,7 +27,7 @@ const imageSrc = computed(() => {
     <div class="flex flex-col sm:flex-row overflow-auto h-full">
       <div class="flex-auto sm:flex-1 relative w-full sm:w-auto h-40 sm:h-auto">
         <div
-          class="absolute top-1/2 sm:top-20 -translate-y-1/2 sm:translate-y-0 left-4 sm:left-1/2 sm:-translate-x-1/2 text-lg sm:text-4xl font-black italic leading-[3rem]"
+          class="absolute top-1/2 sm:top-20 -translate-y-1/2 sm:translate-y-0 left-4 sm:left-1/2 sm:-translate-x-1/2 text-lg sm:text-4xl font-black italic sm:leading-[3rem]"
         >
           <p class="text-brand-yellow text-sm sm:text-2xl">EXCLUSIVE</p>
           <p class="font-extrabold text-xl sm:text-5xl">PRE-RELEASE</p>
