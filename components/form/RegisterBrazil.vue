@@ -56,6 +56,7 @@ const onSubmit = handleSubmit((values) => {
       wrapper-class="bg-subtle"
       input-class="text-default"
       :error="errors.email"
+      autocomplete="email"
     />
     <FormControl
       v-model="password"
@@ -65,6 +66,7 @@ const onSubmit = handleSubmit((values) => {
       wrapper-class="bg-subtle"
       input-class="text-default"
       :error="errors.password"
+      autocomplete="new-password"
     />
     <FormControl
       v-model="cpf"

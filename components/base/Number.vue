@@ -72,6 +72,8 @@ const placeholder = computed(() =>
     :input-class="inputClass"
     :disabled="disabled"
     :placeholder="placeholder"
+    inputmode="numeric"
+    autocomplete="tel"
   >
     <template #prefix>
       <Listbox v-model="region">

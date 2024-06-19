@@ -13,6 +13,16 @@ export type InputProps = {
   scrollIntoView?: boolean;
   type?: string;
   required?: boolean;
+  autocomplete?: string;
+  inputmode?:
+    | "none"
+    | "text"
+    | "tel"
+    | "url"
+    | "email"
+    | "numeric"
+    | "decimal"
+    | "search";
 };
 
 const props = withDefaults(defineProps<InputProps>(), {
@@ -113,7 +123,8 @@ defineExpose({
       :type="type"
       :required="required"
       :aria-required="required"
-      autocomplete="on"
+      :inputmode="inputmode"
+      :autocomplete="autocomplete"
       @input="emit('input', $event)"
       @change="emit('change', $event)"
       @blur="onBlur"
