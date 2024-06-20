@@ -59,8 +59,7 @@ const onBlur = (evt: FocusEvent) => {
   }
 };
 
-const onFocus = (evt: FocusEvent) => {
-  input.value?.focus();
+const onInputFocus = (evt: FocusEvent) => {
   emit("focus", evt);
   if (props.scrollIntoView) {
     wrapper.value?.$el?.scrollIntoView({
@@ -72,6 +71,11 @@ const onFocus = (evt: FocusEvent) => {
   if (props.blurScreen && wrapper.value) {
     overlay(wrapper.value.$el);
   }
+};
+
+const onFocus = (evt: FocusEvent) => {
+  input.value?.focus();
+  onInputFocus(evt);
 };
 
 const focus = () => {
@@ -128,6 +132,7 @@ defineExpose({
       @input="emit('input', $event)"
       @change="emit('change', $event)"
       @blur="onBlur"
+      @focus="onInputFocus"
     >
     <template #suffix>
       <slot name="suffix" />

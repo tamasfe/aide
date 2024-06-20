@@ -13,7 +13,7 @@ const emit = defineEmits(["update:opened"]);
 const props = withDefaults(
   defineProps<{
     opened: boolean;
-    position: "left" | "right";
+    position?: "left" | "right";
     size?:
       | "full"
       | "sm"

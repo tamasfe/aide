@@ -1,8 +1,13 @@
 <script setup lang="ts">
-const emit = defineEmits(["update:opened"]);
+const emit = defineEmits([
+  "update:opened",
+  "request:login",
+  "request:register",
+]);
 
 const props = defineProps<{
   opened: boolean;
+  type: "login" | "register";
 }>();
 
 const { isDesktop } = useDevice();
@@ -16,6 +21,14 @@ const imageSrc = computed(() => {
   const name = isDesktop ? "wheel-desktop" : "wheel";
   return `/assets/images/${name}.png`;
 });
+
+const requestLogin = () => {
+  emit("request:login");
+};
+
+const requestRegister = () => {
+  emit("request:register");
+};
 </script>
 
 <template>
@@ -25,7 +38,7 @@ const imageSrc = computed(() => {
     size="6xl"
   >
     <div class="flex flex-col sm:flex-row overflow-auto h-full">
-      <div class="flex-auto sm:flex-1 relative w-full sm:w-auto h-40 sm:h-auto">
+      <div class="sm:flex-1 relative w-full sm:w-auto h-40 sm:h-auto">
         <div
           class="absolute top-1/2 sm:top-20 -translate-y-1/2 sm:translate-y-0 left-4 sm:left-1/2 sm:-translate-x-1/2 text-lg sm:text-4xl font-black italic sm:leading-[3rem]"
         >
@@ -45,11 +58,18 @@ const imageSrc = computed(() => {
         />
       </div>
       <div class="flex-auto sm:flex-1 flex flex-col gap-2 sm:gap-0 py-2">
-        <div class="inline-flex justify-center py-2 sm:pt-10">
+        <div class="inline-flex justify-center py-6 sm:pt-12 sm:pb-4">
           <IconsLogo />
         </div>
         <div class="px-6 sm:py-6">
-          <FormRegisterBrazil />
+          <FormRegisterBrazil
+            v-if="type === 'register'"
+            @request:login="requestLogin"
+          />
+          <FormLogin
+            v-else
+            @request:register="requestRegister"
+          />
         </div>
       </div>
     </div>

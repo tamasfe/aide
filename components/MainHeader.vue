@@ -1,13 +1,32 @@
 <script setup lang="ts">
 const refferalBaseNoticeOpen = ref(true);
 
-const modalRegisterOpened = ref(false);
-const modalLoginOpened = ref(false);
+const modalLoginRegisterOpened = ref(false);
+const type = ref<"login" | "register">("login");
+
+const login = () => {
+  type.value = "login";
+  modalLoginRegisterOpened.value = true;
+};
+
+const register = () => {
+  type.value = "register";
+  modalLoginRegisterOpened.value = true;
+};
+
+const changeType = (newType: "login" | "register") => {
+  type.value = newType;
+};
 </script>
 
 <template>
   <div class="sticky top-0 left-0 w-full z-[10]">
-    <ModalRegister v-model:opened="modalRegisterOpened" />
+    <ModalLoginRegister
+      v-model:opened="modalLoginRegisterOpened"
+      :type="type"
+      @request:login="changeType('login')"
+      @request:register="changeType('register')"
+    />
     <Transition name="slide">
       <BaseNotice
         v-if="refferalBaseNoticeOpen"
@@ -22,10 +41,15 @@ const modalLoginOpened = ref(false);
     <div class="bg-subtle flex items-center justify-between px-4 sm:px-10 py-4">
       <IconsLogo />
       <div class="flex items-center gap-4">
-        <BaseButton variant="secondary">Login</BaseButton>
+        <BaseButton
+          variant="secondary"
+          @click="login"
+        >
+          Login
+        </BaseButton>
         <BaseButton
           variant="primary"
-          @click="() => (modalRegisterOpened = true)"
+          @click="register"
         >
           Register
         </BaseButton>

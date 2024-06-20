@@ -137,6 +137,7 @@ defineExpose({
           type="button"
           class="outline-none"
           aria-label="Toggle password visibility"
+          tabindex="-1"
           @click="changeInputType"
           @blur="onBlur"
         >

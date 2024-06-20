@@ -75,7 +75,7 @@ const selectedOption = computed(() => {
           <template #default>
             <span
               class="font-medium flex items-start"
-              :class="[modelValue ? 'text-default' : 'text-subtle']"
+              :class="[inputClass, modelValue ? 'text-default' : 'text-subtle']"
             >
               {{ selectedOption?.title || placeholder }}
             </span>

@@ -10,8 +10,12 @@
   "have_account": "Have an account already?",
   "accept_terms": "By signin up, you agree to our",
   "terms": "Terms of Service",
-  "required_field": "This field is required",
+  "field_required": "This field is required",
   "field_too_short": "This field is too short",
   "enter_valid_number": "Please enter a valid number",
-  "enter_valid_email": "Please enter a valid email"
+  "enter_valid_email": "Please enter a valid email",
+  "forgot_your_password": "Forgot your password?",
+  "enter": "Enter",
+  "dont_have_account": "Don't you have an account yet?",
+  "sign_up": "Sign Up"
 }

@@ -66,7 +66,7 @@ const placeholder = computed(() =>
     ref="input"
     v-model="modelValue"
     class="relative"
-    type="number"
+    type="text"
     :title="title"
     :wrapper-class="wrapperClass"
     :input-class="inputClass"

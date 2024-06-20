@@ -5,7 +5,7 @@ import * as zod from "zod";
 
 const { t } = useI18n();
 
-const emit = defineEmits(["request:login"]);
+const emit = defineEmits(["request:register"]);
 
 // FormControl example
 const validationSchema = toTypedSchema(
@@ -14,15 +14,7 @@ const validationSchema = toTypedSchema(
       .string()
       .min(1, { message: t("field_required") })
       .email({ message: t("enter_valid_email") }),
-    password: zod
-      .string()
-      .min(1, { message: t("field_required") })
-      .min(8, { message: t("field_too_short") }),
-    cpf: zod.string().min(1, { message: t("field_required") }),
-    number: zod
-      .number({ message: t("enter_valid_number") })
-      .min(1, { message: t("field_required") }),
-    region: zod.string().min(1, { message: t("field_required") }),
+    password: zod.string().min(1, { message: t("field_required") }),
   }),
 );
 const { handleSubmit, errors } = useForm({
@@ -30,15 +22,6 @@ const { handleSubmit, errors } = useForm({
 });
 const { value: email } = useField("email");
 const { value: password } = useField("password");
-const { value: cpf } = useField("cpf");
-const { value: number } = useField("number");
-const { value: region } = useField(
-  "region",
-  {},
-  {
-    initialValue: "BR+55",
-  },
-);
 
 const onSubmit = handleSubmit((values) => {
   alert(JSON.stringify(values, null, 2));
@@ -70,50 +53,28 @@ const onSubmit = handleSubmit((values) => {
       :error="errors.password"
       autocomplete="new-password"
     />
-    <FormControl
-      v-model="cpf"
-      type="text"
-      :title="t('cpf')"
-      class="w-full"
-      wrapper-class="bg-subtle"
-      input-class="text-default"
-      :error="errors.cpf"
-    />
-    <FormControl
-      v-model="number"
-      v-model:region="region"
-      type="tel"
-      :title="t('telephone')"
-      class="w-full"
-      wrapper-class="bg-subtle"
-      input-class="text-default"
-      :error="errors.number || errors.region"
-    />
-    <p class="text-sm text-subtle sm:py-2">
-      {{ t("accept_terms") }}
-      <button
-        type="button"
-        class="font-semibold"
-      >
-        {{ t("terms") }}
-      </button>
-    </p>
+    <button
+      type="button"
+      class="font-semibold text-subtle sm:py-2"
+    >
+      {{ t("forgot_your_password") }}
+    </button>
     <BaseButton
       class="w-full inline-flex justify-center"
       variant="primary"
       type="submit"
       big
     >
-      {{ t("create_accont") }}
+      {{ t("enter") }}
     </BaseButton>
-    <p class="text-lg text-subtle sm:py-2">
-      {{ t("have_account") }}
+    <p class="text-lg text-subtle py-2">
+      {{ t("dont_have_account") }}
       <button
         type="button"
         class="font-semibold text-brand-yellow"
-        @click="emit('request:login')"
+        @click="emit('request:register')"
       >
-        {{ t("sign_in") }}
+        {{ t("sign_up") }}
       </button>
     </p>
   </form>

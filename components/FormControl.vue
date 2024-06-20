@@ -51,7 +51,7 @@ const controlAttrs = computed(() => {
 const isInput = computed(() => {
   const inputs = {
     text: true,
-    number: true,
+    number: false,
     password: false,
     email: true,
     tel: false,
@@ -93,6 +93,25 @@ const isInput = computed(() => {
         <slot name="prefix" />
       </template>
     </BaseSelect>
+    <BaseInput
+      v-if="type === 'number'"
+      v-bind="controlAttrs as TextControl"
+      type="text"
+      inputmode="numeric"
+    >
+      <template
+        v-if="$slots.prefix"
+        #prefix
+      >
+        <slot name="prefix" />
+      </template>
+      <template
+        v-if="$slots.suffix"
+        #suffix
+      >
+        <slot name="suffix" />
+      </template>
+    </BaseInput>
     <BaseNumber
       v-else-if="type === 'tel'"
       v-bind="controlAttrs as NumberControl"
