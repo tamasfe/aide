@@ -75,10 +75,10 @@ defineExpose({
 
 <template>
   <div class="relative">
-    <div class="giro__carousel">
+    <div class="giro__carousel h-full">
       <div
         ref="container"
-        class="giro__carousel-container gap-4"
+        class="giro__carousel-container gap-4 h-full"
       >
         <slot />
       </div>

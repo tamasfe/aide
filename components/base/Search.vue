@@ -85,9 +85,9 @@ defineOptions({
       ref="input"
       v-model="modelValue"
       :class="[opened ? 'z-[13]' : '']"
-      wrapper-class="bg-emphasis"
-      input-class="text-default"
-      placeholder="Search"
+      wrapper-class="bg-emphasis p-2"
+      input-class="text-default text-lg"
+      placeholder="Search for a casino games"
       type="text"
       v-bind="$attrs"
       @focus="openPopover"
@@ -103,7 +103,7 @@ defineOptions({
         <button
           v-if="opened"
           type="button"
-          class="font-bold text-xl cursor-pointer outline-none"
+          class="cursor-pointer outline-none"
           aria-label="Close"
           @click="close"
         >

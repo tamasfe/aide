@@ -53,7 +53,7 @@ const defaultSlotWrapperClass = computed(() => (props.title ? "pt-4" : ""));
 // of the input when label is present
 // check if it can be improved
 const wrapperPaddingClass = computed(() =>
-  props.title ? "py-0.5 sm:py-1.5" : "py-[0.813rem] sm:py-[1.063rem]",
+  props.title ? "py-0.5 sm:py-1.5" : "py-1 sm:py-3.5",
 );
 
 defineExpose({

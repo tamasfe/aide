@@ -5,12 +5,10 @@ const random = (min: number, max: number) =>
 </script>
 
 <template>
-  <div>
-    <div class="p-6 flex flex-col items-center gap-4 bg-subtle">
-      <SimpleForm />
-    </div>
+  <div class="px-10 py-8">
+    <CarouselHome class="h-[250] sm:h-[350] lg:h-[450px]" />
     <ComponentsTest />
-    <div class="grid grid-cols-1 gap-4 p-6">
+    <div class="grid grid-cols-1 gap-4">
       <BaseSearch
         v-model="search"
         class="w-full"
