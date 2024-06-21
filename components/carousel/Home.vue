@@ -1,12 +1,15 @@
 <script setup lang="ts">
-console.log("test");
+import { BaseCarousel } from "#components";
+
+const { isMobile } = useDevice();
 </script>
 
 <template>
-  <BaseCarousel>
-    <div>
-      <SlideTry />
-    </div>
+  <BaseCarousel
+    :side-controls="!isMobile"
+    bottom-controls
+  >
+    <SlideTry />
     <div>Component 2</div>
     <div>Component 2</div>
   </BaseCarousel>

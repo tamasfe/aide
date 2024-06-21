@@ -1,21 +1,39 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const { isMobile } = useDevice();
+const imageSrc = isMobile
+  ? `/assets/images/wheel.png`
+  : `/assets/images/wheel-spin.png`;
+/// assets/images/wheel-spin.png
+</script>
 
 <template>
   <div class="h-full w-full">
     <div
-      class="absolute top-1/2 -translate-y-1/2 left-4 lg:left-24 text-lg lg:text-4xl font-black italic lg:leading-[3rem]"
+      class="absolute top-1/2 -translate-y-1/2 left-6 sm:left-4 text-lg lg:left-28 lg:text-2xl xl:text-4xl font-black italic gap-3"
     >
-      <p class="text-brand-yellow text-sm lg:text-2xl">EXCLUSIVE</p>
-      <p class="font-extrabold text-xl lg:text-5xl">PRE-RELEASE</p>
-      <p class="font-extrabold text-xl lg:text-5xl text-nowrap">
+      <h3 class="text-brand-yellow text-sm lg:text-xl xl:text-2xl">
+        EXCLUSIVE
+      </h3>
+      <h1 class="font-extrabold text-xl lg:text-3xl xl:text-5xl">
+        PRE-RELEASE
+      </h1>
+      <h1 class="font-extrabold text-xl lg:text-3xl xl:text-5xl text-nowrap">
         FROM WILDJACK
-      </p>
-      <p class="font-extrabold">
+      </h1>
+      <h2 class="font-extrabold">
         <span class="text-brand-yellow">+100</span> FREE SPINS
-      </p>
+      </h2>
+      <BaseButton
+        v-if="!isMobile"
+        variant="emphasis"
+        big
+        shadow
+      >
+        TRY IT NOW
+      </BaseButton>
     </div>
     <NuxtImg
-      src="/assets/images/wheel-spin.png"
+      :src="imageSrc"
       alt="Wheel Spin"
       class="object-cover h-full w-full rounded-default"
     />

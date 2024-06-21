@@ -1,6 +1,19 @@
 <script setup lang="ts">
+import { PhCaretLeft, PhCaretRight } from "@phosphor-icons/vue";
 import { clamp } from "@vueuse/core";
-import { ref, onMounted } from "vue";
+
+withDefaults(
+  defineProps<{
+    bottomControls?: boolean;
+    sideControls?: boolean;
+    bottomControlsClass?: string;
+  }>(),
+  {
+    bottomControls: false,
+    sideControls: false,
+    bottomControlsClass: undefined,
+  },
+);
 
 const container = ref<HTMLElement | null>(null);
 const items = ref<HTMLElement[]>([]);
@@ -65,6 +78,9 @@ const transform = () => {
   }
 };
 
+const bottomControlColorClass = (index: number) =>
+  index === currentIndex.value ? "bg-text-emphasis" : "bg-text-subtle";
+
 watch(currentIndex, transform);
 
 defineExpose({
@@ -75,6 +91,47 @@ defineExpose({
 
 <template>
   <div class="relative">
+    <slot
+      v-if="sideControls"
+      name="controls"
+    >
+      <div
+        class="absolute z-[2] w-full h-full flex justify-between items-center px-8 text-subtle"
+      >
+        <button
+          type="button"
+          class="p-1 bg-subtle hover:bg-emphasis rounded-default outline-none"
+          @click="prev"
+        >
+          <PhCaretLeft :size="24" />
+        </button>
+        <button
+          type="button"
+          class="p-1 bg-subtle hover:bg-emphasis rounded-default outline-none"
+          @click="next"
+        >
+          <PhCaretRight :size="24" />
+        </button>
+      </div>
+    </slot>
+    <div
+      v-if="bottomControls"
+      class="absolute z-[2] left-1/2 bottom-0 transform -translate-x-1/2 flex items-center space-x-2"
+      :class="bottomControlsClass"
+    >
+      <div
+        v-for="(_, index) in items"
+        :key="index"
+        class="py-2 cursor-pointer giro__slide-dot-wrapper"
+        @click="goto(index)"
+      >
+        <button
+          class="w-8 md:w-12 h-1 rounded-full transition-colors duration-300 ease-in-out giro__slide-dot"
+          :class="bottomControlColorClass(index)"
+          type="button"
+        />
+      </div>
+    </div>
     <div class="giro__carousel h-full">
       <div
         ref="container"
@@ -98,5 +155,10 @@ defineExpose({
 
 :deep(.giro__carousel-container > *) {
   flex: 0 0 100%;
+}
+
+.giro__slide-dot-wrapper:hover .giro__slide-dot {
+  transition: transform 150ms;
+  transform: translateY(-50%);
 }
 </style>

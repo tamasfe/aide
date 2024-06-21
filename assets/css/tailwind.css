@@ -8,6 +8,8 @@
   --giro-bg-subtle: 19, 18, 50;
   --giro-bg-emphasis: 39, 38, 70;
   --giro-bg-info: 85, 40, 139;
+  --giro-bg-text-emphasis: 196, 199, 226;
+  --giro-bg-text-subtle: 123, 130, 192;
 
   /* text */
   --giro-text: #FFFFFF;
@@ -39,7 +41,7 @@
   /* spacing */
   --giro-border-radius: 8px;
   --giro-padding-button: 6px 16px 6px 16px;
-  --giro-padding-button-big: 6px 64px 6px 64px;
+  --giro-padding-button-big: 8px 64px 8px 64px;
 
   /* font */
   --giro-font-size: 1rem;
