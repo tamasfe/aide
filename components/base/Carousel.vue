@@ -95,24 +95,20 @@ defineExpose({
       v-if="sideControls"
       name="controls"
     >
-      <div
-        class="absolute z-[2] w-full h-full flex justify-between items-center px-8 text-subtle"
+      <button
+        type="button"
+        class="absolute z-[2] left-8 top-1/2 transform -translate-y-1/2 p-1 bg-subtle hover:bg-emphasis rounded-default outline-none text-subtle"
+        @click="prev"
       >
-        <button
-          type="button"
-          class="p-1 bg-subtle hover:bg-emphasis rounded-default outline-none"
-          @click="prev"
-        >
-          <PhCaretLeft :size="24" />
-        </button>
-        <button
-          type="button"
-          class="p-1 bg-subtle hover:bg-emphasis rounded-default outline-none"
-          @click="next"
-        >
-          <PhCaretRight :size="24" />
-        </button>
-      </div>
+        <PhCaretLeft :size="24" />
+      </button>
+      <button
+        type="button"
+        class="absolute z-[2] right-8 top-1/2 transform -translate-y-1/2 p-1 bg-subtle hover:bg-emphasis rounded-default outline-none text-subtle"
+        @click="next"
+      >
+        <PhCaretRight :size="24" />
+      </button>
     </slot>
     <div
       v-if="bottomControls"

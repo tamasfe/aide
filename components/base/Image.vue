@@ -16,7 +16,10 @@ const loadingClass = computed(() => {
 
 <template>
   <div :class="[loadingClass, wrapperClass]">
-    <NuxtImg v-bind="$attrs" @load="() => (loading = false)" />
+    <NuxtImg
+      v-bind="$attrs"
+      @load="() => (loading = false)"
+    />
   </div>
 </template>
 

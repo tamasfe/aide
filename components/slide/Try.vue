@@ -9,7 +9,7 @@ const imageSrc = isMobile
 <template>
   <div class="h-full w-full">
     <div
-      class="absolute top-1/2 -translate-y-1/2 left-6 sm:left-4 text-lg lg:left-28 lg:text-2xl xl:text-4xl font-black italic gap-3"
+      class="absolute top-1/2 -translate-y-1/2 left-6 sm:left-4 text-lg md:left-28 lg:text-2xl xl:text-4xl font-black italic lg:space-y-4 lg:leading-4 xl:space-y-8 xl:leading-6"
     >
       <h3 class="text-brand-yellow text-sm lg:text-xl xl:text-2xl">
         EXCLUSIVE
@@ -24,7 +24,7 @@ const imageSrc = isMobile
         <span class="text-brand-yellow">+100</span> FREE SPINS
       </h2>
       <BaseButton
-        v-if="!isMobile"
+        class="hidden lg:block cursor-pointer"
         variant="emphasis"
         big
         shadow
