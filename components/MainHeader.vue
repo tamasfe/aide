@@ -1,7 +1,10 @@
 <script setup lang="ts">
+import { PhList } from "@phosphor-icons/vue";
+
 const refferalBaseNoticeOpen = ref(true);
 
 const modalLoginRegisterOpened = ref(false);
+const sidebarOpened = ref(false);
 const type = ref<"login" | "register">("login");
 
 const login = () => {
@@ -17,6 +20,10 @@ const register = () => {
 const changeType = (newType: "login" | "register") => {
   type.value = newType;
 };
+
+const openSidebar = () => {
+  sidebarOpened.value = true;
+};
 </script>
 
 <template>
@@ -27,6 +34,7 @@ const changeType = (newType: "login" | "register") => {
       @request:login="changeType('login')"
       @request:register="changeType('register')"
     />
+    <SidebarMenu v-model:opened="sidebarOpened" />
     <Transition name="slide">
       <BaseNotice
         v-if="refferalBaseNoticeOpen"
@@ -39,7 +47,19 @@ const changeType = (newType: "login" | "register") => {
       </BaseNotice>
     </Transition>
     <div class="bg-subtle flex items-center justify-between px-4 sm:px-10 py-4">
-      <IconsLogo />
+      <div class="flex items-center space-x-2">
+        <button
+          type="button"
+          class="hidden sm:block outline-none"
+          @click="openSidebar"
+        >
+          <PhList
+            class="text-subtle"
+            :size="30"
+          />
+        </button>
+        <IconsLogo />
+      </div>
       <div class="flex items-center gap-4">
         <BaseButton
           variant="secondary"

@@ -98,7 +98,7 @@ const maxSlides = computed(() => {
     </BaseCarousel>
     <div
       v-else
-      class="flex items-center gap-4 overflow-auto hide-scroll giro__hide-scroll"
+      class="flex items-center gap-4 overflow-auto giro__hide-scroll"
     >
       <div
         v-for="(datapoint, index) in data"

@@ -7,6 +7,7 @@ import {
   TransitionRoot,
   TransitionChild,
 } from "@headlessui/vue";
+import { PhX } from "@phosphor-icons/vue";
 
 const emit = defineEmits(["update:opened"]);
 
@@ -54,7 +55,7 @@ const size = computed(() => {
   if (props.size) {
     switch (props.size) {
       case "full":
-        return "max-w-full";
+        return "w-full";
       case "sm":
         return "max-w-sm";
       case "md":
@@ -147,45 +148,33 @@ const slideTransition = computed(() => ({
             v-bind="slideTransition"
           >
             <DialogPanel
-              class="bg-emphasis/85 backdrop-blur-lg rounded-default p-6 flex flex-col gap-4 h-full"
+              class="bg-emphasis/85 backdrop-blur-lg rounded-default p-4 flex flex-col gap-4 h-full"
               v-bind="$attrs"
             >
+              <button
+                type="button"
+                class="absolute top-0 right-0 rounded-md text-subtle hover:text-emphasis py-4 px-2 outline-none z-10"
+                @click="closeModal"
+              >
+                <span class="sr-only">Close</span>
+                <div
+                  class="p-1 bg-emphasis/50 backdrop-blur-lg rounded-default"
+                >
+                  <PhX :size="24" />
+                </div>
+              </button>
               <DialogTitle
                 as="h3"
                 class="text-lg font-medium leading-6"
               >
                 <div class="relative">
                   <slot name="title" />
-                  <button
-                    type="button"
-                    class="absolute top-0 right-0 rounded-md text-emphasis hover:text-default"
-                    @click="closeModal"
-                  >
-                    <span class="sr-only">Close</span>
-                    <span class="text-2xl">X</span>
-                  </button>
                 </div>
               </DialogTitle>
               <DialogDescription>
                 <slot name="description" />
               </DialogDescription>
-              <slot>
-                <div class="mt-2">
-                  <p class="text-sm text-gray-500">
-                    Your payment has been successfully submitted. We’ve sent you
-                    an email with all of the details of your order.
-                  </p>
-                </div>
-                <div class="mt-4">
-                  <button
-                    type="button"
-                    class="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                    @click="closeModal"
-                  >
-                    Got it, thanks!
-                  </button>
-                </div>
-              </slot>
+              <slot />
             </DialogPanel>
           </TransitionChild>
         </div>

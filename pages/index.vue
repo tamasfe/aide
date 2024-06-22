@@ -23,9 +23,9 @@ onMounted(async () => {
     <div class="sm:px-10 h-[200px] sm:h-[350px] lg:h-[450px]">
       <CarouselHome class="h-full w-full" />
     </div>
-    <div class="px-4 sm:px-10 py-4 sm:py-8">
+    <div class="px-4 sm:px-10 py-6">
       <!-- <ComponentsTest /> -->
-      <div class="grid grid-cols-1 gap-4">
+      <div class="grid grid-cols-1 gap-6">
         <BaseSearch
           v-model="search"
           class="w-full"
@@ -60,6 +60,10 @@ onMounted(async () => {
             </GridPage>
           </template>
         </BaseSearch>
+        <HomeWinningNow
+          v-if="!isMobile"
+          class="w-full"
+        />
         <GridPage
           :data="data"
           :columns="6"
