@@ -1,13 +1,22 @@
 <!-- TODO: Add server side rendering support -->
 <script setup lang="ts">
+import { PhCaretLeft, PhCaretRight } from "@phosphor-icons/vue";
 import { BaseCarousel } from "#components";
 
 const { isMobile } = useDevice();
 
-const props = defineProps<{
-  data: unknown[];
-  columns: number;
-}>();
+const props = withDefaults(
+  defineProps<{
+    data: unknown[];
+    columns: number;
+    showControls?: boolean;
+    loading?: boolean;
+  }>(),
+  {
+    showControls: true,
+    loading: false,
+  },
+);
 
 const { data, columns } = toRefs(props);
 
@@ -42,15 +51,25 @@ const maxSlides = computed(() => {
           <slot name="title" />
         </div>
         <div
-          v-if="maxSlides > 1 && !isMobile"
+          v-if="maxSlides > 1 && showControls && !loading"
           class="flex items-center gap-x-4 text-3xl font-bold cursor-pointer"
         >
-          <div @click="previousPage">
-            {{ `<` }}
-          </div>
-          <div @click="nextPage">
-            {{ `>` }}
-          </div>
+          <button
+            type="button"
+            class="p-1 bg-subtle text-subtle outline-none"
+            :class="[carousel?.isFirst ? 'opacity-50 cursor-default' : '']"
+            @click="previousPage"
+          >
+            <PhCaretLeft :size="24" />
+          </button>
+          <button
+            type="button"
+            class="p-1 bg-subtle text-subtle outline-none"
+            :class="[carousel?.isLast ? 'opacity-50 cursor-default' : '']"
+            @click="nextPage"
+          >
+            <PhCaretRight :size="24" />
+          </button>
         </div>
       </div>
       <slot name="options" />

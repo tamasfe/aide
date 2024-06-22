@@ -2,6 +2,20 @@
 const search = ref("");
 const random = (min: number, max: number) =>
   Math.floor(Math.random() * (max - min + 1) + min);
+
+const { isMobile } = useDevice();
+
+const data = ref<unknown[]>(Array.from({ length: 8 }, (_, i) => i + 1));
+const loading = ref(true);
+
+const waitFor = (ms: number) =>
+  new Promise(resolve => setTimeout(resolve, ms));
+
+onMounted(async () => {
+  await waitFor(3000);
+  loading.value = false;
+  data.value = Array.from({ length: 10 }, (_, i) => i + 1);
+});
 </script>
 
 <template>
@@ -18,8 +32,9 @@ const random = (min: number, max: number) =>
         >
           <template #default>
             <GridPage
-              :data="['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']"
+              :data="data"
               :columns="6"
+              :loading="loading"
             >
               <template #title> ⭐ Popular </template>
               <template #options>
@@ -27,21 +42,29 @@ const random = (min: number, max: number) =>
               </template>
               <template #default>
                 <div
-                  class="bg-subtle rounded-default h-[300px] overflow-hidden"
+                  class="bg-subtle rounded-default h-[150px] md:h-[300px] overflow-hidden"
+                  :class="isMobile ? 'w-24' : ''"
                 >
-                  <BaseImage
-                    :src="`https://picsum.photos/200/300?random=${random(0, 100)}`"
-                    alt=""
-                    class="w-full h-full object-cover rounded-default transition-transform transform hover:scale-105"
-                  />
+                  <BaseSkeleton
+                    class="w-full h-full"
+                    :loading="loading"
+                  >
+                    <NuxtImg
+                      :src="`https://picsum.photos/200/300?random=${random(0, 100)}`"
+                      alt=""
+                      class="w-full h-full object-cover rounded-default transition-transform transform hover:scale-105"
+                    />
+                  </BaseSkeleton>
                 </div>
               </template>
             </GridPage>
           </template>
         </BaseSearch>
         <GridPage
-          :data="['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']"
+          :data="data"
           :columns="6"
+          :show-controls="!isMobile"
+          :loading="loading"
         >
           <template #title> ⭐ Popular </template>
           <template #options>
@@ -49,20 +72,27 @@ const random = (min: number, max: number) =>
           </template>
           <template #default>
             <div
-              class="bg-subtle rounded-default h-[150px] sm:h-[300px] overflow-hidden w-24 sm:w-auto"
+              class="bg-subtle rounded-default h-[150px] md:h-[300px] overflow-hidden"
+              :class="isMobile ? 'w-24' : ''"
             >
-              <BaseImage
-                :src="`https://picsum.photos/200/300?random=${random(0, 100)}`"
-                alt=""
-                class="w-full h-full object-cover rounded-default transition-transform transform hover:scale-105"
-                wrapper-class="h-[150px] sm:h-[300px] overflow-hidden"
-              />
+              <BaseSkeleton
+                class="w-full h-full"
+                :loading="loading"
+              >
+                <NuxtImg
+                  :src="`https://picsum.photos/200/300?random=${random(0, 100)}`"
+                  alt=""
+                  class="w-full h-full object-cover rounded-default transition-transform transform hover:scale-105"
+                />
+              </BaseSkeleton>
             </div>
           </template>
         </GridPage>
         <GridPage
-          :data="['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']"
+          :data="data"
           :columns="6"
+          :show-controls="!isMobile"
+          :loading="loading"
         >
           <template #title> 🔥 Hot games today </template>
           <template #options>
@@ -70,14 +100,19 @@ const random = (min: number, max: number) =>
           </template>
           <template #default>
             <div
-              class="bg-subtle rounded-default h-[150px] sm:h-[300px] overflow-hidden w-24 sm:w-auto"
+              class="bg-subtle rounded-default h-[150px] md:h-[300px] overflow-hidden"
+              :class="isMobile ? 'w-24' : ''"
             >
-              <BaseImage
-                :src="`https://picsum.photos/200/300?random=${random(0, 100)}`"
-                alt=""
-                class="w-full h-full object-cover rounded-default transition-transform transform hover:scale-105"
-                wrapper-class="h-[150px] sm:h-[300px] overflow-hidden"
-              />
+              <BaseSkeleton
+                class="w-full h-full"
+                :loading="loading"
+              >
+                <NuxtImg
+                  :src="`https://picsum.photos/200/300?random=${random(0, 100)}`"
+                  alt=""
+                  class="w-full h-full object-cover rounded-default transition-transform transform hover:scale-105"
+                />
+              </BaseSkeleton>
             </div>
           </template>
         </GridPage>

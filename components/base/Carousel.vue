@@ -49,6 +49,21 @@ onMounted(() => {
   if (container.value) {
     items.value = Array.from(container.value.children) as HTMLElement[];
     container.value.addEventListener("touchstart", handleTouchStart);
+
+    const observer = new MutationObserver((list) => {
+      if (!container.value) {
+        return;
+      }
+      for (const mutation of list) {
+        if (mutation.type === "childList") {
+          items.value = Array.from(container.value?.children) as HTMLElement[];
+        }
+      }
+    });
+
+    observer.observe(container.value, {
+      childList: true,
+    });
   }
 });
 
@@ -63,6 +78,9 @@ const next = () => {
 const prev = () => {
   goto(currentIndex.value - 1);
 };
+
+const isFirst = computed(() => currentIndex.value === 0);
+const isLast = computed(() => currentIndex.value === items.value.length - 1);
 
 const transform = () => {
   if (container.value) {
@@ -86,6 +104,8 @@ watch(currentIndex, transform);
 defineExpose({
   next,
   prev,
+  isFirst,
+  isLast,
 });
 </script>
 
@@ -133,7 +153,7 @@ defineExpose({
         ref="container"
         class="giro__carousel-container gap-4 h-full"
       >
-        <slot />
+        <slot :index="currentIndex" />
       </div>
     </div>
   </div>
