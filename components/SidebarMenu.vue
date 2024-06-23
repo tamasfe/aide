@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { PhGift, PhGridFour, PhStar } from "@phosphor-icons/vue";
+
 const { isMobile } = useDevice();
 const emit = defineEmits(["update:opened"]);
 const props = defineProps<{
@@ -13,6 +15,8 @@ const opened = computed({
 const deposit = ref("10,00");
 
 const size = isMobile ? "full" : "lg";
+
+const quickDepositAmounts = ["10.00", "50.00", "100.00"];
 </script>
 
 <template>
@@ -20,9 +24,10 @@ const size = isMobile ? "full" : "lg";
     v-model:opened="opened"
     position="left"
     :size="size"
+    class="px-2"
   >
     <template #title>
-      <div class="flex items-center justify-between">
+      <div class="flex items-center justify-between pl-4">
         <IconsLogo />
       </div>
     </template>
@@ -44,6 +49,17 @@ const size = isMobile ? "full" : "lg";
           </div>
         </template>
       </FormControl>
+      <div class="flex items-center gap-2">
+        <button
+          v-for="amount of quickDepositAmounts"
+          :key="amount"
+          type="button"
+          class="flex-1 flex items-center bg-subtle outline-none space-x-2 p-3 rounded-default cursor-pointer"
+        >
+          <IconsRSGreen />
+          <p class="font-semibold">{{ amount }}</p>
+        </button>
+      </div>
       <BaseButton
         type="button"
         class="w-full inline-flex justify-center"
@@ -52,6 +68,39 @@ const size = isMobile ? "full" : "lg";
       >
         QUICK DEPOSIT
       </BaseButton>
+      <BaseMenuCollapse
+        :parent="{
+          title: 'All Games',
+          value: 'all_games',
+          icon: PhGridFour,
+        }"
+        :options="[
+          {
+            title: 'Slots',
+            value: 'slots',
+            icon: PhStar,
+            iconClass: 'text-brand-yellow',
+          },
+          {
+            title: 'Table Games',
+            value: 'table_games',
+            icon: PhGift,
+            iconClass: 'text-brand-yellow',
+          },
+          {
+            title: 'Live Casino',
+            value: 'live_casino',
+            icon: PhGridFour,
+            iconClass: 'text-brand-yellow',
+          },
+          {
+            title: 'Jackpot',
+            value: 'jackpot',
+            icon: PhGridFour,
+            iconClass: 'text-brand-yellow',
+          },
+        ]"
+      />
     </div>
   </BaseDrawer>
 </template>

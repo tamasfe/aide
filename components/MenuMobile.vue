@@ -6,6 +6,14 @@ import {
   PhHeadphones,
   PhGift,
 } from "@phosphor-icons/vue";
+
+const emit = defineEmits([
+  "click:menu",
+  "click:hot",
+  "click:search",
+  "click:support",
+  "click:promos",
+]);
 </script>
 
 <template>
@@ -15,26 +23,46 @@ import {
     <div
       class="flex items-center justify-between pt-2 px-4 pb-1 text-subtle font-bold"
     >
-      <div class="inline-flex flex-col justify-center items-center">
+      <button
+        class="inline-flex flex-col justify-center items-center outline-none"
+        type="button"
+        @click="emit('click:menu')"
+      >
         <PhList :size="24" />
         <p>Menu</p>
-      </div>
-      <div class="inline-flex flex-col justify-center items-center">
+      </button>
+      <button
+        class="inline-flex flex-col justify-center items-center outline-none"
+        type="button"
+        @click="emit('click:hot')"
+      >
         <PhLightning :size="24" />
         <p>Hot</p>
-      </div>
-      <div class="inline-flex flex-col justify-center items-center">
+      </button>
+      <button
+        class="inline-flex flex-col justify-center items-center outline-none"
+        type="button"
+        @click="emit('click:search')"
+      >
         <PhMagnifyingGlass :size="24" />
         <p>Search</p>
-      </div>
-      <div class="inline-flex flex-col justify-center items-center">
+      </button>
+      <button
+        class="inline-flex flex-col justify-center items-center outline-none"
+        type="button"
+        @click="emit('click:support')"
+      >
         <PhHeadphones :size="24" />
         <p>Support</p>
-      </div>
-      <div class="inline-flex flex-col justify-center items-center">
+      </button>
+      <button
+        class="inline-flex flex-col justify-center items-center outline-none"
+        type="button"
+        @click="emit('click:promos')"
+      >
         <PhGift :size="24" />
         <p>Promos</p>
-      </div>
+      </button>
     </div>
   </div>
 </template>

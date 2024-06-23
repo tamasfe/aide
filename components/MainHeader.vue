@@ -24,6 +24,10 @@ const changeType = (newType: "login" | "register") => {
 const openSidebar = () => {
   sidebarOpened.value = true;
 };
+
+defineExpose({
+  openSidebar,
+});
 </script>
 
 <template>

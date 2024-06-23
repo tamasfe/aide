@@ -1,12 +1,18 @@
 <script setup lang="ts">
 import { MainHeader, MenuMobile } from "#components";
+
+const menu = ref<InstanceType<typeof MainHeader>>();
+
+const openMenu = () => {
+  menu.value?.openSidebar();
+};
 </script>
 
 <template>
   <div>
-    <MainHeader />
+    <MainHeader ref="menu" />
     <slot />
-    <MenuMobile />
+    <MenuMobile @click:menu="openMenu" />
   </div>
 </template>
 
