@@ -50,20 +50,14 @@ const toggle = () => {
       v-if="opened"
       class="flex flex-col gap-8"
     >
-      <NuxtLink
+      <BaseMenuLink
         v-for="option in options"
         :key="option.value"
-        class="flex items-center gap-2"
-        :to="option.value"
-      >
-        <Component
-          :is="option.icon"
-          v-if="option.icon"
-          :size="24"
-          :class="option.iconClass"
-        />
-        <p>{{ option.title }}</p>
-      </NuxtLink>
+        :title="option.title"
+        :value="option.value"
+        :icon="option.icon"
+        :icon-class="option.iconClass"
+      />
     </div>
   </div>
 </template>

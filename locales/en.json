@@ -17,5 +17,8 @@
   "forgot_your_password": "Forgot your password?",
   "enter": "Enter",
   "dont_have_account": "Don't you have an account yet?",
-  "sign_up": "Sign Up"
+  "sign_up": "Sign Up",
+  "make_deposit": "Make a deposit",
+  "deposit": "Deposit",
+  "quick_deposit": "Quick Deposit"
 }
