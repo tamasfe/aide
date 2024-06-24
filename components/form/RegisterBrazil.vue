@@ -104,7 +104,7 @@ const onSubmit = handleSubmit((values) => {
       type="submit"
       big
     >
-      {{ t("create_accont") }}
+      {{ t("create_account") }}
     </BaseButton>
     <p class="text-lg text-subtle sm:py-2">
       {{ t("have_account") }}

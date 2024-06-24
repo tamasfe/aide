@@ -30,7 +30,7 @@ const openModal = () => {
         <span class="text-brand-yellow">+100</span> FREE SPINS
       </h2>
       <BaseButton
-        class="hidden lg:block cursor-pointer"
+        class="hidden lg:inline-flex justify-center cursor-pointer w-56 xl:w-72"
         variant="emphasis"
         big
         shadow
