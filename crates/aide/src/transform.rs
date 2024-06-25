@@ -838,7 +838,7 @@ impl<'t> TransformOperation<'t> {
         let t = callback_transform(TransformCallback::new(p));
 
         if t.hidden {
-            callbacks.remove(callback_url);
+            callbacks.swap_remove(callback_url);
             if self
                 .operation
                 .callbacks
@@ -848,7 +848,7 @@ impl<'t> TransformOperation<'t> {
                 .unwrap()
                 .is_empty()
             {
-                self.operation.callbacks.remove(callback_name);
+                self.operation.callbacks.swap_remove(callback_name);
             }
         }
 
