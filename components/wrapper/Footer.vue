@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { PhCaretUp } from "@phosphor-icons/vue";
+
 const languageOptions = [
   { title: "English", value: "en" },
   { title: "Português", value: "pt" },
