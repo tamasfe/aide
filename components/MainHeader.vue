@@ -31,7 +31,7 @@ defineExpose({
 </script>
 
 <template>
-  <div class="sticky top-0 left-0 w-full z-[10]">
+  <nav class="sticky top-0 left-0 w-full z-[10]">
     <ModalLoginRegister
       v-model:opened="modalLoginRegisterOpened"
       :type="type"
@@ -79,5 +79,5 @@ defineExpose({
         </BaseButton>
       </div>
     </div>
-  </div>
+  </nav>
 </template>

@@ -52,11 +52,11 @@ const selectedOption = computed(() => {
     v-slot="{ open }"
     v-model="modelValue"
   >
-    <div
-      class="relative outline-none rounded-default h-max"
-      :class="$attrs.class"
-    >
-      <ListboxButton class="w-full outline-none">
+    <div class="relative outline-none rounded-default h-max">
+      <ListboxButton
+        class="outline-none"
+        :class="$attrs.class"
+      >
         <BaseInputWrapper
           class="cursor-pointer focus:outline outline-focus outline-2"
           :class="[open ? 'outline' : '']"
@@ -110,7 +110,7 @@ const selectedOption = computed(() => {
             as="template"
           >
             <li
-              class="cursor-pointer outline-none px-4 py-2 text-subtle focus:bg-subtle"
+              class="cursor-pointer outline-none px-3 py-2 text-subtle focus:bg-subtle"
               :class="[active ? 'bg-subtle text-emphasis' : '']"
             >
               <slot
