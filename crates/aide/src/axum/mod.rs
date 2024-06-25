@@ -178,7 +178,7 @@ use crate::{
     OperationInput, OperationOutput,
 };
 use axum::{
-    body::Body,
+    body::{Body, HttpBody, Bytes},
     handler::Handler,
     http::Request,
     response::IntoResponse,
@@ -222,7 +222,9 @@ impl<S> Clone for ApiRouter<S> {
     }
 }
 
-impl Service<Request<Body>> for ApiRouter<()> {
+impl<B> Service<Request<B>> for ApiRouter<()>
+    where B: HttpBody<Data = Bytes> + Send + 'static,
+    B::Error: Into<axum::BoxError>, {
     type Response = axum::response::Response;
     type Error = Infallible;
     type Future = axum::routing::future::RouteFuture<Infallible>;
@@ -232,11 +234,11 @@ impl Service<Request<Body>> for ApiRouter<()> {
         &mut self,
         cx: &mut std::task::Context<'_>,
     ) -> std::task::Poll<Result<(), Self::Error>> {
-        <axum::Router as Service<Request<Body>>>::poll_ready(&mut self.router, cx)
+        Service::<Request<B>>::poll_ready(&mut self.router, cx)
     }
 
     #[inline]
-    fn call(&mut self, req: Request<Body>) -> Self::Future {
+    fn call(&mut self, req: Request<B>) -> Self::Future {
         self.router.call(req)
     }
 }
