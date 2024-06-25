@@ -13,7 +13,10 @@ const openModal = () => {
 
 <template>
   <div class="h-full w-full">
-    <ModalDeposit v-model:opened="depositModalOpened" />
+    <ModalWrapper
+      v-model:opened="depositModalOpened"
+      type="withdraw"
+    />
     <div
       class="absolute top-1/2 -translate-y-1/2 left-6 sm:left-4 text-lg md:left-28 lg:text-2xl xl:text-4xl font-black italic lg:space-y-4 lg:leading-4 xl:space-y-8 xl:leading-6"
     >

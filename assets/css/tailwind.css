@@ -8,14 +8,17 @@
   --giro-bg-subtle: 19, 18, 50;
   --giro-bg-emphasis: 39, 38, 70;
   --giro-bg-info: 85, 40, 139;
+  --giro-bg-warning: 98, 88, 25;
   --giro-bg-text-emphasis: 196, 199, 226;
   --giro-bg-text-subtle: 123, 130, 192;
+  --giro-bg-muted: 73, 72, 122;
 
   /* text */
   --giro-text: #FFFFFF;
   --giro-text-subtle: #7B82C0;
   --giro-text-emphasis: #C4C7E2;
   --giro-text-info: #9F6DDE;
+  --giro-text-warning: #FFE00C;
   --giro-button-text-primary: #000000;
   --giro-button-text-secondary: #7B82C0;
   --giro-button-text-emphasis: #000000;

@@ -9,12 +9,13 @@ import {
 } from "@headlessui/vue";
 import { PhX } from "@phosphor-icons/vue";
 
-const emit = defineEmits(["update:opened"]);
+const emit = defineEmits(["update:opened", "close"]);
 
 const props = withDefaults(
   defineProps<{
     opened: boolean;
     center?: boolean;
+    close?: boolean;
     size?:
       | "full"
       | "sm"
@@ -34,6 +35,7 @@ const props = withDefaults(
   {
     center: false,
     size: "lg",
+    close: true,
   },
 );
 
@@ -91,6 +93,7 @@ const size = computed(() => {
 
 const closeModal = () => {
   opened.value = false;
+  emit("close");
 };
 
 defineOptions({
@@ -141,6 +144,7 @@ defineOptions({
               class="bg-emphasis/85 backdrop-blur-lg sm:rounded-default flex flex-col gap-4 h-full"
             >
               <button
+                v-if="close"
                 type="button"
                 class="absolute top-0 right-0 rounded-md text-emphasis hover:text-default p-2 outline-none z-10"
                 @click="closeModal"
