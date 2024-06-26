@@ -1,13 +1,8 @@
 <script setup lang="ts">
-const emit = defineEmits([
-  "update:opened",
-  "request:login",
-  "request:register",
-]);
+const emit = defineEmits(["update:opened"]);
 
 const props = defineProps<{
   opened: boolean;
-  type: "login" | "register" | "invite";
 }>();
 
 const { isDesktop } = useDevice();
@@ -21,14 +16,6 @@ const imageSrc = computed(() => {
   const name = isDesktop ? "wheel-desktop" : "wheel";
   return `/assets/images/${name}.png`;
 });
-
-const requestLogin = () => {
-  emit("request:login");
-};
-
-const requestRegister = () => {
-  emit("request:register");
-};
 </script>
 
 <template>
@@ -58,13 +45,15 @@ const requestRegister = () => {
         />
       </div>
       <div class="flex-auto sm:flex-1 flex flex-col gap-2 sm:gap-0 py-2">
-        <div
+        <slot />
+        <!-- <div
           v-if="type !== 'invite'"
           class="inline-flex justify-center py-6 sm:pt-12 sm:pb-4"
         >
           <IconsLogo />
         </div>
         <div class="flex-1 px-6 sm:py-6">
+          <slot />
           <FormRegisterBrazil
             v-if="type === 'register'"
             @request:login="requestLogin"
@@ -73,8 +62,8 @@ const requestRegister = () => {
             v-else-if="type === 'login'"
             @request:register="requestRegister"
           />
-          <FormInvite v-else-if="type === 'invite'" />
-        </div>
+<FormInvite v-else-if="type === 'invite'" />
+      </div> -->
       </div>
     </div>
   </BaseDialog>

@@ -1,13 +1,10 @@
 <script setup lang="ts">
-type ModalType = "deposit" | "withdraw";
-
 const { isDesktop } = useDevice();
 
 const emit = defineEmits(["update:opened"]);
 
 const props = defineProps<{
   opened: boolean;
-  type: ModalType;
 }>();
 
 const opened = computed({
@@ -21,18 +18,18 @@ const imageSrc = computed(() => {
   return `/assets/images/${name}.png`;
 });
 
-const showInfo = (value: boolean) => {
-  image.value = !value;
-};
-
 const reset = () => {
   image.value = true;
 };
 
-const close = () => {
-  opened.value = false;
-  reset();
+const showImage = (value: boolean) => {
+  image.value = value;
 };
+
+defineExpose({
+  reset,
+  showImage,
+});
 </script>
 
 <template>
@@ -64,12 +61,7 @@ const close = () => {
           class="object-cover w-full h-full sm:rounded-t-default"
         />
       </div>
-      <WrapperDeposit v-if="type === 'deposit'" />
-      <WrapperWithdraw
-        v-else-if="type === 'withdraw'"
-        @show:info="showInfo"
-        @click:close="close"
-      />
+      <slot />
     </div>
   </BaseDialog>
 </template>

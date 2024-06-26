@@ -3,16 +3,18 @@ import { PhList } from "@phosphor-icons/vue";
 
 const refferalBaseNoticeOpen = ref(true);
 
-const modalLoginRegisterOpened = ref(true);
+const modalLoginRegisterOpened = ref(false);
+const modalCancelRegistrationOpened = ref(false);
 const sidebarOpened = ref(false);
-const type = ref<"login" | "register" | "invite">("invite");
+const type = ref<"login" | "register">("login");
 
 const login = () => {
   type.value = "login";
   modalLoginRegisterOpened.value = true;
 };
 
-const register = () => {
+const register = (e: Event) => {
+  e.preventDefault();
   type.value = "register";
   modalLoginRegisterOpened.value = true;
 };
@@ -25,6 +27,17 @@ const openSidebar = () => {
   sidebarOpened.value = true;
 };
 
+const confirmCancelRegistration = () => {
+  if (type.value === "register") {
+    modalCancelRegistrationOpened.value = true;
+  }
+};
+
+const continueRegistration = () => {
+  modalCancelRegistrationOpened.value = false;
+  modalLoginRegisterOpened.value = true;
+};
+
 defineExpose({
   openSidebar,
 });
@@ -32,11 +45,16 @@ defineExpose({
 
 <template>
   <nav class="sticky top-0 left-0 w-full z-[10]">
-    <ModalWrapperHorizontal
+    <ModalCancelRegistration
+      v-model:opened="modalCancelRegistrationOpened"
+      @submit="continueRegistration"
+    />
+    <ModalLoginRegister
       v-model:opened="modalLoginRegisterOpened"
       :type="type"
       @request:login="changeType('login')"
       @request:register="changeType('register')"
+      @close="confirmCancelRegistration"
     />
     <SidebarMenu v-model:opened="sidebarOpened" />
     <Transition name="slide">

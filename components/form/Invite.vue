@@ -5,7 +5,7 @@ const link = ref("https://girobet.com/invite/123456");
 </script>
 
 <template>
-  <form class="flex flex-col justify-center gap-4 sm:h-full w-full">
+  <form class="flex flex-col justify-center gap-2 sm:gap-4 sm:h-full w-full">
     <h2 class="text-2xl font-semibold">Invite Friends, Earn Money</h2>
     <p class="text-subtle text-lg">
       Receive cash balance for every friend you refer.
