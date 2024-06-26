@@ -7,7 +7,7 @@ const emit = defineEmits([
 
 const props = defineProps<{
   opened: boolean;
-  type: "login" | "register";
+  type: "login" | "register" | "invite";
 }>();
 
 const { isDesktop } = useDevice();
@@ -58,18 +58,22 @@ const requestRegister = () => {
         />
       </div>
       <div class="flex-auto sm:flex-1 flex flex-col gap-2 sm:gap-0 py-2">
-        <div class="inline-flex justify-center py-6 sm:pt-12 sm:pb-4">
+        <div
+          v-if="type !== 'invite'"
+          class="inline-flex justify-center py-6 sm:pt-12 sm:pb-4"
+        >
           <IconsLogo />
         </div>
-        <div class="px-6 sm:py-6">
+        <div class="flex-1 px-6 sm:py-6">
           <FormRegisterBrazil
             v-if="type === 'register'"
             @request:login="requestLogin"
           />
           <FormLogin
-            v-else
+            v-else-if="type === 'login'"
             @request:register="requestRegister"
           />
+          <FormInvite v-else-if="type === 'invite'" />
         </div>
       </div>
     </div>

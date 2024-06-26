@@ -3,9 +3,9 @@ import { PhList } from "@phosphor-icons/vue";
 
 const refferalBaseNoticeOpen = ref(true);
 
-const modalLoginRegisterOpened = ref(false);
+const modalLoginRegisterOpened = ref(true);
 const sidebarOpened = ref(false);
-const type = ref<"login" | "register">("login");
+const type = ref<"login" | "register" | "invite">("invite");
 
 const login = () => {
   type.value = "login";
@@ -32,7 +32,7 @@ defineExpose({
 
 <template>
   <nav class="sticky top-0 left-0 w-full z-[10]">
-    <ModalLoginRegister
+    <ModalWrapperHorizontal
       v-model:opened="modalLoginRegisterOpened"
       :type="type"
       @request:login="changeType('login')"
