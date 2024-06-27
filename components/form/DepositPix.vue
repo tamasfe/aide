@@ -30,9 +30,10 @@ defineProps<{
         class="outline-none text-subtle cursor-pointer"
         @click="goBack"
       >
-        <PhArrowLeft :size="34" />
+        <PhArrowLeft :size="30" />
       </button>
       <NuxtImg
+        class="max-h-8"
         src="/assets/images/pix-logo.svg"
         alt="Pix"
       />

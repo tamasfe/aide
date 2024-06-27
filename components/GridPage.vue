@@ -56,7 +56,7 @@ const maxSlides = computed(() => {
         >
           <button
             type="button"
-            class="p-1 bg-subtle text-subtle outline-none"
+            class="p-1 bg-subtle text-subtle outline-none rounded-default"
             :class="[carousel?.isFirst ? 'opacity-50 cursor-default' : '']"
             @click="previousPage"
           >
@@ -64,7 +64,7 @@ const maxSlides = computed(() => {
           </button>
           <button
             type="button"
-            class="p-1 bg-subtle text-subtle outline-none"
+            class="p-1 bg-subtle text-subtle outline-none rounded-default"
             :class="[carousel?.isLast ? 'opacity-50 cursor-default' : '']"
             @click="nextPage"
           >

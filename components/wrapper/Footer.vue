@@ -42,7 +42,7 @@ const getFlag = (language: string) => {
         <BaseSelect
           v-model="language"
           :options="languageOptions"
-          class="w-full lg:w-auto"
+          class="w-full lg:w-max"
         >
           <template #prefix>
             <BaseFlag

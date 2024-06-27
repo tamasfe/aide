@@ -52,7 +52,10 @@ const selectedOption = computed(() => {
     v-slot="{ open }"
     v-model="modelValue"
   >
-    <div class="relative outline-none rounded-default h-max">
+    <div
+      class="relative outline-none rounded-default h-max"
+      :class="$attrs.class"
+    >
       <ListboxButton
         class="outline-none"
         :class="$attrs.class"
