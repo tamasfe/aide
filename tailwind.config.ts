@@ -26,6 +26,7 @@ export default <Partial<Config>>{
         muted: "rgba(var(--giro-bg-muted), <alpha-value>)",
         info: "rgba(var(--giro-bg-info), <alpha-value>)",
         warning: "rgba(var(--giro-bg-warning), <alpha-value>)",
+        success: "rgba(var(--giro-bg-success), <alpha-value>)",
         text: {
           emphasis: "rgba(var(--giro-bg-text-emphasis), <alpha-value>)",
           subtle: "rgba(var(--giro-bg-text-subtle), <alpha-value>)",
@@ -72,6 +73,7 @@ export default <Partial<Config>>{
         emphasis: "var(--giro-text-emphasis)",
         info: "var(--giro-text-info)",
         warning: "var(--giro-text-warning)",
+        success: "var(--giro-text-success)",
         button: {
           primary: "var(--giro-button-text-primary)",
           secondary: "var(--giro-button-text-secondary)",
