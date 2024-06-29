@@ -24,7 +24,6 @@ onMounted(async () => {
       <CarouselHome class="h-full w-full" />
     </div>
     <div class="px-4 sm:px-10 py-6">
-      <!-- <ComponentsTest /> -->
       <div class="grid grid-cols-1 gap-6">
         <BaseSearch
           v-model="search"
@@ -70,25 +69,19 @@ onMounted(async () => {
           :show-controls="!isMobile"
           :loading="loading"
         >
-          <template #title> ⭐ Popular </template>
+          <template #title>🔥 Top games</template>
           <template #options>
             <BaseButton class="bg-subtle text-subtle"> See all </BaseButton>
           </template>
           <template #default>
             <div
-              class="bg-subtle rounded-default h-[150px] md:h-[300px] overflow-hidden"
-              :class="isMobile ? 'w-24' : ''"
+              class="relative bg-subtle rounded-default overflow-hidden pt-[134.26%]"
             >
-              <BaseSkeleton
-                class="w-full h-full"
-                :loading="loading"
-              >
-                <NuxtImg
-                  :src="`https://picsum.photos/200/300?random=${random(0, 100)}`"
-                  alt=""
-                  class="w-full h-full object-cover rounded-default transition-transform transform hover:scale-105"
-                />
-              </BaseSkeleton>
+              <NuxtImg
+                :src="`https://picsum.photos/200/300?random=${random(0, 100)}`"
+                alt=""
+                class="absolute top-0 left-0 w-full h-full object-cover rounded-default transition-transform transform hover:scale-105"
+              />
             </div>
           </template>
         </GridPage>
@@ -98,25 +91,19 @@ onMounted(async () => {
           :show-controls="!isMobile"
           :loading="loading"
         >
-          <template #title> 🔥 Hot games today </template>
+          <template #title>👍 Popular Games</template>
           <template #options>
             <BaseButton class="bg-subtle text-subtle"> See all </BaseButton>
           </template>
           <template #default>
             <div
-              class="bg-subtle rounded-default h-[150px] md:h-[300px] overflow-hidden"
-              :class="isMobile ? 'w-24' : ''"
+              class="relative bg-subtle rounded-default overflow-hidden pt-[134.26%]"
             >
-              <BaseSkeleton
-                class="w-full h-full"
-                :loading="loading"
-              >
-                <NuxtImg
-                  :src="`https://picsum.photos/200/300?random=${random(0, 100)}`"
-                  alt=""
-                  class="w-full h-full object-cover rounded-default transition-transform transform hover:scale-105"
-                />
-              </BaseSkeleton>
+              <NuxtImg
+                :src="`https://picsum.photos/200/300?random=${random(0, 100)}`"
+                alt=""
+                class="absolute top-0 left-0 w-full h-full object-cover rounded-default transition-transform transform hover:scale-105"
+              />
             </div>
           </template>
         </GridPage>

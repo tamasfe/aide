@@ -41,6 +41,12 @@ const previousPage = () => {
 const maxSlides = computed(() => {
   return Math.ceil(data.value.length / columns.value);
 });
+
+const gridColumns = computed(() => {
+  return {
+    gridTemplateColumns: `repeat(${props.columns}, minmax(0, 1fr))`,
+  };
+});
 </script>
 
 <template>
@@ -81,12 +87,12 @@ const maxSlides = computed(() => {
       <div
         v-for="(_, slide) in maxSlides"
         :key="slide"
-        class="flex items-center gap-4"
+        class="grid gap-4"
+        :style="gridColumns"
       >
         <div
           v-for="(_, col) in columns"
-          :key="col"
-          class="flex-1"
+          :key="slide * columns + col"
         >
           <slot
             v-if="data[slide * columns + col]"
@@ -98,12 +104,12 @@ const maxSlides = computed(() => {
     </BaseCarousel>
     <div
       v-else
-      class="flex items-center gap-4 overflow-auto giro__hide-scroll"
+      class="w-full flex items-center gap-4 overflow-auto giro__hide-scroll"
     >
       <div
         v-for="(datapoint, index) in data"
         :key="index"
-        class="giro__grid-page-item"
+        class="min-w-[35%] w-[35%]"
       >
         <slot
           name="default"
