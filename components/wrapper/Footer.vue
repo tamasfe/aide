@@ -97,7 +97,7 @@ const getFlag = (language: string) => {
     <section>logos here</section>
     <!-- trademark -->
     <section
-      class="flex items-center flex-col lg:flex-row justify-between space-x-4 space-y-4 text-sm text-subtle"
+      class="flex items-center flex-col lg:flex-row justify-between lg:space-x-4 space-y-4 text-sm text-subtle"
     >
       <p class="max-w-4xl">
         Prior to engaging in any online gambling activities on our platform, it
