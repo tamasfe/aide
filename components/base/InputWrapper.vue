@@ -53,7 +53,7 @@ const defaultSlotWrapperClass = computed(() => (props.title ? "pt-4" : ""));
 // of the input when label is present
 // check if it can be improved
 const wrapperPaddingClass = computed(() =>
-  props.title ? "py-0.5 sm:py-1.5" : "py-1 sm:py-3.5",
+  props.title ? "py-0.5 sm:py-1.5" : "py-1 sm:py-[0.8rem]",
 );
 
 defineExpose({
@@ -65,11 +65,11 @@ defineExpose({
 <template>
   <div
     ref="container"
-    class="giro__input-container rounded-default"
+    class="giro__input-container rounded-[0.8rem]"
     @click="onFocus"
   >
     <div
-      class="flex items-center gap-4 rounded-default w-full bg-emphasis focus-within:outline outline-2 outline-focus min-h-12 px-3"
+      class="flex items-center gap-4 rounded-[0.8rem] w-full bg-emphasis focus-within:outline outline-2 outline-focus min-h-12 p-[0.8rem]"
       :class="[wrapperClass, wrapperPaddingClass]"
     >
       <slot name="prefix" />
@@ -108,6 +108,6 @@ defineExpose({
 
 .giro__input-container:focus-within .giro__input-placeholder,
 .giro__input-label-position {
-  transform: translateY(-20px) scale(0.75);
+  transform: translateY(-1.429rem) scale(0.75);
 }
 </style>

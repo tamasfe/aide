@@ -43,7 +43,7 @@ defineExpose({
     <div class="flex flex-col overflow-auto h-full">
       <div
         v-if="image"
-        class="relative w-full h-40 sm:h-44"
+        class="relative w-full"
       >
         <div
           class="absolute top-1/2 -translate-y-1/2 left-10 text-lg sm:text-xl font-black italic"
@@ -58,7 +58,7 @@ defineExpose({
         <NuxtImg
           :src="imageSrc"
           alt="Wheel"
-          class="object-cover w-full h-full sm:rounded-t-default"
+          class="object-cover w-full sm:rounded-t-default"
         />
       </div>
       <slot />

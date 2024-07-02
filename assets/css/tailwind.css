@@ -44,9 +44,9 @@
   --giro-shadow-btn-primary: #BFA61F;
 
   /* spacing */
-  --giro-border-radius: 8px;
-  --giro-padding-button: 6px 16px 6px 16px;
-  --giro-padding-button-big: 8px 8px 8px 8px;
+  --giro-border-radius: 0.571rem;
+  --giro-padding-button: 0.429rem 1.143rem 0.429rem 1.143rem;
+  --giro-padding-button-big: 0.5rem 3.2rem 0.5rem 3.2rem;
 
   /* font */
   --giro-font-size: 1rem;
@@ -58,7 +58,7 @@
   }
 
   html {
-    @apply sm:text-[14px] text-[16px];
+    font-size: 14px;
   }
 
   body {
@@ -107,6 +107,19 @@
   z-index: 11;
   animation: giro__fade-in 0.15s ease-in-out forwards;
   animation-delay: 0s;
+}
+
+.giro__container {
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+/* add 1 rem of padding to container on devices with a width of 1240px or less */
+@media (max-width: 1240px) {
+  .giro__container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
 }
 
 @keyframes giro__fade-in {

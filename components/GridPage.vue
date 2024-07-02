@@ -62,15 +62,19 @@ const gridColumns = computed(() => {
         >
           <button
             type="button"
-            class="p-1 bg-subtle text-subtle outline-none rounded-default"
-            :class="[carousel?.isFirst ? 'opacity-50 cursor-default' : '']"
+            class="p-1 bg-subtle text-subtle outline-none rounded-[0.4rem]"
+            :class="[
+              carousel?.isFirst
+                ? 'opacity-50 cursor-default'
+                : 'hover:bg-emphasis hover:text-emphasis',
+            ]"
             @click="previousPage"
           >
             <PhCaretLeft :size="24" />
           </button>
           <button
             type="button"
-            class="p-1 bg-subtle text-subtle outline-none rounded-default"
+            class="p-1 bg-subtle text-subtle outline-none rounded-[0.4rem] hover:bg-emphasis hover:text-emphasis"
             :class="[carousel?.isLast ? 'opacity-50 cursor-default' : '']"
             @click="nextPage"
           >

@@ -21,10 +21,10 @@ const getFlag = (language: string) => {
 </script>
 
 <template>
-  <footer class="px-4 sm:px-10 py-6 bg-subtle flex flex-col space-y-10">
+  <footer class="py-6 bg-subtle flex flex-col space-y-10">
     <!-- info -->
     <section
-      class="flex flex-col lg:flex-row space-y-6 lg:space-x-24 text-subtle"
+      class="giro__container w-full flex flex-col lg:flex-row space-y-6 lg:space-x-24 text-subtle"
     >
       <div class="flex-1 lg:flex-none lg:w-72 flex flex-col space-y-6">
         <div class="w-40 h-8">
@@ -94,10 +94,10 @@ const getFlag = (language: string) => {
       <WrapperSocialMediaLogos class="flex-1 hidden lg:flex" />
     </section>
     <!-- logos -->
-    <section>logos here</section>
+    <section class="giro__container w-full">logos here</section>
     <!-- trademark -->
     <section
-      class="flex items-center flex-col lg:flex-row justify-between lg:space-x-4 space-y-4 text-sm text-subtle"
+      class="giro__container w-full flex items-center flex-col lg:flex-row justify-between lg:space-x-4 space-y-4 text-sm text-subtle"
     >
       <p class="max-w-4xl">
         Prior to engaging in any online gambling activities on our platform, it

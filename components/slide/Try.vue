@@ -2,7 +2,7 @@
 const { isMobile } = useDevice();
 const imageSrc = isMobile
   ? `/assets/images/wheel.png`
-  : `/assets/images/wheel-spin.png`;
+  : `/assets/images/wheel-2.png`;
 
 const depositModalOpened = ref(false);
 
@@ -12,7 +12,7 @@ const openModal = () => {
 </script>
 
 <template>
-  <div class="h-full w-full">
+  <div class="h-full w-full rounded-default">
     <ModalDeposit v-model:opened="depositModalOpened" />
     <div
       class="absolute top-1/2 -translate-y-1/2 left-6 sm:left-4 text-lg md:left-28 lg:text-2xl xl:text-4xl font-black italic lg:space-y-4 lg:leading-4 xl:space-y-8 xl:leading-6"
@@ -30,7 +30,7 @@ const openModal = () => {
         <span class="text-brand-yellow">+100</span> FREE SPINS
       </h2>
       <BaseButton
-        class="hidden lg:inline-flex justify-center cursor-pointer w-56 xl:w-72"
+        class="hidden lg:inline-flex justify-center cursor-pointer rounded-[0.4rem]"
         variant="emphasis"
         big
         shadow
@@ -42,7 +42,7 @@ const openModal = () => {
     <NuxtImg
       :src="imageSrc"
       alt="Wheel Spin"
-      class="object-cover h-full w-full rounded-default"
+      class="object-cover w-full rounded-default"
     />
   </div>
 </template>

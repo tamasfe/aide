@@ -68,33 +68,35 @@ defineExpose({
         invite
       </BaseNotice>
     </Transition>
-    <div class="bg-subtle flex items-center justify-between px-4 sm:px-10 py-4">
-      <div class="flex items-center space-x-2">
-        <button
-          type="button"
-          class="hidden sm:block outline-none"
-          @click="openSidebar"
-        >
-          <PhList
-            class="text-subtle"
-            :size="30"
-          />
-        </button>
-        <IconsLogo />
-      </div>
-      <div class="flex items-center gap-4">
-        <BaseButton
-          variant="secondary"
-          @click="login"
-        >
-          Login
-        </BaseButton>
-        <BaseButton
-          variant="primary"
-          @click="register"
-        >
-          Register
-        </BaseButton>
+    <div class="w-full bg-subtle">
+      <div class="giro__container flex items-center justify-between py-4">
+        <div class="flex items-center space-x-2">
+          <button
+            type="button"
+            class="hidden sm:block outline-none"
+            @click="openSidebar"
+          >
+            <PhList
+              class="text-subtle"
+              :size="30"
+            />
+          </button>
+          <IconsLogo />
+        </div>
+        <div class="flex items-center gap-4">
+          <BaseButton
+            variant="secondary"
+            @click="login"
+          >
+            Login
+          </BaseButton>
+          <BaseButton
+            variant="primary"
+            @click="register"
+          >
+            Register
+          </BaseButton>
+        </div>
       </div>
     </div>
   </nav>
