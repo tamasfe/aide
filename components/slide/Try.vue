@@ -1,8 +1,9 @@
 <script setup lang="ts">
 const { isMobile } = useDevice();
-const imageSrc = isMobile
-  ? `/assets/images/wheel.png`
-  : `/assets/images/wheel-2.png`;
+// const imageSrc = isMobile
+//  ? `/assets/images/wheel.png`
+//  : `/assets/images/wheel-2.png`;
+const imageSrc = "/assets/images/wheel-2.png";
 
 const depositModalOpened = ref(false);
 
