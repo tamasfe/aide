@@ -9,7 +9,7 @@ import {
 
 <template>
   <div class="flex flex-col space-y-4">
-    <h3 class="text-lg text-default font-semibold hidden lg:block">
+    <h3 class="text-lg text-emphasis font-semibold hidden lg:block">
       Social Media
     </h3>
     <div class="flex space-x-4 justify-evenly lg:justify-start">

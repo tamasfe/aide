@@ -12,7 +12,7 @@ defineProps<{
 
 <template>
   <div class="flex-1 flex flex-col space-y-4">
-    <h3 class="text-lg font-semibold text-default hidden lg:block">
+    <h3 class="text-lg font-semibold text-emphasis hidden lg:block">
       {{ section }}
     </h3>
     <NuxtLink

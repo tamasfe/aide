@@ -53,7 +53,7 @@ const selectedOption = computed(() => {
     v-model="modelValue"
   >
     <div
-      class="relative outline-none rounded-default h-max"
+      class="relative outline-none h-max"
       :class="$attrs.class"
     >
       <ListboxButton

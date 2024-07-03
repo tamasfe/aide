@@ -60,7 +60,7 @@ defineExpose({
     <Transition name="slide">
       <BaseNotice
         v-if="refferalBaseNoticeOpen"
-        class="w-full"
+        class="w-full h-14"
         variant="info"
         @close="() => (refferalBaseNoticeOpen = false)"
       >
@@ -69,8 +69,10 @@ defineExpose({
       </BaseNotice>
     </Transition>
     <div class="w-full bg-subtle">
-      <div class="giro__container flex items-center justify-between py-4">
-        <div class="flex items-center space-x-2">
+      <div
+        class="giro__container flex items-center justify-between py-[0.6rem] sm:py-3"
+      >
+        <div class="flex items-center gap-x-8">
           <button
             type="button"
             class="hidden sm:block outline-none"
@@ -83,7 +85,7 @@ defineExpose({
           </button>
           <IconsLogo />
         </div>
-        <div class="flex items-center gap-4">
+        <div class="flex items-center space-x-3 sm:space-x-4">
           <BaseButton
             variant="secondary"
             @click="login"

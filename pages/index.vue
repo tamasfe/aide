@@ -20,7 +20,7 @@ onMounted(async () => {
 
 <template>
   <div class="sm:py-8">
-    <div class="giro__container">
+    <div class="max-w-full sm:max-w-[1240px] mx-auto">
       <CarouselHome class="w-full" />
     </div>
     <div class="giro__container py-6">
@@ -36,7 +36,9 @@ onMounted(async () => {
               :show-controls="!isMobile"
               :loading="loading"
             >
-              <template #title>🔥 Top games</template>
+              <template #title>
+                <h2 class="text-xl sm:text-2xl">🔥 Top games</h2>
+              </template>
               <template #options>
                 <BaseButton class="bg-subtle text-subtle"> See all </BaseButton>
               </template>
@@ -54,17 +56,16 @@ onMounted(async () => {
             </GridPage>
           </template>
         </BaseSearch>
-        <HomeWinningNow
-          v-if="!isMobile"
-          class="w-full"
-        />
+        <HomeWinningNow class="w-full" />
         <GridPage
           :data="data"
           :columns="6"
           :show-controls="!isMobile"
           :loading="loading"
         >
-          <template #title>🔥 Top games</template>
+          <template #title>
+            <h2 class="text-xl sm:text-2xl">🔥 Top games</h2>
+          </template>
           <template #options>
             <BaseButton class="bg-subtle text-subtle"> See all </BaseButton>
           </template>
@@ -86,7 +87,9 @@ onMounted(async () => {
           :show-controls="!isMobile"
           :loading="loading"
         >
-          <template #title>👍 Popular Games</template>
+          <template #title>
+            <h2 class="text-xl sm:text-2xl">👍 Popular Games</h2>
+          </template>
           <template #options>
             <BaseButton class="bg-subtle text-subtle"> See all </BaseButton>
           </template>

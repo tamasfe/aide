@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { PhX } from "@phosphor-icons/vue";
+
 const props = defineProps<{
   variant: "info";
 }>();
@@ -21,15 +23,18 @@ const close = () => {
 
 <template>
   <div
-    class="relative p-2 px-6 flex items-center justify-center font-medium"
+    class="relative flex items-center justify-center font-medium"
     :class="backgroundClass"
   >
-    <slot />
-    <span
-      class="absolute top-1/2 right-[10px] transform -translate-y-1/2 cursor-pointer text-xl"
+    <div class="my-4 ml-4 mr-10">
+      <slot />
+    </div>
+    <button
+      type="button"
+      class="absolute top-1/2 right-[10px] transform -translate-y-1/2 cursor-pointer text-xl outline-none"
       @click="close"
     >
-      X
-    </span>
+      <PhX :size="24" />
+    </button>
   </div>
 </template>

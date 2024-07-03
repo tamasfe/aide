@@ -21,17 +21,19 @@ const getFlag = (language: string) => {
 </script>
 
 <template>
-  <footer class="py-6 bg-subtle flex flex-col space-y-10">
+  <footer class="py-6 sm:py-12 bg-subtle flex flex-col space-y-10">
     <!-- info -->
     <section
       class="giro__container w-full flex flex-col lg:flex-row space-y-6 lg:space-x-24 text-subtle"
     >
-      <div class="flex-1 lg:flex-none lg:w-72 flex flex-col space-y-6">
-        <div class="w-40 h-8">
+      <div
+        class="flex-1 lg:flex-none lg:w-72 flex flex-col items-center sm:items-start space-y-6"
+      >
+        <div class="w-40">
           <NuxtImg
             src="/assets/images/logo-unsaturated.svg"
             alt="Logo"
-            class="w-full h-full object-cover"
+            class="w-full object-cover"
           />
         </div>
         <p>
@@ -42,20 +44,21 @@ const getFlag = (language: string) => {
         <BaseSelect
           v-model="language"
           :options="languageOptions"
-          class="w-full lg:w-max"
+          class="w-full lg:w-max rounded-[0.475rem]"
+          wrapper-class="rounded-[0.475rem]"
         >
           <template #prefix>
             <BaseFlag
               :key="language"
               :code="getFlag(language)"
-              size="l"
+              size="m"
             />
           </template>
           <template #option="{ option }">
             <div class="flex items-center space-x-4">
               <BaseFlag
                 :code="getFlag(option.value as string)"
-                size="l"
+                size="m"
               />
               <span>{{ option.title }}</span>
             </div>
