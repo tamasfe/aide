@@ -12,19 +12,21 @@ export default defineNuxtConfig({
   build: {
     transpile: ["applicationinsights"],
   },
+  compatibilityDate: "2024-07-03",
   debug: false,
   devtools: {
     enabled: true,
   },
   modules: [
     "@nuxt/eslint",
+    "@nuxt/image",
+    "@nuxt/test-utils/module",
+    "@nuxtjs/device",
     "@nuxtjs/i18n",
     "@nuxtjs/seo",
     "@nuxtjs/tailwindcss",
     "@pinia/nuxt",
-    "@nuxt/test-utils/module",
-    "@nuxtjs/device",
-    "@nuxt/image",
+    "@vee-validate/nuxt",
   ],
   runtimeConfig: {
     public: {},
@@ -39,6 +41,14 @@ export default defineNuxtConfig({
   typescript: {
     strict: true,
     typeCheck: true,
+  },
+  // NOTE
+  // https://github.com/nuxt/nuxt/issues/27544
+  // when this issue is fixed, the entire "vite" block below can be removed
+  vite: {
+    optimizeDeps: {
+      exclude: ["vee-validate"],
+    },
   },
   // @nuxtjs/eslint
   eslint: {

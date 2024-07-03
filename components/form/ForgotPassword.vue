@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { toTypedSchema } from "@vee-validate/zod";
-import { useField, useForm } from "vee-validate";
 import * as zod from "zod";
 
 const { t } = useI18n();

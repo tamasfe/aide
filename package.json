@@ -18,10 +18,10 @@
     "@nuxt/image": "^1.7.0",
     "@phosphor-icons/vue": "^2.2.1",
     "@pinia/nuxt": "^0.5.1",
+    "@vee-validate/nuxt": "^4.13.1",
     "@vee-validate/zod": "^4.13.1",
     "@vueuse/core": "^10.11.0",
     "nuxt": "^3.12.3",
-    "vee-validate": "^4.13.1",
     "vue": "^3.4.31",
     "vue-router": "^4.4.0",
     "zod": "^3.23.8"
