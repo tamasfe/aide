@@ -28,7 +28,7 @@ const onSubmit = handleSubmit((values) => {
 
 <template>
   <form
-    class="flex flex-col items-center gap-4 w-full"
+    class="flex flex-col items-center space-y-2 w-full"
     @submit="onSubmit"
   >
     <FormControl
@@ -53,19 +53,19 @@ const onSubmit = handleSubmit((values) => {
     />
     <button
       type="button"
-      class="font-semibold text-subtle sm:py-2"
+      class="font-semibold text-subtle py-4"
     >
       {{ t("forgot_your_password") }}
     </button>
     <BaseButton
-      class="w-full inline-flex justify-center"
+      class="w-full inline-flex justify-center text-lg [border-radius:0.3rem]"
       variant="primary"
       type="submit"
       big
     >
       {{ t("enter") }}
     </BaseButton>
-    <p class="text-lg text-subtle py-2">
+    <p class="text-subtle py-4">
       {{ t("dont_have_account") }}
       <button
         type="button"

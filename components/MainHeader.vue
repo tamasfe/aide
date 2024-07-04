@@ -83,7 +83,9 @@ defineExpose({
               :size="30"
             />
           </button>
-          <IconsLogo />
+          <NuxtLink to="/">
+            <IconsLogo class="w-36 sm:w-40 object-cover" />
+          </NuxtLink>
         </div>
         <div class="flex items-center space-x-3 sm:space-x-4">
           <BaseButton

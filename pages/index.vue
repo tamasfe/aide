@@ -76,7 +76,7 @@ onMounted(async () => {
               <NuxtImg
                 :src="`https://picsum.photos/200/300?random=${random(0, 100)}`"
                 alt=""
-                class="absolute top-0 left-0 w-full h-full object-cover rounded-[0.8rem] transition-transform transform hover:scale-105"
+                class="absolute top-0 left-0 w-full object-cover rounded-[0.8rem] transition-transform transform hover:scale-105"
               />
             </div>
           </template>
@@ -100,7 +100,7 @@ onMounted(async () => {
               <NuxtImg
                 :src="`https://picsum.photos/200/300?random=${random(0, 100)}`"
                 alt=""
-                class="absolute top-0 left-0 w-full h-full object-cover rounded-[0.8rem] transition-transform transform hover:scale-105"
+                class="absolute top-0 left-0 w-full object-cover rounded-[0.8rem] transition-transform transform hover:scale-105"
               />
             </div>
           </template>

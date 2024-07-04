@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { isMobile } = useDevice();
+// const { isMobile } = useDevice();
 // const imageSrc = isMobile
 //  ? `/assets/images/wheel.png`
 //  : `/assets/images/wheel-2.png`;
@@ -31,7 +31,7 @@ const openModal = () => {
         <span class="text-brand-yellow">+100</span> FREE SPINS
       </h2>
       <BaseButton
-        class="hidden lg:inline-flex justify-center cursor-pointer rounded-[0.4rem]"
+        class="hidden lg:inline-flex justify-center cursor-pointer [border-radius:0.4rem]"
         variant="emphasis"
         big
         shadow

@@ -45,7 +45,7 @@ const onSubmit = handleSubmit((values) => {
 
 <template>
   <form
-    class="flex flex-col items-center gap-4 w-full"
+    class="flex flex-col items-center space-y-2 w-full"
     @submit="onSubmit"
   >
     <FormControl
@@ -87,7 +87,7 @@ const onSubmit = handleSubmit((values) => {
       input-class="text-default"
       :error="errors.number || errors.region"
     />
-    <p class="text-sm text-subtle sm:py-2">
+    <p class="text-sm text-subtle py-4">
       {{ t("accept_terms") }}
       <button
         type="button"
@@ -97,14 +97,14 @@ const onSubmit = handleSubmit((values) => {
       </button>
     </p>
     <BaseButton
-      class="w-full inline-flex justify-center"
+      class="w-full inline-flex justify-center text-lg [border-radius:0.3rem]"
       variant="primary"
       type="submit"
       big
     >
       {{ t("create_account") }}
     </BaseButton>
-    <p class="text-lg text-subtle sm:py-2">
+    <p class="text-subtle py-4">
       {{ t("have_account") }}
       <button
         type="button"

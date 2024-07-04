@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { isDesktop } = useDevice();
+// const { isDesktop } = useDevice();
 
 const emit = defineEmits(["update:opened"]);
 
@@ -13,10 +13,10 @@ const opened = computed({
 });
 const image = ref(true);
 
-const imageSrc = computed(() => {
-  const name = isDesktop ? "wheel-2" : "wheel";
-  return `/assets/images/${name}.png`;
-});
+// const imageSrc = computed(() => {
+//  const name = isDesktop ? "wheel-2" : "wheel";
+//  return `/assets/images/${name}.png`;
+// });
 
 const reset = () => {
   image.value = true;
@@ -56,7 +56,7 @@ defineExpose({
           </p>
         </div>
         <NuxtImg
-          :src="imageSrc"
+          src="/assets/images/wheel-2.png"
           alt="Wheel"
           class="object-cover w-full sm:rounded-t-default"
         />

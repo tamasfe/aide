@@ -89,7 +89,7 @@ const placeholder = computed(() =>
               <BaseFlag
                 :key="selectedOption.code"
                 :code="selectedOption.code"
-                size="l"
+                size="m"
               />
               <span
                 :class="[selectedOption ? 'text-default' : 'text-subtle']"
@@ -122,7 +122,7 @@ const placeholder = computed(() =>
                     <div class="flex items-center justify-between">
                       <BaseFlag
                         :code="option.code"
-                        size="l"
+                        size="m"
                       />
                       <span>
                         {{ option.dial_code }}

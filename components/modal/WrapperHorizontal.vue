@@ -5,16 +5,9 @@ const props = defineProps<{
   opened: boolean;
 }>();
 
-const { isDesktop } = useDevice();
-
 const opened = computed({
   get: () => props.opened,
   set: (value: boolean) => emit("update:opened", value),
-});
-
-const imageSrc = computed(() => {
-  const name = isDesktop ? "wheel-desktop" : "wheel";
-  return `/assets/images/${name}.png`;
 });
 </script>
 
@@ -22,10 +15,10 @@ const imageSrc = computed(() => {
   <BaseDialog
     v-bind="$attrs"
     v-model:opened="opened"
-    size="6xl"
+    size="5xl"
   >
     <div class="flex flex-col sm:flex-row overflow-auto h-full">
-      <div class="sm:flex-1 relative w-full sm:w-auto h-40 sm:h-auto">
+      <div class="sm:flex-1 relative w-full sm:w-auto">
         <div
           class="absolute top-1/2 sm:top-20 -translate-y-1/2 sm:translate-y-0 left-4 sm:left-1/2 sm:-translate-x-1/2 text-lg sm:text-3xl lg:text-4xl font-black italic sm:leading-[3rem]"
         >
@@ -43,31 +36,18 @@ const imageSrc = computed(() => {
           </p>
         </div>
         <NuxtImg
-          :src="imageSrc"
+          src="/assets/images/wheel-desktop.png"
           alt="Wheel"
-          class="object-cover w-full h-full sm:rounded-l-default"
+          class="hidden sm:block object-cover w-full h-full sm:rounded-l-default"
+        />
+        <NuxtImg
+          src="/assets/images/wheel-2.png"
+          alt="Wheel"
+          class="sm:hidden object-cover w-full h-full sm:rounded-l-default"
         />
       </div>
       <div class="flex-auto sm:flex-1 flex flex-col gap-2 sm:gap-0 py-2">
         <slot />
-        <!-- <div
-          v-if="type !== 'invite'"
-          class="inline-flex justify-center py-6 sm:pt-12 sm:pb-4"
-        >
-          <IconsLogo />
-        </div>
-        <div class="flex-1 px-6 sm:py-6">
-          <slot />
-          <FormRegisterBrazil
-            v-if="type === 'register'"
-            @request:login="requestLogin"
-          />
-          <FormLogin
-            v-else-if="type === 'login'"
-            @request:register="requestRegister"
-          />
-<FormInvite v-else-if="type === 'invite'" />
-      </div> -->
       </div>
     </div>
   </BaseDialog>

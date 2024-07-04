@@ -19,6 +19,7 @@ defineProps<{
       v-for="option in options"
       :key="option.to"
       :to="option.to"
+      class="hover:text-emphasis"
     >
       {{ option.title }}
     </NuxtLink>

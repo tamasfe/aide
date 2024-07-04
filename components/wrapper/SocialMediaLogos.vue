@@ -13,16 +13,28 @@ import {
       Social Media
     </h3>
     <div class="flex space-x-4 justify-evenly lg:justify-start">
-      <NuxtLink to="/terms">
+      <NuxtLink
+        to="/terms"
+        class="hover:text-emphasis"
+      >
         <PhTelegramLogo :size="24" />
       </NuxtLink>
-      <NuxtLink to="/privacy">
+      <NuxtLink
+        to="/privacy"
+        class="hover:text-emphasis"
+      >
         <PhInstagramLogo :size="24" />
       </NuxtLink>
-      <NuxtLink to="/responsible">
+      <NuxtLink
+        to="/responsible"
+        class="hover:text-emphasis"
+      >
         <PhXLogo :size="24" />
       </NuxtLink>
-      <NuxtLink to="/cookies">
+      <NuxtLink
+        to="/cookies"
+        class="hover:text-emphasis"
+      >
         <PhTiktokLogo :size="24" />
       </NuxtLink>
     </div>

@@ -2,11 +2,12 @@
   <div
     class="bg-subtle grid grid-cols-3 gap-2 p-2 rounded-[0.8rem] cursor-pointer outline-none"
   >
-    <div class="rounded-default">
+    <!-- force aspect ration 3:3 -->
+    <div class="relative pt-[100%] rounded-[0.8rem]">
       <NuxtImg
         src="https://picsum.photos/300/300?random=1"
         alt=""
-        class="w-full object-cover rounded-default"
+        class="absolute left-0 top-0 w-full object-cover rounded-[0.8rem]"
       />
     </div>
     <div class="col-span-2 text-subtle">

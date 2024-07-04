@@ -26,7 +26,7 @@ const close = () => {
       </p>
       <BaseButton
         tabindex="0"
-        class="w-full inline-flex justify-center"
+        class="w-full inline-flex justify-center text-lg [border-radius:0.3rem]"
         variant="primary"
         type="submit"
         big

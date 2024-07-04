@@ -65,11 +65,11 @@ defineExpose({
 <template>
   <div
     ref="container"
-    class="giro__input-container rounded-[0.8rem]"
+    class="giro__input-container rounded-lg"
     @click="onFocus"
   >
     <div
-      class="flex items-center gap-4 rounded-[0.8rem] w-full bg-emphasis focus-within:outline outline-2 outline-focus min-h-12 p-[0.8rem]"
+      class="flex items-center gap-4 rounded-lg w-full bg-emphasis focus-within:outline outline-2 outline-focus min-h-12 p-[0.8rem]"
       :class="[wrapperClass, wrapperPaddingClass]"
     >
       <slot name="prefix" />
@@ -108,6 +108,6 @@ defineExpose({
 
 .giro__input-container:focus-within .giro__input-placeholder,
 .giro__input-label-position {
-  transform: translateY(-1.429rem) scale(0.75);
+  transform: translateY(-1.13rem) scale(0.75);
 }
 </style>
