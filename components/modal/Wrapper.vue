@@ -38,6 +38,7 @@ defineExpose({
     v-model:opened="opened"
     :close="image"
     size="2xl"
+    class="sm:!rounded-[0.8rem]"
     @close="reset"
   >
     <div class="flex flex-col overflow-auto h-full">
@@ -58,7 +59,7 @@ defineExpose({
         <NuxtImg
           src="/assets/images/wheel-2.png"
           alt="Wheel"
-          class="object-cover w-full sm:rounded-t-default"
+          class="object-cover w-full sm:rounded-t-[0.8rem]"
         />
       </div>
       <slot />

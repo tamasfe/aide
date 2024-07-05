@@ -16,34 +16,35 @@ const opened = computed({
     v-bind="$attrs"
     v-model:opened="opened"
     size="5xl"
+    class="sm:!rounded-[0.8rem]"
   >
     <div class="flex flex-col sm:flex-row overflow-auto h-full">
       <div class="sm:flex-1 relative w-full sm:w-auto">
         <div
-          class="absolute top-1/2 sm:top-20 -translate-y-1/2 sm:translate-y-0 left-4 sm:left-1/2 sm:-translate-x-1/2 text-lg sm:text-3xl lg:text-4xl font-black italic sm:leading-[3rem]"
+          class="absolute top-1/2 sm:top-20 -translate-y-1/2 sm:translate-y-0 left-4 sm:left-1/2 sm:-translate-x-1/2 text-lg sm:text-3xl lg:text-3xl font-black italic sm:leading-[3rem]"
         >
-          <p class="text-brand-yellow text-sm sm:text-xl lg:text-2xl">
+          <p
+            class="text-brand-yellow font-semibold text-sm sm:text-lg lg:text-2xl"
+          >
             EXCLUSIVE
           </p>
-          <p class="font-extrabold text-xl sm:text-4xl lg:text-5xl">
-            PRE-RELEASE
-          </p>
-          <p class="font-extrabold text-xl sm:text-4xl lg:text-5xl text-nowrap">
+          <p class="font-black text-xl sm:text-3xl lg:text-4xl">PRE-RELEASE</p>
+          <p class="font-black text-xl sm:text-3xl lg:text-4xl text-nowrap">
             FROM WILDJACK
           </p>
-          <p class="font-extrabold">
+          <p class="font-black">
             <span class="text-brand-yellow">+100</span> FREE SPINS
           </p>
         </div>
         <NuxtImg
           src="/assets/images/wheel-desktop.png"
           alt="Wheel"
-          class="hidden sm:block object-cover w-full h-full sm:rounded-l-default"
+          class="hidden sm:block object-cover w-full h-full sm:rounded-l-[0.8rem]"
         />
         <NuxtImg
           src="/assets/images/wheel-2.png"
           alt="Wheel"
-          class="sm:hidden object-cover w-full h-full sm:rounded-l-default"
+          class="sm:hidden object-cover w-full h-full sm:rounded-l-[0.8rem]"
         />
       </div>
       <div class="flex-auto sm:flex-1 flex flex-col gap-2 sm:gap-0 py-2">

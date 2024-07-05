@@ -90,11 +90,13 @@ defineExpose({
         <div class="flex items-center space-x-3 sm:space-x-4">
           <BaseButton
             variant="secondary"
+            class="py-2"
             @click="login"
           >
             Login
           </BaseButton>
           <BaseButton
+            class="py-2"
             variant="primary"
             @click="register"
           >

@@ -26,7 +26,7 @@ const close = () => {
       </p>
       <BaseButton
         tabindex="0"
-        class="w-full inline-flex justify-center text-lg [border-radius:0.3rem]"
+        class="w-full inline-flex justify-center text-lg !rounded-[0.3rem] !py-4 sm:!py-3"
         variant="primary"
         type="submit"
         big

@@ -36,7 +36,7 @@ const onSubmit = handleSubmit((values) => {
       type="email"
       :title="t('email')"
       class="w-full"
-      wrapper-class="bg-subtle"
+      wrapper-class="bg-subtle py-3"
       input-class="text-default"
       :error="errors.email"
       autocomplete="email"
@@ -46,7 +46,7 @@ const onSubmit = handleSubmit((values) => {
       type="password"
       :title="t('Password')"
       class="w-full"
-      wrapper-class="bg-subtle"
+      wrapper-class="bg-subtle py-3"
       input-class="text-default"
       :error="errors.password"
       autocomplete="new-password"
@@ -58,7 +58,7 @@ const onSubmit = handleSubmit((values) => {
       {{ t("forgot_your_password") }}
     </button>
     <BaseButton
-      class="w-full inline-flex justify-center text-lg [border-radius:0.3rem]"
+      class="w-full inline-flex justify-center text-lg !rounded-[0.3rem] !py-4 sm:!py-3"
       variant="primary"
       type="submit"
       big

@@ -53,7 +53,7 @@ const onSubmit = handleSubmit((values) => {
       type="email"
       :title="t('email')"
       class="w-full"
-      wrapper-class="bg-subtle"
+      wrapper-class="bg-subtle py-3"
       input-class="text-default"
       :error="errors.email"
       autocomplete="email"
@@ -63,7 +63,7 @@ const onSubmit = handleSubmit((values) => {
       type="password"
       :title="t('Password')"
       class="w-full"
-      wrapper-class="bg-subtle"
+      wrapper-class="bg-subtle py-3"
       input-class="text-default"
       :error="errors.password"
       autocomplete="new-password"
@@ -73,7 +73,7 @@ const onSubmit = handleSubmit((values) => {
       type="text"
       :title="t('cpf')"
       class="w-full"
-      wrapper-class="bg-subtle"
+      wrapper-class="bg-subtle py-3"
       input-class="text-default"
       :error="errors.cpf"
     />
@@ -83,7 +83,7 @@ const onSubmit = handleSubmit((values) => {
       type="tel"
       :title="t('telephone')"
       class="w-full"
-      wrapper-class="bg-subtle"
+      wrapper-class="bg-subtle py-3"
       input-class="text-default"
       :error="errors.number || errors.region"
     />
@@ -97,7 +97,7 @@ const onSubmit = handleSubmit((values) => {
       </button>
     </p>
     <BaseButton
-      class="w-full inline-flex justify-center text-lg [border-radius:0.3rem]"
+      class="w-full inline-flex justify-center text-lg !rounded-[0.3rem] !py-4 sm:!py-3"
       variant="primary"
       type="submit"
       big

@@ -44,8 +44,7 @@ const getFlag = (language: string) => {
         <BaseSelect
           v-model="language"
           :options="languageOptions"
-          class="w-full lg:w-max rounded-[0.475rem]"
-          wrapper-class="rounded-[0.475rem]"
+          class="w-full lg:w-max"
         >
           <template #prefix>
             <BaseFlag

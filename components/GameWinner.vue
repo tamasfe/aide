@@ -10,7 +10,7 @@
         class="absolute left-0 top-0 w-full object-cover rounded-[0.8rem]"
       />
     </div>
-    <div class="col-span-2 text-subtle">
+    <div class="col-span-2 text-subtle text-[0.9rem]">
       <p class="bg-button-primary text-transparent bg-clip-text">$32.14</p>
       <p class="truncate">Golden rush inferno</p>
       <p>Rui***</p>

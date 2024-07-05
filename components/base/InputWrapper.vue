@@ -49,13 +49,6 @@ const labelPositionClass = computed(() => {
 
 const defaultSlotWrapperClass = computed(() => (props.title ? "pt-4" : ""));
 
-// magic numbers because of the padding
-// of the input when label is present
-// check if it can be improved
-const wrapperPaddingClass = computed(() =>
-  props.title ? "py-0.5 sm:py-1.5" : "py-1 sm:py-[0.8rem]",
-);
-
 defineExpose({
   onFocus,
   onBlur,
@@ -69,8 +62,8 @@ defineExpose({
     @click="onFocus"
   >
     <div
-      class="flex items-center gap-4 rounded-lg w-full bg-emphasis focus-within:outline outline-2 outline-focus min-h-12 p-[0.8rem]"
-      :class="[wrapperClass, wrapperPaddingClass]"
+      class="flex items-center gap-4 rounded-lg w-full bg-emphasis focus-within:outline outline-2 outline-focus min-h-12 px-[0.8rem] py-1 sm:py-[0.8rem]"
+      :class="wrapperClass"
     >
       <slot name="prefix" />
       <div
