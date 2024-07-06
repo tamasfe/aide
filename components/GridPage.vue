@@ -52,7 +52,7 @@ const gridColumns = computed(() => {
 <template>
   <div class="flex flex-col gap-y-4 py-2">
     <div class="flex items-center justify-between">
-      <div class="flex items-center gap-x-2">
+      <div class="flex items-center gap-x-8">
         <div class="text-[24px] font-bold">
           <slot name="title" />
         </div>

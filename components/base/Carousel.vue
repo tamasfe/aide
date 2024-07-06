@@ -117,17 +117,17 @@ defineExpose({
     >
       <button
         type="button"
-        class="absolute z-[2] left-8 top-1/2 transform -translate-y-1/2 p-1 bg-subtle hover:bg-emphasis rounded-[0.4rem] outline-none text-subtle hover:text-emphasis"
+        class="absolute z-[2] left-2 top-1/2 transform -translate-y-1/2 p-4 outline-none"
         @click="prev"
       >
-        <PhCaretLeft :size="24" />
+        <PhCaretLeft :size="34" />
       </button>
       <button
         type="button"
-        class="absolute z-[2] right-8 top-1/2 transform -translate-y-1/2 p-1 bg-subtle hover:bg-emphasis rounded-[0.4rem] outline-none text-subtle hover:text-emphasis"
+        class="absolute z-[2] right-2 top-1/2 transform -translate-y-1/2 p-4 outline-none"
         @click="next"
       >
-        <PhCaretRight :size="24" />
+        <PhCaretRight :size="34" />
       </button>
     </slot>
     <div

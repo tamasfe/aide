@@ -64,8 +64,10 @@ defineExpose({
         variant="info"
         @close="() => (refferalBaseNoticeOpen = false)"
       >
-        Refer a friend and earn R$ 5,00 of REAL balance for each friend you
-        invite
+        <p class="text-center">
+          Refer a friend and earn R$ 5,00 of REAL balance for each friend you
+          invite
+        </p>
       </BaseNotice>
     </Transition>
     <div class="w-full bg-subtle">

@@ -18,6 +18,10 @@ const getFlag = (language: string) => {
       return "US";
   }
 };
+
+const scrollToTop = () => {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+};
 </script>
 
 <template>
@@ -113,6 +117,7 @@ const getFlag = (language: string) => {
       <button
         type="button"
         class="outline-none w-full md:w-auto bg-emphasis p-3 rounded-default text-subtle inline-flex justify-center"
+        @click="scrollToTop"
       >
         <PhCaretUp :size="24" />
       </button>

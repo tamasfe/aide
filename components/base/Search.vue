@@ -104,7 +104,7 @@ defineOptions({
         <button
           v-if="opened"
           type="button"
-          class="cursor-pointer outline-none"
+          class="text-subtle cursor-pointer outline-none"
           aria-label="Close"
           @click="close"
         >

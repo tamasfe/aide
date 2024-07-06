@@ -103,7 +103,7 @@ const selectedOption = computed(() => {
 
       <transition name="giro__select-fade">
         <ListboxOptions
-          class="absolute giro__select-options max-h-60 w-full overflow-auto rounded-b-default bg-emphasis outline-none"
+          class="absolute giro__select-options max-h-60 w-full overflow-auto rounded-default bg-emphasis outline-none"
         >
           <ListboxOption
             v-for="option in options"
@@ -113,8 +113,8 @@ const selectedOption = computed(() => {
             as="template"
           >
             <li
-              class="cursor-pointer outline-none px-3 py-2 text-subtle focus:bg-subtle"
-              :class="[active ? 'bg-subtle text-emphasis' : '']"
+              class="cursor-pointer outline-none px-3 py-2 text-subtle focus:bg-default"
+              :class="[active ? 'bg-default text-emphasis' : '']"
             >
               <slot
                 name="option"
@@ -137,7 +137,7 @@ const selectedOption = computed(() => {
 
 <style scoped lang="postcss">
 .giro__select-options {
-  top: calc(100% - 5px);
+  top: calc(100% + 0.5rem);
   left: 0;
   z-index: 1;
 }
