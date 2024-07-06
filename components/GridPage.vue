@@ -74,8 +74,12 @@ const gridColumns = computed(() => {
           </button>
           <button
             type="button"
-            class="p-1 bg-subtle text-subtle outline-none rounded-[0.4rem] hover:bg-emphasis hover:text-emphasis"
-            :class="[carousel?.isLast ? 'opacity-50 cursor-default' : '']"
+            class="p-1 bg-subtle text-subtle outline-none rounded-[0.4rem]"
+            :class="[
+              carousel?.isLast
+                ? 'opacity-50 cursor-default'
+                : 'hover:bg-emphasis hover:text-emphasis',
+            ]"
             @click="nextPage"
           >
             <PhCaretRight :size="24" />
@@ -91,7 +95,7 @@ const gridColumns = computed(() => {
       <div
         v-for="(_, slide) in maxSlides"
         :key="slide"
-        class="grid gap-4"
+        class="grid gap-6"
         :style="gridColumns"
       >
         <div

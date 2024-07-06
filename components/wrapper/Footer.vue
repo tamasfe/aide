@@ -21,13 +21,13 @@ const getFlag = (language: string) => {
 </script>
 
 <template>
-  <footer class="py-6 sm:py-12 bg-subtle flex flex-col space-y-10">
+  <footer class="py-6 md:py-12 bg-subtle flex flex-col space-y-10">
     <!-- info -->
     <section
-      class="giro__container w-full flex flex-col lg:flex-row space-y-6 lg:space-x-24 text-subtle"
+      class="giro__container w-full flex flex-col md:flex-row md:justify-between sm:space-x-8 md:space-x-12 text-subtle"
     >
       <div
-        class="flex-1 lg:flex-none lg:w-72 flex flex-col items-center sm:items-start space-y-6"
+        class="flex-1 md:flex-none md:max-w-xs lg:max-w-sm flex flex-col items-center md:items-start space-y-6"
       >
         <div class="w-40">
           <NuxtImg
@@ -44,7 +44,8 @@ const getFlag = (language: string) => {
         <BaseSelect
           v-model="language"
           :options="languageOptions"
-          class="w-full lg:w-max"
+          class="w-full md:w-max"
+          wrapper-class="!py-0"
         >
           <template #prefix>
             <BaseFlag
@@ -64,11 +65,11 @@ const getFlag = (language: string) => {
           </template>
         </BaseSelect>
       </div>
-      <WrapperSocialMediaLogos class="lg:hidden" />
+      <WrapperSocialMediaLogos class="md:hidden" />
       <WrapperFooterColumn
         section="Legal"
         :options="[
-          { title: 'Terms and Conditions', to: '/terms' },
+          { title: 'Terms of Use & Service Agreement', to: '/terms' },
           { title: 'Privacy Policy', to: '/privacy' },
           { title: 'Custom Privacy Notice', to: '/responsible' },
           { title: 'Affiliate Terms and Conditions', to: '/cookies' },
@@ -93,15 +94,15 @@ const getFlag = (language: string) => {
           { title: 'Contact Us', to: '/contact' },
         ]"
       />
-      <WrapperSocialMediaLogos class="flex-1 hidden lg:flex" />
+      <WrapperSocialMediaLogos class="hidden lg:flex" />
     </section>
     <!-- logos -->
     <section class="giro__container w-full">logos here</section>
     <!-- trademark -->
     <section
-      class="giro__container w-full flex items-center flex-col lg:flex-row justify-between lg:space-x-4 space-y-4 text-sm text-subtle"
+      class="giro__container w-full flex items-center flex-col md:flex-row justify-between md:space-x-4 space-y-4 text-sm text-subtle"
     >
-      <p class="max-w-4xl">
+      <p class="max-w-4xl text-xs">
         Prior to engaging in any online gambling activities on our platform, it
         is imperative to verify that such actions are legally permissible within
         your jurisdiction. It is your responsibility to ascertain and adhere to
@@ -111,7 +112,7 @@ const getFlag = (language: string) => {
       <p>©2024 GIROBET ALL RIGHTS RESERVED</p>
       <button
         type="button"
-        class="outline-none w-full lg:w-auto bg-emphasis p-3 rounded-default text-subtle inline-flex justify-center"
+        class="outline-none w-full md:w-auto bg-emphasis p-3 rounded-default text-subtle inline-flex justify-center"
       >
         <PhCaretUp :size="24" />
       </button>

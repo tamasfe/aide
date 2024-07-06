@@ -9,34 +9,30 @@ import {
 
 <template>
   <div class="flex flex-col space-y-4">
-    <h3 class="text-lg text-emphasis font-semibold hidden lg:block">
+    <h3 class="text-lg text-emphasis font-semibold hidden md:block">
       Social Media
     </h3>
-    <div class="flex space-x-4 justify-evenly lg:justify-start">
-      <NuxtLink
-        to="/terms"
-        class="hover:text-emphasis"
-      >
-        <PhTelegramLogo :size="24" />
-      </NuxtLink>
-      <NuxtLink
-        to="/privacy"
-        class="hover:text-emphasis"
-      >
-        <PhInstagramLogo :size="24" />
-      </NuxtLink>
-      <NuxtLink
-        to="/responsible"
-        class="hover:text-emphasis"
-      >
-        <PhXLogo :size="24" />
-      </NuxtLink>
-      <NuxtLink
-        to="/cookies"
-        class="hover:text-emphasis"
-      >
-        <PhTiktokLogo :size="24" />
-      </NuxtLink>
+    <div class="flex space-x-2 lg:space-x-4 justify-evenly md:justify-start">
+      <div class="p-1 lg:p-3 rounded-xl hover:bg-emphasis">
+        <NuxtLink to="/telegram">
+          <PhTelegramLogo :size="28" />
+        </NuxtLink>
+      </div>
+      <div class="p-1 lg:p-3 rounded-xl hover:bg-emphasis">
+        <NuxtLink to="/instagram">
+          <PhInstagramLogo :size="28" />
+        </NuxtLink>
+      </div>
+      <div class="p-1 lg:p-3 rounded-xl hover:bg-emphasis">
+        <NuxtLink to="/x">
+          <PhXLogo :size="28" />
+        </NuxtLink>
+      </div>
+      <div class="p-1 lg:p-3 rounded-xl hover:bg-emphasis">
+        <NuxtLink to="/tiktok">
+          <PhTiktokLogo :size="28" />
+        </NuxtLink>
+      </div>
     </div>
   </div>
 </template>
