@@ -44,7 +44,7 @@ defineExpose({
 </script>
 
 <template>
-  <nav class="sticky top-0 left-0 w-full z-[10]">
+  <nav class="sticky top-0 left-0 w-full z-[9]">
     <ModalCancelRegistration
       v-model:opened="modalCancelRegistrationOpened"
       @submit="continueRegistration"
@@ -85,8 +85,11 @@ defineExpose({
               :size="30"
             />
           </button>
-          <NuxtLink to="/">
-            <IconsLogo class="w-36 sm:w-40 object-cover" />
+          <NuxtLink
+            to="/"
+            class="min-w-36 sm:min-w-40"
+          >
+            <IconsLogo />
           </NuxtLink>
         </div>
         <div class="flex items-center space-x-3 sm:space-x-4">

@@ -34,7 +34,9 @@ const requestRegister = () => {
 <template>
   <ModalWrapperHorizontal v-model:opened="opened">
     <div class="inline-flex justify-center py-6 sm:pt-12 sm:pb-4">
-      <IconsLogo class="w-40" />
+      <div class="min-w-36 sm:min-w-40">
+        <IconsLogo />
+      </div>
     </div>
     <div class="flex-1 px-6 sm:py-6">
       <FormRegisterBrazil

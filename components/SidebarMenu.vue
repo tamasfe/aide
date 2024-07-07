@@ -13,6 +13,27 @@ const opened = computed({
 });
 
 const size = isMobile ? "full" : "lg";
+
+const bottomPadding = ref(0);
+
+onMounted(() => {
+  const menu = document.querySelector(".giro__mobile-menu");
+  if (menu) {
+    bottomPadding.value = menu.clientHeight;
+  }
+});
+
+watch(
+  () => props.opened,
+  (value) => {
+    if (value) {
+      const menu = document.querySelector(".giro__mobile-menu");
+      if (menu) {
+        bottomPadding.value = menu.clientHeight;
+      }
+    }
+  },
+);
 </script>
 
 <template>
@@ -23,11 +44,14 @@ const size = isMobile ? "full" : "lg";
     class="px-2"
   >
     <template #title>
-      <div class="flex items-center justify-between pl-4">
+      <div class="flex items-center justify-between pl-4 max-w-48">
         <IconsLogo />
       </div>
     </template>
-    <div class="w-full flex flex-col gap-4">
+    <div
+      class="w-full flex flex-col gap-4 overflow-y-auto py-1 px-2"
+      :style="{ paddingBottom: `${bottomPadding}px` }"
+    >
       <FormDeposit />
       <div>
         <BaseMenuCollapse

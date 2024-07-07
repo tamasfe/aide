@@ -33,14 +33,14 @@ const close = () => {
       >
         Continue
       </BaseButton>
-      <BaseButton
-        class="w-full inline-flex justify-center text-subtle"
+      <button
+        class="outline-none font-medium w-full inline-flex justify-center text-subtle"
         type="button"
         big
         @click="close"
       >
         Yes, I want to cancel
-      </BaseButton>
+      </button>
     </form>
   </ModalWrapper>
 </template>

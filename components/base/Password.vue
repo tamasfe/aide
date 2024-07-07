@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { PhEye } from "@phosphor-icons/vue";
+import { PhEye, PhEyeSlash } from "@phosphor-icons/vue";
 import { BaseInputWrapper } from "#components";
 
 export type PasswordProps = {
@@ -142,6 +142,12 @@ defineExpose({
           @blur="onBlur"
         >
           <PhEye
+            v-if="type === 'password'"
+            class="text-subtle"
+            :size="24"
+          />
+          <PhEyeSlash
+            v-else
             class="text-subtle"
             :size="24"
           />

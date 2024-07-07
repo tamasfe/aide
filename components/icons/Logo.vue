@@ -1,3 +1,9 @@
 <template>
-  <NuxtImg v-bind="$attrs" src="/assets/images/logo.svg" alt="Logo" />
+  <div class="relative w-full pb-[20.41%]">
+    <NuxtImg
+      class="w-full absolute left-0 top-0 object-cover"
+      src="/assets/images/logo.svg"
+      alt="Logo"
+    />
+  </div>
 </template>

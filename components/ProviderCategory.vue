@@ -19,11 +19,11 @@ defineProps<{ title: string }>();
     <template #options>
       <BaseButton class="bg-subtle text-subtle"> See all </BaseButton>
     </template>
-    <template #default="{ data }">
+    <template #default="{ data: index }">
       <div class="px-2 sm:px-8 space-y-4">
         <div class="relative rounded-[0.8rem] overflow-hidden pt-[59.52%]">
           <NuxtImg
-            :src="`/assets/images/providers/${data}.png`"
+            :src="`/assets/images/providers/${index}.png`"
             alt=""
             class="absolute top-0 left-0 w-full object-cover rounded-[0.8rem]"
           />

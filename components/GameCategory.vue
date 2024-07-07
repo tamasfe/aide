@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { PhPlay } from "@phosphor-icons/vue";
-
 const { isMobile } = useDevice();
 const data = ref<unknown[]>(Array.from({ length: 8 }, (_, i) => i + 1));
 const loading = ref(false);
@@ -19,16 +17,18 @@ defineProps<{ title: string }>();
       <h2 class="text-xl sm:text-2xl">{{ title }}</h2>
     </template>
     <template #options>
-      <BaseButton class="bg-subtle text-subtle"> See all </BaseButton>
+      <BaseButton class="bg-subtle text-subtle hover:bg-emphasis">
+        See all
+      </BaseButton>
     </template>
-    <template #default="{ data }">
+    <template #default="{ data: index }">
       <div
-        class="relative bg-subtle rounded-[0.8rem] overflow-hidden pt-[134.26%]"
+        class="relative bg-subtle rounded-default overflow-hidden pt-[134.26%]"
       >
         <NuxtImg
-          :src="`/assets/images/games/${data}.png`"
+          :src="`/assets/images/games/${index}.png`"
           alt=""
-          class="absolute top-0 left-0 w-full object-cover rounded-[0.8rem] transition-transform transform hover:scale-105"
+          class="absolute top-0 left-0 w-full object-cover rounded-default transition-transform transform hover:scale-105"
         />
       </div>
     </template>

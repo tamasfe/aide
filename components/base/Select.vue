@@ -113,7 +113,7 @@ const selectedOption = computed(() => {
             as="template"
           >
             <li
-              class="cursor-pointer outline-none px-3 py-2 text-subtle focus:bg-default"
+              class="cursor-pointer outline-none px-3 py-3 text-subtle focus:bg-default select-none"
               :class="[active ? 'bg-default text-emphasis' : '']"
             >
               <slot

@@ -127,7 +127,7 @@ const slideTransition = computed(() => ({
       <Dialog
         v-model:open="opened"
         as="div"
-        class="relative z-10"
+        class="relative z-[9]"
         @close="closeModal"
       >
         <TransitionChild

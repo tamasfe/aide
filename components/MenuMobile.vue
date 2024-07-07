@@ -18,7 +18,7 @@ const emit = defineEmits([
 
 <template>
   <div
-    class="block sm:hidden sticky bottom-0 left-0 w-full bg-subtle text-subtle"
+    class="giro__mobile-menu block z-10 sm:hidden sticky bottom-0 left-0 w-full bg-subtle text-subtle"
   >
     <div
       class="flex items-center justify-between pt-2 px-4 pb-1 text-subtle font-bold"

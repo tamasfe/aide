@@ -101,6 +101,6 @@ defineExpose({
 
 .giro__input-container:focus-within .giro__input-placeholder,
 .giro__input-label-position {
-  transform: translateY(-1.13rem) scale(0.75);
+  transform: translateY(-100%) scale(0.75);
 }
 </style>
