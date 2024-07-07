@@ -34,7 +34,7 @@ const close = () => {
         Continue
       </BaseButton>
       <button
-        class="outline-none font-medium w-full inline-flex justify-center text-subtle"
+        class="outline-none font-medium w-full inline-flex justify-center text-subtle hover:text-emphasis"
         type="button"
         big
         @click="close"
