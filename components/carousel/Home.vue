@@ -11,6 +11,6 @@ const { isMobile } = useDevice();
   >
     <SlideTry />
     <div>Component 2</div>
-    <div>Component 2</div>
+    <div>Component 3</div>
   </BaseCarousel>
 </template>

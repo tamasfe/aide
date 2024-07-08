@@ -3,15 +3,20 @@ const { isMobile } = useDevice();
 const data = ref<unknown[]>(Array.from({ length: 8 }, (_, i) => i + 1));
 const loading = ref(false);
 
-defineProps<{ title: string }>();
+const columns = isMobile ? 2.5 : 6;
+
+defineProps<{
+  title: string;
+}>();
 </script>
 
 <template>
   <GridPage
     :data="data"
-    :columns="6"
+    :columns="columns"
     :show-controls="!isMobile"
     :loading="loading"
+    :slides-to-scroll="3"
   >
     <template #title>
       <h2 class="text-xl sm:text-2xl">{{ title }}</h2>

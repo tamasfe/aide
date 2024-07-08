@@ -53,7 +53,7 @@ watch(
       :style="{ paddingBottom: `${bottomPadding}px` }"
     >
       <FormDeposit />
-      <div>
+      <div class="select-none">
         <BaseMenuCollapse
           :parent="{
             title: 'Home',

@@ -4,12 +4,14 @@ const data = ref<unknown[]>(Array.from({ length: 4 }, (_, i) => i + 1));
 const loading = ref(false);
 
 defineProps<{ title: string }>();
+
+const columns = isMobile ? 2.5 : 3.5;
 </script>
 
 <template>
   <GridPage
     :data="data"
-    :columns="4"
+    :columns="columns"
     :show-controls="!isMobile"
     :loading="loading"
   >

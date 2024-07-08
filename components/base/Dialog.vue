@@ -99,6 +99,14 @@ const closeModal = () => {
 defineOptions({
   inheritAttrs: false,
 });
+
+const beforeLeave = () => {
+  console.log("beforeLeave");
+};
+
+const beforeEnter = () => {
+  console.log("beforeEnter");
+};
 </script>
 
 <template>
@@ -116,12 +124,14 @@ defineOptions({
       >
         <TransitionChild
           as="template"
-          enter="duration-350 ease-out"
+          enter="duration-300 ease-out"
           enter-from="opacity-0"
           enter-to="opacity-100"
-          leave="duration-350 ease-in"
+          leave="duration-300 ease-in"
           leave-from="opacity-100"
           leave-to="opacity-0"
+          @before-enter="beforeEnter"
+          @before-leave="beforeLeave"
         >
           <div class="fixed inset-0 bg-black/40 z-[0]" />
         </TransitionChild>
@@ -135,7 +145,7 @@ defineOptions({
             enter="duration-300 ease-out"
             enter-from="opacity-0 scale-95"
             enter-to="opacity-100 scale-100"
-            leave="duration-200 ease-in"
+            leave="duration-300 ease-in"
             leave-from="opacity-100 scale-100"
             leave-to="opacity-0 scale-95"
           >

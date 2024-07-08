@@ -44,10 +44,15 @@ defineExpose({
     <div class="flex flex-col overflow-auto h-full">
       <div
         v-if="image"
-        class="relative w-full"
+        class="relative w-full pb-[33%]"
       >
+        <NuxtImg
+          src="/assets/images/wheel-2.png"
+          alt="Wheel"
+          class="absolute left-0 top-0 object-cover w-full sm:rounded-t-[0.8rem]"
+        />
         <div
-          class="absolute top-1/2 -translate-y-1/2 left-10 text-lg sm:text-xl font-black italic"
+          class="absolute top-1/2 -translate-y-1/2 left-5 sm:left-10 text-lg sm:text-xl font-black italic"
         >
           <p class="text-brand-yellow text-sm sm:text-lg">EXCLUSIVE</p>
           <p class="font-extrabold text-xl">PRE-RELEASE</p>
@@ -56,11 +61,6 @@ defineExpose({
             <span class="text-brand-yellow">+100</span> FREE SPINS
           </p>
         </div>
-        <NuxtImg
-          src="/assets/images/wheel-2.png"
-          alt="Wheel"
-          class="object-cover w-full sm:rounded-t-[0.8rem]"
-        />
       </div>
       <slot />
     </div>
