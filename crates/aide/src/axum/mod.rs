@@ -394,6 +394,10 @@ where
                 let components = api.components.get_or_insert_with(Default::default);
 
                 components
+                    .security_schemes
+                    .extend(ctx.security_schemes.drain());
+
+                components
                     .schemas
                     .extend(ctx.schema.take_definitions().into_iter().map(
                         |(name, json_schema)| {

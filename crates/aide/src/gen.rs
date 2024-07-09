@@ -49,9 +49,7 @@ pub fn on_error(handler: impl Fn(Error) + 'static) {
 ///
 /// [`OpenApi`]: crate::openapi::OpenApi
 pub fn extract_schemas(extract: bool) {
-    in_context(|ctx| {
-        ctx.set_extract_schemas(extract)
-    });
+    in_context(|ctx| ctx.set_extract_schemas(extract));
 }
 
 /// Set the inferred status code of empty responses (`()`).
@@ -105,6 +103,12 @@ pub struct GenContext {
     /// for generating JSON schemas.
     pub schema: SchemaGenerator,
 
+    /// Secutiry schemes descriptions.
+    pub security_schemes: std::collections::HashMap<
+        String,
+        crate::openapi::ReferenceOr<crate::openapi::SecurityScheme>,
+    >,
+
     pub(crate) infer_responses: bool,
 
     pub(crate) all_error_responses: bool,
@@ -134,6 +138,7 @@ impl GenContext {
 
         let mut this = Self {
             schema: SchemaGenerator::new(SchemaSettings::draft07()),
+            security_schemes: std::collections::HashMap::new(),
             infer_responses: true,
             all_error_responses: false,
             extract_schemas: true,
