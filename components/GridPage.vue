@@ -5,10 +5,10 @@ import { PhCaretLeft, PhCaretRight } from "@phosphor-icons/vue";
 const props = withDefaults(
   defineProps<{
     data: unknown[];
-    columns: number;
     showControls?: boolean;
     loading?: boolean;
     slidesToScroll?: number;
+    itemClass?: string;
   }>(),
   {
     showControls: true,
@@ -17,7 +17,7 @@ const props = withDefaults(
   },
 );
 
-const { data, columns } = toRefs(props);
+const { data } = toRefs(props);
 
 const slider = ref<HTMLElement | null>(null);
 
@@ -40,7 +40,10 @@ const nextPage = () => {
   if (slider.value) {
     const slideWidth = slider.value.children[0]?.clientWidth;
     const gap = parseInt(getComputedStyle(slider.value).gap, 10);
-    slider.value.scrollLeft += (slideWidth + gap) * props.slidesToScroll;
+    scrollToPosition(
+      slider.value.scrollLeft + (slideWidth + gap) * props.slidesToScroll,
+      350,
+    );
   }
   emit("click:nextPage");
 };
@@ -49,19 +52,19 @@ const previousPage = () => {
   if (isAtBeginning.value) return;
   if (slider.value) {
     const slideWidth = slider.value.children[0]?.clientWidth;
-    const gap = parseInt(getComputedStyle(slider.value).gap, 10);
-    slider.value.scrollLeft -= (slideWidth + gap) * props.slidesToScroll;
+    const gap = parseInt(getComputedStyle(slider.value).gap, 10) - 1;
+    scrollToPosition(
+      slider.value.scrollLeft - (slideWidth + gap) * props.slidesToScroll,
+      350,
+    );
   }
   emit("click:previousPage");
 };
 
-const maxSlides = computed(() => {
-  return Math.ceil(data.value.length / columns.value);
-});
-
 onMounted(() => {
   if (slider.value) {
     slider.value.addEventListener("scroll", onScroll);
+    onScroll();
   }
 });
 
@@ -70,17 +73,51 @@ onBeforeUnmount(() => {
     slider.value.removeEventListener("scroll", onScroll);
   }
 });
+
+// const easeInOutQuad = (t: number, b: number, c: number, d: number) => {
+//  t /= d / 2;
+//  if (t < 1) return (c / 2) * t * t + b;
+//  t--;
+//  return (-c / 2) * (t * (t - 2) - 1) + b;
+// };
+
+const easeOutQuad = (t: number, b: number, c: number, d: number): number => {
+  t /= d;
+  return -c * t * (t - 2) + b;
+};
+
+const scrollToPosition = (target: number, duration: number) => {
+  if (!slider.value) return;
+
+  const start = slider.value.scrollLeft;
+  const change = target - start;
+  let currentTime = 0;
+  const increment = 20;
+
+  const animateScroll = () => {
+    currentTime += increment;
+    const val = easeOutQuad(currentTime, start, change, duration);
+    if (slider.value) {
+      slider.value.scrollLeft = val;
+    }
+    if (currentTime < duration) {
+      requestAnimationFrame(animateScroll);
+    }
+  };
+
+  animateScroll();
+};
 </script>
 
 <template>
   <div class="flex flex-col gap-y-4 py-2">
     <div class="flex items-center justify-between">
       <div class="flex items-center gap-x-8">
-        <div class="text-[24px] font-bold">
+        <div class="text-3xl font-bold">
           <slot name="title" />
         </div>
         <div
-          v-if="maxSlides > 1 && showControls && !loading"
+          v-if="showControls && !loading"
           class="flex items-center gap-x-4 text-3xl font-bold cursor-pointer"
         >
           <button
@@ -113,31 +150,13 @@ onBeforeUnmount(() => {
     </div>
     <div
       ref="slider"
-      class="w-full flex items-center gap-4 overflow-auto sm:overflow-hidden giro__hide-scroll giro__category_container"
+      class="w-full flex items-center gap-4 overflow-auto sm:overflow-hidden giro__hide-scroll"
     >
-      <div
+      <slot
         v-for="(datapoint, index) in data"
         :key="index"
-        class="select-none"
-        :style="{
-          flexBasis: `calc((100% - ${columns}rem) / ${columns})`,
-          flexShrink: 0,
-          width: '100%',
-        }"
-      >
-        <slot
-          name="default"
-          :data="datapoint"
-        />
-      </div>
+        :data="datapoint"
+      />
     </div>
   </div>
 </template>
-
-<style scoped>
-.giro__category_container {
-  scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
-}
-</style>

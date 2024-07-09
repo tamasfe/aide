@@ -1,19 +1,33 @@
 <script setup lang="ts">
 const { isMobile } = useDevice();
-const data = ref<unknown[]>(Array.from({ length: 8 }, (_, i) => i + 1));
-const loading = ref(false);
 
-const columns = isMobile ? 2.5 : 6;
+const itemsCount = 20;
+
+const data = ref<unknown[]>(
+  Array.from({ length: itemsCount }, (_, i) => i + 1),
+);
+const loading = ref(true);
 
 defineProps<{
   title: string;
 }>();
+
+onMounted(() => {
+  setTimeout(() => {
+    loading.value = false;
+  }, 1000);
+});
+
+const getImageId = (idx: unknown) => {
+  const index = idx as number;
+  // 8 max images will not anyways be used in the final version
+  return (index % 8) + 1;
+};
 </script>
 
 <template>
   <GridPage
     :data="data"
-    :columns="columns"
     :show-controls="!isMobile"
     :loading="loading"
     :slides-to-scroll="3"
@@ -28,13 +42,22 @@ defineProps<{
     </template>
     <template #default="{ data: index }">
       <div
-        class="relative bg-subtle rounded-default overflow-hidden pt-[134.26%]"
+        class="basis-[calc((100%-2.5rem)/2.5)] sm:basis-[calc((100%-6rem)/6)] flex-shrink-0 w-full"
       >
-        <NuxtImg
-          :src="`/assets/images/games/${index}.png`"
-          alt=""
-          class="absolute top-0 left-0 w-full object-cover rounded-default transition-transform transform hover:scale-105"
-        />
+        <div
+          class="relative bg-subtle rounded-default overflow-hidden pt-[134.26%]"
+        >
+          <BaseSkeleton
+            :loading="loading"
+            class="absolute left-0 top-0 w-full h-full"
+          >
+            <NuxtImg
+              :src="`/assets/images/games/${getImageId(index)}.png`"
+              alt=""
+              class="absolute top-0 left-0 w-full object-cover rounded-default transition-transform transform hover:scale-105"
+            />
+          </BaseSkeleton>
+        </div>
       </div>
     </template>
   </GridPage>
