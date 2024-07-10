@@ -1226,3 +1226,14 @@ export const hideOverlay = (element: HTMLElement) => {
   const overlay = element.parentElement?.querySelector(".giro__overlay");
   overlay?.remove();
 };
+
+export const getCurrencySymbol = (currency_iso: string) => {
+  const currency = new Intl.NumberFormat("en-US", {
+    minimumFractionDigits: 2,
+    // add currency symbol
+    style: "currency",
+    currency: currency_iso,
+  }).format(0);
+  const symbol = currency.replace(/[\d\s\.,]/g, "");
+  return symbol;
+};

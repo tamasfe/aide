@@ -3,14 +3,23 @@ import type { InputProps } from "./base/Input.vue";
 import type { NumberProps } from "./base/Number.vue";
 import type { SelectProps } from "./base/Select.vue";
 import type { PasswordProps } from "./base/Password.vue";
-import { BaseInput, BaseSelect } from "#components";
+import type { CurrencyProps } from "./base/Currency.vue";
+import { BaseCurrency, BaseInput, BaseSelect } from "#components";
 
 defineOptions({
   inheritAttrs: false,
 });
 
 type FormControlProps = {
-  type?: "text" | "select" | "number" | "password" | "email" | "tel" | "search";
+  type?:
+    | "text"
+    | "select"
+    | "number"
+    | "password"
+    | "email"
+    | "tel"
+    | "search"
+    | "currency";
   hint?: string;
   error?: string;
 };
@@ -30,6 +39,10 @@ type NumberControl = {
 type PasswordControl = {
   type: "password";
 } & PasswordProps;
+
+type CurrencyControl = {
+  type: "currency";
+} & CurrencyProps;
 
 // vue doens't support auto type detecta :(
 const props = withDefaults(defineProps<FormControlProps>(), {
@@ -57,6 +70,7 @@ const isInput = computed(() => {
     tel: false,
     search: true,
     select: false,
+    currency: false,
   };
   return inputs[props.type];
 });
@@ -135,6 +149,10 @@ const isInput = computed(() => {
         <slot name="prefix" />
       </template>
     </BasePassword>
+    <BaseCurrency
+      v-else-if="type === 'currency'"
+      v-bind="controlAttrs as CurrencyControl"
+    />
     <div
       v-if="error"
       class="text-red-400"

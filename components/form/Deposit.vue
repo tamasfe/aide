@@ -24,6 +24,9 @@ const onSubmit = handleSubmit((values) => {
 });
 
 const quickDepositAmounts = ["10.00", "50.00", "100.00"];
+
+const currency = ref("BRL");
+const locale = ref("pt-BR");
 </script>
 
 <template>
@@ -34,22 +37,14 @@ const quickDepositAmounts = ["10.00", "50.00", "100.00"];
     <FormControl
       v-model="value"
       class="w-full"
-      type="number"
+      type="currency"
       wrapper-class="bg-subtle text-lg"
-      input-class="font-semibold"
+      input-class="font-"
+      :currency="currency"
+      :locale="locale"
       :placeholder="t('deposit')"
       :error="errors.value"
-    >
-      <template #prefix>
-        <IconsRSGreen />
-      </template>
-      <template #suffix>
-        <div class="flex items-center space-x-2">
-          <BaseFlag code="BR" />
-          <span class="text-emphasis text-lg font-semibold">BRL</span>
-        </div>
-      </template>
-    </FormControl>
+    />
     <div class="flex items-center gap-2 w-full">
       <button
         v-for="amount of quickDepositAmounts"
@@ -58,7 +53,11 @@ const quickDepositAmounts = ["10.00", "50.00", "100.00"];
         class="flex-1 flex items-center bg-subtle outline-none space-x-2 p-3 rounded-default cursor-pointer"
         @click="value = amount"
       >
-        <IconsRSGreen />
+        <p
+          class="bg-button-emphasis text-transparent bg-clip-text text-lg font-bold"
+        >
+          {{ getCurrencySymbol(currency) }}
+        </p>
         <p class="font-semibold">{{ amount }}</p>
       </button>
     </div>
