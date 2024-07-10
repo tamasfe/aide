@@ -42,7 +42,7 @@ const getImageId = (idx: unknown) => {
     </template>
     <template #default="{ data: index }">
       <div
-        class="basis-[calc((100%-2.5rem)/2.5)] sm:basis-[calc((100%-6rem)/6)] flex-shrink-0 w-full"
+        class="basis-[calc((100%-2rem)/2.5)] sm:basis-[calc((100%-5rem)/6)] flex-shrink-0 w-full"
       >
         <div
           class="relative bg-subtle rounded-default overflow-hidden pt-[134.26%]"

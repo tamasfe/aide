@@ -28,10 +28,10 @@ const isTheEnd = ref(false);
 
 const onScroll = () => {
   if (slider.value) {
-    isAtBeginning.value = slider.value.scrollLeft === 0;
+    isAtBeginning.value = slider.value.scrollLeft <= 1;
+    const maxWidth = slider.value.scrollLeft + slider.value.clientWidth;
     isTheEnd.value
-      = slider.value.scrollLeft + slider.value.clientWidth
-      >= slider.value.scrollWidth;
+      = Math.round(maxWidth) >= Math.round(slider.value.scrollWidth) - 10;
   }
 };
 
@@ -52,7 +52,7 @@ const previousPage = () => {
   if (isAtBeginning.value) return;
   if (slider.value) {
     const slideWidth = slider.value.children[0]?.clientWidth;
-    const gap = parseInt(getComputedStyle(slider.value).gap, 10) - 1;
+    const gap = parseInt(getComputedStyle(slider.value).gap, 10);
     scrollToPosition(
       slider.value.scrollLeft - (slideWidth + gap) * props.slidesToScroll,
       350,
