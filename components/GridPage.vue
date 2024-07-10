@@ -25,6 +25,7 @@ const emit = defineEmits(["click:nextPage", "click:previousPage"]);
 
 const isAtBeginning = ref(true);
 const isTheEnd = ref(false);
+const isAnimating = ref(false);
 
 const onScroll = () => {
   if (slider.value) {
@@ -36,7 +37,7 @@ const onScroll = () => {
 };
 
 const nextPage = () => {
-  if (isTheEnd.value) return;
+  if (isTheEnd.value || isAnimating.value) return;
   if (slider.value) {
     const slideWidth = slider.value.children[0]?.clientWidth;
     const gap = parseInt(getComputedStyle(slider.value).gap, 10);
@@ -49,7 +50,7 @@ const nextPage = () => {
 };
 
 const previousPage = () => {
-  if (isAtBeginning.value) return;
+  if (isAtBeginning.value || isAnimating.value) return;
   if (slider.value) {
     const slideWidth = slider.value.children[0]?.clientWidth;
     const gap = parseInt(getComputedStyle(slider.value).gap, 10);
@@ -93,6 +94,7 @@ const scrollToPosition = (target: number, duration: number) => {
   const change = target - start;
   let currentTime = 0;
   const increment = 20;
+  isAnimating.value = true;
 
   const animateScroll = () => {
     currentTime += increment;
@@ -102,6 +104,9 @@ const scrollToPosition = (target: number, duration: number) => {
     }
     if (currentTime < duration) {
       requestAnimationFrame(animateScroll);
+    }
+    else {
+      isAnimating.value = false;
     }
   };
 

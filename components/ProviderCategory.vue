@@ -27,7 +27,7 @@ onMounted(() => {
     </template>
     <template #default="{ data: index }">
       <div
-        class="basis-[calc((100%-2.5rem)/2.5)] sm:basis-[calc((100%-3.5rem)/3.5)] flex-shrink-0 w-full"
+        class="basis-[calc((100%-2rem)/2.5)] sm:basis-[calc((100%-3rem)/3.5)] flex-shrink-0 w-full"
       >
         <div class="px-2 sm:px-8 space-y-4">
           <div class="relative rounded-[0.8rem] overflow-hidden pt-[59.52%]">
