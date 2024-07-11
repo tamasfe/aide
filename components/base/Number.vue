@@ -5,6 +5,10 @@ import {
   ListboxOptions,
   ListboxOption,
 } from "@headlessui/vue";
+import {
+  formatIncompletePhoneNumber,
+  type CountryCode as LibCountryCode,
+} from "libphonenumber-js";
 import { BaseInput } from "#components";
 import type { CountryCode } from "~/utils/types";
 
@@ -14,7 +18,7 @@ export type NumberProps = {
   wrapperClass?: string;
   title?: string;
   disabled?: boolean;
-  region?: string;
+  region: string;
   placeholder?: string;
 };
 
@@ -36,14 +40,27 @@ const emit = defineEmits([
 const input = ref<InstanceType<typeof BaseInput>>();
 const countryCodes = getCountryCodes();
 
-const modelValue = computed({
-  get: () => props.modelValue,
-  set: value => emit("update:modelValue", value),
-});
-
 const region = computed({
   get: () => props.region,
   set: value => emit("update:region", value),
+});
+
+const modelValue = computed({
+  get: () => {
+    if (!props.modelValue) return "";
+    const value = props.modelValue;
+    const locale = region.value.split("+")[0] as LibCountryCode;
+    const parsed = formatIncompletePhoneNumber(value, locale);
+    return parsed;
+  },
+  set: (value) => {
+    if (!value) {
+      emit("update:modelValue", "");
+      return;
+    }
+    const clean = value.replace(/\D/g, "");
+    emit("update:modelValue", clean);
+  },
 });
 
 const getCountryCodeValue = (option: CountryCode) => {
@@ -65,7 +82,7 @@ const placeholder = computed(() =>
   <BaseInput
     ref="input"
     v-model="modelValue"
-    class="relative"
+    class="relative select-none"
     type="text"
     :title="title"
     :wrapper-class="wrapperClass"
@@ -102,7 +119,7 @@ const placeholder = computed(() =>
 
           <transition name="giro__select-fade">
             <ListboxOptions
-              class="absolute giro__select-options max-h-60 w-40 overflow-auto rounded-b-default bg-subtle outline-none"
+              class="absolute giro__select-options max-h-40 w-40 overflow-auto rounded-b-default bg-subtle outline-none ml-[0.1rem]"
             >
               <ListboxOption
                 v-for="option in countryCodes"

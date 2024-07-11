@@ -21,6 +21,7 @@
     "@vee-validate/nuxt": "^4.13.2",
     "@vee-validate/zod": "^4.13.2",
     "@vueuse/core": "^10.11.0",
+    "libphonenumber-js": "^1.11.4",
     "nuxt": "^3.12.3",
     "vue": "^3.4.31",
     "vue-router": "^4.4.0",

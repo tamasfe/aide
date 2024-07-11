@@ -21,5 +21,6 @@
   "make_deposit": "Make a deposit",
   "deposit": "Deposit",
   "quick_deposit": "Quick Deposit",
-  "send_recovery_email": "Send recovery email"
+  "send_recovery_email": "Send recovery email",
+  "min_deposit": "Minimum deposit is: "
 }

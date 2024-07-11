@@ -3,9 +3,11 @@ import * as zod from "zod";
 
 const { t } = useI18n();
 
+const minDeposit = 10;
+
 const validationSchema = toTypedSchema(
   zod.object({
-    value: zod.string().min(1, { message: t("field_required") }),
+    value: zod.number().min(10, `${t("min_deposit")} ${minDeposit}`),
   }),
 );
 const { handleSubmit, errors } = useForm({
@@ -15,7 +17,7 @@ const { value } = useField(
   "value",
   {},
   {
-    initialValue: "10.00",
+    initialValue: 10,
   },
 );
 
@@ -23,7 +25,7 @@ const onSubmit = handleSubmit((values) => {
   alert(JSON.stringify(values, null, 2));
 });
 
-const quickDepositAmounts = ["10.00", "50.00", "100.00"];
+const quickDepositAmounts = [10, 50, 100];
 
 const currency = ref("BRL");
 const locale = ref("pt-BR");
@@ -58,7 +60,14 @@ const locale = ref("pt-BR");
         >
           {{ getCurrencySymbol(currency) }}
         </p>
-        <p class="font-semibold">{{ amount }}</p>
+        <p class="font-semibold">
+          {{
+            formatNumber(amount, {
+              locale: "pt-BR",
+              decimalPlaces: 2,
+            })
+          }}
+        </p>
       </button>
     </div>
     <BaseButton

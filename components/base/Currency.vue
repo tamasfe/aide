@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type { InputProps } from "./Input.vue";
 
-export type CurrencyProps = InputProps & {
+export type CurrencyProps = Omit<InputProps, "modelValue"> & {
+  modelValue: number;
   locale: string;
   currency: string;
 };
@@ -11,24 +12,35 @@ const emit = defineEmits(["update:modelValue"]);
 
 const moneyMask = (value: string, locale: string) => {
   value = value.replace(".", "").replace(",", "").replace(/\D/g, "");
-  if (!value) return "";
+  if (!value)
+    return {
+      value: "",
+      number: undefined,
+    };
+  const num = parseFloat(value) / 100;
   const result = new Intl.NumberFormat(locale, {
     minimumFractionDigits: 2,
     // add currency symbol
-  }).format(parseFloat(value) / 100);
+  }).format(num);
 
-  return result;
+  return {
+    value: result,
+    number: num,
+  };
 };
 
 const modelValue = computed({
-  get: () => props.modelValue,
+  get: () => {
+    if (props.modelValue) {
+      const number = props.modelValue;
+      const { value } = moneyMask((number * 100).toString(), props.locale);
+      return value;
+    }
+    return "";
+  },
   set: (value) => {
-    if (value) {
-      emit("update:modelValue", moneyMask(value, props.locale));
-    }
-    else {
-      emit("update:modelValue", "");
-    }
+    const { number } = moneyMask(value, props.locale);
+    emit("update:modelValue", number);
   },
 });
 </script>

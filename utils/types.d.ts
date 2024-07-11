@@ -3,3 +3,9 @@ export type CountryCode = {
   code: string;
   dial_code: string;
 };
+
+export type FormatNumberOptions = {
+  currency?: string;
+  decimalPlaces?: number;
+  locale: string;
+};

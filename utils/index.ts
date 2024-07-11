@@ -1,4 +1,4 @@
-import type { CountryCode } from "./types";
+import type { CountryCode, FormatNumberOptions } from "./types";
 
 export const getCountryCodes = (): CountryCode[] => {
   return [
@@ -1236,4 +1236,12 @@ export const getCurrencySymbol = (currency_iso: string) => {
   }).format(0);
   const symbol = currency.replace(/[\d\s\.,]/g, "");
   return symbol;
+};
+
+export const formatNumber = (number: number, options: FormatNumberOptions) => {
+  return new Intl.NumberFormat(options.locale, {
+    minimumFractionDigits: options.decimalPlaces,
+    style: options.currency ? "currency" : "decimal",
+    currency: options.currency,
+  }).format(number);
 };
