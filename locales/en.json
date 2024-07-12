@@ -12,7 +12,7 @@
   "terms": "Terms of Service",
   "field_required": "This field is required",
   "field_too_short": "This field is too short",
-  "enter_valid_number": "Please enter a valid number",
+  "enter_valid_phone": "Please enter a valid phone number",
   "enter_valid_email": "Please enter a valid email",
   "forgot_your_password": "Forgot your password?",
   "enter": "Enter",

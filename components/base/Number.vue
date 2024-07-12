@@ -7,6 +7,7 @@ import {
 } from "@headlessui/vue";
 import {
   formatIncompletePhoneNumber,
+  parseDigits,
   type CountryCode as LibCountryCode,
 } from "libphonenumber-js";
 import { BaseInput } from "#components";
@@ -58,7 +59,7 @@ const modelValue = computed({
       emit("update:modelValue", "");
       return;
     }
-    const clean = value.replace(/\D/g, "");
+    const clean = parseDigits(value);
     emit("update:modelValue", clean);
   },
 });

@@ -1,4 +1,10 @@
 <script setup lang="ts">
+import {
+  isPossiblePhoneNumber,
+  isValidNumberForRegion,
+  validatePhoneNumberLength,
+  type CountryCode,
+} from "libphonenumber-js";
 import * as zod from "zod";
 
 const { t } = useI18n();
@@ -7,22 +13,54 @@ const emit = defineEmits(["request:login"]);
 
 // FormControl example
 const validationSchema = toTypedSchema(
-  zod.object({
-    email: zod
-      .string()
-      .min(1, { message: t("field_required") })
-      .email({ message: t("enter_valid_email") }),
-    password: zod
-      .string()
-      .min(1, { message: t("field_required") })
-      .min(8, { message: t("field_too_short") }),
-    cpf: zod.string().min(1, { message: t("field_required") }),
-    number: zod
-      .number({ message: t("enter_valid_number") })
-      .min(1, { message: t("field_required") }),
-    region: zod.string().min(1, { message: t("field_required") }),
-  }),
+  zod
+    .object({
+      email: zod
+        .string()
+        .min(1, { message: t("field_required") })
+        .email({ message: t("enter_valid_email") }),
+      password: zod
+        .string()
+        .min(1, { message: t("field_required") })
+        .min(8, { message: t("field_too_short") }),
+      cpf: zod.string().min(1, { message: t("field_required") }),
+      number: zod.string().min(1, { message: t("field_required") }),
+      region: zod.string().min(1, { message: t("field_required") }),
+    })
+    .superRefine((data, ctx) => {
+      console.log(data);
+      const locale = data.region.split("+")[0] as CountryCode;
+      const isPossible = isPossiblePhoneNumber(data.number, locale);
+      if (!isPossible) {
+        ctx.addIssue({
+          code: zod.ZodIssueCode.custom,
+          message: t("enter_valid_phone"),
+          path: ["number"],
+        });
+        return false;
+      }
+      const isValid = isValidNumberForRegion(data.number, locale);
+      if (!isValid) {
+        ctx.addIssue({
+          code: zod.ZodIssueCode.custom,
+          message: t("enter_valid_phone"),
+          path: ["number"],
+        });
+        return false;
+      }
+      const isValidLength = validatePhoneNumberLength(data.number, locale);
+      if (isValidLength !== undefined) {
+        ctx.addIssue({
+          code: zod.ZodIssueCode.custom,
+          message: t("enter_valid_phone"),
+          path: ["number"],
+        });
+        return false;
+      }
+      return true;
+    }),
 );
+
 const { handleSubmit, errors } = useForm({
   validationSchema,
 });
