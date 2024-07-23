@@ -33,7 +33,8 @@ const modelValue = computed({
   get: () => {
     if (props.modelValue) {
       const number = props.modelValue;
-      const { value } = moneyMask((number * 100).toString(), props.locale);
+      const actualNumber = roundToDecimalPlaces(number * 100, 2);
+      const { value } = moneyMask(actualNumber.toString(), props.locale);
       return value;
     }
     return "";
