@@ -1268,3 +1268,21 @@ export const formatCPF = (cpf: string) => {
     return `${cpf.substring(0, 3)}.${cpf.substring(3, 6)}.${cpf.substring(6, 9)}-${cpf.substring(9, 11)}`;
   }
 };
+
+export const moneyMask = (value: string, locale: string) => {
+  value = value.replace(".", "").replace(",", "").replace(/\D/g, "");
+  if (!value)
+    return {
+      value: "",
+      number: undefined,
+    };
+  const num = parseFloat(value) / 100;
+  const result = new Intl.NumberFormat(locale, {
+    minimumFractionDigits: 2,
+  }).format(num);
+
+  return {
+    value: result,
+    number: num,
+  };
+};

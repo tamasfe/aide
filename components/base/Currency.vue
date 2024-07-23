@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { InputProps } from "./Input.vue";
+import { moneyMask } from "@/utils";
 
 export type CurrencyProps = Omit<InputProps, "modelValue"> & {
   modelValue: number;
@@ -9,24 +10,6 @@ export type CurrencyProps = Omit<InputProps, "modelValue"> & {
 
 const props = defineProps<CurrencyProps>();
 const emit = defineEmits(["update:modelValue"]);
-
-const moneyMask = (value: string, locale: string) => {
-  value = value.replace(".", "").replace(",", "").replace(/\D/g, "");
-  if (!value)
-    return {
-      value: "",
-      number: undefined,
-    };
-  const num = parseFloat(value) / 100;
-  const result = new Intl.NumberFormat(locale, {
-    minimumFractionDigits: 2,
-  }).format(num);
-
-  return {
-    value: result,
-    number: num,
-  };
-};
 
 const modelValue = computed({
   get: () => {
