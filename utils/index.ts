@@ -1250,3 +1250,21 @@ export const roundToDecimalPlaces = (number: number, decimalPlaces: number) => {
   const factor = Math.pow(10, decimalPlaces);
   return Math.round(number * factor) / factor;
 };
+
+export const formatCPF = (cpf: string) => {
+  cpf = cpf.replace(/\D+/g, ""); // remove all non-digit characters
+  cpf = cpf.substring(0, 11); // limit to 11 characters
+
+  if (cpf.length <= 3) {
+    return cpf;
+  }
+  else if (cpf.length <= 6) {
+    return `${cpf.substring(0, 3)}.${cpf.substring(3)}`;
+  }
+  else if (cpf.length <= 9) {
+    return `${cpf.substring(0, 3)}.${cpf.substring(3, 6)}.${cpf.substring(6)}`;
+  }
+  else {
+    return `${cpf.substring(0, 3)}.${cpf.substring(3, 6)}.${cpf.substring(6, 9)}-${cpf.substring(9, 11)}`;
+  }
+};

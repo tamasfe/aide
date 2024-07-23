@@ -20,7 +20,6 @@ const moneyMask = (value: string, locale: string) => {
   const num = parseFloat(value) / 100;
   const result = new Intl.NumberFormat(locale, {
     minimumFractionDigits: 2,
-    // add currency symbol
   }).format(num);
 
   return {
@@ -33,8 +32,8 @@ const modelValue = computed({
   get: () => {
     if (props.modelValue) {
       const number = props.modelValue;
-      const actualNumber = roundToDecimalPlaces(number * 100, 2);
-      const { value } = moneyMask(actualNumber.toString(), props.locale);
+      const actualNumber = number.toFixed(2);
+      const { value } = moneyMask(actualNumber, props.locale);
       return value;
     }
     return "";

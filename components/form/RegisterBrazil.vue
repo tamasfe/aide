@@ -28,7 +28,6 @@ const validationSchema = toTypedSchema(
       region: zod.string().min(1, { message: t("field_required") }),
     })
     .superRefine((data, ctx) => {
-      console.log(data);
       const locale = data.region.split("+")[0] as CountryCode;
       const isPossible = isPossiblePhoneNumber(data.number, locale);
       if (!isPossible) {
@@ -66,7 +65,7 @@ const { handleSubmit, errors } = useForm({
 });
 const { value: email } = useField("email");
 const { value: password } = useField("password");
-const { value: cpf } = useField("cpf");
+const { value: cpf } = useField<string>("cpf");
 const { value: number } = useField("number");
 const { value: region } = useField(
   "region",
@@ -75,6 +74,18 @@ const { value: region } = useField(
     initialValue: "BR+55",
   },
 );
+
+const updateCpf = (value: string) => {
+  const formatted = formatCPF(value);
+  cpf.value = formatted;
+};
+
+const formattedCpf = computed({
+  get: () => {
+    return cpf.value;
+  },
+  set: value => updateCpf(value),
+});
 
 const onSubmit = handleSubmit((values) => {
   alert(JSON.stringify(values, null, 2));
@@ -107,7 +118,7 @@ const onSubmit = handleSubmit((values) => {
       autocomplete="new-password"
     />
     <FormControl
-      v-model="cpf"
+      v-model="formattedCpf"
       type="text"
       :title="t('cpf')"
       class="w-full"
