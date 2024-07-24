@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { InputProps } from "./Input.vue";
-import { moneyMask } from "@/utils";
+import { toLocalMoney } from "@/utils";
 
 export type CurrencyProps = Omit<InputProps, "modelValue"> & {
   modelValue: number;
@@ -15,14 +15,13 @@ const modelValue = computed({
   get: () => {
     if (props.modelValue) {
       const number = props.modelValue;
-      const actualNumber = number.toFixed(2);
-      const { value } = moneyMask(actualNumber, props.locale);
+      const { value } = toLocalMoney(String(number), props.locale);
       return value;
     }
     return "";
   },
   set: (value) => {
-    const { number } = moneyMask(value, props.locale);
+    const { number } = toLocalMoney(value, props.locale);
     emit("update:modelValue", number);
   },
 });
