@@ -36,11 +36,16 @@ const emit = defineEmits([
   "change",
   "focus",
   "blur",
+  "keydown",
 ]);
 
 const modelValue = computed({
-  get: () => props.modelValue,
-  set: value => emit("update:modelValue", value),
+  get: () => {
+    return props.modelValue;
+  },
+  set: (value) => {
+    emit("update:modelValue", value);
+  },
 });
 
 const inputId = Math.random().toString(36).substring(7);
@@ -133,6 +138,7 @@ defineExpose({
       @change="emit('change', $event)"
       @blur="onBlur"
       @focus="onInputFocus"
+      @keydown="emit('keydown', $event)"
     >
     <template #suffix>
       <slot name="suffix" />

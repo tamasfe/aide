@@ -84,8 +84,17 @@ const formattedCpf = computed({
   get: () => {
     return cpf.value;
   },
-  set: value => updateCpf(value),
+  set: (value) => {
+    updateCpf(value);
+  },
 });
+
+const checkCpf = (evt: KeyboardEvent) => {
+  const value = cpf.value;
+  if (value && value.length >= 14 && evt.code !== "Backspace") {
+    evt.preventDefault();
+  }
+};
 
 const onSubmit = handleSubmit((values) => {
   alert(JSON.stringify(values, null, 2));
@@ -125,6 +134,7 @@ const onSubmit = handleSubmit((values) => {
       wrapper-class="bg-subtle py-3"
       input-class="text-default"
       :error="errors.cpf"
+      @keydown="checkCpf"
     />
     <FormControl
       v-model="number"

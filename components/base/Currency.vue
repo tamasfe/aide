@@ -43,6 +43,22 @@ const modelValue = computed({
     emit("update:modelValue", numberValue);
   },
 });
+
+const isDecimal = (value: string) => {
+  return value.includes(localeConfig.value.decimalSeparator);
+};
+
+// prevent user from typing group separator
+// and multiple decimal separators
+const onKeyDown = (evt: KeyboardEvent) => {
+  const value = modelValue.value;
+  if (
+    evt.key === localeConfig.value.groupSeparator
+    || (isDecimal(value) && evt.key === localeConfig.value.decimalSeparator)
+  ) {
+    evt.preventDefault();
+  }
+};
 </script>
 
 <template>
@@ -52,6 +68,7 @@ const modelValue = computed({
     v-model:model-value="modelValue"
     type="text"
     inputmode="numeric"
+    @keydown="onKeyDown"
   >
     <template #prefix>
       <p
