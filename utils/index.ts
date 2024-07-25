@@ -1,10 +1,3 @@
-import {
-  cleanValue,
-  fixedDecimalValue,
-  formatValue,
-  getLocaleConfig,
-  padTrimValue,
-} from "./mask";
 import type { CountryCode, FormatNumberOptions } from "./types";
 
 export const getCountryCodes = (): CountryCode[] => {
@@ -1274,50 +1267,4 @@ export const formatCPF = (cpf: string) => {
   else {
     return `${cpf.substring(0, 3)}.${cpf.substring(3, 6)}.${cpf.substring(6, 9)}-${cpf.substring(9, 11)}`;
   }
-};
-
-// separate formatted to clean value
-export const toLocalMoney = (value: string, locale: string) => {
-  const localeConfig = getLocaleConfig({
-    locale: locale,
-  });
-  const formattedValue = formatValue({
-    value: value,
-    intlConfig: {
-      locale: locale,
-    },
-  });
-
-  const valueOnly = cleanValue({
-    value,
-    groupSeparator: localeConfig.groupSeparator,
-    decimalSeparator: localeConfig.decimalSeparator,
-  });
-
-  if (
-    valueOnly === "-"
-    || valueOnly === localeConfig.decimalSeparator
-    || !valueOnly
-  ) {
-    return {
-      value: "",
-      number: undefined,
-    };
-  }
-
-  const fixedDecimals = fixedDecimalValue(
-    valueOnly,
-    localeConfig.decimalSeparator,
-  );
-
-  const newValue = padTrimValue(fixedDecimals, localeConfig.decimalSeparator);
-
-  const numberValue = parseFloat(
-    newValue.replace(localeConfig.decimalSeparator, "."),
-  );
-
-  return {
-    value: formattedValue,
-    number: numberValue,
-  };
 };
