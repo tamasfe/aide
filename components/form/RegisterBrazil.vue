@@ -97,7 +97,7 @@ const checkCpf = (evt: KeyboardEvent) => {
   if (value && value.length >= 14) {
     evt.preventDefault();
   }
-  if (isNaN(parseInt(evt.key))) {
+  if (isNaN(parseInt(evt.key, 10))) {
     evt.preventDefault();
   }
 };
