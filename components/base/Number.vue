@@ -6,6 +6,7 @@ import {
   ListboxOption,
 } from "@headlessui/vue";
 import {
+  AsYouType,
   formatIncompletePhoneNumber,
   parseDigits,
   type CountryCode as LibCountryCode,
@@ -21,6 +22,7 @@ export type NumberProps = {
   disabled?: boolean;
   region: string;
   placeholder?: string;
+  error?: string;
 };
 
 defineOptions({
@@ -46,13 +48,34 @@ const region = computed({
   set: value => emit("update:region", value),
 });
 
+// replace template with number, (XXX) XXX-XXXX
+// ex. 1234567890 -> (123) 456-7890
+// const formatByTemplate = (value: string, template: string) => {
+//  if (!value) {
+//    return value;
+//  }
+//  for (const char of value) {
+//    template = template.replace("x", char);
+//  }
+//  return template;
+// };
+
+const getNationalNumber = (modelValue: string) => {
+  const parts = region.value.split("+");
+  const locale = parts[0] as LibCountryCode;
+  const asYouType = new AsYouType(locale);
+  return asYouType.input(modelValue);
+  // const template = asYouType.getTemplate();
+  // return formatByTemplate(asYouType.getNationalNumber(), template);
+  // return formatIncompletePhoneNumber(asYouType.getNationalNumber(), locale);
+};
+
 const modelValue = computed({
   get: () => {
     if (!props.modelValue) return "";
     const value = props.modelValue;
-    const locale = region.value.split("+")[0] as LibCountryCode;
-    const parsed = formatIncompletePhoneNumber(value, locale);
-    return parsed;
+    const nationalNumber = getNationalNumber(value);
+    return nationalNumber;
   },
   set: (value) => {
     if (!value) {
@@ -90,6 +113,7 @@ const placeholder = computed(() =>
     :input-class="inputClass"
     :disabled="disabled"
     :placeholder="placeholder"
+    :error="error"
     inputmode="numeric"
     autocomplete="tel"
   >

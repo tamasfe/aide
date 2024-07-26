@@ -14,6 +14,7 @@ export type InputProps = {
   type?: string;
   required?: boolean;
   autocomplete?: string;
+  error?: string;
   inputmode?:
     | "none"
     | "text"
@@ -114,6 +115,7 @@ defineExpose({
     :disabled="disabled"
     :placeholder="placeholder"
     :model-value="modelValue"
+    :error="error"
     @focus="onFocus"
     @blur="onBlur"
   >

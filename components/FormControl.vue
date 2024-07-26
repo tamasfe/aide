@@ -49,6 +49,8 @@ const props = withDefaults(defineProps<FormControlProps>(), {
   type: "text",
 });
 
+const { error } = toRefs(props);
+
 const attrs = useAttrs();
 
 const controlAttrs = computed(() => {
@@ -74,14 +76,43 @@ const isInput = computed(() => {
   };
   return inputs[props.type];
 });
+
+const wrapper = ref<HTMLElement | null>(null);
+
+const triggerJiggle = () => {
+  const el = wrapper.value?.children[0];
+  if (el && !el.classList.contains("giro__input-jiggle")) {
+    el.classList.add("giro__input-jiggle");
+  }
+};
+
+const removeJiggle = () => {
+  const el = wrapper.value?.children[0];
+  if (el && el.classList.contains("giro__input-jiggle")) {
+    el.classList.remove("giro__input-jiggle");
+  }
+};
+
+watch(error, () => {
+  if (error.value) {
+    triggerJiggle();
+  }
+  else {
+    removeJiggle();
+  }
+});
 </script>
 
 <template>
-  <div :class="attrs.class">
+  <div
+    ref="wrapper"
+    :class="attrs.class"
+  >
     <BaseInput
       v-if="isInput"
       v-bind="controlAttrs as TextControl"
       :type="type"
+      :error="error"
     >
       <template
         v-if="$slots.prefix"
@@ -99,6 +130,7 @@ const isInput = computed(() => {
     <BaseSelect
       v-else-if="type === 'select'"
       v-bind="controlAttrs as SelectControl"
+      :error="error"
     >
       <template
         v-if="$slots.prefix"
@@ -112,6 +144,7 @@ const isInput = computed(() => {
       v-bind="controlAttrs as TextControl"
       type="text"
       inputmode="numeric"
+      :error="error"
     >
       <template
         v-if="$slots.prefix"
@@ -130,6 +163,7 @@ const isInput = computed(() => {
       v-else-if="type === 'tel'"
       v-bind="controlAttrs as NumberControl"
       type="number"
+      :error="error"
     >
       <template
         v-if="$slots.suffix"
@@ -141,6 +175,7 @@ const isInput = computed(() => {
     <BasePassword
       v-else-if="type === 'password'"
       v-bind="controlAttrs as PasswordControl"
+      :error="error"
     >
       <template
         v-if="$slots.prefix"
@@ -152,6 +187,7 @@ const isInput = computed(() => {
     <BaseCurrency
       v-else-if="type === 'currency'"
       v-bind="controlAttrs as CurrencyControl"
+      :error="error"
     />
     <div
       v-if="error"
@@ -167,3 +203,26 @@ const isInput = computed(() => {
     </div>
   </div>
 </template>
+
+<style scoped lang="postcss">
+@keyframes jiggle {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-2px);
+  }
+  50% {
+    transform: translateX(2px);
+  }
+  75% {
+    transform: translateX(-2px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+.giro__input-jiggle {
+  animation: jiggle 0.3s 1;
+}
+</style>

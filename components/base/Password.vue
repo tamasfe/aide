@@ -13,6 +13,7 @@ export type PasswordProps = {
   blurScreen?: boolean;
   scrollIntoView?: boolean;
   required?: boolean;
+  error?: string;
 };
 
 const props = withDefaults(defineProps<PasswordProps>(), {
@@ -37,7 +38,6 @@ const wrapper = ref<InstanceType<typeof BaseInputWrapper> | null>(null);
 const input = ref<HTMLInputElement | null>(null);
 
 const onBlur = (evt: FocusEvent) => {
-  console.log("onBlur");
   const el: HTMLElement | undefined = wrapper.value?.$el;
   if (el?.contains(evt.relatedTarget as Node)) {
     return;
@@ -107,6 +107,7 @@ defineExpose({
     :disabled="disabled"
     :placeholder="placeholder"
     :model-value="modelValue"
+    :error="error"
     @focus="onFocus"
     @blur="onBlur"
   >

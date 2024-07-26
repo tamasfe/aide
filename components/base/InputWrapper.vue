@@ -5,6 +5,7 @@ export type InputWrapperProps = {
   placeholder?: string;
   wrapperClass?: string;
   modelValue?: unknown;
+  error?: string;
 };
 
 const props = defineProps<InputWrapperProps>();
@@ -47,6 +48,12 @@ const labelPositionClass = computed(() => {
   return props.modelValue ? "giro__input-label-position" : "";
 });
 
+const outlineClass = computed(() => {
+  return props.error
+    ? "outline outline-red-800"
+    : "focus-within:outline outline-2 outline-focus";
+});
+
 const defaultSlotWrapperClass = computed(() => (props.title ? "pt-4" : ""));
 
 defineExpose({
@@ -62,8 +69,8 @@ defineExpose({
     @click="onFocus"
   >
     <div
-      class="flex items-center gap-4 rounded-lg w-full bg-emphasis focus-within:outline outline-2 outline-focus min-h-12 px-[0.8rem] py-1 sm:py-[0.8rem]"
-      :class="wrapperClass"
+      class="flex items-center gap-4 rounded-lg w-full bg-emphasis min-h-12 px-[0.8rem] py-1 sm:py-[0.8rem]"
+      :class="[outlineClass, wrapperClass]"
     >
       <slot name="prefix" />
       <div

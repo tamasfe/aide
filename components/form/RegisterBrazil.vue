@@ -91,7 +91,13 @@ const formattedCpf = computed({
 
 const checkCpf = (evt: KeyboardEvent) => {
   const value = cpf.value;
-  if (value && value.length >= 14 && evt.code !== "Backspace") {
+  if (evt.code === "Backspace") {
+    return;
+  }
+  if (value && value.length >= 14) {
+    evt.preventDefault();
+  }
+  if (isNaN(parseInt(evt.key))) {
     evt.preventDefault();
   }
 };

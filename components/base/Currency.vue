@@ -6,6 +6,7 @@ export type CurrencyProps = Omit<InputProps, "modelValue"> & {
   modelValue: number;
   locale: string;
   currency: string;
+  error?: string;
 };
 
 const props = defineProps<CurrencyProps>();
@@ -68,6 +69,7 @@ const onKeyDown = (evt: KeyboardEvent) => {
     v-model:model-value="modelValue"
     type="text"
     inputmode="numeric"
+    :error="error"
     @keydown="onKeyDown"
   >
     <template #prefix>
