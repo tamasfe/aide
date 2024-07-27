@@ -7,7 +7,6 @@ import {
 } from "@headlessui/vue";
 import {
   AsYouType,
-  formatIncompletePhoneNumber,
   parseDigits,
   type CountryCode as LibCountryCode,
 } from "libphonenumber-js";

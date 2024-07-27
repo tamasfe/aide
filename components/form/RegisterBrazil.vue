@@ -36,7 +36,6 @@ const validationSchema = toTypedSchema(
           message: t("enter_valid_phone"),
           path: ["number"],
         });
-        return false;
       }
       const isValid = isValidNumberForRegion(data.number, locale);
       if (!isValid) {
@@ -45,7 +44,6 @@ const validationSchema = toTypedSchema(
           message: t("enter_valid_phone"),
           path: ["number"],
         });
-        return false;
       }
       const isValidLength = validatePhoneNumberLength(data.number, locale);
       if (isValidLength !== undefined) {
@@ -54,9 +52,16 @@ const validationSchema = toTypedSchema(
           message: t("enter_valid_phone"),
           path: ["number"],
         });
-        return false;
       }
-      return true;
+
+      const isValidCpf = validateCpf(data.cpf);
+      if (!isValidCpf) {
+        ctx.addIssue({
+          code: zod.ZodIssueCode.custom,
+          message: t("enter_valid_cpf"),
+          path: ["cpf"],
+        });
+      }
     }),
 );
 
@@ -75,27 +80,31 @@ const { value: region } = useField(
   },
 );
 
-const updateCpf = (value: string) => {
-  const formatted = formatCPF(value);
-  cpf.value = formatted;
-};
-
 const formattedCpf = computed({
   get: () => {
-    return cpf.value;
+    if (!cpf.value) {
+      return "";
+    }
+    return formatCPF(cpf.value);
   },
   set: (value) => {
-    updateCpf(value);
+    cpf.value = value;
   },
 });
 
 const checkCpf = (evt: KeyboardEvent) => {
   const value = cpf.value;
-  if (evt.code === "Backspace") {
+  // if holding ctrl or alt or cmd key
+  // do not prevent default
+  if (evt.ctrlKey || evt.altKey || evt.metaKey) {
+    return;
+  }
+  if (evt.code === "Backspace" || evt.code === "Tab" || evt.code === "Delete") {
     return;
   }
   if (value && value.length >= 14) {
     evt.preventDefault();
+    return;
   }
   if (isNaN(parseInt(evt.key, 10))) {
     evt.preventDefault();
@@ -108,10 +117,7 @@ const onSubmit = handleSubmit((values) => {
 </script>
 
 <template>
-  <form
-    class="flex flex-col items-center space-y-2 w-full"
-    @submit="onSubmit"
-  >
+  <form class="flex flex-col items-center space-y-2 w-full" @submit="onSubmit">
     <FormControl
       v-model="email"
       type="email"
@@ -154,10 +160,7 @@ const onSubmit = handleSubmit((values) => {
     />
     <p class="text-sm text-subtle py-4">
       {{ t("accept_terms") }}
-      <button
-        type="button"
-        class="font-semibold"
-      >
+      <button type="button" class="font-semibold">
         {{ t("terms") }}
       </button>
     </p>
