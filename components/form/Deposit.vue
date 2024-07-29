@@ -10,9 +10,11 @@ const validationSchema = toTypedSchema(
     value: zod.number().min(10, `${t("min_deposit")} ${minDeposit}`),
   }),
 );
-const { handleSubmit, errors } = useForm({
+
+const { handleSubmit, errors, meta } = useForm({
   validationSchema,
 });
+
 const { value } = useField(
   "value",
   {},
@@ -75,6 +77,7 @@ const locale = ref("pt-BR");
       variant="emphasis"
       type="submit"
       big
+      :disabled="!meta.valid"
     >
       {{ t("quick_deposit") }}
     </BaseButton>

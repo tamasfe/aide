@@ -10,7 +10,7 @@ export type CurrencyProps = Omit<InputProps, "modelValue"> & {
 };
 
 const props = defineProps<CurrencyProps>();
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits(["update:modelValue", "focus", "blur", "input"]);
 
 const localeConfig = computed(() =>
   getLocaleConfig({
@@ -71,6 +71,9 @@ const onKeyDown = (evt: KeyboardEvent) => {
     inputmode="numeric"
     :error="error"
     @keydown="onKeyDown"
+    @focus="emit('focus', $event)"
+    @blur="emit('blur', $event)"
+    @input="emit('input', $event)"
   >
     <template #prefix>
       <p

@@ -65,6 +65,11 @@ const validationSchema = toTypedSchema(
         });
       }
 
+      console.log("isPossible", isPossible);
+      console.log("isValid", isValid);
+      console.log("isValidLength", isValidLength);
+      console.log("isInternational", isInternational);
+
       const isValidCpf = validateCpf(data.cpf);
       if (!isValidCpf) {
         ctx.addIssue({

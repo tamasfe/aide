@@ -7,7 +7,7 @@
       <GameWinner
         v-for="idx in 10"
         :key="idx"
-        class="min-w-[90%] sm:min-w-[20%]"
+        class="min-w-[90%] sm:min-w-[50%] md:min-w-[40%] lg:min-w-[20%]"
       />
     </div>
   </div>

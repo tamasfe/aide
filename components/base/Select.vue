@@ -114,7 +114,7 @@ const selectedOption = computed(() => {
           >
             <li
               class="cursor-pointer outline-none px-3 py-3 text-subtle focus:bg-default select-none"
-              :class="[active ? 'bg-default text-emphasis' : '']"
+              :class="[active ? 'bg-active text-emphasis' : '']"
             >
               <slot
                 name="option"

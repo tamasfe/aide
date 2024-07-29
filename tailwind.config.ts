@@ -31,6 +31,7 @@ export default <Partial<Config>>{
           emphasis: "rgba(var(--giro-bg-text-emphasis), <alpha-value>)",
           subtle: "rgba(var(--giro-bg-text-subtle), <alpha-value>)",
         },
+        active: "rgba(var(--giro-bg-active), <alpha-value>)",
         button: {
           primary: "var(--giro-button-primary)",
           "primary-hover": "var(--giro-button-primary-hover)",

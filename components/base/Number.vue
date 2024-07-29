@@ -115,6 +115,9 @@ const placeholder = computed(() =>
     :error="error"
     inputmode="numeric"
     autocomplete="tel"
+    @focus="emit('focus', $event)"
+    @blur="emit('blur', $event)"
+    @input="emit('input', $event)"
   >
     <template #prefix>
       <Listbox v-model="region">

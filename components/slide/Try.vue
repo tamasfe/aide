@@ -23,7 +23,9 @@ const openModal = () => {
     <div
       class="absolute top-1/2 -translate-y-1/2 left-6 sm:left-28 text-lg md:text-2xl lg:text-4xl font-black italic md:leading-6 md:space-y-2 lg:space-y-6"
     >
-      <h3 class="text-brand-yellow text-sm md:text-lg lg:text-2xl">
+      <h3
+        class="bg-button-primary text-transparent bg-clip-text text-sm md:text-lg lg:text-2xl font-bold"
+      >
         EXCLUSIVE
       </h3>
       <h1 class="font-extrabold text-xl md:text-3xl lg:text-5xl">
@@ -33,7 +35,8 @@ const openModal = () => {
         FROM WILDJACK
       </h1>
       <h2 class="font-extrabold">
-        <span class="text-brand-yellow">+100</span> FREE SPINS
+        <span class="bg-button-primary text-transparent bg-clip-text">+100</span>
+        FREE SPINS
       </h2>
       <BaseButton
         class="hidden md:inline-flex justify-center cursor-pointer !py-3 !rounded-[0.4rem]"

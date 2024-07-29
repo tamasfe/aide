@@ -50,6 +50,8 @@ const props = withDefaults(defineProps<FormControlProps>(), {
 });
 
 const { error } = toRefs(props);
+// used to trigger jiggle animation on blur
+const localError = ref(error.value);
 
 const attrs = useAttrs();
 
@@ -93,12 +95,20 @@ const removeJiggle = () => {
   }
 };
 
-watch(error, () => {
-  if (error.value) {
+watch(localError, (value) => {
+  if (value) {
     triggerJiggle();
   }
   else {
     removeJiggle();
+  }
+});
+
+watch(error, (value) => {
+  // if there's no longer error we don't
+  // need to wait for the blur event
+  if (!value) {
+    localError.value = value;
   }
 });
 </script>
@@ -112,7 +122,8 @@ watch(error, () => {
       v-if="isInput"
       v-bind="controlAttrs as TextControl"
       :type="type"
-      :error="error"
+      :error="localError"
+      @blur="localError = error"
     >
       <template
         v-if="$slots.prefix"
@@ -130,7 +141,8 @@ watch(error, () => {
     <BaseSelect
       v-else-if="type === 'select'"
       v-bind="controlAttrs as SelectControl"
-      :error="error"
+      :error="localError"
+      @blur="localError = error"
     >
       <template
         v-if="$slots.prefix"
@@ -144,7 +156,8 @@ watch(error, () => {
       v-bind="controlAttrs as TextControl"
       type="text"
       inputmode="numeric"
-      :error="error"
+      :error="localError"
+      @blur="localError = error"
     >
       <template
         v-if="$slots.prefix"
@@ -163,7 +176,8 @@ watch(error, () => {
       v-else-if="type === 'tel'"
       v-bind="controlAttrs as NumberControl"
       type="number"
-      :error="error"
+      :error="localError"
+      @blur="localError = error"
     >
       <template
         v-if="$slots.suffix"
@@ -175,7 +189,8 @@ watch(error, () => {
     <BasePassword
       v-else-if="type === 'password'"
       v-bind="controlAttrs as PasswordControl"
-      :error="error"
+      :error="localError"
+      @blur="localError = error"
     >
       <template
         v-if="$slots.prefix"
@@ -187,13 +202,14 @@ watch(error, () => {
     <BaseCurrency
       v-else-if="type === 'currency'"
       v-bind="controlAttrs as CurrencyControl"
-      :error="error"
+      :error="localError"
+      @blur="localError = error"
     />
     <div
-      v-if="error"
+      v-if="localError"
       class="text-red-400"
     >
-      {{ error }}
+      {{ localError }}
     </div>
     <div
       v-if="hint"
