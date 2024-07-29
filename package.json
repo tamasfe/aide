@@ -13,35 +13,35 @@
     "test": "vitest --coverage"
   },
   "dependencies": {
-    "@floating-ui/vue": "^1.1.1",
+    "@floating-ui/vue": "^1.1.2",
     "@headlessui/vue": "^1.7.22",
     "@nuxt/image": "^1.7.0",
     "@phosphor-icons/vue": "^2.2.1",
-    "@pinia/nuxt": "^0.5.1",
+    "@pinia/nuxt": "^0.5.2",
     "@vee-validate/nuxt": "^4.13.2",
     "@vee-validate/zod": "^4.13.2",
     "@vueuse/core": "^10.11.0",
-    "libphonenumber-js": "^1.11.4",
-    "nuxt": "^3.12.3",
-    "vue": "^3.4.31",
+    "libphonenumber-js": "^1.11.5",
+    "nuxt": "^3.12.4",
+    "vue": "^3.4.34",
     "vue-router": "^4.4.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
     "@nuxt/eslint": "^0.3.13",
-    "@nuxt/test-utils": "^3.13.1",
+    "@nuxt/test-utils": "^3.14.0",
     "@nuxtjs/device": "^3.1.1",
-    "@nuxtjs/i18n": "^8.3.1",
+    "@nuxtjs/i18n": "^8.3.3",
     "@nuxtjs/seo": "2.0.0-rc.10",
-    "@nuxtjs/tailwindcss": "^6.12.0",
+    "@nuxtjs/tailwindcss": "^6.12.1",
     "@vitest/coverage-v8": "^1.6.0",
     "@vue/test-utils": "^2.4.6",
-    "@vue/typescript-plugin": "^2.0.26",
-    "eslint": "^9.6.0",
+    "@vue/typescript-plugin": "^2.0.29",
+    "eslint": "^9.8.0",
     "happy-dom": "^14.12.3",
-    "tailwindcss": "^3.4.4",
-    "typescript": "^5.5.3",
+    "tailwindcss": "^3.4.7",
+    "typescript": "^5.5.4",
     "vitest": "^1.6.0",
-    "vue-tsc": "^2.0.26"
+    "vue-tsc": "^2.0.29"
   }
 }
