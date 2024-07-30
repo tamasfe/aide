@@ -116,7 +116,7 @@ const scrollToTop = () => {
       <p>©2024 GIROBET ALL RIGHTS RESERVED</p>
       <button
         type="button"
-        class="outline-none w-full md:w-auto bg-emphasis p-3 rounded-default text-subtle inline-flex justify-center"
+        class="outline-none w-full md:w-auto bg-emphasis hover:bg-active p-3 rounded-default text-subtle inline-flex justify-center"
         @click="scrollToTop"
       >
         <PhCaretUp :size="24" />

@@ -32,7 +32,10 @@ const requestRegister = () => {
 </script>
 
 <template>
-  <ModalWrapperHorizontal v-model:opened="opened">
+  <ModalWrapperHorizontal
+    v-model:opened="opened"
+    :close-on-click-outside="false"
+  >
     <div class="inline-flex justify-center py-6 sm:pt-12 sm:pb-4">
       <div class="min-w-36 sm:min-w-40">
         <IconsLogo />

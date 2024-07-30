@@ -81,7 +81,7 @@ defineExpose({
           v-if="title"
           ref="label"
           :for="inputId"
-          class="text-subtle font-medium giro__input-placeholder"
+          class="text-subtle font-medium giro__input-placeholder select-none"
           :class="labelPositionClass"
         >
           {{ title }}

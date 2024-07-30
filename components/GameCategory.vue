@@ -54,7 +54,7 @@ const getImageId = (idx: unknown) => {
             <NuxtImg
               :src="`/assets/images/games/${getImageId(index)}.png`"
               alt=""
-              class="absolute top-0 left-0 w-full object-cover rounded-default transition-transform transform hover:scale-105"
+              class="absolute top-0 left-0 w-full object-cover rounded-default transition-transform transform hover:scale-105 cursor-pointer"
             />
           </BaseSkeleton>
         </div>

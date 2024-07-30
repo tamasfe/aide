@@ -21,7 +21,7 @@ const emit = defineEmits([
     class="giro__mobile-menu block z-10 sm:hidden sticky bottom-0 left-0 w-full bg-subtle text-subtle"
   >
     <div
-      class="flex items-center justify-between pt-2 px-4 pb-1 text-subtle font-bold"
+      class="flex items-center justify-between pt-2.5 px-4 pb-2 text-subtle font-bold"
     >
       <button
         class="inline-flex flex-col justify-center items-center outline-none"

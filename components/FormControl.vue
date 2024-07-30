@@ -70,7 +70,7 @@ const isInput = computed(() => {
     text: true,
     number: false,
     password: false,
-    email: true,
+    email: false,
     tel: false,
     search: true,
     select: false,
@@ -122,6 +122,26 @@ watch(error, (value) => {
       v-if="isInput"
       v-bind="controlAttrs as TextControl"
       :type="type"
+      :error="localError"
+      @blur="localError = error"
+    >
+      <template
+        v-if="$slots.prefix"
+        #prefix
+      >
+        <slot name="prefix" />
+      </template>
+      <template
+        v-if="$slots.suffix"
+        #suffix
+      >
+        <slot name="suffix" />
+      </template>
+    </BaseInput>
+    <BaseInput
+      v-else-if="props.type === 'email'"
+      v-bind="controlAttrs as TextControl"
+      type="text"
       :error="localError"
       @blur="localError = error"
     >

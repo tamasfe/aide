@@ -59,6 +59,7 @@ watch(
             title: 'Home',
             value: '/',
             icon: PhHouse,
+            iconClass: 'text-subtle',
           }"
           :options="[
             {
@@ -92,6 +93,7 @@ watch(
             title: 'All Games',
             value: 'all_games',
             icon: PhGridFour,
+            iconClass: 'text-subtle',
           }"
           :options="[
             {
@@ -125,18 +127,21 @@ watch(
           title="Promotions"
           value="promotions"
           :icon="PhStar"
+          icon-class="text-subtle"
         />
         <BaseMenuLink
           class="p-4 text-emphasis text-lg"
           title="VIP"
           value="vip"
           :icon="PhStar"
+          icon-class="text-subtle"
         />
         <BaseMenuLink
           class="p-4 text-emphasis text-lg"
           title="Recently added"
           value="recently_added"
           :icon="PhStar"
+          icon-class="text-subtle"
         />
       </div>
     </div>

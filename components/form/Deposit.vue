@@ -66,7 +66,7 @@ const locale = ref("pt-BR");
           {{
             formatNumber(amount, {
               locale: "pt-BR",
-              decimalPlaces: 2,
+              decimalPlaces: 0,
             })
           }}
         </p>

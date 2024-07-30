@@ -23,7 +23,9 @@ onMounted(() => {
       <h2 class="text-xl sm:text-2xl">{{ title }}</h2>
     </template>
     <template #options>
-      <BaseButton class="bg-subtle text-subtle"> See all </BaseButton>
+      <BaseButton class="bg-subtle hover:bg-emphasis text-subtle">
+        See all
+      </BaseButton>
     </template>
     <template #default="{ data: index }">
       <div
@@ -35,21 +37,20 @@ onMounted(() => {
               :loading="loading"
               class="absolute left-0 top-0 w-full h-full"
             >
+              <!-- center image -->
               <NuxtImg
                 :src="`/assets/images/providers/${index}.png`"
                 alt=""
-                class="absolute top-0 left-0 w-full object-cover rounded-[0.8rem]"
+                class="absolute top-1/2 left-1/2 w-full object-cover rounded-[0.8rem] transform -translate-x-1/2 -translate-y-1/2"
               />
             </BaseSkeleton>
           </div>
           <div class="w-full flex justify-center">
-            <div class="bg-subtle rounded-lg">
-              <p
-                class="py-1 px-2 bg-button-primary text-transparent bg-clip-text"
-              >
-                32 games
-              </p>
-            </div>
+            <p
+              class="py-1 px-2 bg-button-primary text-transparent bg-clip-text"
+            >
+              32 games
+            </p>
           </div>
         </div>
       </div>

@@ -27,6 +27,10 @@ const openSidebar = () => {
   sidebarOpened.value = true;
 };
 
+const toggleSidebar = () => {
+  sidebarOpened.value = !sidebarOpened.value;
+};
+
 const confirmCancelRegistration = () => {
   if (type.value === "register") {
     modalCancelRegistrationOpened.value = true;
@@ -40,6 +44,7 @@ const continueRegistration = () => {
 
 defineExpose({
   openSidebar,
+  toggleSidebar,
 });
 </script>
 

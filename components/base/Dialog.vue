@@ -16,6 +16,7 @@ const props = withDefaults(
     opened: boolean;
     center?: boolean;
     close?: boolean;
+    closeOnClickOutside?: boolean;
     size?:
       | "full"
       | "sm"
@@ -36,6 +37,7 @@ const props = withDefaults(
     center: false,
     size: "lg",
     close: true,
+    closeOnClickOutside: true,
   },
 );
 
@@ -91,9 +93,12 @@ const size = computed(() => {
   return "max-w-lg";
 });
 
-const closeModal = () => {
-  opened.value = false;
-  emit("close");
+const closeModal = (isManuallyTriggered: boolean) => {
+  console.log("isManuallyTriggered", isManuallyTriggered);
+  if (props.closeOnClickOutside || isManuallyTriggered) {
+    opened.value = false;
+    emit("close");
+  }
 };
 
 defineOptions({
@@ -112,7 +117,7 @@ defineOptions({
         v-model:open="opened"
         as="div"
         class="relative z-10"
-        @close="closeModal"
+        @close="closeModal(false)"
       >
         <TransitionChild
           as="template"
@@ -147,7 +152,7 @@ defineOptions({
                 v-if="close"
                 type="button"
                 class="absolute top-0 right-0 rounded-md text-emphasis hover:text-default p-2 outline-none z-10"
-                @click="closeModal"
+                @click="closeModal(true)"
               >
                 <span class="sr-only">Close</span>
                 <div
