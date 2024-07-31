@@ -43,7 +43,6 @@ const locale = ref("pt-BR");
       class="w-full"
       type="currency"
       wrapper-class="bg-subtle text-lg"
-      input-class="font-"
       :currency="currency"
       :locale="locale"
       :placeholder="t('deposit')"

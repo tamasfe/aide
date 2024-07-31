@@ -6,6 +6,7 @@ import {
   type CountryCode,
   AsYouType,
 } from "libphonenumber-js";
+import type { MaskInputOptions } from "maska";
 import * as zod from "zod";
 
 const { t } = useI18n();
@@ -65,11 +66,6 @@ const validationSchema = toTypedSchema(
         });
       }
 
-      console.log("isPossible", isPossible);
-      console.log("isValid", isValid);
-      console.log("isValidLength", isValidLength);
-      console.log("isInternational", isInternational);
-
       const isValidCpf = validateCpf(data.cpf);
       if (!isValidCpf) {
         ctx.addIssue({
@@ -96,35 +92,9 @@ const { value: region } = useField(
   },
 );
 
-const formattedCpf = computed({
-  get: () => {
-    if (!cpf.value) {
-      return "";
-    }
-    return formatCPF(cpf.value);
-  },
-  set: (value) => {
-    cpf.value = value;
-  },
-});
-
-const checkCpf = (evt: KeyboardEvent) => {
-  const value = cpf.value;
-  // if holding ctrl or alt or cmd key
-  // do not prevent default
-  if (evt.ctrlKey || evt.altKey || evt.metaKey) {
-    return;
-  }
-  if (evt.code === "Backspace" || evt.code === "Tab" || evt.code === "Delete") {
-    return;
-  }
-  if (value && value.length >= 14) {
-    evt.preventDefault();
-    return;
-  }
-  if (isNaN(parseInt(evt.key, 10))) {
-    evt.preventDefault();
-  }
+const maskOptions: MaskInputOptions = {
+  mask: "###.###.###-##",
+  eager: true,
 };
 
 const onSubmit = handleSubmit((values) => {
@@ -158,14 +128,14 @@ const onSubmit = handleSubmit((values) => {
       autocomplete="new-password"
     />
     <FormControl
-      v-model="formattedCpf"
+      v-model="cpf"
       type="text"
       :title="t('cpf')"
       class="w-full"
       wrapper-class="bg-subtle py-3"
       input-class="text-default"
       :error="errors.cpf"
-      @keydown="checkCpf"
+      :maska="maskOptions"
     />
     <FormControl
       v-model="number"

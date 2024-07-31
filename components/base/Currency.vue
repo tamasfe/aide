@@ -1,9 +1,9 @@
 <script setup lang="ts">
+import type { MaskInputOptions } from "maska";
 import type { InputProps } from "./Input.vue";
-import { cleanValue, formatValue, getLocaleConfig } from "~/utils/mask";
 
 export type CurrencyProps = Omit<InputProps, "modelValue"> & {
-  modelValue: number;
+  modelValue?: number;
   locale: string;
   currency: string;
   error?: string;
@@ -12,68 +12,52 @@ export type CurrencyProps = Omit<InputProps, "modelValue"> & {
 const props = defineProps<CurrencyProps>();
 const emit = defineEmits(["update:modelValue", "focus", "blur", "input"]);
 
-const localeConfig = computed(() =>
-  getLocaleConfig({
-    locale: props.locale,
-  }),
-);
-
-const modelValue = computed({
+const modelValue = computed<number | undefined>({
   get: () => {
-    if (props.modelValue) {
-      const number = props.modelValue;
-      const formattedValue = formatValue({
-        value: String(number),
-        intlConfig: {
-          locale: props.locale,
-        },
-      });
-      return formattedValue;
-    }
-    return "";
+    return props.modelValue;
   },
   set: (value) => {
     if (!value) {
       emit("update:modelValue", undefined);
       return;
     }
-    const stringValue = cleanValue({ value: value, ...localeConfig.value });
-    const numberValue = parseFloat(
-      stringValue.replace(localeConfig.value.decimalSeparator, "."),
-    );
-    emit("update:modelValue", numberValue);
+    emit("update:modelValue", value);
   },
 });
 
-const isDecimal = (value: string) => {
-  return value.includes(localeConfig.value.decimalSeparator);
+const maskOptions = computed<MaskInputOptions>(() => ({
+  number: {
+    locale: props.locale,
+    fraction: 2,
+    unsigned: true,
+  },
+}));
+
+const onUpdateModelValue = (value: string) => {
+  if (value !== "") {
+    modelValue.value = Number(value);
+    return;
+  }
+  modelValue.value = undefined;
 };
 
-// prevent user from typing group separator
-// and multiple decimal separators
-const onKeyDown = (evt: KeyboardEvent) => {
-  const value = modelValue.value;
-  if (
-    evt.key === localeConfig.value.groupSeparator
-    || (isDecimal(value) && evt.key === localeConfig.value.decimalSeparator)
-  ) {
-    evt.preventDefault();
-  }
-};
+const inputValue = computed(() => modelValue.value?.toString());
 </script>
 
 <template>
   <BaseInput
     ref="input"
     v-bind="props"
-    v-model:model-value="modelValue"
+    :model-value="inputValue"
     type="text"
     inputmode="numeric"
     :error="error"
-    @keydown="onKeyDown"
+    :maska="maskOptions"
+    :raw="true"
     @focus="emit('focus', $event)"
     @blur="emit('blur', $event)"
     @input="emit('input', $event)"
+    @update:model-value="onUpdateModelValue"
   >
     <template #prefix>
       <p

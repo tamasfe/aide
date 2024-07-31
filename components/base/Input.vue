@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { MaskInputOptions, MaskaDetail } from "maska";
 import { BaseInputWrapper } from "#components";
 
 export type InputProps = {
@@ -24,11 +25,14 @@ export type InputProps = {
     | "numeric"
     | "decimal"
     | "search";
+  maska?: string | MaskInputOptions;
+  raw?: boolean;
 };
 
 const props = withDefaults(defineProps<InputProps>(), {
   type: "text",
   required: false,
+  raw: false,
 });
 
 const emit = defineEmits([
@@ -96,6 +100,15 @@ const blur = () => {
   }
 };
 
+const onMaska = (event: CustomEvent<MaskaDetail>) => {
+  if (props.raw) {
+    modelValue.value = event.detail.unmasked;
+  }
+  else {
+    modelValue.value = event.detail.masked;
+  }
+};
+
 const placeholder = computed(() => {
   return props.title ? undefined : props.placeholder;
 });
@@ -125,7 +138,8 @@ defineExpose({
     <input
       :id="inputId"
       ref="input"
-      v-model="modelValue"
+      v-maska="maska"
+      :value="modelValue"
       class="flex-1 bg-inherit border-none outline-none font-medium placeholder:text-subtle w-full"
       :class="inputClass"
       :disabled="disabled"
@@ -141,6 +155,7 @@ defineExpose({
       @blur="onBlur"
       @focus="onInputFocus"
       @keydown="emit('keydown', $event)"
+      @maska="onMaska"
     >
     <template #suffix>
       <slot name="suffix" />

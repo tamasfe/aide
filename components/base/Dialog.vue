@@ -94,7 +94,6 @@ const size = computed(() => {
 });
 
 const closeModal = (isManuallyTriggered: boolean) => {
-  console.log("isManuallyTriggered", isManuallyTriggered);
   if (props.closeOnClickOutside || isManuallyTriggered) {
     opened.value = false;
     emit("close");

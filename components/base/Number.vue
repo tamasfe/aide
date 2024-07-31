@@ -5,11 +5,7 @@ import {
   ListboxOptions,
   ListboxOption,
 } from "@headlessui/vue";
-import {
-  AsYouType,
-  parseDigits,
-  type CountryCode as LibCountryCode,
-} from "libphonenumber-js";
+import type { MaskOptions } from "maska";
 import { BaseInput } from "#components";
 import type { CountryCode } from "~/utils/types";
 
@@ -40,49 +36,49 @@ const emit = defineEmits([
 ]);
 
 const input = ref<InstanceType<typeof BaseInput>>();
-const countryCodes = getCountryCodes();
+
+const getMaskOptions = (code: string) => {
+  const maskOptions: MaskOptions = {
+    mask: numberMasks[code as keyof typeof numberMasks],
+    eager: true,
+  };
+  return maskOptions;
+};
+
+const countryCodes = [
+  {
+    name: "United States",
+    dial_code: "+1",
+    code: "US",
+  },
+  {
+    name: "Brazil",
+    dial_code: "+55",
+    code: "BR",
+  },
+];
+
+const numberMasks = {
+  US: ["(###) ###-####"],
+  BR: ["(##) #####-####", "(##) ####-####"],
+};
 
 const region = computed({
   get: () => props.region,
   set: value => emit("update:region", value),
 });
 
-// replace template with number, (XXX) XXX-XXXX
-// ex. 1234567890 -> (123) 456-7890
-// const formatByTemplate = (value: string, template: string) => {
-//  if (!value) {
-//    return value;
-//  }
-//  for (const char of value) {
-//    template = template.replace("x", char);
-//  }
-//  return template;
-// };
-
-const getNationalNumber = (modelValue: string) => {
-  const parts = region.value.split("+");
-  const locale = parts[0] as LibCountryCode;
-  const asYouType = new AsYouType(locale);
-  return asYouType.input(modelValue);
-  // const template = asYouType.getTemplate();
-  // return formatByTemplate(asYouType.getNationalNumber(), template);
-  // return formatIncompletePhoneNumber(asYouType.getNationalNumber(), locale);
-};
-
 const modelValue = computed({
   get: () => {
     if (!props.modelValue) return "";
-    const value = props.modelValue;
-    const nationalNumber = getNationalNumber(value);
-    return nationalNumber;
+    return props.modelValue;
   },
   set: (value) => {
     if (!value) {
       emit("update:modelValue", "");
       return;
     }
-    const clean = parseDigits(value);
-    emit("update:modelValue", clean);
+    emit("update:modelValue", value);
   },
 });
 
@@ -93,7 +89,7 @@ const getCountryCodeValue = (option: CountryCode) => {
 const selectedOption = computed(() => {
   return countryCodes.find(
     option => getCountryCodeValue(option) === region.value,
-  );
+  ) as CountryCode;
 });
 
 const placeholder = computed(() =>
@@ -113,6 +109,8 @@ const placeholder = computed(() =>
     :disabled="disabled"
     :placeholder="placeholder"
     :error="error"
+    :maska="getMaskOptions(selectedOption?.code)"
+    :raw="true"
     inputmode="numeric"
     autocomplete="tel"
     @focus="emit('focus', $event)"
