@@ -1,13 +1,7 @@
 <script setup lang="ts">
-import {
-  isPossiblePhoneNumber,
-  isValidNumberForRegion,
-  validatePhoneNumberLength,
-  type CountryCode,
-  AsYouType,
-} from "libphonenumber-js";
 import type { MaskInputOptions } from "maska";
 import * as zod from "zod";
+import { isValidPhoneNumber } from "~/utils";
 
 const { t } = useI18n();
 
@@ -30,35 +24,9 @@ const validationSchema = toTypedSchema(
       region: zod.string().min(1, { message: t("field_required") }),
     })
     .superRefine((data, ctx) => {
-      const locale = data.region.split("+")[0] as CountryCode;
-      const isPossible = isPossiblePhoneNumber(data.number, locale);
-      if (!isPossible) {
-        ctx.addIssue({
-          code: zod.ZodIssueCode.custom,
-          message: t("enter_valid_phone"),
-          path: ["number"],
-        });
-      }
-      const isValid = isValidNumberForRegion(data.number, locale);
-      if (!isValid) {
-        ctx.addIssue({
-          code: zod.ZodIssueCode.custom,
-          message: t("enter_valid_phone"),
-          path: ["number"],
-        });
-      }
-      const isValidLength = validatePhoneNumberLength(data.number, locale);
-      if (isValidLength !== undefined) {
-        ctx.addIssue({
-          code: zod.ZodIssueCode.custom,
-          message: t("enter_valid_phone"),
-          path: ["number"],
-        });
-      }
-      const _asYouType = new AsYouType(locale);
-      _asYouType.input(data.number);
-      const isInternational = !!_asYouType.getCallingCode();
-      if (isInternational) {
+      const locale = data.region.split("+")[0];
+      const _isValidPhoneNumber = isValidPhoneNumber(data.number, locale);
+      if (!_isValidPhoneNumber) {
         ctx.addIssue({
           code: zod.ZodIssueCode.custom,
           message: t("enter_valid_phone"),

@@ -1,3 +1,4 @@
+import { Mask } from "maska";
 import type { CountryCode, FormatNumberOptions } from "./types";
 
 export const getCountryCodes = (): CountryCode[] => {
@@ -1318,4 +1319,20 @@ export const validateCpf = (cpfString: string) => {
 
   validated = true;
   return validated;
+};
+
+export const numberMasks = {
+  US: ["(###) ###-####"],
+  BR: ["(##) #####-####", "(##) ####-####"],
+};
+
+export const isValidPhoneNumber = (number: string, countryCode: string) => {
+  const masks = numberMasks[countryCode as keyof typeof numberMasks];
+  if (!masks) {
+    return false;
+  }
+  const mask = new Mask({
+    mask: masks,
+  });
+  return mask.completed(number);
 };

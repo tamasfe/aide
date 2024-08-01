@@ -5,9 +5,10 @@ import {
   ListboxOptions,
   ListboxOption,
 } from "@headlessui/vue";
-import type { MaskOptions } from "maska";
+import type { MaskInputOptions } from "maska";
 import { BaseInput } from "#components";
 import type { CountryCode } from "~/utils/types";
+import { numberMasks } from "~/utils";
 
 export type NumberProps = {
   modelValue?: string;
@@ -38,7 +39,7 @@ const emit = defineEmits([
 const input = ref<InstanceType<typeof BaseInput>>();
 
 const getMaskOptions = (code: string) => {
-  const maskOptions: MaskOptions = {
+  const maskOptions: MaskInputOptions = {
     mask: numberMasks[code as keyof typeof numberMasks],
     eager: true,
   };
@@ -57,11 +58,6 @@ const countryCodes = [
     code: "BR",
   },
 ];
-
-const numberMasks = {
-  US: ["(###) ###-####"],
-  BR: ["(##) #####-####", "(##) ####-####"],
-};
 
 const region = computed({
   get: () => props.region,
