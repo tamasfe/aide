@@ -31,6 +31,7 @@ cfg-if = "1.0.0"
 # custom axum extractors
 serde_qs = { version = "0.13", optional = true }
 jwt-authorizer = { version = "0.14", default-features = false, optional = true }
+telegram-authorizer = { version = "0.1.0", default-features = false, optional = true }
 
 [features]
 macros = ["dep:aide-macros"]
@@ -52,6 +53,7 @@ axum-wasm = ["axum"]
 
 serde_qs = ["dep:serde_qs"]
 jwt-authorizer = ["dep:jwt-authorizer"]
+telegram-authorizer = ["dep:telegram-authorizer"]
 
 [dev-dependencies]
 serde = { version = "1.0.144", features = ["derive"] }

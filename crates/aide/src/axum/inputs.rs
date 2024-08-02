@@ -424,7 +424,7 @@ mod jwt_authorizer {
             ctx.security_schemes.insert(
                 t.clone(),
                 ReferenceOr::Item(SecurityScheme::Http {
-                    scheme: "Bearer".to_string(),
+                    scheme: "bearer".to_string(),
                     bearer_format: Some("JWT".to_string()),
                     description: Some("A bearer token.".to_string()),
                     extensions: Default::default(),
@@ -434,4 +434,13 @@ mod jwt_authorizer {
             operation.security.push([(t, Vec::new())].into())
         }
     }
+}
+
+#[cfg(feature = "telegram-authorizer")]
+mod telegram_authorizer {
+
+    use crate::OperationInput;
+    use ::telegram_authorizer::TelegramUser;
+
+    impl OperationInput for TelegramUser {}
 }
