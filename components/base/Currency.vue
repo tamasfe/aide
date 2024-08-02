@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { MaskInputOptions } from "maska";
+import { type MaskInputOptions } from "maska";
 import type { InputProps } from "./Input.vue";
 
 export type CurrencyProps = Omit<InputProps, "modelValue"> & {
@@ -25,23 +25,32 @@ const modelValue = computed<number | undefined>({
   },
 });
 
-const maskOptions = computed<MaskInputOptions>(() => ({
-  number: {
-    locale: props.locale,
-    fraction: 2,
-    unsigned: true,
-  },
-}));
+const inputValue = computed(() => {
+  if (props.modelValue) {
+    const number = props.modelValue;
+    const formatted = Intl.NumberFormat(props.locale).format(number);
+    return formatted;
+  }
+  return "";
+});
+
+const maskOptions = computed<MaskInputOptions>(() => {
+  return {
+    number: {
+      locale: props.locale,
+      fraction: 2,
+      unsigned: true,
+    },
+  } as MaskInputOptions;
+});
 
 const onUpdateModelValue = (value: string) => {
   if (value !== "") {
-    modelValue.value = Number(value);
+    modelValue.value = parseFloat(value);
     return;
   }
   modelValue.value = undefined;
 };
-
-const inputValue = computed(() => modelValue.value?.toString());
 </script>
 
 <template>
