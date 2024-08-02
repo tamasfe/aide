@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { PhList } from "@phosphor-icons/vue";
 
+const { t } = useI18n();
+
 const refferalBaseNoticeOpen = ref(true);
 
 const modalLoginRegisterOpened = ref(false);
@@ -70,8 +72,7 @@ defineExpose({
         @close="() => (refferalBaseNoticeOpen = false)"
       >
         <p class="text-center">
-          Refer a friend and earn R$ 5,00 of REAL balance for each friend you
-          invite
+          {{ t("refer_a_friend") }}
         </p>
       </BaseNotice>
     </Transition>
@@ -103,14 +104,14 @@ defineExpose({
             class="py-2"
             @click="login"
           >
-            Login
+            {{ t("login") }}
           </BaseButton>
           <BaseButton
             class="py-2"
             variant="primary"
             @click="register"
           >
-            Register
+            {{ t("register") }}
           </BaseButton>
         </div>
       </div>

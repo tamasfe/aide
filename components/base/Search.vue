@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { useScrollLock } from "@vueuse/core";
-
 import { Popover, PopoverPanel } from "@headlessui/vue";
-
 import { PhMagnifyingGlass, PhX } from "@phosphor-icons/vue";
 import { BaseInput } from "#components";
+
+const { t } = useI18n();
 
 const props = defineProps<{
   modelValue?: string;
@@ -88,7 +88,7 @@ defineOptions({
       class="!rounded-2xl sm:!rounded-xl"
       wrapper-class="font-normal bg-emphasis !rounded-2xl sm:!rounded-xl"
       input-class="font-normal text-default text-lg"
-      placeholder="Search for a casino games"
+      :placeholder="t('home_search.placeholder')"
       type="text"
       v-bind="$attrs"
       @focus="openPopover"

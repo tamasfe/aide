@@ -7,6 +7,8 @@ import {
   PhGift,
 } from "@phosphor-icons/vue";
 
+const { t } = useI18n();
+
 const emit = defineEmits([
   "click:menu",
   "click:hot",
@@ -29,7 +31,7 @@ const emit = defineEmits([
         @click="emit('click:menu')"
       >
         <PhList :size="24" />
-        <p>Menu</p>
+        <p>{{ t("menu") }}</p>
       </button>
       <button
         class="inline-flex flex-col justify-center items-center outline-none"
@@ -37,7 +39,7 @@ const emit = defineEmits([
         @click="emit('click:hot')"
       >
         <PhLightning :size="24" />
-        <p>Hot</p>
+        <p>{{ t("hot") }}</p>
       </button>
       <button
         class="inline-flex flex-col justify-center items-center outline-none"
@@ -45,7 +47,7 @@ const emit = defineEmits([
         @click="emit('click:search')"
       >
         <PhMagnifyingGlass :size="24" />
-        <p>Search</p>
+        <p>{{ t("search") }}</p>
       </button>
       <button
         class="inline-flex flex-col justify-center items-center outline-none"
@@ -53,7 +55,7 @@ const emit = defineEmits([
         @click="emit('click:support')"
       >
         <PhHeadphones :size="24" />
-        <p>Support</p>
+        <p>{{ t("support") }}</p>
       </button>
       <button
         class="inline-flex flex-col justify-center items-center outline-none"
@@ -61,7 +63,7 @@ const emit = defineEmits([
         @click="emit('click:promos')"
       >
         <PhGift :size="24" />
-        <p>Promos</p>
+        <p>{{ t("promos") }}</p>
       </button>
     </div>
   </div>

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const { t } = useI18n();
 const { isMobile } = useDevice();
 const data = ref<unknown[]>(Array.from({ length: 4 }, (_, i) => i + 1));
 const loading = ref(true);
@@ -24,7 +25,7 @@ onMounted(() => {
     </template>
     <template #options>
       <BaseButton class="bg-subtle hover:bg-emphasis text-subtle">
-        See all
+        {{ t("see_all") }}
       </BaseButton>
     </template>
     <template #default="{ data: index }">
@@ -49,7 +50,7 @@ onMounted(() => {
             <p
               class="py-1 px-2 bg-button-primary text-transparent bg-clip-text"
             >
-              32 games
+              32 {{ t("games").toLowerCase() }}
             </p>
           </div>
         </div>

@@ -5,12 +5,14 @@ import {
   PhTiktokLogo,
   PhXLogo,
 } from "@phosphor-icons/vue";
+
+const { t } = useI18n();
 </script>
 
 <template>
   <div class="flex flex-col space-y-4">
     <h3 class="text-lg text-emphasis font-semibold hidden md:block">
-      Social Media
+      {{ t("social_media") }}
     </h3>
     <div class="flex space-x-2 lg:space-x-4 justify-evenly md:justify-start">
       <div class="p-1 lg:p-3 rounded-xl hover:bg-emphasis">

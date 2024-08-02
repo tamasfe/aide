@@ -1,5 +1,5 @@
 <script setup lang="ts">
-// const { isDesktop } = useDevice();
+const { t } = useI18n();
 
 const emit = defineEmits(["update:opened"]);
 
@@ -12,11 +12,6 @@ const opened = computed({
   set: (value: boolean) => emit("update:opened", value),
 });
 const image = ref(true);
-
-// const imageSrc = computed(() => {
-//  const name = isDesktop ? "wheel-2" : "wheel";
-//  return `/assets/images/${name}.png`;
-// });
 
 const reset = () => {
   image.value = true;
@@ -54,11 +49,20 @@ defineExpose({
         <div
           class="absolute top-1/2 -translate-y-1/2 left-5 sm:left-10 text-lg sm:text-xl font-black italic"
         >
-          <p class="text-brand-yellow text-sm sm:text-lg">EXCLUSIVE</p>
-          <p class="font-extrabold text-xl">PRE-RELEASE</p>
-          <p class="font-extrabold text-xl">FROM WILDJACK</p>
+          <p
+            class="bg-button-primary text-transparent bg-clip-text text-sm sm:text-lg"
+          >
+            {{ t("exclusive").toUpperCase() }}
+          </p>
+          <p class="font-extrabold text-xl">
+            {{ t("prerelease").toUpperCase() }}
+          </p>
+          <p class="font-extrabold text-xl">
+            {{ t("from").toUpperCase() }} WILDJACK
+          </p>
           <p class="font-extrabold">
-            <span class="text-brand-yellow">+100</span> FREE SPINS
+            <span class="bg-button-primary text-transparent bg-clip-text">+100</span>
+            {{ t("free_spins").toUpperCase() }}
           </p>
         </div>
       </div>

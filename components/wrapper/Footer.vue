@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { PhCaretUp } from "@phosphor-icons/vue";
 
+const { t } = useI18n();
+
 const languageOptions = [
-  { title: "English", value: "en" },
-  { title: "Português", value: "pt" },
+  { title: t("languages.english"), value: "en" },
+  { title: t("languages.portugese"), value: "pt" },
 ];
 
 const language = ref("en");
@@ -41,9 +43,7 @@ const scrollToTop = () => {
           />
         </div>
         <p>
-          Welcome to The GiroBet Experience the ultimate thrill of online
-          gambling with us. Play slots, poker, blackjack, and more. Win big with
-          our bonuses and promotions.
+          {{ t("footer.slogan") }}
         </p>
         <BaseSelect
           v-model="language"
@@ -71,31 +71,31 @@ const scrollToTop = () => {
       </div>
       <WrapperSocialMediaLogos class="md:hidden" />
       <WrapperFooterColumn
-        section="Legal"
+        :section="t('footer.legal')"
         :options="[
-          { title: 'Terms of Use & Service Agreement', to: '/terms' },
-          { title: 'Privacy Policy', to: '/privacy' },
-          { title: 'Custom Privacy Notice', to: '/responsible' },
-          { title: 'Affiliate Terms and Conditions', to: '/cookies' },
+          { title: t('footer.terms_of_service'), to: '/terms' },
+          { title: t('footer.privacy_policy'), to: '/privacy' },
+          { title: t('footer.custom_privacy_notice'), to: '/responsible' },
+          { title: t('footer.affiliate_terms_and_conditions'), to: '/cookies' },
         ]"
       />
       <WrapperFooterColumn
-        section="For Partners"
+        :section="t('footer.for_partners')"
         :options="[
-          { title: 'VIP Program', to: '/terms' },
-          { title: 'Banking', to: '/privacy' },
-          { title: 'Security & Fair Play', to: '/responsible' },
-          { title: 'Responsible Gambling', to: '/cookies' },
+          { title: t('footer.vip_program'), to: '/terms' },
+          { title: t('footer.banking'), to: '/privacy' },
+          { title: t('footer.security_and_fair_play'), to: '/responsible' },
+          { title: t('footer.responsible_gambling'), to: '/cookies' },
         ]"
       />
       <WrapperFooterColumn
-        section="Menu"
+        :section="t('menu')"
         :options="[
-          { title: 'Home', to: '/' },
-          { title: 'Games', to: '/games' },
-          { title: 'Promotions', to: '/promotions' },
-          { title: 'FAQ', to: '/faq' },
-          { title: 'Contact Us', to: '/contact' },
+          { title: t('home'), to: '/' },
+          { title: t('games'), to: '/games' },
+          { title: t('promotions'), to: '/promotions' },
+          { title: t('footer.faq'), to: '/faq' },
+          { title: t('footer.contact_us'), to: '/contact' },
         ]"
       />
       <WrapperSocialMediaLogos class="hidden lg:flex" />
@@ -107,13 +107,9 @@ const scrollToTop = () => {
       class="giro__container w-full flex items-center flex-col md:flex-row justify-between md:space-x-4 space-y-4 text-sm text-subtle"
     >
       <p class="max-w-4xl text-xs">
-        Prior to engaging in any online gambling activities on our platform, it
-        is imperative to verify that such actions are legally permissible within
-        your jurisdiction. It is your responsibility to ascertain and adhere to
-        the laws and regulations governing online gambling in your country or
-        region.
+        {{ t("footer.legal_notice") }}
       </p>
-      <p>©2024 GIROBET ALL RIGHTS RESERVED</p>
+      <p>{{ t("footer.copyright") }}</p>
       <button
         type="button"
         class="outline-none w-full md:w-auto bg-emphasis hover:bg-active p-3 rounded-default text-subtle inline-flex justify-center"

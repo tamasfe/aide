@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const { isMobile } = useDevice();
+const { t } = useI18n();
 
 const itemsCount = 20;
 
@@ -37,7 +38,7 @@ const getImageId = (idx: unknown) => {
     </template>
     <template #options>
       <BaseButton class="bg-subtle text-subtle hover:bg-emphasis">
-        See all
+        {{ t("see_all") }}
       </BaseButton>
     </template>
     <template #default="{ data: index }">

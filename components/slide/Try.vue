@@ -1,8 +1,6 @@
 <script setup lang="ts">
-// const { isMobile } = useDevice();
-// const imageSrc = isMobile
-//  ? `/assets/images/wheel.png`
-//  : `/assets/images/wheel-2.png`;
+const { t } = useI18n();
+
 const imageSrc = "/assets/images/wheel-2.png";
 
 const depositModalOpened = ref(false);
@@ -26,17 +24,17 @@ const openModal = () => {
       <h3
         class="bg-button-primary text-transparent bg-clip-text text-sm md:text-lg lg:text-2xl font-bold"
       >
-        EXCLUSIVE
+        {{ t("exclusive").toUpperCase() }}
       </h3>
       <h1 class="font-extrabold text-xl md:text-3xl lg:text-5xl">
-        PRE-RELEASE
+        {{ t("prerelease").toUpperCase() }}
       </h1>
       <h1 class="font-extrabold text-xl md:text-3xl lg:text-5xl text-nowrap">
-        FROM WILDJACK
+        {{ t("from").toUpperCase() }} WILDJACK
       </h1>
       <h2 class="font-extrabold">
         <span class="bg-button-primary text-transparent bg-clip-text">+100</span>
-        FREE SPINS
+        {{ t("free_spins").toUpperCase() }}
       </h2>
       <BaseButton
         class="hidden md:inline-flex justify-center cursor-pointer !py-3 !rounded-[0.4rem]"
@@ -45,7 +43,7 @@ const openModal = () => {
         shadow
         @click="openModal"
       >
-        TRY IT NOW
+        {{ t("try_it_now").toUpperCase() }}
       </BaseButton>
     </div>
   </div>
