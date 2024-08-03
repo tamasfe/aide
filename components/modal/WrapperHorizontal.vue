@@ -36,17 +36,21 @@ const opened = computed({
           class="absolute top-1/2 sm:top-20 -translate-y-1/2 sm:translate-y-0 left-4 sm:left-1/2 sm:-translate-x-1/2 text-lg sm:text-3xl lg:text-3xl font-black italic sm:leading-[3rem]"
         >
           <p
-            class="bg-button-primary text-transparent bg-clip-text font-semibold text-sm sm:text-lg lg:text-2xl"
+            class="bg-button-primary text-transparent bg-clip-text font-semibold text-sm sm:text-lg md:text-2xl"
           >
             {{ t("exclusive").toUpperCase() }}
           </p>
-          <p class="font-black text-xl sm:text-3xl lg:text-4xl">
+          <p
+            class="bg-gradient-white text-transparent bg-clip-text text-xl sm:text-3xl md:text-[2.55rem]"
+          >
             {{ t("prerelease").toUpperCase() }}
           </p>
-          <p class="font-black text-xl sm:text-3xl lg:text-4xl text-nowrap">
+          <p
+            class="bg-gradient-white text-transparent bg-clip-text text-xl sm:text-3xl md:text-[2.55rem] text-nowrap"
+          >
             {{ t("from").toUpperCase() }} WILDJACK
           </p>
-          <p class="font-black">
+          <p class="bg-gradient-white text-transparent bg-clip-text">
             <span class="bg-button-primary text-transparent bg-clip-text">+100</span>
             {{ t("free_spins").toUpperCase() }}
           </p>

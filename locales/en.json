@@ -25,7 +25,7 @@
   "send_recovery_email": "Send recovery email",
   "min_deposit": "Minimum deposit is: ",
   "exclusive": "Exclusive",
-  "prerelease": "Prerelease",
+  "prerelease": "Pre-release",
   "from": "From",
   "free_spins": "Free spins",
   "try_it_now": "Try it now",
@@ -57,7 +57,7 @@
     "vip_program": "VIP Program",
     "banking": "Banking",
     "security_and_fair_play": "Security and Fair Play",
-    "responsible_gaming": "Responsible Gaming",
+    "responsible_gambling": "Responsible Gambling",
     "faq": "FAQ",
     "contact_us": "Contact Us"
   },

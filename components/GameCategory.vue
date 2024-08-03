@@ -52,11 +52,15 @@ const getImageId = (idx: unknown) => {
             :loading="loading"
             class="absolute left-0 top-0 w-full h-full"
           >
-            <NuxtImg
-              :src="`/assets/images/games/${getImageId(index)}.png`"
-              alt=""
-              class="absolute top-0 left-0 w-full object-cover rounded-default transition-transform transform hover:scale-105 cursor-pointer"
-            />
+            <NuxtLink :to="`/games/${index}`">
+              <span class="block">
+                <NuxtImg
+                  :src="`/assets/images/games/${getImageId(index)}.png`"
+                  alt=""
+                  class="absolute top-0 left-0 w-full object-cover rounded-default transition-transform transform hover:scale-105 cursor-pointer"
+                />
+              </span>
+            </NuxtLink>
           </BaseSkeleton>
         </div>
       </div>

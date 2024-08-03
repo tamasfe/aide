@@ -47,20 +47,20 @@ defineExpose({
           class="absolute left-0 top-0 object-cover w-full sm:rounded-t-[0.8rem]"
         />
         <div
-          class="absolute top-1/2 -translate-y-1/2 left-5 sm:left-10 text-lg sm:text-xl font-black italic"
+          class="absolute top-1/2 -translate-y-1/2 left-5 sm:left-10 text-lg sm:text-xl font-black italic leading-6"
         >
           <p
-            class="bg-button-primary text-transparent bg-clip-text text-sm sm:text-lg"
+            class="bg-button-primary text-transparent bg-clip-text text-sm sm:text-lg font-semibold"
           >
             {{ t("exclusive").toUpperCase() }}
           </p>
-          <p class="font-extrabold text-xl">
+          <p class="bg-gradient-white text-transparent bg-clip-text text-xl">
             {{ t("prerelease").toUpperCase() }}
           </p>
-          <p class="font-extrabold text-xl">
+          <p class="bg-gradient-white text-transparent bg-clip-text text-xl">
             {{ t("from").toUpperCase() }} WILDJACK
           </p>
-          <p class="font-extrabold">
+          <p class="bg-gradient-white text-transparent bg-clip-text">
             <span class="bg-button-primary text-transparent bg-clip-text">+100</span>
             {{ t("free_spins").toUpperCase() }}
           </p>

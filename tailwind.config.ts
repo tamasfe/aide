@@ -40,6 +40,9 @@ export default <Partial<Config>>{
           emphasis: "var(--giro-button-emphasis)",
           "emphasis-hover": "var(--giro-button-emphasis-hover)",
         },
+        gradient: {
+          white: "var(--giro-text-white-gradient)",
+        },
       },
 
       backgroundImage: {
@@ -49,6 +52,7 @@ export default <Partial<Config>>{
         "button-secondary-hover": "var(--giro-button-secondary-hover)",
         "button-emphasis": "var(--giro-button-emphasis)",
         "button-emphasis-hover": "var(--giro-button-emphasis-hover)",
+        "gradient-white": "var(--giro-text-white-gradient)",
       },
 
       borderColor: {

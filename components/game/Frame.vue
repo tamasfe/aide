@@ -21,32 +21,37 @@ and keep the aspect ratio of the image -->
         class="absolute top-0 left-0 w-full h-full flex justify-center items-center"
       >
         <div
-          class="flex flex-col items-center space-y-4 lg:space-y-6 max-w-[18rem]"
+          class="flex flex-col items-center space-y-4 lg:space-y-10 max-w-[20.5rem]"
         >
-          <NuxtImg
-            src="/assets/images/logo.svg"
-            alt="logo"
-            class="max-h-10 lg:max-h-max"
-          />
+          <div class="relative w-full pb-[20.33%]">
+            <NuxtImg
+              src="/assets/images/logo.svg"
+              alt="logo"
+              class="absolute top-0 left-0 object-cover w-full h-full"
+            />
+          </div>
           <div class="flex flex-col space-y-4">
-            <h1 class="text-xl lg:text-2xl font-semibold">
-              You need to login to play.
+            <h1 class="text-lg font-bold text-center">
+              You need to log in to play.
             </h1>
             <div class="flex space-x-4">
               <BaseButton
-                class="bg-subtle text-subtle px-8"
+                class="bg-subtle text-subtle px-8 py-3.5 !text-base !font-semibold"
                 big
               >
-                Login
+                Log In
               </BaseButton>
-              <BaseButton
-                class="flex-1 inline-flex justify-center"
-                variant="primary"
-                big
-                shadow
-              >
-                Register
-              </BaseButton>
+              <!-- temporary fix -->
+              <div class="mb-[0.4rem]">
+                <BaseButton
+                  class="inline-flex justify-center py-3.5 px-16 !text-base items-center"
+                  variant="primary"
+                  big
+                  shadow
+                >
+                  Register
+                </BaseButton>
+              </div>
             </div>
           </div>
         </div>

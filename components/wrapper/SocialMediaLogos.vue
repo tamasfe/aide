@@ -15,42 +15,38 @@ const { t } = useI18n();
       {{ t("social_media") }}
     </h3>
     <div class="flex space-x-2 lg:space-x-4 justify-evenly md:justify-start">
-      <div class="p-1 lg:p-3 rounded-xl hover:bg-emphasis">
-        <NuxtLink
-          to="/telegram"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <PhTelegramLogo :size="28" />
-        </NuxtLink>
-      </div>
-      <div class="p-1 lg:p-3 rounded-xl hover:bg-emphasis">
-        <NuxtLink
-          to="/instagram"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <PhInstagramLogo :size="28" />
-        </NuxtLink>
-      </div>
-      <div class="p-1 lg:p-3 rounded-xl hover:bg-emphasis">
-        <NuxtLink
-          to="/x"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <PhXLogo :size="28" />
-        </NuxtLink>
-      </div>
-      <div class="p-1 lg:p-3 rounded-xl hover:bg-emphasis">
-        <NuxtLink
-          to="/tiktok"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <PhTiktokLogo :size="28" />
-        </NuxtLink>
-      </div>
+      <NuxtLink
+        to="/telegram"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="p-1 lg:p-3 rounded-xl hover:bg-emphasis"
+      >
+        <PhTelegramLogo :size="28" />
+      </NuxtLink>
+      <NuxtLink
+        to="/instagram"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="p-1 lg:p-3 rounded-xl hover:bg-emphasis"
+      >
+        <PhInstagramLogo :size="28" />
+      </NuxtLink>
+      <NuxtLink
+        to="/x"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="p-1 lg:p-3 rounded-xl hover:bg-emphasis"
+      >
+        <PhXLogo :size="28" />
+      </NuxtLink>
+      <NuxtLink
+        to="/tiktok"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="p-1 lg:p-3 rounded-xl hover:bg-emphasis"
+      >
+        <PhTiktokLogo :size="28" />
+      </NuxtLink>
     </div>
   </div>
 </template>

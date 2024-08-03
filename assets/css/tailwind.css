@@ -28,6 +28,7 @@
   --giro-button-text-secondary: #7B82C0;
   --giro-button-text-emphasis: #000000;
   --giro-brand-yellow: #FBB500;
+  --giro-text-white-gradient: linear-gradient(to bottom, #FDFCF3, #C6C6C6);
 
   /* buttons */
   --giro-button-primary: linear-gradient(to bottom, #FFC441, #FFE600);
