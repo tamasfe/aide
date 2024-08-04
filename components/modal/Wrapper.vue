@@ -54,13 +54,11 @@ defineExpose({
           >
             {{ t("exclusive").toUpperCase() }}
           </p>
-          <p class="bg-gradient-white text-transparent bg-clip-text text-xl">
+          <p class="text-xl">
             {{ t("prerelease").toUpperCase() }}
           </p>
-          <p class="bg-gradient-white text-transparent bg-clip-text text-xl">
-            {{ t("from").toUpperCase() }} WILDJACK
-          </p>
-          <p class="bg-gradient-white text-transparent bg-clip-text">
+          <p class="text-xl">{{ t("from").toUpperCase() }} WILDJACK</p>
+          <p>
             <span class="bg-button-primary text-transparent bg-clip-text">+100</span>
             {{ t("free_spins").toUpperCase() }}
           </p>

@@ -26,17 +26,13 @@ const openModal = () => {
       >
         {{ t("exclusive").toUpperCase() }}
       </h3>
-      <h1
-        class="bg-gradient-white text-transparent bg-clip-text text-xl md:text-3xl lg:text-5xl"
-      >
+      <h1 class="text-xl md:text-3xl lg:text-5xl">
         {{ t("prerelease").toUpperCase() }}
       </h1>
-      <h1
-        class="bg-gradient-white text-transparent bg-clip-text text-xl md:text-3xl lg:text-5xl text-nowrap"
-      >
+      <h1 class="text-xl md:text-3xl lg:text-5xl text-nowrap">
         {{ t("from").toUpperCase() }} WILDJACK
       </h1>
-      <h2 class="bg-gradient-white text-transparent bg-clip-text">
+      <h2>
         <span class="bg-button-primary text-transparent bg-clip-text">+100</span>
         {{ t("free_spins").toUpperCase() }}
       </h2>

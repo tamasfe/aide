@@ -6,33 +6,49 @@ import {
   PhWhatsappLogo,
 } from "@phosphor-icons/vue";
 
-console.log("test");
+// TODO: make props work
+// TODO: replace image with iframe
+// TODO: translations
+
+// const props = defineProps<{
+//  name: string;
+//  description: string;
+//  image: string;
+//  likes: number;
+//  categories: string[];
+// }>();
 </script>
 
 <template>
   <div class="flex flex-col">
-    <div class="relative rounded-t-default bg-emphasis w-full">
+    <div class="relative rounded-t-default bg-emphasis w-full pb-[75.38%]">
       <!-- always cover the full width and height of the parent
 and keep the aspect ratio of the image -->
       <NuxtImg
-        class="w-full min-h-64 object-cover"
+        class="absolute top-0 left-0 w-full h-full object-cover"
         src="/assets/images/fake-game.png"
         alt=""
       />
-      <div class="absolute top-0 left-0 w-full h-full p-6">
-        <div class="h-full flex flex-col justify-evenly space-y-4">
-          <div class="flex items-center space-x-4 text-emphasis">
+      <div class="absolute top-0 left-0 w-full h-full py-7 px-8">
+        <div class="h-full flex flex-col justify-between space-y-4">
+          <div
+            class="grid grid-cols-3 place-items-center space-x-8 text-emphasis"
+          >
             <NuxtImg
               src="https://picsum.photos/200/300"
               alt=""
-              class="w-[25%] rounded-default"
+              class="w-full rounded-default"
             />
-            <div class="flex flex-col space-y-4">
+            <div class="col-span-2 w-full flex flex-col space-y-6">
               <div class="flex flex-col">
-                <h3 class="text-lg font-semibold">Game Name</h3>
-                <p class="text-emphasis">By Acme Inc</p>
+                <h3 class="text-default text-[1.7rem] font-bold">
+                  Potion Spells
+                </h3>
+                <p class="text-xl text-emphasis font-medium">
+                  By Pragmatic Play
+                </p>
               </div>
-              <div class="flex items-center space-x-4">
+              <div class="flex items-center space-x-4 font-semibold">
                 <button
                   type="button"
                   class="outline-none inline-flex items-center space-x-2 text-emphasis"
@@ -53,16 +69,16 @@ and keep the aspect ratio of the image -->
               </div>
             </div>
           </div>
-          <div class="flex items-center space-x-4">
+          <div class="grid grid-cols-3 gap-x-8 place-items-center">
             <button
               type="button"
-              class="w-[25%] outline-none inline-flex space-x-2 text-emphasis"
+              class="outline-none inline-flex space-x-2 text-emphasis"
             >
               <PhWhatsappLogo :size="24" />
-              <p>Share</p>
+              <p class="text-lg font-semibold">Share</p>
             </button>
             <BaseButton
-              class="flex-1 inline-flex justify-center"
+              class="col-span-2 inline-flex justify-center w-full !py-3"
               variant="primary"
               big
               shadow
@@ -70,7 +86,7 @@ and keep the aspect ratio of the image -->
               <template #prefix>
                 <PhPlay :size="24" />
               </template>
-              Play
+              <h1 class="text-2xl">Play</h1>
             </BaseButton>
           </div>
         </div>

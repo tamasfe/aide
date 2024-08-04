@@ -1,27 +1,34 @@
 <script setup lang="ts">
+import { PhCaretDown } from "@phosphor-icons/vue";
+
 console.log("test");
 </script>
 
 <template>
-  <div class="p-4 md:p-6 flex gap-x-6 rounded-default">
-    <div
-      class="min-w-56 max-w-sm hidden lg:block bg-subtle rounded-default h-[150px] md:h-[250px] overflow-hidden"
-    >
-      <NuxtImg
-        src="https://picsum.photos/200/300"
-        alt=""
-        class="w-full h-full rounded-default"
-      />
+  <div class="p-8 flex gap-x-8 rounded-default">
+    <div class="min-w-56 hidden md:block">
+      <div class="relative rounded-default overflow-hidden pt-[134.26%]">
+        <NuxtImg
+          src="https://picsum.photos/200/300"
+          alt=""
+          class="absolute top-0 left-0 w-full h-full rounded-default"
+        />
+      </div>
     </div>
-    <div class="flex flex-col space-y-6">
+    <div class="flex flex-col space-y-8">
       <div class="flex flex-col space-y-2">
-        <h2 class="text-xl font-semibold">Game Title</h2>
+        <h2 class="text-[1.7rem] sm:text-xl font-bold leading-3">
+          Potion Spells
+        </h2>
+        <p class="text-xl text-subtle-light font-semibold block sm:hidden">
+          By Pragmatic Play
+        </p>
         <div class="flex items-center space-x-2">
           <button
             v-for="name in ['Cards', 'Casino', 'Slots']"
             :key="name"
             type="button"
-            class="bg-emphasis outline-none rounded-default text-subtle text-sm px-2 py-1"
+            class="bg-emphasis outline-none rounded-default text-subtle text-lg sm:text-base font-medium px-2 py-0.5"
           >
             {{ name }}
           </button>
@@ -39,6 +46,18 @@ console.log("test");
         rewards. Spin the reels of Wild Spirit Slots and embark on a journey of
         spiritual discovery and big wins.
       </p>
+
+      <BaseButton
+        class="bg-emphasis text-subtle w-max !text-base !font-medium !px-4 !py-2 lg:!px-5 lg:!py-2.5 !rounded-md"
+        big
+      >
+        <div class="inline-flex items-center gap-x-2">
+          <p>Show more</p>
+          <div>
+            <PhCaretDown :size="20" />
+          </div>
+        </div>
+      </BaseButton>
     </div>
   </div>
 </template>

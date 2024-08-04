@@ -5,15 +5,25 @@ import {
   PhThumbsUp,
   PhWhatsappLogo,
 } from "@phosphor-icons/vue";
+
+// TODO: make props work
+// TODO: replace image with iframe
+// TODO: translations
+
+// const props = defineProps<{
+//  name: string;
+//  description: string;
+//  image: string;
+//  likes: number;
+//  categories: string[];
+// }>();
 </script>
 
 <template>
   <div class="flex flex-col">
-    <div class="relative rounded-t-default bg-emphasis">
-      <!-- always cover the full width and height of the parent
-and keep the aspect ratio of the image -->
+    <div class="relative rounded-t-default bg-emphasis pb-[54.39%]">
       <NuxtImg
-        class="w-full h-full object-cover"
+        class="absolute top-0 left-0 w-full h-full object-cover"
         src="/assets/images/fake-game.png"
         alt=""
       />
@@ -21,7 +31,7 @@ and keep the aspect ratio of the image -->
         class="absolute top-0 left-0 w-full h-full flex justify-center items-center"
       >
         <div
-          class="flex flex-col items-center space-y-4 lg:space-y-10 max-w-[20.5rem]"
+          class="flex flex-col items-center space-y-8 max-w-[16rem] lg:max-w-[20.5rem]"
         >
           <div class="relative w-full pb-[20.33%]">
             <NuxtImg
@@ -31,12 +41,12 @@ and keep the aspect ratio of the image -->
             />
           </div>
           <div class="flex flex-col space-y-4">
-            <h1 class="text-lg font-bold text-center">
+            <h1 class="text-base lg:text-lg font-bold text-center">
               You need to log in to play.
             </h1>
             <div class="flex space-x-4">
               <BaseButton
-                class="bg-subtle text-subtle px-8 py-3.5 !text-base !font-semibold"
+                class="bg-subtle text-subtle px-6 py-2.5 lg:py-3.5 !text-base !font-semibold"
                 big
               >
                 Log In
@@ -44,7 +54,7 @@ and keep the aspect ratio of the image -->
               <!-- temporary fix -->
               <div class="mb-[0.4rem]">
                 <BaseButton
-                  class="inline-flex justify-center py-3.5 px-16 !text-base items-center"
+                  class="inline-flex justify-center py-2.5 lg:py-3.5 px-12 !text-base items-center"
                   variant="primary"
                   big
                   shadow
@@ -64,36 +74,36 @@ and keep the aspect ratio of the image -->
         <div
           class="w-full flex justify-between md:justify-start flex-row md:flex-col items-center md:items-start font-semibold"
         >
-          <h3 class="text-xl">Game Name</h3>
-          <p class="text-emphasis">By Acme Inc</p>
+          <h3 class="text-lg font-bold">Potion Spells</h3>
+          <p class="text-subtle-light">By Pragmatic Play</p>
         </div>
         <div
-          class="w-full flex justify-between md:justify-end items-center space-x-4 text-subtle font-medium"
+          class="w-full flex justify-between md:justify-end items-center space-x-8 text-subtle font-semibold"
         >
           <button
             type="button"
             class="outline-none inline-flex items-center space-x-2"
           >
             <div>
-              <PhWhatsappLogo :size="24" />
+              <PhWhatsappLogo :size="26" />
             </div>
-            <p class="hidden lg:block">Share</p>
+            <p>Share</p>
           </button>
           <button
             type="button"
             class="outline-none inline-flex items-center space-x-2"
           >
             <div>
-              <PhThumbsUp :size="24" />
+              <PhThumbsUp :size="26" />
             </div>
-            <p class="hidden lg:block">74.88% (2.245)</p>
+            <p>74.88% (2.245)</p>
           </button>
           <button
             type="button"
             class="outline-none inline-flex items-center space-x-2"
           >
             <div>
-              <PhThumbsDown :size="24" />
+              <PhThumbsDown :size="26" />
             </div>
           </button>
           <button
@@ -101,7 +111,7 @@ and keep the aspect ratio of the image -->
             class="outline-none inline-flex items-center space-x-2"
           >
             <div>
-              <PhCornersOut :size="24" />
+              <PhCornersOut :size="26" />
             </div>
           </button>
         </div>
