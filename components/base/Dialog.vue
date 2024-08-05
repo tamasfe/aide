@@ -100,85 +100,83 @@ const closeModal = (isManuallyTriggered: boolean) => {
   }
 };
 
+// TODO: make teleport to body work
+
 defineOptions({
   inheritAttrs: false,
 });
 </script>
 
 <template>
-  <Teleport to="body">
-    <TransitionRoot
-      appear
-      :show="opened"
-      as="template"
+  <TransitionRoot
+    appear
+    :show="opened"
+    as="template"
+  >
+    <Dialog
+      v-model:open="opened"
+      as="div"
+      class="relative z-10"
+      @close="closeModal(false)"
     >
-      <Dialog
-        v-model:open="opened"
-        as="div"
-        class="relative z-10"
-        @close="closeModal(false)"
+      <TransitionChild
+        as="template"
+        enter="duration-300 ease-out"
+        enter-from="opacity-0"
+        enter-to="opacity-100"
+        leave="duration-300 ease-in"
+        leave-from="opacity-100"
+        leave-to="opacity-0"
+      >
+        <div class="fixed inset-0 bg-black/40 z-[0]" />
+      </TransitionChild>
+
+      <div
+        class="fixed inset-0 sm:p-12"
+        :class="[positionClass, size]"
       >
         <TransitionChild
           as="template"
           enter="duration-300 ease-out"
-          enter-from="opacity-0"
-          enter-to="opacity-100"
+          enter-from="opacity-0 scale-95"
+          enter-to="opacity-100 scale-100"
           leave="duration-300 ease-in"
-          leave-from="opacity-100"
-          leave-to="opacity-0"
+          leave-from="opacity-100 scale-100"
+          leave-to="opacity-0 scale-95"
         >
-          <div class="fixed inset-0 bg-black/40 z-[0]" />
-        </TransitionChild>
-
-        <div
-          class="fixed inset-0 sm:p-12"
-          :class="[positionClass, size]"
-        >
-          <TransitionChild
-            as="template"
-            enter="duration-300 ease-out"
-            enter-from="opacity-0 scale-95"
-            enter-to="opacity-100 scale-100"
-            leave="duration-300 ease-in"
-            leave-from="opacity-100 scale-100"
-            leave-to="opacity-0 scale-95"
+          <DialogPanel
+            v-bind="$attrs"
+            class="bg-emphasis/85 backdrop-blur-lg sm:rounded-default flex flex-col gap-4 h-full"
           >
-            <DialogPanel
-              v-bind="$attrs"
-              class="bg-emphasis/85 backdrop-blur-lg sm:rounded-default flex flex-col gap-4 h-full"
+            <button
+              v-if="close"
+              type="button"
+              class="absolute top-0 right-0 rounded-md text-emphasis hover:text-default p-2 outline-none z-10"
+              @click="closeModal(true)"
             >
-              <button
-                v-if="close"
-                type="button"
-                class="absolute top-0 right-0 rounded-md text-emphasis hover:text-default p-2 outline-none z-10"
-                @click="closeModal(true)"
-              >
-                <span class="sr-only">Close</span>
-                <div
-                  class="p-1 bg-emphasis/50 backdrop-blur-lg rounded-default"
-                >
-                  <PhX :size="24" />
-                </div>
-              </button>
-              <DialogTitle
-                v-if="$slots.title"
-                as="h3"
-                class="text-lg font-medium leading-6"
-              >
-                <div class="relative">
-                  <slot name="title" />
-                </div>
-              </DialogTitle>
-              <DialogDescription v-if="$slots.description">
-                <slot name="description" />
-              </DialogDescription>
-              <slot />
-            </DialogPanel>
-          </TransitionChild>
-        </div>
-      </Dialog>
-    </TransitionRoot>
-  </Teleport>
+              <span class="sr-only">Close</span>
+              <div class="p-1 bg-emphasis/50 backdrop-blur-lg rounded-default">
+                <PhX :size="24" />
+              </div>
+            </button>
+            <DialogTitle
+              v-if="$slots.title"
+              as="h3"
+              class="text-lg font-medium leading-6"
+            >
+              <div class="relative">
+                <slot name="title" />
+              </div>
+            </DialogTitle>
+            <DialogDescription v-if="$slots.description">
+              <slot name="description" />
+            </DialogDescription>
+            <slot />
+          </DialogPanel>
+        </TransitionChild>
+      </div>
+    </Dialog>
+  </TransitionRoot>
 </template>
 
 <style scoped lang="postcss">

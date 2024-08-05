@@ -48,7 +48,7 @@ console.log("test");
       </p>
 
       <BaseButton
-        class="bg-emphasis text-subtle w-max !text-base !font-medium !px-4 !py-2 lg:!px-5 lg:!py-2.5 !rounded-md"
+        class="bg-emphasis text-subtle w-max !text-base !font-medium !px-4 !py-2 xl:!px-5 xl:!py-2.5 !rounded-md"
         big
       >
         <div class="inline-flex items-center gap-x-2">

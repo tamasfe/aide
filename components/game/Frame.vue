@@ -30,9 +30,7 @@ import {
       <div
         class="absolute top-0 left-0 w-full h-full flex justify-center items-center"
       >
-        <div
-          class="flex flex-col items-center space-y-8 max-w-[16rem] lg:max-w-[20.5rem]"
-        >
+        <div class="flex flex-col items-center space-y-10 w-[24%]">
           <div class="relative w-full pb-[20.33%]">
             <NuxtImg
               src="/assets/images/logo.svg"
@@ -40,21 +38,21 @@ import {
               class="absolute top-0 left-0 object-cover w-full h-full"
             />
           </div>
-          <div class="flex flex-col space-y-4">
-            <h1 class="text-base lg:text-lg font-bold text-center">
+          <div class="flex flex-col space-y-4 w-full">
+            <h1 class="text-base xl:text-lg font-bold text-center">
               You need to log in to play.
             </h1>
-            <div class="flex space-x-4">
+            <div class="flex space-x-4 w-full">
               <BaseButton
-                class="bg-subtle text-subtle px-6 py-2.5 lg:py-3.5 !text-base !font-semibold"
+                class="bg-subtle text-subtle px-6 xl:px-8 py-2.5 xl:py-3.5 !text-base !font-semibold"
                 big
               >
                 Log In
               </BaseButton>
               <!-- temporary fix -->
-              <div class="mb-[0.4rem]">
+              <div class="mb-[0.4rem] flex-1">
                 <BaseButton
-                  class="inline-flex justify-center py-2.5 lg:py-3.5 px-12 !text-base items-center"
+                  class="w-full inline-flex justify-center py-2.5 xl:py-3.5 px-12 !text-base items-center"
                   variant="primary"
                   big
                   shadow
