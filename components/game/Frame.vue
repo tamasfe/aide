@@ -30,7 +30,9 @@ import {
       <div
         class="absolute top-0 left-0 w-full h-full flex justify-center items-center"
       >
-        <div class="flex flex-col items-center space-y-10 w-[24%]">
+        <div
+          class="flex flex-col items-center space-y-4 sm:space-y-10 px-14 sm:p-0 w-full sm:w-[30%] lg:w-[24%]"
+        >
           <div class="relative w-full pb-[20.33%]">
             <NuxtImg
               src="/assets/images/logo.svg"
