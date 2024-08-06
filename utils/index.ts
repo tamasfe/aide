@@ -1,6 +1,7 @@
 import { Mask } from "maska";
 import type { CountryCode, FormatNumberOptions } from "./types";
 
+// move to contants
 export const getCountryCodes = (): CountryCode[] => {
   return [
     {

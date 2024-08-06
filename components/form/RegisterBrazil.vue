@@ -71,7 +71,10 @@ const onSubmit = handleSubmit((values) => {
 </script>
 
 <template>
-  <form class="flex flex-col items-center space-y-2 w-full" @submit="onSubmit">
+  <form
+    class="flex flex-col items-center space-y-2 w-full"
+    @submit="onSubmit"
+  >
     <FormControl
       v-model="email"
       type="email"
@@ -115,7 +118,10 @@ const onSubmit = handleSubmit((values) => {
     />
     <p class="text-sm text-subtle py-4">
       {{ t("accept_terms") }}
-      <button type="button" class="font-semibold">
+      <button
+        type="button"
+        class="font-semibold"
+      >
         {{ t("terms") }}
       </button>
     </p>

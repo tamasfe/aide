@@ -6,7 +6,7 @@ import {
   ListboxOption,
 } from "@headlessui/vue";
 
-import { PhCaretDown, PhCaretUp } from "@phosphor-icons/vue";
+import { PhCaretDown, PhCaretUp, PhCheck } from "@phosphor-icons/vue";
 import { BaseInputWrapper } from "#components";
 
 type SelectOption = {
@@ -121,10 +121,12 @@ const selectedOption = computed(() => {
                 :option="option"
               >
                 <div class="flex items-center justify-between">
-                  <span>
+                  <span class="truncate">
                     {{ option.title }}
                   </span>
-                  <span v-if="selected"> true </span>
+                  <div v-if="selected">
+                    <PhCheck :size="20" />
+                  </div>
                 </div>
               </slot>
             </li>

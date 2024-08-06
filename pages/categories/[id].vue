@@ -1,52 +1,83 @@
 <script setup lang="ts">
-const random = (min: number, max: number) =>
-  Math.floor(Math.random() * (max - min + 1) + min);
+// GameCategory related
+const data = ref(
+  new Array(30).fill(0).map((d, i) => ({
+    index: i,
+    title: `Game ${i + 1}`,
+    value: d,
+  })),
+);
+const provider = ref("provider1");
+const providers = [
+  { title: "All", value: "all" },
+  { title: "Pragmatic Game", value: "provider1" },
+  { title: "Provider 2", value: "provider2" },
+  { title: "Provider 3123123123123123", value: "provider3" },
+];
 
-const data = ref([
-  { name: "John Doe", age: 30 },
-  { name: "Jane Doe", age: 25 },
-  { name: "John Doe", age: 30 },
-  { name: "Jim Doe", age: 40 },
-  { name: "John Doe", age: 30 },
-  { name: "John Doe", age: 30 },
-  { name: "John Doe", age: 30 },
-  { name: "Jane Doe", age: 25 },
-  { name: "Jim Doe", age: 40 },
-  { name: "Jane Doe", age: 25 },
-  { name: "John Doe", age: 30 },
-  { name: "John Doe", age: 30 },
-  { name: "Jim Doe", age: 40 },
-  { name: "Jane Doe", age: 25 },
-  { name: "Jim Doe", age: 40 },
-  { name: "Jane Doe", age: 25 },
-  { name: "Jim Doe", age: 40 },
-  { name: "Jane Doe", age: 25 },
-  { name: "Jim Doe", age: 40 },
-  { name: "Jane Doe", age: 25 },
-  { name: "Jim Doe", age: 40 },
-]);
+const loading = ref(true);
+
+onMounted(() => {
+  setTimeout(() => {
+    loading.value = false;
+  }, 1000);
+});
+
+// temp utils
+const getImageId = (idx: number) => {
+  const index = idx;
+  // 8 max images will not anyways be used in the final version
+  return (index % 8) + 1;
+};
 </script>
 
 <template>
-  <div class="sm:py-8 w-full">
-    <div class="sm:px-10 h-[200px] sm:h-[350px] lg:h-[450px]">
-      <CarouselHome class="h-full w-full" />
+  <div class="sm:py-8">
+    <div class="max-w-full sm:px-4 xl:p-0 xl:max-w-[1240px] mx-auto">
+      <CarouselHome class="w-full" />
     </div>
-    <div class="px-4 sm:px-10 py-6">
-      <BaseGrid
-        class="w-full"
-        :data="data"
-      >
-        <template>
-          <div>
-            <NuxtImg
-              :src="`https://picsum.photos/200/300?random=${random(0, 100)}`"
-              alt=""
-              class="w-full h-full rounded-default transition-transform transform hover:scale-105"
+    <div class="giro__container pt-4 sm:pt-6">
+      <div class="grid grid-cols-1 gap-8">
+        <CategoryGrid
+          :data="data"
+          :max="60"
+        >
+          <template #title>
+            <h3 class="text-[1.45rem] xl:text-[1.3rem] font-bold">
+              🔥 Top Games
+            </h3>
+          </template>
+          <template #options>
+            <BaseSelect
+              v-model="provider"
+              :options="providers"
+              class="text-emphasis min-w-full sm:min-w-40"
+              wrapper-class="!py-0"
+              input-class="!text-emphasis !font-semibold"
             />
-          </div>
-        </template>
-      </BaseGrid>
+          </template>
+          <template #default="{ data: datapoint }">
+            <div
+              class="relative bg-subtle rounded-default overflow-hidden pt-[134.26%]"
+            >
+              <BaseSkeleton
+                :loading="loading"
+                class="absolute left-0 top-0 w-full h-full"
+              >
+                <NuxtLink :to="`/games/${datapoint.index}`">
+                  <span class="block">
+                    <NuxtImg
+                      :src="`/assets/images/games/${getImageId(datapoint.index)}.png`"
+                      alt=""
+                      class="absolute top-0 left-0 w-full object-cover rounded-default transition-transform transform hover:scale-105 cursor-pointer"
+                    />
+                  </span>
+                </NuxtLink>
+              </BaseSkeleton>
+            </div>
+          </template>
+        </CategoryGrid>
+      </div>
     </div>
   </div>
 </template>
