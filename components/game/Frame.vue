@@ -6,6 +6,10 @@ import {
   PhWhatsappLogo,
 } from "@phosphor-icons/vue";
 
+const emit = defineEmits(["click:login", "click:register"]);
+
+const { t } = useI18n();
+
 // TODO: make props work
 // TODO: replace image with iframe
 // TODO: translations
@@ -46,10 +50,12 @@ import {
             </h1>
             <div class="flex space-x-4 w-full">
               <BaseButton
-                class="bg-subtle text-subtle px-6 xl:px-8 py-2.5 xl:py-3.5 !text-base !font-semibold"
+                class="bg-subtle hover:bg-emphasis text-subtle px-6 xl:px-8 py-2.5 xl:py-3.5 !text-base !font-semibold"
                 big
+                type="button"
+                @click="emit('click:login', $event)"
               >
-                Log In
+                {{ t("login") }}
               </BaseButton>
               <!-- temporary fix -->
               <div class="mb-[0.4rem] flex-1">
@@ -58,8 +64,10 @@ import {
                   variant="primary"
                   big
                   shadow
+                  type="button"
+                  @click="emit('click:register', $event)"
                 >
-                  Register
+                  {{ t("register") }}
                 </BaseButton>
               </div>
             </div>
@@ -87,7 +95,7 @@ import {
             <div>
               <PhWhatsappLogo :size="26" />
             </div>
-            <p>Share</p>
+            <p>{{ t("share") }}</p>
           </button>
           <button
             type="button"

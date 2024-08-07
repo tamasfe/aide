@@ -6,6 +6,8 @@ import {
   PhWhatsappLogo,
 } from "@phosphor-icons/vue";
 
+const { t } = useI18n();
+
 // TODO: make props work
 // TODO: replace image with iframe
 // TODO: translations
@@ -22,8 +24,6 @@ import {
 <template>
   <div class="flex flex-col">
     <div class="relative rounded-t-default bg-emphasis w-full pb-[75.38%]">
-      <!-- always cover the full width and height of the parent
-and keep the aspect ratio of the image -->
       <NuxtImg
         class="absolute top-0 left-0 w-full h-full object-cover"
         src="/assets/images/fake-game.png"
@@ -75,7 +75,7 @@ and keep the aspect ratio of the image -->
               class="outline-none inline-flex space-x-2 text-emphasis"
             >
               <PhWhatsappLogo :size="24" />
-              <p class="text-lg font-semibold">Share</p>
+              <p class="text-lg font-semibold">{{ t("share") }}</p>
             </button>
             <BaseButton
               class="col-span-2 inline-flex justify-center w-full !py-3"
