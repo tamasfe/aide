@@ -21,7 +21,9 @@ const opened = computed({
     class="sm:!rounded-[0.8rem]"
   >
     <div class="flex flex-col sm:flex-row overflow-auto h-full">
-      <div class="sm:flex-1 relative w-full sm:w-auto pb-[33%] sm:p-0">
+      <div
+        class="sm:flex-1 relative w-full sm:w-auto pb-[33%] sm:p-0 select-none"
+      >
         <NuxtImg
           src="/assets/images/wheel-desktop.png"
           alt="Wheel"

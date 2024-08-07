@@ -39,7 +39,7 @@ defineExpose({
     <div class="flex flex-col overflow-auto h-full">
       <div
         v-if="image"
-        class="relative w-full pb-[33%]"
+        class="relative w-full pb-[33%] select-none"
       >
         <NuxtImg
           src="/assets/images/wheel-2.png"
