@@ -38,6 +38,7 @@
   --giro-button-secondary-hover: #333256;
   --giro-button-emphasis: linear-gradient(to bottom, #20CD19, #9BFC33);
   --giro-button-emphasis-hover: #81F22E;
+  --giro-button-danger: #DC2625;
 
   /* borders */
   --giro-border-btn-primary: linear-gradient(to bottom, #FFD918, #FFEFAC);

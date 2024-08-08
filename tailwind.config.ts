@@ -39,6 +39,7 @@ export default <Partial<Config>>{
           "secondary-hover": "var(--giro-button-secondary-hover)",
           emphasis: "var(--giro-button-emphasis)",
           "emphasis-hover": "var(--giro-button-emphasis-hover)",
+          danger: "var(--giro-button-danger)",
         },
         gradient: {
           white: "var(--giro-text-white-gradient)",
