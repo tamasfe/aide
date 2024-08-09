@@ -61,7 +61,7 @@ const countryCodes = [
 
 const region = computed({
   get: () => props.region,
-  set: (value) => emit("update:region", value),
+  set: value => emit("update:region", value),
 });
 
 const modelValue = computed({
@@ -84,7 +84,7 @@ const getCountryCodeValue = (option: CountryCode) => {
 
 const selectedOption = computed(() => {
   return countryCodes.find(
-    (option) => getCountryCodeValue(option) === region.value,
+    option => getCountryCodeValue(option) === region.value,
   ) as CountryCode;
 });
 
@@ -120,7 +120,10 @@ const placeholder = computed(() =>
           :class="$attrs.class"
         >
           <ListboxButton class="outline-none">
-            <div v-if="selectedOption" class="flex items-center gap-2">
+            <div
+              v-if="selectedOption"
+              class="flex items-center gap-2"
+            >
               <BaseFlag
                 :key="selectedOption.code"
                 :code="selectedOption.code"
@@ -150,9 +153,15 @@ const placeholder = computed(() =>
                   class="cursor-pointer outline-none px-3 py-2 text-subtle focus:bg-subtle"
                   :class="[active ? 'bg-subtle text-emphasis' : '']"
                 >
-                  <slot name="option" :option="option">
+                  <slot
+                    name="option"
+                    :option="option"
+                  >
                     <div class="flex items-center justify-between">
-                      <BaseFlag :code="option.code" size="m" />
+                      <BaseFlag
+                        :code="option.code"
+                        size="m"
+                      />
                       <span>
                         {{ option.dial_code }}
                       </span>
