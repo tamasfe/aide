@@ -22,16 +22,16 @@ const { handleSubmit, errors, isSubmitting } = useForm({
 const { value: email } = useField("email");
 const { value: password } = useField("password");
 
-const { login, getUser } = useAuth();
+// error returned from the server
+const error = ref("");
+
+const { login } = useAuth();
 
 const onSubmit = handleSubmit(async (values) => {
-  console.log("submitting...");
   const { email, password } = values;
-  const { error } = await login({ username: email, password });
-  const user = await getUser();
-  console.log("user", user);
-  if (error.value) {
-    console.error(error.value);
+  const success = await login({ username: email, password });
+  if (!success) {
+    error.value = t("invalid_credentials");
     return;
   }
   emit("success");
@@ -43,6 +43,12 @@ const onSubmit = handleSubmit(async (values) => {
     class="flex flex-col items-center space-y-2 w-full"
     @submit="onSubmit"
   >
+    <div
+      v-if="error"
+      class="bg-button-danger p-5 rounded-default w-full mb-4"
+    >
+      <p>{{ error }}</p>
+    </div>
     <FormControl
       v-model="email"
       type="email"

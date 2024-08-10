@@ -1,3 +1,4 @@
+import type { InjectionKey } from "vue";
 import type { CountryCode } from "./types";
 
 export const countyCodes: CountryCode[] = [
@@ -1207,3 +1208,6 @@ export const countyCodes: CountryCode[] = [
     code: "ZW",
   },
 ];
+
+export const openLoginModalSymbol = Symbol() as InjectionKey<() => void>;
+export const openRegisterModalSymbol = Symbol() as InjectionKey<() => void>;

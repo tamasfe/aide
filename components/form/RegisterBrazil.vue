@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import type { MaskInputOptions } from "maska";
 import * as zod from "zod";
+import type { RegisterCredentialsBrazil } from "~/types/auth";
 import { isValidPhoneNumber } from "~/utils";
 
 const { t } = useI18n();
 
-const emit = defineEmits(["request:login"]);
+const emit = defineEmits(["request:login", "success"]);
 
 // FormControl example
 const validationSchema = toTypedSchema(
@@ -65,8 +66,24 @@ const maskOptions: MaskInputOptions = {
   eager: true,
 };
 
-const onSubmit = handleSubmit((values) => {
-  alert(JSON.stringify(values, null, 2));
+const { register } = useAuth();
+
+const onSubmit = handleSubmit(async (values) => {
+  // alert("Successfully registered!");
+  const code = values.region.split("+")[1];
+  const credentials: RegisterCredentialsBrazil = {
+    email: values.email,
+    password: values.password,
+    cpf: values.cpf,
+    number: `${code}${values.number}`,
+  };
+  const { message, error } = await register(credentials);
+  // alert(JSON.stringify(credentials, null, 4));
+  if (error) {
+    alert(`Error registering: ${message}`);
+    return;
+  }
+  // emit("success");
 });
 </script>
 

@@ -5,6 +5,7 @@
   "password": "Password",
   "telephone": "Telephone",
   "cpf": "CPF",
+  "invalid_credentials": "Your email or password is incorrect",
   "create_account": "Create Account",
   "sign_in": "Sign In",
   "have_account": "Have an account already?",

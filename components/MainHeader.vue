@@ -1,31 +1,12 @@
 <script setup lang="ts">
 import { PhList } from "@phosphor-icons/vue";
-
-const { query } = useRoute();
+import { openLoginModalSymbol, openRegisterModalSymbol } from "~/constants";
 
 const { t } = useI18n();
 
 const refferalBaseNoticeOpen = ref(true);
 
-const modalLoginRegisterOpened = ref(false);
-const modalCancelRegistrationOpened = ref(false);
 const sidebarOpened = ref(false);
-const type = ref<"login" | "register">("login");
-
-const login = () => {
-  type.value = "login";
-  modalLoginRegisterOpened.value = true;
-};
-
-const register = (e: Event) => {
-  e.preventDefault();
-  type.value = "register";
-  modalLoginRegisterOpened.value = true;
-};
-
-const changeType = (newType: "login" | "register") => {
-  type.value = newType;
-};
 
 const openSidebar = () => {
   sidebarOpened.value = true;
@@ -35,31 +16,18 @@ const toggleSidebar = () => {
   sidebarOpened.value = !sidebarOpened.value;
 };
 
-const confirmCancelRegistration = () => {
-  if (type.value === "register") {
-    modalCancelRegistrationOpened.value = true;
+const openLoginModal = inject(openLoginModalSymbol);
+const openRegisterModal = inject(openRegisterModalSymbol);
+
+const onClickLogin = () => {
+  if (openLoginModal) {
+    openLoginModal();
   }
 };
-
-const continueRegistration = () => {
-  modalCancelRegistrationOpened.value = false;
-  modalLoginRegisterOpened.value = true;
-};
-
-// TODO: put log/reg modal in entrypoint component and
-// interact with it through a global event
-if (query.register === "true") {
-  type.value = "register";
-  modalLoginRegisterOpened.value = true;
-}
-else if (query.login === "true") {
-  type.value = "login";
-  modalLoginRegisterOpened.value = true;
-}
-
-const onSuccess = () => {
-  modalLoginRegisterOpened.value = false;
-  navigateTo("/");
+const onClickRegister = () => {
+  if (openRegisterModal) {
+    openRegisterModal();
+  }
 };
 
 defineExpose({
@@ -70,18 +38,6 @@ defineExpose({
 
 <template>
   <nav class="sticky top-0 left-0 w-full z-[9]">
-    <ModalCancelRegistration
-      v-model:opened="modalCancelRegistrationOpened"
-      @submit="continueRegistration"
-    />
-    <ModalLoginRegister
-      v-model:opened="modalLoginRegisterOpened"
-      :type="type"
-      @request:login="changeType('login')"
-      @request:register="changeType('register')"
-      @close="confirmCancelRegistration"
-      @success:login="onSuccess"
-    />
     <SidebarMenu v-model:opened="sidebarOpened" />
     <Transition name="slide">
       <BaseNotice
@@ -121,14 +77,16 @@ defineExpose({
           <BaseButton
             variant="secondary"
             class="py-2"
-            @click="login"
+            type="button"
+            @click="onClickLogin"
           >
             {{ t("login") }}
           </BaseButton>
           <BaseButton
             class="py-2"
             variant="primary"
-            @click="register"
+            type="button"
+            @click="onClickRegister"
           >
             {{ t("register") }}
           </BaseButton>
