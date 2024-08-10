@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { PhList } from "@phosphor-icons/vue";
 
+const { query } = useRoute();
+
 const { t } = useI18n();
 
 const refferalBaseNoticeOpen = ref(true);
@@ -44,6 +46,22 @@ const continueRegistration = () => {
   modalLoginRegisterOpened.value = true;
 };
 
+// TODO: put log/reg modal in entrypoint component and
+// interact with it through a global event
+if (query.register === "true") {
+  type.value = "register";
+  modalLoginRegisterOpened.value = true;
+}
+else if (query.login === "true") {
+  type.value = "login";
+  modalLoginRegisterOpened.value = true;
+}
+
+const onSuccess = () => {
+  modalLoginRegisterOpened.value = false;
+  navigateTo("/");
+};
+
 defineExpose({
   openSidebar,
   toggleSidebar,
@@ -62,6 +80,7 @@ defineExpose({
       @request:login="changeType('login')"
       @request:register="changeType('register')"
       @close="confirmCancelRegistration"
+      @success:login="onSuccess"
     />
     <SidebarMenu v-model:opened="sidebarOpened" />
     <Transition name="slide">

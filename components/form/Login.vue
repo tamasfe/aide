@@ -1,9 +1,10 @@
 <script setup lang="ts">
+import { PhCircleNotch } from "@phosphor-icons/vue";
 import * as zod from "zod";
 
 const { t } = useI18n();
 
-const emit = defineEmits(["request:register"]);
+const emit = defineEmits(["request:register", "success"]);
 
 // FormControl example
 const validationSchema = toTypedSchema(
@@ -15,14 +16,25 @@ const validationSchema = toTypedSchema(
     password: zod.string().min(1, { message: t("field_required") }),
   }),
 );
-const { handleSubmit, errors } = useForm({
+const { handleSubmit, errors, isSubmitting } = useForm({
   validationSchema,
 });
 const { value: email } = useField("email");
 const { value: password } = useField("password");
 
-const onSubmit = handleSubmit((values) => {
-  alert(JSON.stringify(values, null, 2));
+const { login, getUser } = useAuth();
+
+const onSubmit = handleSubmit(async (values) => {
+  console.log("submitting...");
+  const { email, password } = values;
+  const { error } = await login({ username: email, password });
+  const user = await getUser();
+  console.log("user", user);
+  if (error.value) {
+    console.error(error.value);
+    return;
+  }
+  emit("success");
 });
 </script>
 
@@ -59,11 +71,24 @@ const onSubmit = handleSubmit((values) => {
     </button>
     <BaseButton
       class="w-full inline-flex justify-center text-lg !rounded-[0.3rem] !py-4 sm:!py-3"
+      :class="isSubmitting ? 'opacity-50' : 'opacity-100'"
       variant="primary"
       type="submit"
       big
+      :disabled="isSubmitting"
     >
-      {{ t("enter") }}
+      <div class="flex items-center gap-x-2">
+        <p>{{ t("enter") }}</p>
+        <div
+          v-if="isSubmitting"
+          class="w-full h-full flex items-center justify-center"
+        >
+          <PhCircleNotch
+            :size="20"
+            class="animate-spin"
+          />
+        </div>
+      </div>
     </BaseButton>
     <p class="text-subtle py-4">
       {{ t("dont_have_account") }}

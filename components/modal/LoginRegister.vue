@@ -3,6 +3,8 @@ const emit = defineEmits([
   "update:opened",
   "request:login",
   "request:register",
+  "success:login",
+  "success:register",
   "close",
 ]);
 
@@ -29,6 +31,10 @@ const requestLogin = () => {
 const requestRegister = () => {
   emit("request:register");
 };
+
+const onSuccessfulLogin = () => {
+  emit("success:login");
+};
 </script>
 
 <template>
@@ -49,6 +55,7 @@ const requestRegister = () => {
       <FormLogin
         v-else-if="type === 'login'"
         @request:register="requestRegister"
+        @success="onSuccessfulLogin"
       />
     </div>
   </ModalWrapperHorizontal>
