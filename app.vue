@@ -1,11 +1,26 @@
 <script setup lang="ts">
-import { openLoginModalSymbol, openRegisterModalSymbol } from "./constants";
+import {
+  openLoginModalSymbol,
+  openRegisterModalSymbol,
+  openSidebarSymbol,
+  toggleSidebarSymbol,
+} from "./constants";
 
 const { currentRoute } = useRouter();
-// TODO: maybe use event bus to reuse the same modal?
+
 const modalLoginRegisterOpened = ref(false);
 const modalCancelRegistrationOpened = ref(false);
 const type = ref<"login" | "register">("login");
+const sidebarOpened = ref(false);
+
+// TODO: provide these symbols in a global event
+const openSidebar = () => {
+  sidebarOpened.value = true;
+};
+
+const toggleSidebar = () => {
+  sidebarOpened.value = !sidebarOpened.value;
+};
 
 const login = () => {
   type.value = "login";
@@ -19,6 +34,8 @@ const register = () => {
 
 provide(openLoginModalSymbol, login);
 provide(openRegisterModalSymbol, register);
+provide(openSidebarSymbol, openSidebar);
+provide(toggleSidebarSymbol, toggleSidebar);
 
 const changeType = (newType: "login" | "register") => {
   type.value = newType;
@@ -64,6 +81,7 @@ const onSuccess = () => {
 
 <template>
   <div>
+    <WrapperSidebarMenu v-model:opened="sidebarOpened" />
     <ModalLoginRegister
       v-model:opened="modalLoginRegisterOpened"
       :type="type"

@@ -7,6 +7,8 @@ import type {
 } from "~/types/auth";
 import type { UserAccount } from "~/types/user";
 
+const isAuthenticated = ref(false);
+
 // TODO: translations for error messages
 export function useAuth() {
   const register = async (credentials: RegisterCredentialsBrazil) => {
@@ -81,7 +83,6 @@ export function useAuth() {
       },
     );
     if (error.value) {
-      console.error("Failed to logout", error.value);
       return null;
     }
     return data.value;
@@ -91,17 +92,16 @@ export function useAuth() {
     // necessary to include cookies in the request
     // for ssr to work
     const { error, data } = await useFetch<UserAccount>(
-      "http://localhost:3050/user/profile",
+      "http://localhost:3050/auth/whoami",
       {
         credentials: "include", // Ensure cookies are included in the request
       },
     );
     if (error.value) {
-      console.error("User is not authenticated", error.value);
       return null;
     }
     return data.value;
   };
 
-  return { login, logout, getUser, register };
+  return { login, logout, getUser, register, isAuthenticated };
 }

@@ -14,15 +14,15 @@ const search = ref("");
           class="w-full"
         >
           <template #default>
-            <GameCategory title="🔥 Top Games" />
+            <WrapperGameScroll title="🔥 Top Games" />
           </template>
         </BaseSearch>
         <HomeWinningNow class="w-full" />
-        <GameCategory title="🔥 Top Games" />
-        <GameCategory title="👍 Popular games" />
-        <GameCategory title="🚀 Exclusive Games" />
-        <GameCategory title="🏆 Trending Games" />
-        <ProviderCategory title="🏆 Providers" />
+        <WrapperGameScroll title="🔥 Top Games" />
+        <WrapperGameScroll title="👍 Popular games" />
+        <WrapperGameScroll title="🚀 Exclusive Games" />
+        <WrapperGameScroll title="🏆 Trending Games" />
+        <WrapperProviderScroll title="🏆 Providers" />
       </div>
     </div>
   </div>

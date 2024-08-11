@@ -27,7 +27,7 @@ const getImageId = (idx: unknown) => {
 </script>
 
 <template>
-  <GridPage
+  <GridScroll
     :data="data"
     :show-controls="!isMobile"
     :loading="loading"
@@ -65,5 +65,5 @@ const getImageId = (idx: unknown) => {
         </div>
       </div>
     </template>
-  </GridPage>
+  </GridScroll>
 </template>

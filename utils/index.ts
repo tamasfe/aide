@@ -1,7 +1,7 @@
 import { Mask } from "maska";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import type { FormatNumberOptions } from "./types";
+import type { FormatNumberOptions } from "../types/utils";
 
 export const overlay = (element: HTMLElement) => {
   const existing = element.parentElement?.querySelector(".giro__overlay");

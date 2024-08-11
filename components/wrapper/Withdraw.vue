@@ -33,7 +33,7 @@ const hideInfo = () => {
       @click:info="showInfo"
       @click:cancel="emit('click:close')"
     />
-    <WithdrawInfo
+    <WrapperWithdrawInfo
       v-else-if="step === 'info'"
       class="py-4"
       @click:back="hideInfo"

@@ -30,9 +30,9 @@ const onClickRegister = () => {
     <GameFrameMobile v-else />
     <GameDescriptionCard class="bg-subtle" />
     <div class="giro__container w-full flex flex-col space-y-4 md:space-y-8">
-      <GameCategory title="🔥 Hot games today" />
-      <GameCategory title="👍 Popular games" />
-      <ProviderCategory title="🏆 Providers" />
+      <WrapperGameScroll title="🔥 Hot games today" />
+      <WrapperGameScroll title="👍 Popular games" />
+      <WrapperProviderScroll title="🏆 Providers" />
     </div>
   </div>
 </template>

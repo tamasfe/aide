@@ -8,7 +8,7 @@ const { t } = useI18n();
     <div
       class="flex-1 flex items-center gap-4 overflow-x-auto giro__hide-scroll"
     >
-      <GameWinner
+      <HomeGameWinner
         v-for="idx in 10"
         :key="idx"
         class="min-w-[90%] sm:min-w-[50%] md:min-w-[40%] lg:min-w-[20%]"

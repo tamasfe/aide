@@ -1,18 +1,20 @@
 <script setup lang="ts">
-import { MainHeader, MenuMobile } from "#components";
+import { toggleSidebarSymbol } from "~/constants";
 
-const menu = ref<InstanceType<typeof MainHeader>>();
+const toggleSidebar = inject(toggleSidebarSymbol);
 
 const toggleMenu = () => {
-  menu.value?.toggleSidebar();
+  if (toggleSidebar) {
+    toggleSidebar();
+  }
 };
 </script>
 
 <template>
   <div>
-    <MainHeader ref="menu" />
+    <WrapperHeader />
     <slot />
     <WrapperFooter />
-    <MenuMobile @click:menu="toggleMenu" />
+    <WrapperMenuMobile @click:menu="toggleMenu" />
   </div>
 </template>

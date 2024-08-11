@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { InputProps } from "./base/Input.vue";
-import type { NumberProps } from "./base/Number.vue";
-import type { SelectProps } from "./base/Select.vue";
-import type { PasswordProps } from "./base/Password.vue";
-import type { CurrencyProps } from "./base/Currency.vue";
+import type { InputProps } from "../base/Input.vue";
+import type { NumberProps } from "../base/Number.vue";
+import type { SelectProps } from "../base/Select.vue";
+import type { PasswordProps } from "../base/Password.vue";
+import type { CurrencyProps } from "../base/Currency.vue";
 import { BaseCurrency, BaseInput, BaseSelect } from "#components";
 
 defineOptions({

@@ -1,7 +1,7 @@
 import type { InjectionKey } from "vue";
-import type { CountryCode } from "./types";
+import type { CountryCode } from "../types/constants";
 
-export const countyCodes: CountryCode[] = [
+export const countryCodes: CountryCode[] = [
   {
     name: "Afghanistan",
     dial_code: "+93",
@@ -1211,3 +1211,5 @@ export const countyCodes: CountryCode[] = [
 
 export const openLoginModalSymbol = Symbol() as InjectionKey<() => void>;
 export const openRegisterModalSymbol = Symbol() as InjectionKey<() => void>;
+export const openSidebarSymbol = Symbol() as InjectionKey<() => void>;
+export const toggleSidebarSymbol = Symbol() as InjectionKey<() => void>;

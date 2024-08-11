@@ -14,7 +14,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <GridPage
+  <GridScroll
     :data="data"
     :show-controls="!isMobile"
     :loading="loading"
@@ -56,5 +56,5 @@ onMounted(() => {
         </div>
       </div>
     </template>
-  </GridPage>
+  </GridScroll>
 </template>
