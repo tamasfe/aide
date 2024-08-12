@@ -1,4 +1,3 @@
-// ~/composables/useAuth.js
 import { useFetch } from "#app";
 import type {
   LoginCredentials,
@@ -14,6 +13,11 @@ export function useAuth() {
   const register = async (credentials: RegisterCredentialsBrazil) => {
     const { error: flowError, data: flowData } = await useFetch<SignupFlow>(
       "http://localhost:3050/signup/flow",
+      {
+        headers: {
+          "cf-ipcountry": "BR",
+        },
+      },
     );
 
     if (flowError.value || flowData.value === null) {
@@ -42,6 +46,9 @@ export function useAuth() {
       `http://localhost:3050/signup/flow/${flowData.value.id_flow}`,
       {
         method: "POST",
+        headers: {
+          "cf-ipcountry": "BR",
+        },
       },
     );
 

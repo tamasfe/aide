@@ -74,7 +74,7 @@ const onSubmit = handleSubmit(async (values) => {
   const credentials: RegisterCredentialsBrazil = {
     email: values.email,
     password: values.password,
-    cpf: values.cpf,
+    CPF: values.cpf,
     number: `${code}${values.number}`,
   };
   const { message, error } = await register(credentials);

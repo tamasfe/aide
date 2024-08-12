@@ -6,7 +6,7 @@ export type LoginCredentials = {
 export type RegisterCredentialsBrazil = {
   email: string;
   password: string;
-  cpf: string;
+  CPF: string;
   number: string;
 };
 
