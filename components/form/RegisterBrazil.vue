@@ -75,7 +75,9 @@ const onSubmit = handleSubmit(async (values) => {
     email: values.email,
     password: values.password,
     CPF: values.cpf,
-    phone: `${code}${values.phone}`,
+    phone: `+${code}${values.phone}`,
+    phone_calling_code: values.region,
+    national_phone_number: values.phone,
   };
   const { message, error } = await register(credentials);
   // alert(JSON.stringify(credentials, null, 4));
@@ -88,19 +90,31 @@ const onSubmit = handleSubmit(async (values) => {
 
 const { query } = useRoute();
 
-onBeforeMount(async () => {
-  if (query.register === "true" && query.flow) {
-    if (typeof query.flow === "string") {
-      const values = await getFlow(query.flow);
-      if (values) {
-        email.value = values.email;
-        password.value = values.password;
-        cpf.value = values.CPF;
-        number.value = values.number;
-        region.value = values.region;
-      }
-    }
+const prefillForm = async () => {
+  console.log("fill", query);
+  if (query.register !== "true" || !query.flow) {
+    return;
   }
+  if (typeof query.flow !== "string") {
+    return;
+  }
+  const data = await getFlow(query.flow);
+  console.log("data", data);
+  if (!data) {
+    return;
+  }
+  const values = data.fields;
+  console.log("values", values);
+  email.value = values.email;
+  password.value = values.password;
+  cpf.value = values.CPF;
+  phone.value = values.national_phone_number;
+  region.value = values.phone_calling_code;
+};
+
+onMounted(() => {
+  console.log("mounted");
+  prefillForm();
 });
 </script>
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { type MaskInputOptions } from "maska";
 import type { InputProps } from "./Input.vue";
-import { getCurrencySymbol, formatNumber } from "~/utils/index"
+import { getCurrencySymbol } from "~/utils/index";
 
 export type CurrencyProps = Omit<InputProps, "modelValue"> & {
   modelValue?: number;

@@ -10,7 +10,7 @@
       className,
     ]"
   >
-    <img :src="imageUrl" />
+    <img :src="imageUrl">
   </div>
 </template>
 

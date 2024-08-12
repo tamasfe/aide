@@ -15,3 +15,9 @@ export type RegisterCredentialsBrazil = {
 export type SignupFlow = {
   id_flow: string;
 };
+
+export type Flow<T> = {
+  id: string;
+  fields: T;
+  jurisdiction: string;
+};

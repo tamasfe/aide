@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { PhList, PhUser } from "@phosphor-icons/vue";
 import { toggleSidebarSymbol } from "~/constants";
-import { getCurrencySymbol, formatNumber } from "~/utils/index"
+import { getCurrencySymbol, formatNumber } from "~/utils/index";
 
 const { t } = useI18n();
 
