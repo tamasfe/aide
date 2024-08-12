@@ -156,7 +156,7 @@ const imageUrl = `/svg/${props.size}/${props.code}.svg`;
       @include before-styling();
       background:
         radial-gradient(
-            50% 36%,
+            circle at center 50% 36%,
             rgba(255, 255, 255, 0.3) 0%,
             rgba(0, 0, 0, 0.24) 11%,
             rgba(0, 0, 0, 0.55) 17%,
@@ -165,9 +165,9 @@ const imageUrl = `/svg/${props.size}/${props.code}.svg`;
             rgba(255, 255, 255, 0.28) 31%,
             rgba(255, 255, 255, 0) 37%
           )
-          center calc(50% - 8px) / 600% 600%,
+          calc(50% - 8px) / 600% 600%,
         radial-gradient(
-            50% 123%,
+            circle at center 50% 123%,
             rgba(255, 255, 255, 0.3) 25%,
             rgba(0, 0, 0, 0.24) 48%,
             rgba(0, 0, 0, 0.55) 61%,
@@ -176,7 +176,7 @@ const imageUrl = `/svg/${props.size}/${props.code}.svg`;
             rgba(255, 255, 255, 0.28) 88%,
             rgba(255, 255, 255, 0.3) 100%
           )
-          center calc(50% - 8px) / 600% 600%;
+          calc(50% - 8px) / 600% 600%;
     }
   }
 
