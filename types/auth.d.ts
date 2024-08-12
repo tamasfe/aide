@@ -7,7 +7,7 @@ export type RegisterCredentialsBrazil = {
   email: string;
   password: string;
   CPF: string;
-  number: string;
+  phone: string;
 };
 
 export type SignupFlow = {

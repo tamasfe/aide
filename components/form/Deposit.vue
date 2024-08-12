@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import * as zod from "zod";
+import { getCurrencySymbol, formatNumber } from "~/utils/index"
 
 const { t } = useI18n();
 

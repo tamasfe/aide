@@ -21,17 +21,17 @@ const validationSchema = toTypedSchema(
         .min(1, { message: t("field_required") })
         .min(8, { message: t("field_too_short") }),
       cpf: zod.string().min(1, { message: t("field_required") }),
-      number: zod.string().min(1, { message: t("field_required") }),
+      phone: zod.string().min(1, { message: t("field_required") }),
       region: zod.string().min(1, { message: t("field_required") }),
     })
     .superRefine((data, ctx) => {
       const locale = data.region.split("+")[0];
-      const _isValidPhoneNumber = isValidPhoneNumber(data.number, locale);
+      const _isValidPhoneNumber = isValidPhoneNumber(data.phone, locale);
       if (!_isValidPhoneNumber) {
         ctx.addIssue({
           code: zod.ZodIssueCode.custom,
           message: t("enter_valid_phone"),
-          path: ["number"],
+          path: ["phone"],
         });
       }
 
@@ -52,7 +52,7 @@ const { handleSubmit, errors } = useForm({
 const { value: email } = useField("email");
 const { value: password } = useField("password");
 const { value: cpf } = useField<string>("cpf");
-const { value: number } = useField("number");
+const { value: phone } = useField("phone");
 const { value: region } = useField(
   "region",
   {},
@@ -75,7 +75,7 @@ const onSubmit = handleSubmit(async (values) => {
     email: values.email,
     password: values.password,
     CPF: values.cpf,
-    number: `${code}${values.number}`,
+    phone: `${code}${values.phone}`,
   };
   const { message, error } = await register(credentials);
   // alert(JSON.stringify(credentials, null, 4));
@@ -124,14 +124,14 @@ const onSubmit = handleSubmit(async (values) => {
       :maska="maskOptions"
     />
     <FormControl
-      v-model="number"
+      v-model="phone"
       v-model:region="region"
       type="tel"
       :title="t('telephone')"
       class="w-full"
       wrapper-class="bg-subtle py-3"
       input-class="text-default"
-      :error="errors.number || errors.region"
+      :error="errors.phone || errors.region"
     />
     <p class="text-sm text-subtle py-4">
       {{ t("accept_terms") }}

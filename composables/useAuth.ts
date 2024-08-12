@@ -12,12 +12,12 @@ const isAuthenticated = ref(false);
 export function useAuth() {
   const register = async (credentials: RegisterCredentialsBrazil) => {
     const { error: flowError, data: flowData } = await useFetch<SignupFlow>(
-      "http://localhost:3050/signup/flow",
+      "http://localhost:3000/signup/flow",
       {
         headers: {
           "cf-ipcountry": "BR",
         },
-      },
+      }
     );
 
     if (flowError.value || flowData.value === null) {
@@ -28,11 +28,11 @@ export function useAuth() {
     }
 
     const { error: flowUpdateError } = await useFetch(
-      `http://localhost:3050/signup/flow/${flowData.value.id_flow}`,
+      `http://localhost:3000/signup/flow/${flowData.value.id_flow}`,
       {
         method: "PATCH",
         body: credentials,
-      },
+      }
     );
 
     if (flowUpdateError.value) {
@@ -43,13 +43,13 @@ export function useAuth() {
     }
 
     const { error: signupError } = await useFetch(
-      `http://localhost:3050/signup/flow/${flowData.value.id_flow}`,
+      `http://localhost:3000/signup/flow/${flowData.value.id_flow}`,
       {
         method: "POST",
         headers: {
           "cf-ipcountry": "BR",
         },
-      },
+      }
     );
 
     if (signupError.value) {
@@ -68,7 +68,7 @@ export function useAuth() {
 
   const login = async (credentials: LoginCredentials) => {
     // TODO: base path should be configurable?
-    const { error } = await useFetch("http://localhost:3050/auth/login", {
+    const { error } = await useFetch("http://localhost:3000/auth/login", {
       method: "POST",
       body: credentials,
       credentials: "include", // Ensure cookies are included in the request
@@ -83,11 +83,11 @@ export function useAuth() {
 
   const logout = async () => {
     const { error, data } = await useFetch(
-      "http://localhost:3050/auth/logout",
+      "http://localhost:3000/auth/logout",
       {
         method: "POST",
         credentials: "include", // Ensure cookies are included in the request
-      },
+      }
     );
     if (error.value) {
       return null;
@@ -99,10 +99,10 @@ export function useAuth() {
     // necessary to include cookies in the request
     // for ssr to work
     const { error, data } = await useFetch<UserAccount>(
-      "http://localhost:3050/auth/whoami",
+      "http://localhost:3000/auth/whoami",
       {
         credentials: "include", // Ensure cookies are included in the request
-      },
+      }
     );
     if (error.value) {
       return null;
