@@ -66,7 +66,7 @@ const maskOptions: MaskInputOptions = {
   eager: true,
 };
 
-const { register } = useAuth();
+const { register, getFlow } = useAuth();
 
 const onSubmit = handleSubmit(async (values) => {
   // alert("Successfully registered!");
@@ -84,6 +84,23 @@ const onSubmit = handleSubmit(async (values) => {
     return;
   }
   // emit("success");
+});
+
+const { query } = useRoute();
+
+onBeforeMount(async () => {
+  if (query.register === "true" && query.flow) {
+    if (typeof query.flow === "string") {
+      const values = await getFlow(query.flow);
+      if (values) {
+        email.value = values.email;
+        password.value = values.password;
+        cpf.value = values.CPF;
+        number.value = values.number;
+        region.value = values.region;
+      }
+    }
+  }
 });
 </script>
 

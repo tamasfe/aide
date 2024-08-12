@@ -10,6 +10,16 @@ const isAuthenticated = ref(false);
 
 // TODO: translations for error messages
 export function useAuth() {
+  const getFlow = async (flowId: string) => {
+    const { error, data } = await useFetch<RegisterCredentialsBrazil>(
+      `http://localhost:3050/signup/flow/${flowId}`,
+    );
+    if (error.value) {
+      return null;
+    }
+    return data.value;
+  };
+
   const register = async (credentials: RegisterCredentialsBrazil) => {
     const { error: flowError, data: flowData } = await useFetch<SignupFlow>(
       "http://localhost:3000/signup/flow",
@@ -110,5 +120,5 @@ export function useAuth() {
     return data.value;
   };
 
-  return { login, logout, getUser, register, isAuthenticated };
+  return { login, logout, getUser, register, getFlow, isAuthenticated };
 }

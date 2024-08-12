@@ -8,6 +8,8 @@ export type RegisterCredentialsBrazil = {
   password: string;
   CPF: string;
   phone: string;
+  phone_calling_code: string;
+  national_phone_number: string;
 };
 
 export type SignupFlow = {
