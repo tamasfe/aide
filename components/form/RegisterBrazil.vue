@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { PhCircleNotch } from "@phosphor-icons/vue";
 import type { MaskInputOptions } from "maska";
 import * as zod from "zod";
 import type { RegisterCredentialsBrazil } from "~/types/auth";
@@ -7,6 +8,9 @@ import { isValidPhoneNumber } from "~/utils";
 const { t } = useI18n();
 
 const emit = defineEmits(["request:login", "success"]);
+const router = useRouter();
+
+const query = router.currentRoute.value.query;
 
 // FormControl example
 const validationSchema = toTypedSchema(
@@ -46,7 +50,7 @@ const validationSchema = toTypedSchema(
     }),
 );
 
-const { handleSubmit, errors } = useForm({
+const { handleSubmit, errors, isSubmitting } = useForm({
   validationSchema,
 });
 const { value: email } = useField("email");
@@ -67,9 +71,8 @@ const maskOptions: MaskInputOptions = {
 };
 
 const { register, getFlow } = useAuth();
-
+const error = ref(""); // error returned from the server
 const onSubmit = handleSubmit(async (values) => {
-  // alert("Successfully registered!");
   const code = values.region.split("+")[1];
   const credentials: RegisterCredentialsBrazil = {
     email: values.email,
@@ -79,19 +82,26 @@ const onSubmit = handleSubmit(async (values) => {
     phone_calling_code: values.region,
     national_phone_number: values.phone,
   };
-  const { message, error } = await register(credentials);
-  // alert(JSON.stringify(credentials, null, 4));
-  if (error) {
-    alert(`Error registering: ${message}`);
+  const { message, error: registerError, flow } = await register(credentials);
+
+  if (flow) {
+    router.replace({
+      query: {
+        register: "true",
+        flow,
+      },
+    });
+  }
+
+  if (registerError) {
+    error.value = message;
     return;
   }
-  // emit("success");
+  error.value = "";
+  emit("success");
 });
 
-const { query } = useRoute();
-
 const prefillForm = async () => {
-  console.log("fill", query);
   if (query.register !== "true" || !query.flow) {
     return;
   }
@@ -99,12 +109,10 @@ const prefillForm = async () => {
     return;
   }
   const data = await getFlow(query.flow);
-  console.log("data", data);
   if (!data) {
     return;
   }
   const values = data.fields;
-  console.log("values", values);
   email.value = values.email;
   password.value = values.password;
   cpf.value = values.CPF;
@@ -113,7 +121,6 @@ const prefillForm = async () => {
 };
 
 onMounted(() => {
-  console.log("mounted");
   prefillForm();
 });
 </script>
@@ -123,6 +130,12 @@ onMounted(() => {
     class="flex flex-col items-center space-y-2 w-full"
     @submit="onSubmit"
   >
+    <div
+      v-if="error"
+      class="bg-button-danger p-5 rounded-default w-full mb-4"
+    >
+      <p>{{ t(error) }}</p>
+    </div>
     <FormControl
       v-model="email"
       type="email"
@@ -175,11 +188,24 @@ onMounted(() => {
     </p>
     <BaseButton
       class="w-full inline-flex justify-center text-lg !rounded-[0.3rem] !py-4 sm:!py-3"
+      :class="isSubmitting ? 'opacity-50' : 'opacity-100'"
       variant="primary"
       type="submit"
       big
+      :disabled="isSubmitting"
     >
-      {{ t("create_account") }}
+      <div class="flex items-center gap-x-2">
+        <p>{{ t("create_account") }}</p>
+        <div
+          v-if="isSubmitting"
+          class="w-full h-full flex items-center justify-center"
+        >
+          <PhCircleNotch
+            :size="20"
+            class="animate-spin"
+          />
+        </div>
+      </div>
     </BaseButton>
     <p class="text-subtle py-4">
       {{ t("have_account") }}

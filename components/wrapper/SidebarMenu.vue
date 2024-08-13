@@ -2,19 +2,19 @@
 import { PhGift, PhGridFour, PhHouse, PhStar } from "@phosphor-icons/vue";
 
 const { isMobile } = useDevice();
+const { isAuthenticated } = useAuth();
+
 const emit = defineEmits(["update:opened"]);
 const props = defineProps<{
   opened: boolean;
 }>();
 
+const size = isMobile ? "full" : "lg";
+const bottomPadding = ref(0);
 const opened = computed({
   get: () => props.opened,
   set: value => emit("update:opened", value),
 });
-
-const size = isMobile ? "full" : "lg";
-
-const bottomPadding = ref(0);
 
 onMounted(() => {
   const menu = document.querySelector(".giro__mobile-menu");
@@ -49,10 +49,10 @@ watch(
       </div>
     </template>
     <div
-      class="w-full flex flex-col gap-4 overflow-y-auto py-1 px-2"
+      class="min-w-[20rem] flex flex-col gap-4 overflow-y-auto py-1 px-2"
       :style="{ paddingBottom: `${bottomPadding}px` }"
     >
-      <FormDeposit />
+      <FormDeposit v-if="isAuthenticated" />
       <div class="select-none">
         <BaseMenuCollapse
           :parent="{

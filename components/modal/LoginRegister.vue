@@ -35,6 +35,10 @@ const requestRegister = () => {
 const onSuccessfulLogin = () => {
   emit("success:login");
 };
+
+const onSuccessfulRegister = () => {
+  emit("success:register");
+};
 </script>
 
 <template>
@@ -51,6 +55,7 @@ const onSuccessfulLogin = () => {
       <FormRegisterBrazil
         v-if="type === 'register'"
         @request:login="requestLogin"
+        @success="onSuccessfulRegister"
       />
       <FormLogin
         v-else-if="type === 'login'"

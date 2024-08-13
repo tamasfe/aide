@@ -1,3 +1,4 @@
+import type { FetchError } from "ofetch";
 import { useFetch } from "#app";
 import type {
   Flow,
@@ -13,7 +14,6 @@ const isAuthenticated = ref(false);
 // TODO: use $fetch instead of useFetch
 export function useAuth() {
   const getFlow = async (flowId: string) => {
-    console.log("flowId", flowId);
     try {
       const data = await $fetch<Flow<RegisterCredentialsBrazil>>(
         `http://localhost:3050/signup/flow/${flowId}`,
@@ -21,63 +21,52 @@ export function useAuth() {
       return data;
     }
     catch (error) {
-      console.log("error from composable: ", error);
+      console.log(error);
     }
     return null;
   };
 
   const register = async (credentials: RegisterCredentialsBrazil) => {
-    const { error: flowError, data: flowData } = await useFetch<SignupFlow>(
-      "http://localhost:3050/signup/flow",
-      {
-        headers: {
-          "cf-ipcountry": "BR",
+    let flowId: null | string = null;
+    try {
+      const flowData = await $fetch<SignupFlow>(
+        "http://localhost:3050/signup/flow",
+        {
+          headers: {
+            "cf-ipcountry": "BR",
+          },
         },
-      },
-    );
+      );
+      flowId = flowData.id_flow;
 
-    if (flowError.value || flowData.value === null) {
-      return {
-        message: "Sign Up failed please try again.",
-        error: true,
-      };
-    }
-
-    const { error: flowUpdateError } = await useFetch(
-      `http://localhost:3050/signup/flow/${flowData.value.id_flow}`,
-      {
+      await $fetch(`http://localhost:3050/signup/flow/${flowData.id_flow}`, {
         method: "PATCH",
         body: credentials,
-      },
-    );
+      });
 
-    if (flowUpdateError.value) {
-      return {
-        message: "Sign Up failed please try again.",
-        error: true,
-      };
-    }
-
-    const { error: signupError } = await useFetch(
-      `http://localhost:3050/signup/flow/${flowData.value.id_flow}`,
-      {
+      await $fetch(`http://localhost:3050/signup/flow/${flowData.id_flow}`, {
         method: "POST",
         headers: {
           "cf-ipcountry": "BR",
         },
-      },
-    );
-
-    if (signupError.value) {
-      // TODO: use the error message from the server
+      });
+    }
+    catch (e: unknown) {
+      let message = "signup_try_again";
+      const error = e as FetchError;
+      if (error.data?.code === "VALIDATION") {
+        message = error.data.metadata;
+      }
       return {
-        message: "Sign Up failed please try again.",
+        message: message,
+        flow: flowId,
         error: true,
       };
     }
 
     return {
-      message: "You have successfully signed up.",
+      message: "signup_success",
+      flow: flowId,
       error: false,
     };
   };
@@ -98,17 +87,17 @@ export function useAuth() {
   };
 
   const logout = async () => {
-    const { error, data } = await useFetch(
-      "http://localhost:3050/auth/logout",
-      {
+    try {
+      const data = await $fetch("http://localhost:3050/auth/logout", {
         method: "POST",
         credentials: "include", // Ensure cookies are included in the request
-      },
-    );
-    if (error.value) {
-      return null;
+      });
+      return data;
     }
-    return data.value;
+    catch (e) {
+      console.log(e);
+    }
+    return null;
   };
 
   const getUser = async () => {

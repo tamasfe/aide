@@ -6,7 +6,8 @@ import {
   toggleSidebarSymbol,
 } from "./constants";
 
-const { currentRoute } = useRouter();
+const { currentRoute, push: routerPush } = useRouter();
+const { isAuthenticated } = useAuth();
 
 const modalLoginRegisterOpened = ref(false);
 const modalCancelRegistrationOpened = ref(false);
@@ -58,11 +59,15 @@ watch(
   currentRoute,
   (route) => {
     const query = route.query;
+    if (isAuthenticated.value) {
+      return;
+    }
     if (query.register === "true") {
       type.value = "register";
       modalLoginRegisterOpened.value = true;
+      return;
     }
-    else if (query.login === "true") {
+    if (query.login === "true") {
       type.value = "login";
       modalLoginRegisterOpened.value = true;
     }
@@ -73,9 +78,21 @@ watch(
   },
 );
 
-const onSuccess = () => {
+const onSuccessLogin = () => {
   modalLoginRegisterOpened.value = false;
-  navigateTo("/");
+  modalCancelRegistrationOpened.value = false;
+  isAuthenticated.value = true;
+  routerPush({ query: {} });
+};
+
+const onSuccessRegister = () => {
+  modalLoginRegisterOpened.value = false;
+  modalCancelRegistrationOpened.value = false;
+  routerPush({
+    query: {
+      login: "true",
+    },
+  });
 };
 </script>
 
@@ -88,7 +105,8 @@ const onSuccess = () => {
       @request:login="changeType('login')"
       @request:register="changeType('register')"
       @close="confirmCancelRegistration"
-      @success:login="onSuccess"
+      @success:login="onSuccessLogin"
+      @success:register="onSuccessRegister"
     />
     <ModalCancelRegistration
       v-model:opened="modalCancelRegistrationOpened"

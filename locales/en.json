@@ -66,5 +66,8 @@
   "languages": {
     "english": "English", 
     "portugese": "Portuguese"
-  }
+  },
+  "signup_try_again": "An error occurred while trying to create your account. Please try again.",
+  "signup_success": "Your account has been created successfully.",
+  "Invalid CPF": "Invalid CPF"
 }
