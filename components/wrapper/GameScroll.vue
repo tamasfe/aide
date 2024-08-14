@@ -2,28 +2,32 @@
 const { isMobile } = useDevice();
 const { t } = useI18n();
 
-const itemsCount = 20;
-
-const data = ref<unknown[]>(
-  Array.from({ length: itemsCount }, (_, i) => i + 1),
-);
-const loading = ref(true);
+const size = 20;
 
 defineProps<{
   title: string;
 }>();
 
-onMounted(() => {
-  setTimeout(() => {
-    loading.value = false;
-  }, 1000);
-});
+const offset = Math.round(Math.random() * 1000);
 
-const getImageId = (idx: unknown) => {
-  const index = idx as number;
-  // 8 max images will not anyways be used in the final version
-  return (index % 8) + 1;
-};
+const { data: games, status } = useFetch<Record<string, unknown>>(
+  "http://localhost:3050/game/list",
+  {
+    query: {
+      offset: offset,
+      limit: 20,
+    },
+  },
+);
+
+const loading = computed(() => status.value === "pending");
+const data = computed(() => {
+  if (!games.value) {
+    const empty = Array.from({ length: size }, _ => null);
+    return empty;
+  }
+  return games.value.data as Record<string, unknown>[];
+});
 </script>
 
 <template>
@@ -41,7 +45,7 @@ const getImageId = (idx: unknown) => {
         {{ t("see_all") }}
       </BaseButton>
     </template>
-    <template #default="{ data: index }">
+    <template #default="{ data: game }">
       <div
         class="basis-[calc((100%-2rem)/2.5)] sm:basis-[calc((100%-5rem)/6)] flex-shrink-0 w-full"
       >
@@ -52,10 +56,13 @@ const getImageId = (idx: unknown) => {
             :loading="loading"
             class="absolute left-0 top-0 w-full h-full"
           >
-            <NuxtLink :to="`/games/${index}`">
+            <NuxtLink
+              v-if="game"
+              :to="`/games/${game.id}`"
+            >
               <span class="block">
                 <NuxtImg
-                  :src="`/assets/images/games/${getImageId(index)}.png`"
+                  :src="`http://localhost:3050/game/${game.id}/image?variant=large`"
                   alt=""
                   class="absolute top-0 left-0 w-full object-cover rounded-default transition-transform transform hover:scale-105 cursor-pointer"
                 />

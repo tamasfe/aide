@@ -1,10 +1,10 @@
 <!-- TODO: Add server side rendering support -->
-<script setup lang="ts">
+<script setup lang="ts" generic="T extends any[]">
 import { PhCaretLeft, PhCaretRight } from "@phosphor-icons/vue";
 
 const props = withDefaults(
   defineProps<{
-    data: unknown[];
+    data: T;
     showControls?: boolean;
     loading?: boolean;
     slidesToScroll?: number;

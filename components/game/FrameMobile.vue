@@ -8,6 +8,10 @@ import {
 
 const { t } = useI18n();
 
+const {
+  params: { id },
+} = useRoute();
+
 // TODO: make props work
 // TODO: replace image with iframe
 // TODO: translations
@@ -26,10 +30,12 @@ const { t } = useI18n();
     <div class="relative rounded-t-default bg-emphasis w-full pb-[75.38%]">
       <NuxtImg
         class="absolute top-0 left-0 w-full h-full object-cover"
-        src="/assets/images/fake-game.png"
+        :src="`http://localhost:3050/game/${id}/image?variant=background`"
         alt=""
       />
-      <div class="absolute top-0 left-0 w-full h-full py-7 px-8">
+      <div
+        class="absolute top-0 left-0 w-full h-full py-7 px-8 bg-default/50 backdrop-blur"
+      >
         <div class="h-full flex flex-col justify-between space-y-4">
           <div
             class="grid grid-cols-3 place-items-center space-x-8 text-emphasis"

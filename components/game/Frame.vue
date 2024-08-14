@@ -10,6 +10,10 @@ const emit = defineEmits(["click:login", "click:register"]);
 
 const { t } = useI18n();
 
+const {
+  params: { id },
+} = useRoute();
+
 // TODO: make props work
 // TODO: replace image with iframe
 // TODO: translations
@@ -24,18 +28,18 @@ const { t } = useI18n();
 </script>
 
 <template>
-  <div class="flex flex-col">
+  <div class="flex flex-col rounded-default">
     <div class="relative rounded-t-default bg-emphasis pb-[54.39%]">
       <NuxtImg
-        class="absolute top-0 left-0 w-full h-full object-cover"
-        src="/assets/images/fake-game.png"
+        class="absolute top-0 left-0 w-full h-full object-cover rounded-t-default"
+        :src="`http://localhost:3050/game/${id}/image?variant=background`"
         alt=""
       />
       <div
-        class="absolute top-0 left-0 w-full h-full flex justify-center items-center"
+        class="absolute top-0 left-0 w-full h-full flex justify-center items-center bg-default/50 backdrop-blur sm:rounded-t-default"
       >
         <div
-          class="flex flex-col items-center space-y-4 sm:space-y-10 px-14 sm:p-0 w-full sm:w-[30%] lg:w-[24%]"
+          class="flex flex-col items-center space-y-4 sm:space-y-10 px-14 sm:p-0"
         >
           <div class="relative w-full pb-[20.33%]">
             <NuxtImg
