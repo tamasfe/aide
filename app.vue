@@ -5,9 +5,10 @@ import {
   openSidebarSymbol,
   toggleSidebarSymbol,
 } from "./constants";
+import type { RegisterCredentialsBrazil } from "./types/auth";
 
 const { currentRoute, push: routerPush } = useRouter();
-const { isAuthenticated } = useAuth();
+const { isAuthenticated, login: loginUser } = useAuth();
 
 const modalLoginRegisterOpened = ref(false);
 const modalCancelRegistrationOpened = ref(false);
@@ -53,6 +54,31 @@ const continueRegistration = () => {
   modalLoginRegisterOpened.value = true;
 };
 
+const onSuccessLogin = () => {
+  modalLoginRegisterOpened.value = false;
+  modalCancelRegistrationOpened.value = false;
+  isAuthenticated.value = true;
+  routerPush({ query: {} });
+};
+
+// TODO: addiotional functionality like toast required
+const onSuccessRegister = async (credentials: RegisterCredentialsBrazil) => {
+  const success = await loginUser({
+    username: credentials.email,
+    password: credentials.password,
+  });
+  if (success) {
+    onSuccessLogin();
+    return;
+  }
+  routerPush({
+    path: "/",
+    query: {
+      login: "true",
+    },
+  });
+};
+
 // TODO: put log/reg modal in entrypoint component and
 // interact with it through a global event
 watch(
@@ -77,23 +103,6 @@ watch(
     immediate: true,
   },
 );
-
-const onSuccessLogin = () => {
-  modalLoginRegisterOpened.value = false;
-  modalCancelRegistrationOpened.value = false;
-  isAuthenticated.value = true;
-  routerPush({ query: {} });
-};
-
-const onSuccessRegister = () => {
-  modalLoginRegisterOpened.value = false;
-  modalCancelRegistrationOpened.value = false;
-  routerPush({
-    query: {
-      login: "true",
-    },
-  });
-};
 </script>
 
 <template>

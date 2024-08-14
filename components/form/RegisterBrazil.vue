@@ -98,7 +98,7 @@ const onSubmit = handleSubmit(async (values) => {
     return;
   }
   error.value = "";
-  emit("success");
+  emit("success", credentials);
 });
 
 const prefillForm = async () => {

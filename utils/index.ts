@@ -2,6 +2,7 @@ import { Mask } from "maska";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import type { FormatNumberOptions } from "../types/utils";
+import type { ValidationErrorMetadata } from "~/types/api";
 
 export const overlay = (element: HTMLElement) => {
   const existing = element.parentElement?.querySelector(".giro__overlay");
@@ -135,3 +136,15 @@ export const isValidPhoneNumber = (number: string, countryCode: string) => {
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
+
+export const getValidationErrorTranslationKeys = (
+  metadata: ValidationErrorMetadata,
+) => {
+  const messages: string[] = [];
+  for (const key in metadata) {
+    for (const error of metadata[key]) {
+      messages.push(`${key}_${error.code}`.toLowerCase());
+    }
+  }
+  return messages;
+};

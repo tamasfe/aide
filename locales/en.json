@@ -69,5 +69,8 @@
   },
   "signup_try_again": "An error occurred while trying to create your account. Please try again.",
   "signup_success": "Your account has been created successfully.",
-  "Invalid CPF": "Invalid CPF"
+  "cpf_invalid_format": "Invalid CPF",
+  "cpf_taken": "This CPF is already in use",
+  "email_taken": "This email is already in use",
+  "password_length": "Password must be at least 6 characters long"
 }

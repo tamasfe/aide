@@ -1,12 +1,13 @@
 import type { FetchError } from "ofetch";
-import { useFetch } from "#app";
+import { getValidationErrorTranslationKeys } from "~/utils";
+import type { ValidationErrorMetadata } from "~/types/api";
+import type { UserAccount } from "~/types/user";
 import type {
   Flow,
   LoginCredentials,
   RegisterCredentialsBrazil,
   SignupFlow,
 } from "~/types/auth";
-import type { UserAccount } from "~/types/user";
 
 const isAuthenticated = ref(false);
 
@@ -55,7 +56,11 @@ export function useAuth() {
       let message = "signup_try_again";
       const error = e as FetchError;
       if (error.data?.code === "VALIDATION") {
-        message = error.data.metadata;
+        const metadata = error.data.metadata as ValidationErrorMetadata;
+        const [firstErrorMessage] = getValidationErrorTranslationKeys(metadata);
+        if (firstErrorMessage) {
+          message = firstErrorMessage;
+        }
       }
       return {
         message: message,
@@ -103,10 +108,13 @@ export function useAuth() {
   const getUser = async () => {
     // necessary to include cookies in the request
     // for ssr to work
+    // TODO: why is this request not working on server?
+    // does it forward the cookies?
     const { error, data } = await useFetch<UserAccount>(
       "http://localhost:3050/auth/whoami",
       {
         credentials: "include", // Ensure cookies are included in the request
+        server: false,
       },
     );
     if (error.value) {

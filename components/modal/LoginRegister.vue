@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { RegisterCredentialsBrazil } from "~/types/auth";
+
 const emit = defineEmits([
   "update:opened",
   "request:login",
@@ -36,8 +38,8 @@ const onSuccessfulLogin = () => {
   emit("success:login");
 };
 
-const onSuccessfulRegister = () => {
-  emit("success:register");
+const onSuccessfulRegister = (credentials: RegisterCredentialsBrazil) => {
+  emit("success:register", credentials);
 };
 </script>
 
