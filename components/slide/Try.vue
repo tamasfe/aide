@@ -24,17 +24,17 @@ const openModal = () => {
       <h3
         class="bg-button-primary text-transparent bg-clip-text text-sm md:text-lg lg:text-2xl font-bold"
       >
-        {{ t("exclusive").toUpperCase() }}
+        {{ t("promotions.exclusive").toUpperCase() }}
       </h3>
       <h1 class="text-xl md:text-3xl lg:text-5xl">
-        {{ t("prerelease").toUpperCase() }}
+        {{ t("promotions.prerelease").toUpperCase() }}
       </h1>
       <h1 class="text-xl md:text-3xl lg:text-5xl text-nowrap">
-        {{ t("from").toUpperCase() }} WILDJACK
+        {{ t("misc.from").toUpperCase() }} WILDJACK
       </h1>
       <h2>
         <span class="bg-button-primary text-transparent bg-clip-text">+100</span>
-        {{ t("free_spins").toUpperCase() }}
+        {{ t("promotions.free_spins").toUpperCase() }}
       </h2>
       <BaseButton
         class="hidden md:inline-flex justify-center cursor-pointer !py-3 !rounded-[0.4rem] leading-6"
@@ -43,7 +43,7 @@ const openModal = () => {
         shadow
         @click="openModal"
       >
-        {{ t("try_it_now").toUpperCase() }}
+        {{ t("promotions.try_it_now").toUpperCase() }}
       </BaseButton>
     </div>
   </div>

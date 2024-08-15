@@ -1,14 +1,14 @@
 <script setup lang="ts">
+import type { RouteLocationNormalizedLoadedGeneric } from "vue-router";
 import {
   openLoginModalSymbol,
   openRegisterModalSymbol,
   openSidebarSymbol,
   toggleSidebarSymbol,
 } from "./constants";
-import type { RegisterCredentialsBrazil } from "./types/auth";
 
-const { currentRoute, push: routerPush } = useRouter();
-const { isAuthenticated, login: loginUser } = useAuth();
+const router = useRouter();
+const { isAuthenticated } = useAuth();
 
 const modalLoginRegisterOpened = ref(false);
 const modalCancelRegistrationOpened = ref(false);
@@ -54,49 +54,33 @@ const continueRegistration = () => {
   modalLoginRegisterOpened.value = true;
 };
 
-const onSuccessLogin = () => {
+const onSuccessAuth = () => {
   modalLoginRegisterOpened.value = false;
   modalCancelRegistrationOpened.value = false;
   isAuthenticated.value = true;
-  routerPush({ query: {} });
+  router.push({ query: {} });
 };
 
-// TODO: addiotional functionality like toast required
-const onSuccessRegister = async (credentials: RegisterCredentialsBrazil) => {
-  const success = await loginUser({
-    username: credentials.email,
-    password: credentials.password,
-  });
-  if (success) {
-    onSuccessLogin();
+const promptAuth = (route: RouteLocationNormalizedLoadedGeneric) => {
+  const query = route.query;
+  if (isAuthenticated.value) {
     return;
   }
-  routerPush({
-    path: "/",
-    query: {
-      login: "true",
-    },
-  });
+  if (query.register === "true") {
+    type.value = "register";
+    modalLoginRegisterOpened.value = true;
+    return;
+  }
+  if (query.login === "true") {
+    type.value = "login";
+    modalLoginRegisterOpened.value = true;
+  }
 };
 
-// TODO: put log/reg modal in entrypoint component and
-// interact with it through a global event
 watch(
-  currentRoute,
+  router.currentRoute,
   (route) => {
-    const query = route.query;
-    if (isAuthenticated.value) {
-      return;
-    }
-    if (query.register === "true") {
-      type.value = "register";
-      modalLoginRegisterOpened.value = true;
-      return;
-    }
-    if (query.login === "true") {
-      type.value = "login";
-      modalLoginRegisterOpened.value = true;
-    }
+    promptAuth(route);
   },
   {
     deep: true,
@@ -114,8 +98,8 @@ watch(
       @request:login="changeType('login')"
       @request:register="changeType('register')"
       @close="confirmCancelRegistration"
-      @success:login="onSuccessLogin"
-      @success:register="onSuccessRegister"
+      @success:login="onSuccessAuth"
+      @success:register="onSuccessAuth"
     />
     <ModalCancelRegistration
       v-model:opened="modalCancelRegistrationOpened"

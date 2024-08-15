@@ -31,7 +31,7 @@ const emit = defineEmits([
         @click="emit('click:menu')"
       >
         <PhList :size="24" />
-        <p>{{ t("menu") }}</p>
+        <p>{{ t("navigation.menu") }}</p>
       </button>
       <button
         class="inline-flex flex-col justify-center items-center outline-none"
@@ -39,7 +39,7 @@ const emit = defineEmits([
         @click="emit('click:hot')"
       >
         <PhLightning :size="24" />
-        <p>{{ t("hot") }}</p>
+        <p>{{ t("misc.hot") }}</p>
       </button>
       <button
         class="inline-flex flex-col justify-center items-center outline-none"
@@ -47,7 +47,7 @@ const emit = defineEmits([
         @click="emit('click:search')"
       >
         <PhMagnifyingGlass :size="24" />
-        <p>{{ t("search") }}</p>
+        <p>{{ t("misc.search") }}</p>
       </button>
       <button
         class="inline-flex flex-col justify-center items-center outline-none"
@@ -55,7 +55,7 @@ const emit = defineEmits([
         @click="emit('click:support')"
       >
         <PhHeadphones :size="24" />
-        <p>{{ t("support") }}</p>
+        <p>{{ t("misc.support") }}</p>
       </button>
       <button
         class="inline-flex flex-col justify-center items-center outline-none"
@@ -63,7 +63,7 @@ const emit = defineEmits([
         @click="emit('click:promos')"
       >
         <PhGift :size="24" />
-        <p>{{ t("promos") }}</p>
+        <p>{{ t("promotions.promos") }}</p>
       </button>
     </div>
   </div>

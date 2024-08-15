@@ -1,6 +1,8 @@
 <script setup lang="ts">
 const emit = defineEmits(["update:opened"]);
 
+const { t } = useI18n();
+
 const props = defineProps<{
   opened: boolean;
 }>();
@@ -19,10 +21,10 @@ const close = () => {
   <ModalWrapper v-model:opened="opened">
     <form class="flex-auto flex sm:justify-center flex-col gap-4 p-6">
       <h1 class="text-2xl font-bold text-center">
-        Are you sure you want to cancel your registration?
+        {{ t("auth.cancel_registration.header") }}
       </h1>
       <p class="text-emphasis text-lg text-center">
-        Sign Up and deposit now to receive double your deposit, up to R$ 7000!
+        {{ t("auth.cancel_registration.message") }}
       </p>
       <BaseButton
         tabindex="0"
@@ -31,7 +33,7 @@ const close = () => {
         type="submit"
         big
       >
-        Continue
+        {{ t("misc.continue") }}
       </BaseButton>
       <button
         class="outline-none mx-auto font-medium inline-flex justify-center text-subtle hover:text-emphasis"
@@ -39,7 +41,7 @@ const close = () => {
         big
         @click="close"
       >
-        Yes, I want to cancel
+        {{ t("auth.cancel_registration.confirm") }}
       </button>
     </form>
   </ModalWrapper>

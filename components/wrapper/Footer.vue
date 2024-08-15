@@ -5,7 +5,7 @@ const { t } = useI18n();
 
 const languageOptions = [
   { title: t("languages.english"), value: "en" },
-  { title: t("languages.portugese"), value: "pt" },
+  { title: t("languages.portuguese"), value: "pt" },
 ];
 
 const language = ref("en");
@@ -89,11 +89,11 @@ const scrollToTop = () => {
         ]"
       />
       <WrapperFooterColumn
-        :section="t('menu')"
+        :section="t('navigation.menu')"
         :options="[
-          { title: t('home'), to: '/' },
-          { title: t('games'), to: '/games' },
-          { title: t('promotions'), to: '/promotions' },
+          { title: t('navigation.home'), to: '/' },
+          { title: t('navigation.games'), to: '/games' },
+          { title: t('promotions.promotions'), to: '/promotions' },
           { title: t('footer.faq'), to: '/faq' },
           { title: t('footer.contact_us'), to: '/contact' },
         ]"

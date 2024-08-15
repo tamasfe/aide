@@ -1,51 +1,81 @@
 {
-  "login": "Login",
-  "register": "Register",
-  "email": "Email",
-  "password": "Password",
-  "telephone": "Telephone",
-  "cpf": "CPF",
-  "invalid_credentials": "Your email or password is incorrect",
-  "create_account": "Create Account",
-  "sign_in": "Sign In",
-  "have_account": "Have an account already?",
-  "accept_terms": "By signin up, you agree to our",
-  "terms": "Terms of Service",
-  "field_required": "This field is required",
-  "field_too_short": "This field is too short",
-  "enter_valid_phone": "Please enter a valid phone number",
-  "enter_valid_cpf": "Please enter a valid CPF",
-  "enter_valid_email": "Please enter a valid email",
-  "forgot_your_password": "Forgot your password?",
-  "enter": "Enter",
-  "dont_have_account": "Don't you have an account yet?",
-  "sign_up": "Sign Up",
-  "make_deposit": "Make a deposit",
-  "deposit": "Deposit",
-  "quick_deposit": "Quick Deposit",
-  "send_recovery_email": "Send recovery email",
-  "min_deposit": "Minimum deposit is: ",
-  "exclusive": "Exclusive",
-  "prerelease": "Pre-release",
-  "from": "From",
-  "free_spins": "Free spins",
-  "try_it_now": "Try it now",
-  "winning_now": "Winning Now",
-  "share": "Share",
-  "menu": "Menu",
-  "hot": "Hot",
-  "support": "Support",
-  "promos": "Promos",
-  "home_search": {
-    "placeholder": "Search for a casino game..."
+  "auth": {
+    "login": "Login",
+    "register": "Register",
+    "email": "Email",
+    "password": "Password",
+    "telephone": "Telephone",
+    "cpf": "CPF",
+    "sign_in": "Sign In",
+    "sign_up": "Sign Up",
+    "have_account": "Have an account already?",
+    "create_account": "Create Account",
+    "dont_have_account": "Don't you have an account yet?",
+    "accept_terms": "By signing up, you agree to our",
+    "terms": "Terms of Service",
+    "forgot_your_password": "Forgot your password?",
+    "send_recovery_email": "Send recovery email",
+    "invalid_credentials": "Your email or password is incorrect",
+    "signup_try_again": "An error occurred while trying to create your account. Please try again.",
+    "signup_success": "Your account has been created successfully.",
+    "cancel_registration": {
+      "header": "Are you sure you want to cancel your registration?",
+      "message": "Sign Up and deposit now to receive double your deposit, up to R$ 7000!",
+      "confirm": "Yes, I want to cancel"
+    }
   },
-  "search": "Search",
-  "home": "Home",
-  "games": "Games",
-  "see_all": "See all",
-  "promotions": "Promotions",
-  "social_media": "Social Media",
-  "refer_a_friend": "Refer a friend and earn R$ 5,00 of REAL balance for each friend you invite",
+  "validation": {
+    "field_required": "This field is required",
+    "field_too_short": "This field is too short",
+    "enter_valid_phone": "Please enter a valid phone number",
+    "enter_valid_cpf": "Please enter a valid CPF",
+    "enter_valid_email": "Please enter a valid email",
+    "password_length": "Password must be at least 6 characters long",
+    "cpf_invalid_format": "Invalid CPF",
+    "cpf_taken": "This CPF is already in use",
+    "email_taken": "This email is already in use"
+  },
+  "payment_flow": {
+    "min_deposit": "Minimum deposit is: ",
+    "make_deposit": "Make a deposit",
+    "deposit": "Deposit",
+    "quick_deposit": "Quick Deposit"
+  },
+  "promotions": {
+    "promotions": "Promotions",
+    "exclusive": "Exclusive",
+    "prerelease": "Pre-release",
+    "free_spins": "Free spins",
+    "try_it_now": "Try it now",
+    "promos": "Promos",
+    "refer_a_friend": "Refer a friend and earn R$ 5,00 of REAL balance for each friend you invite"
+  },
+  "navigation": {
+    "home": "Home",
+    "games": "Games",
+    "menu": "Menu"
+  },
+  "home": {
+    "search": {
+      "placeholder": "Search for a casino game..."
+    },
+    "winning_now": "Winning Now"
+  },
+  "game": {
+    "not_authenticated": "You need to log in to play."
+  },
+  "misc": {
+    "by": "By",
+    "continue": "Continue",
+    "hot": "Hot",
+    "share": "Share",
+    "from": "From",
+    "search": "Search",
+    "enter": "Enter",
+    "see_all": "See all",
+    "social_media": "Social Media",
+    "support": "Support"
+  },
   "footer": {
     "copyright": "©2024 GIROBET ALL RIGHTS RESERVED",
     "slogan": "Welcome to The GiroBet Experience the ultimate thrill of online gambling with us. Play slots, poker, blackjack, and more. Win big with our bonuses and promotions.",
@@ -64,13 +94,7 @@
     "contact_us": "Contact Us"
   },
   "languages": {
-    "english": "English", 
-    "portugese": "Portuguese"
-  },
-  "signup_try_again": "An error occurred while trying to create your account. Please try again.",
-  "signup_success": "Your account has been created successfully.",
-  "cpf_invalid_format": "Invalid CPF",
-  "cpf_taken": "This CPF is already in use",
-  "email_taken": "This email is already in use",
-  "password_length": "Password must be at least 6 characters long"
+    "english": "English",
+    "portuguese": "Portuguese"
+  }
 }

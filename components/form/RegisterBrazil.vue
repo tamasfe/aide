@@ -18,12 +18,12 @@ const validationSchema = toTypedSchema(
     .object({
       email: zod
         .string()
-        .min(1, { message: t("field_required") })
-        .email({ message: t("enter_valid_email") }),
+        .min(1, { message: t("validation.field_required") })
+        .email({ message: t("validation.enter_valid_email") }),
       password: zod
         .string()
-        .min(1, { message: t("field_required") })
-        .min(8, { message: t("field_too_short") }),
+        .min(1, { message: t("validation.field_required") })
+        .min(8, { message: t("validation.field_too_short") }),
       cpf: zod.string().min(1, { message: t("field_required") }),
       phone: zod.string().min(1, { message: t("field_required") }),
       region: zod.string().min(1, { message: t("field_required") }),
@@ -34,7 +34,7 @@ const validationSchema = toTypedSchema(
       if (!_isValidPhoneNumber) {
         ctx.addIssue({
           code: zod.ZodIssueCode.custom,
-          message: t("enter_valid_phone"),
+          message: t("validation.enter_valid_phone"),
           path: ["phone"],
         });
       }
@@ -43,7 +43,7 @@ const validationSchema = toTypedSchema(
       if (!isValidCpf) {
         ctx.addIssue({
           code: zod.ZodIssueCode.custom,
-          message: t("enter_valid_cpf"),
+          message: t("validation.enter_valid_cpf"),
           path: ["cpf"],
         });
       }
@@ -139,7 +139,7 @@ onMounted(() => {
     <FormControl
       v-model="email"
       type="email"
-      :title="t('email')"
+      :title="t('auth.email')"
       class="w-full"
       wrapper-class="bg-subtle py-3"
       input-class="text-default"
@@ -149,7 +149,7 @@ onMounted(() => {
     <FormControl
       v-model="password"
       type="password"
-      :title="t('Password')"
+      :title="t('auth.password')"
       class="w-full"
       wrapper-class="bg-subtle py-3"
       input-class="text-default"
@@ -159,7 +159,7 @@ onMounted(() => {
     <FormControl
       v-model="cpf"
       type="text"
-      :title="t('cpf')"
+      :title="t('auth.cpf')"
       class="w-full"
       wrapper-class="bg-subtle py-3"
       input-class="text-default"
@@ -171,19 +171,19 @@ onMounted(() => {
       v-model="phone"
       v-model:region="region"
       type="tel"
-      :title="t('telephone')"
+      :title="t('auth.telephone')"
       class="w-full"
       wrapper-class="bg-subtle py-3"
       input-class="text-default"
       :error="errors.phone || errors.region"
     />
     <p class="text-sm text-subtle py-4">
-      {{ t("accept_terms") }}
+      {{ t("auth.accept_terms") }}
       <button
         type="button"
         class="font-semibold"
       >
-        {{ t("terms") }}
+        {{ t("auth.terms") }}
       </button>
     </p>
     <BaseButton
@@ -195,7 +195,7 @@ onMounted(() => {
       :disabled="isSubmitting"
     >
       <div class="flex items-center gap-x-2">
-        <p>{{ t("create_account") }}</p>
+        <p>{{ t("auth.create_account") }}</p>
         <div
           v-if="isSubmitting"
           class="w-full h-full flex items-center justify-center"
@@ -208,13 +208,13 @@ onMounted(() => {
       </div>
     </BaseButton>
     <p class="text-subtle py-4">
-      {{ t("have_account") }}
+      {{ t("auth.have_account") }}
       <button
         type="button"
         class="font-semibold text-brand-yellow"
         @click="emit('request:login')"
       >
-        {{ t("sign_in") }}
+        {{ t("auth.sign_in") }}
       </button>
     </p>
   </form>

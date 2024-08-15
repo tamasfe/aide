@@ -8,7 +8,7 @@ const emit = defineEmits(["click:info", "click:cancel"]);
 
 const validationSchema = toTypedSchema(
   zod.object({
-    value: zod.string().min(1, { message: t("field_required") }),
+    value: zod.string().min(1, { message: t("validation.field_required") }),
   }),
 );
 const { handleSubmit, errors } = useForm({
@@ -66,7 +66,7 @@ const onSubmit = handleSubmit((values) => {
       type="number"
       wrapper-class="bg-subtle text-lg"
       input-class="font-semibold"
-      :placeholder="t('deposit')"
+      :placeholder="t('payment_flow.deposit')"
       :error="errors.value"
     >
       <template #prefix>

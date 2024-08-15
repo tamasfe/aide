@@ -47,6 +47,7 @@ export function useAuth() {
 
       await $fetch(`http://localhost:3050/signup/flow/${flowData.id_flow}`, {
         method: "POST",
+        credentials: "include",
         headers: {
           "cf-ipcountry": "BR",
         },

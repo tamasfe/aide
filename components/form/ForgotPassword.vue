@@ -7,8 +7,8 @@ const validationSchema = toTypedSchema(
   zod.object({
     email: zod
       .string()
-      .min(1, { message: t("field_required") })
-      .email({ message: t("enter_valid_email") }),
+      .min(1, { message: t("validation.field_required") })
+      .email({ message: t("validation.enter_valid_email") }),
   }),
 );
 const { handleSubmit, errors } = useForm({

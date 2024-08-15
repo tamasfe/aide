@@ -81,7 +81,7 @@ const {
               class="outline-none inline-flex space-x-2 text-emphasis"
             >
               <PhWhatsappLogo :size="24" />
-              <p class="text-lg font-semibold">{{ t("share") }}</p>
+              <p class="text-lg font-semibold">{{ t("misc.share") }}</p>
             </button>
             <BaseButton
               class="col-span-2 inline-flex justify-center w-full !py-3"

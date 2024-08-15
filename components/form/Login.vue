@@ -11,9 +11,9 @@ const validationSchema = toTypedSchema(
   zod.object({
     email: zod
       .string()
-      .min(1, { message: t("field_required") })
-      .email({ message: t("enter_valid_email") }),
-    password: zod.string().min(1, { message: t("field_required") }),
+      .min(1, { message: t("validation.field_required") })
+      .email({ message: t("validation.enter_valid_email") }),
+    password: zod.string().min(1, { message: t("validation.field_required") }),
   }),
 );
 const { handleSubmit, errors, isSubmitting } = useForm({
@@ -31,7 +31,7 @@ const onSubmit = handleSubmit(async (values) => {
   const { email, password } = values;
   const success = await login({ username: email, password });
   if (!success) {
-    error.value = t("invalid_credentials");
+    error.value = t("validation.invalid_credentials");
     return;
   }
   emit("success");
@@ -52,7 +52,7 @@ const onSubmit = handleSubmit(async (values) => {
     <FormControl
       v-model="email"
       type="email"
-      :title="t('email')"
+      :title="t('auth.email')"
       class="w-full"
       wrapper-class="bg-subtle py-3"
       input-class="text-default"
@@ -62,7 +62,7 @@ const onSubmit = handleSubmit(async (values) => {
     <FormControl
       v-model="password"
       type="password"
-      :title="t('Password')"
+      :title="t('auth.password')"
       class="w-full"
       wrapper-class="bg-subtle py-3"
       input-class="text-default"
@@ -73,7 +73,7 @@ const onSubmit = handleSubmit(async (values) => {
       type="button"
       class="font-semibold text-subtle py-4"
     >
-      {{ t("forgot_your_password") }}
+      {{ t("auth.forgot_your_password") }}
     </button>
     <BaseButton
       class="w-full inline-flex justify-center text-lg !rounded-[0.3rem] !py-4 sm:!py-3"
@@ -84,7 +84,7 @@ const onSubmit = handleSubmit(async (values) => {
       :disabled="isSubmitting"
     >
       <div class="flex items-center gap-x-2">
-        <p>{{ t("enter") }}</p>
+        <p>{{ t("misc.enter") }}</p>
         <div
           v-if="isSubmitting"
           class="w-full h-full flex items-center justify-center"
@@ -97,13 +97,13 @@ const onSubmit = handleSubmit(async (values) => {
       </div>
     </BaseButton>
     <p class="text-subtle py-4">
-      {{ t("dont_have_account") }}
+      {{ t("auth.dont_have_account") }}
       <button
         type="button"
         class="font-semibold text-brand-yellow"
         @click="emit('request:register')"
       >
-        {{ t("sign_up") }}
+        {{ t("auth.sign_up") }}
       </button>
     </p>
   </form>

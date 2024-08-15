@@ -40,17 +40,17 @@ const opened = computed({
           <p
             class="bg-button-primary text-transparent bg-clip-text font-semibold text-sm sm:text-lg md:text-2xl"
           >
-            {{ t("exclusive").toUpperCase() }}
+            {{ t("promotions.exclusive").toUpperCase() }}
           </p>
           <p class="text-xl sm:text-3xl md:text-[2.55rem]">
-            {{ t("prerelease").toUpperCase() }}
+            {{ t("promotions.prerelease").toUpperCase() }}
           </p>
           <p class="text-xl sm:text-3xl md:text-[2.55rem] text-nowrap">
-            {{ t("from").toUpperCase() }} WILDJACK
+            {{ t("misc.from").toUpperCase() }} WILDJACK
           </p>
           <p>
             <span class="bg-button-primary text-transparent bg-clip-text">+100</span>
-            {{ t("free_spins").toUpperCase() }}
+            {{ t("promotions.free_spins").toUpperCase() }}
           </p>
         </div>
       </div>

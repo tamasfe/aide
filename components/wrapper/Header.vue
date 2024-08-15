@@ -15,7 +15,7 @@ const { isAuthenticated } = useAuth();
         @close="() => (refferalBaseNoticeOpen = false)"
       >
         <p class="text-center">
-          {{ t("refer_a_friend") }}
+          {{ t("promotions.refer_a_friend") }}
         </p>
       </BaseNotice>
     </Transition>

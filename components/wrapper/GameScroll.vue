@@ -42,7 +42,7 @@ const data = computed(() => {
     </template>
     <template #options>
       <BaseButton class="bg-subtle text-subtle hover:bg-emphasis">
-        {{ t("see_all") }}
+        {{ t("misc.see_all") }}
       </BaseButton>
     </template>
     <template #default="{ data: game }">

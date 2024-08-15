@@ -50,7 +50,7 @@ const {
           </div>
           <div class="flex flex-col space-y-4 w-full">
             <h1 class="text-base xl:text-lg font-bold text-center">
-              You need to log in to play.
+              {{ t("game.not_authenticated") }}
             </h1>
             <div class="flex space-x-4 w-full">
               <BaseButton
@@ -59,7 +59,7 @@ const {
                 type="button"
                 @click="emit('click:login', $event)"
               >
-                {{ t("login") }}
+                {{ t("auth.login") }}
               </BaseButton>
               <!-- temporary fix -->
               <div class="mb-[0.4rem] flex-1">
@@ -71,7 +71,7 @@ const {
                   type="button"
                   @click="emit('click:register', $event)"
                 >
-                  {{ t("register") }}
+                  {{ t("auth.register") }}
                 </BaseButton>
               </div>
             </div>
@@ -87,7 +87,7 @@ const {
           class="w-full flex justify-between md:justify-start flex-row md:flex-col items-center md:items-start font-semibold"
         >
           <h3 class="text-lg font-bold">Potion Spells</h3>
-          <p class="text-subtle-light">By Pragmatic Play</p>
+          <p class="text-subtle-light">{{ t("misc.by") }} Pragmatic Play</p>
         </div>
         <div
           class="w-full flex justify-between md:justify-end items-center space-x-8 text-subtle font-semibold"
@@ -99,7 +99,7 @@ const {
             <div>
               <PhWhatsappLogo :size="26" />
             </div>
-            <p>{{ t("share") }}</p>
+            <p>{{ t("misc.share") }}</p>
           </button>
           <button
             type="button"
