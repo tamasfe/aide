@@ -1,12 +1,12 @@
 import type { FetchError } from "ofetch";
 import { getValidationErrorTranslationKeys } from "~/utils";
 import type { ValidationErrorMetadata } from "~/types/api";
-import type { UserAccount } from "~/types/user";
 import type {
   Flow,
   LoginCredentials,
   RegisterCredentialsBrazil,
   SignupFlow,
+  WhoAmI,
 } from "~/types/auth";
 
 const isAuthenticated = ref(false);
@@ -107,15 +107,14 @@ export function useAuth() {
   };
 
   const getUser = async () => {
-    // necessary to include cookies in the request
-    // for ssr to work
-    // TODO: why is this request not working on server?
-    // does it forward the cookies?
-    const { error, data } = await useFetch<UserAccount>(
+    // As per the documentation, the cookie headers
+    // must be explicitly passed to the useFetch call
+    const headers = useRequestHeaders(["cookie"]);
+    const { error, data } = await useFetch<WhoAmI>(
       "http://localhost:3050/auth/whoami",
       {
         credentials: "include", // Ensure cookies are included in the request
-        server: false,
+        headers,
       },
     );
     if (error.value) {

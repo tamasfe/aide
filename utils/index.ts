@@ -143,7 +143,7 @@ export const getValidationErrorTranslationKeys = (
   const messages: string[] = [];
   for (const key in metadata) {
     for (const error of metadata[key]) {
-      messages.push(`${key}_${error.code}`.toLowerCase());
+      messages.push(`validation.${key}_${error.code}`.toLowerCase());
     }
   }
   return messages;

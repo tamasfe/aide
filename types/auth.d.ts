@@ -21,3 +21,9 @@ export type Flow<T> = {
   fields: T;
   jurisdiction: string;
 };
+
+export type WhoAmI = {
+  id: number;
+  email: string;
+  name: string;
+};
