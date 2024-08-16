@@ -24,8 +24,8 @@
     "clsx": "^2.1.1",
     "maska": "3.0.0",
     "nuxt": "3.12.4",
-    "pinia": "^2.2.1",
-    "tailwind-merge": "^2.5.1",
+    "pinia": "^2.2.2",
+    "tailwind-merge": "^2.5.2",
     "vue": "3.4.37",
     "vue-router": "4.4.3",
     "zod": "3.23.8"
