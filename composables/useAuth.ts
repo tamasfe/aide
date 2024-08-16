@@ -9,19 +9,26 @@ import type {
   WhoAmI,
 } from "~/types/auth";
 
-const isAuthenticated = ref(false);
+const useAuthenticatedState = () => useState("isAuthenticated", () => false);
 
 // TODO: translations for error messages
 // TODO: use $fetch instead of useFetch
 export function useAuth() {
+  // using ref directly outisde setup is dangerous because
+  // cross headers pollution can happen
+  const isAuthenticated = useAuthenticatedState();
+  const config = useRuntimeConfig();
+
   const getFlow = async (flowId: string) => {
     try {
       const data = await $fetch<Flow<RegisterCredentialsBrazil>>(
-        `http://localhost:3050/signup/flow/${flowId}`,
+        `/signup/flow/${flowId}`,
+        {
+          baseURL: config.public.apiBaseUrl,
+        },
       );
       return data;
-    }
-    catch (error) {
+    } catch (error) {
       console.log(error);
     }
     return null;
@@ -30,30 +37,29 @@ export function useAuth() {
   const register = async (credentials: RegisterCredentialsBrazil) => {
     let flowId: null | string = null;
     try {
-      const flowData = await $fetch<SignupFlow>(
-        "http://localhost:3050/signup/flow",
-        {
-          headers: {
-            "cf-ipcountry": "BR",
-          },
+      const flowData = await $fetch<SignupFlow>("/signup/flow", {
+        headers: {
+          "cf-ipcountry": "BR",
         },
-      );
+        baseURL: config.public.apiBaseUrl,
+      });
       flowId = flowData.id_flow;
 
-      await $fetch(`http://localhost:3050/signup/flow/${flowData.id_flow}`, {
+      await $fetch(`/signup/flow/${flowData.id_flow}`, {
         method: "PATCH",
         body: credentials,
+        baseURL: config.public.apiBaseUrl,
       });
 
-      await $fetch(`http://localhost:3050/signup/flow/${flowData.id_flow}`, {
+      await $fetch(`/signup/flow/${flowData.id_flow}`, {
         method: "POST",
         credentials: "include",
         headers: {
           "cf-ipcountry": "BR",
         },
+        baseURL: config.public.apiBaseUrl,
       });
-    }
-    catch (e: unknown) {
+    } catch (e: unknown) {
       let message = "signup_try_again";
       const error = e as FetchError;
       if (error.data?.code === "VALIDATION") {
@@ -71,7 +77,7 @@ export function useAuth() {
     }
 
     return {
-      message: "signup_success",
+      message: "auth.signup_success",
       flow: flowId,
       error: false,
     };
@@ -79,10 +85,11 @@ export function useAuth() {
 
   const login = async (credentials: LoginCredentials) => {
     // TODO: base path should be configurable?
-    const { error } = await useFetch("http://localhost:3050/auth/login", {
+    const { error } = await useFetch("/auth/login", {
       method: "POST",
       body: credentials,
       credentials: "include", // Ensure cookies are included in the request
+      baseURL: config.public.apiBaseUrl,
     });
 
     if (error.value) {
@@ -94,13 +101,13 @@ export function useAuth() {
 
   const logout = async () => {
     try {
-      const data = await $fetch("http://localhost:3050/auth/logout", {
+      const data = await $fetch("/auth/logout", {
         method: "POST",
         credentials: "include", // Ensure cookies are included in the request
+        baseURL: config.public.apiBaseUrl,
       });
       return data;
-    }
-    catch (e) {
+    } catch (e) {
       console.log(e);
     }
     return null;
@@ -110,13 +117,11 @@ export function useAuth() {
     // As per the documentation, the cookie headers
     // must be explicitly passed to the useFetch call
     const headers = useRequestHeaders(["cookie"]);
-    const { error, data } = await useFetch<WhoAmI>(
-      "http://localhost:3050/auth/whoami",
-      {
-        credentials: "include", // Ensure cookies are included in the request
-        headers,
-      },
-    );
+    const { error, data } = await useFetch<WhoAmI>("/auth/whoami", {
+      credentials: "include", // Ensure cookies are included in the request
+      headers,
+      baseURL: config.public.apiBaseUrl,
+    });
     if (error.value) {
       return null;
     }

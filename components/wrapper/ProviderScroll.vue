@@ -25,7 +25,7 @@ onMounted(() => {
     </template>
     <template #options>
       <BaseButton class="bg-subtle hover:bg-emphasis text-subtle">
-        {{ t("see_all") }}
+        {{ t("misc.see_all") }}
       </BaseButton>
     </template>
     <template #default="{ data: index }">

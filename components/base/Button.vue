@@ -1,7 +1,8 @@
 <script setup lang="ts">
+type Variant = "primary" | "secondary" | "emphasis";
 const props = defineProps<{
   disabled?: boolean;
-  variant?: "primary" | "secondary" | "emphasis";
+  variant?: Variant;
   big?: boolean;
   shadow?: boolean;
   border?: boolean;
@@ -9,45 +10,44 @@ const props = defineProps<{
 
 const { variant, big, shadow, border } = toRefs(props);
 
-const getVariantClass = computed(() => {
-  switch (variant.value) {
-    case "secondary":
-      return "bg-button-secondary hover:bg-button-secondary-hover text-button-secondary";
-    case "emphasis":
-      return "bg-button-emphasis hover:bg-button-emphasis-hover text-button-emphasis";
-    case "primary":
-      return "bg-button-primary hover:bg-button-primary-hover text-button-primary";
-    default:
-      return "";
-  }
-});
+const VARIANT_CLASSES = {
+  primary:
+    "bg-button-primary hover:bg-button-primary-hover text-button-primary",
+  secondary:
+    "bg-button-secondary hover:bg-button-secondary-hover text-button-secondary",
+  emphasis:
+    "bg-button-emphasis hover:bg-button-emphasis-hover text-button-emphasis",
+};
+
+const BORDER_CLASSES: Partial<Record<Variant, string>> = {
+  primary: "giro__border-btn giro__border-btn-primary",
+  emphasis: "giro__border-btn giro__border-btn-emphasis",
+};
+
+const SHADOW_CLASSES: Partial<Record<Variant, string>> = {
+  primary: "giro__shadow-3d-primary",
+  emphasis: "giro__shadow-3d-emphasis",
+};
+const getVariantClass = computed(() =>
+  variant.value ? VARIANT_CLASSES[variant.value] : "",
+);
 
 const getSizeClass = computed(() =>
   big.value ? "p-button-big font-bold text-lg" : "p-button font-semibold",
 );
 
 const getBorderClass = computed(() => {
-  if (!border.value) return "";
-  switch (variant.value) {
-    case "primary":
-      return "giro__border-btn giro__border-btn-primary";
-    case "emphasis":
-      return "giro__border-btn giro__border-btn-emphasis";
-    default:
-      return "";
+  if (border.value && variant.value) {
+    return BORDER_CLASSES[variant.value];
   }
+  return "";
 });
 
 const getShadowClass = computed(() => {
-  if (!shadow.value) return "";
-  switch (variant.value) {
-    case "primary":
-      return "giro__shadow-3d-primary";
-    case "emphasis":
-      return "giro__shadow-3d-emphasis";
-    default:
-      return "";
+  if (shadow.value && variant.value) {
+    return SHADOW_CLASSES[variant.value];
   }
+  return "";
 });
 </script>
 

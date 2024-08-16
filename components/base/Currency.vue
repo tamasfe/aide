@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type MaskInputOptions } from "maska";
+import type { MaskInputOptions } from "maska";
 import type { InputProps } from "./Input.vue";
 import { getCurrencySymbol } from "~/utils/index";
 
