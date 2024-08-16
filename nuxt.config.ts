@@ -29,7 +29,9 @@ export default defineNuxtConfig({
     "@vee-validate/nuxt",
   ],
   runtimeConfig: {
-    public: {},
+    public: {
+      apiBaseUrl: "http://127.0.0.1:3050",
+    },
   },
   site: {
     url: "https://girobet.vip",
