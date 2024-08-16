@@ -20,19 +20,27 @@ defineProps<{
 // temp
 const offset = Math.round(Math.random() * 1000);
 
-const { data: games, status } = useFetch<ApiData<Game[]>>("/game/list", {
-  query: {
-    offset: offset,
-    limit: 20,
+// because useFetch is fetching twice
+// ( client and server it results in flickering )
+const { data: games, status } = await useAsyncData(
+  () =>
+    $fetch<ApiData<Game[]>>("/game/list", {
+      query: {
+        offset: offset,
+        limit: 20,
+      },
+      baseURL: config.public.apiBaseUrl,
+    }),
+  {
+    server: true,
+    lazy: false,
   },
-  server: true,
-  baseURL: config.public.apiBaseUrl,
-});
+);
 
 const loading = computed(() => status.value !== "success");
 const data = computed(() => {
   if (!games.value) {
-    const empty = Array.from({ length: size }, (_) => null);
+    const empty = Array.from({ length: size }, _ => null);
     return empty;
   }
   return games.value.data;
@@ -69,7 +77,10 @@ watch(loading, (value) => {
             :loading="loading"
             class="absolute left-0 top-0 w-full h-full"
           >
-            <NuxtLink v-if="game" :to="`/games/${game.id}`">
+            <NuxtLink
+              v-if="game"
+              :to="`/games/${game.id}`"
+            >
               <span class="block">
                 <NuxtImg
                   :src="getGameImageUrl(game.id, 'large')"

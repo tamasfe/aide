@@ -5,14 +5,14 @@ import {
   PhThumbsUp,
   PhWhatsappLogo,
 } from "@phosphor-icons/vue";
+import { getGameImageUrl } from "~/utils";
 
 const emit = defineEmits(["click:login", "click:register"]);
 
 const { t } = useI18n();
 
-const {
-  params: { id },
-} = useRoute();
+const { params } = useRoute();
+const id = Number(params.id as string);
 
 // TODO: make props work
 // TODO: replace image with iframe
@@ -32,7 +32,7 @@ const {
     <div class="relative rounded-t-default bg-emphasis pb-[54.39%]">
       <NuxtImg
         class="absolute top-0 left-0 w-full h-full object-cover rounded-t-default"
-        :src="`http://localhost:3050/game/${id}/image?variant=background`"
+        :src="getGameImageUrl(id, 'large')"
         alt=""
       />
       <div

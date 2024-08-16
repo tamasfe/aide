@@ -28,7 +28,8 @@ export function useAuth() {
         },
       );
       return data;
-    } catch (error) {
+    }
+    catch (error) {
       console.log(error);
     }
     return null;
@@ -59,7 +60,8 @@ export function useAuth() {
         },
         baseURL: config.public.apiBaseUrl,
       });
-    } catch (e: unknown) {
+    }
+    catch (e: unknown) {
       let message = "signup_try_again";
       const error = e as FetchError;
       if (error.data?.code === "VALIDATION") {
@@ -107,7 +109,8 @@ export function useAuth() {
         baseURL: config.public.apiBaseUrl,
       });
       return data;
-    } catch (e) {
+    }
+    catch (e) {
       console.log(e);
     }
     return null;
