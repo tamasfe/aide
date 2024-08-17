@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import type { Game, ApiData } from "~/types/api";
+import { getGameCategoryTranslationKey } from "~/utils";
+import { useGames } from "~/composables/useGames";
 
-// TODO: utils for img src
 // TODO: seo
-// TODO: translations
-// TODO: utils for skeleton
-const config = useRuntimeConfig();
+// TODO: use slug for game url
+// ( need to fetch game by slug or use both id and slug )
 const { isMobile } = useDevice();
 const { t } = useI18n();
 
@@ -13,41 +12,24 @@ const { t } = useI18n();
 const size = 20;
 
 // TODO: use translation key
-defineProps<{
-  title: string;
+const props = defineProps<{
+  identifier: string;
+  categories: number[];
 }>();
 
-// temp
-const offset = Math.round(Math.random() * 1000);
+const categories = ref(props.categories);
 
 // because useFetch is fetching twice
 // ( client and server it results in flickering )
-const { data: games, status } = await useAsyncData(
-  () =>
-    $fetch<ApiData<Game[]>>("/game/list", {
-      query: {
-        offset: offset,
-        limit: 20,
-      },
-      baseURL: config.public.apiBaseUrl,
-    }),
-  {
-    server: true,
-    lazy: false,
-  },
-);
+const { data: games, status } = await useGames(categories.value);
 
-const loading = computed(() => status.value !== "success");
+const loading = computed(() => status.value === "pending");
 const data = computed(() => {
   if (!games.value) {
-    const empty = Array.from({ length: size }, _ => null);
-    return empty;
+    const placeholder = generateSkeletonPlaceholderData(size);
+    return placeholder;
   }
   return games.value.data;
-});
-
-watch(loading, (value) => {
-  console.log("[GameScroll] new loading value", value);
 });
 </script>
 
@@ -59,7 +41,9 @@ watch(loading, (value) => {
     :slides-to-scroll="3"
   >
     <template #title>
-      <h2 class="text-xl sm:text-2xl">{{ title }}</h2>
+      <h2 class="text-xl sm:text-2xl">
+        {{ t(getGameCategoryTranslationKey(identifier)) }}
+      </h2>
     </template>
     <template #options>
       <BaseButton class="bg-subtle text-subtle hover:bg-emphasis">

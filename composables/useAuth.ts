@@ -94,6 +94,8 @@ export function useAuth() {
       baseURL: config.public.apiBaseUrl,
     });
 
+    console.log("logged in");
+
     if (error.value) {
       return false;
     }

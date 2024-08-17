@@ -8,7 +8,7 @@ import {
 import type { MaskInputOptions } from "maska";
 import { BaseInput } from "#components";
 import type { CountryCode } from "~/types/constants";
-import { numberMasks } from "~/utils";
+import { NUMBER_MASKS } from "~/constants";
 
 export type NumberProps = {
   modelValue?: string;
@@ -40,7 +40,7 @@ const input = ref<InstanceType<typeof BaseInput>>();
 
 const getMaskOptions = (code: string) => {
   const maskOptions: MaskInputOptions = {
-    mask: numberMasks[code as keyof typeof numberMasks],
+    mask: NUMBER_MASKS[code as keyof typeof NUMBER_MASKS],
     eager: true,
   };
   return maskOptions;

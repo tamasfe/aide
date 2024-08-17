@@ -3,6 +3,7 @@ import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import type { FormatNumberOptions } from "../types/utils";
 import type { GameImageVariant, ValidationErrorMetadata } from "~/types/api";
+import { NUMBER_MASKS } from "~/constants";
 
 export const overlay = (element: HTMLElement) => {
   const existing = element.parentElement?.querySelector(".giro__overlay");
@@ -117,13 +118,8 @@ export const validateCpf = (cpfString: string) => {
   return validated;
 };
 
-export const numberMasks = {
-  US: ["(###) ###-####"],
-  BR: ["(##) #####-####", "(##) ####-####"],
-};
-
 export const isValidPhoneNumber = (number: string, countryCode: string) => {
-  const masks = numberMasks[countryCode as keyof typeof numberMasks];
+  const masks = NUMBER_MASKS[countryCode as keyof typeof NUMBER_MASKS];
   if (!masks) {
     return false;
   }
@@ -154,4 +150,13 @@ export const getGameImageUrl = (gameId: number, variant: GameImageVariant) => {
   const url = new URL(`/game/${gameId}/image`, config.public.apiBaseUrl);
   url.searchParams.append("variant", variant);
   return url.toString();
+};
+
+// retunrs length amount of null elements used for skeleton loading
+export const generateSkeletonPlaceholderData = (length: number) => {
+  return Array.from({ length }, () => null);
+};
+
+export const getGameCategoryTranslationKey = (identifier: string) => {
+  return `game.categories.${identifier}`;
 };

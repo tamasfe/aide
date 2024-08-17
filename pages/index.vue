@@ -1,5 +1,13 @@
 <script setup lang="ts">
+import { useGameCategories } from "~/composables/useGameCategories";
+
 const search = ref("");
+
+const { data: categories } = await useGameCategories("home");
+
+const data = computed(() => {
+  return categories.value || [];
+});
 </script>
 
 <template>
@@ -8,20 +16,30 @@ const search = ref("");
       <CarouselHome class="w-full" />
     </div>
     <div class="giro__container py-6">
-      <div class="grid grid-cols-1 gap-8">
+      <div class="flex flex-col gap-8">
         <BaseSearch
           v-model="search"
           class="w-full"
         >
           <template #default>
-            <WrapperGameScroll title="🔥 Top Games" />
+            <!-- Search hardcoded for now, until we agree to final design -->
+            <WrapperGameScroll
+              identifier="weekly-top-picks"
+              :categories="[9]"
+            />
           </template>
         </BaseSearch>
         <HomeWinningNow class="w-full" />
-        <WrapperGameScroll title="🔥 Top Games" />
+        <WrapperGameScroll
+          v-for="category in data"
+          :key="category.id"
+          :identifier="category.identifier"
+          :categories="[category.id]"
+        />
+        <!-- <WrapperGameScroll title="🔥 Top Games" />
         <WrapperGameScroll title="👍 Popular games" />
         <WrapperGameScroll title="🚀 Exclusive Games" />
-        <WrapperGameScroll title="🏆 Trending Games" />
+<WrapperGameScroll title="🏆 Trending Games" /> -->
         <WrapperProviderScroll title="🏆 Providers" />
       </div>
     </div>

@@ -8,6 +8,23 @@ import {
   TransitionChild,
 } from "@headlessui/vue";
 import { PhX } from "@phosphor-icons/vue";
+import { MODAL_SIZES } from "~/constants";
+
+type Size =
+  | "full"
+  | "sm"
+  | "md"
+  | "lg"
+  | "xl"
+  | "2xl"
+  | "3xl"
+  | "4xl"
+  | "5xl"
+  | "6xl"
+  | "7xl"
+  | "8xl"
+  | "9xl"
+  | "10xl";
 
 const emit = defineEmits(["update:opened"]);
 
@@ -15,21 +32,7 @@ const props = withDefaults(
   defineProps<{
     opened: boolean;
     position?: "left" | "right";
-    size?:
-      | "full"
-      | "sm"
-      | "md"
-      | "lg"
-      | "xl"
-      | "2xl"
-      | "3xl"
-      | "4xl"
-      | "5xl"
-      | "6xl"
-      | "7xl"
-      | "8xl"
-      | "9xl"
-      | "10xl";
+    size?: Size;
   }>(),
   {
     size: "lg",
@@ -53,36 +56,7 @@ const positionClass = computed(() => {
 
 const size = computed(() => {
   if (props.size) {
-    switch (props.size) {
-      case "full":
-        return "w-full";
-      case "sm":
-        return "max-w-sm";
-      case "md":
-        return "max-w-md";
-      case "lg":
-        return "max-w-lg";
-      case "xl":
-        return "max-w-xl";
-      case "2xl":
-        return "max-w-2xl";
-      case "3xl":
-        return "max-w-3xl";
-      case "4xl":
-        return "max-w-4xl";
-      case "5xl":
-        return "max-w-5xl";
-      case "6xl":
-        return "max-w-6xl";
-      case "7xl":
-        return "max-w-7xl";
-      case "8xl":
-        return "max-w-8xl";
-      case "9xl":
-        return "max-w-9xl";
-      case "10xl":
-        return "max-w-10xl";
-    }
+    return MODAL_SIZES[props.size];
   }
   return "max-w-lg";
 });

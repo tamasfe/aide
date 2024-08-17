@@ -92,7 +92,7 @@ const scrollToTop = () => {
         :section="t('navigation.menu')"
         :options="[
           { title: t('navigation.home'), to: '/' },
-          { title: t('navigation.games'), to: '/games' },
+          { title: t('misc.games'), to: '/games' },
           { title: t('promotions.promotions'), to: '/promotions' },
           { title: t('footer.faq'), to: '/faq' },
           { title: t('footer.contact_us'), to: '/contact' },

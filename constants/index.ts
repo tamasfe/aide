@@ -1,7 +1,7 @@
 import type { InjectionKey } from "vue";
 import type { CountryCode } from "../types/constants";
 
-export const countryCodes: CountryCode[] = [
+export const COUNTRY_CODES: CountryCode[] = [
   {
     name: "Afghanistan",
     dial_code: "+93",
@@ -1209,7 +1209,32 @@ export const countryCodes: CountryCode[] = [
   },
 ];
 
+// Symbols for injection keys
 export const openLoginModalSymbol = Symbol() as InjectionKey<() => void>;
 export const openRegisterModalSymbol = Symbol() as InjectionKey<() => void>;
 export const openSidebarSymbol = Symbol() as InjectionKey<() => void>;
 export const toggleSidebarSymbol = Symbol() as InjectionKey<() => void>;
+
+// misc
+export const NUMBER_MASKS = {
+  US: ["(###) ###-####"],
+  BR: ["(##) #####-####", "(##) ####-####"],
+};
+
+// Tailwind CSS classes for modal sizes
+export const MODAL_SIZES = {
+  full: "w-full",
+  sm: "max-w-sm",
+  md: "max-w-md",
+  lg: "max-w-lg",
+  xl: "max-w-xl",
+  "2xl": "max-w-2xl",
+  "3xl": "max-w-3xl",
+  "4xl": "max-w-4xl",
+  "5xl": "max-w-5xl",
+  "6xl": "max-w-6xl",
+  "7xl": "max-w-7xl",
+  "8xl": "max-w-8xl",
+  "9xl": "max-w-9xl",
+  "10xl": "max-w-10xl",
+};

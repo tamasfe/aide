@@ -50,7 +50,7 @@ onMounted(() => {
             <p
               class="py-1 px-2 bg-button-primary text-transparent bg-clip-text"
             >
-              32 {{ t("games").toLowerCase() }}
+              32 {{ t("misc.games").toLowerCase() }}
             </p>
           </div>
         </div>

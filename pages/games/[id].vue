@@ -1,10 +1,17 @@
 <script setup lang="ts">
 import { openLoginModalSymbol, openRegisterModalSymbol } from "~/constants";
+import { useGameCategories } from "~/composables/useGameCategories";
 
 const { isMobile } = useDevice();
 
 const openLoginModal = inject(openLoginModalSymbol);
 const openRegisterModal = inject(openRegisterModalSymbol);
+
+const { data: categories } = await useGameCategories("home");
+
+const data = computed(() => {
+  return categories.value || [];
+});
 
 const onClickLogin = () => {
   if (openLoginModal) {
@@ -30,8 +37,12 @@ const onClickRegister = () => {
     <GameFrameMobile v-else />
     <GameDescriptionCard class="bg-subtle" />
     <div class="giro__container w-full flex flex-col space-y-4 md:space-y-8">
-      <WrapperGameScroll title="🔥 Hot games today" />
-      <WrapperGameScroll title="👍 Popular games" />
+      <WrapperGameScroll
+        v-for="category in data"
+        :key="category.id"
+        :identifier="category.identifier"
+        :categories="[category.id]"
+      />
       <WrapperProviderScroll title="🏆 Providers" />
     </div>
   </div>

@@ -30,7 +30,7 @@ export default defineNuxtConfig({
   ],
   runtimeConfig: {
     public: {
-      apiBaseUrl: "http://127.0.0.1:3050",
+      apiBaseUrl: "http://localhost:3050",
     },
   },
   site: {

@@ -52,7 +52,6 @@
   },
   "navigation": {
     "home": "Home",
-    "games": "Games",
     "menu": "Menu"
   },
   "home": {
@@ -62,9 +61,30 @@
     "winning_now": "Winning Now"
   },
   "game": {
-    "not_authenticated": "You need to log in to play."
+    "not_authenticated": "You need to log in to play.",
+    "categories": {
+      "blackjack": "Blackjack",
+      "table": "Table",
+      "live": "Live",
+      "jackpot": "Jackpot",
+      "weekly-top-picks": "Weekly Top Picks",
+      "your-top-picks": "Your Top Picks",
+      "craps": "Craps",
+      "video_poker": "Video Poker",
+      "mines": "Mines",
+      "casual": "Casual",
+      "slots": "Slots",
+      "virtual_sports": "Virtual Sports",
+      "roulette": "Roulette",
+      "card": "Card",
+      "scratch": "Scratch",
+      "fishing": "Fishing",
+      "crash": "Crash",
+      "poker": "Poker"
+    }
   },
   "misc": {
+    "games": "Games",
     "by": "By",
     "continue": "Continue",
     "hot": "Hot",

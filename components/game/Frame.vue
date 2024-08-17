@@ -17,6 +17,7 @@ const id = Number(params.id as string);
 // TODO: make props work
 // TODO: replace image with iframe
 // TODO: translations
+// TODO: slug in url
 
 // const props = defineProps<{
 //  name: string;
