@@ -17,20 +17,31 @@ const props = defineProps<{
   categories: number[];
 }>();
 
-const categories = ref(props.categories);
+const options = reactive({
+  offset: Math.round(Math.random() * 1000),
+  limit: 20,
+  categories: props.categories,
+});
 
 // because useFetch is fetching twice
 // ( client and server it results in flickering )
-const { data: games, status } = await useGames(categories.value);
+const { data: games, status } = await useGames(options);
 
 const loading = computed(() => status.value === "pending");
 const data = computed(() => {
+  console.log("games", games.value);
   if (!games.value) {
     const placeholder = generateSkeletonPlaceholderData(size);
     return placeholder;
   }
   return games.value.data;
 });
+
+const onClickSeeAll = () => {
+  // append games to scroll
+  console.log("see all");
+  options.limit += size;
+};
 </script>
 
 <template>
@@ -46,7 +57,11 @@ const data = computed(() => {
       </h2>
     </template>
     <template #options>
-      <BaseButton class="bg-subtle text-subtle hover:bg-emphasis">
+      <BaseButton
+        class="bg-subtle text-subtle hover:bg-emphasis"
+        type="button"
+        @click="onClickSeeAll"
+      >
         {{ t("misc.see_all") }}
       </BaseButton>
     </template>
@@ -58,7 +73,7 @@ const data = computed(() => {
           class="relative bg-subtle rounded-default overflow-hidden pt-[134.26%]"
         >
           <BaseSkeleton
-            :loading="loading"
+            :loading="loading && !game"
             class="absolute left-0 top-0 w-full h-full"
           >
             <NuxtLink

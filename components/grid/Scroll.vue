@@ -112,6 +112,17 @@ const scrollToPosition = (target: number, duration: number) => {
 
   animateScroll();
 };
+
+watch(
+  data,
+  () => {
+    console.log("data changed");
+    onScroll();
+  },
+  {
+    deep: true,
+  },
+);
 </script>
 
 <template>

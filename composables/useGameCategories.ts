@@ -1,13 +1,15 @@
 import type { Category } from "~/types/api";
 
-export const useGameCategories = (group: string) => {
+export const useGameCategories = async (group?: string) => {
   const config = useRuntimeConfig();
+
   // temp until categories auth is removed,
   // not sure if it will be
   // TODO: rm headers
   const headers = useRequestHeaders(["cookie"]);
 
-  const asynDataPromise = useAsyncData(
+  const asyncDataPromise = useAsyncData(
+    `useGameCategories-${group}`,
     () =>
       $fetch<Category[]>("/game/category/list", {
         credentials: "include",
@@ -22,5 +24,6 @@ export const useGameCategories = (group: string) => {
       lazy: false,
     },
   );
-  return asynDataPromise;
+
+  return asyncDataPromise;
 };

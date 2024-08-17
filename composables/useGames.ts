@@ -1,20 +1,27 @@
+import type { Reactive } from "vue";
 import type { Game, ApiData } from "~/types/api";
+import type { UseGamesOptions } from "~/types/game";
 
-export const useGames = (categories: number[]) => {
+export const useGames = (options: Reactive<UseGamesOptions>) => {
   const config = useRuntimeConfig();
 
-  const asynDataPromise = useAsyncData(
+  const asyncDataPromise = useAsyncData(
+    JSON.stringify(options),
     () =>
       $fetch<ApiData<Game[]>>("/game/list", {
         query: {
-          category: categories.join(","),
+          category: options.categories.join(","),
+          offset: options.offset,
+          limit: options.limit,
         },
         baseURL: config.public.apiBaseUrl,
       }),
     {
       server: true,
       lazy: false,
+      watch: [options],
     },
   );
-  return asynDataPromise;
+
+  return asyncDataPromise;
 };

@@ -1,8 +1,36 @@
 <script setup lang="ts">
-import { PhGift, PhGridFour, PhHouse, PhStar } from "@phosphor-icons/vue";
+import { PhGridFour, PhHouse, PhStar } from "@phosphor-icons/vue";
+import { useGameCategories } from "~/composables/useGameCategories";
 
 const { isMobile } = useDevice();
 const { isAuthenticated } = useAuth();
+
+const { t } = useI18n();
+
+const { data: categories } = await useGameCategories("home");
+// TODO: maybe get all and filter them here to avoid multiple requests
+const { data: allCategories } = await useGameCategories();
+
+const homeGameCategories = computed(() => {
+  const data = categories.value || [];
+  return data.map(category => ({
+    title: t(getGameCategoryTranslationKey(category.identifier)),
+    value: `/categories/${category.id}`,
+    // TODO: hardcoded for now we'll change icons anyways
+    icon: PhStar,
+    iconClass: "text-brand-yellow",
+  }));
+});
+
+const allGameCategories = computed(() => {
+  const data = allCategories.value || [];
+  return data.map(category => ({
+    title: t(getGameCategoryTranslationKey(category.identifier)),
+    value: `/categories/${category.id}`,
+    icon: PhStar,
+    iconClass: "text-brand-yellow",
+  }));
+});
 
 const emit = defineEmits(["update:opened"]);
 const props = defineProps<{
@@ -61,32 +89,7 @@ watch(
             icon: PhHouse,
             iconClass: 'text-subtle',
           }"
-          :options="[
-            {
-              title: 'Slots',
-              value: 'slots',
-              icon: PhStar,
-              iconClass: 'text-brand-yellow',
-            },
-            {
-              title: 'Table Games',
-              value: 'table_games',
-              icon: PhGift,
-              iconClass: 'text-brand-yellow',
-            },
-            {
-              title: 'Live Casino',
-              value: 'live_casino',
-              icon: PhGridFour,
-              iconClass: 'text-brand-yellow',
-            },
-            {
-              title: 'Jackpot',
-              value: 'jackpot',
-              icon: PhGridFour,
-              iconClass: 'text-brand-yellow',
-            },
-          ]"
+          :options="homeGameCategories"
         />
         <BaseMenuCollapse
           :parent="{
@@ -95,32 +98,7 @@ watch(
             icon: PhGridFour,
             iconClass: 'text-subtle',
           }"
-          :options="[
-            {
-              title: 'Slots',
-              value: 'slots',
-              icon: PhStar,
-              iconClass: 'text-brand-yellow',
-            },
-            {
-              title: 'Table Games',
-              value: 'table_games',
-              icon: PhGift,
-              iconClass: 'text-brand-yellow',
-            },
-            {
-              title: 'Live Casino',
-              value: 'live_casino',
-              icon: PhGridFour,
-              iconClass: 'text-brand-yellow',
-            },
-            {
-              title: 'Jackpot',
-              value: 'jackpot',
-              icon: PhGridFour,
-              iconClass: 'text-brand-yellow',
-            },
-          ]"
+          :options="allGameCategories"
         />
         <BaseMenuLink
           class="p-4 text-emphasis text-lg"

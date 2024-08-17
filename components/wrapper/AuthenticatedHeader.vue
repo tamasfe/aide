@@ -2,29 +2,49 @@
 import { PhCircleNotch, PhList, PhUser } from "@phosphor-icons/vue";
 import { toggleSidebarSymbol } from "~/constants";
 import { getCurrencySymbol, formatNumber } from "~/utils/index";
+import { useBalance } from "~/composables/useBalance";
 
 const { t } = useI18n();
 
-// TODO: load from user/settings store
+const { data: balance, refresh, status } = await useBalance();
+const data = computed(() => {
+  if (balance.value && balance.value.length) {
+    return balance.value[0];
+  }
+  return null;
+});
+const balanceValue = computed(() => {
+  if (data.value) {
+    const value = parseFloat(data.value.balance);
+    return formatNumber(value, {
+      locale: locale.value,
+      decimalPlaces: 2,
+    });
+  }
+  return "";
+});
+
+// TODO: hardcoded for now, is it fetched from the user settings? ( language )
 const locale = ref("pt-BR");
-const currencySymbol = getCurrencySymbol("BRL");
+
+const currencySymbol = computed(() => {
+  if (data.value) {
+    return getCurrencySymbol(data.value.currency);
+  }
+  return "";
+});
 
 // deposti modal
 const depositModalOpened = ref(false);
 
-const loading = ref(false);
+const loading = computed(() => status.value === "pending");
 
-// TODO: add functionality
+// TODO: check where balance is stored
+// not sure if funcionality is working yet
 const onClickBalance = () => {
-  // faking fetching of the data
-  if (loading.value) {
-    return;
-  }
-  loading.value = true;
-  setTimeout(() => {
-    loading.value = false;
-  }, 1000);
+  refresh();
 };
+
 const onClickDeposit = () => {
   depositModalOpened.value = true;
 };
@@ -80,12 +100,7 @@ const onClickMenu = () => {
             {{ currencySymbol }}
           </p>
           <p class="text-white">
-            {{
-              formatNumber(2349.34, {
-                locale: locale,
-                decimalPlaces: 2,
-              })
-            }}
+            {{ balanceValue }}
           </p>
         </BaseButton>
         <BaseButton
