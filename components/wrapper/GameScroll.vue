@@ -16,33 +16,33 @@ type GridScrollEvent = {
 const { isMobile } = useDevice();
 const { t } = useI18n();
 
-// temp
-const size = 20;
-
 const loadedOffsetLimitCombinations = new Set<string>();
 
 // TODO: use translation key
 const props = defineProps<{
   identifier: string;
-  category: number;
 }>();
 
 const options = reactive({
   offset: Math.round(Math.random() * 1000),
-  limit: 20,
-  categories: [props.category],
+  limit: 100,
+  categories: [props.identifier],
 });
 
 const { data: games, status } = await useGames(options);
 const data = ref<(Game | null)[]>([]);
 
 const onScroll = (event: GridScrollEvent) => {
-  if (status.value === "pending") return;
+  if (
+    status.value === "pending"
+    || (games.value && games.value.data.length < options.limit)
+  )
+    return;
   const pxToEnd = event.scrollWidth - event.scrollLeft - event.clientWidth;
-  if (pxToEnd < 200) {
+  if (pxToEnd < 600) {
     // we check if we have already fetched this offset and limit
     // if not, we fetch more data by increasing the offset
-    const newOffset = options.offset + size;
+    const newOffset = options.offset + options.limit;
     if (!loadedOffsetLimitCombinations.has(`${newOffset}-${options.limit}`)) {
       // triggers refetch becuase useGames
       // composable is watching for options change
@@ -81,7 +81,7 @@ watch(
       </h2>
     </template>
     <template #options>
-      <NuxtLink :to="`/categories/${category}`">
+      <NuxtLink :to="`/categories/${identifier}`">
         <BaseButton
           class="bg-subtle text-subtle hover:bg-emphasis"
           type="button"
@@ -114,7 +114,10 @@ watch(
         </div>
       </div>
     </template>
-    <template #loading>
+    <template
+      v-if="status === 'pending'"
+      #loading
+    >
       <div
         class="basis-[calc((100%-2rem)/2)] sm:basis-[calc((100%-5rem)/6)] flex-shrink-0 w-full"
       >

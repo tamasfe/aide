@@ -1,5 +1,5 @@
 export type UseGamesOptions = {
-  categories: number[];
+  categories: string[];
   limit: number;
   offset: number;
 };

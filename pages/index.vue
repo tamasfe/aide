@@ -24,10 +24,7 @@ const data = computed(() => {
         >
           <template #default>
             <!-- Search hardcoded for now, until we agree to final design -->
-            <WrapperGameScroll
-              identifier="weekly-top-picks"
-              :category="9"
-            />
+            <WrapperGameScroll identifier="weekly-top-picks" />
           </template>
         </BaseSearch>
         <HomeWinningNow class="w-full" />
@@ -35,7 +32,6 @@ const data = computed(() => {
           v-for="category in data"
           :key="category.id"
           :identifier="category.identifier"
-          :category="category.id"
         />
         <WrapperProviderScroll title="🏆 Providers" />
       </div>
