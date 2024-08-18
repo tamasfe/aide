@@ -41,7 +41,7 @@ const onClickRegister = () => {
         v-for="category in data"
         :key="category.id"
         :identifier="category.identifier"
-        :categories="[category.id]"
+        :category="category.id"
       />
       <WrapperProviderScroll title="🏆 Providers" />
     </div>

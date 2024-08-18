@@ -1,6 +1,14 @@
 <script setup lang="ts">
+import { PhCircleNotch } from "@phosphor-icons/vue";
 import { getGameCategoryTranslationKey } from "~/utils";
 import { useGames } from "~/composables/useGames";
+import type { Game } from "~/types/api";
+
+type GridScrollEvent = {
+  scrollLeft: number;
+  scrollWidth: number;
+  clientWidth: number;
+};
 
 // TODO: seo
 // TODO: use slug for game url
@@ -11,45 +19,61 @@ const { t } = useI18n();
 // temp
 const size = 20;
 
+const loadedOffsetLimitCombinations = new Set<string>();
+
 // TODO: use translation key
 const props = defineProps<{
   identifier: string;
-  categories: number[];
+  category: number;
 }>();
 
 const options = reactive({
   offset: Math.round(Math.random() * 1000),
   limit: 20,
-  categories: props.categories,
+  categories: [props.category],
 });
 
-// because useFetch is fetching twice
-// ( client and server it results in flickering )
 const { data: games, status } = await useGames(options);
+const data = ref<(Game | null)[]>([]);
 
-const loading = computed(() => status.value === "pending");
-const data = computed(() => {
-  console.log("games", games.value);
-  if (!games.value) {
-    const placeholder = generateSkeletonPlaceholderData(size);
-    return placeholder;
+const onScroll = (event: GridScrollEvent) => {
+  if (status.value === "pending") return;
+  const pxToEnd = event.scrollWidth - event.scrollLeft - event.clientWidth;
+  if (pxToEnd < 200) {
+    // we check if we have already fetched this offset and limit
+    // if not, we fetch more data by increasing the offset
+    const newOffset = options.offset + size;
+    if (!loadedOffsetLimitCombinations.has(`${newOffset}-${options.limit}`)) {
+      // triggers refetch becuase useGames
+      // composable is watching for options change
+      options.offset = newOffset;
+    }
   }
-  return games.value.data;
-});
-
-const onClickSeeAll = () => {
-  // append games to scroll
-  console.log("see all");
-  options.limit += size;
 };
+
+// Every time games change, we append data because
+// we guarantee that only unique games are fetched
+watch(
+  games,
+  () => {
+    if (games.value && games.value.data.length) {
+      loadedOffsetLimitCombinations.add(`${options.offset}-${options.limit}`);
+      data.value = data.value.concat(games.value.data);
+    }
+  },
+  {
+    immediate: true,
+  },
+);
 </script>
 
 <template>
   <GridScroll
     :data="data"
     :show-controls="!isMobile"
-    :loading="loading"
+    :loading="!data.length"
     :slides-to-scroll="3"
+    @scrolled="onScroll"
   >
     <template #title>
       <h2 class="text-xl sm:text-2xl">
@@ -57,25 +81,23 @@ const onClickSeeAll = () => {
       </h2>
     </template>
     <template #options>
-      <BaseButton
-        class="bg-subtle text-subtle hover:bg-emphasis"
-        type="button"
-        @click="onClickSeeAll"
-      >
-        {{ t("misc.see_all") }}
-      </BaseButton>
+      <NuxtLink :to="`/categories/${category}`">
+        <BaseButton
+          class="bg-subtle text-subtle hover:bg-emphasis"
+          type="button"
+        >
+          {{ t("misc.see_all") }}
+        </BaseButton>
+      </NuxtLink>
     </template>
     <template #default="{ data: game }">
       <div
-        class="basis-[calc((100%-2rem)/2.5)] sm:basis-[calc((100%-5rem)/6)] flex-shrink-0 w-full"
+        class="basis-[calc((100%-2rem)/2)] sm:basis-[calc((100%-5rem)/6)] flex-shrink-0 w-full"
       >
         <div
           class="relative bg-subtle rounded-default overflow-hidden pt-[134.26%]"
         >
-          <BaseSkeleton
-            :loading="loading && !game"
-            class="absolute left-0 top-0 w-full h-full"
-          >
+          <div class="absolute left-0 top-0 w-full h-full">
             <NuxtLink
               v-if="game"
               :to="`/games/${game.id}`"
@@ -88,7 +110,25 @@ const onClickSeeAll = () => {
                 />
               </span>
             </NuxtLink>
-          </BaseSkeleton>
+          </div>
+        </div>
+      </div>
+    </template>
+    <template #loading>
+      <div
+        class="basis-[calc((100%-2rem)/2)] sm:basis-[calc((100%-5rem)/6)] flex-shrink-0 w-full"
+      >
+        <div
+          class="relative bg-subtle rounded-default overflow-hidden pt-[134.26%]"
+        >
+          <div
+            class="absolute left-0 top-0 w-full h-full grid place-items-center"
+          >
+            <PhCircleNotch
+              class="animate-spin text-subtle"
+              :size="32"
+            />
+          </div>
         </div>
       </div>
     </template>

@@ -33,7 +33,7 @@ const id = Number(params.id as string);
     <div class="relative rounded-t-default bg-emphasis pb-[54.39%]">
       <NuxtImg
         class="absolute top-0 left-0 w-full h-full object-cover rounded-t-default"
-        :src="getGameImageUrl(id, 'large')"
+        :src="getGameImageUrl(id, 'background')"
         alt=""
       />
       <div

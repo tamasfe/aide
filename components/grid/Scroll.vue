@@ -21,7 +21,7 @@ const { data } = toRefs(props);
 
 const slider = ref<HTMLElement | null>(null);
 
-const emit = defineEmits(["click:nextPage", "click:previousPage"]);
+const emit = defineEmits(["click:nextPage", "click:previousPage", "scrolled"]);
 
 const isAtBeginning = ref(true);
 const isTheEnd = ref(false);
@@ -33,6 +33,12 @@ const onScroll = () => {
     const maxWidth = slider.value.scrollLeft + slider.value.clientWidth;
     isTheEnd.value
       = Math.round(maxWidth) >= Math.round(slider.value.scrollWidth) - 10;
+    // emit scrolled percentage to parent
+    emit("scrolled", {
+      scrollLeft: slider.value.scrollLeft,
+      scrollWidth: slider.value.scrollWidth,
+      clientWidth: slider.value.clientWidth,
+    });
   }
 };
 
@@ -41,10 +47,12 @@ const nextPage = () => {
   if (slider.value) {
     const slideWidth = slider.value.children[0]?.clientWidth;
     const gap = parseInt(getComputedStyle(slider.value).gap, 10);
-    scrollToPosition(
-      slider.value.scrollLeft + (slideWidth + gap) * props.slidesToScroll,
-      350,
-    );
+    console.log("scrollAmount", (slideWidth + gap) * props.slidesToScroll);
+    const value
+      = slider.value.scrollLeft + (slideWidth + gap) * props.slidesToScroll;
+    console.log("value", value);
+    console.log("[nextPage current scrollLeft]", slider.value.scrollLeft);
+    scrollToPosition(value, 350);
   }
   emit("click:nextPage");
 };
@@ -66,6 +74,8 @@ onMounted(() => {
   if (slider.value) {
     slider.value.addEventListener("scroll", onScroll);
     onScroll();
+    const mutationObserver = new MutationObserver(onScroll);
+    mutationObserver.observe(slider.value, { childList: true });
   }
 });
 
@@ -111,18 +121,8 @@ const scrollToPosition = (target: number, duration: number) => {
   };
 
   animateScroll();
+  console.log("scrollLeft", slider.value.scrollLeft);
 };
-
-watch(
-  data,
-  () => {
-    console.log("data changed");
-    onScroll();
-  },
-  {
-    deep: true,
-  },
-);
 </script>
 
 <template>
@@ -173,6 +173,7 @@ watch(
         :key="index"
         :data="datapoint"
       />
+      <slot name="loading" />
     </div>
   </div>
 </template>

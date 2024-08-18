@@ -18,6 +18,8 @@ const emit = defineEmits([
   "blur",
 ]);
 
+// need consistent id for label and input
+// otherwise nuxt hydration will throw warnings
 const inputId = Math.random().toString(36).substring(7);
 const label = ref<HTMLLabelElement | null>(null);
 const container = ref<HTMLDivElement | null>(null);
