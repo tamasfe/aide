@@ -106,7 +106,7 @@ watch(
                 <NuxtImg
                   :src="getGameImageUrl(game.id, 'large')"
                   alt=""
-                  class="absolute top-0 left-0 w-full object-cover rounded-default transition-transform transform hover:scale-105 cursor-pointer"
+                  class="absolute top-0 left-0 w-full h-full object-cover rounded-default transition-transform transform hover:scale-105 cursor-pointer"
                 />
               </span>
             </NuxtLink>
