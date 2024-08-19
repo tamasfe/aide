@@ -119,12 +119,13 @@ onMounted(() => {
             <NuxtLink
               v-if="game"
               :to="`/games/${game.id}`"
+              class="block"
             >
               <span class="block">
                 <NuxtImg
                   :src="getGameImageUrl(game.id, 'large')"
                   alt=""
-                  class="absolute top-0 left-0 w-full h-full object-cover rounded-default transition-transform transform hover:scale-105 cursor-pointer"
+                  class="block absolute top-0 left-0 w-full h-full object-cover transition-transform transform hover:scale-105 cursor-pointer"
                 />
               </span>
             </NuxtLink>
