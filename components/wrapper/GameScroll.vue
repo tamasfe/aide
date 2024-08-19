@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { PhCircleNotch } from "@phosphor-icons/vue";
-import { getGameCategoryTranslationKey } from "~/utils";
+import { getGameCategoryTranslationKey, getGameImageUrl } from "~/utils";
 import { useGames } from "~/composables/useGames";
 import type { Game } from "~/types/api";
 
@@ -24,7 +24,7 @@ const props = defineProps<{
 }>();
 
 const options = reactive({
-  offset: Math.round(Math.random() * 1000),
+  offset: 0,
   limit: 100,
   categories: [props.identifier],
 });
