@@ -8,7 +8,6 @@ import {
   TransitionChild,
 } from "@headlessui/vue";
 import { PhX } from "@phosphor-icons/vue";
-import { MODAL_SIZES } from "~/constants";
 
 type Size =
   | "full"
@@ -53,6 +52,23 @@ const positionClass = computed(() => {
   }
   return "fixed right-0 top-0 bottom-0 h-full min-h-0 ";
 });
+
+const MODAL_SIZES = {
+  full: "w-full",
+  sm: "max-w-sm",
+  md: "max-w-md",
+  lg: "max-w-lg",
+  xl: "max-w-xl",
+  "2xl": "max-w-2xl",
+  "3xl": "max-w-3xl",
+  "4xl": "max-w-4xl",
+  "5xl": "max-w-5xl",
+  "6xl": "max-w-6xl",
+  "7xl": "max-w-7xl",
+  "8xl": "max-w-8xl",
+  "9xl": "max-w-9xl",
+  "10xl": "max-w-10xl",
+};
 
 const size = computed(() => {
   if (props.size) {
