@@ -66,7 +66,7 @@ const modelValue = computed({
 });
 
 const getCountryCodeValue = (meta: CountryMetadata) => {
-  return `${meta.code}${meta.dial_code}`;
+  return `${meta.code}${meta.dialCode}`;
 };
 
 const phoneMaskCountries = Object.entries(PHONE_MASKS).map(([code, _]) => (
@@ -122,7 +122,7 @@ const placeholder = computed(() =>
                 :class="[selectedOption ? 'text-default' : 'text-subtle']"
                 :placeholder="placeholder"
               >
-                {{ selectedOption?.dial_code }}
+                {{ selectedOption?.dialCode }}
               </span>
             </div>
           </ListboxButton>
@@ -152,7 +152,7 @@ const placeholder = computed(() =>
                         size="m"
                       />
                       <span>
-                        {{ option.dial_code }}
+                        {{ option.dialCode }}
                       </span>
                     </div>
                   </slot>

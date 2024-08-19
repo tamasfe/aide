@@ -9,13 +9,13 @@ const { t } = useI18n();
 const language = ref<Language>("en");
 
 const languageOptions: Array<TranslationLanguageOption> = ACTIVE_TRANSLATIONS.map(meta => ({
-  title: t(`languages.${meta.key}`),
-  value: meta.value,
-  code: meta.code,
+  title: t(`languages.${meta.code}`),
+  value: meta.code,
+  countryCode: meta.countryCode,
 }));
 
-const getFlag = (lang: Language) => {
-  return languageOptions.find(option => option.value === lang)?.code;
+const getFlag = (code: Language) => {
+  return languageOptions.find(option => option.value === code)?.countryCode;
 };
 
 const scrollToTop = () => {

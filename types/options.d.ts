@@ -1,11 +1,13 @@
+import type { Currency } from "./constants";
+
 export type TranslationLanguageOption = {
   title: string;
   value: Language;
-  code: CountryCode;
+  countryCode: CountryCode;
 };
 
 export type FormatNumberOptions = {
-  currency?: string;
+  currency?: Currency;
   decimalPlaces?: number;
   locale: string;
 };

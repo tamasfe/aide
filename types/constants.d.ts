@@ -27,15 +27,14 @@ export type GameImageVariant =
   | "background";
 
 export type LanguageMetadata = {
-  key: string;
-  value: Language;
-  code: CountryCode;
+  code: Language;
+  countryCode: CountryCode;
 };
 
 export type CountryMetadata = {
-  name: string;
   code: CountryCode;
-  dial_code: string;
+  name: string;
+  dialCode: string;
 };
 
 export type PhoneMasks = {
