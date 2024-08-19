@@ -1,5 +1,10 @@
 import type { InjectionKey } from "vue";
-import type { LanguageMetadata, CountryMetadata, CountryCode, PhoneMasks } from "~/types/constants";
+import type {
+  LanguageMetadata,
+  CountryMetadata,
+  CountryCode,
+  PhoneMasks,
+} from "~/types/constants";
 
 // Symbols for injection keys
 export const openLoginModalSymbol = Symbol() as InjectionKey<() => void>;
@@ -36,9 +41,13 @@ export const PHONE_MASKS: PhoneMasks = {
 
 export const ACTIVE_TRANSLATION_COUNTRIES: Array<CountryCode> = ["US", "BR"];
 
-export const ACTIVE_TRANSLATIONS: Array<LanguageMetadata> = ACTIVE_TRANSLATION_COUNTRIES.map(code =>
-  LOCALE_METADATA.find(locale => locale.countryCode === code) as LanguageMetadata,
-);
+export const ACTIVE_TRANSLATIONS: Array<LanguageMetadata> =
+  ACTIVE_TRANSLATION_COUNTRIES.map(
+    (code) =>
+      LOCALE_METADATA.find(
+        (locale) => locale.countryCode === code
+      ) as LanguageMetadata
+  );
 
 // if we change this to be translated, get rid of name and use "key" like LanguageMetadata
 export const COUNTRY_METADATA: CountryMetadata[] = [
@@ -91,7 +100,11 @@ export const COUNTRY_METADATA: CountryMetadata[] = [
   { name: "Colombia", dialCode: "+57", code: "CO" },
   { name: "Comoros", dialCode: "+269", code: "KM" },
   { name: "Congo", dialCode: "+242", code: "CG" },
-  { name: "Congo, The Democratic Republic of the Congo", dialCode: "+243", code: "CD" },
+  {
+    name: "Congo, The Democratic Republic of the Congo",
+    dialCode: "+243",
+    code: "CD",
+  },
   { name: "Cook Islands", dialCode: "+682", code: "CK" },
   { name: "Costa Rica", dialCode: "+506", code: "CR" },
   { name: "Cote d'Ivoire", dialCode: "+225", code: "CI" },
@@ -141,7 +154,11 @@ export const COUNTRY_METADATA: CountryMetadata[] = [
   { name: "Iceland", dialCode: "+354", code: "IS" },
   { name: "India", dialCode: "+91", code: "IN" },
   { name: "Indonesia", dialCode: "+62", code: "ID" },
-  { name: "Iran, Islamic Republic of Persian Gulf", dialCode: "+98", code: "IR" },
+  {
+    name: "Iran, Islamic Republic of Persian Gulf",
+    dialCode: "+98",
+    code: "IR",
+  },
   { name: "Iraq", dialCode: "+964", code: "IQ" },
   { name: "Ireland", dialCode: "+353", code: "IE" },
   { name: "Isle of Man", dialCode: "+44", code: "IM" },
@@ -154,7 +171,11 @@ export const COUNTRY_METADATA: CountryMetadata[] = [
   { name: "Kazakhstan", dialCode: "+77", code: "KZ" },
   { name: "Kenya", dialCode: "+254", code: "KE" },
   { name: "Kiribati", dialCode: "+686", code: "KI" },
-  { name: "Korea, Democratic People's Republic of Korea", dialCode: "+850", code: "KP" },
+  {
+    name: "Korea, Democratic People's Republic of Korea",
+    dialCode: "+850",
+    code: "KP",
+  },
   { name: "Korea, Republic of South Korea", dialCode: "+82", code: "KR" },
   { name: "Kuwait", dialCode: "+965", code: "KW" },
   { name: "Kyrgyzstan", dialCode: "+996", code: "KG" },
@@ -181,7 +202,11 @@ export const COUNTRY_METADATA: CountryMetadata[] = [
   { name: "Mauritius", dialCode: "+230", code: "MU" },
   { name: "Mayotte", dialCode: "+262", code: "YT" },
   { name: "Mexico", dialCode: "+52", code: "MX" },
-  { name: "Micronesia, Federated States of Micronesia", dialCode: "+691", code: "FM" },
+  {
+    name: "Micronesia, Federated States of Micronesia",
+    dialCode: "+691",
+    code: "FM",
+  },
   { name: "Moldova", dialCode: "+373", code: "MD" },
   { name: "Monaco", dialCode: "+377", code: "MC" },
   { name: "Mongolia", dialCode: "+976", code: "MN" },
@@ -222,7 +247,11 @@ export const COUNTRY_METADATA: CountryMetadata[] = [
   { name: "Rwanda", dialCode: "+250", code: "RW" },
   { name: "Reunion", dialCode: "+262", code: "RE" },
   { name: "Saint Barthelemy", dialCode: "+590", code: "BL" },
-  { name: "Saint Helena, Ascension and Tristan Da Cunha", dialCode: "+290", code: "SH" },
+  {
+    name: "Saint Helena, Ascension and Tristan Da Cunha",
+    dialCode: "+290",
+    code: "SH",
+  },
   { name: "Saint Kitts and Nevis", dialCode: "+1869", code: "KN" },
   { name: "Saint Lucia", dialCode: "+1758", code: "LC" },
   { name: "Saint Martin", dialCode: "+590", code: "MF" },
@@ -243,7 +272,11 @@ export const COUNTRY_METADATA: CountryMetadata[] = [
   { name: "Somalia", dialCode: "+252", code: "SO" },
   { name: "South Africa", dialCode: "+27", code: "ZA" },
   { name: "South Sudan", dialCode: "+211", code: "SS" },
-  { name: "South Georgia and the South Sandwich Islands", dialCode: "+500", code: "GS" },
+  {
+    name: "South Georgia and the South Sandwich Islands",
+    dialCode: "+500",
+    code: "GS",
+  },
   { name: "Spain", dialCode: "+34", code: "ES" },
   { name: "Sri Lanka", dialCode: "+94", code: "LK" },
   { name: "Sudan", dialCode: "+249", code: "SD" },
@@ -255,7 +288,11 @@ export const COUNTRY_METADATA: CountryMetadata[] = [
   { name: "Syrian Arab Republic", dialCode: "+963", code: "SY" },
   { name: "Taiwan", dialCode: "+886", code: "TW" },
   { name: "Tajikistan", dialCode: "+992", code: "TJ" },
-  { name: "Tanzania, United Republic of Tanzania", dialCode: "+255", code: "TZ" },
+  {
+    name: "Tanzania, United Republic of Tanzania",
+    dialCode: "+255",
+    code: "TZ",
+  },
   { name: "Thailand", dialCode: "+66", code: "TH" },
   { name: "Timor-Leste", dialCode: "+670", code: "TL" },
   { name: "Togo", dialCode: "+228", code: "TG" },
@@ -275,7 +312,11 @@ export const COUNTRY_METADATA: CountryMetadata[] = [
   { name: "Uruguay", dialCode: "+598", code: "UY" },
   { name: "Uzbekistan", dialCode: "+998", code: "UZ" },
   { name: "Vanuatu", dialCode: "+678", code: "VU" },
-  { name: "Venezuela, Bolivarian Republic of Venezuela", dialCode: "+58", code: "VE" },
+  {
+    name: "Venezuela, Bolivarian Republic of Venezuela",
+    dialCode: "+58",
+    code: "VE",
+  },
   { name: "Vietnam", dialCode: "+84", code: "VN" },
   { name: "Virgin Islands, British", dialCode: "+1284", code: "VG" },
   { name: "Virgin Islands, U.S.", dialCode: "+1340", code: "VI" },
@@ -284,3 +325,7 @@ export const COUNTRY_METADATA: CountryMetadata[] = [
   { name: "Zambia", dialCode: "+260", code: "ZM" },
   { name: "Zimbabwe", dialCode: "+263", code: "ZW" },
 ];
+
+// Home page category constants
+export const INITIAL_GAMES_PER_CATEGORY = 100;
+export const LAZY_LOAD_GAMES_PER_CATEGORY = 40;

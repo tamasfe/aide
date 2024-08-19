@@ -3,6 +3,10 @@ import { PhCircleNotch } from "@phosphor-icons/vue";
 import { getGameCategoryTranslationKey, getGameImageUrl } from "~/utils";
 import { useGames } from "~/composables/useGames";
 import type { Game } from "~/types/game";
+import {
+  INITIAL_GAMES_PER_CATEGORY,
+  LAZY_LOAD_GAMES_PER_CATEGORY,
+} from "~/constants";
 
 type GridScrollEvent = {
   scrollLeft: number;
@@ -23,19 +27,19 @@ const props = defineProps<{
   identifier: string;
 }>();
 
-const options = reactive({
+const options = ref({
   offset: 0,
-  limit: 100,
+  limit: INITIAL_GAMES_PER_CATEGORY,
   categories: [props.identifier],
 });
 
-const { data: games, status } = await useGames(options);
+const { data: games, status, refresh } = await useGames(options);
 const data = ref<(Game | null)[]>([]);
 
 const isLastPage = () => {
   if (!games.value) return false;
   // TODO: this should come from API
-  return games.value.data.length < options.limit;
+  return games.value.data.length < options.value.limit;
 };
 
 const onScroll = (event: GridScrollEvent) => {
@@ -45,11 +49,14 @@ const onScroll = (event: GridScrollEvent) => {
   if (pxToEnd < 1200) {
     // we check if we have already fetched this offset and limit
     // if not, we fetch more data by increasing the offset
-    const newOffset = options.offset + options.limit;
-    if (!loadedOffsetLimitCombinations.has(`${newOffset}-${options.limit}`)) {
+    const newOffset = options.value.offset + options.value.limit;
+    if (
+      !loadedOffsetLimitCombinations.has(`${newOffset}-${options.value.limit}`)
+    ) {
       // triggers refetch becuase useGames
       // composable is watching for options change
-      options.offset = newOffset;
+      options.value.offset = newOffset;
+      refresh();
     }
   }
 };
@@ -60,7 +67,9 @@ watch(
   games,
   () => {
     if (games.value && games.value.data.length) {
-      loadedOffsetLimitCombinations.add(`${options.offset}-${options.limit}`);
+      loadedOffsetLimitCombinations.add(
+        `${options.value.offset}-${options.value.limit}`,
+      );
       data.value = data.value.concat(games.value.data);
     }
   },
@@ -68,6 +77,12 @@ watch(
     immediate: true,
   },
 );
+
+// once hydrated we set the limit and offset
+onMounted(() => {
+  options.value.limit = LAZY_LOAD_GAMES_PER_CATEGORY;
+  options.value.offset = INITIAL_GAMES_PER_CATEGORY;
+});
 </script>
 
 <template>

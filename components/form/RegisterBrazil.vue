@@ -25,9 +25,9 @@ const validationSchema = toTypedSchema(
         .string()
         .min(1, { message: t("validation.field_required") })
         .min(8, { message: t("validation.field_too_short") }),
-      cpf: zod.string().min(1, { message: t("field_required") }),
-      phone: zod.string().min(1, { message: t("field_required") }),
-      region: zod.string().min(1, { message: t("field_required") }),
+      cpf: zod.string().min(1, { message: t("validation.field_required") }),
+      phone: zod.string().min(1, { message: t("validation.field_required") }),
+      region: zod.string().min(1, { message: t("validation.field_required") }),
     })
     .superRefine((data, ctx) => {
       const locale = data.region.split("+")[0] as CountryCode;
