@@ -50,9 +50,11 @@ const nextPage = () => {
     console.log("scrollAmount", (slideWidth + gap) * props.slidesToScroll);
     const value
       = slider.value.scrollLeft + (slideWidth + gap) * props.slidesToScroll;
-    console.log("value", value);
-    console.log("[nextPage current scrollLeft]", slider.value.scrollLeft);
+    // console.log("value", value);
+    // console.log("[nextPage current scrollLeft]", slider.value.scrollLeft);
+    // console.log("[nextPage new scrollLeft]", slider.value.scrollLeft);
     scrollToPosition(value, 350);
+    slider.value.scrollLeft = value;
   }
   emit("click:nextPage");
 };
@@ -62,10 +64,10 @@ const previousPage = () => {
   if (slider.value) {
     const slideWidth = slider.value.children[0]?.clientWidth;
     const gap = parseInt(getComputedStyle(slider.value).gap, 10);
-    scrollToPosition(
-      slider.value.scrollLeft - (slideWidth + gap) * props.slidesToScroll,
-      350,
-    );
+    const value
+      = slider.value.scrollLeft - (slideWidth + gap) * props.slidesToScroll;
+    scrollToPosition(value, 350);
+    slider.value.scrollLeft = value;
   }
   emit("click:previousPage");
 };
