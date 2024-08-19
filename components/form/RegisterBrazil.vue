@@ -66,7 +66,7 @@ const { value: region } = useField(
   },
 );
 
-const maskOptions: MaskInputOptions = {
+const cpfMask: MaskInputOptions = {
   mask: "###.###.###-##",
   eager: true,
 };
@@ -166,7 +166,7 @@ onMounted(() => {
       input-class="text-default"
       inputmode="numeric"
       :error="errors.cpf"
-      :maska="maskOptions"
+      :maska="cpfMask"
     />
     <FormControl
       v-model="phone"
@@ -180,12 +180,13 @@ onMounted(() => {
     />
     <p class="text-sm text-subtle py-4">
       {{ t("auth.accept_terms") }}
-      <button
-        type="button"
+      <NuxtLink
+        to="/terms"
+        target="_blank"
         class="font-semibold"
       >
         {{ t("auth.terms") }}
-      </button>
+      </NuxtLink>
     </p>
     <BaseButton
       class="w-full inline-flex justify-center text-lg !rounded-[0.3rem] !py-4 sm:!py-3"
