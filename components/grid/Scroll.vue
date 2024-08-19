@@ -47,11 +47,8 @@ const nextPage = () => {
   if (slider.value) {
     const slideWidth = slider.value.children[0]?.clientWidth;
     const gap = parseInt(getComputedStyle(slider.value).gap, 10);
-    console.log("scrollAmount", (slideWidth + gap) * props.slidesToScroll);
     const value
       = slider.value.scrollLeft + (slideWidth + gap) * props.slidesToScroll;
-    console.log("value", value);
-    console.log("[nextPage current scrollLeft]", slider.value.scrollLeft);
     scrollToPosition(value, 350);
   }
   emit("click:nextPage");
@@ -121,7 +118,6 @@ const scrollToPosition = (target: number, duration: number) => {
   };
 
   animateScroll();
-  console.log("scrollLeft", slider.value.scrollLeft);
 };
 </script>
 

@@ -6,7 +6,6 @@ const search = ref("");
 const { data: categories } = await useGameCategories("home");
 
 const data = computed(() => {
-  console.log("categories.value", categories.value);
   return categories.value || [];
 });
 </script>

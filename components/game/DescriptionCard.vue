@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import { PhCaretDown } from "@phosphor-icons/vue";
-
-console.log("test");
 </script>
 
 <template>

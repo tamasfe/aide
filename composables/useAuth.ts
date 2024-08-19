@@ -39,6 +39,7 @@ export function useAuth() {
     let flowId: null | string = null;
     try {
       const flowData = await $fetch<SignupFlow>("/signup/flow", {
+        // TODO refactor out this hardcode as soon as possible
         headers: {
           "cf-ipcountry": "BR",
         },
@@ -93,8 +94,6 @@ export function useAuth() {
       credentials: "include", // Ensure cookies are included in the request
       baseURL: config.public.apiBaseUrl,
     });
-
-    console.log("logged in");
 
     if (error.value) {
       return false;

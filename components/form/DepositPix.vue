@@ -4,7 +4,6 @@ import { PhArrowLeft, PhCopy } from "@phosphor-icons/vue";
 const emit = defineEmits(["update:pix", "click:back"]);
 
 const onSubmit = () => {
-  console.log("do something");
 };
 
 const goBack = () => {
