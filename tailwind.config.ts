@@ -1,7 +1,7 @@
 import type { Config } from "tailwindcss";
 
 export default <Partial<Config>>{
-  content: ["./pages/**/*.vue", "./components/**/*.vue"],
+  content: ["./pages/**/*.vue", "./components/**/*.vue", "./constants/**/*.ts"],
   theme: {
     fontSize: {
       base: "var(--giro-font-size)",
