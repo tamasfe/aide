@@ -41,6 +41,9 @@ importers:
       nuxt:
         specifier: ^3.12.4
         version: 3.12.4(@parcel/watcher@2.4.1)(@types/node@22.4.1)(encoding@0.1.13)(eslint@9.9.0(jiti@1.21.6))(ioredis@5.4.1)(magicast@0.3.4)(optionator@0.9.4)(rollup@4.21.0)(sass@1.77.6)(terser@5.31.6)(typescript@5.5.4)(vite@5.4.1(@types/node@22.4.1)(sass@1.77.6)(terser@5.31.6))(vue-tsc@2.0.29(typescript@5.5.4))
+      pathe:
+        specifier: ^1.1.2
+        version: 1.1.2
       pinia:
         specifier: ^2.2.2
         version: 2.2.2(typescript@5.5.4)(vue@3.4.38(typescript@5.5.4))
