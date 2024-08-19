@@ -28,7 +28,7 @@ const props = withDefaults(defineProps<{
 // maybe refactor this out to composable (maybe this linked solution,
 // or another one in the thread)
 // https://github.com/nuxt/nuxt/issues/14766/#issuecomment-1397365434
-const glob = import.meta.glob("~/assets/svg/flags/*.svg", { eager: true });
+const glob = import.meta.glob("~/assets/svg/flags/active/*.svg", { eager: true });
 const images = Object.fromEntries(
   Object.entries(glob).map(([key, value]) => [filename(key), value.default]),
 );

@@ -39,7 +39,12 @@ export const PHONE_MASKS: PhoneMasks = {
   BR: ["(##) #####-####", "(##) ####-####"],
 };
 
-export const ACTIVE_TRANSLATION_COUNTRIES: Array<CountryCode> = ["US", "BR"];
+// IMPORTANT: when you update this, move the associated flag
+// from assets/flags to assets/flags/active
+export const ACTIVE_TRANSLATION_COUNTRIES: Array<CountryCode> = [
+  "US",
+  "BR",
+];
 
 export const ACTIVE_TRANSLATIONS: Array<LanguageMetadata>
   = ACTIVE_TRANSLATION_COUNTRIES.map(
