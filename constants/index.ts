@@ -1,5 +1,5 @@
 import type { InjectionKey } from "vue";
-import type { CountryCode } from "~/types/constants";
+import type { CountryCode, Language } from "~/types/constants";
 
 // Symbols for injection keys
 export const openLoginModalSymbol = Symbol() as InjectionKey<() => void>;
@@ -30,6 +30,11 @@ export const MODAL_SIZES = {
   "9xl": "max-w-9xl",
   "10xl": "max-w-10xl",
 };
+
+export const LANGUAGES: Array<{ key: string; value: Language; code: string }> = [
+  { key: "english", value: "en", code: "US" },
+  { key: "portuguese", value: "pt", code: "BR" },
+];
 
 export const COUNTRY_CODES: CountryCode[] = [
   { name: "Afghanistan", dial_code: "+93", code: "AF" },

@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { PhCaretUp } from "@phosphor-icons/vue";
+import { LANGUAGES } from "~/constants";
 
 const { t } = useI18n();
 
-const languageOptions = [
-  { title: t("languages.english"), value: "en" },
-  { title: t("languages.portuguese"), value: "pt" },
-];
+const languageOptions = LANGUAGES.map(language => ({
+  title: t(`languages.${language.key}`),
+  value: language.value,
+}));
 
 const language = ref("en");
 
