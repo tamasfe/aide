@@ -114,7 +114,6 @@ const placeholder = computed(() =>
               class="flex items-center gap-2"
             >
               <BaseFlag
-                :key="selectedOption.code"
                 :code="selectedOption.code"
                 size="m"
               />
