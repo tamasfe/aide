@@ -12,6 +12,10 @@ export const openRegisterModalSymbol = Symbol() as InjectionKey<() => void>;
 export const openSidebarSymbol = Symbol() as InjectionKey<() => void>;
 export const toggleSidebarSymbol = Symbol() as InjectionKey<() => void>;
 
+// Home page category constants
+export const INITIAL_GAMES_PER_CATEGORY = 100;
+export const LAZY_LOAD_GAMES_PER_CATEGORY = 40;
+
 export const MODAL_SIZES = {
   full: "w-full",
   sm: "max-w-sm",
@@ -330,7 +334,3 @@ export const COUNTRY_METADATA: CountryMetadata[] = [
   { name: "Zambia", dialCode: "+260", code: "ZM" },
   { name: "Zimbabwe", dialCode: "+263", code: "ZW" },
 ];
-
-// Home page category constants
-export const INITIAL_GAMES_PER_CATEGORY = 100;
-export const LAZY_LOAD_GAMES_PER_CATEGORY = 40;
