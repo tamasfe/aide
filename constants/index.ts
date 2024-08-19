@@ -1,5 +1,5 @@
 import type { InjectionKey } from "vue";
-import type { CountryCode } from "../types/constants";
+import type { CountryCode } from "~/types/constants";
 
 // Symbols for injection keys
 export const openLoginModalSymbol = Symbol() as InjectionKey<() => void>;

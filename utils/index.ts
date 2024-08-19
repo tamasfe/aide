@@ -2,7 +2,8 @@ import { Mask } from "maska";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import type { FormatNumberOptions } from "../types/utils";
-import type { GameImageVariant, ValidationErrorMetadata } from "~/types/api";
+import type { ValidationErrorMetadata } from "~/types/api";
+import type { GameImageVariant } from "~/types/constants";
 import { NUMBER_MASKS } from "~/constants";
 
 export const overlay = (element: HTMLElement) => {

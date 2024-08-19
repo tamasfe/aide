@@ -1,4 +1,4 @@
-import type { Category } from "~/types/api";
+import type { Category } from "~/types/category";
 
 export const useGameCategories = async (group?: string) => {
   const config = useRuntimeConfig();

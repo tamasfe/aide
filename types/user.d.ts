@@ -1,7 +1,9 @@
+import type { Jurisdiction, Language, Currency, Gender } from "./constants";
+
 export type UserAccountJurisdiction = {
   code: Jurisdiction;
   name: string;
-  currencies: string[];
+  currencies: Currency[];
 };
 
 export type UserAccount = {
@@ -26,7 +28,7 @@ export type UserAccount = {
 
 export type UserAccountPhysicalAddress = {
   id: number;
-  id_user_account: number;
+  id_user_account: UserAccount["id"];
   address_line1: string | null;
   address_line2: string | null;
   address_line3: string | null;
@@ -40,7 +42,7 @@ export type UserAccountPhysicalAddress = {
 
 export type UserAccountAttribute = {
   id: number;
-  id_user_account: number;
+  id_user_account: UserAccount["id"];
   key: string;
   value: Record<string, unknown>;
   created_at: string;
@@ -49,9 +51,14 @@ export type UserAccountAttribute = {
 
 export type UserAccountSetting = {
   id: number;
-  id_user_account: number;
+  id_user_account: UserAccount["id"];
   key: string;
   value: Record<string, unknown>;
   created_at: string;
   updated_at: string;
+};
+
+export type UserBalance = {
+  balance: string;
+  currency: Currency;
 };

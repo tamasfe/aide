@@ -1,4 +1,4 @@
-import type { UserBalance } from "~/types/api";
+import type { UserBalance } from "~/types/user";
 
 export const useBalance = () => {
   const config = useRuntimeConfig();

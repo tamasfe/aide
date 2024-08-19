@@ -1,6 +1,6 @@
 import type { Reactive } from "vue";
-import type { Game, ApiData } from "~/types/api";
-import type { UseGamesOptions } from "~/types/game";
+import type { ApiData } from "~/types/api";
+import type { Game, UseGamesOptions } from "~/types/game";
 
 export const useGames = (options: Reactive<UseGamesOptions>) => {
   const config = useRuntimeConfig();

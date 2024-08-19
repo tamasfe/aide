@@ -1,3 +1,5 @@
+import type { Jurisdiction } from "./constants";
+
 export type LoginCredentials = {
   username: string;
   password: string;
@@ -19,7 +21,7 @@ export type SignupFlow = {
 export type Flow<T> = {
   id: string;
   fields: T;
-  jurisdiction: string;
+  jurisdiction: Jurisdiction;
 };
 
 export type WhoAmI = {

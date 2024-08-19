@@ -2,7 +2,7 @@
 import { PhCircleNotch } from "@phosphor-icons/vue";
 import { getGameCategoryTranslationKey, getGameImageUrl } from "~/utils";
 import { useGames } from "~/composables/useGames";
-import type { Game } from "~/types/api";
+import type { Game } from "~/types/game";
 
 type GridScrollEvent = {
   scrollLeft: number;
