@@ -41,12 +41,12 @@ export const PHONE_MASKS: PhoneMasks = {
 
 export const ACTIVE_TRANSLATION_COUNTRIES: Array<CountryCode> = ["US", "BR"];
 
-export const ACTIVE_TRANSLATIONS: Array<LanguageMetadata> =
-  ACTIVE_TRANSLATION_COUNTRIES.map(
-    (code) =>
+export const ACTIVE_TRANSLATIONS: Array<LanguageMetadata>
+  = ACTIVE_TRANSLATION_COUNTRIES.map(
+    code =>
       LOCALE_METADATA.find(
-        (locale) => locale.countryCode === code
-      ) as LanguageMetadata
+        locale => locale.countryCode === code,
+      ) as LanguageMetadata,
   );
 
 // if we change this to be translated, get rid of name and use "key" like LanguageMetadata

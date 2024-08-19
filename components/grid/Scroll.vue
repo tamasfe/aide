@@ -14,7 +14,7 @@ const props = withDefaults(
     showControls: true,
     loading: false,
     slidesToScroll: 1,
-  }
+  },
 );
 
 const { data } = toRefs(props);
@@ -31,8 +31,8 @@ const onScroll = () => {
   if (slider.value) {
     isAtBeginning.value = slider.value.scrollLeft <= 1;
     const maxWidth = slider.value.scrollLeft + slider.value.clientWidth;
-    isTheEnd.value =
-      Math.round(maxWidth) >= Math.round(slider.value.scrollWidth) - 10;
+    isTheEnd.value
+      = Math.round(maxWidth) >= Math.round(slider.value.scrollWidth) - 10;
     // emit scrolled percentage to parent
     emit("scrolled", {
       scrollLeft: slider.value.scrollLeft,
@@ -47,8 +47,8 @@ const nextPage = () => {
   if (slider.value) {
     const slideWidth = slider.value.children[0]?.clientWidth;
     const gap = parseInt(getComputedStyle(slider.value).gap, 10);
-    const value =
-      slider.value.scrollLeft + (slideWidth + gap) * props.slidesToScroll;
+    const value
+      = slider.value.scrollLeft + (slideWidth + gap) * props.slidesToScroll;
     // console.log("value", value);
     // console.log("[nextPage current scrollLeft]", slider.value.scrollLeft);
     // console.log("[nextPage new scrollLeft]", slider.value.scrollLeft);
@@ -63,8 +63,8 @@ const previousPage = () => {
   if (slider.value) {
     const slideWidth = slider.value.children[0]?.clientWidth;
     const gap = parseInt(getComputedStyle(slider.value).gap, 10);
-    const value =
-      slider.value.scrollLeft - (slideWidth + gap) * props.slidesToScroll;
+    const value
+      = slider.value.scrollLeft - (slideWidth + gap) * props.slidesToScroll;
     scrollToPosition(value, 350);
     slider.value.scrollLeft = value;
   }
@@ -115,7 +115,8 @@ const scrollToPosition = (target: number, duration: number) => {
     }
     if (currentTime < duration) {
       requestAnimationFrame(animateScroll);
-    } else {
+    }
+    else {
       isAnimating.value = false;
     }
   };
@@ -167,7 +168,11 @@ const scrollToPosition = (target: number, duration: number) => {
       ref="slider"
       class="w-full flex items-center gap-4 overflow-auto sm:overflow-hidden giro__hide-scroll"
     >
-      <slot v-for="(datapoint, index) in data" :key="index" :data="datapoint" />
+      <slot
+        v-for="(datapoint, index) in data"
+        :key="index"
+        :data="datapoint"
+      />
       <slot name="loading" />
     </div>
   </div>
