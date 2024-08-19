@@ -32,14 +32,17 @@ const options = reactive({
 const { data: games, status } = await useGames(options);
 const data = ref<(Game | null)[]>([]);
 
+const isLastPage = () => {
+  if (!games.value) return false;
+  // TODO: this should come from API
+  return games.value.data.length < options.limit;
+};
+
 const onScroll = (event: GridScrollEvent) => {
-  if (
-    status.value === "pending"
-    || (games.value && games.value.data.length < options.limit)
-  )
-    return;
+  if (status.value === "pending" || isLastPage()) return;
+  // we check if we are close to the end of the scroll
   const pxToEnd = event.scrollWidth - event.scrollLeft - event.clientWidth;
-  if (pxToEnd < 600) {
+  if (pxToEnd < 1200) {
     // we check if we have already fetched this offset and limit
     // if not, we fetch more data by increasing the offset
     const newOffset = options.offset + options.limit;
