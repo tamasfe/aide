@@ -18,18 +18,27 @@ const telegramUrl = computed(() => {
 });
 
 const instagramUrl = computed(() => {
-  if (props.code === "en") {
-    return "TODO";
+  if (props.code === "pt") {
+    return "https://www.instagram.com/girobetofficial/";
   }
+  // eventually default to english
   return "https://www.instagram.com/girobetofficial/";
 });
 
 const xUrl = computed(() => {
-  return "TODO";
+  if (props.code === "pt") {
+    return "https://x.com/girobet";
+  }
+  // eventually default to english
+  return "https://x.com/girobet";
 });
 
 const tiktokUrl = computed(() => {
-  return "TODO";
+  if (props.code === "pt") {
+    return "https://www.tiktok.com/@girobetofficial";
+  }
+  // eventually default to english
+  return "https://www.tiktok.com/@girobetofficial";
 });
 </script>
 
