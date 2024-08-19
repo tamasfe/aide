@@ -12,21 +12,7 @@ import { MODAL_SIZES } from "~/constants";
 
 const emit = defineEmits(["update:opened", "close"]);
 
-type Size =
-  | "full"
-  | "sm"
-  | "md"
-  | "lg"
-  | "xl"
-  | "2xl"
-  | "3xl"
-  | "4xl"
-  | "5xl"
-  | "6xl"
-  | "7xl"
-  | "8xl"
-  | "9xl"
-  | "10xl";
+type Size = keyof typeof MODAL_SIZES;
 
 const props = withDefaults(
   defineProps<{
