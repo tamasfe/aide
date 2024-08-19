@@ -94,25 +94,30 @@
     "search": "Search",
     "enter": "Enter",
     "see_all": "See all",
-    "social_media": "Social Media",
     "support": "Support"
   },
-  "footer": {
-    "copyright": "©2024 GIROBET ALL RIGHTS RESERVED",
-    "slogan": "Welcome to The GiroBet Experience the ultimate thrill of online gambling with us. Play slots, poker, blackjack, and more. Win big with our bonuses and promotions.",
-    "legal_notice": "Prior to engaging in any online gambling activities on our platform, it is imperative to verify that such actions are legally permissible within your jurisdiction. It is your responsibility to ascertain and adhere to the laws and regulations governing online gambling in your country or region.",
-    "legal": "Legal",
-    "terms_of_service": "Terms of Use & Service Agreement",
-    "privacy_policy": "Privacy Policy",
-    "custom_privacy_notice": "Custom Privacy Notice",
-    "affiliate_terms_and_conditions": "Affiliate Terms and Conditions",
-    "for_partners": "For Partners",
-    "vip_program": "VIP Program",
-    "banking": "Banking",
-    "security_and_fair_play": "Security and Fair Play",
-    "responsible_gambling": "Responsible Gambling",
+  "pages": {
+    "aviator": "Aviator",
+    "slots": "Slots",
+    "live_casino": "Live Casino",
+    "affiliate_program": "Affiliate Program",
     "faq": "FAQ",
-    "contact_us": "Contact Us"
+    "support": "Support",
+    "telegram": "Telegram",
+    "betting_terms": "Betting Terms",
+    "terms": "Terms & Conditions",
+    "privacy": "Privacy Policy",
+    "aml_policy": "AML Policy",
+    "responsible_gaming": "Responsible Gaming"
+  },
+  "footer": {
+    "summary": "Welcome to The GiroBet Experience the ultimate thrill of online gambling with us. Play slots, poker, blackjack, and more. Win big with our bonuses and promotions.",
+    "popular": "Popular",
+    "girobet": "GiroBet",
+    "legal": "Legal",
+    "social_media": "Social Media",
+    "legal_notice": "Prior to engaging in any online gambling activities on our platform, it is imperative to verify that such actions are legally permissible within your jurisdiction. It is your responsibility to ascertain and adhere to the laws and regulations governing online gambling in your country or region.",
+    "copyright": "© 2024 GiroBet. All Rights Reserved."
   },
   "languages": {
     "en": "English",

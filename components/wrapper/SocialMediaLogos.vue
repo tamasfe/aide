@@ -12,7 +12,7 @@ const { t } = useI18n();
 <template>
   <div class="flex flex-col space-y-4">
     <h3 class="text-lg text-emphasis font-semibold hidden md:block">
-      {{ t("misc.social_media") }}
+      {{ t("footer.social_media") }}
     </h3>
     <div class="flex space-x-2 lg:space-x-4 justify-evenly md:justify-start">
       <NuxtLink

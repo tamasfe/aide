@@ -39,9 +39,7 @@ const scrollToTop = () => {
             class="w-full object-cover"
           />
         </div>
-        <p>
-          {{ t("footer.slogan") }}
-        </p>
+        <p>{{ t("footer.summary") }}</p>
         <BaseSelect
           v-model="language"
           :options="languageOptions"
@@ -68,31 +66,30 @@ const scrollToTop = () => {
       </div>
       <WrapperSocialMediaLogos class="md:hidden" />
       <WrapperFooterColumn
+        :section="t('footer.popular')"
+        :options="[
+          { title: t('pages.aviator'), to: 'TODO' },
+          { title: t('pages.slots'), to: 'TODO' },
+          { title: t('pages.live_casino'), to: 'TODO' },
+        ]"
+      />
+      <WrapperFooterColumn
+        :section="t('footer.girobet')"
+        :options="[
+          { title: t('pages.affiliate_program'), to: '/affiliate-program' },
+          { title: t('pages.faq'), to: '/faq' },
+          { title: t('pages.support'), to: '/support' },
+          { title: t('pages.telegram'), to: 'TODO' },
+        ]"
+      />
+      <WrapperFooterColumn
         :section="t('footer.legal')"
         :options="[
-          { title: t('footer.terms_of_service'), to: '/terms' },
-          { title: t('footer.privacy_policy'), to: '/privacy' },
-          { title: t('footer.custom_privacy_notice'), to: '/responsible' },
-          { title: t('footer.affiliate_terms_and_conditions'), to: '/cookies' },
-        ]"
-      />
-      <WrapperFooterColumn
-        :section="t('footer.for_partners')"
-        :options="[
-          { title: t('footer.vip_program'), to: '/terms' },
-          { title: t('footer.banking'), to: '/privacy' },
-          { title: t('footer.security_and_fair_play'), to: '/responsible' },
-          { title: t('footer.responsible_gambling'), to: '/cookies' },
-        ]"
-      />
-      <WrapperFooterColumn
-        :section="t('navigation.menu')"
-        :options="[
-          { title: t('navigation.home'), to: '/' },
-          { title: t('misc.games'), to: '/games' },
-          { title: t('promotions.promotions'), to: '/promotions' },
-          { title: t('footer.faq'), to: '/faq' },
-          { title: t('footer.contact_us'), to: '/contact' },
+          { title: t('pages.betting_terms'), to: '/betting-terms' },
+          { title: t('pages.terms'), to: '/terms' },
+          { title: t('pages.privacy'), to: '/privacy' },
+          { title: t('pages.aml_policy'), to: '/aml-policy' },
+          { title: t('pages.responsible_gaming'), to: '/responsible-gaming' },
         ]"
       />
       <WrapperSocialMediaLogos class="hidden lg:flex" />
