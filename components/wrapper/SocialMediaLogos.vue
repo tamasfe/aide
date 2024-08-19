@@ -5,8 +5,32 @@ import {
   PhTiktokLogo,
   PhXLogo,
 } from "@phosphor-icons/vue";
+import type { Language } from "@/types/constants";
 
 const { t } = useI18n();
+
+const props = defineProps<{
+  code: Language;
+}>();
+
+const telegramUrl = computed(() => {
+  return "TODO";
+});
+
+const instagramUrl = computed(() => {
+  if (props.code === "en") {
+    return "TODO";
+  }
+  return "https://www.instagram.com/girobetofficial/";
+});
+
+const xUrl = computed(() => {
+  return "TODO";
+});
+
+const tiktokUrl = computed(() => {
+  return "TODO";
+});
 </script>
 
 <template>
@@ -16,7 +40,7 @@ const { t } = useI18n();
     </h3>
     <div class="flex space-x-2 lg:space-x-4 justify-evenly md:justify-start">
       <NuxtLink
-        to="/telegram"
+        :to="telegramUrl"
         target="_blank"
         rel="noopener noreferrer"
         class="p-1 lg:p-3 rounded-xl hover:bg-emphasis"
@@ -24,7 +48,7 @@ const { t } = useI18n();
         <PhTelegramLogo :size="28" />
       </NuxtLink>
       <NuxtLink
-        to="/instagram"
+        :to="instagramUrl"
         target="_blank"
         rel="noopener noreferrer"
         class="p-1 lg:p-3 rounded-xl hover:bg-emphasis"
@@ -32,7 +56,7 @@ const { t } = useI18n();
         <PhInstagramLogo :size="28" />
       </NuxtLink>
       <NuxtLink
-        to="/x"
+        :to="xUrl"
         target="_blank"
         rel="noopener noreferrer"
         class="p-1 lg:p-3 rounded-xl hover:bg-emphasis"
@@ -40,7 +64,7 @@ const { t } = useI18n();
         <PhXLogo :size="28" />
       </NuxtLink>
       <NuxtLink
-        to="/tiktok"
+        :to="tiktokUrl"
         target="_blank"
         rel="noopener noreferrer"
         class="p-1 lg:p-3 rounded-xl hover:bg-emphasis"

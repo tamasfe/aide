@@ -16,9 +16,9 @@ import { filename } from "pathe/utils";
 import type { CountryCode } from "@/types/constants";
 
 const props = withDefaults(defineProps<{
-  size: "m" | "s" | "l";
+  size?: "m" | "s" | "l";
   code: CountryCode;
-  borderRadius: boolean;
+  borderRadius?: boolean;
   className?: string;
 }>(), {
   size: "m",

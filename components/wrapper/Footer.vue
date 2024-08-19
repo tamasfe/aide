@@ -25,7 +25,7 @@ const scrollToTop = () => {
 
 <template>
   <footer class="py-6 md:py-12 bg-subtle flex flex-col space-y-10">
-    <!-- info -->
+    <!-- main -->
     <section
       class="giro__container w-full flex flex-col md:flex-row md:justify-between sm:space-x-8 md:space-x-12 text-subtle"
     >
@@ -64,7 +64,10 @@ const scrollToTop = () => {
           </template>
         </BaseSelect>
       </div>
-      <WrapperSocialMediaLogos class="md:hidden" />
+      <WrapperSocialMediaLogos
+        :code="language"
+        class="md:hidden"
+      />
       <WrapperFooterColumn
         :section="t('footer.popular')"
         :options="[
@@ -92,10 +95,15 @@ const scrollToTop = () => {
           { title: t('pages.responsible_gaming'), to: '/responsible-gaming' },
         ]"
       />
-      <WrapperSocialMediaLogos class="hidden lg:flex" />
+      <WrapperSocialMediaLogos
+        :code="language"
+        class="hidden lg:flex"
+      />
     </section>
+
     <!-- logos -->
     <section class="giro__container w-full">logos here</section>
+
     <!-- trademark -->
     <section
       class="giro__container w-full flex items-center flex-col md:flex-row justify-between md:space-x-4 space-y-4 text-sm text-subtle"
