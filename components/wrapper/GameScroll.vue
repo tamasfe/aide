@@ -11,7 +11,7 @@ import {
 type GridScrollEvent = {
   scrollLeft: number;
   scrollWidth: number;
-  clientWidth: number;
+  boundingClientRect: DOMRect;
 };
 
 // TODO: seo
@@ -45,7 +45,8 @@ const isLastPage = () => {
 const onScroll = (event: GridScrollEvent) => {
   if (status.value === "pending" || isLastPage()) return;
   // we check if we are close to the end of the scroll
-  const pxToEnd = event.scrollWidth - event.scrollLeft - event.clientWidth;
+  const pxToEnd
+    = event.scrollWidth - event.scrollLeft - event.boundingClientRect.width;
   if (pxToEnd < 1200) {
     // we check if we have already fetched this offset and limit
     // if not, we fetch more data by increasing the offset

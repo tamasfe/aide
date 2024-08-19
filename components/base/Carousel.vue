@@ -91,7 +91,8 @@ const transform = () => {
     //   inline: "start",
     // });
     container.value.style.transform = `translateX(-${
-      currentIndex.value * items.value[currentIndex.value].clientWidth
+      currentIndex.value
+      * items.value[currentIndex.value].getBoundingClientRect().width
     }px)`;
   }
 };

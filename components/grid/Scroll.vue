@@ -30,14 +30,15 @@ const isAnimating = ref(false);
 const onScroll = () => {
   if (slider.value) {
     isAtBeginning.value = slider.value.scrollLeft <= 1;
-    const maxWidth = slider.value.scrollLeft + slider.value.clientWidth;
+    const maxWidth
+      = slider.value.scrollLeft + slider.value.getBoundingClientRect().width;
     isTheEnd.value
       = Math.round(maxWidth) >= Math.round(slider.value.scrollWidth) - 10;
     // emit scrolled percentage to parent
     emit("scrolled", {
       scrollLeft: slider.value.scrollLeft,
       scrollWidth: slider.value.scrollWidth,
-      clientWidth: slider.value.clientWidth,
+      boundingClientRect: slider.value.getBoundingClientRect(),
     });
   }
 };
@@ -45,15 +46,11 @@ const onScroll = () => {
 const nextPage = () => {
   if (isTheEnd.value || isAnimating.value) return;
   if (slider.value) {
-    const slideWidth = slider.value.children[0]?.clientWidth;
+    const slideWidth = slider.value.children[0]?.getBoundingClientRect().width;
     const gap = parseInt(getComputedStyle(slider.value).gap, 10);
     const value
       = slider.value.scrollLeft + (slideWidth + gap) * props.slidesToScroll;
-    // console.log("value", value);
-    // console.log("[nextPage current scrollLeft]", slider.value.scrollLeft);
-    // console.log("[nextPage new scrollLeft]", slider.value.scrollLeft);
     scrollToPosition(value, 350);
-    slider.value.scrollLeft = value;
   }
   emit("click:nextPage");
 };
@@ -61,7 +58,7 @@ const nextPage = () => {
 const previousPage = () => {
   if (isAtBeginning.value || isAnimating.value) return;
   if (slider.value) {
-    const slideWidth = slider.value.children[0]?.clientWidth;
+    const slideWidth = slider.value.children[0]?.getBoundingClientRect().width;
     const gap = parseInt(getComputedStyle(slider.value).gap, 10);
     const value
       = slider.value.scrollLeft - (slideWidth + gap) * props.slidesToScroll;
