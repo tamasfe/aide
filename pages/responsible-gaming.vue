@@ -3,5 +3,5 @@ const { t } = useI18n();
 </script>
 
 <template>
-  <h1>{{ t("pages.responsible_gaming") }}</h1>
+  <h1>{{ t("page.responsible_gaming") }}</h1>
 </template>

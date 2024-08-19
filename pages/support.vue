@@ -3,5 +3,5 @@ const { t } = useI18n();
 </script>
 
 <template>
-  <h1>{{ t("pages.support") }}</h1>
+  <h1>{{ t("page.support") }}</h1>
 </template>

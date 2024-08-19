@@ -159,5 +159,5 @@ export const generateSkeletonPlaceholderData = (length: number) => {
 };
 
 export const getGameCategoryTranslationKey = (identifier: string) => {
-  return `categories.${identifier}`;
+  return `category.${identifier}`;
 };

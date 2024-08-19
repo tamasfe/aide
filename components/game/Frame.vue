@@ -51,7 +51,7 @@ const id = Number(params.id as string);
           </div>
           <div class="flex flex-col space-y-4 w-full">
             <h1 class="text-base xl:text-lg font-bold text-center">
-              {{ t("game.not_authenticated") }}
+              {{ t("auth.login_to_play") }}
             </h1>
             <div class="flex space-x-4 w-full">
               <BaseButton

@@ -9,7 +9,7 @@ const { t } = useI18n();
 const language = ref<Language>("en");
 
 const languageOptions: Array<TranslationLanguageOption> = ACTIVE_TRANSLATIONS.map(meta => ({
-  title: t(`languages.${meta.code}`),
+  title: t(`language.${meta.code}`),
   value: meta.code,
   countryCode: meta.countryCode,
 }));
@@ -71,28 +71,28 @@ const scrollToTop = () => {
       <WrapperFooterColumn
         :section="t('footer.popular')"
         :options="[
-          { title: t('pages.aviator'), to: 'TODO' },
-          { title: t('pages.slots'), to: 'TODO' },
-          { title: t('pages.live_casino'), to: 'TODO' },
+          { title: t('page.aviator'), to: 'TODO' },
+          { title: t('page.slots'), to: 'TODO' },
+          { title: t('page.live_casino'), to: 'TODO' },
         ]"
       />
       <WrapperFooterColumn
         :section="t('footer.girobet')"
         :options="[
-          { title: t('pages.affiliate_program'), to: '/affiliate-program' },
-          { title: t('pages.faq'), to: '/faq' },
-          { title: t('pages.support'), to: '/support' },
-          { title: t('pages.telegram'), to: 'TODO' },
+          { title: t('page.affiliate_program'), to: '/affiliate-program' },
+          { title: t('page.faq'), to: '/faq' },
+          { title: t('page.support'), to: '/support' },
+          { title: t('page.telegram'), to: 'TODO' },
         ]"
       />
       <WrapperFooterColumn
         :section="t('footer.legal')"
         :options="[
-          { title: t('pages.betting_terms'), to: '/betting-terms' },
-          { title: t('pages.terms'), to: '/terms' },
-          { title: t('pages.privacy'), to: '/privacy' },
-          { title: t('pages.aml_policy'), to: '/aml-policy' },
-          { title: t('pages.responsible_gaming'), to: '/responsible-gaming' },
+          { title: t('page.betting_terms'), to: '/betting-terms' },
+          { title: t('page.terms'), to: '/terms' },
+          { title: t('page.privacy'), to: '/privacy' },
+          { title: t('page.aml_policy'), to: '/aml-policy' },
+          { title: t('page.responsible_gaming'), to: '/responsible-gaming' },
         ]"
       />
       <WrapperSocialMediaLogos

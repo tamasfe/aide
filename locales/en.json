@@ -1,5 +1,7 @@
 {
   "auth": {
+    "login_to_play": "You need to log in to play.",
+
     "login": "Login",
     "register": "Register",
     "email": "Email",
@@ -24,17 +26,6 @@
       "confirm": "Yes, I want to cancel"
     }
   },
-  "validation": {
-    "field_required": "This field is required",
-    "field_too_short": "This field is too short",
-    "enter_valid_phone": "Please enter a valid phone number",
-    "enter_valid_cpf": "Please enter a valid CPF",
-    "enter_valid_email": "Please enter a valid email",
-    "password_length": "Password must be at least 6 characters long",
-    "cpf_invalid_format": "Invalid CPF",
-    "cpf_taken": "This CPF is already in use",
-    "email_taken": "This email is already in use"
-  },
   "payment_flow": {
     "min_deposit": "Minimum deposit is: ",
     "make_deposit": "Make a deposit",
@@ -50,33 +41,42 @@
     "promos": "Promos",
     "refer_a_friend": "Refer a friend and earn R$ 5,00 of REAL balance for each friend you invite"
   },
-  "navigation": {
-    "home": "Home",
-    "menu": "Menu"
-  },
   "home": {
     "search": {
       "placeholder": "Search for a casino game..."
     },
     "winning_now": "Winning Now"
   },
-  "game": {
-    "not_authenticated": "You need to log in to play."
-  },
   "misc": {
     "games": "Games",
     "by": "By",
     "continue": "Continue",
-    "hot": "Hot",
     "share": "Share",
     "from": "From",
-    "search": "Search",
     "enter": "Enter",
     "see_all": "See all",
     "support": "Support"
   },
 
-  "categories": {
+  "mobile_nav": {
+    "menu": "Menu",
+    "hot": "Hot",
+    "search": "Search",
+    "support": "Support",
+    "promos": "Promos"
+  },
+  "validation": {
+    "field_required": "Field is required",
+    "field_too_short": "Field is too short",
+    "enter_valid_phone": "Please enter a valid phone number",
+    "enter_valid_cpf": "Please enter a valid CPF",
+    "enter_valid_email": "Please enter a valid email",
+    "password_length": "Password must be at least 6 characters long",
+    "cpf_invalid_format": "Invalid CPF",
+    "cpf_taken": "This CPF is already in use",
+    "email_taken": "This email is already in use"
+  },
+  "category": {
     "casual": "Casual",
     "craps": "Craps",
     "crash": "Crash",
@@ -87,7 +87,7 @@
     "video_poker": "Video Poker",
     "virtual_sports": "Virtual Sports"
   },
-  "pages": {
+  "page": {
     "aviator": "Aviator",
     "slots": "Slots",
     "live_casino": "Live Casino",
@@ -110,7 +110,7 @@
     "legal_notice": "Prior to engaging in any online gambling activities on our platform, it is imperative to verify that such actions are legally permissible within your jurisdiction. It is your responsibility to ascertain and adhere to the laws and regulations governing online gambling in your country or region.",
     "copyright": "© 2024 GiroBet. All Rights Reserved."
   },
-  "languages": {
+  "language": {
     "en": "English",
     "pt": "Portuguese"
   }

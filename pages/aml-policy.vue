@@ -3,5 +3,5 @@ const { t } = useI18n();
 </script>
 
 <template>
-  <h1>{{ t("pages.aml_policy") }}</h1>
+  <h1>{{ t("page.aml_policy") }}</h1>
 </template>
