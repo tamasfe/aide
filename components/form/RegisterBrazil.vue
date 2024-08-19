@@ -51,7 +51,7 @@ const validationSchema = toTypedSchema(
     }),
 );
 
-const { handleSubmit, errors, isSubmitting } = useForm({
+const { handleSubmit, errors, isSubmitting, meta } = useForm({
   validationSchema,
 });
 const { value: email } = useField("email");
@@ -193,7 +193,7 @@ onMounted(() => {
       variant="primary"
       type="submit"
       big
-      :disabled="isSubmitting"
+      :disabled="isSubmitting || !meta.valid"
     >
       <div class="flex items-center gap-x-2">
         <p>{{ t("auth.create_account") }}</p>

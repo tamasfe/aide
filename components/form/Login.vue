@@ -16,7 +16,7 @@ const validationSchema = toTypedSchema(
     password: zod.string().min(1, { message: t("validation.field_required") }),
   }),
 );
-const { handleSubmit, errors, isSubmitting } = useForm({
+const { handleSubmit, errors, isSubmitting, meta } = useForm({
   validationSchema,
 });
 const { value: email } = useField("email");
@@ -81,7 +81,7 @@ const onSubmit = handleSubmit(async (values) => {
       variant="primary"
       type="submit"
       big
-      :disabled="isSubmitting"
+      :disabled="isSubmitting || !meta.valid"
     >
       <div class="flex items-center gap-x-2">
         <p>{{ t("misc.enter") }}</p>
