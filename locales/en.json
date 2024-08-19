@@ -61,28 +61,7 @@
     "winning_now": "Winning Now"
   },
   "game": {
-    "not_authenticated": "You need to log in to play.",
-    "categories": {
-      "blackjack": "Blackjack",
-      "table": "Table",
-      "live": "Live",
-      "jackpot": "Jackpot",
-      "weekly-top-picks": "Weekly Top Picks",
-      "your-top-picks": "Your Top Picks",
-      "craps": "Craps",
-      "video_poker": "Video Poker",
-      "mines": "Mines",
-      "casual": "Casual",
-      "slots": "Slots",
-      "lottery": "Lottery",
-      "virtual_sports": "Virtual Sports",
-      "roulette": "Roulette",
-      "card": "Card",
-      "scratch": "Scratch",
-      "fishing": "Fishing",
-      "crash": "Crash",
-      "poker": "Poker"
-    }
+    "not_authenticated": "You need to log in to play."
   },
   "misc": {
     "games": "Games",
@@ -95,6 +74,18 @@
     "enter": "Enter",
     "see_all": "See all",
     "support": "Support"
+  },
+
+  "categories": {
+    "casual": "Casual",
+    "craps": "Craps",
+    "crash": "Crash",
+    "fishing": "Fishing",
+    "lottery": "Lottery",
+    "mines": "Mines",
+    "scratch": "Scratch",
+    "video_poker": "Video Poker",
+    "virtual_sports": "Virtual Sports"
   },
   "pages": {
     "aviator": "Aviator",
