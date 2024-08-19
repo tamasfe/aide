@@ -63,7 +63,6 @@ const previousPage = () => {
     const value
       = slider.value.scrollLeft - (slideWidth + gap) * props.slidesToScroll;
     scrollToPosition(value, 350);
-    slider.value.scrollLeft = value;
   }
   emit("click:previousPage");
 };
