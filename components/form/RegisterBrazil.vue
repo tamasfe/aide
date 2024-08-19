@@ -3,6 +3,7 @@ import { PhCircleNotch } from "@phosphor-icons/vue";
 import type { MaskInputOptions } from "maska";
 import * as zod from "zod";
 import type { RegisterCredentialsBrazil } from "~/types/auth";
+import type { CountryCode } from "~/types/constants";
 import { isValidPhoneNumber } from "~/utils";
 
 const { t } = useI18n();
@@ -29,7 +30,7 @@ const validationSchema = toTypedSchema(
       region: zod.string().min(1, { message: t("field_required") }),
     })
     .superRefine((data, ctx) => {
-      const locale = data.region.split("+")[0];
+      const locale = data.region.split("+")[0] as CountryCode;
       const _isValidPhoneNumber = isValidPhoneNumber(data.phone, locale);
       if (!_isValidPhoneNumber) {
         ctx.addIssue({

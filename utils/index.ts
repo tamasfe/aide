@@ -1,10 +1,10 @@
 import { Mask } from "maska";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import type { FormatNumberOptions } from "../types/utils";
+import type { FormatNumberOptions } from "../types/options";
 import type { ValidationErrorMetadata } from "~/types/api";
-import type { GameImageVariant } from "~/types/constants";
-import { NUMBER_MASKS } from "~/constants";
+import type { CountryCode, GameImageVariant } from "~/types/constants";
+import { PHONE_MASKS } from "~/constants";
 
 export const overlay = (element: HTMLElement) => {
   const existing = element.parentElement?.querySelector(".giro__overlay");
@@ -119,8 +119,8 @@ export const validateCpf = (cpfString: string) => {
   return validated;
 };
 
-export const isValidPhoneNumber = (number: string, countryCode: string) => {
-  const masks = NUMBER_MASKS[countryCode as keyof typeof NUMBER_MASKS];
+export const isValidPhoneNumber = (number: string, code: CountryCode) => {
+  const masks = PHONE_MASKS[code];
   if (!masks) {
     return false;
   }

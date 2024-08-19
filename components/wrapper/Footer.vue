@@ -1,25 +1,21 @@
 <script setup lang="ts">
 import { PhCaretUp } from "@phosphor-icons/vue";
-import { LANGUAGES } from "~/constants";
+import { ACTIVE_TRANSLATIONS } from "~/constants";
+import type { TranslationLanguageOption } from "~/types/options";
+import type { Language } from "~/types/constants";
 
 const { t } = useI18n();
 
-const languageOptions = LANGUAGES.map(language => ({
-  title: t(`languages.${language.key}`),
-  value: language.value,
+const language = ref<Language>("en");
+
+const languageOptions: Array<TranslationLanguageOption> = ACTIVE_TRANSLATIONS.map(meta => ({
+  title: t(`languages.${meta.key}`),
+  value: meta.value,
+  code: meta.code,
 }));
 
-const language = ref("en");
-
-const getFlag = (language: string) => {
-  switch (language) {
-    case "en":
-      return "US";
-    case "pt":
-      return "BR";
-    default:
-      return "US";
-  }
+const getFlag = (lang: Language) => {
+  return languageOptions.find(option => option.value === lang)?.code;
 };
 
 const scrollToTop = () => {
@@ -62,7 +58,7 @@ const scrollToTop = () => {
           <template #option="{ option }">
             <div class="flex items-center space-x-4">
               <BaseFlag
-                :code="getFlag(option.value as string)"
+                :code="getFlag(option.value as Language)"
                 size="m"
               />
               <span>{{ option.title }}</span>

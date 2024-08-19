@@ -7,8 +7,8 @@ import {
 } from "@headlessui/vue";
 import type { MaskInputOptions } from "maska";
 import { BaseInput } from "#components";
-import type { CountryCode } from "~/types/constants";
-import { NUMBER_MASKS } from "~/constants";
+import type { CountryCode, CountryMetadata } from "~/types/constants";
+import { PHONE_MASKS, COUNTRY_METADATA } from "~/constants";
 
 export type NumberProps = {
   modelValue?: string;
@@ -38,26 +38,13 @@ const emit = defineEmits([
 
 const input = ref<InstanceType<typeof BaseInput>>();
 
-const getMaskOptions = (code: string) => {
+const getMaskOptions = (code: CountryCode) => {
   const maskOptions: MaskInputOptions = {
-    mask: NUMBER_MASKS[code as keyof typeof NUMBER_MASKS],
+    mask: PHONE_MASKS[code],
     eager: true,
   };
   return maskOptions;
 };
-
-const countryCodes = [
-  {
-    name: "United States",
-    dial_code: "+1",
-    code: "US",
-  },
-  {
-    name: "Brazil",
-    dial_code: "+55",
-    code: "BR",
-  },
-];
 
 const region = computed({
   get: () => props.region,
@@ -78,14 +65,16 @@ const modelValue = computed({
   },
 });
 
-const getCountryCodeValue = (option: CountryCode) => {
-  return `${option.code}${option.dial_code}`;
+const getCountryCodeValue = (meta: CountryMetadata) => {
+  return `${meta.code}${meta.dial_code}`;
 };
 
+const phoneMaskCountries = Object.entries(PHONE_MASKS).map(([code, _]) => (
+  COUNTRY_METADATA.find(option => option.code === code) as CountryMetadata
+));
+
 const selectedOption = computed(() => {
-  return countryCodes.find(
-    option => getCountryCodeValue(option) === region.value,
-  ) as CountryCode;
+  return COUNTRY_METADATA.find(option => getCountryCodeValue(option) === region.value) as CountryMetadata;
 });
 
 const placeholder = computed(() =>
@@ -105,7 +94,7 @@ const placeholder = computed(() =>
     :disabled="disabled"
     :placeholder="placeholder"
     :error="error"
-    :maska="getMaskOptions(selectedOption?.code)"
+    :maska="getMaskOptions(selectedOption.code)"
     :raw="true"
     inputmode="numeric"
     autocomplete="tel"
@@ -143,7 +132,7 @@ const placeholder = computed(() =>
               class="absolute giro__select-options max-h-40 w-40 overflow-auto rounded-b-default bg-subtle outline-none ml-[0.1rem]"
             >
               <ListboxOption
-                v-for="option in countryCodes"
+                v-for="option in phoneMaskCountries"
                 v-slot="{ active }"
                 :key="option.name"
                 :value="getCountryCodeValue(option)"

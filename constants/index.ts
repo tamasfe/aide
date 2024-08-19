@@ -1,5 +1,5 @@
 import type { InjectionKey } from "vue";
-import type { CountryCode, Language } from "~/types/constants";
+import type { LanguageMetadata, CountryMetadata, CountryCode, PhoneMasks } from "~/types/constants";
 
 // Symbols for injection keys
 export const openLoginModalSymbol = Symbol() as InjectionKey<() => void>;
@@ -7,13 +7,6 @@ export const openRegisterModalSymbol = Symbol() as InjectionKey<() => void>;
 export const openSidebarSymbol = Symbol() as InjectionKey<() => void>;
 export const toggleSidebarSymbol = Symbol() as InjectionKey<() => void>;
 
-// misc
-export const NUMBER_MASKS = {
-  US: ["(###) ###-####"],
-  BR: ["(##) #####-####", "(##) ####-####"],
-};
-
-// Tailwind CSS classes for modal sizes
 export const MODAL_SIZES = {
   full: "w-full",
   sm: "max-w-sm",
@@ -31,12 +24,24 @@ export const MODAL_SIZES = {
   "10xl": "max-w-10xl",
 };
 
-export const LANGUAGES: Array<{ key: string; value: Language; code: string }> = [
+export const LANGUAGE_METADATA: Array<LanguageMetadata> = [
   { key: "english", value: "en", code: "US" },
   { key: "portuguese", value: "pt", code: "BR" },
 ];
 
-export const COUNTRY_CODES: CountryCode[] = [
+export const PHONE_MASKS: PhoneMasks = {
+  US: ["(###) ###-####"],
+  BR: ["(##) #####-####", "(##) ####-####"],
+};
+
+export const ACTIVE_TRANSLATION_COUNTRIES: Array<CountryCode> = ["US", "BR"];
+
+export const ACTIVE_TRANSLATIONS: Array<LanguageMetadata> = ACTIVE_TRANSLATION_COUNTRIES.map(code =>
+  LANGUAGE_METADATA.find(lang => lang.code === code) as LanguageMetadata,
+);
+
+// if we change this to be translated, get rid of name and use "key" like LanguageMetadata
+export const COUNTRY_METADATA: CountryMetadata[] = [
   { name: "Afghanistan", dial_code: "+93", code: "AF" },
   { name: "Aland Islands", dial_code: "+358", code: "AX" },
   { name: "Albania", dial_code: "+355", code: "AL" },
