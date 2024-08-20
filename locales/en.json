@@ -11,8 +11,7 @@
     "prerelease": "Pre-release",
     "free_spins": "Free spins",
     "try_it_now": "Try it now",
-    "promos": "Promos",
-    "refer_a_friend": "Refer a friend and earn R$ 5,00 of REAL balance for each friend you invite"
+    "promos": "Promos"
   },
   "home": {
     "search": {
@@ -34,6 +33,9 @@
 
 
 
+  "promo_bar": {
+    "refer": "Refer a friend and earn REAL balance for each friend you invite"
+  },
   "auth": {
     "dont_have_account": "Don't have an account yet?",
     "create_free_account": "Create a Free account",
