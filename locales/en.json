@@ -2,33 +2,39 @@
   "promo_bar": {
     "refer": "Refer a friend and earn REAL balance for each friend you invite"
   },
+  "winning_now": {
+    "title": "Winning Now"
+  },
   "placeholder": {
     "search": "Search for a casino game...",
     "deposit_amount": "Deposit amount",
     "withdrawal_amount": "Withdrawal amount"
   },
-  "winning_now": {
-    "title": "Winning Now"
+  "field": {
+    "email": "Email",
+    "password": "Password",
+    "telephone": "Telephone",
+    "cpf": "CPF"
   },
-  "auth": {
-    "dont_have_account": "Don't have an account yet?",
-    "create_free_account": "Create a Free account",
-    "forgot_password": "Forgot your password?",
-    "login_to_play": "You need to log in to play",
-    "accept_terms": "By signing up, you agree to our",
-    "have_account": "Have an account already?"
+  "validation": {
+    "field_required": "Field is required",
+    "field_too_short": "Field is too short",
+    "enter_valid_phone": "Please enter a valid phone number",
+    "enter_valid_cpf": "Please enter a valid CPF",
+    "enter_valid_email": "Please enter a valid email",
+    "password_length": "Password must be at least 6 characters long",
+    "cpf_invalid_format": "Invalid CPF",
+    "cpf_taken": "This CPF is already in use",
+    "email_taken": "This email is already in use",
+    "min_deposit": "Minimum deposit is {amount}",
+    "max_deposit": "Maximum deposit is {amount}"
   },
-  "cancel_registration": {
-    "headline": "Are you sure you want to cancel registration?",
-    "body": "Thousands of winners cash out every day with our quick withdrawals.",
-    "cancel": "Yes, I want to cancel"
+  "api_client": {
+    "invalid_credentials": "Your email or password is incorrect",
+    "signup_try_again": "An error occurred while trying to create your account. Please try again.",
+    "signup_success": "Your account has been created successfully"
   },
-  "play": {
-    "by_provider": "By {provider}",
-    "share": "Share"
-  },
-  "grid": {
-    "game_count": "{count} Games"
+  "api_server": {
   },
   "button": {
     "register": "Register",
@@ -55,42 +61,25 @@
     "completed_payment": "I completed the payment",
     "available_withdrawal": "Available to withdrawal"
   },
-  "field": {
-    "email": "Email",
-    "password": "Password",
-    "telephone": "Telephone",
-    "cpf": "CPF"
+  "auth": {
+    "dont_have_account": "Don't have an account yet?",
+    "create_free_account": "Create a Free account",
+    "forgot_password": "Forgot your password?",
+    "login_to_play": "You need to log in to play",
+    "accept_terms": "By signing up, you agree to our",
+    "have_account": "Have an account already?"
   },
-  "api_client": {
-    "invalid_credentials": "Your email or password is incorrect",
-    "signup_try_again": "An error occurred while trying to create your account. Please try again.",
-    "signup_success": "Your account has been created successfully"
+  "cancel_registration": {
+    "headline": "Are you sure you want to cancel registration?",
+    "body": "Thousands of winners cash out every day with our quick withdrawals.",
+    "cancel": "Yes, I want to cancel"
   },
-  "api_server": {
+  "play": {
+    "by_provider": "By {provider}",
+    "share": "Share"
   },
-  "validation": {
-    "field_required": "Field is required",
-    "field_too_short": "Field is too short",
-    "enter_valid_phone": "Please enter a valid phone number",
-    "enter_valid_cpf": "Please enter a valid CPF",
-    "enter_valid_email": "Please enter a valid email",
-    "password_length": "Password must be at least 6 characters long",
-    "cpf_invalid_format": "Invalid CPF",
-    "cpf_taken": "This CPF is already in use",
-    "email_taken": "This email is already in use",
-    "min_deposit": "Minimum deposit is {amount}",
-    "max_deposit": "Maximum deposit is {amount}"
-  },
-  "category": {
-    "casual": "Casual",
-    "craps": "Craps",
-    "crash": "Crash",
-    "fishing": "Fishing",
-    "lottery": "Lottery",
-    "mines": "Mines",
-    "scratch": "Scratch",
-    "video_poker": "Video Poker",
-    "virtual_sports": "Virtual Sports"
+  "grid": {
+    "game_count": "{count} Games"
   },
   "page": {
     "aviator": "Aviator",
@@ -114,6 +103,17 @@
     "social_media": "Social Media",
     "legal_notice": "Prior to engaging in any online gambling activities on our platform, it is imperative to verify that such actions are legally permissible within your jurisdiction. It is your responsibility to ascertain and adhere to the laws and regulations governing online gambling in your country or region.",
     "copyright": "© 2024 GiroBet. All Rights Reserved."
+  },
+  "category": {
+    "casual": "Casual",
+    "craps": "Craps",
+    "crash": "Crash",
+    "fishing": "Fishing",
+    "lottery": "Lottery",
+    "mines": "Mines",
+    "scratch": "Scratch",
+    "video_poker": "Video Poker",
+    "virtual_sports": "Virtual Sports"
   },
   "language": {
     "en": "English",
