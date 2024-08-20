@@ -4,13 +4,17 @@ import { getCurrencySymbol, formatNumber } from "~/utils/index";
 
 const { t } = useI18n();
 
+// TODO these need to come from daniel somehow, and theyre specific to
+// different currencies etc
 const minDeposit = 10;
+const maxDeposit = 20;
 
 const validationSchema = toTypedSchema(
   zod.object({
     value: zod
       .number()
-      .min(minDeposit, t("validation.min_deposit", { amount: minDeposit })),
+      .min(minDeposit, t("validation.min_deposit", { amount: minDeposit }))
+      .max(maxDeposit, t("validation.max_deposit", { amount: maxDeposit })),
   }),
 );
 

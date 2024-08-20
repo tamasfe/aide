@@ -109,7 +109,7 @@ const onClickMenu = () => {
           type="button"
           @click="onClickDeposit"
         >
-          {{ t("payment_flow.deposit") }}
+          {{ t("button.deposit") }}
         </BaseButton>
         <NuxtLink class="text-subtle hover:text-emphasis cursor-pointer">
           <span class="block">

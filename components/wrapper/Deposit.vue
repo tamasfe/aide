@@ -3,6 +3,8 @@ import { PhCircleNotch } from "@phosphor-icons/vue";
 
 type Step = "deposit" | "pix" | "loading";
 
+const { t } = useI18n();
+
 const step = ref<Step>("deposit");
 
 const gotoStep = (stepName: Step) => {
@@ -24,7 +26,7 @@ const generatePayment = () => {
       v-if="step === 'deposit'"
       class="self-start text-2xl font-bold"
     >
-      Make a deposit
+      {{ t('modal_payments.make_deposit') }}
     </h2>
     <FormDeposit
       v-if="step === 'deposit'"
