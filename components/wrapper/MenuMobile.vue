@@ -9,6 +9,14 @@ import {
 
 const { t } = useI18n();
 
+const items = [
+  { icon: PhList, text: "mobile_nav.menu", emit: "click:menu" },
+  { icon: PhLightning, text: "mobile_nav.hot", emit: "click:hot" },
+  { icon: PhMagnifyingGlass, text: "mobile_nav.search", emit: "click:search" },
+  { icon: PhHeadphones, text: "mobile_nav.support", emit: "click:support" },
+  { icon: PhGift, text: "mobile_nav.promos", emit: "click:promos" },
+] as const;
+
 const emit = defineEmits([
   "click:menu",
   "click:hot",
@@ -23,47 +31,21 @@ const emit = defineEmits([
     class="giro__mobile-menu block z-10 sm:hidden sticky bottom-0 left-0 w-full bg-subtle text-subtle"
   >
     <div
-      class="flex items-center justify-between pt-2.5 px-4 pb-2 text-subtle font-bold"
+      class="flex items-center justify-between pt-2.5 px-4 pb-2 text-subtle-light font-semibold"
     >
       <button
+        v-for="item in items"
+        :key="item.text"
         class="inline-flex flex-col justify-center items-center outline-none"
         type="button"
-        @click="emit('click:menu')"
+        @click="emit(item.emit)"
       >
-        <PhList :size="24" />
-        <p>{{ t("mobile_nav.menu") }}</p>
-      </button>
-      <button
-        class="inline-flex flex-col justify-center items-center outline-none"
-        type="button"
-        @click="emit('click:hot')"
-      >
-        <PhLightning :size="24" />
-        <p>{{ t("mobile_nav.hot") }}</p>
-      </button>
-      <button
-        class="inline-flex flex-col justify-center items-center outline-none"
-        type="button"
-        @click="emit('click:search')"
-      >
-        <PhMagnifyingGlass :size="24" />
-        <p>{{ t("mobile_nav.search") }}</p>
-      </button>
-      <button
-        class="inline-flex flex-col justify-center items-center outline-none"
-        type="button"
-        @click="emit('click:support')"
-      >
-        <PhHeadphones :size="24" />
-        <p>{{ t("mobile_nav.support") }}</p>
-      </button>
-      <button
-        class="inline-flex flex-col justify-center items-center outline-none"
-        type="button"
-        @click="emit('click:promos')"
-      >
-        <PhGift :size="24" />
-        <p>{{ t("mobile_nav.promos") }}</p>
+        <component
+          :is="item.icon"
+          class="text-subtle"
+          :size="24"
+        />
+        <p>{{ t(item.text) }}</p>
       </button>
     </div>
   </div>
