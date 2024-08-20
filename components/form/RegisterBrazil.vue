@@ -179,7 +179,7 @@ onMounted(() => {
       :error="errors.phone || errors.region"
     />
     <p class="text-sm text-subtle py-4">
-      {{ t("auth.accept_terms") }}
+      {{ t("modal_auth.accept_terms") }}
       <NuxtLink
         to="/terms"
         target="_blank"
@@ -210,7 +210,7 @@ onMounted(() => {
       </div>
     </BaseButton>
     <p class="text-subtle py-4">
-      {{ t("auth.have_account") }}
+      {{ t("modal_auth.have_account") }}
       <button
         type="button"
         class="font-semibold text-brand-yellow"

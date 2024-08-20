@@ -56,25 +56,25 @@
     "support": "Support",
     "promos": "Promos"
   },
+  "modal_auth": {
+    "dont_have_account": "Don't have an account yet?",
+    "create_free_account": "Create a Free account",
+    "forgot_password": "Forgot your password?",
+    "accept_terms": "By signing up, you agree to our",
+    "have_account": "Have an account already?"
+  },
   "modal_payments": {
     "make_deposit": "Make a deposit",
     "completed_payment": "I completed the payment",
     "available_withdrawal": "Available to withdrawal"
   },
-  "auth": {
-    "dont_have_account": "Don't have an account yet?",
-    "create_free_account": "Create a Free account",
-    "forgot_password": "Forgot your password?",
-    "login_to_play": "You need to log in to play",
-    "accept_terms": "By signing up, you agree to our",
-    "have_account": "Have an account already?"
-  },
-  "cancel_registration": {
+  "modal_cancel_registration": {
     "headline": "Are you sure you want to cancel registration?",
     "body": "Thousands of winners cash out every day with our quick withdrawals.",
     "cancel": "Yes, I want to cancel"
   },
   "play": {
+    "login_to_play": "You need to log in to play",
     "by_provider": "By {provider}",
     "share": "Share"
   },

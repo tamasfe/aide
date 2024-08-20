@@ -73,7 +73,7 @@ const onSubmit = handleSubmit(async (values) => {
       type="button"
       class="font-semibold text-subtle py-4"
     >
-      {{ t("auth.forgot_password") }}
+      {{ t("modal_auth.forgot_password") }}
     </button>
     <BaseButton
       class="w-full inline-flex justify-center text-lg !rounded-[0.262rem] !py-4 sm:!py-3"
@@ -97,13 +97,13 @@ const onSubmit = handleSubmit(async (values) => {
       </div>
     </BaseButton>
     <p class="text-sm text-subtle py-4">
-      {{ t("auth.dont_have_account") }}
+      {{ t("modal_auth.dont_have_account") }}
       <button
         type="button"
         class="font-semibold text-brand-yellow"
         @click="emit('request:register')"
       >
-        {{ t("auth.create_free_account") }}
+        {{ t("modal_auth.create_free_account") }}
       </button>
     </p>
   </form>
