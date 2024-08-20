@@ -24,17 +24,14 @@ const openModal = () => {
       <h3
         class="bg-button-primary text-transparent bg-clip-text text-sm md:text-lg lg:text-2xl font-bold"
       >
-        {{ t("promotions.exclusive").toUpperCase() }}
+        EXCLUSIVE
       </h3>
       <h1 class="text-xl md:text-3xl lg:text-5xl">
-        {{ t("promotions.prerelease").toUpperCase() }}
-      </h1>
-      <h1 class="text-xl md:text-3xl lg:text-5xl text-nowrap">
-        {{ t("misc.from").toUpperCase() }} WILDJACK
+        PRE-RELEASE
       </h1>
       <h2>
         <span class="bg-button-primary text-transparent bg-clip-text">+100</span>
-        {{ t("promotions.free_spins").toUpperCase() }}
+        FREE SPINS
       </h2>
       <BaseButton
         class="hidden md:inline-flex justify-center cursor-pointer !py-3 !rounded-[0.4rem] leading-6"
@@ -43,7 +40,7 @@ const openModal = () => {
         shadow
         @click="openModal"
       >
-        {{ t("promotions.try_it_now").toUpperCase() }}
+        TRY IT NOW
       </BaseButton>
     </div>
   </div>

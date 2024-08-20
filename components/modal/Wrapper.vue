@@ -46,23 +46,6 @@ defineExpose({
           alt="Wheel"
           class="absolute left-0 top-0 object-cover w-full sm:rounded-t-[0.8rem]"
         />
-        <div
-          class="absolute top-1/2 -translate-y-1/2 left-5 sm:left-10 text-lg sm:text-xl font-black italic leading-6"
-        >
-          <p
-            class="bg-button-primary text-transparent bg-clip-text text-sm sm:text-lg font-semibold"
-          >
-            {{ t("promotions.exclusive").toUpperCase() }}
-          </p>
-          <p class="text-xl">
-            {{ t("promotions.prerelease").toUpperCase() }}
-          </p>
-          <p class="text-xl">{{ t("misc.from").toUpperCase() }} WILDJACK</p>
-          <p>
-            <span class="bg-button-primary text-transparent bg-clip-text">+100</span>
-            {{ t("promotions.free_spins").toUpperCase() }}
-          </p>
-        </div>
       </div>
       <slot />
     </div>

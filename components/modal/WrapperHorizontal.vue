@@ -34,25 +34,6 @@ const opened = computed({
           alt="Wheel"
           class="sm:hidden absolute left-0 top-0 object-cover w-full sm:rounded-l-[0.8rem]"
         />
-        <div
-          class="absolute top-1/2 sm:top-20 -translate-y-1/2 sm:translate-y-0 left-4 sm:left-1/2 sm:-translate-x-1/2 text-lg sm:text-3xl lg:text-3xl font-black italic sm:leading-[3rem]"
-        >
-          <p
-            class="bg-button-primary text-transparent bg-clip-text font-semibold text-sm sm:text-lg md:text-2xl"
-          >
-            {{ t("promotions.exclusive").toUpperCase() }}
-          </p>
-          <p class="text-xl sm:text-3xl md:text-[2.55rem]">
-            {{ t("promotions.prerelease").toUpperCase() }}
-          </p>
-          <p class="text-xl sm:text-3xl md:text-[2.55rem] text-nowrap">
-            {{ t("misc.from").toUpperCase() }} WILDJACK
-          </p>
-          <p>
-            <span class="bg-button-primary text-transparent bg-clip-text">+100</span>
-            {{ t("promotions.free_spins").toUpperCase() }}
-          </p>
-        </div>
       </div>
       <div class="flex-auto sm:flex-1 flex flex-col gap-2 sm:gap-0 py-2">
         <slot />
