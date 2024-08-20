@@ -31,7 +31,7 @@ const onSubmit = handleSubmit(async (values) => {
   const { email, password } = values;
   const success = await login({ username: email, password });
   if (!success) {
-    error.value = t("auth.invalid_credentials");
+    error.value = t("api_client.invalid_credentials");
     return;
   }
   emit("success");

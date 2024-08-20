@@ -63,7 +63,7 @@ export function useAuth() {
       });
     }
     catch (e: unknown) {
-      let message = "auth.signup_try_again";
+      let message = "api_client.signup_try_again";
       const error = e as FetchError;
       if (error.data?.code === "VALIDATION") {
         const metadata = error.data.metadata as ValidationErrorMetadata;
@@ -80,7 +80,7 @@ export function useAuth() {
     }
 
     return {
-      message: "auth.signup_success",
+      message: "api_client.signup_success",
       flow: flowId,
       error: false,
     };

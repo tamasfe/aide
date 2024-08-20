@@ -34,10 +34,7 @@
     "forgot_password": "Forgot your password?",
     "login_to_play": "You need to log in to play",
     "accept_terms": "By signing up, you agree to our",
-    "have_account": "Have an account already?",
-    "invalid_credentials": "Your email or password is incorrect",
-    "signup_try_again": "An error occurred while trying to create your account. Please try again.",
-    "signup_success": "Your account has been created successfully"
+    "have_account": "Have an account already?"
   },
   "cancel_registration": {
     "headline": "Are you sure you want to cancel registration?",
@@ -64,6 +61,13 @@
     "password": "Password",
     "telephone": "Telephone",
     "cpf": "CPF"
+  },
+  "api_client": {
+    "invalid_credentials": "Your email or password is incorrect",
+    "signup_try_again": "An error occurred while trying to create your account. Please try again.",
+    "signup_success": "Your account has been created successfully"
+  },
+  "api_server": {
   },
   "validation": {
     "field_required": "Field is required",
