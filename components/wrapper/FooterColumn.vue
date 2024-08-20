@@ -11,17 +11,19 @@ defineProps<{
 </script>
 
 <template>
-  <div class="flex flex-col space-y-7">
+  <div class="flex flex-col space-y-4">
     <h3 class="text-lg font-semibold text-emphasis hidden md:block">
       {{ section }}
     </h3>
-    <NuxtLink
-      v-for="option in options"
-      :key="option.to"
-      :to="option.to"
-      class="hover:text-emphasis"
-    >
-      {{ option.title }}
-    </NuxtLink>
+    <div class="flex flex-col whitespace-nowrap space-y-5">
+      <NuxtLink
+        v-for="option in options"
+        :key="option.to"
+        :to="option.to"
+        class="hover:text-emphasis"
+      >
+        {{ option.title }}
+      </NuxtLink>
+    </div>
   </div>
 </template>
