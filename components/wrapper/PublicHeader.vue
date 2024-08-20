@@ -35,7 +35,7 @@ const onClickMenu = () => {
 <template>
   <div class="w-full bg-subtle">
     <div
-      class="giro__container flex items-center justify-between py-[0.525rem] sm:py-3"
+      class="giro__container flex items-center justify-between py-[0.525rem] sm:py-2"
     >
       <div class="flex items-center gap-x-8">
         <button
@@ -58,14 +58,14 @@ const onClickMenu = () => {
       <div class="flex items-center space-x-[0.625rem] sm:space-x-4">
         <BaseButton
           variant="secondary"
-          class="py-2"
+          class="py-2 sm:py-2.5"
           type="button"
           @click="onClickLogin"
         >
           {{ t("button.login") }}
         </BaseButton>
         <BaseButton
-          class="py-2"
+          class="py-2 sm:py-2.5"
           variant="primary"
           type="button"
           @click="onClickRegister"

@@ -62,7 +62,7 @@ const onClickMenu = () => {
   <div class="w-full bg-subtle">
     <ModalDeposit v-model:opened="depositModalOpened" />
     <div
-      class="giro__container flex items-center justify-between py-[0.525rem] sm:py-3"
+      class="giro__container flex items-center justify-between py-[0.525rem] sm:py-2"
     >
       <div class="flex items-center gap-x-8">
         <button
@@ -86,7 +86,7 @@ const onClickMenu = () => {
       <div class="flex items-center space-x-[0.625rem] sm:space-x-4">
         <BaseButton
           variant="secondary"
-          class="py-2 inline-flex giro__button-balance"
+          class="py-2 sm:py-2.5 inline-flex giro__button-balance"
           type="button"
           @click="onClickBalance"
         >
@@ -104,7 +104,7 @@ const onClickMenu = () => {
           </p>
         </BaseButton>
         <BaseButton
-          class="py-2"
+          class="py-2 sm:py-2.5"
           variant="emphasis"
           type="button"
           @click="onClickDeposit"

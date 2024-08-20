@@ -22,7 +22,7 @@ const toggle = () => {
 
 <template>
   <div
-    class="p-4 flex flex-col text-emphasis gap-8 rounded-default text-lg"
+    class="p-4 flex flex-col text-emphasis gap-8 rounded-default"
     :class="[opened ? 'bg-subtle' : '']"
   >
     <div

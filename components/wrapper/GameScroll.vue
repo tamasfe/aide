@@ -102,7 +102,7 @@ onMounted(() => {
     <template #options>
       <NuxtLink :to="`/categories/${identifier}`">
         <BaseButton
-          class="bg-subtle text-subtle hover:bg-emphasis"
+          class="bg-subtle text-sm text-subtle hover:bg-emphasis"
           type="button"
         >
           {{ t("button.see_all") }}

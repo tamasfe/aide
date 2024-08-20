@@ -24,7 +24,7 @@ onMounted(() => {
       <h2 class="text-xl sm:text-2xl">{{ title }}</h2>
     </template>
     <template #options>
-      <BaseButton class="bg-subtle hover:bg-emphasis text-subtle">
+      <BaseButton class="bg-subtle hover:bg-emphasis text-subtle text-sm">
         {{ t("button.see_all") }}
       </BaseButton>
     </template>

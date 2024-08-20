@@ -87,7 +87,7 @@ defineOptions({
       :class="[opened ? 'z-[13]' : '']"
       class="!rounded-2xl sm:!rounded-xl"
       wrapper-class="font-normal bg-emphasis !rounded-2xl sm:!rounded-xl"
-      input-class="font-normal text-default text-lg"
+      input-class="font-normal text-default"
       :placeholder="t('home.search.placeholder')"
       type="text"
       v-bind="$attrs"

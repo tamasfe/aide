@@ -37,7 +37,7 @@ const props = defineProps<{
   opened: boolean;
 }>();
 
-const size = isMobile ? "full" : "lg";
+const size = isMobile ? "full" : "xl";
 const bottomPadding = ref(0);
 const opened = computed({
   get: () => props.opened,
@@ -69,7 +69,7 @@ watch(
     v-model:opened="opened"
     position="left"
     :size="size"
-    class="px-2"
+    class="px-0.5"
   >
     <template #title>
       <div class="flex items-center justify-between pl-4 max-w-48">
@@ -77,7 +77,7 @@ watch(
       </div>
     </template>
     <div
-      class="min-w-[20rem] flex flex-col gap-4 overflow-y-auto py-1 px-2"
+      class="min-w-[24rem] flex flex-col gap-4 overflow-y-auto py-1 px-2"
       :style="{ paddingBottom: `${bottomPadding}px` }"
     >
       <FormDeposit v-if="isAuthenticated" />
@@ -101,21 +101,21 @@ watch(
           :options="allGameCategories"
         />
         <BaseMenuLink
-          class="p-4 text-emphasis text-lg"
+          class="p-4 text-emphasis"
           title="Promotions"
           value="promotions"
           :icon="PhStar"
           icon-class="text-subtle"
         />
         <BaseMenuLink
-          class="p-4 text-emphasis text-lg"
+          class="p-4 text-emphasis"
           title="VIP"
           value="vip"
           :icon="PhStar"
           icon-class="text-subtle"
         />
         <BaseMenuLink
-          class="p-4 text-emphasis text-lg"
+          class="p-4 text-emphasis"
           title="Recently added"
           value="recently_added"
           :icon="PhStar"

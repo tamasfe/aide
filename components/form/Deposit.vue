@@ -50,6 +50,7 @@ const locale = ref("pt-BR");
       :locale="locale"
       :placeholder="t('payment_flow.deposit')"
       :error="errors.value"
+      inputmode="numeric"
     />
     <div class="flex items-center gap-2 w-full">
       <button
