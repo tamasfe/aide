@@ -63,7 +63,7 @@ const id = Number(params.id as string);
                 {{ t("button.login") }}
               </BaseButton>
               <!-- temporary fix -->
-              <div class="mb-[0.4rem] flex-1">
+              <div class="mb-[0.35rem] flex-1">
                 <BaseButton
                   class="w-full inline-flex justify-center py-2.5 xl:py-3.5 px-12 !text-base items-center"
                   variant="primary"

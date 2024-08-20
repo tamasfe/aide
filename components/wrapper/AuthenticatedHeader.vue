@@ -62,7 +62,7 @@ const onClickMenu = () => {
   <div class="w-full bg-subtle">
     <ModalDeposit v-model:opened="depositModalOpened" />
     <div
-      class="giro__container flex items-center justify-between py-[0.6rem] sm:py-3"
+      class="giro__container flex items-center justify-between py-[0.525rem] sm:py-3"
     >
       <div class="flex items-center gap-x-8">
         <button

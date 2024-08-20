@@ -189,7 +189,7 @@ onMounted(() => {
       </NuxtLink>
     </p>
     <BaseButton
-      class="w-full inline-flex justify-center text-lg !rounded-[0.3rem] !py-4 sm:!py-3"
+      class="w-full inline-flex justify-center text-lg !rounded-[0.262rem] !py-4 sm:!py-3"
       :class="isSubmitting ? 'opacity-50' : 'opacity-100'"
       variant="primary"
       type="submit"

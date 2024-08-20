@@ -15,20 +15,25 @@
 import { filename } from "pathe/utils";
 import type { CountryCode } from "@/types/constants";
 
-const props = withDefaults(defineProps<{
-  size?: "m" | "s" | "l";
-  code: CountryCode;
-  borderRadius?: boolean;
-  className?: string;
-}>(), {
-  size: "m",
-  borderRadius: true,
-});
+const props = withDefaults(
+  defineProps<{
+    size?: "m" | "s" | "l";
+    code: CountryCode;
+    borderRadius?: boolean;
+    className?: string;
+  }>(),
+  {
+    size: "m",
+    borderRadius: true,
+  },
+);
 
 // maybe refactor this out to composable (maybe this linked solution,
 // or another one in the thread)
 // https://github.com/nuxt/nuxt/issues/14766/#issuecomment-1397365434
-const glob = import.meta.glob("~/assets/svg/flags/active/*.svg", { eager: true });
+const glob = import.meta.glob("~/assets/svg/flags/active/*.svg", {
+  eager: true,
+});
 const images = Object.fromEntries(
   Object.entries(glob).map(([key, value]) => [filename(key), value.default]),
 );

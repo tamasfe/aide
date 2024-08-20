@@ -26,15 +26,13 @@ const openModal = () => {
       >
         EXCLUSIVE
       </h3>
-      <h1 class="text-xl md:text-3xl lg:text-5xl">
-        PRE-RELEASE
-      </h1>
+      <h1 class="text-xl md:text-3xl lg:text-5xl">PRE-RELEASE</h1>
       <h2>
         <span class="bg-button-primary text-transparent bg-clip-text">+100</span>
         FREE SPINS
       </h2>
       <BaseButton
-        class="hidden md:inline-flex justify-center cursor-pointer !py-3 !rounded-[0.4rem] leading-6"
+        class="hidden md:inline-flex justify-center cursor-pointer !py-3 !rounded-[0.35rem] leading-6"
         variant="emphasis"
         big
         shadow

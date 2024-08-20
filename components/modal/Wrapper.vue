@@ -1,12 +1,15 @@
 <script setup lang="ts">
 const emit = defineEmits(["update:opened"]);
 
-const props = withDefaults(defineProps<{
-  opened: boolean;
-  banner?: "left" | "top";
-}>(), {
-  banner: "left",
-});
+const props = withDefaults(
+  defineProps<{
+    opened: boolean;
+    banner?: "left" | "top";
+  }>(),
+  {
+    banner: "left",
+  },
+);
 
 const opened = computed({
   get: () => props.opened,
@@ -38,7 +41,7 @@ defineExpose({
     v-model:opened="opened"
     :close="image"
     :size="size"
-    class="sm:!rounded-[0.8rem]"
+    class="sm:!rounded-[0.7rem]"
     @close="reset"
   >
     <div
@@ -52,7 +55,7 @@ defineExpose({
         <NuxtImg
           src="/assets/images/wheel-2.png"
           alt="Wheel"
-          class="absolute left-0 top-0 object-cover w-full sm:rounded-t-[0.8rem]"
+          class="absolute left-0 top-0 object-cover w-full sm:rounded-t-[0.7rem]"
         />
       </div>
       <slot />
@@ -67,12 +70,12 @@ defineExpose({
         <NuxtImg
           src="/assets/images/wheel-desktop.png"
           alt="Wheel"
-          class="hidden sm:block object-cover w-full h-full sm:rounded-l-[0.8rem]"
+          class="hidden sm:block object-cover w-full h-full sm:rounded-l-[0.7rem]"
         />
         <NuxtImg
           src="/assets/images/wheel-2.png"
           alt="Wheel"
-          class="sm:hidden absolute left-0 top-0 object-cover w-full sm:rounded-l-[0.8rem]"
+          class="sm:hidden absolute left-0 top-0 object-cover w-full sm:rounded-l-[0.7rem]"
         />
       </div>
       <div class="flex-auto sm:flex-1 flex flex-col gap-2 sm:gap-0 py-2">

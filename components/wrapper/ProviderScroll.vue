@@ -33,7 +33,7 @@ onMounted(() => {
         class="basis-[calc((100%-2rem)/2.5)] sm:basis-[calc((100%-3rem)/3.5)] flex-shrink-0 w-full"
       >
         <div class="px-2 sm:px-8 space-y-4">
-          <div class="relative rounded-[0.8rem] overflow-hidden pt-[59.52%]">
+          <div class="relative rounded-[0.7rem] overflow-hidden pt-[59.52%]">
             <BaseSkeleton
               :loading="loading"
               class="absolute left-0 top-0 w-full h-full"
@@ -42,7 +42,7 @@ onMounted(() => {
               <NuxtImg
                 :src="`/assets/images/providers/${index}.png`"
                 alt=""
-                class="absolute top-1/2 left-1/2 w-full object-cover rounded-[0.8rem] transform -translate-x-1/2 -translate-y-1/2"
+                class="absolute top-1/2 left-1/2 w-full object-cover rounded-[0.7rem] transform -translate-x-1/2 -translate-y-1/2"
               />
             </BaseSkeleton>
           </div>

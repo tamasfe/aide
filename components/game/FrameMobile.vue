@@ -48,7 +48,7 @@ const id = Number(params.id as string);
             />
             <div class="col-span-2 w-full flex flex-col space-y-6">
               <div class="flex flex-col">
-                <h3 class="text-default text-[1.7rem] font-bold">
+                <h3 class="text-default text-[1.487rem] font-bold">
                   Potion Spells
                 </h3>
                 <p class="text-xl text-emphasis font-medium">

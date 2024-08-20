@@ -43,7 +43,7 @@ const getImageId = (idx: number) => {
           :max="60"
         >
           <template #title>
-            <h3 class="text-[1.45rem] xl:text-[1.3rem] font-bold">
+            <h3 class="text-[1.268rem] xl:text-[1.137rem] font-bold">
               🔥 Top Games
             </h3>
           </template>
@@ -67,7 +67,9 @@ const getImageId = (idx: number) => {
                 <NuxtLink :to="`/games/${datapoint.index}`">
                   <span class="block">
                     <NuxtImg
-                      :src="`/assets/images/games/${getImageId(datapoint.index)}.png`"
+                      :src="`/assets/images/games/${getImageId(
+                        datapoint.index,
+                      )}.png`"
                       alt=""
                       class="absolute top-0 left-0 w-full object-cover rounded-default transition-transform transform hover:scale-105 cursor-pointer"
                     />

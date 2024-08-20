@@ -134,7 +134,7 @@ const scrollToPosition = (target: number, duration: number) => {
         >
           <button
             type="button"
-            class="p-1 bg-subtle text-subtle outline-none rounded-[0.4rem]"
+            class="p-1 bg-subtle text-subtle outline-none rounded-[0.35rem]"
             :class="[
               isAtBeginning
                 ? 'opacity-50 cursor-default'
@@ -146,7 +146,7 @@ const scrollToPosition = (target: number, duration: number) => {
           </button>
           <button
             type="button"
-            class="p-1 bg-subtle text-subtle outline-none rounded-[0.4rem]"
+            class="p-1 bg-subtle text-subtle outline-none rounded-[0.35rem]"
             :class="[
               isTheEnd
                 ? 'opacity-50 cursor-default'

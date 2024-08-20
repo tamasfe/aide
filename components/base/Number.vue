@@ -69,12 +69,15 @@ const getCountryCodeValue = (meta: CountryMetadata) => {
   return `${meta.code}${meta.dialCode}`;
 };
 
-const phoneMaskCountries = Object.entries(PHONE_MASKS).map(([code, _]) => (
-  COUNTRY_METADATA.find(option => option.code === code) as CountryMetadata
-));
+const phoneMaskCountries = Object.entries(PHONE_MASKS).map(
+  ([code, _]) =>
+    COUNTRY_METADATA.find(option => option.code === code) as CountryMetadata,
+);
 
 const selectedOption = computed(() => {
-  return COUNTRY_METADATA.find(option => getCountryCodeValue(option) === region.value) as CountryMetadata;
+  return COUNTRY_METADATA.find(
+    option => getCountryCodeValue(option) === region.value,
+  ) as CountryMetadata;
 });
 
 const placeholder = computed(() =>
@@ -128,7 +131,7 @@ const placeholder = computed(() =>
 
           <transition name="giro__select-fade">
             <ListboxOptions
-              class="absolute giro__select-options max-h-40 w-40 overflow-auto rounded-b-default bg-subtle outline-none ml-[0.1rem]"
+              class="absolute giro__select-options max-h-40 w-40 overflow-auto rounded-b-default bg-subtle outline-none ml-[0.0875rem]"
             >
               <ListboxOption
                 v-for="option in phoneMaskCountries"

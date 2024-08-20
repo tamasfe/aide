@@ -31,7 +31,7 @@ const close = () => {
     </div>
     <button
       type="button"
-      class="absolute top-1/2 right-[10px] transform -translate-y-1/2 cursor-pointer text-xl outline-none"
+      class="absolute top-1/2 right-[0.625rem] transform -translate-y-1/2 cursor-pointer text-xl outline-none"
       @click="close"
     >
       <PhX :size="24" />
