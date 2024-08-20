@@ -1,9 +1,7 @@
 {
   "payment_flow": {
-    "min_deposit": "Minimum deposit is: ",
     "make_deposit": "Make a deposit",
-    "deposit": "Deposit",
-    "quick_deposit": "Quick Deposit"
+    "deposit": "Deposit"
   },
   "misc": {
     "games": "Games",
@@ -47,7 +45,8 @@
     "create_account": "Create Account",
     "continue": "Continue",
     "see_all": "See All",
-    "send_recovery_email": "Send recovery email"
+    "send_recovery_email": "Send recovery email",
+    "deposit_now": "Deposit Now"
   },
   "mobile_nav": {
     "menu": "Menu",
@@ -78,7 +77,8 @@
     "password_length": "Password must be at least 6 characters long",
     "cpf_invalid_format": "Invalid CPF",
     "cpf_taken": "This CPF is already in use",
-    "email_taken": "This email is already in use"
+    "email_taken": "This email is already in use",
+    "min_deposit": "Minimum deposit is {amount}"
   },
   "category": {
     "casual": "Casual",

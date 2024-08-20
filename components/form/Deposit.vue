@@ -10,7 +10,7 @@ const validationSchema = toTypedSchema(
   zod.object({
     value: zod
       .number()
-      .min(10, `${t("payment_flow.min_deposit")} ${minDeposit}`),
+      .min(minDeposit, t("validation.min_deposit", { amount: minDeposit })),
   }),
 );
 
@@ -82,7 +82,7 @@ const locale = ref("pt-BR");
       big
       :disabled="!meta.valid"
     >
-      {{ t("payment_flow.quick_deposit") }}
+      {{ t("button.deposit_now") }}
     </BaseButton>
   </form>
 </template>
