@@ -32,7 +32,7 @@ const openModal = () => {
         FREE SPINS
       </h2>
       <BaseButton
-        class="hidden md:inline-flex justify-center cursor-pointer !py-3 !rounded-[0.35rem] leading-6"
+        class="hidden md:inline-flex justify-center cursor-pointer !py-2 !rounded-[0.35rem] leading-6"
         variant="emphasis"
         big
         shadow

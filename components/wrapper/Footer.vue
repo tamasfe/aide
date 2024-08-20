@@ -8,11 +8,12 @@ const { t } = useI18n();
 
 const language = ref<Language>("en");
 
-const languageOptions: Array<TranslationLanguageOption> = ACTIVE_TRANSLATIONS.map(meta => ({
-  title: t(`language.${meta.code}`),
-  value: meta.code,
-  countryCode: meta.countryCode,
-}));
+const languageOptions: Array<TranslationLanguageOption>
+  = ACTIVE_TRANSLATIONS.map(meta => ({
+    title: t(`language.${meta.code}`),
+    value: meta.code,
+    countryCode: meta.countryCode,
+  }));
 
 const getFlag = (code: Language) => {
   return languageOptions.find(option => option.value === code)?.countryCode;

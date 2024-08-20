@@ -68,6 +68,7 @@
     background-color: rgb(var(--giro-bg));
     height: 100vh;
     color: var(--giro-text);
+    @apply text-base;
   }
 
   input::placeholder {

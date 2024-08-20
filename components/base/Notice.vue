@@ -26,7 +26,7 @@ const close = () => {
     class="relative flex items-center justify-center font-medium"
     :class="backgroundClass"
   >
-    <div class="my-4 ml-4 mr-10">
+    <div class="my-1 sm:my-3.5 ml-2.5 mr-8">
       <slot />
     </div>
     <button

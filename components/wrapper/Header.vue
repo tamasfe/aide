@@ -10,7 +10,7 @@ const { isAuthenticated } = useAuth();
     <Transition name="slide">
       <BaseNotice
         v-if="refferalBaseNoticeOpen"
-        class="w-full h-14"
+        class="w-full text-[0.9rem]"
         variant="info"
         @close="() => (refferalBaseNoticeOpen = false)"
       >

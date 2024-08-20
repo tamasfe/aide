@@ -77,13 +77,13 @@ const onClickMenu = () => {
         </button>
         <NuxtLink
           to="/"
-          class="min-w-8 sm:min-w-40"
+          class="min-w-8 sm:min-w-[8.5rem]"
         >
           <IconsLogoSmall class="sm:hidden" />
           <IconsLogo class="hidden sm:block" />
         </NuxtLink>
       </div>
-      <div class="flex items-center space-x-3 sm:space-x-4">
+      <div class="flex items-center space-x-[0.625rem] sm:space-x-4">
         <BaseButton
           variant="secondary"
           class="py-2 inline-flex giro__button-balance"
