@@ -50,7 +50,7 @@ onMounted(() => {
             <p
               class="py-1 px-2 bg-button-primary text-transparent bg-clip-text"
             >
-              32 {{ t("misc.games").toLowerCase() }}
+              {{ t("grid.game_count", { count: 69 }) }}
             </p>
           </div>
         </div>

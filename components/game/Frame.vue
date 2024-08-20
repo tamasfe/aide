@@ -88,7 +88,7 @@ const id = Number(params.id as string);
           class="w-full flex justify-between md:justify-start flex-row md:flex-col items-center md:items-start font-semibold"
         >
           <h3 class="text-lg font-bold">Potion Spells</h3>
-          <p class="text-subtle-light">{{ t("misc.by") }} Pragmatic Play</p>
+          <p class="text-subtle-light">{{ t("play.by_provider", { provider: "TODO" }) }}</p>
         </div>
         <div
           class="w-full flex justify-between md:justify-end items-center space-x-8 text-subtle font-semibold"
@@ -100,7 +100,7 @@ const id = Number(params.id as string);
             <div>
               <PhWhatsappLogo :size="26" />
             </div>
-            <p>{{ t("misc.share") }}</p>
+            <p>{{ t("play.share") }}</p>
           </button>
           <button
             type="button"

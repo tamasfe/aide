@@ -52,7 +52,7 @@ const id = Number(params.id as string);
                   Potion Spells
                 </h3>
                 <p class="text-xl text-emphasis font-medium">
-                  By Pragmatic Play
+                  {{ t("play.by_provider", { provider: "TODO" }) }}
                 </p>
               </div>
               <div class="flex items-center space-x-4 font-semibold">
@@ -82,7 +82,7 @@ const id = Number(params.id as string);
               class="outline-none inline-flex space-x-2 text-emphasis"
             >
               <PhWhatsappLogo :size="24" />
-              <p class="text-lg font-semibold">{{ t("misc.share") }}</p>
+              <p class="text-lg font-semibold">{{ t("play.share") }}</p>
             </button>
             <BaseButton
               class="col-span-2 inline-flex justify-center w-full !py-3"
