@@ -62,7 +62,7 @@ const onClickMenu = () => {
           type="button"
           @click="onClickLogin"
         >
-          {{ t("auth.login") }}
+          {{ t("button.login") }}
         </BaseButton>
         <BaseButton
           class="py-2"
@@ -70,7 +70,7 @@ const onClickMenu = () => {
           type="button"
           @click="onClickRegister"
         >
-          {{ t("auth.register") }}
+          {{ t("button.register") }}
         </BaseButton>
       </div>
     </div>

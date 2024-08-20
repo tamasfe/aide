@@ -60,7 +60,7 @@ const id = Number(params.id as string);
                 type="button"
                 @click="emit('click:login', $event)"
               >
-                {{ t("auth.login") }}
+                {{ t("button.login") }}
               </BaseButton>
               <!-- temporary fix -->
               <div class="mb-[0.4rem] flex-1">
@@ -72,7 +72,7 @@ const id = Number(params.id as string);
                   type="button"
                   @click="emit('click:register', $event)"
                 >
-                  {{ t("auth.register") }}
+                  {{ t("button.register") }}
                 </BaseButton>
               </div>
             </div>

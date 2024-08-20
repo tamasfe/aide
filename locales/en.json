@@ -1,31 +1,4 @@
 {
-  "auth": {
-    "login_to_play": "You need to log in to play.",
-
-    "login": "Login",
-    "register": "Register",
-    "email": "Email",
-    "password": "Password",
-    "telephone": "Telephone",
-    "cpf": "CPF",
-    "sign_in": "Sign In",
-    "sign_up": "Sign Up",
-    "have_account": "Have an account already?",
-    "create_account": "Create Account",
-    "dont_have_account": "Don't you have an account yet?",
-    "accept_terms": "By signing up, you agree to our",
-    "terms": "Terms of Service",
-    "forgot_your_password": "Forgot your password?",
-    "send_recovery_email": "Send recovery email",
-    "invalid_credentials": "Your email or password is incorrect",
-    "signup_try_again": "An error occurred while trying to create your account. Please try again.",
-    "signup_success": "Your account has been created successfully.",
-    "cancel_registration": {
-      "header": "Are you sure you want to cancel your registration?",
-      "message": "Sign Up and deposit now to receive double your deposit, up to R$ 7000!",
-      "confirm": "Yes, I want to cancel"
-    }
-  },
   "payment_flow": {
     "min_deposit": "Minimum deposit is: ",
     "make_deposit": "Make a deposit",
@@ -54,16 +27,49 @@
     "share": "Share",
     "from": "From",
     "enter": "Enter",
-    "see_all": "See all",
     "support": "Support"
   },
 
+
+
+
+
+  "auth": {
+    "dont_have_account": "Don't have an account yet?",
+    "create_free_account": "Create a Free account",
+    "forgot_password": "Forgot your password?",
+    "login_to_play": "You need to log in to play",
+    "accept_terms": "By signing up, you agree to our",
+    "have_account": "Have an account already?",
+    "invalid_credentials": "Your email or password is incorrect",
+    "signup_try_again": "An error occurred while trying to create your account. Please try again.",
+    "signup_success": "Your account has been created successfully"
+  },
+  "cancel_registration": {
+    "headline": "Are you sure you want to cancel registration?",
+    "body": "Thousands of winners cash out every day with our quick withdrawals.",
+    "cancel": "Yes, I want to cancel"
+  },
+  "button": {
+    "register": "Register",
+    "login": "Login",
+    "create_account": "Create Account",
+    "continue": "Continue",
+    "see_all": "See All",
+    "send_recovery_email": "Send recovery email"
+  },
   "mobile_nav": {
     "menu": "Menu",
     "hot": "Hot",
     "search": "Search",
     "support": "Support",
     "promos": "Promos"
+  },
+  "field": {
+    "email": "Email",
+    "password": "Password",
+    "telephone": "Telephone",
+    "cpf": "CPF"
   },
   "validation": {
     "field_required": "Field is required",

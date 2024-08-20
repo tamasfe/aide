@@ -52,7 +52,7 @@ const onSubmit = handleSubmit(async (values) => {
     <FormControl
       v-model="email"
       type="email"
-      :title="t('auth.email')"
+      :title="t('field.email')"
       class="w-full"
       wrapper-class="bg-subtle py-3"
       input-class="text-default"
@@ -62,7 +62,7 @@ const onSubmit = handleSubmit(async (values) => {
     <FormControl
       v-model="password"
       type="password"
-      :title="t('auth.password')"
+      :title="t('field.password')"
       class="w-full"
       wrapper-class="bg-subtle py-3"
       input-class="text-default"
@@ -73,7 +73,7 @@ const onSubmit = handleSubmit(async (values) => {
       type="button"
       class="font-semibold text-subtle py-4"
     >
-      {{ t("auth.forgot_your_password") }}
+      {{ t("auth.forgot_password") }}
     </button>
     <BaseButton
       class="w-full inline-flex justify-center text-lg !rounded-[0.3rem] !py-4 sm:!py-3"
@@ -84,7 +84,7 @@ const onSubmit = handleSubmit(async (values) => {
       :disabled="isSubmitting || !meta.valid"
     >
       <div class="flex items-center gap-x-2">
-        <p>{{ t("misc.enter") }}</p>
+        <p>{{ t("button.login") }}</p>
         <div
           v-if="isSubmitting"
           class="w-full h-full flex items-center justify-center"
@@ -96,14 +96,14 @@ const onSubmit = handleSubmit(async (values) => {
         </div>
       </div>
     </BaseButton>
-    <p class="text-subtle py-4">
+    <p class="text-sm text-subtle py-4">
       {{ t("auth.dont_have_account") }}
       <button
         type="button"
         class="font-semibold text-brand-yellow"
         @click="emit('request:register')"
       >
-        {{ t("auth.sign_up") }}
+        {{ t("auth.create_free_account") }}
       </button>
     </p>
   </form>

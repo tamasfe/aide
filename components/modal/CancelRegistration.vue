@@ -21,10 +21,10 @@ const close = () => {
   <ModalWrapper v-model:opened="opened">
     <form class="flex-auto flex sm:justify-center flex-col gap-4 p-6">
       <h1 class="text-2xl font-bold text-center">
-        {{ t("auth.cancel_registration.header") }}
+        {{ t("cancel_registration.headline") }}
       </h1>
       <p class="text-emphasis text-lg text-center">
-        {{ t("auth.cancel_registration.message") }}
+        {{ t("cancel_registration.body") }}
       </p>
       <BaseButton
         tabindex="0"
@@ -33,7 +33,7 @@ const close = () => {
         type="submit"
         big
       >
-        {{ t("misc.continue") }}
+        {{ t("button.continue") }}
       </BaseButton>
       <button
         class="outline-none mx-auto font-medium inline-flex justify-center text-subtle hover:text-emphasis"
@@ -41,7 +41,7 @@ const close = () => {
         big
         @click="close"
       >
-        {{ t("auth.cancel_registration.confirm") }}
+        {{ t("cancel_registration.cancel") }}
       </button>
     </form>
   </ModalWrapper>

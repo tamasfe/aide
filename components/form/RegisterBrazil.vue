@@ -140,7 +140,7 @@ onMounted(() => {
     <FormControl
       v-model="email"
       type="email"
-      :title="t('auth.email')"
+      :title="t('field.email')"
       class="w-full"
       wrapper-class="bg-subtle py-3"
       input-class="text-default"
@@ -150,7 +150,7 @@ onMounted(() => {
     <FormControl
       v-model="password"
       type="password"
-      :title="t('auth.password')"
+      :title="t('field.password')"
       class="w-full"
       wrapper-class="bg-subtle py-3"
       input-class="text-default"
@@ -160,7 +160,7 @@ onMounted(() => {
     <FormControl
       v-model="cpf"
       type="text"
-      :title="t('auth.cpf')"
+      :title="t('field.cpf')"
       class="w-full"
       wrapper-class="bg-subtle py-3"
       input-class="text-default"
@@ -172,7 +172,7 @@ onMounted(() => {
       v-model="phone"
       v-model:region="region"
       type="tel"
-      :title="t('auth.telephone')"
+      :title="t('field.telephone')"
       class="w-full"
       wrapper-class="bg-subtle py-3"
       input-class="text-default"
@@ -185,7 +185,7 @@ onMounted(() => {
         target="_blank"
         class="font-semibold"
       >
-        {{ t("auth.terms") }}
+        {{ t("page.terms") }}
       </NuxtLink>
     </p>
     <BaseButton
@@ -197,7 +197,7 @@ onMounted(() => {
       :disabled="isSubmitting || !meta.valid"
     >
       <div class="flex items-center gap-x-2">
-        <p>{{ t("auth.create_account") }}</p>
+        <p>{{ t("button.create_account") }}</p>
         <div
           v-if="isSubmitting"
           class="w-full h-full flex items-center justify-center"
@@ -216,7 +216,7 @@ onMounted(() => {
         class="font-semibold text-brand-yellow"
         @click="emit('request:login')"
       >
-        {{ t("auth.sign_in") }}
+        {{ t("button.login") }}
       </button>
     </p>
   </form>

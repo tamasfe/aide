@@ -63,7 +63,7 @@ export function useAuth() {
       });
     }
     catch (e: unknown) {
-      let message = "signup_try_again";
+      let message = "auth.signup_try_again";
       const error = e as FetchError;
       if (error.data?.code === "VALIDATION") {
         const metadata = error.data.metadata as ValidationErrorMetadata;

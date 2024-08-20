@@ -105,7 +105,7 @@ onMounted(() => {
           class="bg-subtle text-subtle hover:bg-emphasis"
           type="button"
         >
-          {{ t("misc.see_all") }}
+          {{ t("button.see_all") }}
         </BaseButton>
       </NuxtLink>
     </template>

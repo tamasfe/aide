@@ -50,7 +50,7 @@ const onSubmit = handleSubmit((values) => {
       shadow
       class="w-full inline-flex justify-center text-base sm:text-lg"
     >
-      {{ t("send_recovery_email") }}
+      {{ t("button.send_recovery_email") }}
     </BaseButton>
   </form>
 </template>
