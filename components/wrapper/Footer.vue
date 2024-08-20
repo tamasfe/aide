@@ -92,7 +92,7 @@ const scrollToTop = () => {
           { title: t('page.betting_terms'), to: '/betting-terms' },
           { title: t('page.terms'), to: '/terms' },
           { title: t('page.privacy'), to: '/privacy' },
-          { title: t('page.aml_policy'), to: '/aml-policy' },
+          { title: t('page.aml_kyc'), to: '/aml-kyc' },
           { title: t('page.responsible_gaming'), to: '/responsible-gaming' },
         ]"
       />

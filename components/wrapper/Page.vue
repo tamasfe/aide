@@ -28,12 +28,21 @@ defineProps<{
 
 <style scoped>
 :deep(p) {
-  @apply my-6;
+  @apply my-4;
 }
 :deep(strong) {
   @apply font-semibold;
 }
 :deep(h4) {
-  @apply my-6 text-2xl font-semibold text-emphasis;
+  @apply my-6 text-[1.2rem] font-semibold text-emphasis;
+}
+:deep(ul) {
+  @apply my-6 list-disc;
+}
+:deep(ol) {
+  @apply my-6 list-decimal;
+}
+:deep(li) {
+  @apply ml-8 pl-2;
 }
 </style>
