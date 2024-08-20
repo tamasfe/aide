@@ -5,16 +5,16 @@
   "winning_now": {
     "title": "Winning Now"
   },
-  "placeholder": {
-    "search": "Search for a casino game...",
-    "deposit_amount": "Deposit amount",
-    "withdrawal_amount": "Withdrawal amount"
-  },
   "field": {
     "email": "Email",
     "password": "Password",
     "telephone": "Telephone",
     "cpf": "CPF"
+  },
+  "placeholder": {
+    "search": "Search for a casino game...",
+    "deposit_amount": "Deposit amount",
+    "withdrawal_amount": "Withdrawal amount"
   },
   "validation": {
     "field_required": "Field is required",
