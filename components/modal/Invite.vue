@@ -12,9 +12,12 @@ const opened = computed({
 </script>
 
 <template>
-  <ModalWrapperHorizontal v-model:opened="opened">
+  <ModalWrapper
+    v-model:opened="opened"
+    banner="top"
+  >
     <div class="flex-1 px-6 sm:py-6">
       <FormInvite />
     </div>
-  </ModalWrapperHorizontal>
+  </ModalWrapper>
 </template>

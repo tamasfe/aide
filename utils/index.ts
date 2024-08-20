@@ -6,6 +6,10 @@ import type { ValidationErrorMetadata } from "~/types/api";
 import type { CountryCode, GameImageVariant } from "~/types/constants";
 import { PHONE_MASKS } from "~/constants";
 
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
+
 export const overlay = (element: HTMLElement) => {
   const existing = element.parentElement?.querySelector(".giro__overlay");
   if (existing) {
@@ -129,10 +133,6 @@ export const isValidPhoneNumber = (number: string, code: CountryCode) => {
   });
   return mask.completed(number);
 };
-
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
 
 export const getValidationErrorTranslationKeys = (
   metadata: ValidationErrorMetadata,

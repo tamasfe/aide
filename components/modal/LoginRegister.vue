@@ -10,10 +10,9 @@ const emit = defineEmits([
   "close",
 ]);
 
-type ModalType = "login" | "register";
 const props = defineProps<{
   opened: boolean;
-  type: ModalType;
+  type: "login" | "register";
 }>();
 
 const opened = computed({
@@ -44,9 +43,10 @@ const onSuccessfulRegister = (credentials: RegisterCredentialsBrazil) => {
 </script>
 
 <template>
-  <ModalWrapperHorizontal
+  <ModalWrapper
     v-model:opened="opened"
     :close-on-click-outside="false"
+    banner="top"
   >
     <div class="inline-flex justify-center py-6 sm:pt-12 sm:pb-4">
       <div class="min-w-36 sm:min-w-40">
@@ -65,5 +65,5 @@ const onSuccessfulRegister = (credentials: RegisterCredentialsBrazil) => {
         @success="onSuccessfulLogin"
       />
     </div>
-  </ModalWrapperHorizontal>
+  </ModalWrapper>
 </template>
