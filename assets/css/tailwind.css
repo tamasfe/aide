@@ -53,9 +53,6 @@
   --giro-border-radius: 0.5rem;
   --giro-padding-button: 0.429rem 1.143rem 0.429rem 1.143rem;
   --giro-padding-button-big: 0.5rem 3.2rem 0.5rem 3.2rem;
-
-  /* font */
-  --giro-font-size: 1rem;
 }
 
 @layer base {
@@ -64,7 +61,6 @@
   }
 
   html {
-    font-size: 14px;
     font-family: 'Montserrat', sans-serif;
   }
 
@@ -72,7 +68,6 @@
     background-color: rgb(var(--giro-bg));
     height: 100vh;
     color: var(--giro-text);
-    font-size: var(--giro-font-size);
   }
 
   input::placeholder {
