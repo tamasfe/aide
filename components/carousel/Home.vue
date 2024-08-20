@@ -10,7 +10,5 @@ const { isMobile } = useDevice();
     bottom-controls
   >
     <SlideTry />
-    <div>Component 2</div>
-    <div>Component 3</div>
   </BaseCarousel>
 </template>
