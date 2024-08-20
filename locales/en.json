@@ -95,6 +95,10 @@
     "aml_policy": "AML Policy",
     "responsible_gaming": "Responsible Gaming"
   },
+  "metadata": {
+    "version": "Version",
+    "updated": "Updated"
+  },
   "footer": {
     "summary": "Welcome to The GiroBet Experience the ultimate thrill of online gambling with us. Play slots, poker, blackjack, and more. Win big with our bonuses and promotions.",
     "popular": "Popular",
