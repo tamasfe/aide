@@ -88,7 +88,7 @@ defineOptions({
       class="!rounded-2xl sm:!rounded-xl"
       wrapper-class="font-normal bg-emphasis !rounded-2xl sm:!rounded-xl"
       input-class="font-normal text-default"
-      :placeholder="t('home.search.placeholder')"
+      :placeholder="t('placeholder.search')"
       type="text"
       v-bind="$attrs"
       @focus="openPopover"

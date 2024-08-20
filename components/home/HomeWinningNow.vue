@@ -4,7 +4,7 @@ const { t } = useI18n();
 
 <template>
   <div class="flex items-center gap-4">
-    <h3 class="sm:text-xl font-bold">🏆 {{ t("home.winning_now") }}:</h3>
+    <h3 class="sm:text-xl font-bold">🏆 {{ t("winning_now.title") }}</h3>
     <div
       class="flex-1 flex items-center gap-4 overflow-x-auto giro__hide-scroll"
     >

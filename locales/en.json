@@ -5,12 +5,6 @@
     "deposit": "Deposit",
     "quick_deposit": "Quick Deposit"
   },
-  "home": {
-    "search": {
-      "placeholder": "Search for a casino game..."
-    },
-    "winning_now": "Winning Now"
-  },
   "misc": {
     "games": "Games",
     "by": "By",
@@ -27,6 +21,12 @@
 
   "promo_bar": {
     "refer": "Refer a friend and earn REAL balance for each friend you invite"
+  },
+  "placeholder": {
+    "search": "Search for a casino game..."
+  },
+  "winning_now": {
+    "title": "Winning Now"
   },
   "auth": {
     "dont_have_account": "Don't have an account yet?",
