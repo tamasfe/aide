@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { PhArrowLeft, PhCopy } from "@phosphor-icons/vue";
 
+const { t } = useI18n();
+
 const emit = defineEmits(["update:pix", "click:back"]);
 
 const onSubmit = () => {
@@ -10,7 +12,7 @@ const goBack = () => {
   emit("click:back");
 };
 
-// NO DEFAULTS, REMOVE ALL DEFAULTS ONLY HERE FOR TESTING PURPOSES
+// TODO NO DEFAULTS, REMOVE ALL DEFAULTS ONLY HERE FOR TESTING PURPOSES
 defineProps<{
   value: number;
   pix: string;
@@ -69,13 +71,13 @@ defineProps<{
       shadow
       class="w-full inline-flex justify-center text-base sm:text-lg"
     >
-      COPY CODE (0:45 REMAINING)
+      {{ t('button.copy_code', { remaining: '0:45' }) }}
     </BaseButton>
     <NuxtLink
       to="/completed/payment"
       class="text-brand-yellow"
     >
-      I completed payment
+      {{ t('modal_payments.completed_payment') }}
     </NuxtLink>
   </form>
 </template>

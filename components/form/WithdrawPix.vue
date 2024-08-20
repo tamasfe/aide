@@ -66,7 +66,7 @@ const onSubmit = handleSubmit((values) => {
       type="number"
       wrapper-class="bg-subtle text-lg"
       input-class="font-semibold"
-      :placeholder="t('payment_flow.deposit')"
+      :placeholder="t('placeholder.withdrawal_amount')"
       :error="errors.value"
     >
       <template #prefix>
@@ -74,7 +74,7 @@ const onSubmit = handleSubmit((values) => {
       </template>
     </FormControl>
     <p class="text-subtle">
-      Available for withdrawal:
+      {{ t('modal_payments.available_withdrawal') }}:
       <span class="text-emphasis">R$ 500,00</span>
     </p>
     <BaseButton
@@ -83,7 +83,7 @@ const onSubmit = handleSubmit((values) => {
       shadow
       class="w-full inline-flex justify-center text-base sm:text-lg"
     >
-      Withdraw
+      {{ t('button.withdraw') }}
     </BaseButton>
     <BaseButton
       big
@@ -91,7 +91,7 @@ const onSubmit = handleSubmit((values) => {
       class="w-full bg-muted text-emphasis inline-flex justify-center text-base sm:text-lg"
       @click="cancel"
     >
-      Cancel
+      {{ t('button.cancel') }}
     </BaseButton>
   </form>
 </template>

@@ -52,7 +52,7 @@ const locale = ref("pt-BR");
       wrapper-class="bg-subtle text-lg"
       :currency="currency"
       :locale="locale"
-      :placeholder="t('payment_flow.deposit')"
+      :placeholder="t('placeholder.deposit_amount')"
       :error="errors.value"
       inputmode="numeric"
     />

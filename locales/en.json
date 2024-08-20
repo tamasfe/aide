@@ -17,7 +17,9 @@
     "refer": "Refer a friend and earn REAL balance for each friend you invite"
   },
   "placeholder": {
-    "search": "Search for a casino game..."
+    "search": "Search for a casino game...",
+    "deposit_amount": "Deposit amount",
+    "withdrawal_amount": "Withdrawal amount"
   },
   "winning_now": {
     "title": "Winning Now"
@@ -43,7 +45,10 @@
     "see_all": "See All",
     "send_recovery_email": "Send recovery email",
     "deposit": "Deposit",
-    "deposit_now": "Deposit Now"
+    "deposit_now": "Deposit Now",
+    "copy_code": "Copy Code ({remaining} Remaining)",
+    "withdrawal": "Withdrawal",
+    "cancel": "Cancel"
   },
   "mobile_nav": {
     "menu": "Menu",
@@ -53,7 +58,9 @@
     "promos": "Promos"
   },
   "modal_payments": {
-    "make_deposit": "Make a deposit"
+    "make_deposit": "Make a deposit",
+    "completed_payment": "I completed the payment",
+    "available_withdrawal": "Available to withdrawal"
   },
   "field": {
     "email": "Email",
