@@ -5,6 +5,7 @@
   * layouts
   * icons
   * BaseButton / button
+  * delete tests
 
 ### Extract to Component
 
@@ -13,3 +14,7 @@
 ### Wire up
 
   * social media logo props
+
+### Finalize
+
+  * Remove @phosphor-icons/vue
