@@ -188,36 +188,27 @@ onMounted(() => {
         {{ t("page.terms") }}
       </NuxtLink>
     </p>
-    <BaseButton
+
+    <BaseButtonNew
       :loading="isSubmitting"
       :disabled="!meta.valid"
-      class="w-full inline-flex justify-center text-lg !rounded-[0.262rem] !py-4 sm:!py-3"
-      variant="primary"
+      size="xl"
+      class="w-full"
       type="submit"
-      big
     >
-      <div class="flex items-center gap-x-2">
-        <p>{{ t("button.create_account") }}</p>
-        <div
-          v-if="isSubmitting"
-          class="w-full h-full flex items-center justify-center"
-        >
-          <PhCircleNotch
-            :size="20"
-            class="animate-spin"
-          />
-        </div>
-      </div>
-    </BaseButton>
+      {{ t("button.create_account") }}
+    </BaseButtonNew>
+
     <p class="text-subtle py-4">
       {{ t("modal_auth.have_account") }}
-      <button
-        type="button"
+      <BaseButtonNew
+        variant="ghost"
+        size="ghost"
         class="font-semibold text-brand-yellow hover:underline"
         @click="emit('request:login')"
       >
         {{ t("button.login") }}
-      </button>
+      </BaseButtonNew>
     </p>
   </form>
 </template>

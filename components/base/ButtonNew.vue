@@ -48,6 +48,7 @@ const props = withDefaults(defineProps<{
 
 <template>
   <button
+    :type="type"
     :disabled="disabled || loading"
     :class="cn(
       buttonVariants({ variant, size }),

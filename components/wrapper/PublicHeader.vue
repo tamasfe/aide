@@ -56,22 +56,18 @@ const onClickMenu = () => {
         </NuxtLink>
       </div>
       <div class="flex items-center space-x-[0.625rem] sm:space-x-4">
-        <BaseButton
+        <BaseButtonNew
           variant="secondary"
-          class="py-2 sm:py-2.5"
-          type="button"
           @click="onClickLogin"
         >
           {{ t("button.login") }}
-        </BaseButton>
-        <BaseButton
-          class="py-2 sm:py-2.5"
+        </BaseButtonNew>
+        <BaseButtonNew
           variant="primary"
-          type="button"
           @click="onClickRegister"
         >
           {{ t("button.register") }}
-        </BaseButton>
+        </BaseButtonNew>
       </div>
     </div>
   </div>

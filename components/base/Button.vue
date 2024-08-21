@@ -1,6 +1,5 @@
 <script setup lang="ts">
 type Variant = "primary" | "secondary" | "emphasis";
-
 const props = withDefaults(defineProps<{
   variant?: Variant;
   loading?: boolean;
