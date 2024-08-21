@@ -17,24 +17,25 @@ const items = [
 
 <template>
   <div
-    class="giro__mobile-menu block z-10 sm:hidden sticky bottom-0 left-0 w-full bg-default text-subtle"
+    class="sticky z-[10] sm:hidden bottom-0 left-0 w-full bg-default text-subtle"
   >
     <div
-      class="flex items-center text-[0.8rem] justify-between pt-2.5 px-4 pb-2 text-subtle-light font-semibold"
+      class="pt-2.5 px-4 pb-2 flex items-center justify-between"
     >
-      <button
+      <BaseButtonNew
         v-for="item in items"
         :key="item.text"
+        variant="ghost"
+        size="ghost"
         class="flex flex-col justify-center items-center outline-none"
-        type="button"
       >
         <Icon
           :name="item.icon"
           class="text-subtle"
           size="24"
         />
-        <div>{{ t(item.text) }}</div>
-      </button>
+        <div class="text-[0.8rem] text-subtle-light font-semibold">{{ t(item.text) }}</div>
+      </BaseButtonNew>
     </div>
   </div>
 </template>
