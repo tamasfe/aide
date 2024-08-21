@@ -1,300 +1,71 @@
-export type Jurisdiction = "BR";
+import type {
+  Country,
+  Jurisdiction,
+  Locale,
+} from "~/types/constants";
 
-export type Currency = "BRL";
+// IMPORTANT: when you update this, move the associated flag
+// from assets/flags to assets/flags/active
+export const LOCALES: Locale[] = [
+  { language: "en", countryCode: "US" },
+  { language: "pt", countryCode: "BR" },
+  { language: "es", countryCode: "ES" },
+  { language: "es", countryCode: "MX" },
+];
 
-export type Language = "en" | "pt";
+// shows in phone dropdown
+export const COUNTRIES: Country[] = [
+  { // Argentina
+    code: "AR",
+    dialCode: "+54",
+    masks: {
+      phone: ["(##) 123"],
+    },
+  },
+  { // Brazil
+    code: "BR",
+    dialCode: "+55",
+    masks: {
+      phone: ["(##) #####-####", "(##) ####-####"],
+      cpf: "###.###.###-##",
+    },
+  },
+  { // Spain
+    code: "ES",
+    dialCode: "+34",
+    masks: {
+      phone: ["(##) 123"],
+    },
+  },
+  { // India
+    code: "IN",
+    dialCode: "+91",
+    masks: {
+      phone: ["(##) 123"],
+    },
+  },
+  { // Mexico
+    code: "MX",
+    dialCode: "+52",
+    masks: {
+      phone: ["(##) 123"],
+    },
+  },
+  { // United States
+    code: "US",
+    dialCode: "+1",
+    masks: {
+      phone: ["(###) ###-####"],
+    },
+  },
+];
 
-export type DeviceType = "mobile" | "desktop";
-
-export type Gender = "male" | "female" | "other";
-
-export type GameVolatility =
-  | "extreme"
-  | "very-high"
-  | "high"
-  | "medium-high"
-  | "medium"
-  | "medium-low"
-  | "low"
-  | "very-low"
-  | "none";
-
-export type GameImageVariant =
-  | "small"
-  | "medium"
-  | "large"
-  | "extra_large"
-  | "background";
-
-export type LanguageMetadata = {
-  code: Language;
-  countryCode: CountryCode;
-};
-
-export type CountryMetadata = {
-  code: CountryCode;
-  name: string;
-  dialCode: string;
-};
-
-export type PhoneMasks = {
-  [key in CountryCode]?: Array<string>;
-};
-
-// matches flag svg filenames
-export type CountryCode =
-  | "AD"
-  | "AE"
-  | "AF"
-  | "AG"
-  | "AI"
-  | "AL"
-  | "AM"
-  | "AO"
-  | "AQ"
-  | "AR"
-  | "AS"
-  | "AT"
-  | "AU"
-  | "AW"
-  | "AX"
-  | "AZ"
-  | "BA"
-  | "BB"
-  | "BD"
-  | "BE"
-  | "BF"
-  | "BG"
-  | "BH"
-  | "BI"
-  | "BJ"
-  | "BL"
-  | "BM"
-  | "BN"
-  | "BO"
-  | "BQ-BO"
-  | "BQ-SA"
-  | "BQ-SE"
-  | "BR"
-  | "BS"
-  | "BT"
-  | "BV"
-  | "BW"
-  | "BY"
-  | "BZ"
-  | "CA"
-  | "CC"
-  | "CD"
-  | "CF"
-  | "CG"
-  | "CH"
-  | "CI"
-  | "CK"
-  | "CL"
-  | "CM"
-  | "CN"
-  | "CO"
-  | "CR"
-  | "CU"
-  | "CV"
-  | "CW"
-  | "CX"
-  | "CY"
-  | "CZ"
-  | "DE"
-  | "DJ"
-  | "DK"
-  | "DM"
-  | "DO"
-  | "DZ"
-  | "EC"
-  | "EE"
-  | "EG"
-  | "EH"
-  | "ER"
-  | "ES"
-  | "ET"
-  | "FI"
-  | "FJ"
-  | "FK"
-  | "FM"
-  | "FO"
-  | "FR"
-  | "GA"
-  | "GB-NIR"
-  | "GB-SCT"
-  | "GB-UKM"
-  | "GB-WLS"
-  | "GB"
-  | "GD"
-  | "GE"
-  | "GF"
-  | "GG"
-  | "GH"
-  | "GI"
-  | "GL"
-  | "GM"
-  | "GN"
-  | "GP"
-  | "GQ"
-  | "GR"
-  | "GS"
-  | "GT"
-  | "GU"
-  | "GW"
-  | "GY"
-  | "HK"
-  | "HM"
-  | "HN"
-  | "HR"
-  | "HT"
-  | "HU"
-  | "ID"
-  | "IE"
-  | "IL"
-  | "IM"
-  | "IN"
-  | "IO"
-  | "IQ"
-  | "IR"
-  | "IS"
-  | "IT"
-  | "JE"
-  | "JM"
-  | "JO"
-  | "JP"
-  | "KE"
-  | "KG"
-  | "KH"
-  | "KI"
-  | "KM"
-  | "KN"
-  | "KP"
-  | "KR"
-  | "KW"
-  | "KY"
-  | "KZ"
-  | "LA"
-  | "LB"
-  | "LC"
-  | "LI"
-  | "LK"
-  | "LR"
-  | "LS"
-  | "LT"
-  | "LU"
-  | "LV"
-  | "LY"
-  | "MA"
-  | "MC"
-  | "MD"
-  | "ME"
-  | "MF"
-  | "MG"
-  | "MH"
-  | "MK"
-  | "ML"
-  | "MM"
-  | "MN"
-  | "MO"
-  | "MP"
-  | "MQ"
-  | "MR"
-  | "MS"
-  | "MT"
-  | "MU"
-  | "MV"
-  | "MW"
-  | "MX"
-  | "MY"
-  | "MZ"
-  | "NA"
-  | "NC"
-  | "NE"
-  | "NF"
-  | "NG"
-  | "NI"
-  | "NL"
-  | "NO"
-  | "NP"
-  | "NR"
-  | "NU"
-  | "NZ"
-  | "OM"
-  | "PA"
-  | "PE"
-  | "PF"
-  | "PG"
-  | "PH"
-  | "PK"
-  | "PL"
-  | "PM"
-  | "PN"
-  | "PR"
-  | "PS"
-  | "PT"
-  | "PW"
-  | "PY"
-  | "QA"
-  | "RE"
-  | "RO"
-  | "RS"
-  | "RU"
-  | "RW"
-  | "SA"
-  | "SB"
-  | "SC"
-  | "SD"
-  | "SE"
-  | "SG"
-  | "SH"
-  | "SI"
-  | "SJ"
-  | "SK"
-  | "SL"
-  | "SM"
-  | "SN"
-  | "SO"
-  | "SR"
-  | "SS"
-  | "ST"
-  | "SV"
-  | "SX"
-  | "SY"
-  | "SZ"
-  | "TC"
-  | "TD"
-  | "TF"
-  | "TG"
-  | "TH"
-  | "TJ"
-  | "TK"
-  | "TL"
-  | "TM"
-  | "TN"
-  | "TO"
-  | "TR"
-  | "TT"
-  | "TV"
-  | "TW"
-  | "TZ"
-  | "UA"
-  | "UG"
-  | "UM"
-  | "US"
-  | "UY"
-  | "UZ"
-  | "VA"
-  | "VC"
-  | "VE"
-  | "VG"
-  | "VI"
-  | "VN"
-  | "VU"
-  | "WF"
-  | "WS"
-  | "YE"
-  | "YT"
-  | "ZA"
-  | "ZM"
-  | "ZW";
+export const JURISDICTIONS: Jurisdiction[] = [
+  {
+    country: COUNTRIES.find(country => country.code === "BR"),
+    currency: {
+      code: "BRL",
+      symbol: "R$",
+    },
+  },
+];
