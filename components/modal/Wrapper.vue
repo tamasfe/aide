@@ -26,7 +26,7 @@ const showImage = (value: boolean) => {
 };
 
 const size = computed(() => {
-  return props.banner === "left" ? "2xl" : "5xl";
+  return props.banner === "left" ? "2xl" : "4xl";
 });
 
 defineExpose({

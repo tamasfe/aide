@@ -86,8 +86,8 @@ const onClickMenu = () => {
       <div class="flex items-center space-x-[0.625rem] sm:space-x-4">
         <BaseButtonNew
           variant="secondary"
-          @click="onClickBalance"
           class="space-x-1"
+          @click="onClickBalance"
         >
           <p class="bg-button-primary text-transparent bg-clip-text">
             {{ currencySymbol }}

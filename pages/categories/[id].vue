@@ -52,7 +52,7 @@ const getImageId = (idx: number) => {
               v-model="provider"
               :options="providers"
               class="text-emphasis min-w-full sm:min-w-40"
-              wrapper-class="!py-0"
+              wrapper-class="sm:py-0"
               input-class="!text-emphasis !font-semibold"
             />
           </template>

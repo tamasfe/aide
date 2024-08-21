@@ -35,17 +35,21 @@ const id = Number(params.id as string);
         alt=""
       />
       <div
-        class="absolute top-0 left-0 w-full h-full py-7 px-8 bg-default/50 backdrop-blur"
+        class="absolute top-0 left-0 w-full h-full py-7 px-6 bg-default/50 backdrop-blur"
       >
         <div class="h-full flex flex-col justify-between space-y-4">
           <div
             class="grid grid-cols-3 place-items-center space-x-8 text-emphasis"
           >
-            <NuxtImg
-              src="https://picsum.photos/200/300"
-              alt=""
-              class="w-full rounded-default"
-            />
+            <div
+              class="relative w-full rounded-default overflow-hidden pb-[136.36%]"
+            >
+              <NuxtImg
+                src="https://picsum.photos/200/300"
+                alt=""
+                class="absolute left-0 top-0 w-full h-full object-cover"
+              />
+            </div>
             <div class="col-span-2 w-full flex flex-col space-y-6">
               <div class="flex flex-col">
                 <h3 class="text-default text-[1.487rem] font-bold">
@@ -85,10 +89,9 @@ const id = Number(params.id as string);
               <p class="text-lg font-semibold">{{ t("play.share") }}</p>
             </button>
             <BaseButton
-              class="col-span-2 inline-flex justify-center w-full !py-3"
+              class="col-span-2 inline-flex justify-center w-full py-2"
               variant="primary"
               big
-              shadow
             >
               <template #prefix>
                 <PhPlay :size="24" />

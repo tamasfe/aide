@@ -56,7 +56,9 @@ const max = computed(() => {
           :style="{ width: `${(data.length / max) * 100}%` }"
         />
       </div>
-      <p class="text-emphasis text-medium">{{ data.length }} of {{ max }}</p>
+      <p class="text-emphasis font-medium text-xl sm:text-base">
+        {{ data.length }} of {{ max }}
+      </p>
       <BaseButton
         class="bg-emphasis inline-flex justify-center text-subtle hover:text-emphasis w-full sm:w-max !text-base !font-medium !px-4 !py-3 sm:!px-6 sm:!py-2.5 !rounded-md"
         big

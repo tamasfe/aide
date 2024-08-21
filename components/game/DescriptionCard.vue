@@ -3,9 +3,9 @@ import { PhCaretDown } from "@phosphor-icons/vue";
 </script>
 
 <template>
-  <div class="p-8 flex gap-x-8 rounded-default">
-    <div class="min-w-56 hidden md:block">
-      <div class="relative rounded-default overflow-hidden pt-[134.26%]">
+  <div class="p-6 flex gap-x-8 rounded-default">
+    <div class="min-w-[12.8rem] hidden md:block">
+      <div class="relative rounded-default overflow-hidden pt-[137%]">
         <NuxtImg
           src="https://picsum.photos/200/300"
           alt=""
@@ -15,10 +15,8 @@ import { PhCaretDown } from "@phosphor-icons/vue";
     </div>
     <div class="flex flex-col space-y-8">
       <div class="flex flex-col space-y-2">
-        <h2 class="text-[1.7rem] sm:text-xl font-bold leading-3">
-          Potion Spells
-        </h2>
-        <p class="text-xl text-subtle-light font-semibold block sm:hidden">
+        <h2 class="text-2xl sm:text-xl font-bold leading-3">Potion Spells</h2>
+        <p class="text-lg text-subtle-light font-semibold block sm:hidden">
           By Pragmatic Play
         </p>
         <div class="flex items-center space-x-2">
@@ -26,7 +24,7 @@ import { PhCaretDown } from "@phosphor-icons/vue";
             v-for="name in ['Cards', 'Casino', 'Slots']"
             :key="name"
             type="button"
-            class="bg-emphasis outline-none rounded-default text-subtle text-lg sm:text-base font-medium px-2 py-0.5"
+            class="bg-emphasis outline-none rounded-default text-subtle font-medium px-2 py-0.5"
           >
             {{ name }}
           </button>
@@ -46,7 +44,7 @@ import { PhCaretDown } from "@phosphor-icons/vue";
       </p>
 
       <BaseButton
-        class="bg-emphasis text-subtle hover:text-emphasis w-max !text-base !font-medium !px-4 !py-2 xl:!px-5 xl:!py-2.5 !rounded-md"
+        class="bg-emphasis text-subtle hover:text-emphasis w-max !text-base !font-medium !px-3 !py-2 xl:!px-4 xl:!py-2.5 rounded-lg"
         big
       >
         <div class="inline-flex items-center gap-x-2">

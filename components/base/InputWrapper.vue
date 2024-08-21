@@ -71,8 +71,13 @@ defineExpose({
     @click="onFocus"
   >
     <div
-      class="flex items-center gap-4 rounded-lg w-full bg-emphasis min-h-12 px-[0.7rem] py-1 sm:py-[0.7rem]"
-      :class="[outlineClass, wrapperClass]"
+      :class="
+        cn(
+          'flex items-center gap-4 rounded-lg w-full bg-emphasis min-h-[2.625rem] px-[0.7rem] py-1 sm:py-[0.7rem]',
+          outlineClass,
+          wrapperClass,
+        )
+      "
     >
       <slot name="prefix" />
       <div
