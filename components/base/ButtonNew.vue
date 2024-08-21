@@ -11,6 +11,7 @@ export const buttonVariants = cva(
         primary: "bg-button-primary hover:bg-button-primary-hover text-button-primary",
         secondary: "bg-button-secondary hover:bg-button-secondary-hover text-button-secondary",
         emphasis: "bg-button-emphasis hover:bg-button-emphasis-hover text-button-emphasis",
+        subtle: "bg-subtle hover:bg-subtle/70 text-white",
         ghost: "",
       },
       size: {

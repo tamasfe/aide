@@ -65,17 +65,17 @@ defineProps<{
         <PhCopy :size="24" />
       </button>
     </div>
-    <BaseButton
-      variant="primary"
-      big
-      shadow
-      class="w-full inline-flex justify-center text-base sm:text-lg"
+
+    <BaseButtonNew
+      size="xl"
+      class="w-full"
     >
       {{ t('button.copy_code', { remaining: '0:45' }) }}
-    </BaseButton>
+    </BaseButtonNew>
+
     <NuxtLink
       to="/completed/payment"
-      class="text-brand-yellow"
+      class="mt-6 text-brand-yellow"
     >
       {{ t('modal_payments.completed_payment') }}
     </NuxtLink>

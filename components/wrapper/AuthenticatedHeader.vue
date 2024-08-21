@@ -84,33 +84,26 @@ const onClickMenu = () => {
         </NuxtLink>
       </div>
       <div class="flex items-center space-x-[0.625rem] sm:space-x-4">
-        <BaseButton
+        <BaseButtonNew
           variant="secondary"
-          class="py-2 sm:py-2.5 inline-flex giro__button-balance"
-          type="button"
           @click="onClickBalance"
+          class="space-x-1"
         >
-          <div v-if="loading">
-            <PhCircleNotch
-              :size="18"
-              class="text-default animate-spin"
-            />
-          </div>
           <p class="bg-button-primary text-transparent bg-clip-text">
             {{ currencySymbol }}
           </p>
           <p class="text-white">
             {{ balanceValue }}
           </p>
-        </BaseButton>
-        <BaseButton
-          class="py-2 sm:py-2.5"
+        </BaseButtonNew>
+
+        <BaseButtonNew
           variant="emphasis"
-          type="button"
           @click="onClickDeposit"
         >
           {{ t("button.deposit") }}
-        </BaseButton>
+        </BaseButtonNew>
+
         <NuxtLink class="text-subtle hover:text-emphasis cursor-pointer">
           <span class="block">
             <PhUser :size="20" />

@@ -56,37 +56,39 @@ const locale = ref("pt-BR");
       :error="errors.value"
       inputmode="numeric"
     />
-    <div class="flex items-center gap-2 w-full">
-      <button
+    <div class="flex items-center gap-3 w-full">
+      <BaseButtonNew
         v-for="amount of quickDepositAmounts"
         :key="amount"
-        type="button"
-        class="flex-1 flex items-center bg-subtle outline-none space-x-2 p-3 rounded-default cursor-pointer"
+        variant="subtle"
+        size="xl"
+        class="flex-1 space-x-2"
         @click="value = amount"
       >
-        <p
+        <div
           class="bg-button-emphasis text-transparent bg-clip-text text-lg font-bold"
         >
           {{ getCurrencySymbol(currency) }}
-        </p>
-        <p class="font-semibold">
+        </div>
+        <div class="font-semibold text-lg">
           {{
             formatNumber(amount, {
               locale: "pt-BR",
               decimalPlaces: 0,
             })
           }}
-        </p>
-      </button>
+        </div>
+      </BaseButtonNew>
     </div>
-    <BaseButton
-      class="w-full inline-flex justify-center"
-      variant="emphasis"
-      type="submit"
-      big
+
+    <BaseButtonNew
       :disabled="!meta.valid"
+      variant="emphasis"
+      size="xl"
+      class="w-full"
+      type="submit"
     >
       {{ t("button.deposit_now") }}
-    </BaseButton>
+    </BaseButtonNew>
   </form>
 </template>
