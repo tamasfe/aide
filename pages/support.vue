@@ -3,5 +3,9 @@ const { t } = useI18n();
 </script>
 
 <template>
-  <h1>{{ t("page.support") }}</h1>
+  <div>
+    <WrapperPage :title="t('page.support')">
+      <p>content</p>
+    </WrapperPage>
+  </div>
 </template>

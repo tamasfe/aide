@@ -3,5 +3,9 @@ const { t } = useI18n();
 </script>
 
 <template>
-  <h1>{{ t("page.affiliate_program") }}</h1>
+  <div>
+    <WrapperPage :title="t('page.affiliate_program')">
+      <p>content</p>
+    </WrapperPage>
+  </div>
 </template>
