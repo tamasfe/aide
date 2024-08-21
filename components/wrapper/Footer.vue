@@ -1,23 +1,9 @@
 <script setup lang="ts">
 import { PhCaretUp } from "@phosphor-icons/vue";
-import { ACTIVE_TRANSLATIONS } from "~/constants";
-import type { TranslationLanguageOption } from "~/types/options";
-import type { Language } from "~/types/constants";
 
 const { t } = useI18n();
 
-const language = ref<Language>("en");
-
-const languageOptions: Array<TranslationLanguageOption>
-  = ACTIVE_TRANSLATIONS.map(meta => ({
-    title: t(`language.${meta.code}`),
-    value: meta.code,
-    countryCode: meta.countryCode,
-  }));
-
-const getFlag = (code: Language) => {
-  return languageOptions.find(option => option.value === code)?.countryCode;
-};
+const language = ref("");
 
 const scrollToTop = () => {
   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -43,21 +29,21 @@ const scrollToTop = () => {
         <p class="text-[0.82rem]">{{ t("footer.summary") }}</p>
         <BaseSelect
           v-model="language"
-          :options="languageOptions"
+          :options="[]"
           class="w-full md:w-max"
           wrapper-class="!py-0"
         >
           <template #prefix>
             <BaseFlag
               :key="language"
-              :code="getFlag(language)"
+              :code="'BRL'"
               size="m"
             />
           </template>
           <template #option="{ option }">
             <div class="flex items-center space-x-4">
               <BaseFlag
-                :code="getFlag(option.value as Language)"
+                :code="'BRL'"
                 size="m"
               />
               <span>{{ option.title }}</span>
@@ -65,12 +51,10 @@ const scrollToTop = () => {
           </template>
         </BaseSelect>
         <WrapperSocialMediaLogos
-          :code="language"
           class="hidden md:flex lg:hidden"
         />
       </div>
       <WrapperSocialMediaLogos
-        :code="language"
         class="md:hidden"
       />
       <WrapperFooterColumn
@@ -101,7 +85,6 @@ const scrollToTop = () => {
         ]"
       />
       <WrapperSocialMediaLogos
-        :code="language"
         class="hidden lg:flex"
       />
     </section>

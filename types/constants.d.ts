@@ -1,71 +1,74 @@
-import type {
-  Country,
-  Jurisdiction,
-  Locale,
-} from "~/types/constants";
+// THINGS TO CONSIDER
+// - "Jurisdiction" is a backend concept which really bundles multiple things together
+// - Telephone prefix dropdown does not necessarily correlate with jurisdictions OR locales, however it DOES involve masking which likely would need to be on "Country"
 
-// IMPORTANT: when you update this, move the associated flag
-// from assets/flags to assets/flags/active
-export const LOCALES: Locale[] = [
-  { language: "en", countryCode: "US" },
-  { language: "pt", countryCode: "BR" },
-  { language: "es", countryCode: "ES" },
-  { language: "es", countryCode: "MX" },
-];
+export type SupportedCurrencyCode =
+  | "BRL";
 
-// shows in phone dropdown
-export const COUNTRIES: Country[] = [
-  { // Argentina
-    code: "AR",
-    dialCode: "+54",
-    masks: {
-      phone: ["(##) 123"],
-    },
-  },
-  { // Brazil
-    code: "BR",
-    dialCode: "+55",
-    masks: {
-      phone: ["(##) #####-####", "(##) ####-####"],
-      cpf: "###.###.###-##",
-    },
-  },
-  { // Spain
-    code: "ES",
-    dialCode: "+34",
-    masks: {
-      phone: ["(##) 123"],
-    },
-  },
-  { // India
-    code: "IN",
-    dialCode: "+91",
-    masks: {
-      phone: ["(##) 123"],
-    },
-  },
-  { // Mexico
-    code: "MX",
-    dialCode: "+52",
-    masks: {
-      phone: ["(##) 123"],
-    },
-  },
-  { // United States
-    code: "US",
-    dialCode: "+1",
-    masks: {
-      phone: ["(###) ###-####"],
-    },
-  },
-];
+export type SupportedLanguageCode =
+  | "en"
+  | "es"
+  | "pt";
 
-export const JURISDICTIONS: Jurisdiction[] = [
-  {
-    country: COUNTRIES.find(country => country.code === "BR"),
-    currency: {
-      code: "BRL",
-      symbol: "R$",
-    },
-  },
-];
+export type SupportedCountryCode =
+  | "AR"
+  | "BR"
+  | "ES"
+  | "IN"
+  | "MX"
+  | "US";
+
+export type ActiveFlag =
+  | "BR"
+  | "US";
+
+export type Currency = {
+  code: SupportedCurrencyCode;
+  symbol: string;
+};
+
+export type Locale = {
+  language: SupportedLanguageCode;
+  countryCode: SupportedCountryCode;
+};
+
+export type Country = {
+  code: SupportedCountryCode;
+  dialCode: string;
+  masks: Masks;
+};
+
+export type Jurisdiction = {
+  country: Country;
+  currency: Currency;
+};
+
+export type PhoneMask = string[];
+export type CPFMask = string;
+
+export type Masks = {
+  phone: PhoneMask;
+  cpf?: CPFMask;
+};
+
+export type DeviceType = "mobile" | "desktop";
+
+export type Gender = "male" | "female" | "other";
+
+export type GameVolatility =
+  | "extreme"
+  | "very-high"
+  | "high"
+  | "medium-high"
+  | "medium"
+  | "medium-low"
+  | "low"
+  | "very-low"
+  | "none";
+
+export type GameImageVariant =
+  | "small"
+  | "medium"
+  | "large"
+  | "extra_large"
+  | "background";

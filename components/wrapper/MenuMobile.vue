@@ -10,20 +10,12 @@ import {
 const { t } = useI18n();
 
 const items = [
-  { icon: PhList, text: "mobile_nav.menu", emit: "click:menu" },
-  { icon: PhLightning, text: "mobile_nav.hot", emit: "click:hot" },
-  { icon: PhMagnifyingGlass, text: "mobile_nav.search", emit: "click:search" },
-  { icon: PhHeadphones, text: "mobile_nav.support", emit: "click:support" },
-  { icon: PhGift, text: "mobile_nav.promos", emit: "click:promos" },
-] as const;
-
-const emit = defineEmits([
-  "click:menu",
-  "click:hot",
-  "click:search",
-  "click:support",
-  "click:promos",
-]);
+  { icon: PhList, text: "mobile_nav.menu" },
+  { icon: PhLightning, text: "mobile_nav.hot" },
+  { icon: PhMagnifyingGlass, text: "mobile_nav.search" },
+  { icon: PhHeadphones, text: "mobile_nav.support" },
+  { icon: PhGift, text: "mobile_nav.promos" },
+];
 </script>
 
 <template>
@@ -38,7 +30,6 @@ const emit = defineEmits([
         :key="item.text"
         class="flex flex-col justify-center items-center outline-none"
         type="button"
-        @click="emit(item.emit)"
       >
         <component
           :is="item.icon"

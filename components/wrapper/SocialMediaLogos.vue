@@ -5,20 +5,17 @@ import {
   PhTiktokLogo,
   PhXLogo,
 } from "@phosphor-icons/vue";
-import type { Language } from "@/types/constants";
 
 const { t } = useI18n();
 
-const props = defineProps<{
-  code: Language;
-}>();
+const locale = ref("pt-BR");
 
 const telegramUrl = computed(() => {
   return "TODO";
 });
 
 const instagramUrl = computed(() => {
-  if (props.code === "pt") {
+  if (locale.value === "pt-BR") {
     return "https://www.instagram.com/girobetofficial/";
   }
   // eventually default to english
@@ -26,7 +23,7 @@ const instagramUrl = computed(() => {
 });
 
 const xUrl = computed(() => {
-  if (props.code === "pt") {
+  if (locale.value === "pt-BR") {
     return "https://x.com/girobet";
   }
   // eventually default to english
@@ -34,7 +31,7 @@ const xUrl = computed(() => {
 });
 
 const tiktokUrl = computed(() => {
-  if (props.code === "pt") {
+  if (locale.value === "pt-BR") {
     return "https://www.tiktok.com/@girobetofficial";
   }
   // eventually default to english

@@ -2,6 +2,10 @@
 import { PhGridFour, PhHouse, PhStar } from "@phosphor-icons/vue";
 import { useGameCategories } from "~/composables/useGameCategories";
 
+const open = ref(false);
+
+
+
 const { isMobile } = useDevice();
 const { isAuthenticated } = useAuth();
 
@@ -66,7 +70,7 @@ watch(
 
 <template>
   <BaseDrawer
-    v-model:opened="opened"
+    v-model:opened="open"
     position="left"
     :size="size"
     class="px-0.5"
