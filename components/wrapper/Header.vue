@@ -57,7 +57,7 @@ const authenticated = ref(true);
               class="space-x-1"
             >
               <div class="bg-button-primary text-transparent bg-clip-text">R$</div>
-              <div class="text-white">69.50</div>
+              <div class="text-white">69,50</div>
             </BaseButtonNew>
 
             <BaseButtonNew variant="emphasis">
