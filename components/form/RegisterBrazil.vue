@@ -183,7 +183,7 @@ onMounted(() => {
       <NuxtLink
         to="/terms"
         target="_blank"
-        class="font-semibold"
+        class="font-semibold hover:text-subtle-light"
       >
         {{ t("page.terms") }}
       </NuxtLink>
@@ -213,7 +213,7 @@ onMounted(() => {
       {{ t("modal_auth.have_account") }}
       <button
         type="button"
-        class="font-semibold text-brand-yellow"
+        class="font-semibold text-brand-yellow hover:underline"
         @click="emit('request:login')"
       >
         {{ t("button.login") }}
