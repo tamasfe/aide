@@ -69,12 +69,14 @@ const onSubmit = handleSubmit(async (values) => {
       :error="errors.password"
       autocomplete="new-password"
     />
-    <button
-      type="button"
-      class="font-semibold text-subtle py-4"
-    >
-      {{ t("modal_auth.forgot_password") }}
-    </button>
+    <div class="py-4">
+      <button
+        type="button"
+        class="font-semibold text-subtle hover:text-subtle-light"
+      >
+        {{ t("modal_auth.forgot_password") }}
+      </button>
+    </div>
     <BaseButton
       class="w-full inline-flex justify-center text-lg !rounded-[0.262rem] !py-4 sm:!py-3"
       :class="isSubmitting ? 'opacity-50' : 'opacity-100'"
@@ -100,7 +102,7 @@ const onSubmit = handleSubmit(async (values) => {
       {{ t("modal_auth.dont_have_account") }}
       <button
         type="button"
-        class="font-semibold text-brand-yellow"
+        class="font-semibold text-brand-yellow hover:underline"
         @click="emit('request:register')"
       >
         {{ t("modal_auth.create_free_account") }}
