@@ -111,7 +111,10 @@ const placeholder = computed(() =>
           class="relative outline-none inline-flex items-center"
           :class="$attrs.class"
         >
-          <ListboxButton class="outline-none">
+          <ListboxButton
+            tabindex="-1"
+            class="outline-none"
+          >
             <div
               v-if="selectedOption"
               class="flex items-center gap-2"
