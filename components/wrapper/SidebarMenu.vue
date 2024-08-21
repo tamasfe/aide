@@ -77,7 +77,7 @@ watch(
   >
     <template #title>
       <div class="flex items-center justify-between pl-4 max-w-48">
-        <IconsLogo />
+        <IconLogo />
       </div>
     </template>
     <div

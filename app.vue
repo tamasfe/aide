@@ -4,6 +4,7 @@ const modal = ref();
 // const modal = ref("login");
 // const modal = ref("register");
 // const modal = ref("cancel_reg");
+// const modal = ref("deposit");
 </script>
 
 <template>
@@ -21,6 +22,10 @@ const modal = ref();
     <ModalCancelRegistration
       v-if="modal === 'cancel_reg'"
     />
+    <ModalDeposit
+      v-if="modal === 'deposit'"
+    />
+
 
     <NuxtLayout>
       <NuxtPage />

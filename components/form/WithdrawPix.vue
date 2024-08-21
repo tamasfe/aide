@@ -70,7 +70,7 @@ const onSubmit = handleSubmit((values) => {
       :error="errors.value"
     >
       <template #prefix>
-        <IconsRSGreen />
+        <IconRSGreen />
       </template>
     </FormControl>
     <p class="text-subtle">
