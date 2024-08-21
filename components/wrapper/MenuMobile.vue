@@ -1,20 +1,17 @@
 <script setup lang="ts">
-import {
-  PhMagnifyingGlass,
-  PhList,
-  PhLightning,
-  PhHeadphones,
-  PhGift,
-} from "@phosphor-icons/vue";
-
 const { t } = useI18n();
 
+// DESIGN STATUS:       ✴️
+//   * icon / user color is a little too similar, might need a new CSS var
+// ARCHITECTURE STATUS: ✅
+// TRANSLATION STATUS:  ✅
+
 const items = [
-  { icon: PhList, text: "mobile_nav.menu" },
-  { icon: PhLightning, text: "mobile_nav.hot" },
-  { icon: PhMagnifyingGlass, text: "mobile_nav.search" },
-  { icon: PhHeadphones, text: "mobile_nav.support" },
-  { icon: PhGift, text: "mobile_nav.promos" },
+  { icon: "lucide:menu", text: "mobile_nav.menu" },
+  { icon: "lucide:flame", text: "mobile_nav.hot" },
+  { icon: "lucide:search", text: "mobile_nav.search" },
+  { icon: "lucide:message-circle-question", text: "mobile_nav.support" },
+  { icon: "lucide:trophy", text: "mobile_nav.promos" },
 ];
 </script>
 
@@ -31,12 +28,12 @@ const items = [
         class="flex flex-col justify-center items-center outline-none"
         type="button"
       >
-        <component
-          :is="item.icon"
+        <Icon
+          :name="item.icon"
           class="text-subtle"
-          :size="24"
+          size="24"
         />
-        <p>{{ t(item.text) }}</p>
+        <div>{{ t(item.text) }}</div>
       </button>
     </div>
   </div>

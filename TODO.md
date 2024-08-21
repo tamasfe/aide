@@ -1,8 +1,6 @@
 
 ### Refactor
 
-  * app.vue
-  * header
   * modals
   * layouts
   * icons

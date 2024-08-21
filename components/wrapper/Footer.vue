@@ -1,5 +1,9 @@
 <script setup lang="ts">
-import { PhCaretUp } from "@phosphor-icons/vue";
+// DESIGN STATUS:       ✴️
+//   * logos for payment providers
+// ARCHITECTURE STATUS: ✴️
+//   * logo should be refactored out like the <Header> component
+// TRANSLATION STATUS:  ✅
 
 const { t } = useI18n();
 
@@ -103,7 +107,10 @@ const scrollToTop = () => {
         class="mt-6 outline-none w-full md:w-auto bg-emphasis hover:bg-active p-3 rounded-default text-subtle inline-flex justify-center md:absolute right-6 bottom-0"
         @click="scrollToTop"
       >
-        <PhCaretUp :size="24" />
+        <Icon
+          name="lucide:chevron-up"
+          size="26"
+        />
       </button>
     </section>
   </footer>
