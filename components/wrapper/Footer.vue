@@ -40,15 +40,15 @@ const scrollToTop = () => {
           <template #prefix>
             <BaseFlag
               :key="language"
-              :code="'BRL'"
-              size="m"
+              :country-code="'BR'"
+              size="md"
             />
           </template>
           <template #option="{ option }">
             <div class="flex items-center space-x-4">
               <BaseFlag
-                :code="'BRL'"
-                size="m"
+                :country-code="'BR'"
+                size="md"
               />
               <span>{{ option.title }}</span>
             </div>
@@ -62,16 +62,16 @@ const scrollToTop = () => {
         class="md:hidden"
       />
       <WrapperFooterColumn
-        :section="t('footer.popular')"
-        :options="[
+        :title="t('footer.popular')"
+        :links="[
           { title: t('page.aviator'), to: 'TODO' },
           { title: t('page.slots'), to: 'TODO' },
           { title: t('page.live_casino'), to: 'TODO' },
         ]"
       />
       <WrapperFooterColumn
-        :section="t('footer.girobet')"
-        :options="[
+        :title="t('footer.girobet')"
+        :links="[
           { title: t('page.affiliate_program'), to: '/affiliate-program' },
           { title: t('page.faq'), to: '/faq' },
           { title: t('page.support'), to: '/support' },
@@ -79,8 +79,8 @@ const scrollToTop = () => {
         ]"
       />
       <WrapperFooterColumn
-        :section="t('footer.legal')"
-        :options="[
+        :title="t('footer.legal')"
+        :links="[
           { title: t('page.betting_terms'), to: '/betting-terms' },
           { title: t('page.terms'), to: '/terms' },
           { title: t('page.privacy'), to: '/privacy' },

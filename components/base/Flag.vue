@@ -1,46 +1,64 @@
-<template>
-  <div
-    :class="[
-      'flag',
-      `size-${size}`,
-      { 'border-radius': borderRadius },
-      className,
-    ]"
-  >
-    <img :src="imageUrl">
-  </div>
-</template>
-
 <script setup lang="ts">
+import type { HTMLAttributes } from "vue";
+import { type VariantProps, cva } from "class-variance-authority";
 import { filename } from "pathe/utils";
-import type { CountryCode } from "@/types/constants";
+import { cn } from "~/utils";
+import type { SupportedCountryCode } from "@/types/constants";
 
-const props = withDefaults(
-  defineProps<{
-    size?: "m" | "s" | "l";
-    code: CountryCode;
-    borderRadius?: boolean;
-    className?: string;
-  }>(),
+// DESIGN STATUS:       ✴️
+//   * Design is completely broken because I have added cva but didnt migrate the css at the bottom of this file into the variants css. that still needs to be done
+// ARCHITECTURE STATUS: ✴️
+//   * refactor glob imports below into composable potentially... or just handle stupid multi images in a better way as this pattern will probably appear a lot
+//   * https://github.com/nuxt/nuxt/issues/14766/#issuecomment-1397365434
+// TRANSLATION STATUS:  ✅
+
+const flagVariants = cva(
+  "flag border-radius",
   {
-    size: "m",
-    borderRadius: true,
+    variants: {
+      size: {
+        sm: "",
+        md: "",
+        lg: "",
+      },
+    },
+    defaultVariants: {
+      size: "md",
+    },
   },
 );
 
-// maybe refactor this out to composable (maybe this linked solution,
-// or another one in the thread)
-// https://github.com/nuxt/nuxt/issues/14766/#issuecomment-1397365434
+type FlagVariants = VariantProps<typeof flagVariants>;
+
+const props = defineProps<{
+  size?: FlagVariants["size"];
+  countryCode: SupportedCountryCode;
+  class?: HTMLAttributes["class"];
+}>();
+
 // @ts-ignore
 const glob = import.meta.glob("~/assets/svg/flags/active/*.svg", {
   eager: true,
 });
+
 const images = Object.fromEntries(
   // @ts-ignore
   Object.entries(glob).map(([key, value]) => [filename(key), value.default]),
 );
-const imageUrl = computed(() => images[props.code]);
+
+const imageUrl = computed(() => images[props.countryCode]);
 </script>
+
+<template>
+  <div
+    :class="cn(
+      flagVariants({ size }),
+      props.class,
+    )"
+  >
+    <NuxtImg :src="imageUrl" />
+  </div>
+</template>
 
 <style scoped>
 .flag {

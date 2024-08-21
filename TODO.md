@@ -11,14 +11,11 @@ account
   - RegionalSettings.vue
   - SettingContainer.vue
 base
-  - Button.vue
-  - ButtonNew.vue
   - Carousel.vue
   - ContentBox.vue
   - Currency.vue
   - Dialog.vue
   - Drawer.vue
-  - Flag.vue
   - Image.vue
   - Input.vue
   - InputWrapper.vue
@@ -63,11 +60,7 @@ slide
   - Try.vue
 wrapper
   - Deposit.vue
-  - Footer.vue
-  - FooterColumn.vue
   - GameScroll.vue
-  - Header.vue
-  - MenuMobile.vue
   - Page.vue
   - ProviderScroll.vue
   - SidebarMenu.vue

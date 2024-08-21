@@ -39,7 +39,6 @@ const props = withDefaults(defineProps<{
   <Transition name="slide">
     <div
       v-if="open"
-      class=""
       :class="cn(
         promoBarVariants({ variant }),
         props.class,

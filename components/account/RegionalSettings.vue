@@ -15,8 +15,8 @@
         <template #default>
           <div class="flex items-center gap-2">
             <BaseFlag
-              code="BR"
-              size="l"
+              :country-code="'BR'"
+              size="lg"
             />
             <p>BRL (ID: #292482)</p>
           </div>

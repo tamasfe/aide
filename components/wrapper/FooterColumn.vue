@@ -1,26 +1,30 @@
 <script setup lang="ts">
-type LinkOption = {
-  title: string;
+// DESIGN STATUS:       ✅
+// ARCHITECTURE STATUS: ✅
+// TRANSLATION STATUS:  ✅
+
+type Link = {
   to: string;
+  title: string;
 };
 
 defineProps<{
-  section: string;
-  options: LinkOption[];
+  title: string;
+  links: Link[];
 }>();
 </script>
 
 <template>
-  <div class="flex flex-col space-y-4 mt-8 mb-2 md:mt-0">
-    <h3 class="text-lg font-semibold text-emphasis">{{ section }}</h3>
+  <div class="mt-8 mb-2 md:mt-0 flex flex-col space-y-4">
+    <h3 class="text-lg font-semibold text-emphasis">{{ title }}</h3>
     <div class="flex flex-col whitespace-nowrap space-y-5">
       <NuxtLink
-        v-for="option in options"
-        :key="option.to"
-        :to="option.to"
+        v-for="link in links"
+        :key="link.to"
+        :to="link.to"
         class="hover:text-emphasis"
       >
-        {{ option.title }}
+        {{ link.title }}
       </NuxtLink>
     </div>
   </div>
