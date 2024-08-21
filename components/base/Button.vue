@@ -1,12 +1,20 @@
 <script setup lang="ts">
 type Variant = "primary" | "secondary" | "emphasis";
-const props = defineProps<{
-  disabled?: boolean;
+
+const props = withDefaults(defineProps<{
   variant?: Variant;
+  loading?: boolean;
+  disabled?: boolean;
   big?: boolean;
   shadow?: boolean;
   border?: boolean;
-}>();
+}>(), {
+  loading: false,
+  disabled: false,
+  big: false,
+  shadow: false,
+  border: false,
+});
 
 const { variant, big, shadow, border } = toRefs(props);
 
@@ -53,9 +61,15 @@ const getShadowClass = computed(() => {
 
 <template>
   <button
-    :disabled="disabled"
-    class="rounded-default outline-none select-none whitespace-nowrap disabled:pointer-events-none disabled:opacity-70"
-    :class="[getVariantClass, getSizeClass, getBorderClass, getShadowClass]"
+    :disabled="disabled || loading"
+    class="rounded-default outline-none select-none whitespace-nowrap disabled:pointer-events-none"
+    :class="[
+      { 'opacity-70': disabled || loading },
+      getVariantClass,
+      getSizeClass,
+      getBorderClass,
+      getShadowClass,
+    ]"
   >
     <div class="flex items-center gap-x-2">
       <slot name="prefix" />

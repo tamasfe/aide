@@ -78,12 +78,12 @@ const onSubmit = handleSubmit(async (values) => {
       </button>
     </div>
     <BaseButton
+      :loading="isSubmitting"
+      :disabled="!meta.valid"
       class="w-full inline-flex justify-center text-lg !rounded-[0.262rem] !py-4 sm:!py-3"
-      :class="isSubmitting ? 'opacity-50' : 'opacity-100'"
       variant="primary"
       type="submit"
       big
-      :disabled="isSubmitting || !meta.valid"
     >
       <div class="flex items-center gap-x-2">
         <p>{{ t("button.login") }}</p>
