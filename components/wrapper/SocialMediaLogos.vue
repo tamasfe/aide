@@ -43,11 +43,11 @@ const tiktokUrl = computed(() => {
 </script>
 
 <template>
-  <div class="flex flex-col space-y-4">
+  <div class="flex flex-col">
     <h3 class="text-lg text-emphasis font-semibold hidden md:block">
       {{ t("footer.social_media") }}
     </h3>
-    <div class="flex space-x-2 lg:space-x-4 justify-evenly md:justify-start">
+    <div class="mt-8 md:mt-0 flex space-x-2 lg:space-x-4 justify-evenly md:justify-start">
       <NuxtLink
         :to="telegramUrl"
         target="_blank"

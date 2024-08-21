@@ -31,7 +31,7 @@ const scrollToTop = () => {
       class="giro__container w-full flex flex-col md:flex-row md:justify-between sm:space-x-8 md:space-x-12 text-subtle"
     >
       <div
-        class="flex-1 md:flex-none md:max-w-xs lg:max-w-sm flex flex-col items-center md:items-start space-y-6"
+        class="flex-1 md:max-w-xs lg:max-w-sm flex flex-col items-center md:items-start space-y-6"
       >
         <div class="w-40">
           <NuxtImg
@@ -40,7 +40,7 @@ const scrollToTop = () => {
             class="w-full object-cover"
           />
         </div>
-        <p>{{ t("footer.summary") }}</p>
+        <p class="text-[0.82rem]">{{ t("footer.summary") }}</p>
         <BaseSelect
           v-model="language"
           :options="languageOptions"
@@ -105,17 +105,15 @@ const scrollToTop = () => {
     <!-- logos -->
     <section class="giro__container w-full">logos here</section>
 
-    <!-- trademark -->
-    <section
-      class="giro__container w-full flex items-center flex-col md:flex-row justify-between md:space-x-4 space-y-4 text-sm text-subtle"
-    >
-      <p class="max-w-4xl text-xs">
-        {{ t("footer.legal_notice") }}
-      </p>
-      <p>{{ t("footer.copyright") }}</p>
+    <!-- legal -->
+    <section class="giro__container w-full flex flex-col text-subtle">
+      <div class="flex flex-col items-center space-y-5 md:space-y-8">
+        <p class="max-w-[52rem] text-[0.7rem] sm:text-center">{{ t("footer.legal_notice") }}</p>
+        <p class="text-center text-[0.82rem]">{{ t("footer.copyright") }}</p>
+      </div>
       <button
         type="button"
-        class="outline-none w-full md:w-auto bg-emphasis hover:bg-active p-3 rounded-default text-subtle inline-flex justify-center"
+        class="mt-6 outline-none w-full md:w-auto bg-emphasis hover:bg-active p-3 rounded-default text-subtle inline-flex justify-center"
         @click="scrollToTop"
       >
         <PhCaretUp :size="24" />

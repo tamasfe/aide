@@ -28,15 +28,15 @@ const emit = defineEmits([
 
 <template>
   <div
-    class="giro__mobile-menu block z-10 sm:hidden sticky bottom-0 left-0 w-full bg-subtle text-subtle"
+    class="giro__mobile-menu block z-10 sm:hidden sticky bottom-0 left-0 w-full bg-default text-subtle"
   >
     <div
-      class="flex items-center justify-between pt-2.5 px-4 pb-2 text-subtle-light font-semibold"
+      class="flex items-center text-[0.8rem] justify-between pt-2.5 px-4 pb-2 text-subtle-light font-semibold"
     >
       <button
         v-for="item in items"
         :key="item.text"
-        class="inline-flex flex-col justify-center items-center outline-none"
+        class="flex flex-col justify-center items-center outline-none"
         type="button"
         @click="emit(item.emit)"
       >
