@@ -40,45 +40,33 @@ const tiktokUrl = computed(() => {
   // eventually default to english
   return "https://www.tiktok.com/@girobetofficial";
 });
+
+const links = [
+  { icon: PhTelegramLogo, url: telegramUrl },
+  { icon: PhInstagramLogo, url: instagramUrl },
+  { icon: PhXLogo, url: xUrl },
+  { icon: PhTiktokLogo, url: tiktokUrl },
+];
 </script>
 
 <template>
   <div class="flex flex-col">
-    <h3 class="text-lg text-emphasis font-semibold hidden md:block">
+    <h3 class="hidden lg:block text-lg text-center text-emphasis font-semibold">
       {{ t("footer.social_media") }}
     </h3>
-    <div class="mt-8 md:mt-0 flex space-x-2 lg:space-x-4 justify-evenly md:justify-start">
+    <div class="mt-8 md:mt-0 flex space-x-4 lg:space-x-2 justify-evenly md:justify-start">
       <NuxtLink
-        :to="telegramUrl"
+        v-for="(link, index) in links"
+        :key="index"
+        :to="link.url.value"
         target="_blank"
         rel="noopener noreferrer"
-        class="p-1 lg:p-3 rounded-xl hover:bg-emphasis"
+        class="p-1 lg:p-3 rounded-xl hover:text-subtle-light"
       >
-        <PhTelegramLogo :size="28" />
-      </NuxtLink>
-      <NuxtLink
-        :to="instagramUrl"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="p-1 lg:p-3 rounded-xl hover:bg-emphasis"
-      >
-        <PhInstagramLogo :size="28" />
-      </NuxtLink>
-      <NuxtLink
-        :to="xUrl"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="p-1 lg:p-3 rounded-xl hover:bg-emphasis"
-      >
-        <PhXLogo :size="28" />
-      </NuxtLink>
-      <NuxtLink
-        :to="tiktokUrl"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="p-1 lg:p-3 rounded-xl hover:bg-emphasis"
-      >
-        <PhTiktokLogo :size="28" />
+        <component
+          :is="link.icon"
+          :size="28"
+        />
       </NuxtLink>
     </div>
   </div>

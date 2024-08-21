@@ -11,7 +11,7 @@ defineProps<{
 </script>
 
 <template>
-  <div class="flex flex-col space-y-4 mt-8 mb-2">
+  <div class="flex flex-col space-y-4 mt-8 mb-2 md:mt-0">
     <h3 class="text-lg font-semibold text-emphasis">{{ section }}</h3>
     <div class="flex flex-col whitespace-nowrap space-y-5">
       <NuxtLink
