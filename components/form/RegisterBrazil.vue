@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { PhCircleNotch } from "@phosphor-icons/vue";
 import type { MaskInputOptions } from "maska";
 import * as zod from "zod";
 import type { RegisterCredentialsBrazil } from "~/types/auth";

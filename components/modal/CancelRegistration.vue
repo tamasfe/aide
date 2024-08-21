@@ -23,26 +23,27 @@ const close = () => {
       <h1 class="text-2xl font-bold text-center">
         {{ t("modal_cancel_registration.headline") }}
       </h1>
+
       <p class="text-emphasis text-lg text-center">
         {{ t("modal_cancel_registration.body") }}
       </p>
-      <BaseButton
-        tabindex="0"
-        class="w-full inline-flex justify-center text-lg !rounded-[0.262rem] !py-4 sm:!py-3"
-        variant="primary"
+
+      <BaseButtonNew
+        size="xl"
+        class="w-full"
         type="submit"
-        big
       >
         {{ t("button.continue") }}
-      </BaseButton>
-      <button
-        class="outline-none mx-auto font-medium inline-flex justify-center text-subtle hover:text-emphasis"
-        type="button"
-        big
+      </BaseButtonNew>
+
+      <BaseButtonNew
+        variant="ghost"
+        size="ghost"
+        class="mt-6 font-semibold text-subtle hover:text-subtle-light"
         @click="close"
       >
         {{ t("modal_cancel_registration.cancel") }}
-      </button>
+      </BaseButtonNew>
     </form>
   </ModalWrapper>
 </template>

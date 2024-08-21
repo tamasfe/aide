@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { PhCircleNotch } from "@phosphor-icons/vue";
 import * as zod from "zod";
 
 const { t } = useI18n();
@@ -70,43 +69,34 @@ const onSubmit = handleSubmit(async (values) => {
       autocomplete="new-password"
     />
     <div class="py-4">
-      <button
-        type="button"
+      <BaseButtonNew
+        variant="ghost"
+        size="ghost"
         class="font-semibold text-subtle hover:text-subtle-light"
       >
         {{ t("modal_auth.forgot_password") }}
-      </button>
+      </BaseButtonNew>
     </div>
-    <BaseButton
+    <BaseButtonNew
       :loading="isSubmitting"
       :disabled="!meta.valid"
-      class="w-full inline-flex justify-center text-lg !rounded-[0.262rem] !py-4 sm:!py-3"
-      variant="primary"
+      size="xl"
+      class="w-full"
       type="submit"
-      big
     >
-      <div class="flex items-center gap-x-2">
-        <p>{{ t("button.login") }}</p>
-        <div
-          v-if="isSubmitting"
-          class="w-full h-full flex items-center justify-center"
-        >
-          <PhCircleNotch
-            :size="20"
-            class="animate-spin"
-          />
-        </div>
-      </div>
-    </BaseButton>
+      {{ t("button.login") }}
+    </BaseButtonNew>
+
     <p class="text-sm text-subtle py-4">
       {{ t("modal_auth.dont_have_account") }}
-      <button
-        type="button"
+      <BaseButtonNew
+        variant="ghost"
+        size="ghost"
         class="font-semibold text-brand-yellow hover:underline"
         @click="emit('request:register')"
       >
         {{ t("modal_auth.create_free_account") }}
-      </button>
+      </BaseButtonNew>
     </p>
   </form>
 </template>
