@@ -1,28 +1,4 @@
 <script setup lang="ts">
-import { openLoginModalSymbol, openRegisterModalSymbol } from "~/constants";
-import { useGameCategories } from "~/composables/useGameCategories";
-
-const { isMobile } = useDevice();
-
-const openLoginModal = inject(openLoginModalSymbol);
-const openRegisterModal = inject(openRegisterModalSymbol);
-
-const { data: categories } = await useGameCategories("home");
-
-const data = computed(() => {
-  return categories.value || [];
-});
-
-const onClickLogin = () => {
-  if (openLoginModal) {
-    openLoginModal();
-  }
-};
-const onClickRegister = () => {
-  if (openRegisterModal) {
-    openRegisterModal();
-  }
-};
 </script>
 
 <template>
@@ -31,8 +7,6 @@ const onClickRegister = () => {
   >
     <GameFrame
       v-if="!isMobile"
-      @click:login="onClickLogin"
-      @click:register="onClickRegister"
     />
     <GameFrameMobile v-else />
     <GameDescriptionCard class="bg-subtle" />
@@ -40,7 +14,6 @@ const onClickRegister = () => {
       <WrapperGameScroll
         v-for="category in data"
         :key="category.id"
-        :identifier="category.identifier"
       />
       <WrapperProviderScroll title="🏆 Providers" />
     </div>

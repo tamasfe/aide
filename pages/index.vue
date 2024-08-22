@@ -1,13 +1,6 @@
 <script setup lang="ts">
-import { useGameCategories } from "~/composables/useGameCategories";
-
 const search = ref("");
-
-const { data: categories } = await useGameCategories("home");
-
-const data = computed(() => {
-  return categories.value || [];
-});
+const data = ref([]);
 </script>
 
 <template>
