@@ -21,7 +21,6 @@ account
   - RegionalSettings.vue
   - SettingContainer.vue
 base
-  - Carousel.vue
   - ContentBox.vue
   - Currency.vue
   - Dialog.vue
@@ -37,8 +36,6 @@ base
   - Search.vue
   - Select.vue
   - Skeleton.vue
-carousel
-  - Home.vue
 form
   - Control.vue
   - Deposit.vue
@@ -66,8 +63,6 @@ modal
   - LoginRegister.vue
   - Withdraw.vue
   - Wrapper.vue
-slide
-  - Try.vue
 wrapper
   - Deposit.vue
   - GameScroll.vue

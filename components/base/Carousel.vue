@@ -1,17 +1,23 @@
 <script setup lang="ts">
-import { PhCaretLeft, PhCaretRight } from "@phosphor-icons/vue";
 import { clamp } from "@vueuse/core";
+
+// DESIGN STATUS:       ✴️
+//   * controls should disappear if a single slide
+//   * most importantly... each slide should NOT be responsible for its own ratio. that should be defined in HeroCarousel, so it "configures" the carousel with props or whatever. Then, adding slides very simply can be done with simple wrapping divs which automatically style with w-full/h-full, and then anything in that div can be styled with normal css (whether its an image, a button, etc)
+//   * the button should be what gets the @click event... not the div wrapping it
+// ARCHITECTURE STATUS: ✴️
+//   * currently quite messy and should be refactored
+//   * maybe: https://swiperjs.com/get-started
+// TRANSLATION STATUS:  ✅
 
 withDefaults(
   defineProps<{
     bottomControls?: boolean;
     sideControls?: boolean;
-    bottomControlsClass?: string;
   }>(),
   {
     bottomControls: false,
     sideControls: false,
-    bottomControlsClass: undefined,
   },
 );
 
@@ -116,25 +122,32 @@ defineExpose({
       v-if="sideControls"
       name="controls"
     >
-      <button
-        type="button"
+      <BaseButtonNew
+        variant="ghost"
+        size="ghost"
         class="absolute z-[2] left-2 top-1/2 transform -translate-y-1/2 p-4 outline-none"
         @click="prev"
       >
-        <PhCaretLeft :size="34" />
-      </button>
-      <button
-        type="button"
+        <Icon
+          name="lucide:chevron-left"
+          size="38"
+        />
+      </BaseButtonNew>
+      <BaseButtonNew
+        variant="ghost"
+        size="ghost"
         class="absolute z-[2] right-2 top-1/2 transform -translate-y-1/2 p-4 outline-none"
         @click="next"
       >
-        <PhCaretRight :size="34" />
-      </button>
+        <Icon
+          name="lucide:chevron-right"
+          size="38"
+        />
+      </BaseButtonNew>
     </slot>
     <div
       v-if="bottomControls"
       class="absolute z-[2] left-1/2 bottom-0 transform -translate-x-1/2 flex items-center space-x-2"
-      :class="bottomControlsClass"
     >
       <div
         v-for="(_, index) in items"
@@ -142,10 +155,11 @@ defineExpose({
         class="py-2 cursor-pointer giro__slide-dot-wrapper"
         @click="goto(index)"
       >
-        <button
+        <BaseButtonNew
+          variant="ghost"
+          size="ghost"
           class="w-8 md:w-12 h-1 rounded-full transition-colors duration-300 ease-in-out giro__slide-dot"
           :class="bottomControlColorClass(index)"
-          type="button"
         />
       </div>
     </div>

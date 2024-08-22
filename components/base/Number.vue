@@ -7,8 +7,6 @@ import {
 } from "@headlessui/vue";
 import type { MaskInputOptions } from "maska";
 import { BaseInput } from "#components";
-import type { CountryCode, CountryMetadata } from "~/types/constants";
-import { PHONE_MASKS, COUNTRY_METADATA } from "~/constants";
 
 export type NumberProps = {
   modelValue?: string;

@@ -6,7 +6,7 @@ const data = ref([]);
 <template>
   <div class="sm:py-8">
     <div class="max-w-full sm:px-4 xl:p-0 xl:max-w-[1240px] mx-auto">
-      <CarouselHome class="w-full" />
+      <CarouselHero />
     </div>
     <div class="giro__container py-6">
       <div class="flex flex-col gap-8">

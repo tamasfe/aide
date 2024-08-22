@@ -8,7 +8,8 @@ const { isMobile } = useDevice();
   <BaseCarousel
     :side-controls="!isMobile"
     bottom-controls
+    class="w-full"
   >
-    <SlideTry />
+    <SlideAviator />
   </BaseCarousel>
 </template>
