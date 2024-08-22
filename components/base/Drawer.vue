@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { HTMLAttributes } from "vue";
+import { type VariantProps, cva } from "class-variance-authority";
 import {
   Dialog,
   DialogPanel,
@@ -8,17 +10,38 @@ import {
   TransitionChild,
 } from "@headlessui/vue";
 import { PhX } from "@phosphor-icons/vue";
+import { cn } from "~/utils";
 
-const emit = defineEmits(["update:open"]);
+const drawerVariants = cva(
+  "fixed top-0 bottom-0 h-full min-h-0",
+  {
+    variants: {
+      position: {
+        left: "left-0",
+        right: "right-0",
+      },
+      size: {
+        lg: "max-w-[10rem]",
+        full: "w-full",
+      },
+    },
+    defaultVariants: {
+      position: "left",
+      size: "lg",
+    },
+  },
+);
 
-// lg
-// left
+type DrawerVariants = VariantProps<typeof drawerVariants>;
 
 const props = defineProps<{
   open: boolean;
-  position?: "left" | "right";
-  size?: Size;
+  position?: DrawerVariants["position"];
+  size?: DrawerVariants["size"];
+  class?: HTMLAttributes["class"];
 }>();
+
+const emit = defineEmits(["update:open"]);
 
 const open = computed({
   get: () => props.open,
@@ -27,21 +50,7 @@ const open = computed({
   },
 });
 
-const positionClass = computed(() => {
-  if (props.position === "left") {
-    return "fixed left-0 top-0 bottom-0 h-full min-h-0";
-  }
-  return "fixed right-0 top-0 bottom-0 h-full min-h-0 ";
-});
-
-const size = computed(() => {
-  if (props.size) {
-    return MODAL_SIZES[props.size];
-  }
-  return "max-w-lg";
-});
-
-const closeModal = () => {
+const onClose = () => {
   open.value = false;
 };
 
@@ -82,7 +91,7 @@ const slideTransition = computed(() => ({
         v-model:open="open"
         as="div"
         class="relative z-[9]"
-        @close="closeModal"
+        @close="onClose"
       >
         <TransitionChild
           as="template"
@@ -96,7 +105,12 @@ const slideTransition = computed(() => ({
           <div class="fixed inset-0 bg-black/40 z-[0]" />
         </TransitionChild>
 
-        <div :class="[positionClass, size]">
+        <div
+          :class="cn(
+            drawerVariants({ position, size }),
+            props.class,
+          )"
+        >
           <TransitionChild
             as="template"
             v-bind="slideTransition"
@@ -108,7 +122,7 @@ const slideTransition = computed(() => ({
               <button
                 type="button"
                 class="absolute top-0 right-0 rounded-md text-subtle hover:text-emphasis py-4 px-2 outline-none z-10"
-                @click="closeModal"
+                @click="onClose"
               >
                 <span class="sr-only">Close</span>
                 <div
