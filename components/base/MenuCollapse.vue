@@ -37,7 +37,8 @@ const onToggle = () => {
         <Icon
           v-if="parent.icon"
           :name="parent.icon"
-          size="20"
+          class="text-subtle"
+          size="24"
         />
         <div :class="props.parent.class">{{ parent.title }}</div>
       </div>
@@ -50,6 +51,7 @@ const onToggle = () => {
         <Icon
           name="lucide:chevron-down"
           size="24"
+          class="text-subtle"
         />
       </BaseButtonNew>
     </div>

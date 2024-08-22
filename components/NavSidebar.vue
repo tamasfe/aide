@@ -1,7 +1,8 @@
 <script setup lang="ts">
 const open = ref(true);
 
-// DESIGN STATUS:       ✅
+// DESIGN STATUS:       ✴️
+//   * design is awful...... i need to just come back to this or someone with good eye for design
 // ARCHITECTURE STATUS: ✴️
 //   * sidebar needs to close after clicking a link
 // TRANSLATION STATUS:  ✅
@@ -45,11 +46,11 @@ const links = [
           :parent="{
             title: link.title,
             icon: link.icon,
-            class: 'ml-4 text-emphasis',
+            class: 'ml-4 text-[0.90rem] font-medium text-emphasis hover:text-white',
           }"
           :children="link.children.map(child => ({
             ...child,
-            class: 'ml-4 text-emphasis',
+            class: 'ml-4 text-[0.90rem] font-medium text-emphasis hover:text-white',
           }))"
         />
         <div
@@ -61,7 +62,7 @@ const links = [
             :title="link.title"
             :to="link.to"
             :icon="link.icon"
-            class="ml-4 text-emphasis"
+            class="ml-4 text-[0.90rem] font-medium text-emphasis hover:text-white"
           />
         </div>
       </template>
