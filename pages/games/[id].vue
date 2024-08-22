@@ -5,12 +5,12 @@
   <div
     class="max-w-full sm:px-4 xl:py-8 xl:max-w-[1240px] mx-auto flex flex-col space-y-4 md:space-y-8"
   >
-    <BaseGameFrame
+    <GameFrame
       v-if="!isMobile"
     />
-    <BaseGameFrameMobile v-else />
+    <GameFrameMobile v-else />
 
-    <BaseGameDescriptionCard class="bg-subtle" />
+    <GameDescriptionCard class="bg-subtle" />
 
     <div class="giro__container w-full flex flex-col space-y-4 md:space-y-8">
       <WrapperScrollerGame

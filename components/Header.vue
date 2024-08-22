@@ -12,7 +12,7 @@ const authenticated = ref(true);
 
 <template>
   <nav class="sticky top-0 left-0 w-full z-[9]">
-    <BasePromoBar />
+    <PromoBar />
 
     <div class="w-full bg-subtle">
       <div

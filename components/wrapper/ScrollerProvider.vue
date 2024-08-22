@@ -14,7 +14,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <BaseGridScroller
+  <GridScroller
     :data="data"
     :show-controls="!isMobile"
     :loading="loading"
@@ -56,5 +56,5 @@ onMounted(() => {
         </div>
       </div>
     </template>
-  </BaseGridScroller>
+  </GridScroller>
 </template>

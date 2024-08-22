@@ -10,16 +10,16 @@ const data = ref([]);
     </div>
     <div class="giro__container py-6">
       <div class="flex flex-col gap-8">
-        <BaseSearch
+        <Search
           v-model="search"
           class="w-full"
         >
           <template #default>
             <WrapperScrollerGame />
           </template>
-        </BaseSearch>
+        </Search>
 
-        <BaseWinningNow />
+        <WinningNow />
 
         <WrapperScrollerGame
           v-for="category in data"

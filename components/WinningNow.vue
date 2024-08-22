@@ -16,7 +16,7 @@ const { t } = useI18n();
     <div
       class="giro__hide-scroll flex-1 flex items-center gap-2 overflow-x-auto"
     >
-      <BaseWinningNowGame
+      <WinningNowGame
         v-for="id in 10"
         :key="id"
         class="min-w-[90%] sm:min-w-[50%] md:min-w-[40%] lg:min-w-[20%]"
