@@ -16,7 +16,7 @@ withDefaults(
     sideControls?: boolean;
   }>(),
   {
-    bottomControls: false,
+    bottomControls: true,
     sideControls: false,
   },
 );
