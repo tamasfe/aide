@@ -6,7 +6,7 @@ import { cn } from "~/utils";
 import type { SupportedCountryCode } from "@/types/constants";
 
 // DESIGN STATUS:       ✴️
-//   * Design is completely broken because I have added cva but didnt migrate the css at the bottom of this file into the variants css. that still needs to be done
+//   * Design is completely broken because I have added cva but didnt migrate the css at the bottom of this file into the variants css. when we move it in we can pretty much destroy all this css and just make some very fukin simple widths just like using w-[2rem] and thats the end of it. all this other flim flamming is stupid and a waste of time
 // ARCHITECTURE STATUS: ✴️
 //   * refactor glob imports below into composable potentially... or just handle stupid multi images in a better way as this pattern will probably appear a lot
 //   * https://github.com/nuxt/nuxt/issues/14766/#issuecomment-1397365434
