@@ -7,8 +7,8 @@
 
     <slot />
 
-    <WrapperFooter />
+    <Footer />
 
-    <WrapperMenuMobile />
+    <NavMobile />
   </div>
 </template>

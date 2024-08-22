@@ -9,7 +9,7 @@ const modal = ref();
 
 <template>
   <div>
-    <WrapperSidebarMenu
+    <NavSidebar
       v-if="sidebarOpen"
     />
 

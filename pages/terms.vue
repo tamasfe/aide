@@ -4,7 +4,7 @@ const { t } = useI18n();
 
 <template>
   <div>
-    <WrapperPage
+    <Page
       :title="t('page.terms')"
       version="1.0"
       date="August 20, 2024"
@@ -29,6 +29,6 @@ const { t } = useI18n();
         <li>If you deposit using a credit card, it is recommended that you retain a copy of Transaction Records and a copy of these Terms.</li>
         <li>If we suspect that you are currently under 18 years or were under 18 years when you placed any bets, your Account will be suspended.</li>
       </ul>
-    </WrapperPage>
+    </Page>
   </div>
 </template>

@@ -4,7 +4,7 @@ const { t } = useI18n();
 
 <template>
   <div>
-    <WrapperPage
+    <Page
       :title="t('page.responsible_gaming')"
       version="1.0"
       date="August 20, 2024"
@@ -55,6 +55,6 @@ const { t } = useI18n();
         <li>Do not save passwords on your computer; write them down and keep them out of reach.</li>
         <li>Download filtering software (e.g., Net Nanny) to prevent minors from accessing inappropriate sites.</li>
       </ul>
-    </WrapperPage>
+    </Page>
   </div>
 </template>
