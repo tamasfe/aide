@@ -102,6 +102,9 @@
     "version": "Version",
     "updated": "Updated"
   },
+  "i18n": {
+    "close": "Close"
+  },
   "footer": {
     "summary": "Welcome to The GiroBet Experience the ultimate thrill of online gambling with us. Play slots, poker, blackjack, and more. Win big with our bonuses and promotions.",
     "popular": "Popular",

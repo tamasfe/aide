@@ -4,7 +4,7 @@ import { PhGridFour, PhHouse, PhStar } from "@phosphor-icons/vue";
 const { isMobile } = useDevice();
 
 const size = computed(() => (isMobile.value ? "full" : "lg"));
-const open = ref(true);
+const open = ref(false);
 </script>
 
 <template>

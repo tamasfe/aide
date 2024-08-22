@@ -12,6 +12,14 @@ import {
 import { PhX } from "@phosphor-icons/vue";
 import { cn } from "~/utils";
 
+// DESIGN STATUS:       ✴️
+//   * user icon size is stupid
+//   * ButtonNew might need to be overridden for md size (md size probably shouldnt change as it looks fine elsewhere just not in the menu)
+// ARCHITECTURE STATUS: ✅
+// TRANSLATION STATUS:  ✅
+
+const { t } = useI18n();
+
 const drawerVariants = cva(
   "fixed top-0 bottom-0 h-full min-h-0",
   {
@@ -34,6 +42,29 @@ const drawerVariants = cva(
 
 type DrawerVariants = VariantProps<typeof drawerVariants>;
 
+const positionTransitions = computed(() => ({
+  left: {
+    enter: "duration-150 ease-out",
+    enterFrom: "transform -translate-x-full",
+    enterTo: "transform translate-x-0",
+    leave: "duration-150 ease-in",
+    leaveFrom: "transform translate-x-0",
+    leaveTo: "transform -translate-x-full",
+  },
+  right: {
+    enter: "duration-150 ease-out",
+    enterFrom: "transform translate-x-full",
+    enterTo: "transform translate-x-0",
+    leave: "duration-150 ease-in",
+    leaveFrom: "transform translate-x-0",
+    leaveTo: "transform translate-x-full",
+  },
+}));
+
+defineOptions({
+  inheritAttrs: false,
+});
+
 const props = defineProps<{
   open: boolean;
   position?: DrawerVariants["position"];
@@ -43,41 +74,20 @@ const props = defineProps<{
 
 const emit = defineEmits(["update:open"]);
 
-const open = computed({
-  get: () => props.open,
-  set: (value) => {
-    emit("update:open", value);
-  },
+const positionTransition = computed(() => {
+  return positionTransitions.value[props.position];
 });
 
 const onClose = () => {
   open.value = false;
 };
 
-defineOptions({
-  inheritAttrs: false,
+const open = computed({
+  get: () => props.open,
+  set: (value) => {
+    emit("update:open", value);
+  },
 });
-
-const slideTransition = computed(() => ({
-  enter: `duration-150 ease-out`,
-  enterFrom:
-    props.position === "left"
-      ? "transform -translate-x-full"
-      : "transform translate-x-full",
-  etnerTo:
-    props.position === "left"
-      ? "transform translate-x-0"
-      : "transform translate-x-0",
-  leave: `duration-150 ease-in`,
-  leaveFrom:
-    props.position === "left"
-      ? "transform translate-x-0"
-      : "transform translate-x-0",
-  leaveTo:
-    props.position === "left"
-      ? "transform -translate-x-full"
-      : "transform translate-x-full",
-}));
 </script>
 
 <template>
@@ -113,7 +123,7 @@ const slideTransition = computed(() => ({
         >
           <TransitionChild
             as="template"
-            v-bind="slideTransition"
+            v-bind="positionTransition"
           >
             <DialogPanel
               class="bg-emphasis/85 backdrop-blur-lg rounded-default p-4 flex flex-col gap-4 h-full"
@@ -124,7 +134,7 @@ const slideTransition = computed(() => ({
                 class="absolute top-0 right-0 rounded-md text-subtle hover:text-emphasis py-4 px-2 outline-none z-10"
                 @click="onClose"
               >
-                <span class="sr-only">Close</span>
+                <span class="sr-only">{{ t('i18n.close') }}</span>
                 <div
                   class="p-1 bg-emphasis/50 backdrop-blur-lg rounded-default"
                 >

@@ -43,7 +43,7 @@ export default defineNuxtConfig({
   ssr: true,
   typescript: {
     strict: true,
-    typeCheck: false, // TODO put this back at true
+    typeCheck: true,
   },
   // NOTE
   // https://github.com/nuxt/nuxt/issues/27544
