@@ -6,14 +6,13 @@ import { PhCircleNotch } from "@phosphor-icons/vue";
 // ARCHITECTURE STATUS:  ✴️
 //   * infinite scroll logic should be handled WrapperInfiniteScroller and then ScrollerGame uses that. We will have many scrollers and pretty much every single one will be infinite scroll. we shouldnt be re-adding that logic multiple times
 //   * ALSO loading in last position must be extracted to the wrapper as well
-//   * we also dont need tons of named templates as a game scroller will only ever (always) show games
 //   * any advanced logic in here should be moved to wrapper as well. if we are having ScrollerGame/ScrollerProvider the only thing it should do is provide some api call metadata and "counts (offsets/limits)" and nothing else
 //   * SEO stuffbelow
 // TRANSLATION STATUS:   ✴️
 
 const { t } = useI18n();
 const { isMobile } = useDevice();
-const data = ref<unknown[]>(Array.from({ length: 4 }, (_, i) => i + 1));
+const data = ref<unknown[]>(Array.from({ length: 10 }, (_, i) => i + 1));
 const loading = ref(true);
 
 onMounted(() => {
@@ -49,7 +48,7 @@ const onScroll = () => {
         </BaseButtonNew>
       </NuxtLink>
     </template>
-    <template #default="{ item: game }">
+    <template #default="{ item: n }">
       <div
         class="basis-[calc((100%-2rem)/2)] sm:basis-[calc((100%-5rem)/6)] flex-shrink-0 w-full"
       >
@@ -59,12 +58,12 @@ const onScroll = () => {
           <div class="absolute left-0 top-0 w-full h-full">
             <NuxtLink
               v-if="game"
-              :to="`/games/${game.id}`"
+              :to="`/games/${n}`"
               class="block"
             >
               <span class="block">
                 <NuxtImg
-                  :src="`/assets/images/games/${index}.png`"
+                  :src="`/assets/images/games/${n}.png`"
                   alt=""
                   class="block absolute top-0 left-0 w-full h-full object-cover transition-transform transform hover:scale-105 cursor-pointer"
                 />
