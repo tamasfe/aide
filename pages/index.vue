@@ -19,7 +19,9 @@ const data = ref([]);
             <WrapperGameScroll identifier="weekly-top-picks" />
           </template>
         </BaseSearch>
-        <HomeWinningNow class="w-full" />
+
+        <BaseWinningNow />
+
         <WrapperGameScroll
           v-for="category in data"
           :key="category.id"

@@ -52,9 +52,6 @@ game
 grid
   - Category.vue
   - Scroll.vue
-home
-  - GameWinner.vue
-  - HomeWinningNow.vue
 modal
   - CancelRegistration.vue
   - Deposit.vue
