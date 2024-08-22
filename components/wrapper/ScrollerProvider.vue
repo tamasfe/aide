@@ -8,6 +8,7 @@ const loading = ref(true);
 //   * follow all advice of ScrollerGame
 // ARCHITECTURE STATUS:  ✴️
 //   * follow all advice of ScrollerGame
+//   * just like game... this will come from the API
 // TRANSLATION STATUS:   ✅
 
 onMounted(() => {

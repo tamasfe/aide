@@ -29,7 +29,6 @@ base
   - GameFrame.vue
   - GameFrameMobile.vue
   - GridCategory.vue
-  - GridScroll.vue
   - Image.vue
   - Input.vue
   - InputWrapper.vue
@@ -60,8 +59,6 @@ modal
   - Wrapper.vue
 wrapper
   - Deposit.vue
-  - ScrollerGame.vue
-  - ScrollerProvider.vue
   - SidebarMenu.vue
   - Withdraw.vue
   - WithdrawInfo.vue
