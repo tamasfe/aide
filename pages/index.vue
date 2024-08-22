@@ -15,8 +15,7 @@ const data = ref([]);
           class="w-full"
         >
           <template #default>
-            <!-- Search hardcoded for now, until we agree to final design -->
-            <WrapperGameScroll identifier="weekly-top-picks" />
+            <WrapperGameScroll />
           </template>
         </BaseSearch>
 
@@ -27,6 +26,7 @@ const data = ref([]);
           :key="category.id"
           :identifier="category.identifier"
         />
+
         <WrapperProviderScroll title="🏆 Providers" />
       </div>
     </div>
