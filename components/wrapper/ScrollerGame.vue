@@ -6,6 +6,7 @@ import { PhCircleNotch } from "@phosphor-icons/vue";
 // ARCHITECTURE STATUS:  ✴️
 //   * infinite scroll logic should be handled WrapperInfiniteScroller and then ScrollerGame uses that. We will have many scrollers and pretty much every single one will be infinite scroll. we shouldnt be re-adding that logic multiple times
 //   * ALSO loading in last position must be extracted to the wrapper as well
+//   * we also dont need tons of named templates as a game scroller will only ever (always) show games
 //   * any advanced logic in here should be moved to wrapper as well. if we are having ScrollerGame/ScrollerProvider the only thing it should do is provide some api call metadata and "counts (offsets/limits)" and nothing else
 //   * SEO stuffbelow
 // TRANSLATION STATUS:   ✴️
@@ -35,7 +36,7 @@ const onScroll = () => {
     @scrolled="onScroll"
   >
     <template #title>
-      <h2 class="text-xl sm:text-2xl">Fortune Tiger</h2>
+      <h2 class="text-xl sm:text-2xl">🔥 Top Trending</h2>
     </template>
     <template #options>
       <NuxtLink :to="`/categories/1`">
