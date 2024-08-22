@@ -10,6 +10,10 @@ const { isMobile } = useDevice();
     class="w-full"
   >
     <SlideAviator />
-    <SlideAviator />
+    <SlideFortuneTiger />
+    <SlideRoleta />
+    <SlideMines />
+    <SlideWin10K />
+    <SlideChooseGiroBet />
   </BaseCarousel>
 </template>

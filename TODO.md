@@ -2,10 +2,10 @@
 
   * components
   * BaseButton / button (delete old button)
+  * search source for all image sources and make them in assets (not in public)
   * layouts
   * pages
   * replace all @phosphor-icons/vue
-  * all image sources for shit in public folder
   * delete public images junk folder
 
 
