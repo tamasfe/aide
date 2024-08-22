@@ -6,7 +6,6 @@
   * pages
   * replace all @phosphor-icons/vue
   * all image sources for shit in public folder
-  * delete tests
   * delete public images junk folder
 
 
