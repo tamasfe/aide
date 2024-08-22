@@ -22,11 +22,11 @@ const modelValue = computed({
   },
 });
 
-const opened = ref(false);
+const open = ref(false);
 
 const openPopover = () => {
-  if (opened.value) return;
-  opened.value = true;
+  if (open.value) return;
+  open.value = true;
 };
 
 const close = (event?: Event) => {
@@ -34,20 +34,20 @@ const close = (event?: Event) => {
     event.preventDefault();
     event.stopPropagation();
   }
-  opened.value = false;
+  open.value = false;
 };
 
 let scrollLocked: ReturnType<typeof useScrollLock> | null = null;
 
 const escape = (e: KeyboardEvent) => {
-  if (e.key === "Escape" && opened.value) {
+  if (e.key === "Escape" && open.value) {
     e.preventDefault();
     e.stopPropagation();
     close();
   }
 };
 
-watch(opened, (value) => {
+watch(open, (value) => {
   if (value) {
     window.addEventListener("keydown", escape);
     window.scrollTo({
@@ -62,7 +62,7 @@ watch(opened, (value) => {
   }
 
   if (scrollLocked) {
-    scrollLocked.value = opened.value;
+    scrollLocked.value = open.value;
   }
 });
 
@@ -84,7 +84,7 @@ defineOptions({
     <BaseInput
       ref="input"
       v-model="modelValue"
-      :class="[opened ? 'z-[13]' : '']"
+      :class="[open ? 'z-[13]' : '']"
       class="!rounded-2xl sm:!rounded-xl"
       wrapper-class="font-normal bg-emphasis !rounded-2xl sm:!rounded-xl"
       input-class="font-normal text-default"
@@ -102,7 +102,7 @@ defineOptions({
       </template>
       <template #suffix>
         <button
-          v-if="opened"
+          v-if="open"
           type="button"
           class="text-subtle cursor-pointer outline-none"
           aria-label="Close"
@@ -113,7 +113,7 @@ defineOptions({
       </template>
     </BaseInput>
     <div
-      v-if="opened"
+      v-if="open"
       class="fixed inset-0 z-[12] bg-black/40"
       aria-hidden="true"
       @click="close"
@@ -127,7 +127,7 @@ defineOptions({
       leave-to-class="translate-y-1 opacity-0"
     >
       <PopoverPanel
-        v-if="opened"
+        v-if="open"
         class="absolute left-1/2 z-[13] mt-10 -translate-x-1/2 w-full outline-none"
         static
       >

@@ -1,18 +1,18 @@
 <script setup lang="ts">
-const emit = defineEmits(["update:opened"]);
+const emit = defineEmits(["update:open"]);
 
 const props = defineProps<{
-  opened: boolean;
+  open: boolean;
 }>();
 
-const opened = computed({
-  get: () => props.opened,
-  set: (value: boolean) => emit("update:opened", value),
+const open = computed({
+  get: () => props.open,
+  set: (value: boolean) => emit("update:open", value),
 });
 </script>
 
 <template>
-  <ModalWrapper v-model:opened="opened">
+  <ModalWrapper v-model:open="opened">
     <WrapperDeposit />
   </ModalWrapper>
 </template>

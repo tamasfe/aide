@@ -2,7 +2,7 @@
 import type { RegisterCredentialsBrazil } from "~/types/auth";
 
 const emit = defineEmits([
-  "update:opened",
+  "update:open",
   "request:login",
   "request:register",
   "success:login",
@@ -11,14 +11,14 @@ const emit = defineEmits([
 ]);
 
 const props = defineProps<{
-  opened: boolean;
+  open: boolean;
   type: "login" | "register";
 }>();
 
-const opened = computed({
-  get: () => props.opened,
+const open = computed({
+  get: () => props.open,
   set: (value: boolean) => {
-    emit("update:opened", value);
+    emit("update:open", value);
     if (!value) {
       emit("close");
     }
@@ -44,7 +44,7 @@ const onSuccessfulRegister = (credentials: RegisterCredentialsBrazil) => {
 
 <template>
   <ModalWrapper
-    v-model:opened="opened"
+    v-model:open="open"
     :close-on-click-outside="false"
     banner="top"
   >

@@ -13,17 +13,17 @@ defineProps<{
   options: CollapseOption[];
 }>();
 
-const opened = ref(false);
+const open = ref(false);
 
 const toggle = () => {
-  opened.value = !opened.value;
+  open.value = !open.value;
 };
 </script>
 
 <template>
   <div
     class="p-4 flex flex-col text-emphasis gap-8 rounded-default"
-    :class="[opened ? 'bg-subtle' : '']"
+    :class="[open ? 'bg-subtle' : '']"
   >
     <div
       class="flex items-center justify-between cursor-pointer outline-none"
@@ -41,13 +41,13 @@ const toggle = () => {
       <button
         type="button"
         class="outline-none transition-transform transform"
-        :class="opened ? 'rotate-180' : 'text-subtle rotate-0'"
+        :class="open ? 'rotate-180' : 'text-subtle rotate-0'"
       >
         <PhCaretDown :size="24" />
       </button>
     </div>
     <div
-      v-if="opened"
+      v-if="open"
       class="flex flex-col gap-8"
     >
       <BaseMenuLink

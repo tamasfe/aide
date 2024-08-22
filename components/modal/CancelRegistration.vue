@@ -1,24 +1,24 @@
 <script setup lang="ts">
-const emit = defineEmits(["update:opened"]);
+const emit = defineEmits(["update:open"]);
 
 const { t } = useI18n();
 
 const props = defineProps<{
-  opened: boolean;
+  open: boolean;
 }>();
 
-const opened = computed({
-  get: () => props.opened,
-  set: (value: boolean) => emit("update:opened", value),
+const open = computed({
+  get: () => props.open,
+  set: (value: boolean) => emit("update:open", value),
 });
 
 const close = () => {
-  opened.value = false;
+  open.value = false;
 };
 </script>
 
 <template>
-  <ModalWrapper v-model:opened="opened">
+  <ModalWrapper v-model:open="open">
     <form class="flex-auto flex sm:justify-center flex-col gap-4 p-6">
       <h1 class="text-2xl font-bold text-center">
         {{ t("modal_cancel_registration.headline") }}

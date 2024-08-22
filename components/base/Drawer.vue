@@ -8,28 +8,22 @@ import {
   TransitionChild,
 } from "@headlessui/vue";
 import { PhX } from "@phosphor-icons/vue";
-import { MODAL_SIZES } from "~/constants";
 
-type Size = keyof typeof MODAL_SIZES;
+const emit = defineEmits(["update:open"]);
 
-const emit = defineEmits(["update:opened"]);
+// lg
+// left
 
-const props = withDefaults(
-  defineProps<{
-    opened: boolean;
-    position?: "left" | "right";
-    size?: Size;
-  }>(),
-  {
-    size: "lg",
-    position: "left",
-  },
-);
+const props = defineProps<{
+  ope: boolean;
+  position?: "left" | "right";
+  size?: Size;
+}>();
 
-const opened = computed({
-  get: () => props.opened,
+const open = computed({
+  get: () => props.open,
   set: (value) => {
-    emit("update:opened", value);
+    emit("update:open", value);
   },
 });
 
@@ -48,7 +42,7 @@ const size = computed(() => {
 });
 
 const closeModal = () => {
-  opened.value = false;
+  open.value = false;
 };
 
 defineOptions({
@@ -81,11 +75,11 @@ const slideTransition = computed(() => ({
   <Teleport to="body">
     <TransitionRoot
       appear
-      :show="opened"
+      :show="open"
       as="template"
     >
       <Dialog
-        v-model:open="opened"
+        v-model:open="open"
         as="div"
         class="relative z-[9]"
         @close="closeModal"

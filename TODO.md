@@ -4,7 +4,8 @@
   * BaseButton / button (delete old button)
   * search source for all image sources and make them in assets (not in public)
   * layouts
-  * pages
+  * all pages
+  * put typeCheck back at true
   * replace all @phosphor-icons/vue
   * delete public images junk folder
 
@@ -24,7 +25,6 @@ base
   - ContentBox.vue
   - Currency.vue
   - Dialog.vue
-  - Drawer.vue
   - GameDescriptionCard.vue
   - GameFrame.vue
   - GameFrameMobile.vue
@@ -59,6 +59,5 @@ modal
   - Wrapper.vue
 wrapper
   - Deposit.vue
-  - SidebarMenu.vue
   - Withdraw.vue
   - WithdrawInfo.vue

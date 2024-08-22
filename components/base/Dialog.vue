@@ -10,13 +10,13 @@ import {
 import { PhX } from "@phosphor-icons/vue";
 import { MODAL_SIZES } from "~/constants";
 
-const emit = defineEmits(["update:opened", "close"]);
+const emit = defineEmits(["update:open", "close"]);
 
 type Size = keyof typeof MODAL_SIZES;
 
 const props = withDefaults(
   defineProps<{
-    opened: boolean;
+    open: boolean;
     center?: boolean;
     close?: boolean;
     closeOnClickOutside?: boolean;
@@ -30,10 +30,10 @@ const props = withDefaults(
   },
 );
 
-const opened = computed({
-  get: () => props.opened,
+const open = computed({
+  get: () => props.open,
   set: (value) => {
-    emit("update:opened", value);
+    emit("update:open", value);
   },
 });
 
@@ -55,7 +55,7 @@ const size = computed(() => {
 
 const closeModal = (isManuallyTriggered: boolean) => {
   if (props.closeOnClickOutside || isManuallyTriggered) {
-    opened.value = false;
+    open.value = false;
     emit("close");
   }
 };
@@ -70,11 +70,11 @@ defineOptions({
 <template>
   <TransitionRoot
     appear
-    :show="opened"
+    :show="open"
     as="template"
   >
     <Dialog
-      v-model:open="opened"
+      v-model:open="open"
       as="div"
       class="relative z-10"
       @close="closeModal(false)"
@@ -138,9 +138,3 @@ defineOptions({
     </Dialog>
   </TransitionRoot>
 </template>
-
-<style scoped lang="postcss">
-.giro__dialog {
-  @apply p-6;
-}
-</style>

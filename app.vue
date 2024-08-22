@@ -9,10 +9,10 @@ const modal = ref();
 
 <template>
   <div>
-    <!-- <NavSidebar -->
-    <!--   v-if="sidebarOpen" -->
-    <!-- /> -->
-    <!---->
+    <NavSidebar
+      v-if="sidebarOpen"
+    />
+
     <!-- <ModalLoginRegister -->
     <!--   v-if="modal === 'login'" -->
     <!-- /> -->

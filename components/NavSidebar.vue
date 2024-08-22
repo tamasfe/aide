@@ -7,7 +7,7 @@ const isAuthenticated = ref(false);
 
 <template>
   <BaseDrawer
-    v-model:opened="open"
+    v-model:open="open"
     position="left"
     :size="size"
     class="px-0.5"

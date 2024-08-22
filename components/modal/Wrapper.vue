@@ -1,9 +1,9 @@
 <script setup lang="ts">
-const emit = defineEmits(["update:opened"]);
+const emit = defineEmits(["update:open"]);
 
 const props = withDefaults(
   defineProps<{
-    opened: boolean;
+    open: boolean;
     banner?: "left" | "top";
   }>(),
   {
@@ -11,9 +11,9 @@ const props = withDefaults(
   },
 );
 
-const opened = computed({
-  get: () => props.opened,
-  set: (value: boolean) => emit("update:opened", value),
+const open = computed({
+  get: () => props.open,
+  set: (value: boolean) => emit("update:open", value),
 });
 const image = ref(true);
 
@@ -38,7 +38,7 @@ defineExpose({
 <template>
   <BaseDialog
     v-bind="$attrs"
-    v-model:opened="opened"
+    v-model:open="open"
     :close="image"
     :size="size"
     class="sm:!rounded-[0.7rem]"

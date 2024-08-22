@@ -1,17 +1,17 @@
 <script setup lang="ts">
 import { ModalWrapper } from "#components";
 
-const emit = defineEmits(["update:opened"]);
+const emit = defineEmits(["update:open"]);
 
 const props = defineProps<{
-  opened: boolean;
+  open: boolean;
 }>();
 
 const modal = ref<InstanceType<typeof ModalWrapper> | null>(null);
 
-const opened = computed({
-  get: () => props.opened,
-  set: (value: boolean) => emit("update:opened", value),
+const open = computed({
+  get: () => props.open,
+  set: (value: boolean) => emit("update:open", value),
 });
 
 const showInfo = (value: boolean) => {
@@ -19,7 +19,7 @@ const showInfo = (value: boolean) => {
 };
 
 const close = () => {
-  opened.value = false;
+  open.value = false;
   modal.value?.reset();
 };
 </script>
@@ -27,7 +27,7 @@ const close = () => {
 <template>
   <ModalWrapper
     ref="modal"
-    v-model:opened="opened"
+    v-model:open="open"
   >
     <WrapperWithdraw
       @show:info="showInfo"
