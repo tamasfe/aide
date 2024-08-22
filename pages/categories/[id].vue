@@ -38,7 +38,7 @@ const getImageId = (idx: number) => {
     </div>
     <div class="giro__container p-4 sm:pt-6">
       <div class="grid grid-cols-1 gap-8">
-        <GridCategory
+        <BaseGridCategory
           :data="data"
           :max="60"
         >
@@ -78,7 +78,7 @@ const getImageId = (idx: number) => {
               </BaseSkeleton>
             </div>
           </template>
-        </GridCategory>
+        </BaseGridCategory>
       </div>
     </div>
   </div>
