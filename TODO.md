@@ -25,6 +25,11 @@ base
   - Currency.vue
   - Dialog.vue
   - Drawer.vue
+  - GameDescriptionCard.vue
+  - GameFrame.vue
+  - GameFrameMobile.vue
+  - GridCategory.vue
+  - GridScroll.vue
   - Image.vue
   - Input.vue
   - InputWrapper.vue
@@ -45,13 +50,6 @@ form
   - Login.vue
   - RegisterBrazil.vue
   - WithdrawPix.vue
-game
-  - DescriptionCard.vue
-  - Frame.vue
-  - FrameMobile.vue
-grid
-  - Category.vue
-  - Scroll.vue
 modal
   - CancelRegistration.vue
   - Deposit.vue
