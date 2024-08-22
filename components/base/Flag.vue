@@ -56,7 +56,7 @@ const imageUrl = computed(() => images[props.countryCode]);
       props.class,
     )"
   >
-    <NuxtImg :src="imageUrl" />
+    <img :src="imageUrl">
   </div>
 </template>
 
