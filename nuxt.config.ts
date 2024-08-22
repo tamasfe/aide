@@ -77,11 +77,6 @@ export default defineNuxtConfig({
         code: "en",
         file: "en.json",
       },
-      {
-        iso: "pt-BR",
-        code: "pt",
-        file: "pt.json",
-      },
     ],
     detectBrowserLanguage: false,
     strategy: "no_prefix",

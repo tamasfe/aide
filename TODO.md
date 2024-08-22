@@ -1,5 +1,16 @@
+### Refactor
 
-### Files
+  * components
+  * BaseButton / button (delete old button)
+  * layouts
+  * pages
+  * replace all @phosphor-icons/vue
+  * all image sources for shit in public folder
+  * delete tests
+  * delete public images junk folder
+
+
+### Components
 
 account
   - Close.vue
@@ -65,24 +76,3 @@ wrapper
   - SidebarMenu.vue
   - Withdraw.vue
   - WithdrawInfo.vue
-
-
-
-
-
-
-### Refactor
-
-  * layouts
-  * icons
-  * BaseButton / button (delete old button)
-  * all image sources for shit in public folder
-  * delete tests
-
-### Extract to Component
-
-  * promo bar
-
-### Finalize
-
-  * Remove @phosphor-icons/vue
