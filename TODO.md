@@ -62,8 +62,8 @@ modal
   - Wrapper.vue
 wrapper
   - Deposit.vue
-  - GameScroll.vue
-  - ProviderScroll.vue
+  - ScrollerGame.vue
+  - ScrollerProvider.vue
   - SidebarMenu.vue
   - Withdraw.vue
   - WithdrawInfo.vue

@@ -9,13 +9,14 @@
       v-if="!isMobile"
     />
     <GameFrameMobile v-else />
+
     <GameDescriptionCard class="bg-subtle" />
+
     <div class="giro__container w-full flex flex-col space-y-4 md:space-y-8">
-      <WrapperGameScroll
+      <WrapperScrollerGame
         v-for="category in data"
         :key="category.id"
       />
-      <WrapperProviderScroll title="🏆 Providers" />
     </div>
   </div>
 </template>

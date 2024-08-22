@@ -6,7 +6,7 @@ const data = ref([]);
 <template>
   <div class="sm:py-8">
     <div class="max-w-full sm:px-4 xl:p-0 xl:max-w-[1240px] mx-auto">
-      <CarouselHero />
+      <WrapperCarouselHero />
     </div>
     <div class="giro__container py-6">
       <div class="flex flex-col gap-8">
@@ -15,19 +15,19 @@ const data = ref([]);
           class="w-full"
         >
           <template #default>
-            <WrapperGameScroll />
+            <WrapperScrollerGame />
           </template>
         </BaseSearch>
 
         <BaseWinningNow />
 
-        <WrapperGameScroll
+        <WrapperScrollerGame
           v-for="category in data"
           :key="category.id"
           :identifier="category.identifier"
         />
 
-        <WrapperProviderScroll title="🏆 Providers" />
+        <WrapperScrollerProvider title="🏆 Providers" />
       </div>
     </div>
   </div>

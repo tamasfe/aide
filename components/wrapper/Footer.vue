@@ -53,11 +53,11 @@ const scrollToTop = () => {
             </div>
           </template>
         </BaseSelect>
-        <WrapperSocialMediaLogos
+        <WrapperFooterColumnSocialMedia
           class="hidden md:flex lg:hidden"
         />
       </div>
-      <WrapperSocialMediaLogos
+      <WrapperFooterColumnSocialMedia
         class="md:hidden"
       />
       <WrapperFooterColumn
@@ -87,7 +87,7 @@ const scrollToTop = () => {
           { title: t('page.responsible_gaming'), to: '/responsible-gaming' },
         ]"
       />
-      <WrapperSocialMediaLogos
+      <WrapperFooterColumnSocialMedia
         class="hidden lg:flex"
       />
     </section>

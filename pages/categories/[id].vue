@@ -34,7 +34,7 @@ const getImageId = (idx: number) => {
 <template>
   <div class="sm:py-8">
     <div class="max-w-full sm:px-4 xl:p-0 xl:max-w-[1240px] mx-auto">
-      <CarouselHero />
+      <WrapperCarouselHero />
     </div>
     <div class="giro__container p-4 sm:pt-6">
       <div class="grid grid-cols-1 gap-8">

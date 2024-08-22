@@ -3,7 +3,7 @@ import { clamp } from "@vueuse/core";
 
 // DESIGN STATUS:       ✴️
 //   * controls should disappear if a single slide
-//   * most importantly... each slide should NOT be responsible for its own ratio. that should be defined in HeroCarousel, so it "configures" the carousel with props or whatever. Then, adding slides very simply can be done with simple wrapping divs which automatically style with w-full/h-full, and then anything in that div can be styled with normal css (whether its an image, a button, etc)
+//   * most importantly... each slide should NOT be responsible for its own ratio. that should be defined in WrapperCarouselHero, so it "configures" the carousel with props or whatever. Then, adding slides very simply can be done with simple wrapping divs which automatically style with w-full/h-full, and then anything in that div can be styled with normal css (whether its an image, a button, etc)
 //   * the button should be what gets the @click event... not the div wrapping it
 // ARCHITECTURE STATUS: ✴️
 //   * currently quite messy and should be refactored
