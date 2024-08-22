@@ -15,7 +15,7 @@ const emit = defineEmits(["update:open"]);
 // left
 
 const props = defineProps<{
-  ope: boolean;
+  open: boolean;
   position?: "left" | "right";
   size?: Size;
 }>();

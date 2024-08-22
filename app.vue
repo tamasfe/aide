@@ -1,5 +1,4 @@
 <script setup lang="ts">
-const sidebarOpen = ref(false);
 const modal = ref();
 // const modal = ref("login");
 // const modal = ref("register");
@@ -9,9 +8,7 @@ const modal = ref();
 
 <template>
   <div>
-    <NavSidebar
-      v-if="sidebarOpen"
-    />
+    <NavSidebar />
 
     <!-- <ModalLoginRegister -->
     <!--   v-if="modal === 'login'" -->

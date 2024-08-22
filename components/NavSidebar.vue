@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { PhGridFour, PhHouse, PhStar } from "@phosphor-icons/vue";
 
-const open = ref(false);
-const isAuthenticated = ref(false);
+const { isMobile } = useDevice();
+
+const size = computed(() => (isMobile.value ? "full" : "lg"));
+const open = ref(true);
 </script>
 
 <template>
@@ -19,9 +21,7 @@ const isAuthenticated = ref(false);
     </template>
     <div
       class="min-w-[24rem] flex flex-col gap-4 overflow-y-auto py-1 px-2"
-      :style="{ paddingBottom: `${bottomPadding}px` }"
     >
-      <FormDeposit v-if="isAuthenticated" />
       <div class="select-none">
         <BaseMenuCollapse
           :parent="{
@@ -30,7 +30,7 @@ const isAuthenticated = ref(false);
             icon: PhHouse,
             iconClass: 'text-subtle',
           }"
-          :options="homeGameCategories"
+          :options="[]"
         />
         <BaseMenuCollapse
           :parent="{
@@ -39,7 +39,7 @@ const isAuthenticated = ref(false);
             icon: PhGridFour,
             iconClass: 'text-subtle',
           }"
-          :options="allGameCategories"
+          :options="[]"
         />
         <BaseMenuLink
           class="p-4 text-emphasis"
