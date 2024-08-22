@@ -1,62 +1,68 @@
 <script setup lang="ts">
-import { PhCaretDown } from "@phosphor-icons/vue";
+import type { HTMLAttributes } from "vue";
 
-type CollapseOption = {
+// DESIGN STATUS:       ✅
+// ARCHITECTURE STATUS: ✅
+// TRANSLATION STATUS:  ✅
+
+type Link = {
   title: string;
-  value: string;
-  icon?: Component;
-  iconClass?: string;
+  to: string;
+  icon?: string;
+  class?: HTMLAttributes["class"];
 };
 
-defineProps<{
-  parent: CollapseOption;
-  options: CollapseOption[];
+const props = defineProps<{
+  parent: Omit<Link, "to">;
+  children: Link[];
 }>();
 
 const open = ref(false);
 
-const toggle = () => {
+const onToggle = () => {
   open.value = !open.value;
 };
 </script>
 
 <template>
   <div
-    class="p-4 flex flex-col text-emphasis gap-8 rounded-default"
-    :class="[open ? 'bg-subtle' : '']"
+    class="select-none p-4 flex flex-col text-emphasis gap-8 rounded-default"
+    :class="{ 'bg-subtle': open }"
   >
     <div
       class="flex items-center justify-between cursor-pointer outline-none"
-      @click="toggle"
+      @click="onToggle"
     >
       <div class="flex items-center gap-2">
-        <Component
-          :is="parent.icon"
+        <Icon
           v-if="parent.icon"
-          :size="24"
-          :class="parent.iconClass"
+          :name="parent.icon"
+          size="20"
         />
-        <p>{{ parent.title }}</p>
+        <div :class="props.parent.class">{{ parent.title }}</div>
       </div>
-      <button
-        type="button"
-        class="outline-none transition-transform transform"
+      <BaseButtonNew
+        variant="ghost"
+        size="ghost"
+        class="transition-transform transform"
         :class="open ? 'rotate-180' : 'text-subtle rotate-0'"
       >
-        <PhCaretDown :size="24" />
-      </button>
+        <Icon
+          name="lucide:chevron-down"
+          size="24"
+        />
+      </BaseButtonNew>
     </div>
     <div
       v-if="open"
-      class="flex flex-col gap-8"
+      class="flex flex-col space-y-8"
     >
       <BaseMenuLink
-        v-for="option in options"
-        :key="option.value"
-        :title="option.title"
-        :value="option.value"
-        :icon="option.icon"
-        :icon-class="option.iconClass"
+        v-for="(link, index) in children"
+        :key="index"
+        :title="link.title"
+        :to="link.to"
+        :icon="link.icon"
       />
     </div>
   </div>

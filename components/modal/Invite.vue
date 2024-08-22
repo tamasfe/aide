@@ -13,7 +13,7 @@ const open = computed({
 
 <template>
   <ModalWrapper
-    v-model:open="opened"
+    v-model:open="open"
     banner="top"
   >
     <div class="flex-1 px-6 sm:py-6">

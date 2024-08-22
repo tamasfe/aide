@@ -1,25 +1,28 @@
 <script setup lang="ts">
-type MenuLinkProps = {
-  title: string;
-  value: string;
-  icon?: Component;
-  iconClass?: string;
-};
+import type { HTMLAttributes } from "vue";
 
-defineProps<MenuLinkProps>();
+// DESIGN STATUS:       ✅
+// ARCHITECTURE STATUS: ✅
+// TRANSLATION STATUS:  ✅
+
+const props = defineProps<{
+  title: string;
+  to: string;
+  icon?: string;
+  class?: HTMLAttributes["class"];
+}>();
 </script>
 
 <template>
   <NuxtLink
-    class="flex items-center gap-2"
-    :to="value"
+    class="flex items-center space-x-2"
+    :to="to"
   >
-    <Component
-      :is="icon"
+    <Icon
       v-if="icon"
-      :size="24"
-      :class="iconClass"
+      :name="icon"
+      size="20"
     />
-    <p>{{ title }}</p>
+    <div :class="props.class">{{ title }}</div>
   </NuxtLink>
 </template>

@@ -2,6 +2,7 @@
 
   * components
   * BaseButton / button (delete old button)
+    * search and destroy all "btn" stuff
   * search source for all image sources and make them in assets (not in public)
   * layouts
   * all pages
@@ -32,8 +33,6 @@ base
   - Image.vue
   - Input.vue
   - InputWrapper.vue
-  - MenuCollapse.vue
-  - MenuLink.vue
   - Number.vue
   - Password.vue
   - PromoBar.vue

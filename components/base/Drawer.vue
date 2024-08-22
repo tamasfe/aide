@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { HTMLAttributes } from "vue";
-import { type VariantProps, cva } from "class-variance-authority";
 import {
   Dialog,
   DialogPanel,
@@ -9,33 +7,26 @@ import {
   TransitionRoot,
   TransitionChild,
 } from "@headlessui/vue";
-import { PhX } from "@phosphor-icons/vue";
+import type { HTMLAttributes } from "vue";
+import { type VariantProps, cva } from "class-variance-authority";
 import { cn } from "~/utils";
 
 // DESIGN STATUS:       ✴️
-//   * user icon size is stupid
-//   * ButtonNew might need to be overridden for md size (md size probably shouldnt change as it looks fine elsewhere just not in the menu)
+//   * are translations actually working? there was a typo in the original code so we should test to make sure its actually correct. i see it animated but it might be sub-optimal
+//   * also check the animation for the overlay, it appears instantly, i may have broken it
 // ARCHITECTURE STATUS: ✅
 // TRANSLATION STATUS:  ✅
 
 const { t } = useI18n();
 
 const drawerVariants = cva(
-  "fixed top-0 bottom-0 h-full min-h-0",
+  "fixed top-0 bottom-0 h-full w-full sm:w-auto min-h-0",
   {
     variants: {
       position: {
         left: "left-0",
         right: "right-0",
       },
-      size: {
-        lg: "max-w-[10rem]",
-        full: "w-full",
-      },
-    },
-    defaultVariants: {
-      position: "left",
-      size: "lg",
     },
   },
 );
@@ -65,17 +56,19 @@ defineOptions({
   inheritAttrs: false,
 });
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   open: boolean;
   position?: DrawerVariants["position"];
-  size?: DrawerVariants["size"];
   class?: HTMLAttributes["class"];
-}>();
+}>(), {
+  position: "left",
+});
 
 const emit = defineEmits(["update:open"]);
 
 const positionTransition = computed(() => {
-  return positionTransitions.value[props.position];
+  const position = props.position as keyof typeof positionTransitions.value;
+  return positionTransitions.value[position];
 });
 
 const onClose = () => {
@@ -117,7 +110,7 @@ const open = computed({
 
         <div
           :class="cn(
-            drawerVariants({ position, size }),
+            drawerVariants({ position }),
             props.class,
           )"
         >
@@ -129,29 +122,31 @@ const open = computed({
               class="bg-emphasis/85 backdrop-blur-lg rounded-default p-4 flex flex-col gap-4 h-full"
               v-bind="$attrs"
             >
-              <button
-                type="button"
-                class="absolute top-0 right-0 rounded-md text-subtle hover:text-emphasis py-4 px-2 outline-none z-10"
+              <BaseButtonNew
+                variant="ghost"
+                size="ghost"
+                class="absolute top-3 right-2 rounded-md text-subtle hover:text-emphasis p-2 outline-none z-10"
                 @click="onClose"
               >
                 <span class="sr-only">{{ t('i18n.close') }}</span>
                 <div
                   class="p-1 bg-emphasis/50 backdrop-blur-lg rounded-default"
                 >
-                  <PhX :size="24" />
+                  <Icon
+                    name="lucide:x"
+                    size="24"
+                  />
                 </div>
-              </button>
-              <DialogTitle
-                as="h3"
-                class="text-lg font-medium leading-6"
-              >
-                <div class="relative">
-                  <slot name="title" />
-                </div>
+              </BaseButtonNew>
+
+              <DialogTitle as="h3">
+                <slot name="title" />
               </DialogTitle>
+
               <DialogDescription>
                 <slot name="description" />
               </DialogDescription>
+
               <slot />
             </DialogPanel>
           </TransitionChild>

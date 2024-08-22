@@ -1,68 +1,63 @@
 <script setup lang="ts">
-import { PhGridFour, PhHouse, PhStar } from "@phosphor-icons/vue";
+const open = ref(true);
 
-const { isMobile } = useDevice();
+// DESIGN STATUS:       ✅
+// ARCHITECTURE STATUS: ✴️
+//   * sidebar needs to close after clicking a link
+// TRANSLATION STATUS:  ✅
 
-const size = computed(() => (isMobile.value ? "full" : "lg"));
-const open = ref(false);
+const links = [
+  {
+    title: "Casino",
+    icon: "lucide:badge-dollar-sign",
+    children: [
+      {
+        title: "Aviator",
+        icon: "lucide:plane",
+        to: "/aviator",
+      },
+    ],
+  },
+  {
+    title: "Support",
+    icon: "lucide:headset",
+    to: "/support",
+  },
+];
 </script>
 
 <template>
   <BaseDrawer
     v-model:open="open"
-    position="left"
-    :size="size"
-    class="px-0.5"
   >
     <template #title>
-      <div class="flex items-center justify-between pl-4 max-w-48">
+      <div class="flex items-center justify-between pt-1 pl-4 max-w-[10rem]">
         <IconLogo />
       </div>
     </template>
     <div
-      class="min-w-[24rem] flex flex-col gap-4 overflow-y-auto py-1 px-2"
+      class="min-w-[20rem] flex flex-col overflow-y-auto"
     >
-      <div class="select-none">
+      <template v-for="(link, index) in links">
         <BaseMenuCollapse
+          v-if="link.children"
+          :key="`parent-${index}`"
           :parent="{
-            title: 'Home',
-            value: '/',
-            icon: PhHouse,
-            iconClass: 'text-subtle',
+            title: link.title,
+            icon: link.icon,
+            class: 'p-4 text-emphasis',
           }"
-          :options="[]"
-        />
-        <BaseMenuCollapse
-          :parent="{
-            title: 'All Games',
-            value: 'all_games',
-            icon: PhGridFour,
-            iconClass: 'text-subtle',
-          }"
-          :options="[]"
+          :children="link.children"
         />
         <BaseMenuLink
+          v-else
+          :key="`link-${index}`"
+          :title="link.title"
+          :to="link.to"
+          :icon="link.icon"
           class="p-4 text-emphasis"
-          title="Promotions"
-          value="promotions"
-          :icon="PhStar"
-          icon-class="text-subtle"
         />
-        <BaseMenuLink
-          class="p-4 text-emphasis"
-          title="VIP"
-          value="vip"
-          :icon="PhStar"
-          icon-class="text-subtle"
-        />
-        <BaseMenuLink
-          class="p-4 text-emphasis"
-          title="Recently added"
-          value="recently_added"
-          :icon="PhStar"
-          icon-class="text-subtle"
-        />
-      </div>
+      </template>
     </div>
   </BaseDrawer>
 </template>

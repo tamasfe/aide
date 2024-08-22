@@ -47,7 +47,6 @@ export default <Partial<Config>>{
           white: "var(--giro-text-white-gradient)",
         },
       },
-
       backgroundImage: {
         "button-primary": "var(--giro-button-primary)",
         "button-primary-hover": "var(--giro-button-primary-hover)",
@@ -57,7 +56,6 @@ export default <Partial<Config>>{
         "button-emphasis-hover": "var(--giro-button-emphasis-hover)",
         "gradient-white": "var(--giro-text-white-gradient)",
       },
-
       borderColor: {
         btn: {
           emphasis: "var(--giro-border-btn-emphasis)",
@@ -65,16 +63,13 @@ export default <Partial<Config>>{
         },
         focus: "var(--giro-border-focus)",
       },
-
       outlineColor: {
         focus: "var(--giro-border-focus)",
       },
-
       boxShadow: {
         "btn-emphasis": "var(--giro-shadow-btn-emphasis)",
         "btn-primary": "var(--giro-shadow-btn-primary)",
       },
-
       textColor: {
         default: "var(--giro-text)",
         subtle: "var(--giro-text-subtle)",
@@ -93,7 +88,6 @@ export default <Partial<Config>>{
           yellow: "var(--giro-brand-yellow)",
         },
       },
-
       fill: {
         default: "var(--giro-text)",
         subtle: "var(--giro-text-subtle)",
@@ -104,14 +98,8 @@ export default <Partial<Config>>{
           emphasis: "var(--giro-button-text-emphasis)",
         },
       },
-
       borderRadius: {
         default: "var(--giro-border-radius)",
-      },
-
-      padding: {
-        button: "var(--giro-padding-button)",
-        "button-big": "var(--giro-padding-button-big)",
       },
     },
   },

@@ -1,4 +1,6 @@
-<template></template>
+<template>
+  <div />
+</template>
 <!-- <script setup lang="ts"> -->
 <!-- import * as zod from "zod"; -->
 <!-- import { getCurrencySymbol, formatNumber } from "~/utils/index"; -->

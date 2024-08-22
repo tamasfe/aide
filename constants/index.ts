@@ -62,7 +62,7 @@ export const COUNTRIES: Country[] = [
 
 export const JURISDICTIONS: Jurisdiction[] = [
   {
-    country: COUNTRIES.find(country => country.code === "BR"),
+    country: COUNTRIES[0], // TODO
     currency: {
       code: "BRL",
       symbol: "R$",
