@@ -26,7 +26,7 @@ const onToggle = () => {
 
 <template>
   <div
-    class="select-none p-4 flex flex-col text-emphasis gap-8 rounded-default"
+    class="select-none flex flex-col text-emphasis rounded-default"
     :class="{ 'bg-subtle': open }"
   >
     <div
@@ -57,7 +57,7 @@ const onToggle = () => {
     </div>
     <div
       v-if="open"
-      class="flex flex-col space-y-8"
+      class="flex flex-col"
     >
       <BaseMenuLink
         v-for="(link, index) in children"

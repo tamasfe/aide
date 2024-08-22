@@ -21,8 +21,8 @@ const props = defineProps<{
     <Icon
       v-if="icon"
       :name="icon"
-      class="text-subtle"
       size="24"
+      class="text-subtle"
     />
     <div :class="props.class">{{ title }}</div>
   </NuxtLink>

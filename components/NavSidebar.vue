@@ -10,14 +10,50 @@ const open = ref(true);
 const links = [
   {
     title: "Casino",
-    icon: "lucide:badge-dollar-sign",
+    icon: "lucide:cherry",
     children: [
       {
         title: "Aviator",
         icon: "lucide:plane",
         to: "/aviator",
       },
+      {
+        title: "Fortune Tiger",
+        icon: "lucide:circle-dollar-sign",
+        to: "/aviator",
+      },
     ],
+  },
+  {
+    title: "Casino",
+    icon: "lucide:cherry",
+    children: [
+      {
+        title: "Aviator",
+        icon: "lucide:plane",
+        to: "/aviator",
+      },
+      {
+        title: "Fortune Tiger",
+        icon: "lucide:circle-dollar-sign",
+        to: "/aviator",
+      },
+    ],
+  },
+  {
+    title: "Support",
+    icon: "lucide:headset",
+    to: "/support",
+  },
+  {
+    title: "Support",
+    icon: "lucide:headset",
+    to: "/support",
+  },
+  {
+    title: "Support",
+    icon: "lucide:headset",
+    to: "/support",
   },
   {
     title: "Support",
@@ -56,7 +92,6 @@ const links = [
         <div
           v-else
           :key="`link-${index}`"
-          class="p-4"
         >
           <BaseMenuLink
             :title="link.title"
