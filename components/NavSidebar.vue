@@ -45,18 +45,25 @@ const links = [
           :parent="{
             title: link.title,
             icon: link.icon,
-            class: 'p-4 text-emphasis',
+            class: 'ml-4 text-emphasis',
           }"
-          :children="link.children"
+          :children="link.children.map(child => ({
+            ...child,
+            class: 'ml-4 text-emphasis',
+          }))"
         />
-        <BaseMenuLink
+        <div
           v-else
           :key="`link-${index}`"
-          :title="link.title"
-          :to="link.to"
-          :icon="link.icon"
-          class="p-4 text-emphasis"
-        />
+          class="p-4"
+        >
+          <BaseMenuLink
+            :title="link.title"
+            :to="link.to"
+            :icon="link.icon"
+            class="ml-4 text-emphasis"
+          />
+        </div>
       </template>
     </div>
   </BaseDrawer>

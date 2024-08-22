@@ -33,7 +33,7 @@ const onToggle = () => {
       class="flex items-center justify-between cursor-pointer outline-none"
       @click="onToggle"
     >
-      <div class="flex items-center gap-2">
+      <div class="flex items-center">
         <Icon
           v-if="parent.icon"
           :name="parent.icon"
@@ -63,6 +63,7 @@ const onToggle = () => {
         :title="link.title"
         :to="link.to"
         :icon="link.icon"
+        :class="link.class"
       />
     </div>
   </div>
