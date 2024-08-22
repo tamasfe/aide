@@ -15,8 +15,6 @@ const { isMobile } = useDevice();
 const data = ref<unknown[]>(Array.from({ length: 4 }, (_, i) => i + 1));
 const loading = ref(true);
 
-defineProps<{ title: string }>();
-
 onMounted(() => {
   setTimeout(() => {
     loading.value = false;
@@ -29,7 +27,6 @@ const onScroll = () => {
 </script>
 
 <template>
-  hello
   <GridScroller
     :data="data"
     :show-controls="!isMobile"

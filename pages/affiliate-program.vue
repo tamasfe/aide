@@ -4,8 +4,8 @@ const { t } = useI18n();
 
 <template>
   <div>
-    <Page :title="t('page.affiliate_program')">
+    <AppPage :title="t('page.affiliate_program')">
       <p>content</p>
-    </Page>
+    </AppPage>
   </div>
 </template>

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 const search = ref("");
-const data = ref([]);
 </script>
 
 <template>
@@ -25,7 +24,7 @@ const data = ref([]);
         <WrapperScrollerGame />
         <WrapperScrollerGame />
 
-        <WrapperScrollerProvider title="🏆 Providers" />
+        <WrapperScrollerProvider />
       </div>
     </div>
   </div>

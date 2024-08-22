@@ -4,7 +4,11 @@ const { isMobile } = useDevice();
 const data = ref<unknown[]>(Array.from({ length: 4 }, (_, i) => i + 1));
 const loading = ref(true);
 
-defineProps<{ title: string }>();
+// DESIGN STATUS:        ✴️
+//   * follow all advice of ScrollerGame
+// ARCHITECTURE STATUS:  ✴️
+//   * follow all advice of ScrollerGame
+// TRANSLATION STATUS:   ✅
 
 onMounted(() => {
   setTimeout(() => {
@@ -21,7 +25,7 @@ onMounted(() => {
     :slides-to-scroll="2"
   >
     <template #title>
-      <h2 class="text-xl sm:text-2xl">{{ title }}</h2>
+      <h2 class="text-xl sm:text-2xl">🏆 {{ t('grid.providers') }}</h2>
     </template>
     <template #options>
       <BaseButton class="bg-subtle hover:bg-emphasis text-subtle text-sm">
@@ -38,7 +42,6 @@ onMounted(() => {
               :loading="loading"
               class="absolute left-0 top-0 w-full h-full"
             >
-              <!-- center image -->
               <NuxtImg
                 :src="`/assets/images/providers/${index}.png`"
                 alt=""

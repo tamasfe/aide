@@ -79,7 +79,8 @@
     "share": "Share"
   },
   "grid": {
-    "game_count": "{count} Games"
+    "game_count": "{count} Games",
+    "providers": "Providers"
   },
   "page": {
     "aviator": "Aviator",

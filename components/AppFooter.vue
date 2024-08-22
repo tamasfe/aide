@@ -2,7 +2,7 @@
 // DESIGN STATUS:       ✴️
 //   * logos for payment providers
 // ARCHITECTURE STATUS: ✴️
-//   * logo should be refactored out like the <Header> component
+//   * logo should be refactored out like the <AppHeader> component
 // TRANSLATION STATUS:  ✅
 
 const { t } = useI18n();
@@ -53,14 +53,14 @@ const scrollToTop = () => {
             </div>
           </template>
         </BaseSelect>
-        <FooterColumnSocialMedia
+        <AppFooterColumnSocialMedia
           class="hidden md:flex lg:hidden"
         />
       </div>
-      <FooterColumnSocialMedia
+      <AppFooterColumnSocialMedia
         class="md:hidden"
       />
-      <FooterColumn
+      <AppFooterColumn
         :title="t('footer.popular')"
         :links="[
           { title: t('page.aviator'), to: 'TODO' },
@@ -68,7 +68,7 @@ const scrollToTop = () => {
           { title: t('page.live_casino'), to: 'TODO' },
         ]"
       />
-      <FooterColumn
+      <AppFooterColumn
         :title="t('footer.girobet')"
         :links="[
           { title: t('page.affiliate_program'), to: '/affiliate-program' },
@@ -77,7 +77,7 @@ const scrollToTop = () => {
           { title: t('page.telegram'), to: 'TODO' },
         ]"
       />
-      <FooterColumn
+      <AppFooterColumn
         :title="t('footer.legal')"
         :links="[
           { title: t('page.betting_terms'), to: '/betting-terms' },
@@ -87,7 +87,7 @@ const scrollToTop = () => {
           { title: t('page.responsible_gaming'), to: '/responsible-gaming' },
         ]"
       />
-      <FooterColumnSocialMedia
+      <AppFooterColumnSocialMedia
         class="hidden lg:flex"
       />
     </section>

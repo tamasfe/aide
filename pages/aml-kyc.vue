@@ -4,7 +4,7 @@ const { t } = useI18n();
 
 <template>
   <div>
-    <Page
+    <AppPage
       :title="t('page.aml_policy')"
       version="1.0"
       date="August 20, 2024"
@@ -174,9 +174,9 @@ const { t } = useI18n();
         <li>A brother or sister</li>
       </ul>
       <p>A close associate of a PEP is an individual publicly known to maintain a business or close relationship with a PEP or to be a shareholder in the same commercial company.</p>
-    </Page>
+    </AppPage>
 
-    <Page
+    <AppPage
       :title="t('page.kyc_policy')"
       version="1.0"
       date="August 20, 2024"
@@ -233,6 +233,6 @@ const { t } = useI18n();
 
       <p><strong>Account Approval:</strong></p>
       <p>Once all proper documents are in possession, the account gets approved.</p>
-    </Page>
+    </AppPage>
   </div>
 </template>

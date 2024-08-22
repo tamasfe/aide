@@ -4,8 +4,8 @@ const { t } = useI18n();
 
 <template>
   <div>
-    <Page :title="t('page.support')">
+    <AppPage :title="t('page.support')">
       <p>content</p>
-    </Page>
+    </AppPage>
   </div>
 </template>

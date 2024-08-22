@@ -3,11 +3,11 @@
 
 <template>
   <div>
-    <WrapperHeader />
+    <WrapperAppHeader />
 
     <slot />
 
-    <Footer />
+    <AppFooter />
 
     <NavMobile />
   </div>
