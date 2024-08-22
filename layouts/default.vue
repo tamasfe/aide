@@ -3,7 +3,7 @@
 
 <template>
   <div>
-    <WrapperAppHeader />
+    <AppHeader />
 
     <slot />
 
