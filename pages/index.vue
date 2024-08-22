@@ -21,11 +21,9 @@ const data = ref([]);
 
         <WinningNow />
 
-        <WrapperScrollerGame
-          v-for="category in data"
-          :key="category.id"
-          :identifier="category.identifier"
-        />
+        <WrapperScrollerGame />
+        <WrapperScrollerGame />
+        <WrapperScrollerGame />
 
         <WrapperScrollerProvider title="🏆 Providers" />
       </div>

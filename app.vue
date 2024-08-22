@@ -9,22 +9,22 @@ const modal = ref();
 
 <template>
   <div>
-    <NavSidebar
-      v-if="sidebarOpen"
-    />
-
-    <ModalLoginRegister
-      v-if="modal === 'login'"
-    />
-    <ModalLoginRegister
-      v-if="modal === 'register'"
-    />
-    <ModalCancelRegistration
-      v-if="modal === 'cancel_reg'"
-    />
-    <ModalDeposit
-      v-if="modal === 'deposit'"
-    />
+    <!-- <NavSidebar -->
+    <!--   v-if="sidebarOpen" -->
+    <!-- /> -->
+    <!---->
+    <!-- <ModalLoginRegister -->
+    <!--   v-if="modal === 'login'" -->
+    <!-- /> -->
+    <!-- <ModalLoginRegister -->
+    <!--   v-if="modal === 'register'" -->
+    <!-- /> -->
+    <!-- <ModalCancelRegistration -->
+    <!--   v-if="modal === 'cancel_reg'" -->
+    <!-- /> -->
+    <!-- <ModalDeposit -->
+    <!--   v-if="modal === 'deposit'" -->
+    <!-- /> -->
 
 
     <NuxtLayout>

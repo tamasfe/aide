@@ -28,7 +28,7 @@ onMounted(() => {
         {{ t("button.see_all") }}
       </BaseButton>
     </template>
-    <template #default="{ data: index }">
+    <template #default="{ item: index }">
       <div
         class="basis-[calc((100%-2rem)/2.5)] sm:basis-[calc((100%-3rem)/3.5)] flex-shrink-0 w-full"
       >

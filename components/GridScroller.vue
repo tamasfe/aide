@@ -1,6 +1,12 @@
-<!-- TODO: Add server side rendering support -->
 <script setup lang="ts" generic="T extends any[]">
 import { PhCaretLeft, PhCaretRight } from "@phosphor-icons/vue";
+
+// DESIGN STATUS:        ✴️
+//   * didnt do audit of css
+// ARCHITECTURE STATUS:  ✴️
+//   * TODO add server side rendering support
+//   * do not use 'any' anywhere in app
+// TRANSLATION STATUS:   ✅
 
 const props = withDefaults(
   defineProps<{
@@ -125,8 +131,9 @@ const scrollToPosition = (target: number, duration: number) => {
           v-if="showControls && !loading"
           class="flex items-center gap-x-4 text-3xl font-bold cursor-pointer"
         >
-          <button
-            type="button"
+          <BaseButtonNew
+            variant="ghost"
+            size="ghost"
             class="p-1 bg-subtle text-subtle outline-none rounded-[0.35rem]"
             :class="[
               isAtBeginning
@@ -136,9 +143,10 @@ const scrollToPosition = (target: number, duration: number) => {
             @click="previousPage"
           >
             <PhCaretLeft :size="24" />
-          </button>
-          <button
-            type="button"
+          </BaseButtonNew>
+          <BaseButtonNew
+            variant="ghost"
+            size="ghost"
             class="p-1 bg-subtle text-subtle outline-none rounded-[0.35rem]"
             :class="[
               isTheEnd
@@ -148,7 +156,7 @@ const scrollToPosition = (target: number, duration: number) => {
             @click="nextPage"
           >
             <PhCaretRight :size="24" />
-          </button>
+          </BaseButtonNew>
         </div>
       </div>
       <slot name="options" />
@@ -158,9 +166,9 @@ const scrollToPosition = (target: number, duration: number) => {
       class="w-full flex items-center gap-4 overflow-auto sm:overflow-hidden giro__hide-scroll"
     >
       <slot
-        v-for="(datapoint, index) in data"
+        v-for="(item, index) in data"
         :key="index"
-        :data="datapoint"
+        :item="item"
       />
       <slot name="loading" />
     </div>
