@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import {
-  PhInstagramLogo,
-  PhTelegramLogo,
-  PhTiktokLogo,
-  PhXLogo,
-} from "@phosphor-icons/vue";
+// DESIGN STATUS:       ✅
+// ARCHITECTURE STATUS: ✴️
+//   * locale must be properly handled via props/pinia not as a static variable
+// TRANSLATION STATUS:  ✅
 
 const { t } = useI18n();
 
@@ -39,10 +37,10 @@ const tiktokUrl = computed(() => {
 });
 
 const links = [
-  { icon: PhTelegramLogo, url: telegramUrl },
-  { icon: PhInstagramLogo, url: instagramUrl },
-  { icon: PhXLogo, url: xUrl },
-  { icon: PhTiktokLogo, url: tiktokUrl },
+  { icon: "ph:telegram-logo", url: telegramUrl },
+  { icon: "ph:instagram-logo", url: instagramUrl },
+  { icon: "ph:x-logo", url: xUrl },
+  { icon: "ph:tiktok-logo", url: tiktokUrl },
 ];
 </script>
 
@@ -60,9 +58,9 @@ const links = [
         rel="noopener noreferrer"
         class="p-1 lg:p-3 rounded-xl hover:text-subtle-light"
       >
-        <component
-          :is="link.icon"
-          :size="28"
+        <Icon
+          :name="link.icon"
+          size="28"
         />
       </NuxtLink>
     </div>

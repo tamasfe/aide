@@ -39,7 +39,6 @@ const scrollToTop = () => {
         >
           <template #prefix>
             <BaseFlag
-              :key="language"
               :country-code="'BR'"
               size="md"
             />

@@ -61,10 +61,8 @@ slide
 wrapper
   - Deposit.vue
   - GameScroll.vue
-  - Page.vue
   - ProviderScroll.vue
   - SidebarMenu.vue
-  - SocialMediaLogos.vue
   - Withdraw.vue
   - WithdrawInfo.vue
 
@@ -84,10 +82,6 @@ wrapper
 ### Extract to Component
 
   * promo bar
-
-### Wire up
-
-  * social media logo props
 
 ### Finalize
 
