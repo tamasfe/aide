@@ -53,14 +53,14 @@ const scrollToTop = () => {
             </div>
           </template>
         </BaseSelect>
-        <AppFooterColumnSocialMedia
+        <FooterColumnSocialMedia
           class="hidden md:flex lg:hidden"
         />
       </div>
-      <AppFooterColumnSocialMedia
+      <FooterColumnSocialMedia
         class="md:hidden"
       />
-      <AppFooterColumn
+      <FooterColumn
         :title="t('footer.popular')"
         :links="[
           { title: t('page.aviator'), to: 'TODO' },
@@ -68,7 +68,7 @@ const scrollToTop = () => {
           { title: t('page.live_casino'), to: 'TODO' },
         ]"
       />
-      <AppFooterColumn
+      <FooterColumn
         :title="t('footer.girobet')"
         :links="[
           { title: t('page.affiliate_program'), to: '/affiliate-program' },
@@ -77,7 +77,7 @@ const scrollToTop = () => {
           { title: t('page.telegram'), to: 'TODO' },
         ]"
       />
-      <AppFooterColumn
+      <FooterColumn
         :title="t('footer.legal')"
         :links="[
           { title: t('page.betting_terms'), to: '/betting-terms' },
@@ -87,7 +87,7 @@ const scrollToTop = () => {
           { title: t('page.responsible_gaming'), to: '/responsible-gaming' },
         ]"
       />
-      <AppFooterColumnSocialMedia
+      <FooterColumnSocialMedia
         class="hidden lg:flex"
       />
     </section>

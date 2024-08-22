@@ -1,6 +1,4 @@
 <script setup lang="ts" generic="T extends any[]">
-import { PhCaretLeft, PhCaretRight } from "@phosphor-icons/vue";
-
 // DESIGN STATUS:        ✴️
 //   * didnt do audit of css
 // ARCHITECTURE STATUS:  ✴️
@@ -29,16 +27,16 @@ const slider = ref<HTMLElement | null>(null);
 
 const emit = defineEmits(["click:nextPage", "click:previousPage", "scrolled"]);
 
-const isAtBeginning = ref(true);
-const isTheEnd = ref(false);
+const isBeginning = ref(true);
+const isEnd = ref(false);
 const isAnimating = ref(false);
 
 const onScroll = () => {
   if (slider.value) {
-    isAtBeginning.value = slider.value.scrollLeft <= 1;
+    isBeginning.value = slider.value.scrollLeft <= 1;
     const maxWidth
       = slider.value.scrollLeft + slider.value.getBoundingClientRect().width;
-    isTheEnd.value
+    isEnd.value
       = Math.round(maxWidth) >= Math.round(slider.value.scrollWidth) - 10;
     // emit scrolled percentage to parent
     emit("scrolled", {
@@ -50,7 +48,7 @@ const onScroll = () => {
 };
 
 const nextPage = () => {
-  if (isTheEnd.value || isAnimating.value) return;
+  if (isEnd.value || isAnimating.value) return;
   if (slider.value) {
     const slideWidth = slider.value.children[0]?.getBoundingClientRect().width;
     const gap = parseInt(getComputedStyle(slider.value).gap, 10);
@@ -62,7 +60,7 @@ const nextPage = () => {
 };
 
 const previousPage = () => {
-  if (isAtBeginning.value || isAnimating.value) return;
+  if (isBeginning.value || isAnimating.value) return;
   if (slider.value) {
     const slideWidth = slider.value.children[0]?.getBoundingClientRect().width;
     const gap = parseInt(getComputedStyle(slider.value).gap, 10);
@@ -132,30 +130,28 @@ const scrollToPosition = (target: number, duration: number) => {
           class="flex items-center gap-x-4 text-3xl font-bold cursor-pointer"
         >
           <BaseButtonNew
-            variant="ghost"
-            size="ghost"
-            class="p-1 bg-subtle text-subtle outline-none rounded-[0.35rem]"
-            :class="[
-              isAtBeginning
-                ? 'opacity-50 cursor-default'
-                : 'hover:bg-emphasis hover:text-emphasis',
-            ]"
+            variant="subtle"
+            size="sm"
+            class="p-1.5"
+            :disabled="isBeginning"
             @click="previousPage"
           >
-            <PhCaretLeft :size="24" />
+            <Icon
+              name="lucide:chevron-left"
+              size="24"
+            />
           </BaseButtonNew>
           <BaseButtonNew
-            variant="ghost"
-            size="ghost"
-            class="p-1 bg-subtle text-subtle outline-none rounded-[0.35rem]"
-            :class="[
-              isTheEnd
-                ? 'opacity-50 cursor-default'
-                : 'hover:bg-emphasis hover:text-emphasis',
-            ]"
+            variant="subtle"
+            size="sm"
+            class="p-1.5"
+            :disabled="isEnd"
             @click="nextPage"
           >
-            <PhCaretRight :size="24" />
+            <Icon
+              name="lucide:chevron-right"
+              size="24"
+            />
           </BaseButtonNew>
         </div>
       </div>

@@ -62,7 +62,7 @@ const locale = ref("pt-BR");
         :key="amount"
         variant="subtle"
         size="xl"
-        class="flex-1 space-x-2"
+        class="flex-1 space-x-2 text-white"
         @click="value = amount"
       >
         <div

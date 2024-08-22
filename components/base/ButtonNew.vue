@@ -15,11 +15,11 @@ export const buttonVariants = cva(
         primary: "bg-button-primary hover:bg-button-primary-hover text-button-primary",
         secondary: "bg-button-secondary hover:bg-button-secondary-hover text-button-secondary",
         emphasis: "bg-button-emphasis hover:bg-button-emphasis-hover text-button-emphasis",
-        subtle: "bg-subtle hover:bg-subtle/70 text-white",
+        subtle: "bg-button-subtle hover:bg-button-subtle-hover text-button-subtle",
         ghost: "",
       },
       size: {
-        sm: "",
+        sm: "h-8 px-3 text-sm font-semibold rounded-default",
         md: "h-10 px-4 text-base font-semibold rounded-default",
         lg: "",
         xl: "h-12 px-6 text-lg font-bold rounded-default",

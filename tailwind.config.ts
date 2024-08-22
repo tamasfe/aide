@@ -39,6 +39,8 @@ export default <Partial<Config>>{
           "secondary-hover": "var(--giro-button-secondary-hover)",
           emphasis: "var(--giro-button-emphasis)",
           "emphasis-hover": "var(--giro-button-emphasis-hover)",
+          subtle: "var(--giro-button-subtle)",
+          "subtle-hover": "var(--giro-button-subtle-hover)",
           danger: "var(--giro-button-danger)",
         },
         gradient: {
@@ -85,6 +87,7 @@ export default <Partial<Config>>{
           primary: "var(--giro-button-text-primary)",
           secondary: "var(--giro-button-text-secondary)",
           emphasis: "var(--giro-button-text-emphasis)",
+          subtle: "var(--giro-button-text-subtle)",
         },
         brand: {
           yellow: "var(--giro-brand-yellow)",

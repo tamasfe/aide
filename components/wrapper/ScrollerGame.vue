@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { PhCircleNotch } from "@phosphor-icons/vue";
-
 // DESIGN STATUS:        ✴️
 //   * didnt do audit of css
 // ARCHITECTURE STATUS:  ✴️
@@ -40,9 +38,8 @@ const onScroll = () => {
     <template #options>
       <NuxtLink :to="`/categories/1`">
         <BaseButtonNew
-          variant="ghost"
-          size="ghost"
-          class="bg-subtle text-sm text-subtle hover:bg-emphasis"
+          variant="subtle"
+          size="sm"
         >
           {{ t("button.see_all") }}
         </BaseButtonNew>
@@ -57,7 +54,6 @@ const onScroll = () => {
         >
           <div class="absolute left-0 top-0 w-full h-full">
             <NuxtLink
-              v-if="game"
               :to="`/games/${n}`"
               class="block"
             >
