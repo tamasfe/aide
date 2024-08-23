@@ -8,7 +8,7 @@ import { cn } from "~/utils";
 // TRANSLATION STATUS:  ✅
 
 export const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap font-medium focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none",
+  "inline-flex items-center justify-center whitespace-nowrap font-medium focus-visible:outline-none focus-visible:ring-ring disabled:pointer-events-none",
   {
     variants: {
       variant: {
