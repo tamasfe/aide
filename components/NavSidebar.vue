@@ -2,6 +2,7 @@
 const open = ref(true);
 
 // DESIGN STATUS:       ✴️
+//   * hide the scrollbar like on bet7k
 //   * design is awful...... i need to just come back to this or someone with good eye for design
 // ARCHITECTURE STATUS: ✴️
 //   * sidebar needs to close after clicking a link
