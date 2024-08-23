@@ -11,11 +11,15 @@ const { t } = useI18n();
 </script>
 
 <template>
-  <div class="flex items-center gap-4">
-    <h3 class="sm:text-xl font-bold">🏆 {{ t("winning_now.title") }}</h3>
-    <div
-      class="no-scrollbar flex-1 flex items-center gap-2 overflow-x-auto"
-    >
+  <div class="flex items-center justify-center">
+    <h3 class="min-w-[6rem] sm:min-w-[8rem] text-center flex flex-col items-center justify-center">
+      <div class="mb-2 leading-none text-5xl">🏆</div>
+      <div
+        class="text-sm sm:text-base leading-tight bg-button-primary text-transparent bg-clip-text font-semibold"
+        v-html="t('winning_now.title', { br: '<br>' })"
+      />
+    </h3>
+    <div class="no-scrollbar flex-1 flex items-center gap-2 overflow-x-auto">
       <NuxtLink
         v-for="id in 10"
         :key="id"
