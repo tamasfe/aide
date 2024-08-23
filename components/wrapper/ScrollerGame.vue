@@ -33,7 +33,7 @@ const onScroll = () => {
     @scrolled="onScroll"
   >
     <template #title>
-      <h2 class="text-xl sm:text-2xl">🔥 Top Trending</h2>
+      <h2 class="text-xl font-semibold sm:text-2xl">🔥 Top Trending</h2>
     </template>
     <template #options>
       <NuxtLink :to="`/categories/1`">
