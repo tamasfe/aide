@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { clamp } from "@vueuse/core";
+import type { CSSProperties } from "vue";
 
 // DESIGN STATUS:       ✴️
 //   * controls should disappear if a single slide
@@ -14,6 +15,7 @@ withDefaults(
   defineProps<{
     bottomControls?: boolean;
     sideControls?: boolean;
+    ratio?: CSSProperties["aspectRatio"];
   }>(),
   {
     bottomControls: true,
@@ -163,10 +165,15 @@ defineExpose({
         />
       </div>
     </div>
-    <div class="giro__carousel h-full">
+    <div
+      class="giro__carousel"
+      :style="{
+        aspectRatio: ratio,
+      }"
+    >
       <div
         ref="container"
-        class="giro__carousel-container gap-4 h-full"
+        class="giro__carousel-container gap-4"
       >
         <slot :index="currentIndex" />
       </div>
