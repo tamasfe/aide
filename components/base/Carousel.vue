@@ -125,7 +125,7 @@ defineExpose({
       <BaseButtonNew
         variant="ghost"
         size="ghost"
-        class="absolute z-[2] left-2 top-1/2 transform -translate-y-1/2 p-4 outline-none"
+        class="absolute z-[2] left-2 top-1/2 transform -translate-y-1/2 p-4 outline-none opacity-70 hover:opacity-100"
         @click="prev"
       >
         <Icon
@@ -136,7 +136,7 @@ defineExpose({
       <BaseButtonNew
         variant="ghost"
         size="ghost"
-        class="absolute z-[2] right-2 top-1/2 transform -translate-y-1/2 p-4 outline-none"
+        class="absolute z-[2] right-2 top-1/2 transform -translate-y-1/2 p-4 outline-none opacity-70 hover:opacity-100"
         @click="next"
       >
         <Icon
