@@ -1,11 +1,13 @@
 <script setup lang="ts">
+const { t } = useI18n();
 const open = ref(true);
 
 // DESIGN STATUS:       ✴️
 //   * hide the scrollbar like on bet7k
 // ARCHITECTURE STATUS: ✴️
 //   * sidebar needs to close after clicking a link
-// TRANSLATION STATUS:  ✅
+// TRANSLATION STATUS:  ✴️
+//   * translate final menu items
 
 const links = [
   {
