@@ -32,9 +32,9 @@ const { t } = useI18n();
           />
         </div>
         <div class="font-medium leading-tight space-y-1">
-          <div class="font-semibold">Rui***</div>
+          <div class="">Rui***</div>
           <div class="text-subtle text-sm">Golden rush inferno</div>
-          <div class="text-lg bg-button-primary text-transparent bg-clip-text">R$ 32.14</div>
+          <div class="sm:text-lg font-semibold bg-button-primary text-transparent bg-clip-text">R$ 32.14</div>
         </div>
       </NuxtLink>
     </div>
