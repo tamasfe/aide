@@ -12,7 +12,7 @@ defineProps<{
 
 <template>
   <NuxtLink
-    class="p-2 flex items-center"
+    class="p-2 flex items-center text-emphasis hover:text-white"
     :to="to"
   >
     <Icon
@@ -21,6 +21,6 @@ defineProps<{
       size="22"
       class="flex-shrink-0 text-subtle"
     />
-    <div class="w-full ml-4 text-[0.90rem] font-medium text-emphasis hover:text-white">{{ title }}</div>
+    <div class="w-full ml-4 text-[0.90rem] font-medium">{{ title }}</div>
   </NuxtLink>
 </template>
