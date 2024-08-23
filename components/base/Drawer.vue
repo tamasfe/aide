@@ -130,7 +130,7 @@ const open = computed({
               >
                 <span class="sr-only">{{ t('i18n.close') }}</span>
                 <div
-                  class="p-1 bg-emphasis/50 backdrop-blur-lg rounded-default"
+                  class="p-1"
                 >
                   <Icon
                     name="lucide:x"
