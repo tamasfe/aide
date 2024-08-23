@@ -159,7 +159,7 @@ const scrollToPosition = (target: number, duration: number) => {
     </div>
     <div
       ref="slider"
-      class="w-full flex items-center gap-4 overflow-auto sm:overflow-hidden giro__hide-scroll"
+      class="w-full flex items-center gap-4 overflow-auto sm:overflow-hidden no-scrollbar"
     >
       <slot
         v-for="(item, index) in data"

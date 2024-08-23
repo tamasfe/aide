@@ -79,12 +79,14 @@
   }
 }
 
-.giro__hide-scroll {
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  -webkit-overflow-scrolling: touch;
-  &::-webkit-scrollbar {
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
     display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
   }
 }
 

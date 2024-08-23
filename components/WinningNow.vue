@@ -14,7 +14,7 @@ const { t } = useI18n();
   <div class="flex items-center gap-4">
     <h3 class="sm:text-xl font-bold">🏆 {{ t("winning_now.title") }}</h3>
     <div
-      class="giro__hide-scroll flex-1 flex items-center gap-2 overflow-x-auto"
+      class="no-scrollbar flex-1 flex items-center gap-2 overflow-x-auto"
     >
       <WinningNowGame
         v-for="id in 10"

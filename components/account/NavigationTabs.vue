@@ -29,7 +29,7 @@ const isActive = (route: string) => currentRoute.value.name === route;
 
 <template>
   <div
-    class="flex items-center space-x-4 w-full overflow-x-auto giro__hide-scroll"
+    class="flex items-center space-x-4 w-full overflow-x-auto no-scrollbar"
   >
     <AccountNavigationTab
       v-for="route in routes"
