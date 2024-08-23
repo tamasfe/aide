@@ -29,7 +29,7 @@ const close = () => {
     ref="modal"
     v-model:open="open"
   >
-    <WrapperWithdraw
+    <WrapperWithdrawal
       @show:info="showInfo"
       @click:close="close"
     />
