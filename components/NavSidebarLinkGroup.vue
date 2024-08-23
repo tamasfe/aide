@@ -28,10 +28,10 @@ const onToggle = () => {
     :class="{ 'bg-subtle': open }"
   >
     <div
-      class="flex items-center justify-between cursor-pointer outline-none"
+      class="flex items-center justify-between cursor-pointer text-emphasis hover:text-white"
       @click="onToggle"
     >
-      <div class="p-2 flex items-center text-emphasis hover:text-white">
+      <div class="p-2 flex items-center">
         <Icon
           v-if="parent.icon"
           :name="parent.icon"
