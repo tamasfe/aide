@@ -59,7 +59,7 @@ const onToggle = () => {
       v-if="open"
       class="flex flex-col"
     >
-      <BaseMenuLink
+      <NavSidebarLink
         v-for="(link, index) in children"
         :key="index"
         :title="link.title"
