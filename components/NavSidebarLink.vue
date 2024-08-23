@@ -15,7 +15,7 @@ const props = defineProps<{
 
 <template>
   <NuxtLink
-    class="flex items-center"
+    class="p-2 flex items-center"
     :to="to"
   >
     <Icon

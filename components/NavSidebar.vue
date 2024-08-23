@@ -74,10 +74,10 @@ const links = [
       </div>
     </template>
     <div
-      class="min-w-[20rem] flex flex-col overflow-y-auto"
+      class="min-w-[20rem] flex flex-col overflow-y-auto space-y-2"
     >
       <template v-for="(link, index) in links">
-        <BaseMenuLinkGroup
+        <NavSidebarLinkGroup
           v-if="link.children"
           :key="`parent-${index}`"
           :parent="{
@@ -94,7 +94,7 @@ const links = [
           v-else
           :key="`link-${index}`"
         >
-          <BaseMenuLink
+          <NavSidebarLink
             :title="link.title"
             :to="link.to"
             :icon="link.icon"
