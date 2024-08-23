@@ -1,7 +1,5 @@
 <script setup lang="ts">
-// DESIGN STATUS:       ✴️
-//   * not done
-//   * refactor this css to be a lot better
+// DESIGN STATUS:       ✅
 // ARCHITECTURE STATUS: ✴️
 //   * not done
 // TRANSLATION STATUS:  ✴️
