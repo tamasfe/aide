@@ -6,7 +6,6 @@ import {
   ListboxOption,
 } from "@headlessui/vue";
 
-import { PhCaretDown, PhCaretUp, PhCheck } from "@phosphor-icons/vue";
 import { BaseInputWrapper } from "#components";
 
 type SelectOption = {
@@ -88,13 +87,15 @@ const selectedOption = computed(() => {
               name="suffix"
               :open="open"
             >
-              <PhCaretUp
+              <Icon
                 v-if="open"
-                :size="24"
+                name="lucide:chevron-up"
+                size="24"
               />
-              <PhCaretDown
+              <Icon
                 v-else
-                :size="24"
+                name="lucide:chevron-down"
+                size="24"
               />
             </slot>
           </template>
@@ -125,7 +126,10 @@ const selectedOption = computed(() => {
                     {{ option.title }}
                   </span>
                   <div v-if="selected">
-                    <PhCheck :size="20" />
+                    <Icon
+                      name="lucide:check"
+                      size="20"
+                    />
                   </div>
                 </div>
               </slot>
