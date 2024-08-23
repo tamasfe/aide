@@ -77,7 +77,7 @@ const links = [
       class="min-w-[20rem] flex flex-col overflow-y-auto"
     >
       <template v-for="(link, index) in links">
-        <BaseMenuCollapse
+        <BaseMenuLinkGroup
           v-if="link.children"
           :key="`parent-${index}`"
           :parent="{
