@@ -1,15 +1,12 @@
 <script setup lang="ts">
-import type { HTMLAttributes } from "vue";
-
 // DESIGN STATUS:       ✅
 // ARCHITECTURE STATUS: ✅
 // TRANSLATION STATUS:  ✅
 
-const props = defineProps<{
+defineProps<{
   title: string;
   to: string;
-  icon?: string;
-  class?: HTMLAttributes["class"];
+  icon: string;
 }>();
 </script>
 
@@ -24,6 +21,6 @@ const props = defineProps<{
       size="24"
       class="text-subtle"
     />
-    <div :class="props.class">{{ title }}</div>
+    <div class="ml-4 text-[0.90rem] font-medium text-emphasis hover:text-white">{{ title }}</div>
   </NuxtLink>
 </template>

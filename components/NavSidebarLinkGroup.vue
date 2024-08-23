@@ -1,18 +1,16 @@
 <script setup lang="ts">
-import type { HTMLAttributes } from "vue";
-
 // DESIGN STATUS:       ✅
+//   * currently this is hardcoded as a nav sidebar component and not generalized, because theres so much sidebar specific css. when we get a PROPER "collapse" component we can use that
 // ARCHITECTURE STATUS: ✅
 // TRANSLATION STATUS:  ✅
 
 type Link = {
   title: string;
   to: string;
-  icon?: string;
-  class?: HTMLAttributes["class"];
+  icon: string;
 };
 
-const props = defineProps<{
+defineProps<{
   parent: Omit<Link, "to">;
   children: Link[];
 }>();
@@ -40,13 +38,13 @@ const onToggle = () => {
           class="text-subtle"
           size="24"
         />
-        <div :class="props.parent.class">{{ parent.title }}</div>
+        <div class="ml-4 text-[0.90rem] font-medium text-emphasis hover:text-white">{{ parent.title }}</div>
       </div>
       <BaseButtonNew
         variant="ghost"
         size="ghost"
-        class="transition-transform transform"
-        :class="open ? 'rotate-180' : 'text-subtle rotate-0'"
+        class="mr-2"
+        :class="open ? 'rotate-180' : 'rotate-0'"
       >
         <Icon
           name="lucide:chevron-down"
@@ -65,7 +63,6 @@ const onToggle = () => {
         :title="link.title"
         :to="link.to"
         :icon="link.icon"
-        :class="link.class"
       />
     </div>
   </div>
