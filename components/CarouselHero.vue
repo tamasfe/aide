@@ -8,6 +8,7 @@ const { isMobile } = useDevice();
   <BaseCarousel
     :side-controls="!isMobile"
     class="w-full"
+    ratio="3/1"
   >
     <SlideAviator />
     <SlideFortuneTiger />
