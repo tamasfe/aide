@@ -2,12 +2,10 @@
 
 <template>
   <NuxtLink to="/todo">
-    <span>
-      <NuxtImg
-        src="/assets/images/wheel-2.png"
-        alt="Wheel Spin"
-        class="object-cover object-center w-full h-full"
-      />
-    </span>
+    <NuxtImg
+      src="/assets/images/wheel-2.png"
+      alt="Wheel Spin"
+      class="object-cover object-center w-full h-full"
+    />
   </NuxtLink>
 </template>
