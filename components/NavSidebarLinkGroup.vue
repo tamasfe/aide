@@ -31,14 +31,14 @@ const onToggle = () => {
       class="flex items-center justify-between cursor-pointer outline-none"
       @click="onToggle"
     >
-      <div class="p-2 flex items-center">
+      <div class="p-2 flex items-center text-emphasis hover:text-white">
         <Icon
           v-if="parent.icon"
           :name="parent.icon"
-          class="text-subtle"
-          size="24"
+          class="flex-shrink-0 text-subtle"
+          size="22"
         />
-        <div class="ml-4 text-[0.90rem] font-medium text-emphasis hover:text-white">{{ parent.title }}</div>
+        <div class="w-full ml-4 text-[0.90rem] font-medium">{{ parent.title }}</div>
       </div>
       <BaseButtonNew
         variant="ghost"

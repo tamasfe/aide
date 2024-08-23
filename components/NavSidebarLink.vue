@@ -18,9 +18,9 @@ defineProps<{
     <Icon
       v-if="icon"
       :name="icon"
-      size="24"
-      class="text-subtle"
+      size="22"
+      class="flex-shrink-0 text-subtle"
     />
-    <div class="ml-4 text-[0.90rem] font-medium text-emphasis hover:text-white">{{ title }}</div>
+    <div class="w-full ml-4 text-[0.90rem] font-medium text-emphasis hover:text-white">{{ title }}</div>
   </NuxtLink>
 </template>
