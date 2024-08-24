@@ -44,23 +44,32 @@ const authenticated = ref(true);
 
         <div class="flex items-center space-x-[0.625rem] sm:space-x-4">
           <template v-if="!authenticated">
-            <BaseButtonNew variant="secondary">
+            <BaseButtonNew
+              variant="secondary"
+              class="h-9 md:h-10"
+            >
               {{ t("button.login") }}
             </BaseButtonNew>
-            <BaseButtonNew variant="primary">
+            <BaseButtonNew
+              variant="primary"
+              class="h-9 md:h-10"
+            >
               {{ t("button.register") }}
             </BaseButtonNew>
           </template>
           <template v-else>
             <BaseButtonNew
               variant="secondary"
-              class="space-x-1"
+              class="h-9 md:h-10 space-x-1"
             >
               <div class="bg-button-primary text-transparent bg-clip-text">R$</div>
               <div class="text-white">69,50</div>
             </BaseButtonNew>
 
-            <BaseButtonNew variant="emphasis">
+            <BaseButtonNew
+              variant="emphasis"
+              class="h-9 md:h-10"
+            >
               {{ t("button.deposit") }}
             </BaseButtonNew>
 
