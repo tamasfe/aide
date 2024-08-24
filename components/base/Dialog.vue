@@ -11,6 +11,7 @@ import { cn } from "~/utils";
 
 // DESIGN STATUS:       ✅
 // ARCHITECTURE STATUS: ✴️
+//   * refactor out the 'frosted' background to tailwind so our drawer (and anywhere else its used) can also use it
 //   * i dont think the "leave" animations are working properly. i dont WANT animation on close (i like instant) but the component should work still properly
 //   * make sure we are doing everything top notch according to docs.. i notice some components are not structured like the examples https://headlessui.com/v1/vue/dialog
 //   * TODO: make sure "close" is actually emitted by headliess UI so we arent emitting things we dont 100% expect to be true
@@ -22,16 +23,19 @@ import { cn } from "~/utils";
 const dialogVariants = cva(
   [
     "fixed inset-0 z-[10] w-full",
-    "sm:max-w-[30rem] sm:min-h-[8rem] sm:max-h-[90vh] sm:self-center sm:justify-self-center",
   ],
   {
     variants: {
       variant: {
-        default: "bg-emphasis/85 backdrop-blur-lg sm:rounded-default",
+        frosted: "bg-emphasis/85 backdrop-blur-lg sm:rounded-default",
+      },
+      size: {
+        md: "p-5 sm:max-w-[30rem] sm:min-h-[8rem] sm:max-h-[90vh] sm:self-center sm:justify-self-center",
       },
     },
     defaultVariants: {
-      variant: "default",
+      variant: "frosted",
+      size: "md",
     },
   },
 );
@@ -64,6 +68,7 @@ const props = withDefaults(
   defineProps<{
     open: boolean;
     variant?: DialogVariants["variant"];
+    size?: DialogVariants["size"];
     closeOnClickOutside?: boolean;
     class?: HTMLAttributes["class"];
   }>(),
@@ -117,7 +122,7 @@ const onClose = (isManuallyTriggered: boolean) => {
         <DialogPanel
           v-bind="$attrs"
           :class="cn(
-            dialogVariants({ variant }),
+            dialogVariants({ variant, size }),
             props.class,
           )"
         >
