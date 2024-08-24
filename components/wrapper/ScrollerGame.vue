@@ -47,7 +47,7 @@ const onScroll = () => {
     </template>
     <template #default="{ item: n }">
       <div
-        class="basis-[calc((100%-2rem)/2)] sm:basis-[calc((100%-5rem)/6)] flex-shrink-0 w-full"
+        class="basis-[calc((100%-2rem)/2.7)] sm:basis-[calc((100%-5rem)/3.7)] md:basis-[calc((100%-5rem)/6)] flex-shrink-0 w-full"
       >
         <div
           class="relative bg-subtle rounded-default overflow-hidden pt-[134.26%]"
