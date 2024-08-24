@@ -6,6 +6,7 @@
     * search and destroy all "btn" stuff
   * search source for all image sources and make them in assets (not in public)
   * all pages
+  * finalize game grid # of columns @ different screen sizes
   * put typeCheck back at true
   * replace all @phosphor-icons/vue
   * delete public images junk folder
