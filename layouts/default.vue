@@ -4,7 +4,7 @@
   <div>
     <AppHeader />
 
-    <div class="sm:py-8">
+    <div class="md:pt-8">
       <slot />
     </div>
 
