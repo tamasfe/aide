@@ -12,55 +12,79 @@ const open = ref(true);
 const links = [
   {
     title: "Casino",
-    icon: "lucide:cherry",
+    icon: "emojione-v1:cherries",
     children: [
       {
+        title: "All Games",
+        icon: "emojione-v1:slot-machine",
+        to: "TODO",
+      },
+      {
+        title: "Top 20 in Brazil", // bind "Brazil" to {country} in nuxt/i18n
+        icon: "emojione-v1:up-arrow",
+        to: "TODO",
+      },
+      {
+        title: "Crash Games",
+        icon: "emojione-v1:fire",
+        to: "TODO",
+      },
+      {
+        title: "Slot Games",
+        icon: "emojione-v1:slot-machine",
+        to: "TODO",
+      },
+      {
+        title: "Roulette Games",
+        icon: "emojione-v1:eight-spoked-asterisk",
+        to: "TODO",
+      },
+      {
+        title: "Live Casino",
+        icon: "emojione-v1:woman",
+        to: "TODO",
+      },
+      {
+        title: "Providers",
+        icon: "emojione-v1:diamond-suit",
+        to: "TODO",
+      },
+      {
         title: "Aviator",
-        icon: "lucide:plane",
-        to: "/aviator",
+        icon: "emojione-v1:airplane",
+        to: "TODO",
       },
       {
         title: "Fortune Tiger",
-        icon: "lucide:circle-dollar-sign",
-        to: "/aviator",
+        icon: "emojione-v1:tiger",
+        to: "TODO",
+      },
+      {
+        title: "JetX",
+        icon: "emojione-v1:rocket",
+        to: "TODO",
       },
     ],
   },
   {
-    title: "Casino",
-    icon: "lucide:cherry",
-    children: [
-      {
-        title: "Aviator",
-        icon: "lucide:plane",
-        to: "/aviator",
-      },
-      {
-        title: "Fortune Tiger",
-        icon: "lucide:circle-dollar-sign",
-        to: "/aviator",
-      },
-    ],
+    title: "Live Support",
+    icon: "emojione-v1:speech-balloon",
+    to: "TODO",
   },
   {
-    title: "Support",
-    icon: "lucide:headset",
-    to: "/support",
+    title: "Aviator",
+    icon: "emojione-v1:airplane",
+    to: "TODO",
   },
   {
-    title: "Support",
-    icon: "lucide:headset",
-    to: "/support",
+    title: "Fortune Tiger",
+    icon: "emojione-v1:tiger",
+    to: "TODO",
   },
   {
-    title: "Support",
-    icon: "lucide:headset",
-    to: "/support",
-  },
-  {
-    title: "Support",
-    icon: "lucide:headset",
-    to: "/support",
+    title: "Live Casino",
+    icon: "emojione-v1:woman",
+    to: "TODO",
   },
 ];
 </script>
