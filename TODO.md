@@ -3,6 +3,7 @@
   * components
   * layouts (all the margins/paddings on pages... finalize them all so we have solid sections/layouts/normalized paddings across layouts/app.vue/pages)
   * BaseButton / button (delete old button)
+    * add loading spinner to large/medium button
     * search and destroy all "btn" stuff
   * search source for all image sources and make them in assets (not in public)
   * disable animation for signup/login/modals like bet7k (make it optional)

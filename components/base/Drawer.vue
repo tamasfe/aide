@@ -17,8 +17,6 @@ import { cn } from "~/utils";
 // ARCHITECTURE STATUS: ✅
 // TRANSLATION STATUS:  ✅
 
-const { t } = useI18n();
-
 const drawerVariants = cva(
   "fixed top-0 bottom-0 h-full w-full sm:w-auto min-h-0",
   {
@@ -122,22 +120,10 @@ const open = computed({
               class="bg-emphasis/85 backdrop-blur-lg rounded-default p-4 flex flex-col gap-4 h-full"
               v-bind="$attrs"
             >
-              <BaseButtonNew
-                variant="ghost"
-                size="ghost"
-                class="absolute top-3 right-2 rounded-md text-subtle hover:text-emphasis p-2 outline-none z-10"
-                @click="onClose"
-              >
-                <span class="sr-only">{{ t('i18n.close') }}</span>
-                <div
-                  class="p-1"
-                >
-                  <Icon
-                    name="lucide:x"
-                    size="24"
-                  />
-                </div>
-              </BaseButtonNew>
+              <BaseClose
+                class="top-3 right-3"
+                @close="onClose"
+              />
 
               <DialogTitle as="h3">
                 <slot name="title" />

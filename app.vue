@@ -1,6 +1,6 @@
 <script setup lang="ts">
-const modal = ref();
-// const modal = ref("login");
+// const modal = ref();
+const modal = ref("login");
 // const modal = ref("register");
 // const modal = ref("cancel_reg");
 // const modal = ref("forgot_password");
@@ -34,7 +34,6 @@ const modal = ref();
     <!-- <ModalWithdrawal -->
     <!--   v-if="modal === 'withdrawal'" -->
     <!-- /> -->
-
 
     <NuxtLayout>
       <NuxtPage />

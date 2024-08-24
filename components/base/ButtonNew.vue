@@ -1,4 +1,4 @@
-<script lang="ts">
+<script setup lang="ts">
 import type { ButtonHTMLAttributes, HTMLAttributes } from "vue";
 import { type VariantProps, cva } from "class-variance-authority";
 import { cn } from "~/utils";
@@ -7,7 +7,7 @@ import { cn } from "~/utils";
 // ARCHITECTURE STATUS: ✅
 // TRANSLATION STATUS:  ✅
 
-export const buttonVariants = cva(
+const buttonVariants = cva(
   "inline-flex items-center justify-center whitespace-nowrap font-medium focus-visible:outline-none focus-visible:ring-ring disabled:pointer-events-none",
   {
     variants: {
@@ -33,10 +33,8 @@ export const buttonVariants = cva(
   },
 );
 
-export type ButtonVariants = VariantProps<typeof buttonVariants>;
-</script>
+type ButtonVariants = VariantProps<typeof buttonVariants>;
 
-<script setup lang="ts">
 const props = withDefaults(defineProps<{
   variant?: ButtonVariants["variant"];
   size?: ButtonVariants["size"];

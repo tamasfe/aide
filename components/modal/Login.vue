@@ -7,8 +7,7 @@ const open = ref(true);
     v-model:open="open"
     :close-on-click-outside="false"
   >
-    <div class="flex-1 px-6 sm:py-6">
-      <FormLogin />
-    </div>
+    <div>this is text</div>
+    <!-- <FormLogin /> -->
   </BaseModal>
 </template>

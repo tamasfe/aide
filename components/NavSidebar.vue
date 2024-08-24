@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const { t } = useI18n();
-const open = ref(true);
+const open = ref(false);
 
 // DESIGN STATUS:       ✴️
 //   * hide the scrollbar like on bet7k
