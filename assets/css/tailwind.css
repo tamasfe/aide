@@ -5,6 +5,11 @@
 @tailwind utilities;
 
 :root {
+  /* 1240px desired content container + L/R 1rem padding which never goes away = 1272px */
+  /* NOTE: this can be changed safely as it has been properly abstracted, assuming your design looks good at the larger size */
+  --giro-container-max-width: 1272px;
+  --giro-container-padding: 1rem;
+
   /* background */
   --giro-bg: 16, 13, 40;
   --giro-bg-subtle: 19, 18, 50;
@@ -83,11 +88,36 @@
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
+
   .no-scrollbar {
     -ms-overflow-style: none;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
   }
+}
+
+.giro__container {
+  margin: 0 auto;
+  max-width: var(--giro-container-max-width);
+  padding-left: var(--giro-container-padding);
+  padding-right: var(--giro-container-padding);
+}
+
+.giro__container-no-padding {
+  margin: 0 auto;
+  max-width: var(--giro-container-max-width);
+}
+
+.giro__overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 11;
+  animation: giro__fade-in 0.15s ease-in-out forwards;
+  animation-delay: 0s;
 }
 
 .giro__select-fade-enter-active,
@@ -103,31 +133,6 @@
 .giro__select-fade-enter-to,
 .giro__select-fade-leave-from {
   opacity: 1;
-}
-
-.giro__overlay {
-  background-color: rgba(0, 0, 0, 0.5);
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 11;
-  animation: giro__fade-in 0.15s ease-in-out forwards;
-  animation-delay: 0s;
-}
-
-.giro__container {
-  max-width: 1240px;
-  margin: 0 auto;
-}
-
-/* add 1 rem of padding to container on devices with a width of 1240px or less */
-@media (max-width: 1240px) {
-  .giro__container {
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
 }
 
 @keyframes giro__fade-in {
