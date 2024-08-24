@@ -32,11 +32,10 @@ const getImageId = (idx: number) => {
 </script>
 
 <template>
-  <div class="sm:py-8">
-    <div class="max-w-full sm:px-4 xl:p-0 xl:max-w-[1240px] mx-auto">
-      <CarouselHero />
-    </div>
-    <div class="giro__container p-4 sm:pt-6">
+  <div>
+    <CarouselHero />
+
+    <div class="giro__container giro__section">
       <div class="grid grid-cols-1 gap-8">
         <GridCategory
           :data="data"

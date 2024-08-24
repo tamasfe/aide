@@ -1,11 +1,12 @@
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <div>
     <AppHeader />
 
-    <slot />
+    <div class="sm:py-8">
+      <slot />
+    </div>
 
     <AppFooter />
 

@@ -103,9 +103,13 @@
   padding-right: var(--giro-container-padding);
 }
 
-.giro__container-no-padding {
+.giro__container-full-width {
   margin: 0 auto;
   max-width: var(--giro-container-max-width);
+}
+
+.giro__section {
+  @apply py-6;
 }
 
 .giro__overlay {
