@@ -16,7 +16,7 @@ const links = [
     children: [
       {
         title: "All Games",
-        icon: "emojione-v1:slot-machine",
+        icon: "emojione-v1:palm-tree",
         to: "TODO",
       },
       {
