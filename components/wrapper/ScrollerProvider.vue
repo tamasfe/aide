@@ -29,9 +29,14 @@ onMounted(() => {
       <h2 class="text-xl sm:text-2xl">🏆 {{ t('grid.providers') }}</h2>
     </template>
     <template #options>
-      <BaseButton class="bg-subtle hover:bg-emphasis text-subtle text-sm">
-        {{ t("button.see_all") }}
-      </BaseButton>
+      <NuxtLink to="TODO">
+        <BaseButtonNew
+          variant="subtle"
+          size="sm"
+        >
+          {{ t("button.see_all") }}
+        </BaseButtonNew>
+      </NuxtLink>
     </template>
     <template #default="{ item: index }">
       <div
