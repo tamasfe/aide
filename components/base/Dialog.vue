@@ -21,9 +21,8 @@ import { cn } from "~/utils";
 
 const dialogVariants = cva(
   [
-    "fixed inset-0 z-[10]",
-    "md:max-w-[32rem]",
-    // "mx-auto min-h-0 max-h-[90vh] self-center",
+    "fixed inset-0 z-[10] w-full",
+    "sm:max-w-[30rem] sm:min-h-[8rem] sm:max-h-[90vh] sm:self-center sm:justify-self-center",
   ],
   {
     variants: {
