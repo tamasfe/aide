@@ -25,7 +25,7 @@ const close = () => {
 </script>
 
 <template>
-  <ModalWrapper
+  <BaseModal
     ref="modal"
     v-model:open="open"
   >
@@ -33,5 +33,5 @@ const close = () => {
       @show:info="showInfo"
       @click:close="close"
     />
-  </ModalWrapper>
+  </BaseModal>
 </template>

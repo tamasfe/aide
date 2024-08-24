@@ -13,10 +13,10 @@ const modal = ref();
   <div>
     <NavSidebar />
 
-    <!-- <ModalLoginRegister -->
-    <!--   v-if="modal === 'login'" -->
-    <!-- /> -->
-    <!-- <ModalLoginRegister -->
+    <ModalLogin
+      v-if="modal === 'login'"
+    />
+    <!-- <ModalRegister -->
     <!--   v-if="modal === 'register'" -->
     <!-- /> -->
     <!-- <ModalCancelRegistration -->

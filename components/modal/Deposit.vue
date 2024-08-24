@@ -12,7 +12,10 @@ const open = computed({
 </script>
 
 <template>
-  <ModalWrapper v-model:open="open">
+  <BaseModal
+    v-model:open="open"
+    banner="left"
+  >
     <WrapperDeposit />
-  </ModalWrapper>
+  </BaseModal>
 </template>

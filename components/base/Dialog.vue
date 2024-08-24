@@ -8,7 +8,6 @@ import {
   TransitionChild,
 } from "@headlessui/vue";
 import { PhX } from "@phosphor-icons/vue";
-import { MODAL_SIZES } from "~/constants";
 
 const emit = defineEmits(["update:open", "close"]);
 

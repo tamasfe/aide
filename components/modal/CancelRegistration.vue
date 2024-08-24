@@ -18,7 +18,7 @@ const close = () => {
 </script>
 
 <template>
-  <ModalWrapper v-model:open="open">
+  <BaseModal v-model:open="open">
     <form class="flex-auto flex sm:justify-center flex-col gap-4 p-6">
       <h1 class="text-2xl font-bold text-center">
         {{ t("modal_cancel_registration.headline") }}
@@ -45,5 +45,5 @@ const close = () => {
         {{ t("modal_cancel_registration.cancel") }}
       </BaseButtonNew>
     </form>
-  </ModalWrapper>
+  </BaseModal>
 </template>

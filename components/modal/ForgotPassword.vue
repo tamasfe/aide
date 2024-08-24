@@ -15,8 +15,7 @@ const open = computed({
   <BaseDialog
     v-bind="$attrs"
     v-model:open="open"
-    class="p-6"
-    size="2xl"
+    banner="none"
   >
     <FormForgotPassword />
   </BaseDialog>

@@ -5,6 +5,7 @@
   * BaseButton / button (delete old button)
     * search and destroy all "btn" stuff
   * search source for all image sources and make them in assets (not in public)
+  * disable animation for signup/login/modals like bet7k (make it optional)
   * all pages
   * finalize game grid # of columns @ different screen sizes
   * put typeCheck back at true

@@ -4,10 +4,12 @@ const emit = defineEmits(["update:open"]);
 const props = withDefaults(
   defineProps<{
     open: boolean;
-    banner?: "left" | "top";
+    banner?: "top" | "left" | "none";
+    logo?: boolean;
   }>(),
   {
-    banner: "left",
+    banner: "none",
+    logo: true,
   },
 );
 
@@ -58,6 +60,16 @@ defineExpose({
           class="absolute left-0 top-0 object-cover w-full sm:rounded-t-[0.7rem]"
         />
       </div>
+
+      <div
+        v-if="logo"
+        class="flex justify-center py-6 sm:pt-12 sm:pb-4"
+      >
+        <div class="min-w-36 sm:min-w-40">
+          <IconLogo />
+        </div>
+      </div>
+
       <slot />
     </div>
     <div
