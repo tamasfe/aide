@@ -23,40 +23,52 @@
   --giro-bg-active: 51, 50, 92;
 
   /* text */
+
   --giro-text: #ffffff;
   --giro-text-subtle: #7b82c0;
   --giro-text-subtle-light: #a2a7db;
   --giro-text-emphasis: #c4c7e2;
   --giro-text-info: #9f6dde;
   --giro-text-success: #77ff0c;
-  --giro-button-text-primary: #000000;
-  --giro-button-text-secondary: #7b82c0;
-  --giro-button-text-emphasis: #000000;
-  --giro-button-text-subtle: #7b82c0;
 
   /* buttons */
+
   --giro-button-primary: linear-gradient(to bottom, #ffc441, #ffe600);
   --giro-button-primary-hover: #ffe00c;
+  --giro-button-text-primary: #000000;
+
   --giro-button-secondary: #272646;
   --giro-button-secondary-hover: #333256;
+  --giro-button-text-secondary: #7b82c0;
+
   --giro-button-emphasis: linear-gradient(to bottom, #20cd19, #9bfc33);
   --giro-button-emphasis-hover: #81f22e;
+  --giro-button-text-emphasis: #000000;
+
   --giro-button-subtle: #131232;
   --giro-button-subtle-hover: #1f1d47;
+  --giro-button-text-subtle: #7b82c0;
+
   --giro-button-danger: #dc2625;
   --giro-button-danger-hover: #d43f00;
+  --giro-button-text-danger: #ffffff;
 
-  /* alert */
+  /* alerts */
+
   --giro-alert-success: #2c6219;
-  --giro-text-alert-success: #77ff0c;
+  --giro-alert-text-success: #77ff0c;
+
   --giro-alert-error: #621919;
-  --giro-text-alert-error: #ff6969;
+  --giro-alert-text-error: #ff6969;
+
   --giro-alert-warning: #625819;
-  --giro-text-alert-warning: #ffe00c;
+  --giro-alert-text-warning: #ffe00c;
+
   --giro-alert-info: #3d448b;
-  --giro-text-alert-info: #c1c7ff;
+  --giro-alert-text-info: #c1c7ff;
 
   /* borders */
+
   --giro-border-radius: 0.4rem;
 }
 

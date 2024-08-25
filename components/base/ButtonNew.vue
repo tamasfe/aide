@@ -16,6 +16,7 @@ const buttonVariants = cva(
         secondary: "bg-button-secondary hover:bg-button-secondary-hover text-button-secondary",
         emphasis: "bg-button-emphasis hover:bg-button-emphasis-hover text-button-emphasis",
         subtle: "bg-button-subtle hover:bg-button-subtle-hover text-button-subtle",
+        danger: "bg-button-danger hover:bg-button-danger-hover text-button-danger",
         ghost: "",
       },
       size: {
