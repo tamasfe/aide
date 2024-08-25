@@ -18,8 +18,6 @@ import { cn } from "~/utils";
 //   * TODO: make teleport to body work
 // TRANSLATION STATUS:  ✅
 
-// todo "size" is hardcoded to max-w-lg.. either put back as prop or delete
-
 const dialogVariants = cva(
   [
     "fixed inset-0 z-[10] w-full",
@@ -86,8 +84,8 @@ const open = computed({
   },
 });
 
-const onClose = (isManuallyTriggered: boolean) => {
-  if (props.closeOnClickOutside || isManuallyTriggered) {
+const onClose = (force: boolean) => {
+  if (props.closeOnClickOutside || force) {
     open.value = false;
     emit("close");
   }
