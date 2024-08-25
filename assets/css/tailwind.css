@@ -34,7 +34,6 @@
   --giro-button-text-secondary: #7B82C0;
   --giro-button-text-emphasis: #000000;
   --giro-button-text-subtle: #7B82C0;
-  --giro-brand-yellow: #FBB500;
   --giro-text-white-gradient: linear-gradient(to bottom, #FDFCF3, #C6C6C6);
 
   /* buttons */
@@ -47,20 +46,6 @@
   --giro-button-subtle: #131232;
   --giro-button-subtle-hover: #1f1d47;
   --giro-button-danger: #DC2625;
-
-  /* borders */
-  --giro-border-btn-primary: linear-gradient(to bottom, #FFD918, #FFEFAC);
-  --giro-border-btn-emphasis: linear-gradient(to bottom, #59F53C, #C8FF7D);
-  --giro-border-focus: #3D448B;
-
-  /* shadows */
-  --giro-shadow-btn-emphasis: #28D01B;
-  --giro-shadow-btn-primary: #BFA61F;
-
-  /* spacing */
-  --giro-border-radius: 0.4rem;
-  --giro-padding-button: 0.375rem 1rem 0.375rem 1rem;
-  --giro-padding-button-big: 0.437rem 2.8rem 0.437rem 2.8rem;
 }
 
 @layer base {
