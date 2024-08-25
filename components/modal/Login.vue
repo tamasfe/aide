@@ -8,7 +8,8 @@ const loading = ref(false);
     v-model:open="open"
     :disabled="loading"
     :close-on-click-outside="false"
-    banner="top"
+    banner="left"
+    :logo="true"
   >
     <div>this is text</div>
     <!-- <FormLogin /> -->

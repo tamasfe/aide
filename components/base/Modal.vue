@@ -33,88 +33,91 @@ const open = computed({
     class="p-0"
     @close="emit('close')"
   >
-    <div class="flex flex-row">
+    <div
+      v-if="banner === 'none'"
+      class="pt-10 flex flex-col"
+    >
       <div
-        v-if="banner === 'left'"
-        class="w-[40%] hidden sm:block"
+        v-if="logo"
+        class="logo"
       >
+        <IconLogo />
+      </div>
+
+      <div class="content-padding">
+        <slot />
+      </div>
+    </div>
+
+    <div
+      v-else-if="banner === 'top'"
+      class="flex flex-col"
+    >
+      <NuxtImg
+        src="/assets/images/wheel-2.png"
+        alt=""
+        class="banner-top"
+        :class="{ 'mb-8': logo }"
+      />
+
+      <div
+        v-if="logo"
+        class="logo"
+      >
+        <IconLogo />
+      </div>
+
+      <div class="content-padding">
+        <slot />
+      </div>
+    </div>
+
+    <div
+      v-else-if="banner === 'left'"
+      class="flex flex-row"
+    >
+      <div class="w-[40%] hidden sm:block">
         <NuxtImg
           src="/assets/images/wheel-2-vertical.png"
           alt="Wheel"
-          class="w-full object-cover sm:rounded-l-lg"
+          class="banner-left"
         />
       </div>
-      <div class="flex-grow flex flex-col items-center">
-        <div
-          v-if="banner === 'left' || banner === 'top'"
-          :class="{ 'sm:hidden': banner === 'left' }"
-        >
-          <NuxtImg
-            src="/assets/images/wheel-2.png"
-            alt="Wheel"
-            class="w-full aspect-[100/37] object-cover sm:rounded-t-lg"
-          />
-        </div>
+
+      <div class="flex flex-col w-full sm:pt-10">
+        <NuxtImg
+          src="/assets/images/wheel-2.png"
+          alt=""
+          class="banner-top sm:hidden"
+          :class="{ 'mb-8': logo }"
+        />
 
         <div
           v-if="logo"
-          class="w-[9rem] mt-10 pb-2 self-center"
+          class="logo"
         >
           <IconLogo />
         </div>
 
-        <div class="p-5">
+        <div class="content-padding">
           <slot />
         </div>
       </div>
     </div>
-
-    <!-- <div -->
-    <!--   v-if="banner === 'left'" -->
-    <!--   class="flex flex-col overflow-auto h-full" -->
-    <!-- > -->
-    <!--   <div -->
-    <!--     class="relative w-full pb-[33%] select-none" -->
-    <!--   > -->
-    <!--     <NuxtImg -->
-    <!--       src="/assets/images/wheel-2.png" -->
-    <!--       alt="Wheel" -->
-    <!--       class="absolute left-0 top-0 object-cover w-full sm:rounded-t-[0.7rem]" -->
-    <!--     /> -->
-    <!--   </div> -->
-    <!---->
-    <!--   <div -->
-    <!--     v-if="logo" -->
-    <!--     class="flex justify-center py-6 sm:pt-12 sm:pb-4" -->
-    <!--   > -->
-    <!--     <div class="min-w-36 sm:min-w-40"> -->
-    <!--       <IconLogo /> -->
-    <!--     </div> -->
-    <!--   </div> -->
-    <!---->
-    <!--   <slot /> -->
-    <!-- </div> -->
-    <!-- <div -->
-    <!--   v-else-if="banner === 'top'" -->
-    <!--   class="flex flex-col sm:flex-row overflow-auto h-full" -->
-    <!-- > -->
-    <!--   <div -->
-    <!--     class="sm:flex-1 relative w-full sm:w-auto pb-[33%] sm:p-0 select-none" -->
-    <!--   > -->
-    <!--     <NuxtImg -->
-    <!--       src="/assets/images/wheel-desktop.png" -->
-    <!--       alt="Wheel" -->
-    <!--       class="hidden sm:block object-cover w-full h-full sm:rounded-l-[0.7rem]" -->
-    <!--     /> -->
-    <!--     <NuxtImg -->
-    <!--       src="/assets/images/wheel-2.png" -->
-    <!--       alt="Wheel" -->
-    <!--       class="sm:hidden absolute left-0 top-0 object-cover w-full sm:rounded-l-[0.7rem]" -->
-    <!--     /> -->
-    <!--   </div> -->
-    <!--   <div class="flex-auto sm:flex-1 flex flex-col gap-2 sm:gap-0 py-2"> -->
-    <!--     <slot /> -->
-    <!--   </div> -->
-    <!-- </div> -->
   </BaseDialog>
 </template>
+
+<style scoped>
+.logo {
+  @apply w-[9rem] self-center;
+}
+.banner-top {
+  @apply w-full aspect-[100/37] object-cover sm:rounded-t-lg;
+}
+.banner-left {
+  @apply h-full object-cover sm:rounded-l-lg;
+}
+.content-padding {
+  @apply p-5;
+}
+</style>
