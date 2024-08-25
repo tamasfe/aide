@@ -9,6 +9,6 @@ const open = ref(true);
     banner="top"
     banner-top="/assets/images/wheel-2.png"
   >
-    <FormDeposit />
+    <FormCancelRegistration />
   </BaseModal>
 </template>

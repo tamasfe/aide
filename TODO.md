@@ -29,23 +29,15 @@ account
   - SettingContainer.vue
 base
   - ContentBox.vue
-  - Currency.vue
-  - Dialog.vue
   - GameDescriptionCard.vue
   - GameFrame.vue
   - GameFrameMobile.vue
   - GridCategory.vue
-  - Image.vue
-  - Input.vue
-  - InputWrapper.vue
-  - Number.vue
-  - Password.vue
-  - PromoBar.vue
   - Search.vue
   - Select.vue
   - Skeleton.vue
+  - InfoWithdrawal.vue
 form
-  - Control.vue
   - Deposit.vue
   - DepositPix.vue
   - ForgotPassword.vue
@@ -54,14 +46,9 @@ form
   - RegisterBrazil.vue
   - WithdrawPix.vue
 modal
-  - CancelRegistration.vue
   - Deposit.vue
-  - ForgotPassword.vue
   - Invite.vue
-  - LoginRegister.vue
   - Withdraw.vue
-  - Wrapper.vue
 wrapper
   - Deposit.vue
   - Withdraw.vue
-  - WithdrawInfo.vue
