@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const open = ref(true);
+const loading = ref(true);
 </script>
 
 <template>
@@ -8,6 +9,7 @@ const open = ref(true);
     :close-on-click-outside="false"
     banner="top"
     :logo="true"
+    :disabled="loading"
   >
     <div>this is text</div>
     <!-- <FormLogin /> -->

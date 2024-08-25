@@ -6,10 +6,12 @@
 const props = withDefaults(
   defineProps<{
     open: boolean;
+    disabled?: boolean;
     banner?: "none" | "top" | "left";
     logo?: boolean;
   }>(),
   {
+    loading: false,
     banner: "none",
     logo: true,
   },
@@ -25,8 +27,9 @@ const open = computed({
 
 <template>
   <BaseDialog
-    v-bind="$attrs"
     v-model:open="open"
+    v-bind="$attrs"
+    :disabled="disabled"
     class="p-0"
     @close="emit('close')"
   >
@@ -57,6 +60,7 @@ const open = computed({
         </div>
       </div>
     </div>
+
     <!-- <div -->
     <!--   v-if="banner === 'left'" -->
     <!--   class="flex flex-col overflow-auto h-full" -->

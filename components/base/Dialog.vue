@@ -65,12 +65,14 @@ defineOptions({
 const props = withDefaults(
   defineProps<{
     open: boolean;
+    disabled?: boolean;
     variant?: DialogVariants["variant"];
     size?: DialogVariants["size"];
     closeOnClickOutside?: boolean;
     class?: HTMLAttributes["class"];
   }>(),
   {
+    disabled: false,
     closeOnClickOutside: true,
   },
 );
@@ -85,6 +87,9 @@ const open = computed({
 });
 
 const onClose = (force: boolean) => {
+  if (props.disabled) {
+    return;
+  }
   if (props.closeOnClickOutside || force) {
     open.value = false;
     emit("close");
@@ -125,6 +130,7 @@ const onClose = (force: boolean) => {
           )"
         >
           <BaseClose
+            :disabled="disabled"
             @close="onClose(true)"
           />
 

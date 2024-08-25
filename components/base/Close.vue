@@ -4,9 +4,12 @@ import { cn } from "~/utils";
 
 const { t } = useI18n();
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
+  disabled?: boolean;
   class?: HTMLAttributes["class"];
-}>();
+}>(), {
+  disabled: false,
+});
 
 defineEmits(["close"]);
 </script>
@@ -15,6 +18,7 @@ defineEmits(["close"]);
   <BaseButtonNew
     variant="ghost"
     size="ghost"
+    :disabled="disabled"
     :class="cn(
       'absolute top-2 right-2 p-3 text-subtle hover:text-emphasis z-[10]',
       props.class,
