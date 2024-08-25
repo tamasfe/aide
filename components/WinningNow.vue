@@ -21,7 +21,7 @@ const { t } = useI18n();
       <NuxtLink
         v-for="id in 10"
         :key="id"
-        to="/game/123"
+        to="TODO"
         class="min-w-[18rem] flex flex-row items-center space-x-3 bg-subtle p-2 rounded-lg cursor-pointer outline-none"
       >
         <div class="flex-shrink-0 rounded-[0.7rem]">

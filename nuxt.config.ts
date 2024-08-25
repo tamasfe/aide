@@ -45,14 +45,6 @@ export default defineNuxtConfig({
     strict: true,
     typeCheck: true,
   },
-  // NOTE
-  // https://github.com/nuxt/nuxt/issues/27544
-  // when this issue is fixed, the entire "vite" block below can be removed
-  vite: {
-    optimizeDeps: {
-      exclude: ["vee-validate"],
-    },
-  },
   // @nuxtjs/eslint
   eslint: {
     config: {
