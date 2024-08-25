@@ -11,6 +11,7 @@
   --giro-container-padding: 1rem;
 
   /* background */
+
   --giro-bg: 16, 13, 40;
   --giro-bg-subtle: 19, 18, 50;
   --giro-bg-emphasis: 39, 38, 70;
@@ -70,10 +71,6 @@
 
   --giro-promo-purple: #551a8b;
   --giro-promo-text-purple: #9f6dde;
-
-  /* borders */
-
-  --giro-border-radius: 0.4rem;
 }
 
 @layer base {

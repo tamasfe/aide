@@ -19,6 +19,17 @@ export default <Partial<Config>>{
       "9xl": "7rem",
     },
     extend: {
+      backgroundImage: {
+        "button-primary": "var(--giro-button-primary)",
+        "button-primary-hover": "var(--giro-button-primary-hover)",
+        "button-secondary": "var(--giro-button-secondary)",
+        "button-secondary-hover": "var(--giro-button-secondary-hover)",
+        "button-emphasis": "var(--giro-button-emphasis)",
+        "button-emphasis-hover": "var(--giro-button-emphasis-hover)",
+      },
+      borderRadius: {
+        default: "0.4rem",
+      },
       colors: {
         default: "rgba(var(--giro-bg), <alpha-value>)",
         emphasis: "rgba(var(--giro-bg-emphasis), <alpha-value>)",
@@ -53,14 +64,6 @@ export default <Partial<Config>>{
           purple: "var(--giro-promo-purple)",
         },
       },
-      backgroundImage: {
-        "button-primary": "var(--giro-button-primary)",
-        "button-primary-hover": "var(--giro-button-primary-hover)",
-        "button-secondary": "var(--giro-button-secondary)",
-        "button-secondary-hover": "var(--giro-button-secondary-hover)",
-        "button-emphasis": "var(--giro-button-emphasis)",
-        "button-emphasis-hover": "var(--giro-button-emphasis-hover)",
-      },
       textColor: {
         default: "var(--giro-text)",
         subtle: "var(--giro-text-subtle)",
@@ -82,9 +85,6 @@ export default <Partial<Config>>{
         promo: {
           purple: "var(--giro-promo-text-purple)",
         },
-      },
-      borderRadius: {
-        default: "var(--giro-border-radius)",
       },
     },
   },
