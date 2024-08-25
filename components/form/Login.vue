@@ -2,7 +2,7 @@
 const { t } = useI18n();
 
 const error = ref("There was a problem");
-const loading = ref(true);
+const loading = ref(false);
 </script>
 
 <template>
@@ -13,31 +13,25 @@ const loading = ref(true);
       level="error"
     />
 
-    <FormControl
+    <BaseFormControl
       type="email"
       :title="t('field.email')"
-      class="w-full"
-      wrapper-class="bg-subtle sm:py-[0.4rem]"
-      input-class="text-default"
       autocomplete="email"
     />
-    <FormControl
+
+    <BaseFormControl
       type="password"
       :title="t('field.password')"
-      class="w-full"
-      wrapper-class="bg-subtle sm:py-[0.4rem]"
-      input-class="text-default"
       autocomplete="new-password"
     />
-    <div class="py-4">
-      <BaseButtonNew
-        variant="ghost"
-        size="ghost"
-        class="font-semibold text-subtle hover:text-subtle-light"
-      >
-        {{ t("modal_auth.forgot_password") }}
-      </BaseButtonNew>
-    </div>
+
+    <BaseButtonNew
+      variant="ghost"
+      size="ghost"
+      class="font-semibold text-subtle hover:text-subtle-light"
+    >
+      {{ t("modal_auth.forgot_password") }}
+    </BaseButtonNew>
 
     <BaseButtonNew
       :loading="loading"
@@ -48,7 +42,7 @@ const loading = ref(true);
       {{ t("button.login") }}
     </BaseButtonNew>
 
-    <div class="text-sm text-subtle py-4">
+    <div class="text-sm text-subtle">
       {{ t("modal_auth.dont_have_account") }}
 
       <BaseButtonNew
