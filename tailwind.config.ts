@@ -43,6 +43,10 @@ export default <Partial<Config>>{
           "subtle-hover": "var(--giro-button-subtle-hover)",
           danger: "var(--giro-button-danger)",
         },
+        "alert-success": "var(--giro-alert-success)",
+        "alert-warning": "var(--giro-alert-warning)",
+        "alert-error": "var(--giro-alert-error)",
+        "alert-info": "var(--giro-alert-info)",
       },
       backgroundImage: {
         "button-primary": "var(--giro-button-primary)",
@@ -60,6 +64,12 @@ export default <Partial<Config>>{
         info: "var(--giro-text-info)",
         warning: "var(--giro-text-warning)",
         success: "var(--giro-text-success)",
+        alert: {
+          success: "var(--giro-text-alert-success)",
+          warning: "var(--giro-text-alert-warning)",
+          error: "var(--giro-text-alert-error)",
+          info: "var(--giro-text-alert-info)",
+        },
         button: {
           primary: "var(--giro-button-text-primary)",
           secondary: "var(--giro-button-text-secondary)",

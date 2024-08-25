@@ -28,7 +28,6 @@
   --giro-text-subtle-light: #a2a7db;
   --giro-text-emphasis: #c4c7e2;
   --giro-text-info: #9f6dde;
-  --giro-text-warning: #ffe00c;
   --giro-text-success: #77ff0c;
   --giro-button-text-primary: #000000;
   --giro-button-text-secondary: #7b82c0;
@@ -46,6 +45,19 @@
   --giro-button-subtle-hover: #1f1d47;
   --giro-button-danger: #dc2625;
   --giro-button-danger-hover: #d43f00;
+
+  /* alert */
+  --giro-alert-success: #2c6219;
+  --giro-text-alert-success: #77ff0c;
+  --giro-alert-error: #621919;
+  --giro-text-alert-error: #ff6969;
+  --giro-alert-warning: #625819;
+  --giro-text-alert-warning: #ffe00c;
+  --giro-alert-info: #3d448b;
+  --giro-text-alert-info: #c1c7ff;
+
+  /* borders */
+  --giro-border-radius: 0.4rem;
 }
 
 @layer base {

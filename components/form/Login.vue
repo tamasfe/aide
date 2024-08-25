@@ -6,15 +6,12 @@ const loading = ref(true);
 </script>
 
 <template>
-  <form
-    class="flex flex-col items-center space-y-2 w-full"
-  >
-    <div
+  <form>
+    <BaseAlert
       v-if="error"
-      class="bg-button-danger p-5 rounded-default w-full mb-4"
-    >
-      <p>{{ error }}</p>
-    </div>
+      :message="error"
+      level="error"
+    />
 
     <FormControl
       type="email"
@@ -51,15 +48,16 @@ const loading = ref(true);
       {{ t("button.login") }}
     </BaseButtonNew>
 
-    <p class="text-sm text-subtle py-4">
+    <div class="text-sm text-subtle py-4">
       {{ t("modal_auth.dont_have_account") }}
+
       <BaseButtonNew
         variant="ghost"
         size="ghost"
-        class="font-semibold text-brand-yellow hover:underline"
+        class="font-semibold hover:underline"
       >
         {{ t("modal_auth.create_free_account") }}
       </BaseButtonNew>
-    </p>
+    </div>
   </form>
 </template>
