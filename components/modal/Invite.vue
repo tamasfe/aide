@@ -1,5 +1,9 @@
 <script setup lang="ts">
 const open = ref(true);
+
+// DESIGN STATUS:       ✅
+// ARCHITECTURE STATUS: ✅
+// TRANSLATION STATUS:  ✅
 </script>
 
 <template>
