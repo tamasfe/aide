@@ -1,6 +1,8 @@
 <script setup lang="ts">
-// DESIGN STATUS:       ✅
+// DESIGN STATUS: ✴️
+//   * while not a dealbreaker, there is some weirdness with the width of the left banner still shrinking instead of changing the modal height... maybe this ends up being fine though, im undecided which way
 // ARCHITECTURE STATUS: ✴️
+//   * I want banner/bannerLeft/bannerTop to be properly validated by typescript
 // TRANSLATION STATUS:  ✅
 
 const props = withDefaults(
@@ -78,7 +80,7 @@ const open = computed({
       v-else-if="banner === 'left'"
       class="flex flex-row"
     >
-      <div class="w-[40%] hidden sm:block">
+      <div class="w-[40%] hidden sm:block flex-shrink-0">
         <NuxtImg
           v-if="bannerLeft"
           :src="bannerLeft"

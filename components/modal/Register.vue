@@ -9,6 +9,8 @@ const loading = ref(false);
     :disabled="loading"
     :close-on-click-outside="false"
     banner="left"
+    banner-left="/assets/images/wheel-2-vertical.png"
+    banner-top="/assets/images/wheel-2.png"
   >
     <FormRegister />
   </BaseModal>
