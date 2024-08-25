@@ -6,10 +6,9 @@ const loading = ref(false);
 <template>
   <BaseModal
     v-model:open="open"
+    :disabled="loading"
     :close-on-click-outside="false"
     banner="top"
-    :logo="true"
-    :disabled="loading"
   >
     <div>this is text</div>
     <!-- <FormLogin /> -->

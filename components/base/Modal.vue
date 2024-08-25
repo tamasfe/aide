@@ -36,21 +36,29 @@ const open = computed({
     <div class="flex flex-row">
       <div
         v-if="banner === 'left'"
-        class="w-1/3 hidden sm:block"
+        class="w-[40%] hidden sm:block"
       >
-        banner left
+        <NuxtImg
+          src="/assets/images/wheel-2-vertical.png"
+          alt="Wheel"
+          class="w-full object-cover sm:rounded-l-lg"
+        />
       </div>
       <div class="flex-grow flex flex-col items-center">
         <div
           v-if="banner === 'left' || banner === 'top'"
           :class="{ 'sm:hidden': banner === 'left' }"
         >
-          banner top
+          <NuxtImg
+            src="/assets/images/wheel-2.png"
+            alt="Wheel"
+            class="w-full aspect-[100/37] object-cover sm:rounded-t-lg"
+          />
         </div>
 
         <div
           v-if="logo"
-          class="w-[9rem] mt-6 pb-2 self-center"
+          class="w-[9rem] mt-10 pb-2 self-center"
         >
           <IconLogo />
         </div>
