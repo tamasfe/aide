@@ -24,7 +24,6 @@ export default <Partial<Config>>{
         emphasis: "rgba(var(--giro-bg-emphasis), <alpha-value>)",
         subtle: "rgba(var(--giro-bg-subtle), <alpha-value>)",
         muted: "rgba(var(--giro-bg-muted), <alpha-value>)",
-        info: "rgba(var(--giro-bg-info), <alpha-value>)",
         warning: "rgba(var(--giro-bg-warning), <alpha-value>)",
         success: "rgba(var(--giro-bg-success), <alpha-value>)",
         text: {
@@ -32,6 +31,12 @@ export default <Partial<Config>>{
           subtle: "rgba(var(--giro-bg-text-subtle), <alpha-value>)",
         },
         active: "rgba(var(--giro-bg-active), <alpha-value>)",
+        alert: {
+          success: "var(--giro-alert-success)",
+          warning: "var(--giro-alert-warning)",
+          error: "var(--giro-alert-error)",
+          info: "var(--giro-alert-info)",
+        },
         button: {
           primary: "var(--giro-button-primary)",
           "primary-hover": "var(--giro-button-primary-hover)",
@@ -44,11 +49,8 @@ export default <Partial<Config>>{
           danger: "var(--giro-button-danger)",
           "danger-hover": "var(--giro-button-danger-hover)",
         },
-        alert: {
-          success: "var(--giro-alert-success)",
-          warning: "var(--giro-alert-warning)",
-          error: "var(--giro-alert-error)",
-          info: "var(--giro-alert-info)",
+        promo: {
+          purple: "var(--giro-promo-purple)",
         },
       },
       backgroundImage: {
@@ -64,9 +66,6 @@ export default <Partial<Config>>{
         subtle: "var(--giro-text-subtle)",
         "subtle-light": "var(--giro-text-subtle-light)",
         emphasis: "var(--giro-text-emphasis)",
-        info: "var(--giro-text-info)",
-        warning: "var(--giro-text-warning)",
-        success: "var(--giro-text-success)",
         alert: {
           success: "var(--giro-alert-text-success)",
           warning: "var(--giro-alert-text-warning)",
@@ -79,6 +78,9 @@ export default <Partial<Config>>{
           emphasis: "var(--giro-button-text-emphasis)",
           subtle: "var(--giro-button-text-subtle)",
           danger: "var(--giro-button-text-danger)",
+        },
+        promo: {
+          purple: "var(--giro-promo-text-purple)",
         },
       },
       borderRadius: {

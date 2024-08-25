@@ -16,7 +16,7 @@ const promoBarVariants = cva(
   {
     variants: {
       variant: {
-        purple: "bg-info text-info",
+        purple: "bg-promo-purple text-promo-purple",
       },
     },
     defaultVariants: {

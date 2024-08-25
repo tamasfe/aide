@@ -14,7 +14,6 @@
   --giro-bg: 16, 13, 40;
   --giro-bg-subtle: 19, 18, 50;
   --giro-bg-emphasis: 39, 38, 70;
-  --giro-bg-info: 85, 40, 139;
   --giro-bg-warning: 98, 88, 25;
   --giro-bg-success: 44, 98, 25;
   --giro-bg-text-emphasis: 196, 199, 226;
@@ -25,11 +24,25 @@
   /* text */
 
   --giro-text: #ffffff;
+  --giro-text-primary: #ffc441;
   --giro-text-subtle: #7b82c0;
   --giro-text-subtle-light: #a2a7db;
   --giro-text-emphasis: #c4c7e2;
-  --giro-text-info: #9f6dde;
   --giro-text-success: #77ff0c;
+
+  /* alerts */
+
+  --giro-alert-success: #2c6219;
+  --giro-alert-text-success: #77ff0c;
+
+  --giro-alert-error: #621919;
+  --giro-alert-text-error: #ff6969;
+
+  --giro-alert-warning: #625819;
+  --giro-alert-text-warning: #ffe00c;
+
+  --giro-alert-info: #3d448b;
+  --giro-alert-text-info: #c1c7ff;
 
   /* buttons */
 
@@ -53,19 +66,10 @@
   --giro-button-danger-hover: #d43f00;
   --giro-button-text-danger: #ffffff;
 
-  /* alerts */
+  /* promo bars */
 
-  --giro-alert-success: #2c6219;
-  --giro-alert-text-success: #77ff0c;
-
-  --giro-alert-error: #621919;
-  --giro-alert-text-error: #ff6969;
-
-  --giro-alert-warning: #625819;
-  --giro-alert-text-warning: #ffe00c;
-
-  --giro-alert-info: #3d448b;
-  --giro-alert-text-info: #c1c7ff;
+  --giro-promo-purple: #551a8b;
+  --giro-promo-text-purple: #9f6dde;
 
   /* borders */
 
