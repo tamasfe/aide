@@ -27,16 +27,17 @@ const open = computed({
   <BaseDialog
     v-bind="$attrs"
     v-model:open="open"
+    class="p-0"
     @close="emit('close')"
   >
     <div class="flex flex-row">
       <div
         v-if="banner === 'left'"
-        class="hidden sm:block"
+        class="w-1/3 hidden sm:block"
       >
         banner left
       </div>
-      <div class="w-full flex flex-col items-center">
+      <div class="flex-grow flex flex-col items-center">
         <div
           v-if="banner === 'left' || banner === 'top'"
           :class="{ 'sm:hidden': banner === 'left' }"
@@ -46,12 +47,14 @@ const open = computed({
 
         <div
           v-if="logo"
-          class="w-[9rem] my-6 self-center"
+          class="w-[9rem] mt-6 pb-2 self-center"
         >
           <IconLogo />
         </div>
 
-        <slot />
+        <div class="p-5">
+          <slot />
+        </div>
       </div>
     </div>
     <!-- <div -->
