@@ -73,7 +73,7 @@ export default defineNuxtConfig({
     langDir: "locales/",
     locales: [
       {
-        iso: "en-US",
+        language: "en-US",
         code: "en",
         file: "en.json",
       },
