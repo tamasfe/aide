@@ -9,9 +9,9 @@ const loading = ref(false);
     :disabled="loading"
     :close-on-click-outside="false"
     banner="left"
-    :logo="true"
+    banner-left="/assets/images/wheel-2-vertical.png"
+    banner-top="/assets/images/wheel-2.png"
   >
-    <div>this is text</div>
-    <!-- <FormLogin /> -->
+    <FormLogin />
   </BaseModal>
 </template>

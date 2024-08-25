@@ -1,14 +1,16 @@
 <script setup lang="ts">
 // DESIGN STATUS:       ✅
-// ARCHITECTURE STATUS: ✅
+// ARCHITECTURE STATUS: ✴️
 // TRANSLATION STATUS:  ✅
 
 const props = withDefaults(
   defineProps<{
     open: boolean;
     disabled?: boolean;
-    banner?: "none" | "top" | "left";
     logo?: boolean;
+    banner?: "none" | "top" | "left";
+    bannerLeft?: string;
+    bannerTop?: string;
   }>(),
   {
     loading: false,
@@ -54,8 +56,8 @@ const open = computed({
       class="flex flex-col"
     >
       <NuxtImg
-        src="/assets/images/wheel-2.png"
-        alt=""
+        v-if="bannerTop"
+        :src="bannerTop"
         class="banner-top"
         :class="{ 'mb-8': logo }"
       />
@@ -78,16 +80,16 @@ const open = computed({
     >
       <div class="w-[40%] hidden sm:block">
         <NuxtImg
-          src="/assets/images/wheel-2-vertical.png"
-          alt="Wheel"
+          v-if="bannerLeft"
+          :src="bannerLeft"
           class="banner-left"
         />
       </div>
 
       <div class="flex flex-col w-full sm:pt-10">
         <NuxtImg
-          src="/assets/images/wheel-2.png"
-          alt=""
+          v-if="bannerTop"
+          :src="bannerTop"
           class="banner-top sm:hidden"
           :class="{ 'mb-8': logo }"
         />

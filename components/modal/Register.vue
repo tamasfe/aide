@@ -1,14 +1,15 @@
 <script setup lang="ts">
 const open = ref(true);
+const loading = ref(false);
 </script>
 
 <template>
   <BaseModal
     v-model:open="open"
+    :disabled="loading"
     :close-on-click-outside="false"
+    banner="left"
   >
-    <div class="flex-1 px-6 sm:py-6">
-      <FormRegisterBrazil />
-    </div>
+    <FormRegister />
   </BaseModal>
 </template>
