@@ -6,6 +6,7 @@ const open = ref(true);
   <BaseModal
     v-model:open="open"
     :close-on-click-outside="false"
+    banner="left"
   >
     <div>this is text</div>
     <!-- <FormLogin /> -->

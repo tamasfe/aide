@@ -29,8 +29,30 @@ const open = computed({
     v-model:open="open"
     @close="emit('close')"
   >
-    <div if="banner === 'none'">
-      <slot />
+    <div class="flex flex-row">
+      <div
+        v-if="banner === 'left'"
+        class="hidden sm:block"
+      >
+        banner left
+      </div>
+      <div class="w-full flex flex-col items-center">
+        <div
+          v-if="banner === 'left' || banner === 'top'"
+          :class="{ 'sm:hidden': banner === 'left' }"
+        >
+          banner top
+        </div>
+
+        <div
+          v-if="logo"
+          class="w-[9rem] my-6 self-center"
+        >
+          <IconLogo />
+        </div>
+
+        <slot />
+      </div>
     </div>
     <!-- <div -->
     <!--   v-if="banner === 'left'" -->
