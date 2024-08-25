@@ -81,16 +81,6 @@ export default <Partial<Config>>{
           danger: "var(--giro-button-text-danger)",
         },
       },
-      fill: {
-        default: "var(--giro-text)",
-        subtle: "var(--giro-text-subtle)",
-        emphasis: "var(--giro-text-emphasis)",
-        button: {
-          primary: "var(--giro-button-text-primary)",
-          secondary: "var(--giro-button-text-secondary)",
-          emphasis: "var(--giro-button-text-emphasis)",
-        },
-      },
       borderRadius: {
         default: "var(--giro-border-radius)",
       },
