@@ -140,7 +140,7 @@
 <!--     > -->
 <!--       <p>{{ t(error) }}</p> -->
 <!--     </div> -->
-<!--     <FormControl -->
+<!--     <BaseInputGroup -->
 <!--       v-model="email" -->
 <!--       type="email" -->
 <!--       :title="t('field.email')" -->
@@ -150,7 +150,7 @@
 <!--       :error="errors.email" -->
 <!--       autocomplete="email" -->
 <!--     /> -->
-<!--     <FormControl -->
+<!--     <BaseInputGroup -->
 <!--       v-model="password" -->
 <!--       type="password" -->
 <!--       :title="t('field.password')" -->
@@ -160,7 +160,7 @@
 <!--       :error="errors.password" -->
 <!--       autocomplete="new-password" -->
 <!--     /> -->
-<!--     <FormControl -->
+<!--     <BaseInputGroup -->
 <!--       v-model="cpf" -->
 <!--       type="text" -->
 <!--       :title="t('field.cpf')" -->
@@ -171,7 +171,7 @@
 <!--       :error="errors.cpf" -->
 <!--       :maska="cpfMask" -->
 <!--     /> -->
-<!--     <FormControl -->
+<!--     <BaseInputGroup -->
 <!--       v-model="phone" -->
 <!--       v-model:region="region" -->
 <!--       type="tel" -->

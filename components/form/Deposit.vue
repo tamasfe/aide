@@ -48,7 +48,7 @@
 <!--     class="flex flex-col items-center gap-4 w-full" -->
 <!--     @submit="onSubmit" -->
 <!--   > -->
-<!--     <FormControl -->
+<!--     <BaseInputGroup -->
 <!--       v-model="value" -->
 <!--       class="w-full" -->
 <!--       type="currency" -->

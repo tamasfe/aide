@@ -6,19 +6,19 @@ defineOptions({
 });
 
 const props = defineProps<{
-  title?: string;
+  label?: string;
   class?: HTMLAttributes["class"];
 }>();
 </script>
 
 <template>
-  <div>
-    <div v-if="title">{{ title }}</div>
-
+  <div class="bg-subtle text-subtle h-[var(--giro-input-height)]">
     <BaseInput
       v-bind="$attrs"
+      variant="ghost"
+      size="ghost"
       :class="[
-        cn('w-full'),
+        cn('w-full bg-transparent'),
         props.class,
       ]"
     />

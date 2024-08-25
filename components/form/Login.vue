@@ -13,13 +13,13 @@ const loading = ref(false);
       level="error"
     />
 
-    <BaseFormControl
+    <BaseInputGroup
       type="email"
       :title="t('field.email')"
       autocomplete="email"
     />
 
-    <BaseFormControl
+    <BaseInputGroup
       type="password"
       :title="t('field.password')"
       autocomplete="new-password"

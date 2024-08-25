@@ -34,7 +34,7 @@ const onSubmit = handleSubmit((values) => {
     <div class="bg-success text-success p-4 rounded-default">
       Password reset instructions have been sent to your email address.
     </div>
-    <FormControl
+    <BaseInputGroup
       v-model="email"
       class="w-full"
       type="email"

@@ -8,11 +8,11 @@ const inputVariants = cva(
   {
     variants: {
       variant: {
-        primary: "bg-subtle placeholder:text-subtle",
+        primary: "bg-subtle text-subtle placeholder:text-subtle",
         ghost: "",
       },
       size: {
-        md: "h-10 px-4 rounded-default",
+        md: "h-[var(--giro-input-height)] px-4 text-base font-medium rounded-default",
         ghost: "",
       },
     },

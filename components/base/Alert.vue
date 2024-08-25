@@ -18,7 +18,7 @@ const alertVariants = cva(
         info: "bg-alert-info text-alert-info",
       },
       size: {
-        md: "h-12 text-base",
+        md: "h-[var(--giro-input-height)] text-base",
       },
     },
     defaultVariants: {

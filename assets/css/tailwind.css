@@ -71,6 +71,10 @@
 
   --giro-promo-purple: #551a8b;
   --giro-promo-text-purple: #9f6dde;
+
+  /* input */
+
+  --giro-input-height: 3.13rem;
 }
 
 @layer base {

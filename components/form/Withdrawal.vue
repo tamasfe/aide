@@ -60,7 +60,7 @@ const onSubmit = handleSubmit((values) => {
         <PhQuestion :size="24" />
       </button>
     </div>
-    <FormControl
+    <BaseInputGroup
       v-model="value"
       class="w-full"
       type="number"
@@ -72,7 +72,7 @@ const onSubmit = handleSubmit((values) => {
       <template #prefix>
         <IconRSGreen />
       </template>
-    </FormControl>
+    </BaseInputGroup>
     <p class="text-subtle">
       {{ t('modal_payments.available_withdrawal') }}:
       <span class="text-emphasis">R$ 500,00</span>

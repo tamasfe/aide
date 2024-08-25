@@ -10,7 +10,7 @@ const link = ref("https://girobet.com/invite/123456");
     <p class="text-subtle text-lg">
       Receive cash balance for every friend you refer.
     </p>
-    <FormControl
+    <BaseInputGroup
       :model-value="link"
       class="w-full"
       type="number"
@@ -26,7 +26,7 @@ const link = ref("https://girobet.com/invite/123456");
           <PhCopy :size="24" />
         </button>
       </template>
-    </FormControl>
+    </BaseInputGroup>
     <BaseButton
       class="w-full inline-flex justify-center"
       variant="primary"
