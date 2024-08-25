@@ -1,6 +1,7 @@
 ### Refactor
 
   * components
+  * remove bg-text-emphasis bullshit (and the other bg-text one) and also remove it from carousel when hes done refactoring that
   * layouts (all the margins/paddings on pages... finalize them all so we have solid sections/layouts/normalized paddings across layouts/app.vue/pages)
   * BaseButton / button (delete old button)
     * add loading spinner to large/medium button
