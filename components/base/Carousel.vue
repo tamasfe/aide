@@ -149,7 +149,7 @@ defineExpose({
     </slot>
     <div
       v-if="bottomControls"
-      class="absolute z-[2] left-1/2 bottom-0 transform -translate-x-1/2 flex items-center space-x-2"
+      class="absolute z-[2] left-1/2 bottom-3 transform -translate-x-1/2 flex items-center space-x-2"
     >
       <div
         v-for="(_, index) in items"
