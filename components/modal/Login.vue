@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const open = ref(true);
-const loading = ref(true);
+const loading = ref(false);
 </script>
 
 <template>
