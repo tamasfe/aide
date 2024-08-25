@@ -1,21 +1,17 @@
 <script setup lang="ts">
-const emit = defineEmits(["update:open"]);
-
-const props = defineProps<{
-  open: boolean;
-}>();
-
-const open = computed({
-  get: () => props.open,
-  set: (value: boolean) => emit("update:open", value),
-});
+const open = ref(true);
+const loading = ref(false);
 </script>
 
 <template>
   <BaseModal
     v-model:open="open"
+    :disabled="loading"
+    :close-on-click-outside="false"
     banner="left"
+    banner-left="/assets/images/wheel-2-vertical.png"
+    banner-top="/assets/images/wheel-2.png"
   >
-    <WrapperDeposit />
+    <FormDeposit />
   </BaseModal>
 </template>
