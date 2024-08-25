@@ -41,8 +41,8 @@ const props = withDefaults(defineProps<{
   size?: ButtonVariants["size"];
   loading?: boolean;
   disabled?: boolean;
-  class?: HTMLAttributes["class"];
   type?: ButtonHTMLAttributes["type"];
+  class?: HTMLAttributes["class"];
 }>(), {
   loading: false,
   disabled: false,

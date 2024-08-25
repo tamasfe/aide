@@ -1,10 +1,13 @@
 <script setup lang="ts">
+import type { HTMLAttributes } from "vue";
+
 defineOptions({
   inheritAttrs: false,
 });
 
-defineProps<{
+const props = defineProps<{
   title?: string;
+  class?: HTMLAttributes["class"];
 }>();
 </script>
 
@@ -12,6 +15,12 @@ defineProps<{
   <div>
     <div v-if="title">{{ title }}</div>
 
-    <BaseInput v-bind="$attrs" />
+    <BaseInput
+      v-bind="$attrs"
+      :class="[
+        cn('w-full'),
+        props.class,
+      ]"
+    />
   </div>
 </template>
