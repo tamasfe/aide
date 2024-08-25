@@ -99,7 +99,7 @@ const links = [
       </div>
     </template>
     <div
-      class="no-scrollbar min-w-[20rem] flex flex-col overflow-y-auto space-y-2"
+      class="no-scrollbar min-w-[20rem] mt-5 flex flex-col overflow-y-auto space-y-2"
     >
       <template v-for="(link, index) in links">
         <NavSidebarLinkGroup

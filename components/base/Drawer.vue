@@ -129,10 +129,6 @@ const open = computed({
                 <slot name="title" />
               </DialogTitle>
 
-              <DialogDescription>
-                <slot name="description" />
-              </DialogDescription>
-
               <slot />
             </DialogPanel>
           </TransitionChild>
