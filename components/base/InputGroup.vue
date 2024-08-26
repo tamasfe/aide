@@ -1,6 +1,13 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from "vue";
 
+// TODO
+// * floating label
+// * error (right aligned under input)
+// * jiggle animation on error
+// * font/end dropcaps
+// * maska
+
 defineOptions({
   inheritAttrs: false,
 });

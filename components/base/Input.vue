@@ -27,19 +27,31 @@ type InputVariants = VariantProps<typeof inputVariants>;
 
 const props = withDefaults(defineProps<{
   type: InputHTMLAttributes["type"];
+  placeholder?: InputHTMLAttributes["placeholder"];
+  autocomplete?: InputHTMLAttributes["autocomplete"];
+  autocorrect?: InputHTMLAttributes["autocorrect"];
+  inputmode?: InputHTMLAttributes["inputmode"];
   disabled?: boolean;
   variant?: InputVariants["variant"];
   size?: InputVariants["size"];
   class?: HTMLAttributes["class"];
 }>(), {
-  disabled: false,
   type: "text",
+  placeholder: undefined,
+  autocomplete: "on",
+  autocorrect: "off",
+  inputmode: "text",
+  disabled: false,
 });
 </script>
 
 <template>
   <input
     :type="type"
+    :placeholder="placeholder"
+    :autocomplete="autocomplete"
+    :autocorrect="autocorrect"
+    :inputmode="inputmode"
     :disabled="disabled"
     :class="cn(
       inputVariants({ variant, size }),

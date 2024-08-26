@@ -15,14 +15,14 @@ const loading = ref(false);
 
     <BaseInputGroup
       type="email"
-      :title="t('field.email')"
+      :label="t('field.email')"
       autocomplete="email"
     />
 
     <BaseInputGroup
       type="password"
-      :title="t('field.password')"
-      autocomplete="new-password"
+      :label="t('field.password')"
+      autocomplete="current-password"
     />
 
     <BaseButtonNew
