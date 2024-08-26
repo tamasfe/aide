@@ -83,9 +83,9 @@ const onScroll = () => {
             class="absolute left-0 top-0 w-full h-full grid place-items-center"
           >
             <Icon
-              name="lucide:loader-circle"
-              class="animate-spin text-subtle"
+              name="tdesign:loading"
               size="32"
+              class="animate-spin text-subtle"
             />
           </div>
         </div>

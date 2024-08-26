@@ -8,7 +8,7 @@ const { t } = useI18n();
 // INPUTMODES:          ✅
 // ZOD SCHEMA:          ✴️
 
-const loading = ref(false);
+const loading = ref(true);
 </script>
 
 <template>
@@ -21,7 +21,6 @@ const loading = ref(false);
 
     <BaseButtonNew
       :loading="loading"
-      :disabled="loading"
       variant="emphasis"
       size="xl"
       class="w-full"

@@ -44,7 +44,6 @@ const loading = ref(false);
 
     <BaseButtonNew
       :loading="loading"
-      :disabled="loading"
       size="xl"
       class="w-full"
     >

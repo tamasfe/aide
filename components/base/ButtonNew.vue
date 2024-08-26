@@ -3,7 +3,8 @@ import type { ButtonHTMLAttributes, HTMLAttributes } from "vue";
 import { type VariantProps, cva } from "class-variance-authority";
 
 // DESIGN STATUS:       ✴️
-//   * show loading spinner instead of opacity change
+//   * disabled/loading spinner/opacity should fade and not be instant
+//   * loading spinner could look slightly better
 // ARCHITECTURE STATUS: ✅
 // TRANSLATION STATUS:  ✅
 
@@ -56,10 +57,16 @@ const props = withDefaults(defineProps<{
     :disabled="disabled || loading"
     :class="cn(
       buttonVariants({ variant, size }),
-      { 'opacity-70': disabled || loading },
+      { 'opacity-70': disabled },
       props.class,
     )"
   >
+    <Icon
+      v-if="loading"
+      name="tdesign:loading"
+      size="24"
+      class="mr-2 animate-spin"
+    />
     <slot />
   </button>
 </template>
