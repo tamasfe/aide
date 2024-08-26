@@ -32,6 +32,9 @@ const loading = ref(false);
       placeholder-placement="default"
       error-placement="below"
     >
+      <template #prefix>
+        <div class="self-center mr-2 font-semibold text-lg bg-button-emphasis text-transparent bg-clip-text">R$</div>
+      </template>
       <template #suffix>
         <div class="ml-5 flex flex-row justify-center items-center gap-1.5">
           <BaseFlag :country-code="countryCode" />
