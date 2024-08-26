@@ -10,7 +10,7 @@ description = "Macros for the Aide library"
 proc-macro = true
 
 [dependencies]
-darling = "0.20.0"
-proc-macro2 = "1.0.43"
-quote = "1.0.21"
-syn = "2.0.15"
+darling = "0.20.10"
+proc-macro2 = "1.0.86"
+quote = "1.0.37"
+syn = "2.0.76"

@@ -12,15 +12,15 @@ aide = { path = "../../crates/aide", features = [
     "axum-extra",
     "macros",
 ] }
-async-trait = "0.1.57"
-axum = { version = "0.7.1", features = ["macros"] }
-axum-extra = "0.9.0"
+async-trait = "0.1.81"
+axum = { version = "0.7.5", features = ["macros"] }
+axum-extra = "0.9.3"
 axum-jsonschema = { path = "../../crates/axum-jsonschema", features = [
     "aide",
 ] }
-axum-macros = "0.4.0"
-schemars = { version = "0.8.10", features = ["uuid1"] }
-serde = { version = "1.0.144", features = ["derive", "rc"] }
-serde_json = "1.0.85"
-tokio = { version = "1.21.0", features = ["macros", "rt-multi-thread"] }
-uuid = { version = "1.1.2", features = ["serde", "v4"] }
+axum-macros = "0.4.1"
+schemars = { version = "0.8.21", features = ["uuid1"] }
+serde = { version = "1.0.209", features = ["derive", "rc"] }
+serde_json = "1.0.127"
+tokio = { version = "1.39.3", features = ["macros", "rt-multi-thread"] }
+uuid = { version = "1.10.0", features = ["serde", "v4"] }
