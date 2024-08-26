@@ -7,7 +7,6 @@ import {
 } from "@headlessui/vue";
 import type { HTMLAttributes } from "vue";
 import { type VariantProps, cva } from "class-variance-authority";
-import { cn } from "~/utils";
 
 // DESIGN STATUS:       ✅
 // ARCHITECTURE STATUS: ✴️

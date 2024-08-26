@@ -6,7 +6,7 @@ const loading = ref(false);
 </script>
 
 <template>
-  <form>
+  <BaseForm>
     <BaseAlert
       v-if="error"
       :message="error"
@@ -53,5 +53,5 @@ const loading = ref(false);
         {{ t("modal_auth.create_free_account") }}
       </BaseButtonNew>
     </div>
-  </form>
+  </BaseForm>
 </template>

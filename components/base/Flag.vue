@@ -2,7 +2,6 @@
 import type { HTMLAttributes } from "vue";
 import { type VariantProps, cva } from "class-variance-authority";
 import { filename } from "pathe/utils";
-import { cn } from "~/utils";
 import type { SupportedCountryCode } from "@/types/constants";
 
 // DESIGN STATUS:       ✴️

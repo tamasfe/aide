@@ -19,7 +19,7 @@ const props = defineProps<{
 </script>
 
 <template>
-  <div class="bg-subtle text-subtle h-[var(--giro-input-height)]">
+  <div class="h-[var(--giro-input-height)] rounded-default bg-subtle text-subtle">
     <BaseInput
       v-bind="$attrs"
       variant="ghost"

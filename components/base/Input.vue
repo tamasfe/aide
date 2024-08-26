@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { InputHTMLAttributes, HTMLAttributes } from "vue";
 import { type VariantProps, cva } from "class-variance-authority";
-import { cn } from "~/utils";
 
 const inputVariants = cva(
   "focus-visible:outline-none disabled:opacity-70",

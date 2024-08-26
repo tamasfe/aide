@@ -3,13 +3,11 @@ import {
   Dialog,
   DialogPanel,
   DialogTitle,
-  DialogDescription,
   TransitionRoot,
   TransitionChild,
 } from "@headlessui/vue";
 import type { HTMLAttributes } from "vue";
 import { type VariantProps, cva } from "class-variance-authority";
-import { cn } from "~/utils";
 
 // DESIGN STATUS:       ✴️
 //   * are translations actually working? there was a typo in the original code so we should test to make sure its actually correct. i see it animated but it might be sub-optimal
