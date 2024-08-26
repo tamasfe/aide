@@ -2,7 +2,8 @@
 import type { ButtonHTMLAttributes, HTMLAttributes } from "vue";
 import { type VariantProps, cva } from "class-variance-authority";
 
-// DESIGN STATUS:       ✅
+// DESIGN STATUS:       ✴️
+//   * show loading spinner instead of opacity change
 // ARCHITECTURE STATUS: ✅
 // TRANSLATION STATUS:  ✅
 
