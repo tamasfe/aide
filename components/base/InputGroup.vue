@@ -19,6 +19,8 @@ const props = withDefaults(defineProps<{
 }>(), {
   fieldType: "input",
 });
+
+const error = ref("this is an error");
 </script>
 
 <template>
@@ -47,6 +49,13 @@ const props = withDefaults(defineProps<{
       size="ghost"
       class="field"
     />
+
+    <div
+      v-if="error"
+      class="absolute bottom-1 right-2 text-sm whitespace-nowrap text-alert-error"
+    >
+      {{ error }}
+    </div>
   </div>
 </template>
 
