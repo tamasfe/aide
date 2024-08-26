@@ -11,12 +11,11 @@ import type { HTMLAttributes } from "vue";
 // ✴️  prefix/suffix
 // ✴️  maska (use mask prop already on this component)
 
-// NOTE there is the possibiility of this input being everything above
-// except floating labels. This is important because it causes the entire
-// input to no longer be "centered" in the middle, so things like dropcaps
-// wont look good with floating labels.... how to best handle this i havent thought about
-// but i suspect we need clever (non terrible/confusing) styling to account for both
-// i am also thinking this mode activates if passing "placeholder" and then any label will be ignored
+// NOTE this component needs to be refactored to support NON floating labels if placeholder="" is passed.
+// im unsure the best way to do this to minimize styling spaghetti... im almost slightly
+// tempted to rebuild the entire component except below... but much simpler ... but i will
+// just defer doing that yet. in the non floating version, the text always sits right in
+// the middle
 
 defineOptions({
   inheritAttrs: false,
@@ -49,6 +48,11 @@ setTimeout(() => {
         props.class,
       )"
     >
+      <slot
+        v-if="$slots.prefix"
+        name="prefix"
+      />
+
       <label
         v-if="label"
         class="label"
@@ -59,11 +63,6 @@ setTimeout(() => {
           class="opacity-50 inline-block ml-[5px] mt-[1px] align-top leading-[1rem] text-lg text-alert-error"
         >*</span>
       </label>
-
-      <slot
-        v-if="$slots.prefix"
-        name="prefix"
-      />
 
       <div class="w-full relative">
         <BaseInput
@@ -85,7 +84,7 @@ setTimeout(() => {
 
         <div
           v-if="errorPlacement === 'floating' && error"
-          class="absolute bottom-1 right-0 text-right text-sm whitespace-nowrap text-alert-error"
+          class="error absolute bottom-1 right-0"
         >
           {{ error }}
         </div>
@@ -99,7 +98,7 @@ setTimeout(() => {
 
     <div
       v-if="errorPlacement === 'below' && error"
-      class="text-right text-sm whitespace-nowrap text-alert-error"
+      class="error"
     >
       {{ error }}
     </div>
@@ -112,5 +111,8 @@ setTimeout(() => {
 }
 .field  {
   @apply h-[var(--giro-input-group-hidden-field-height)] w-full font-medium bg-transparent;
+}
+.error {
+  @apply text-right text-sm whitespace-nowrap text-alert-error;
 }
 </style>
