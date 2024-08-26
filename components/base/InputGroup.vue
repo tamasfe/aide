@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from "vue";
 
+// ARCHITECTURE TODO:
+// ✴️ anything using this component doesnt properly validate typescript which is bad
+
 // TODO
 // ✴️  floating label
 // ✴️  error (right aligned under input)

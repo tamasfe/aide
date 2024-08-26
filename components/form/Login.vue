@@ -4,8 +4,8 @@ const { t } = useI18n();
 // DESIGN STATUS:       ✅
 // ARCHITECTURE STATUS: ✅
 // TRANSLATION STATUS:  ✅
-// INPUTMODES:          ✅
 // AUTOCOMPLETES:       ✅
+// INPUTMODES:          ✅
 
 const error = ref("There was a problem");
 const loading = ref(false);
@@ -20,16 +20,17 @@ const loading = ref(false);
     />
 
     <BaseInputGroup
-      type="email"
       :label="t('field.email')"
       :required="true"
+      type="text"
       autocomplete="email"
+      inputmode="email"
     />
 
     <BaseInputGroup
-      type="password"
       :label="t('field.password')"
       :required="true"
+      type="password"
       autocomplete="current-password"
     />
 
