@@ -1,5 +1,6 @@
 <script setup lang="ts">
 // DESIGN STATUS: ✴️
+//   * TODO: the modal needs to be scrollable but currently isnt
 //   * while not a dealbreaker, there is some weirdness with the width of the left banner still shrinking instead of changing the modal height... maybe this ends up being fine though, im undecided which way
 // ARCHITECTURE STATUS: ✴️
 //   * I want banner/bannerLeft/bannerTop to be properly validated by typescript

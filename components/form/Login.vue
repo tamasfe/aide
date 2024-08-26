@@ -1,6 +1,12 @@
 <script setup lang="ts">
 const { t } = useI18n();
 
+// DESIGN STATUS:       ✅
+// ARCHITECTURE STATUS: ✅
+// TRANSLATION STATUS:  ✅
+// INPUTMODES:          ✅
+// AUTOCOMPLETES:       ✅
+
 const error = ref("There was a problem");
 const loading = ref(false);
 </script>
@@ -29,7 +35,7 @@ const loading = ref(false);
       <BaseButtonNew
         variant="ghost"
         size="ghost"
-        class="font-semibold text-subtle hover:text-subtle-light"
+        class="text-sm text-subtle hover:text-subtle-light"
       >
         {{ t("modal_auth.forgot_password") }}
       </BaseButtonNew>
@@ -50,7 +56,7 @@ const loading = ref(false);
       <BaseButtonNew
         variant="ghost"
         size="ghost"
-        class="font-semibold hover:underline"
+        class="text-primary hover:underline"
       >
         {{ t("modal_auth.create_free_account") }}
       </BaseButtonNew>

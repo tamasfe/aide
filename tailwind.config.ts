@@ -65,6 +65,7 @@ export default <Partial<Config>>{
         },
       },
       textColor: {
+        primary: "var(--giro-text-primary)",
         default: "var(--giro-text)",
         subtle: "var(--giro-text-subtle)",
         "subtle-light": "var(--giro-text-subtle-light)",
