@@ -9,6 +9,7 @@ import type { HTMLAttributes } from "vue";
 // ✴️  error (right aligned under input)
 // ✴️  jiggle animation on error
 // ✴️  prefix/suffix
+//      - currently suffix is in but clashes with error. maybe we can show error below input?
 // ✴️  maska (use mask prop already on this component)
 
 // NOTE there is the possibiility of this input being everything above

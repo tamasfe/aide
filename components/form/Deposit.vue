@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { SupportedCountryCode } from "@/types/constants";
+
 const { t } = useI18n();
 
 // DESIGN STATUS:       ✅
@@ -9,6 +11,8 @@ const { t } = useI18n();
 // ZOD SCHEMA:          ✴️
 
 const presetAmounts = ref([10, 50, 100]);
+const countryCode = ref<SupportedCountryCode>("BR");
+const currency = ref("BRL");
 
 const loading = ref(false);
 </script>
@@ -24,7 +28,14 @@ const loading = ref(false);
       :label="t('placeholder.deposit_amount')"
       autocomplete="text"
       inputmode="numeric"
-    />
+    >
+      <template #suffix>
+        <div class="ml-5 flex flex-row justify-center items-center gap-2 h-full">
+          <BaseFlag :country-code="countryCode" />
+          <div class="text-sm font-medium text-subtle-light">{{ currency }}</div>
+        </div>
+      </template>
+    </BaseInputGroup>
 
     <div class="flex flex-row gap-2">
       <BaseButtonNew

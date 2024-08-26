@@ -16,8 +16,7 @@ const flagVariants = cva(
   {
     variants: {
       size: {
-        sm: "",
-        md: "",
+        md: "w-[0.9rem] h-auto",
         lg: "",
       },
     },
@@ -58,52 +57,3 @@ const imageUrl = computed(() => images[props.countryCode]);
     <img :src="imageUrl">
   </div>
 </template>
-
-<style scoped>
-.flag {
-  display: inline-block;
-  overflow: hidden;
-  position: relative;
-  box-sizing: border-box;
-}
-.flag.border-radius::before {
-  content: "";
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  display: block;
-  mix-blend-mode: overlay;
-  box-sizing: border-box;
-  border-radius: 1px;
-}
-.flag img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-/* s */
-.flag.size-s {
-  width: 16px;
-  height: 12px;
-}
-.flag.size-s.border-radius {
-  border-radius: 1px;
-}
-/* m */
-.flag.size-m {
-  width: 20px;
-  height: 15px;
-}
-.flag.size-m.border-radius {
-  border-radius: 1.5px;
-}
-/* l */
-.flag.size-l {
-  width: 32px;
-  height: 24px;
-}
-.flag.size-l.border-radius {
-  border-radius: 2px;
-}
-</style>
