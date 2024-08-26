@@ -25,13 +25,15 @@ const loading = ref(false);
       autocomplete="current-password"
     />
 
-    <BaseButtonNew
-      variant="ghost"
-      size="ghost"
-      class="font-semibold text-subtle hover:text-subtle-light"
-    >
-      {{ t("modal_auth.forgot_password") }}
-    </BaseButtonNew>
+    <div class="mb-4 flex justify-end">
+      <BaseButtonNew
+        variant="ghost"
+        size="ghost"
+        class="font-semibold text-subtle hover:text-subtle-light"
+      >
+        {{ t("modal_auth.forgot_password") }}
+      </BaseButtonNew>
+    </div>
 
     <BaseButtonNew
       :loading="loading"
@@ -42,7 +44,7 @@ const loading = ref(false);
       {{ t("button.login") }}
     </BaseButtonNew>
 
-    <div class="text-sm text-subtle">
+    <div class="mt-4 text-center text-sm text-subtle">
       {{ t("modal_auth.dont_have_account") }}
 
       <BaseButtonNew
