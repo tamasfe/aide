@@ -24,7 +24,7 @@ const props = withDefaults(defineProps<{
 <template>
   <div
     :class="cn(
-      'flex flex-row relative h-[var(--giro-input-height)] rounded-default bg-subtle text-subtle',
+      'flex flex-row relative h-[var(--giro-field-height)] rounded-default bg-subtle text-subtle',
       props.class,
     )"
   >
@@ -54,9 +54,7 @@ const props = withDefaults(defineProps<{
 .label {
   @apply absolute left-5 top-1/2 -translate-y-1/2;
 }
-.label-active {
-}
 .field  {
-  @apply h-[30px] mx-5 w-full self-end bg-white/5;
+  @apply h-[var(--giro-input-group-hidden-field-height)] mx-5 w-full font-medium self-end bg-transparent;
 }
 </style>

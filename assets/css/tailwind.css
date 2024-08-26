@@ -74,7 +74,8 @@
 
   /* input */
 
-  --giro-input-height: 3.13rem;
+  --giro-field-height: 3.13rem;
+  --giro-input-group-hidden-field-height: 2.0rem;
 }
 
 @layer base {
