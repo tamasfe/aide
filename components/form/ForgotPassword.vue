@@ -1,56 +1,50 @@
 <script setup lang="ts">
-import * as zod from "zod";
-
 const { t } = useI18n();
 
-const validationSchema = toTypedSchema(
-  zod.object({
-    email: zod
-      .string()
-      .min(1, { message: t("validation.field_required") })
-      .email({ message: t("validation.enter_valid_email") }),
-  }),
-);
-const { handleSubmit, errors } = useForm({
-  validationSchema,
-});
-const { value: email } = useField("email");
+// DESIGN STATUS:       ✅
+// ARCHITECTURE STATUS: ✅
+// TRANSLATION STATUS:  ✅
+// AUTOCOMPLETES:       ✅
+// INPUTMODES:          ✅
+// ZOD SCHEMA:          ✴️
 
-const onSubmit = handleSubmit((values) => {
-  alert(JSON.stringify(values, null, 2));
-});
+const error = ref();
+const loading = ref(false);
 </script>
 
 <template>
-  <form
-    class="flex flex-col gap-4 w-full"
-    @submit="onSubmit"
-  >
-    <h2 class="text-2xl font-semibold">Forgot password?</h2>
-    <p class="text-lg text-emphasis">
-      Fill in your e-mail address and we will send you instructions on how to
-      reset your password via e-mail.
-    </p>
-    <div class="bg-success text-success p-4 rounded-default">
-      Password reset instructions have been sent to your email address.
-    </div>
-    <BaseInputGroup
-      v-model="email"
-      class="w-full"
-      type="email"
-      wrapper-class="bg-subtle text-lg"
-      input-class="font-semibold"
-      :title="t('email')"
-      :error="errors.email"
-      autocomplete="email"
+  <BaseForm>
+    <BaseAlert
+      v-if="error"
+      :message="error"
+      level="error"
     />
-    <BaseButton
-      variant="primary"
-      big
-      shadow
-      class="w-full inline-flex justify-center text-base sm:text-lg"
+
+    <BaseInputGroup
+      :label="t('field.email')"
+      autocomplete="email"
+      inputmode="email"
+    />
+
+    <BaseButtonNew
+      :loading="loading"
+      :disabled="loading"
+      size="xl"
+      class="w-full space-x-1.5"
     >
       {{ t("button.send_recovery_email") }}
-    </BaseButton>
-  </form>
+    </BaseButtonNew>
+
+    <div class="mt-6 text-center text-sm text-subtle">
+      {{ t("modal_auth.have_account") }}
+
+      <BaseButtonNew
+        variant="ghost"
+        size="ghost"
+        class="text-primary hover:underline"
+      >
+        {{ t("button.login") }}
+      </BaseButtonNew>
+    </div>
+  </BaseForm>
 </template>
