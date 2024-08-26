@@ -10,6 +10,7 @@ const loading = ref(false);
 <template>
   <BaseModal
     v-model:open="open"
+    :disabled="loading"
     banner="left"
     banner-left="/assets/images/wheel-2-vertical.png"
     banner-top="/assets/images/wheel-2.png"

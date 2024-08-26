@@ -60,7 +60,7 @@ const loading = ref(false);
       :loading="loading"
       variant="emphasis"
       size="xl"
-      class="mt-4 w-full"
+      class="mt-4 mb-2 w-full"
     >
       {{ t("button.deposit_now") }}
     </BaseButtonNew>

@@ -10,6 +10,7 @@ const loading = ref(false);
 <template>
   <BaseModal
     v-model:open="open"
+    :disabled="loading"
     banner="none"
   >
     <FormForgotPassword />

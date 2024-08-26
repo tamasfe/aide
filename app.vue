@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const modal = ref("deposit");
+const modal = ref("withdrawal");
 </script>
 
 <template>
