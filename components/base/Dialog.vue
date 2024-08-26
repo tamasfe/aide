@@ -27,7 +27,7 @@ const dialogVariants = cva(
         frosted: "bg-emphasis/85 backdrop-blur-lg",
       },
       size: {
-        md: "p-5 sm:max-w-[var(--giro-modal-default-max-width)] sm:min-h-[6rem] sm:self-center sm:justify-self-center sm:rounded-lg",
+        md: "p-5 sm:max-w-[var(--giro-modal-default-max-width)] sm:min-h-[6rem] sm:max-h-[95vh] sm:self-center sm:justify-self-center sm:rounded-lg",
       },
     },
     defaultVariants: {
