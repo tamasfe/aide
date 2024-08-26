@@ -2,11 +2,11 @@
 import type { HTMLAttributes } from "vue";
 
 // TODO
-// * floating label
-// * error (right aligned under input)
-// * jiggle animation on error
-// * font/end dropcaps
-// * maska
+// ✴️  floating label
+// ✴️  error (right aligned under input)
+// ✴️  jiggle animation on error
+// ✴️  font/end dropcaps
+// ✴️  maska
 
 defineOptions({
   inheritAttrs: false,
@@ -52,7 +52,7 @@ const error = ref("this is an error");
 
     <div
       v-if="error"
-      class="absolute bottom-1 right-2 text-sm whitespace-nowrap text-alert-error"
+      class="absolute bottom-1 right-2 text-right text-sm whitespace-nowrap text-alert-error"
     >
       {{ error }}
     </div>
