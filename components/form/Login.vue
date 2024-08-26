@@ -21,13 +21,13 @@ const loading = ref(false);
     />
 
     <BaseInputGroup
-      :label="t('field.email')"
+      :placeholder="t('field.email')"
       autocomplete="email"
       inputmode="email"
     />
 
     <BaseInputGroup
-      :label="t('field.password')"
+      :placeholder="t('field.password')"
       type="password"
       autocomplete="current-password"
     />

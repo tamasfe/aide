@@ -26,13 +26,14 @@ const loading = ref(false);
     </div>
 
     <BaseInputGroup
-      :label="t('placeholder.deposit_amount')"
+      :placeholder="t('placeholder.deposit_amount')"
       autocomplete="text"
       inputmode="numeric"
+      placeholder-placement="default"
       error-placement="below"
     >
       <template #suffix>
-        <div class="ml-5 flex flex-row justify-center items-center gap-2 h-full">
+        <div class="ml-5 flex flex-row justify-center items-center gap-1.5">
           <BaseFlag :country-code="countryCode" />
           <div class="text-sm font-medium text-subtle-light">{{ currency }}</div>
         </div>

@@ -21,7 +21,7 @@ const loading = ref(false);
     />
 
     <BaseInputGroup
-      :label="t('field.email')"
+      :placeholder="t('field.email')"
       autocomplete="email"
       inputmode="email"
     />

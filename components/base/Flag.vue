@@ -16,7 +16,7 @@ const flagVariants = cva(
   {
     variants: {
       size: {
-        md: "w-[0.9rem] h-auto",
+        md: "w-[1.8rem]",
         lg: "",
       },
     },
@@ -48,12 +48,11 @@ const imageUrl = computed(() => images[props.countryCode]);
 </script>
 
 <template>
-  <div
+  <img
     :class="cn(
       flagVariants({ size }),
       props.class,
     )"
+    :src="imageUrl"
   >
-    <img :src="imageUrl">
-  </div>
 </template>

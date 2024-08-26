@@ -24,25 +24,25 @@ const loading = ref(false);
     />
 
     <BaseInputGroup
-      :label="t('field.email')"
+      :placeholder="t('field.email')"
       autocomplete="email"
       inputmode="email"
     />
 
     <BaseInputGroup
-      :label="t('field.password')"
+      :placeholder="t('field.password')"
       type="password"
       autocomplete="new-password"
     />
 
     <BaseInputGroup
-      :label="t('field.cpf')"
+      :placeholder="t('field.cpf')"
       mask="###.###.###-##"
       inputmode="numeric"
     />
 
     <BaseInputGroup
-      :label="t('field.telephone')"
+      :placeholder="t('field.telephone')"
       mask="123"
       inputmode="numeric"
     />

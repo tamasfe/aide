@@ -27,7 +27,7 @@ type InputVariants = VariantProps<typeof inputVariants>;
 const props = withDefaults(defineProps<{
   variant?: InputVariants["variant"];
   size?: InputVariants["size"];
-  type: "text" | "password"; // "text" with X inputmode is preferred as we do our own validation
+  type?: "text" | "password"; // "text" with X inputmode is preferred as we do our own validation
   required?: boolean;
   disabled?: boolean;
   placeholder?: string;
