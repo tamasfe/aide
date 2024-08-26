@@ -9,7 +9,7 @@ import type { HTMLAttributes } from "vue";
 // ✴️  error (right aligned under input)
 // ✴️  jiggle animation on error
 // ✴️  font/end dropcaps
-// ✴️  maska
+// ✴️  maska (use mask prop already on this component)
 
 defineOptions({
   inheritAttrs: false,
@@ -17,10 +17,13 @@ defineOptions({
 
 const props = withDefaults(defineProps<{
   fieldType: "input" | "select";
+  required?: boolean;
+  mask?: string;
   label?: string;
   class?: HTMLAttributes["class"];
 }>(), {
   fieldType: "input",
+  required: true,
 });
 
 const error = ref("this is an error");
@@ -36,11 +39,18 @@ const error = ref("this is an error");
     <label
       v-if="label"
       class="label"
-    >{{ props.label }}</label>
+    >
+      <span>{{ props.label }}</span>
+      <span
+        v-if="required"
+        class="inline-block ml-[5px] mt-[1px] align-top leading-[1rem] text-lg text-alert-error"
+      >*</span>
+    </label>
 
     <BaseInput
       v-if="fieldType === 'input'"
       v-bind="$attrs"
+      :required="required"
       variant="ghost"
       size="ghost"
       class="field"
@@ -48,6 +58,7 @@ const error = ref("this is an error");
     <BaseSelect
       v-else-if="fieldType === 'select'"
       v-bind="$attrs"
+      :required="required"
       variant="ghost"
       size="ghost"
       class="field"
