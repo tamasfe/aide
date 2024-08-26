@@ -16,19 +16,6 @@
     "deposit_amount": "Deposit amount",
     "withdrawal_amount": "Withdrawal amount"
   },
-  "validation": {
-    "field_required": "Field is required",
-    "field_too_short": "Field is too short",
-    "enter_valid_phone": "Please enter a valid phone number",
-    "enter_valid_cpf": "Please enter a valid CPF",
-    "enter_valid_email": "Please enter a valid email",
-    "password_length": "Password must be at least 6 characters long",
-    "cpf_invalid_format": "Invalid CPF",
-    "cpf_taken": "This CPF is already in use",
-    "email_taken": "This email is already in use",
-    "min_deposit": "Minimum deposit is {amount}",
-    "max_deposit": "Maximum deposit is {amount}"
-  },
   "api_client": {
     "invalid_credentials": "Your email or password is incorrect",
     "signup_try_again": "An error occurred while trying to create your account. Please try again.",
@@ -65,6 +52,7 @@
   },
   "modal_payments": {
     "make_deposit": "Make a deposit",
+    "make_deposit_subtitle": "Add funds to your account",
     "completed_payment": "I completed the payment",
     "available_withdrawal": "Available to withdrawal"
   },
