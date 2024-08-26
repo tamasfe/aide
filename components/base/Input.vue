@@ -36,7 +36,6 @@ const props = withDefaults(defineProps<{
   class?: HTMLAttributes["class"];
 }>(), {
   type: "text",
-  placeholder: undefined,
   autocomplete: "on",
   autocorrect: "off",
   inputmode: "text",

@@ -12,22 +12,51 @@ defineOptions({
   inheritAttrs: false,
 });
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
+  fieldType: "input" | "select";
   label?: string;
   class?: HTMLAttributes["class"];
-}>();
+}>(), {
+  fieldType: "input",
+});
 </script>
 
 <template>
-  <div class="h-[var(--giro-input-height)] rounded-default bg-subtle text-subtle">
+  <div
+    :class="cn(
+      'flex flex-row relative h-[var(--giro-input-height)] rounded-default bg-subtle text-subtle',
+      props.class,
+    )"
+  >
+    <label
+      v-if="label"
+      class="label"
+    >{{ props.label }}</label>
+
     <BaseInput
+      v-if="fieldType === 'input'"
       v-bind="$attrs"
       variant="ghost"
       size="ghost"
-      :class="[
-        cn('w-full bg-transparent'),
-        props.class,
-      ]"
+      class="field"
+    />
+    <BaseSelect
+      v-else-if="fieldType === 'select'"
+      v-bind="$attrs"
+      variant="ghost"
+      size="ghost"
+      class="field"
     />
   </div>
 </template>
+
+<style scoped>
+.label {
+  @apply absolute left-5 top-1/2 -translate-y-1/2;
+}
+.label-active {
+}
+.field  {
+  @apply h-[30px] mx-5 w-full self-end bg-white/5;
+}
+</style>
