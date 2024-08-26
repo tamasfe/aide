@@ -33,7 +33,7 @@ const props = withDefaults(defineProps<{
 const error = ref<string | undefined>();
 setTimeout(() => {
   error.value = "This field is required";
-}, 5000);
+}, 10000);
 
 const fieldPlaceholder = computed(() => {
   if (props.placeholderPlacement === "floating") return undefined;

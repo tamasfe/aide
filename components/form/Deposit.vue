@@ -3,19 +3,17 @@ import type { SupportedCountryCode } from "@/types/constants";
 
 const { t } = useI18n();
 
-// DESIGN STATUS:       ✴️
-//   - currently the InputGroup only allows floating labels. we should set this to "placeholder" mode on this one, that way the text is in the center
+// DESIGN STATUS:       ✅
 // ARCHITECTURE STATUS: ✅
 // TRANSLATION STATUS:  ✅
 // AUTOCOMPLETES:       ✅
 // INPUTMODES:          ✅
 // ZOD SCHEMA:          ✴️
 
+const loading = ref(false);
 const presetAmounts = ref([10, 50, 100]);
 const countryCode = ref<SupportedCountryCode>("BR");
 const currency = ref("BRL");
-
-const loading = ref(false);
 </script>
 
 <template>
