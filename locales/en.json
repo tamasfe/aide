@@ -33,7 +33,8 @@
     "deposit": "Deposit",
     "deposit_now": "Deposit Now",
     "copy_code": "Copy Code ({remaining} Remaining)",
-    "withdraw": "Withdraw"
+    "withdraw": "Withdraw",
+    "go_back": "Go Back"
   },
   "mobile_nav": {
     "menu": "Menu",
@@ -55,7 +56,8 @@
     "completed_payment": "I completed the payment",
     "make_withdrawal": "Make a Withdrawal",
     "make_withdrawal_subtitle": "Withdraw funds from your account",
-    "available_withdraw": "Available to withdraw"
+    "available_withdraw": "Available to withdraw",
+    "limits": "limits"
   },
   "modal_cancel_registration": {
     "headline": "Are you sure you want to cancel registration?",
