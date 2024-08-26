@@ -51,7 +51,7 @@ const loading = ref(false);
       {{ t("button.login") }}
     </BaseButtonNew>
 
-    <div class="mt-4 text-center text-sm text-subtle">
+    <div class="mt-6 text-center text-sm text-subtle">
       {{ t("modal_auth.dont_have_account") }}
 
       <BaseButtonNew

@@ -26,7 +26,10 @@ const props = withDefaults(defineProps<{
   required: true,
 });
 
-const error = ref("this is an error");
+const error = ref<string | undefined>();
+setTimeout(() => {
+  error.value = "This field is required";
+}, 5000);
 </script>
 
 <template>

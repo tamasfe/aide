@@ -114,7 +114,7 @@ const open = computed({
 
 <style scoped>
 .logo {
-  @apply w-[9rem] self-center;
+  @apply mb-3 w-[9rem] self-center;
 }
 .banner-top {
   @apply w-full aspect-[100/37] object-cover sm:rounded-t-lg;
