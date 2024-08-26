@@ -8,8 +8,15 @@ import type { HTMLAttributes } from "vue";
 // ✴️  floating label
 // ✴️  error (right aligned under input)
 // ✴️  jiggle animation on error
-// ✴️  font/end dropcaps
+// ✴️  prefix/suffix
 // ✴️  maska (use mask prop already on this component)
+
+// NOTE there is the possibiility of this input being everything above
+// except floating labels. This is important because it causes the entire
+// input to no longer be "centered" in the middle, so things like dropcaps
+// wont look good with floating labels.... how to best handle this i havent thought about
+// but i suspect we need clever (non terrible/confusing) styling to account for both
+// i am also thinking this mode activates if passing "placeholder" and then any label will be ignored
 
 defineOptions({
   inheritAttrs: false,
@@ -35,7 +42,7 @@ setTimeout(() => {
 <template>
   <div
     :class="cn(
-      'flex flex-row relative h-[var(--giro-field-height)] rounded-default bg-subtle text-subtle',
+      'flex flex-row justify-center items-end px-5 relative h-[var(--giro-field-height)] rounded-default bg-subtle text-subtle',
       props.class,
     )"
   >
@@ -50,29 +57,36 @@ setTimeout(() => {
       >*</span>
     </label>
 
-    <BaseInput
-      v-if="fieldType === 'input'"
-      v-bind="$attrs"
-      :required="required"
-      variant="ghost"
-      size="ghost"
-      class="field"
-    />
-    <BaseSelect
-      v-else-if="fieldType === 'select'"
-      v-bind="$attrs"
-      :required="required"
-      variant="ghost"
-      size="ghost"
-      class="field"
-    />
+    <div class="w-full relative">
+      <BaseInput
+        v-if="fieldType === 'input'"
+        v-bind="$attrs"
+        :required="required"
+        variant="ghost"
+        size="ghost"
+        class="field"
+      />
+      <BaseSelect
+        v-else-if="fieldType === 'select'"
+        v-bind="$attrs"
+        :required="required"
+        variant="ghost"
+        size="ghost"
+        class="field"
+      />
 
-    <div
-      v-if="error"
-      class="absolute bottom-1 right-2 text-right text-sm whitespace-nowrap text-alert-error"
-    >
-      {{ error }}
+      <div
+        v-if="error"
+        class="absolute bottom-1 right-0 text-right text-sm whitespace-nowrap text-alert-error"
+      >
+        {{ error }}
+      </div>
     </div>
+
+    <slot
+      v-if="$slots.suffix"
+      name="suffix"
+    />
   </div>
 </template>
 
@@ -81,6 +95,6 @@ setTimeout(() => {
   @apply absolute left-5 top-1/2 -translate-y-1/2;
 }
 .field  {
-  @apply h-[var(--giro-input-group-hidden-field-height)] mx-5 w-full font-medium self-end bg-transparent;
+  @apply h-[var(--giro-input-group-hidden-field-height)] w-full font-medium bg-transparent;
 }
 </style>
