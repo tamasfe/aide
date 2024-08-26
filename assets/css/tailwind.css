@@ -9,6 +9,7 @@
   /* NOTE: this can be changed safely as it has been properly abstracted, assuming your design looks good at the larger size */
   --giro-container-max-width: 1272px;
   --giro-container-padding: 1rem;
+  --giro-modal-default-max-width: 30rem;
 
   /* background */
 

@@ -1,12 +1,5 @@
 <script setup lang="ts">
-// const modal = ref();
-// const modal = ref("login");
-const modal = ref("register");
-// const modal = ref("cancel_reg");
-// const modal = ref("forgot_password");
-// const modal = ref("invite");
-// const modal = ref("deposit");
-// const modal = ref("withdrawal");
+const modal = ref("login");
 </script>
 
 <template>
