@@ -43,7 +43,7 @@ const error = ref("this is an error");
       <span>{{ props.label }}</span>
       <span
         v-if="required"
-        class="inline-block ml-[5px] mt-[1px] align-top leading-[1rem] text-lg text-alert-error"
+        class="opacity-50 inline-block ml-[5px] mt-[1px] align-top leading-[1rem] text-lg text-alert-error"
       >*</span>
     </label>
 

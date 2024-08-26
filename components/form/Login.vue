@@ -6,6 +6,7 @@ const { t } = useI18n();
 // TRANSLATION STATUS:  ✅
 // AUTOCOMPLETES:       ✅
 // INPUTMODES:          ✅
+// ZOD SCHEMA:          ✴️
 
 const error = ref("There was a problem");
 const loading = ref(false);
@@ -21,15 +22,12 @@ const loading = ref(false);
 
     <BaseInputGroup
       :label="t('field.email')"
-      :required="true"
-      type="text"
       autocomplete="email"
       inputmode="email"
     />
 
     <BaseInputGroup
       :label="t('field.password')"
-      :required="true"
       type="password"
       autocomplete="current-password"
     />
