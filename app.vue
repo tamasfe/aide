@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const modal = ref("forgot_password");
+const modal = ref("invite");
 </script>
 
 <template>
@@ -17,9 +17,6 @@ const modal = ref("forgot_password");
     />
     <ModalCancelRegistration
       v-if="modal === 'cancel_reg'"
-    />
-    <ModalInvite
-      v-if="modal === 'invite'"
     />
     <ModalDeposit
       v-if="modal === 'deposit'"
