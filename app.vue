@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const modal = ref("invite");
+const modal = ref("deposit");
 </script>
 
 <template>

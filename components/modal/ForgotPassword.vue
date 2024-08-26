@@ -11,7 +11,6 @@ const loading = ref(false);
   <BaseModal
     v-model:open="open"
     :disabled="loading"
-    :close-on-click-outside="false"
     banner="none"
   >
     <FormForgotPassword />
