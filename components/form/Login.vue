@@ -22,12 +22,14 @@ const loading = ref(false);
     <BaseInputGroup
       type="email"
       :label="t('field.email')"
+      :required="true"
       autocomplete="email"
     />
 
     <BaseInputGroup
       type="password"
       :label="t('field.password')"
+      :required="true"
       autocomplete="current-password"
     />
 

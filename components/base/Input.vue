@@ -25,17 +25,19 @@ const inputVariants = cva(
 type InputVariants = VariantProps<typeof inputVariants>;
 
 const props = withDefaults(defineProps<{
-  type: InputHTMLAttributes["type"];
-  placeholder?: InputHTMLAttributes["placeholder"];
-  autocomplete?: InputHTMLAttributes["autocomplete"];
-  autocorrect?: InputHTMLAttributes["autocorrect"];
-  inputmode?: InputHTMLAttributes["inputmode"];
-  disabled?: boolean;
   variant?: InputVariants["variant"];
   size?: InputVariants["size"];
+  type: InputHTMLAttributes["type"];
+  required?: boolean;
+  disabled?: boolean;
+  placeholder?: string;
+  autocomplete?: InputHTMLAttributes["autocomplete"];
+  autocorrect?: "off";
+  inputmode?: "text" | "decimal" | "numeric" | "tel" | "search" | "email";
   class?: HTMLAttributes["class"];
 }>(), {
   type: "text",
+  required: false,
   autocomplete: "on",
   autocorrect: "off",
   inputmode: "text",
@@ -46,11 +48,12 @@ const props = withDefaults(defineProps<{
 <template>
   <input
     :type="type"
+    :required="required"
+    :disabled="disabled"
     :placeholder="placeholder"
     :autocomplete="autocomplete"
     :autocorrect="autocorrect"
     :inputmode="inputmode"
-    :disabled="disabled"
     :class="cn(
       inputVariants({ variant, size }),
       props.class,
