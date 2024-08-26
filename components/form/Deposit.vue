@@ -28,6 +28,7 @@ const loading = ref(false);
       :label="t('placeholder.deposit_amount')"
       autocomplete="text"
       inputmode="numeric"
+      error-placement="below"
     >
       <template #suffix>
         <div class="ml-5 flex flex-row justify-center items-center gap-2 h-full">

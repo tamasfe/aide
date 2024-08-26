@@ -9,7 +9,6 @@ import type { HTMLAttributes } from "vue";
 // ✴️  error (right aligned under input)
 // ✴️  jiggle animation on error
 // ✴️  prefix/suffix
-//      - currently suffix is in but clashes with error. maybe we can show error below input?
 // ✴️  maska (use mask prop already on this component)
 
 // NOTE there is the possibiility of this input being everything above
@@ -25,12 +24,14 @@ defineOptions({
 
 const props = withDefaults(defineProps<{
   fieldType: "input" | "select";
+  errorPlacement: "floating" | "below";
   required?: boolean;
   mask?: string;
   label?: string;
   class?: HTMLAttributes["class"];
 }>(), {
   fieldType: "input",
+  errorPlacement: "floating",
   required: true,
 });
 
@@ -41,53 +42,67 @@ setTimeout(() => {
 </script>
 
 <template>
-  <div
-    :class="cn(
-      'flex flex-row justify-center items-end px-5 relative h-[var(--giro-field-height)] rounded-default bg-subtle text-subtle',
-      props.class,
-    )"
-  >
-    <label
-      v-if="label"
-      class="label"
+  <div class="flex flex-col gap-0.5">
+    <div
+      :class="cn(
+        'flex flex-row justify-center items-end px-5 relative h-[var(--giro-field-height)] rounded-default bg-subtle text-subtle',
+        props.class,
+      )"
     >
-      <span>{{ props.label }}</span>
-      <span
-        v-if="required"
-        class="opacity-50 inline-block ml-[5px] mt-[1px] align-top leading-[1rem] text-lg text-alert-error"
-      >*</span>
-    </label>
-
-    <div class="w-full relative">
-      <BaseInput
-        v-if="fieldType === 'input'"
-        v-bind="$attrs"
-        :required="required"
-        variant="ghost"
-        size="ghost"
-        class="field"
-      />
-      <BaseSelect
-        v-else-if="fieldType === 'select'"
-        v-bind="$attrs"
-        :required="required"
-        variant="ghost"
-        size="ghost"
-        class="field"
-      />
-
-      <div
-        v-if="error"
-        class="absolute bottom-1 right-0 text-right text-sm whitespace-nowrap text-alert-error"
+      <label
+        v-if="label"
+        class="label"
       >
-        {{ error }}
+        <span>{{ props.label }}</span>
+        <span
+          v-if="required"
+          class="opacity-50 inline-block ml-[5px] mt-[1px] align-top leading-[1rem] text-lg text-alert-error"
+        >*</span>
+      </label>
+
+      <slot
+        v-if="$slots.prefix"
+        name="prefix"
+      />
+
+      <div class="w-full relative">
+        <BaseInput
+          v-if="fieldType === 'input'"
+          v-bind="$attrs"
+          :required="required"
+          variant="ghost"
+          size="ghost"
+          class="field"
+        />
+        <BaseSelect
+          v-else-if="fieldType === 'select'"
+          v-bind="$attrs"
+          :required="required"
+          variant="ghost"
+          size="ghost"
+          class="field"
+        />
+
+        <div
+          v-if="errorPlacement === 'floating' && error"
+          class="absolute bottom-1 right-0 text-right text-sm whitespace-nowrap text-alert-error"
+        >
+          {{ error }}
+        </div>
       </div>
+
+      <slot
+        v-if="$slots.suffix"
+        name="suffix"
+      />
     </div>
 
-    <slot
-      v-if="$slots.suffix"
-      name="suffix"
-    />
+    <div
+      v-if="errorPlacement === 'below' && error"
+      class="text-right text-sm whitespace-nowrap text-alert-error"
+    >
+      {{ error }}
+    </div>
   </div>
 </template>
 
