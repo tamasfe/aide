@@ -71,6 +71,7 @@
   "modal_restrict": {
     "expanding_headline": "Sorry, {blockedDomain} is not available within {country}",
     "expanding_body": "Unfortunately, at this time we don't have local deposit options for players from {country}. We're growing as fast as possible and looking to serve you as soon as we can. Check back soon to join the luckiest online casino in the world!",
+    "expanding_subject": "Add me to the waitlist in {country} for {blockedDomain}",
     "license_alternative_headline": "Go to {allowedDomain} for the Best Casino Experience in {country}",
     "license_alternative_body": "Due to the restrictions of our gaming license, the url {blockedDomain} cannot accept players located in {country}. However, we can provide you a full unrestricted experience on our dedicated {country} website at {allowedDomain}!",
     "license_no_alternative_headline": "Sorry, {blockedDomain} is not available within {country}",

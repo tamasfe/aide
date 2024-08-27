@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const { t } = useI18n();
 const open = ref(true);
 
 // DESIGN STATUS:       ✅
@@ -7,6 +8,14 @@ const open = ref(true);
 // TRANSLATION STATUS:  ✅
 const blockedDomain = ref("girobet.com");
 const country = ref("Brazil"); // request IP jurisdiction
+
+const onNotify = () => {
+  const domain = t("modal_restrict.expanding_subject", {
+    country: country.value,
+    blockedDomain: normalizeBrandDomain(blockedDomain.value),
+  });
+  window.location.href = `mailto:support@girobet.com?subject=${encodeURIComponent(domain)}`;
+};
 </script>
 
 <template>
@@ -32,6 +41,7 @@ const country = ref("Brazil"); // request IP jurisdiction
       <BaseButton
         size="xl"
         class="my-4 w-full"
+        @click="onNotify"
       >
         {{ $t("button.notify_me") }}
       </BaseButton>
