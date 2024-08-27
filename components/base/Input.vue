@@ -58,5 +58,6 @@ const props = withDefaults(defineProps<{
       inputVariants({ variant, size }),
       props.class,
     )"
+    value="https://example.com/74e2d323-63d6-4dc2-adce-711b889169f9/74e2d323-63d6-4dc2-adce-711b889169f9"
   >
 </template>

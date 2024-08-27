@@ -2,7 +2,8 @@
 import type { SupportedCountryCode } from "@/types/constants";
 
 // DESIGN STATUS:       ✅
-// ARCHITECTURE STATUS: ✅
+// ARCHITECTURE STATUS: ✴️
+//   * dynamic server validations for limits with zod (talk to Daniel)
 // TRANSLATION STATUS:  ✅
 // AUTOCOMPLETES:       ✅
 // INPUTMODES:          ✅

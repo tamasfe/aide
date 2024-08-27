@@ -1,6 +1,11 @@
 <script setup lang="ts">
-// DESIGN STATUS:       ✅
-// ARCHITECTURE STATUS: ✅
+// DESIGN STATUS:       ✴️
+//   * make every single part of the input/copy icon/button clickable to copy
+//   * the inputgroup should also be set to text-subtle... but i dont like adding tons of "input-class, icon-class blah blah blah"
+//   * after you style the color, the link should also be text-sm
+// ARCHITECTURE STATUS: ✴️
+//   * implement real countdown (see on bet7k what happens when it runs out)
+//   * G branded QR is VERY FUCKING COOL and adds a serious bit of chrome
 // TRANSLATION STATUS:  ✅
 // AUTOCOMPLETES:       ✅
 // INPUTMODES:          ✅
@@ -8,8 +13,8 @@
 </script>
 
 <template>
-  <BaseForm>
-    <div class="flex flex-row items-center justify-between">
+  <BaseForm class="gap-4 items-center">
+    <div class="w-full flex flex-row items-center justify-between">
       <div class="flex flex-row gap-2">
         <Icon
           name="lucide:arrow-left"
@@ -27,11 +32,44 @@
       />
     </div>
 
+    <NuxtImg
+      src="/assets/images/qr.png"
+      class="block w-[12rem] h-auto"
+    />
+
+    <div class="text-4xl font-bold bg-button-emphasis text-transparent bg-clip-text">R$ 100,00</div>
+
+    <div class="cursor-pointer w-full">
+      <BaseInputGroup
+        autocomplete="off"
+        placeholder-placement="default"
+        class="cursor-pointer"
+        :disabled="true"
+      >
+        <template #suffix>
+          <div class="ml-5 flex flex-row justify-center items-center">
+            <Icon
+              name="lucide:copy"
+              size="24"
+            />
+          </div>
+        </template>
+      </BaseInputGroup>
+    </div>
+
     <BaseButton
       size="xl"
       class="w-full"
     >
       {{ $t('button.copy_code', { remaining: '0:45' }) }}
+    </BaseButton>
+
+    <BaseButton
+      variant="ghost"
+      size="md"
+      class="my-4 text-subtle"
+    >
+      {{ $t("button.completed_payment") }}
     </BaseButton>
   </BaseForm>
 </template>

@@ -47,7 +47,7 @@ const fieldClass = computed(() => {
 </script>
 
 <template>
-  <div class="flex flex-col gap-0.5">
+  <div class="w-full flex flex-col gap-0.5">
     <div
       :class="cn(
         'flex flex-row px-5 relative h-[var(--giro-field-height)] rounded-default bg-subtle text-subtle',
