@@ -7,6 +7,8 @@
 
 const language = ref("");
 
+const year = ref(new Date().getFullYear());
+
 const scrollToTop = () => {
   window.scrollTo({ top: 0, behavior: "smooth" });
 };
@@ -32,8 +34,6 @@ const scrollToTop = () => {
         <BaseSelect
           v-model="language"
           :options="[]"
-          class="w-full md:w-max"
-          wrapper-class="!py-0"
         >
           <template #prefix>
             <BaseFlag
@@ -97,7 +97,7 @@ const scrollToTop = () => {
     <section class="giro__container relative w-full flex flex-col text-subtle">
       <div class="flex flex-col items-center space-y-5 md:space-y-8">
         <p class="max-w-[42rem] lg:max-w-[52rem] text-[0.7rem] sm:text-center">{{ $t("footer.legal_notice") }}</p>
-        <p class="text-center text-[0.82rem]">{{ $t("footer.copyright") }}</p>
+        <p class="text-center text-[0.82rem]">{{ $t("footer.copyright", { year }) }}</p>
       </div>
       <button
         type="button"
