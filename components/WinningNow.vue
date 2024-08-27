@@ -20,20 +20,27 @@
         v-for="id in 10"
         :key="id"
         to="TODO"
-        class="min-w-[18rem] flex flex-row items-center space-x-3 bg-subtle p-2 rounded-lg cursor-pointer outline-none"
       >
-        <div class="flex-shrink-0 rounded-[0.7rem]">
-          <NuxtImg
-            src="/assets/images/games/2.png"
-            alt=""
-            class="aspect-[300/350] w-full h-auto object-cover object-center rounded-default"
-          />
-        </div>
-        <div class="font-medium leading-tight space-y-1">
-          <div class="">Rui***</div>
-          <div class="text-subtle text-sm">Golden rush inferno</div>
-          <div class="sm:text-lg font-semibold bg-button-primary text-transparent bg-clip-text">R$ 32.14</div>
-        </div>
+        <span
+          class="min-w-[18rem] flex items-center space-x-3 bg-subtle p-2 rounded-lg outline-none"
+        >
+          <div class="flex-shrink-0 rounded-[0.7rem] w-[4.8rem]">
+            <NuxtImg
+              src="/assets/images/games/2.png"
+              alt=""
+              class="aspect-[300/350] w-full h-auto object-cover object-center rounded-default"
+            />
+          </div>
+          <div class="font-medium leading-tight space-y-1">
+            <div class="">Rui***</div>
+            <div class="text-subtle text-sm">Golden rush inferno</div>
+            <div
+              class="sm:text-lg font-semibold bg-button-primary text-transparent bg-clip-text"
+            >
+              R$ 32.14
+            </div>
+          </div>
+        </span>
       </NuxtLink>
     </div>
   </div>

@@ -10,6 +10,29 @@ const loading = ref(true);
 //   * just like game... this will come from the API
 // TRANSLATION STATUS:   ✅
 
+// TODO: not final, should be configured
+const scrollerOptions = {
+  slidesToScroll: {
+    sm: 1.5,
+    md: 2.5,
+    lg: 3,
+    xl: 3,
+  },
+  columns: {
+    sm: 1.7,
+    md: 2.7,
+    lg: 3.5,
+    xl: 3.5,
+  },
+  aspectRatio: {
+    sm: "4/1",
+    md: "6/1",
+    lg: "8/1",
+    xl: "8/1",
+  },
+  gap: 3,
+};
+
 onMounted(() => {
   setTimeout(() => {
     loading.value = false;
@@ -18,14 +41,18 @@ onMounted(() => {
 </script>
 
 <template>
-  <GridScroller
+  <WrapperGridScrollerInfinite
     :data="data"
     :show-controls="!isMobile"
     :loading="loading"
-    :slides-to-scroll="2"
+    :columns="scrollerOptions.columns"
+    :slides-to-scroll="scrollerOptions.slidesToScroll"
+    :gap="scrollerOptions.gap"
+    :aspect-ratio="scrollerOptions.aspectRatio"
+    :can-load-more="false"
   >
     <template #title>
-      <h2 class="text-xl sm:text-2xl">🏆 {{ $t('grid.providers') }}</h2>
+      <h2 class="text-xl sm:text-2xl">🏆 {{ $t("grid.providers") }}</h2>
     </template>
     <template #options>
       <NuxtLink to="TODO">
@@ -38,31 +65,22 @@ onMounted(() => {
       </NuxtLink>
     </template>
     <template #default="{ item: index }">
-      <div
-        class="basis-[calc((100%-2rem)/2.5)] sm:basis-[calc((100%-3rem)/3.5)] flex-shrink-0 w-full"
-      >
-        <div class="px-2 sm:px-8 space-y-4">
-          <div class="relative rounded-[0.7rem] overflow-hidden pt-[59.52%]">
-            <BaseSkeleton
-              :loading="loading"
-              class="absolute left-0 top-0 w-full h-full"
-            >
-              <NuxtImg
-                :src="`/assets/images/providers/${index}.png`"
-                alt=""
-                class="absolute top-1/2 left-1/2 w-full object-cover rounded-[0.7rem] transform -translate-x-1/2 -translate-y-1/2"
-              />
-            </BaseSkeleton>
-          </div>
-          <div class="w-full flex justify-center">
-            <p
-              class="py-1 px-2 bg-button-primary text-transparent bg-clip-text"
-            >
-              {{ $t("grid.game_count", { count: 69 }) }}
-            </p>
-          </div>
+      <div class="flex flex-col space-y-4 justify-between w-full h-full">
+        <div class="flex-1 rounded-[0.7rem] overflow-hidden">
+          <NuxtLink to="/TODO">
+            <NuxtImg
+              :src="`/assets/images/providers/${index}.png`"
+              alt=""
+              class="w-full h-full object-cover"
+            />
+          </NuxtLink>
+        </div>
+        <div class="w-full flex justify-center">
+          <p class="py-1 px-2 bg-button-primary text-transparent bg-clip-text">
+            {{ $t("grid.game_count", { count: 69 }) }}
+          </p>
         </div>
       </div>
     </template>
-  </GridScroller>
+  </WrapperGridScrollerInfinite>
 </template>

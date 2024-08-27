@@ -53,21 +53,23 @@ const handleTouchStart = (e: TouchEvent) => {
   container.value?.addEventListener("touchend", handleTouchEnd);
 };
 
+const onMutation = (list: MutationRecord[]) => {
+  if (!container.value) {
+    return;
+  }
+  for (const mutation of list) {
+    if (mutation.type === "childList") {
+      items.value = Array.from(container.value?.children) as HTMLElement[];
+    }
+  }
+};
+
 onMounted(() => {
   if (container.value) {
     items.value = Array.from(container.value.children) as HTMLElement[];
     container.value.addEventListener("touchstart", handleTouchStart);
 
-    const observer = new MutationObserver((list) => {
-      if (!container.value) {
-        return;
-      }
-      for (const mutation of list) {
-        if (mutation.type === "childList") {
-          items.value = Array.from(container.value?.children) as HTMLElement[];
-        }
-      }
-    });
+    const observer = new MutationObserver(onMutation);
 
     observer.observe(container.value, {
       childList: true,
@@ -98,15 +100,19 @@ const transform = () => {
     //   block: "nearest",
     //   inline: "start",
     // });
+    const gap = parseFloat(getComputedStyle(container.value).gap);
     container.value.style.transform = `translateX(-${
       currentIndex.value
       * items.value[currentIndex.value].getBoundingClientRect().width
+      + gap * currentIndex.value
     }px)`;
   }
 };
 
 const bottomControlColorClass = (index: number) =>
   index === currentIndex.value ? "bg-text-emphasis" : "bg-text-subtle";
+
+const hasMultipleSlides = computed(() => items.value.length > 1);
 
 watch(currentIndex, transform);
 
@@ -121,7 +127,7 @@ defineExpose({
 <template>
   <div class="relative">
     <slot
-      v-if="sideControls"
+      v-if="sideControls && hasMultipleSlides"
       name="controls"
     >
       <BaseButton
@@ -148,7 +154,7 @@ defineExpose({
       </BaseButton>
     </slot>
     <div
-      v-if="bottomControls"
+      v-if="bottomControls && hasMultipleSlides"
       class="absolute z-[2] left-1/2 bottom-3 transform -translate-x-1/2 flex items-center space-x-2"
     >
       <div
