@@ -27,7 +27,7 @@ const loading = ref(false);
     <BaseButton
       :loading="loading"
       size="xl"
-      class="w-full space-x-1.5"
+      class="mt-4 w-full space-x-1.5"
     >
       {{ $t("button.send_recovery_email") }}
     </BaseButton>

@@ -66,6 +66,14 @@
     "body": "Thousands of winners cash out every day with our quick withdrawals.",
     "cancel": "Yes, I want to cancel"
   },
+  "modal_restrict": {
+    "expanding_headline": "Regional Restrictions",
+    "expanding_body": "",
+    "alternative_headline": "Regional Restrictions",
+    "alternative_body": "",
+    "license_headline": "",
+    "license_body": ""
+  },
   "withdrawal_limits": {
     "summary": "For an easy, secure and simple withdraw process, make sure to follow these guidelines: The minimum withdrawal amount varies by method and is listed above. Withdrawals are always to be processed to the original deposit method unless otherwise specified or if that method doesn't support withdrawals."
   },

@@ -9,7 +9,8 @@ Turik
     * find dynamic way to load
     * load stuff from assets
     * delete junk in public
-  * fix animations (use tailwind animate?)
+  * fix animations
+    * use to fine tune everything? https://github.com/jamiebuilds/tailwindcss-animate/blob/main/docs/animation-play-state.md
     * other component cant remember has a comment about animation
     * drawer/modal anywhere there is animation
     * button animation fade (see comment)

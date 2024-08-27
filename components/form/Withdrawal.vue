@@ -66,7 +66,7 @@ const onToggleLimits = () => {
 
       <BaseButton
         :loading="loading"
-        variant="emphasis"
+        variant="primary"
         size="xl"
         class="mt-4 mb-2 w-full"
       >

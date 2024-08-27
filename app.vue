@@ -13,7 +13,7 @@ const modal = ref("deposit_confirm");
       v-if="modal === 'register'"
     />
     <ModalForgotPassword
-      v-if="modal === 'forgot_password'"
+      v-if="modal === 'forgot'"
     />
     <ModalCancelRegistration
       v-if="modal === 'cancel_reg'"
@@ -26,6 +26,15 @@ const modal = ref("deposit_confirm");
     />
     <ModalWithdrawal
       v-if="modal === 'withdrawal'"
+    />
+    <ModalRestrictExpanding
+      v-if="modal === 'restrict_expanding'"
+    />
+    <ModalRestrictAlternative
+      v-if="modal === 'restrict_alternative'"
+    />
+    <ModalRestrictLicense
+      v-if="modal === 'restrict_license'"
     />
 
     <NuxtLayout>
