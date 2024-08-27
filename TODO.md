@@ -1,13 +1,16 @@
 ### Refactor
 
 Turik
+  * floating label
+  * clean up tailwind variables
   * search source for all image sources and make them in assets (not in public), figure out better multiple loading images dynamically
     * find dynamic way to load
     * load stuff from assets
     * delete junk in public
   * fix animations (use tailwind animate?)
-  * floating label
-  * clean up tailwind variables
+    * other component cant remember has a comment about animation
+    * drawer/modal anywhere there is animation
+    * button animation fade (see comment)
 
 Todo
   * nuxt 4
