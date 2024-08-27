@@ -1,4 +1,6 @@
 <script setup lang="ts">
+const { t } = useI18n();
+
 // DESIGN STATUS:       ✅
 // ARCHITECTURE STATUS: ✅
 // TRANSLATION STATUS:  ✴️
@@ -14,11 +16,9 @@
     <div class="value">1/day</div>
     <div>Bets to Enable Withdrawal</div>
     <div class="value">1.7x</div>
-    <div>Minimum Withdrawal</div>
-    <div class="value">R$ 20</div>
   </div>
   <div class="flex flex-col">
-    <div class="leading-relaxed text-[0.78rem] text-subtle-light">When withdrawing funds from your account, please follow these rules to ensure a smooth and secure transaction process. The minimum withdrawal amount is specified on the website and may vary depending on the withdrawal method chosen. Withdrawals are processed only to the payment method originally used for depositing funds, unless otherwise specified or if the original method does not support withdrawals...</div>
+    <div class="leading-relaxed text-[0.78rem] text-subtle-light">{{ t('withdrawal_limits.summary') }}</div>
   </div>
 </template>
 
