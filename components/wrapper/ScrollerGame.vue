@@ -37,12 +37,12 @@ const onScroll = () => {
     </template>
     <template #options>
       <NuxtLink :to="`/categories/1`">
-        <BaseButtonNew
+        <BaseButton
           variant="subtle"
           size="sm"
         >
           {{ t("button.see_all") }}
-        </BaseButtonNew>
+        </BaseButton>
       </NuxtLink>
     </template>
     <template #default="{ item: n }">

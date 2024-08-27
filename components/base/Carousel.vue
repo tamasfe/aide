@@ -124,7 +124,7 @@ defineExpose({
       v-if="sideControls"
       name="controls"
     >
-      <BaseButtonNew
+      <BaseButton
         variant="ghost"
         size="ghost"
         class="absolute z-[2] left-2 top-1/2 transform -translate-y-1/2 p-4 outline-none opacity-70 hover:opacity-100"
@@ -134,8 +134,8 @@ defineExpose({
           name="lucide:chevron-left"
           size="38"
         />
-      </BaseButtonNew>
-      <BaseButtonNew
+      </BaseButton>
+      <BaseButton
         variant="ghost"
         size="ghost"
         class="absolute z-[2] right-2 top-1/2 transform -translate-y-1/2 p-4 outline-none opacity-70 hover:opacity-100"
@@ -145,7 +145,7 @@ defineExpose({
           name="lucide:chevron-right"
           size="38"
         />
-      </BaseButtonNew>
+      </BaseButton>
     </slot>
     <div
       v-if="bottomControls"
@@ -157,7 +157,7 @@ defineExpose({
         class="py-2 cursor-pointer giro__slide-dot-wrapper"
         @click="goto(index)"
       >
-        <BaseButtonNew
+        <BaseButton
           variant="ghost"
           size="ghost"
           class="w-8 md:w-12 h-1 rounded-full transition-colors duration-300 ease-in-out giro__slide-dot"

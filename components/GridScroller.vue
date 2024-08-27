@@ -129,7 +129,7 @@ const scrollToPosition = (target: number, duration: number) => {
           v-if="showControls && !loading"
           class="flex items-center gap-x-4 text-3xl font-bold cursor-pointer"
         >
-          <BaseButtonNew
+          <BaseButton
             variant="subtle"
             size="sm"
             class="p-1.5"
@@ -140,8 +140,8 @@ const scrollToPosition = (target: number, duration: number) => {
               name="lucide:chevron-left"
               size="24"
             />
-          </BaseButtonNew>
-          <BaseButtonNew
+          </BaseButton>
+          <BaseButton
             variant="subtle"
             size="sm"
             class="p-1.5"
@@ -152,7 +152,7 @@ const scrollToPosition = (target: number, duration: number) => {
               name="lucide:chevron-right"
               size="24"
             />
-          </BaseButtonNew>
+          </BaseButton>
         </div>
       </div>
       <slot name="options" />

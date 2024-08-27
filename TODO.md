@@ -4,6 +4,7 @@ Turik
   * search source for all image sources and make them in assets (not in public), figure out better multiple loading images dynamically
 
 Todo
+  * nuxt 4
   * add loading spinner to medium button
   * MASSIVELY refactor TW variables. remove fucking tailwind variables.....................
   * make all images load nicely, make some wrapper

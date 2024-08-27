@@ -30,12 +30,12 @@ onMounted(() => {
     </template>
     <template #options>
       <NuxtLink to="TODO">
-        <BaseButtonNew
+        <BaseButton
           variant="subtle"
           size="sm"
         >
           {{ t("button.see_all") }}
-        </BaseButtonNew>
+        </BaseButton>
       </NuxtLink>
     </template>
     <template #default="{ item: index }">

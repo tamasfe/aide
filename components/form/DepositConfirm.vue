@@ -29,11 +29,11 @@ const { t } = useI18n();
       />
     </div>
 
-    <BaseButtonNew
+    <BaseButton
       size="xl"
       class="w-full"
     >
       {{ t('button.copy_code', { remaining: '0:45' }) }}
-    </BaseButtonNew>
+    </BaseButton>
   </BaseForm>
 </template>

@@ -22,7 +22,7 @@ const items = [
     <div
       class="pt-2.5 px-4 pb-2 flex items-center justify-between"
     >
-      <BaseButtonNew
+      <BaseButton
         v-for="item in items"
         :key="item.text"
         variant="ghost"
@@ -35,7 +35,7 @@ const items = [
           size="24"
         />
         <div class="text-[0.8rem] text-subtle-light font-semibold">{{ t(item.text) }}</div>
-      </BaseButtonNew>
+      </BaseButton>
     </div>
   </div>
 </template>

@@ -40,7 +40,7 @@ const onToggle = () => {
         />
         <div class="w-full ml-4 text-[0.90rem] font-medium">{{ parent.title }}</div>
       </div>
-      <BaseButtonNew
+      <BaseButton
         variant="ghost"
         size="ghost"
         class="mr-2"
@@ -51,7 +51,7 @@ const onToggle = () => {
           size="24"
           class="text-subtle"
         />
-      </BaseButtonNew>
+      </BaseButton>
     </div>
     <div
       v-if="open"

@@ -26,24 +26,24 @@ const loading = ref(false);
       inputmode="email"
     />
 
-    <BaseButtonNew
+    <BaseButton
       :loading="loading"
       size="xl"
       class="w-full space-x-1.5"
     >
       {{ t("button.send_recovery_email") }}
-    </BaseButtonNew>
+    </BaseButton>
 
     <div class="mt-6 text-center text-sm text-subtle">
       {{ t("modal_auth.have_account") }}
 
-      <BaseButtonNew
+      <BaseButton
         variant="ghost"
         size="ghost"
         class="text-primary hover:underline"
       >
         {{ t("button.login") }}
-      </BaseButtonNew>
+      </BaseButton>
     </div>
   </BaseForm>
 </template>

@@ -3,7 +3,7 @@ const { t } = useI18n();
 
 // DESIGN STATUS:       ✴️
 //   * user icon size is stupid
-//   * ButtonNew might need to be overridden for md size (md size probably shouldnt change as it looks fine elsewhere just not in the menu)
+//   * Button might need to be overridden for md size (md size probably shouldnt change as it looks fine elsewhere just not in the menu)
 // ARCHITECTURE STATUS: ✅
 // TRANSLATION STATUS:  ✅
 
@@ -19,7 +19,7 @@ const authenticated = ref(true);
         class="giro__container flex items-center justify-between py-[0.525rem] sm:py-2"
       >
         <div class="flex items-center gap-x-8">
-          <BaseButtonNew
+          <BaseButton
             variant="ghost"
             size="ghost"
             class="hidden sm:block"
@@ -29,7 +29,7 @@ const authenticated = ref(true);
               size="30"
               class="text-subtle"
             />
-          </BaseButtonNew>
+          </BaseButton>
           <NuxtLink
             to="/"
             :class="[authenticated ? 'min-w-8 sm:min-w-[8.5rem]' : 'min-w-32 sm:min-w-[8.5rem]']"
@@ -44,34 +44,34 @@ const authenticated = ref(true);
 
         <div class="flex items-center space-x-[0.625rem] sm:space-x-4">
           <template v-if="!authenticated">
-            <BaseButtonNew
+            <BaseButton
               variant="secondary"
               class="h-9 md:h-10"
             >
               {{ t("button.login") }}
-            </BaseButtonNew>
-            <BaseButtonNew
+            </BaseButton>
+            <BaseButton
               variant="primary"
               class="h-9 md:h-10"
             >
               {{ t("button.register") }}
-            </BaseButtonNew>
+            </BaseButton>
           </template>
           <template v-else>
-            <BaseButtonNew
+            <BaseButton
               variant="secondary"
               class="h-9 md:h-10 space-x-1"
             >
               <div class="bg-button-primary text-transparent bg-clip-text">R$</div>
               <div class="text-white">69,50</div>
-            </BaseButtonNew>
+            </BaseButton>
 
-            <BaseButtonNew
+            <BaseButton
               variant="emphasis"
               class="h-9 md:h-10"
             >
               {{ t("button.deposit") }}
-            </BaseButtonNew>
+            </BaseButton>
 
             <NuxtLink class="text-subtle hover:text-emphasis cursor-pointer">
               <span class="block">

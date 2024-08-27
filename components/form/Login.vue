@@ -33,33 +33,33 @@ const loading = ref(false);
     />
 
     <div class="mb-4 flex justify-end">
-      <BaseButtonNew
+      <BaseButton
         variant="ghost"
         size="ghost"
         class="text-sm text-subtle hover:text-subtle-light"
       >
         {{ t("modal_auth.forgot_password") }}
-      </BaseButtonNew>
+      </BaseButton>
     </div>
 
-    <BaseButtonNew
+    <BaseButton
       :loading="loading"
       size="xl"
       class="w-full"
     >
       {{ t("button.login") }}
-    </BaseButtonNew>
+    </BaseButton>
 
     <div class="mt-6 text-center text-sm text-subtle">
       {{ t("modal_auth.dont_have_account") }}
 
-      <BaseButtonNew
+      <BaseButton
         variant="ghost"
         size="ghost"
         class="text-primary hover:underline"
       >
         {{ t("modal_auth.create_free_account") }}
-      </BaseButtonNew>
+      </BaseButton>
     </div>
   </BaseForm>
 </template>

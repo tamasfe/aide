@@ -24,20 +24,20 @@ const open = ref(true);
         {{ t("modal_cancel_registration.body") }}
       </div>
 
-      <BaseButtonNew
+      <BaseButton
         size="xl"
         class="mt-4 w-full"
       >
         {{ t("button.continue") }}
-      </BaseButtonNew>
+      </BaseButton>
 
-      <BaseButtonNew
+      <BaseButton
         variant="ghost"
         size="ghost"
         class="mt-6 text-center text-sm text-subtle hover:text-subtle-light"
       >
         {{ t("modal_cancel_registration.cancel") }}
-      </BaseButtonNew>
+      </BaseButton>
     </div>
   </BaseModal>
 </template>

@@ -66,25 +66,25 @@ const onToggleLimits = () => {
         <div class="text-subtle-light font-semibold">$R 42,069.00</div>
       </div>
 
-      <BaseButtonNew
+      <BaseButton
         :loading="loading"
         variant="emphasis"
         size="xl"
         class="mt-4 mb-2 w-full"
       >
         {{ t("button.withdraw") }}
-      </BaseButtonNew>
+      </BaseButton>
     </template>
     <template v-else>
       <InfoWithdrawalLimits />
 
-      <BaseButtonNew
+      <BaseButton
         variant="subtle"
         class="mt-2"
         @click="onToggleLimits"
       >
         {{ t("button.go_back") }}
-      </BaseButtonNew>
+      </BaseButton>
     </template>
   </BaseForm>
 </template>

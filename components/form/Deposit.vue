@@ -42,7 +42,7 @@ const currency = ref("BRL");
     </BaseInputGroup>
 
     <div class="flex flex-row gap-2">
-      <BaseButtonNew
+      <BaseButton
         v-for="(amount, index) in presetAmounts"
         :key="index"
         variant="subtle"
@@ -51,16 +51,16 @@ const currency = ref("BRL");
       >
         <div class="mr-1 bg-button-emphasis text-transparent bg-clip-text">R$</div>
         {{ amount }}
-      </BaseButtonNew>
+      </BaseButton>
     </div>
 
-    <BaseButtonNew
+    <BaseButton
       :loading="loading"
       variant="emphasis"
       size="xl"
       class="mt-4 mb-2 w-full"
     >
       {{ t("button.deposit_now") }}
-    </BaseButtonNew>
+    </BaseButton>
   </BaseForm>
 </template>

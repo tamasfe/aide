@@ -14,7 +14,7 @@ defineEmits(["close"]);
 </script>
 
 <template>
-  <BaseButtonNew
+  <BaseButton
     variant="ghost"
     size="ghost"
     :disabled="disabled"
@@ -29,5 +29,5 @@ defineEmits(["close"]);
       name="lucide:x"
       size="24"
     />
-  </BaseButtonNew>
+  </BaseButton>
 </template>

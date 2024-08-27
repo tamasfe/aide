@@ -46,7 +46,7 @@ const props = withDefaults(defineProps<{
       <div class="px-3 py-2 mr-10 text-[0.8rem] md:text-[0.9rem] font-medium leading-tight text-left">
         {{ t("promo_bar.refer") }}
       </div>
-      <BaseButtonNew
+      <BaseButton
         variant="ghost"
         size="ghost"
         class="p-2 absolute right-1"
@@ -55,7 +55,7 @@ const props = withDefaults(defineProps<{
           name="lucide:x"
           size="20"
         />
-      </BaseButtonNew>
+      </BaseButton>
     </div>
   </Transition>
 </template>
