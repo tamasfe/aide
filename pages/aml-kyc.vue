@@ -148,7 +148,7 @@
       <p>Withdrawals must be made by the same method as the deposit. If the deposit method does not allow withdrawals, these must be made by bank transfer.</p>
 
       <p><strong>Verification of Identity:</strong></p>
-      <p>For the first withdrawal request, players should send an email to <a href="mailto@support@girobet.com">support@GiroBet.com</a> with:</p>
+      <p>For the first withdrawal request, players should send an email to <a href="mailto:support@girobet.com">support@GiroBet.com</a> with:</p>
       <ul>
         <li>Document of identity with photo and date of birth</li>
         <li>Proof of address</li>
