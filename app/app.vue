@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const modal = ref("restrict_expanding");
+const modal = ref("register");
 </script>
 
 <template>
