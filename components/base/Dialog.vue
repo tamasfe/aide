@@ -24,7 +24,7 @@ const dialogVariants = cva(
   {
     variants: {
       variant: {
-        frosted: "bg-emphasis/85 backdrop-blur-lg",
+        frosted: "bg-emphasis/85 backdrop-blur-2xl",
       },
       size: {
         md: "p-5 sm:max-w-[var(--giro-modal-default-max-width)] sm:min-h-[6rem] sm:max-h-[95vh] sm:self-center sm:justify-self-center sm:rounded-lg",

@@ -115,7 +115,7 @@ const open = computed({
             v-bind="positionTransition"
           >
             <DialogPanel
-              class="bg-emphasis/85 backdrop-blur-lg rounded-default p-4 flex flex-col gap-4 h-full"
+              class="bg-emphasis/85 backdrop-blur-2xl rounded-default p-4 flex flex-col gap-4 h-full"
               v-bind="$attrs"
             >
               <BaseClose
