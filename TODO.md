@@ -2,6 +2,8 @@
 
 Turik
   * search source for all image sources and make them in assets (not in public), figure out better multiple loading images dynamically
+  * fix animations (use tailwind animate?)
+  * floating label
 
 Todo
   * nuxt 4

@@ -3,7 +3,6 @@
 //   * close button ideally should float and not scroll
 //   * if a banner is present (left or top) we need to show bg on close thats semi-transparent black
 //   * the flexbox on this could probably be improved... its sort of close however. top/none work fine, but "left" is kind of a doozie
-//   * while not a dealbreaker, there is some weirdness with the width of the left banner still shrinking instead of changing the modal height... maybe this ends up being fine though, im undecided which way
 // ARCHITECTURE STATUS: ✴️
 //   * I want banner/bannerLeft/bannerTop to be properly validated by typescript
 // TRANSLATION STATUS:  ✅
