@@ -24,7 +24,7 @@
     "@vueuse/core": "^11.0.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
-    "maska": "^3.0.1",
+    "maska": "^3.0.2",
     "nuxt": "^3.13.0",
     "pathe": "^1.1.2",
     "pinia": "^2.2.2",
@@ -34,7 +34,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@nuxt/eslint": "^0.5.2",
+    "@nuxt/eslint": "^0.5.3",
     "@nuxt/test-utils": "^3.14.1",
     "@nuxtjs/device": "^3.1.1",
     "@nuxtjs/i18n": "^8.5.1",
