@@ -35,7 +35,9 @@
     "copy_code": "Copy Code ({remaining} Remaining)",
     "completed_payment": "I completed the payment",
     "withdraw": "Withdraw",
-    "go_back": "Go Back"
+    "go_back": "Go Back",
+    "take_me_to": "Take me to {domain}",
+    "notify_me": "Notify Me When Available"
   },
   "mobile_nav": {
     "menu": "Menu",
@@ -67,12 +69,12 @@
     "cancel": "Yes, I want to cancel"
   },
   "modal_restrict": {
-    "expanding_headline": "Regional Restrictions",
-    "expanding_body": "",
-    "alternative_headline": "Regional Restrictions",
-    "alternative_body": "",
-    "license_headline": "",
-    "license_body": ""
+    "expanding_headline": "Sorry, {blockedDomain} is not available within {country}",
+    "expanding_body": "Unfortunately, at this time we don't have local deposit options for players from {country}. We're growing as fast as possible and looking to serve you as soon as we can. Check back soon to join the luckiest online casino in the world!",
+    "license_alternative_headline": "Go to {allowedDomain} for the Best Casino Experience in {country}",
+    "license_alternative_body": "Due to the restrictions of our gaming license, the url {blockedDomain} cannot accept players located in {country}. However, we can provide you a full unrestricted experience on our dedicated {country} website at {allowedDomain}!",
+    "license_no_alternative_headline": "Sorry, {blockedDomain} is not available within {country}",
+    "license_no_alternative_body": "Due to the restrictions of our gaming license, the url {blockedDomain} cannot accept players located in {country}. If you think this is a mistake, please check your connection or with your ISP. We apologize for the inconvenience and hope to serve you in the near future."
   },
   "withdrawal_limits": {
     "summary": "For an easy, secure and simple withdraw process, make sure to follow these guidelines: The minimum withdrawal amount varies by method and is listed above. Withdrawals are always to be processed to the original deposit method unless otherwise specified or if that method doesn't support withdrawals."

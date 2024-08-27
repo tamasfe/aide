@@ -19,22 +19,18 @@ const country = ref("Brazil"); // request IP jurisdiction
   >
     <div class="flex flex-col items-center gap-4">
       <h1 class="text-2xl font-semibold text-center">
-        {{ $t("modal_restrict.expanding_headline", {
+        {{ $t("modal_restrict.license_no_alternative_headline", {
           country,
           blockedDomain: normalizeBrandDomain(blockedDomain),
         }) }}
       </h1>
 
       <div class="mb-4 text-emphasis text-center">
-        {{ $t("modal_restrict.expanding_body", { country }) }}
+        {{ $t("modal_restrict.license_no_alternative_body", {
+          country,
+          blockedDomain: normalizeBrandDomain(blockedDomain),
+        }) }}
       </div>
-
-      <BaseButton
-        size="xl"
-        class="my-4 w-full"
-      >
-        {{ $t("button.notify_me") }}
-      </BaseButton>
     </div>
   </BaseModal>
 </template>

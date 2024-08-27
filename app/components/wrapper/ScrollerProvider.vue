@@ -76,7 +76,7 @@ onMounted(() => {
           </NuxtLink>
         </div>
         <div class="w-full flex justify-center">
-          <p class="py-1 px-2 bg-button-primary text-transparent bg-clip-text">
+          <p class="py-1 px-2 font-medium bg-button-primary text-transparent bg-clip-text">
             {{ $t("grid.game_count", { count: 69 }) }}
           </p>
         </div>

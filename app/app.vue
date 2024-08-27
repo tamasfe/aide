@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const modal = ref("deposit_confirm");
+const modal = ref("restrict_expanding");
 </script>
 
 <template>
@@ -30,11 +30,11 @@ const modal = ref("deposit_confirm");
     <ModalRestrictExpanding
       v-if="modal === 'restrict_expanding'"
     />
-    <ModalRestrictAlternative
-      v-if="modal === 'restrict_alternative'"
+    <ModalRestrictLicenseAlternative
+      v-if="modal === 'restrict_license_alternative'"
     />
-    <ModalRestrictLicense
-      v-if="modal === 'restrict_license'"
+    <ModalRestrictLicenseNoAlternative
+      v-if="modal === 'restrict_license_no_alternative'"
     />
 
     <NuxtLayout>

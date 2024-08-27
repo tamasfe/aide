@@ -6,6 +6,7 @@ const open = ref(true);
 //   * we need to load the appropriate domain
 // TRANSLATION STATUS:  ✅
 const blockedDomain = ref("girobet.com");
+const allowedDomain = ref("giro.vip");
 const country = ref("Brazil"); // request IP jurisdiction
 </script>
 
@@ -19,21 +20,27 @@ const country = ref("Brazil"); // request IP jurisdiction
   >
     <div class="flex flex-col items-center gap-4">
       <h1 class="text-2xl font-semibold text-center">
-        {{ $t("modal_restrict.expanding_headline", {
+        {{ $t("modal_restrict.license_alternative_headline", {
           country,
-          blockedDomain: normalizeBrandDomain(blockedDomain),
+          allowedDomain: normalizeBrandDomain(allowedDomain),
         }) }}
       </h1>
 
-      <div class="mb-4 text-emphasis text-center">
-        {{ $t("modal_restrict.expanding_body", { country }) }}
+      <div class="text-emphasis text-center">
+        {{ $t("modal_restrict.license_alternative_body", {
+          country,
+          blockedDomain: normalizeBrandDomain(blockedDomain),
+          allowedDomain: normalizeBrandDomain(allowedDomain),
+        }) }}
       </div>
 
       <BaseButton
         size="xl"
         class="my-4 w-full"
       >
-        {{ $t("button.notify_me") }}
+        {{ $t("button.take_me_to", {
+          domain: normalizeBrandDomain(allowedDomain),
+        }) }}
       </BaseButton>
     </div>
   </BaseModal>
