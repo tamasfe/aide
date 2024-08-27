@@ -12,6 +12,7 @@ Turik
     * other component cant remember has a comment about animation
     * drawer/modal anywhere there is animation
     * button animation fade (see comment)
+  * refactor / clean up your existing components
 
 Todo
   * nuxt 4
