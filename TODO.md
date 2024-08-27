@@ -2,8 +2,12 @@
 
 Turik
   * search source for all image sources and make them in assets (not in public), figure out better multiple loading images dynamically
+    * find dynamic way to load
+    * load stuff from assets
+    * delete junk in public
   * fix animations (use tailwind animate?)
   * floating label
+  * clean up tailwind variables
 
 Todo
   * nuxt 4
@@ -14,10 +18,9 @@ Todo
   * remove bg-text-emphasis bullshit (and the other bg-text one) and also remove it from carousel when hes done refactoring that
   * layouts (all the margins/paddings on pages... finalize them all so we have solid sections/layouts/normalized paddings across layouts/app.vue/pages)
   * disable animation for signup/login/modals like bet7k (make it optional)
-  * all pages
+  * all pages (other folders)
   * finalize game grid # of columns @ different screen sizes
   * replace all @phosphor-icons/vue
-  * delete public images junk folder
 
 
 ### Components
