@@ -1,6 +1,4 @@
 <script setup lang="ts">
-const { t } = useI18n();
-
 // DESIGN STATUS:       ✴️
 //   * icon / user color is a little too similar, might need a new CSS var
 // ARCHITECTURE STATUS: ✅
@@ -34,7 +32,7 @@ const items = [
           class="text-subtle"
           size="24"
         />
-        <div class="text-[0.8rem] text-subtle-light font-semibold">{{ t(item.text) }}</div>
+        <div class="text-[0.8rem] text-subtle-light font-semibold">{{ $t(item.text) }}</div>
       </BaseButton>
     </div>
   </div>

@@ -1,6 +1,4 @@
 <script setup lang="ts">
-const { t } = useI18n();
-
 // DESIGN STATUS:       ✅
 // ARCHITECTURE STATUS: ✅
 // TRANSLATION STATUS:  ✅
@@ -21,7 +19,7 @@ const loading = ref(false);
     />
 
     <BaseInputGroup
-      :placeholder="t('field.email')"
+      :placeholder="$t('field.email')"
       autocomplete="email"
       inputmode="email"
     />
@@ -31,18 +29,18 @@ const loading = ref(false);
       size="xl"
       class="w-full space-x-1.5"
     >
-      {{ t("button.send_recovery_email") }}
+      {{ $t("button.send_recovery_email") }}
     </BaseButton>
 
     <div class="mt-6 text-center text-sm text-subtle">
-      {{ t("modal_auth.have_account") }}
+      {{ $t("modal_auth.have_account") }}
 
       <BaseButton
         variant="ghost"
         size="ghost"
         class="text-primary hover:underline"
       >
-        {{ t("button.login") }}
+        {{ $t("button.login") }}
       </BaseButton>
     </div>
   </BaseForm>

@@ -4,8 +4,6 @@
 //   * locale must be properly handled via props/pinia not as a static variable
 // TRANSLATION STATUS:  ✅
 
-const { t } = useI18n();
-
 const locale = ref("pt-BR");
 
 const telegramUrl = computed(() => {
@@ -47,7 +45,7 @@ const links = [
 <template>
   <div class="flex flex-col">
     <h3 class="hidden lg:block text-lg text-center text-emphasis font-semibold">
-      {{ t("footer.social_media") }}
+      {{ $t("footer.social_media") }}
     </h3>
     <div class="mt-8 md:mt-0 flex space-x-4 lg:space-x-2 justify-evenly md:justify-start">
       <NuxtLink

@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from "vue";
 
-const { t } = useI18n();
-
 const props = withDefaults(defineProps<{
   disabled?: boolean;
   class?: HTMLAttributes["class"];
@@ -24,7 +22,7 @@ defineEmits(["close"]);
     )"
     @click="$emit('close')"
   >
-    <span class="sr-only">{{ t('i18n.close') }}</span>
+    <span class="sr-only">{{ $t('i18n.close') }}</span>
     <Icon
       name="lucide:x"
       size="24"

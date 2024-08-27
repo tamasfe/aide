@@ -5,8 +5,6 @@
 //   * logo should be refactored out like the <AppHeader> component
 // TRANSLATION STATUS:  ✅
 
-const { t } = useI18n();
-
 const language = ref("");
 
 const scrollToTop = () => {
@@ -30,7 +28,7 @@ const scrollToTop = () => {
             class="w-full object-cover"
           />
         </div>
-        <p class="text-[0.82rem]">{{ t("footer.summary") }}</p>
+        <p class="text-[0.82rem]">{{ $t("footer.summary") }}</p>
         <BaseSelect
           v-model="language"
           :options="[]"
@@ -61,30 +59,30 @@ const scrollToTop = () => {
         class="md:hidden"
       />
       <FooterColumn
-        :title="t('footer.popular')"
+        :title="$t('footer.popular')"
         :links="[
-          { title: t('page.aviator'), to: 'TODO' },
-          { title: t('page.slots'), to: 'TODO' },
-          { title: t('page.live_casino'), to: 'TODO' },
+          { title: $t('page.aviator'), to: 'TODO' },
+          { title: $t('page.slots'), to: 'TODO' },
+          { title: $t('page.live_casino'), to: 'TODO' },
         ]"
       />
       <FooterColumn
-        :title="t('footer.girobet')"
+        :title="$t('footer.girobet')"
         :links="[
-          { title: t('page.affiliate_program'), to: '/affiliate-program' },
-          { title: t('page.faq'), to: '/faq' },
-          { title: t('page.support'), to: '/support' },
-          { title: t('page.telegram'), to: 'TODO' },
+          { title: $t('page.affiliate_program'), to: '/affiliate-program' },
+          { title: $t('page.faq'), to: '/faq' },
+          { title: $t('page.support'), to: '/support' },
+          { title: $t('page.telegram'), to: 'TODO' },
         ]"
       />
       <FooterColumn
-        :title="t('footer.legal')"
+        :title="$t('footer.legal')"
         :links="[
-          { title: t('page.betting_terms'), to: '/betting-terms' },
-          { title: t('page.terms'), to: '/terms' },
-          { title: t('page.privacy'), to: '/privacy' },
-          { title: t('page.aml_kyc'), to: '/aml-kyc' },
-          { title: t('page.responsible_gaming'), to: '/responsible-gaming' },
+          { title: $t('page.betting_terms'), to: '/betting-terms' },
+          { title: $t('page.terms'), to: '/terms' },
+          { title: $t('page.privacy'), to: '/privacy' },
+          { title: $t('page.aml_kyc'), to: '/aml-kyc' },
+          { title: $t('page.responsible_gaming'), to: '/responsible-gaming' },
         ]"
       />
       <FooterColumnSocialMedia
@@ -98,8 +96,8 @@ const scrollToTop = () => {
     <!-- legal -->
     <section class="giro__container relative w-full flex flex-col text-subtle">
       <div class="flex flex-col items-center space-y-5 md:space-y-8">
-        <p class="max-w-[42rem] lg:max-w-[52rem] text-[0.7rem] sm:text-center">{{ t("footer.legal_notice") }}</p>
-        <p class="text-center text-[0.82rem]">{{ t("footer.copyright") }}</p>
+        <p class="max-w-[42rem] lg:max-w-[52rem] text-[0.7rem] sm:text-center">{{ $t("footer.legal_notice") }}</p>
+        <p class="text-center text-[0.82rem]">{{ $t("footer.copyright") }}</p>
       </div>
       <button
         type="button"

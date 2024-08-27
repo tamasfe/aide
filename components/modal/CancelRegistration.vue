@@ -1,6 +1,4 @@
 <script setup lang="ts">
-const { t } = useI18n();
-
 const open = ref(true);
 
 // DESIGN STATUS:       ✅
@@ -17,18 +15,18 @@ const open = ref(true);
   >
     <div class="flex flex-col items-center gap-2">
       <h1 class="text-xl font-semibold text-center">
-        {{ t("modal_cancel_registration.headline") }}
+        {{ $t("modal_cancel_registration.headline") }}
       </h1>
 
       <div class="text-emphasis text-base text-center">
-        {{ t("modal_cancel_registration.body") }}
+        {{ $t("modal_cancel_registration.body") }}
       </div>
 
       <BaseButton
         size="xl"
         class="mt-4 w-full"
       >
-        {{ t("button.continue") }}
+        {{ $t("button.continue") }}
       </BaseButton>
 
       <BaseButton
@@ -36,7 +34,7 @@ const open = ref(true);
         size="ghost"
         class="mt-6 text-center text-sm text-subtle hover:text-subtle-light"
       >
-        {{ t("modal_cancel_registration.cancel") }}
+        {{ $t("modal_cancel_registration.cancel") }}
       </BaseButton>
     </div>
   </BaseModal>

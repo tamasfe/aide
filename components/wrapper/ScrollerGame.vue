@@ -8,7 +8,6 @@
 //   * SEO stuffbelow
 // TRANSLATION STATUS:   ✴️
 
-const { t } = useI18n();
 const { isMobile } = useDevice();
 const data = ref<unknown[]>(Array.from({ length: 10 }, (_, i) => i + 1));
 const loading = ref(true);
@@ -41,7 +40,7 @@ const onScroll = () => {
           variant="subtle"
           size="sm"
         >
-          {{ t("button.see_all") }}
+          {{ $t("button.see_all") }}
         </BaseButton>
       </NuxtLink>
     </template>

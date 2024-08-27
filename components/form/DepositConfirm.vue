@@ -1,6 +1,4 @@
 <script setup lang="ts">
-const { t } = useI18n();
-
 // DESIGN STATUS:       ✅
 // ARCHITECTURE STATUS: ✅
 // TRANSLATION STATUS:  ✅
@@ -18,8 +16,8 @@ const { t } = useI18n();
           size="20"
         />
         <div class="mb-2 leading-snug">
-          <h2 class="text-xl font-semibold">{{ t('modal_payments.finalize_deposit') }}</h2>
-          <h3 class="text-sm font-medium text-subtle">{{ t('modal_payments.finalize_deposit_subtitle') }}</h3>
+          <h2 class="text-xl font-semibold">{{ $t('modal_payments.finalize_deposit') }}</h2>
+          <h3 class="text-sm font-medium text-subtle">{{ $t('modal_payments.finalize_deposit_subtitle') }}</h3>
         </div>
       </div>
       <NuxtImg
@@ -33,7 +31,7 @@ const { t } = useI18n();
       size="xl"
       class="w-full"
     >
-      {{ t('button.copy_code', { remaining: '0:45' }) }}
+      {{ $t('button.copy_code', { remaining: '0:45' }) }}
     </BaseButton>
   </BaseForm>
 </template>

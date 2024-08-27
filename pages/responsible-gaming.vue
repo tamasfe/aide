@@ -1,11 +1,7 @@
-<script setup lang="ts">
-const { t } = useI18n();
-</script>
-
 <template>
   <div>
     <AppPage
-      :title="t('page.responsible_gaming')"
+      :title="$t('page.responsible_gaming')"
       version="1.0"
       date="August 20, 2024"
     >

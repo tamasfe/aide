@@ -1,11 +1,7 @@
-<script setup lang="ts">
-const { t } = useI18n();
-</script>
-
 <template>
   <div>
     <AppPage
-      :title="t('page.terms')"
+      :title="$t('page.terms')"
       version="1.0"
       date="August 20, 2024"
     >

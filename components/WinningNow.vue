@@ -4,8 +4,6 @@
 //   * not done
 // TRANSLATION STATUS:  ✴️
 //   * not done
-
-const { t } = useI18n();
 </script>
 
 <template>
@@ -14,7 +12,7 @@ const { t } = useI18n();
       <div class="mb-2 leading-none text-5xl">🏆</div>
       <div
         class="text-sm sm:text-base leading-tight bg-button-primary text-transparent bg-clip-text font-semibold"
-        v-html="t('winning_now.title', { br: '<br>' })"
+        v-html="$t('winning_now.title', { br: '<br>' })"
       />
     </h3>
     <div class="no-scrollbar flex-1 flex items-center gap-2 overflow-x-auto">

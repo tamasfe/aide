@@ -3,8 +3,6 @@
 // ARCHITECTURE STATUS: ✅
 // TRANSLATION STATUS:  ✅
 
-const { t } = useI18n();
-
 defineProps<{
   title: string;
   version?: string;
@@ -20,8 +18,8 @@ defineProps<{
       v-if="version || date"
       class="mb-8 text-lg space-y-1"
     >
-      <div v-if="version"><span class="text-emphasis font-medium">{{ t('legal.version') }}:</span> {{ version }}</div>
-      <div v-if="date"><span class="text-emphasis font-medium">{{ t('legal.updated') }}:</span> {{ date }}</div>
+      <div v-if="version"><span class="text-emphasis font-medium">{{ $t('legal.version') }}:</span> {{ version }}</div>
+      <div v-if="date"><span class="text-emphasis font-medium">{{ $t('legal.updated') }}:</span> {{ date }}</div>
     </div>
 
     <div class="text-subtle leading-6 md:leading-7">

@@ -1,6 +1,4 @@
 <script setup lang="ts">
-const { t } = useI18n();
-
 // DESIGN STATUS:       ✅
 // ARCHITECTURE STATUS: ✴️
 //   * currently shows CPF for all jurisdictions and it needs to be BR only
@@ -24,37 +22,37 @@ const loading = ref(false);
     />
 
     <BaseInputGroup
-      :placeholder="t('field.email')"
+      :placeholder="$t('field.email')"
       autocomplete="email"
       inputmode="email"
     />
 
     <BaseInputGroup
-      :placeholder="t('field.password')"
+      :placeholder="$t('field.password')"
       type="password"
       autocomplete="new-password"
     />
 
     <BaseInputGroup
-      :placeholder="t('field.cpf')"
+      :placeholder="$t('field.cpf')"
       mask="###.###.###-##"
       inputmode="numeric"
     />
 
     <BaseInputGroup
-      :placeholder="t('field.telephone')"
+      :placeholder="$t('field.telephone')"
       mask="123"
       inputmode="numeric"
     />
 
     <div class="my-2 text-sm text-center text-subtle">
-      {{ t("modal_auth.accept_terms") }}
+      {{ $t("modal_auth.accept_terms") }}
       <NuxtLink
         to="/terms"
         target="_blank"
         class="font-semibold hover:text-subtle-light"
       >
-        {{ t("page.terms") }}
+        {{ $t("page.terms") }}
       </NuxtLink>
     </div>
 
@@ -63,7 +61,7 @@ const loading = ref(false);
       size="xl"
       class="w-full space-x-1.5"
     >
-      <span>{{ t("button.create_account") }}</span>
+      <span>{{ $t("button.create_account") }}</span>
       <Icon
         name="lucide:arrow-right"
         size="20"
@@ -71,14 +69,14 @@ const loading = ref(false);
     </BaseButton>
 
     <div class="mt-6 text-center text-sm text-subtle">
-      {{ t("modal_auth.have_account") }}
+      {{ $t("modal_auth.have_account") }}
 
       <BaseButton
         variant="ghost"
         size="ghost"
         class="text-primary hover:underline"
       >
-        {{ t("button.login") }}
+        {{ $t("button.login") }}
       </BaseButton>
     </div>
   </BaseForm>

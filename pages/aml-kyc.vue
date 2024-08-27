@@ -1,11 +1,7 @@
-<script setup lang="ts">
-const { t } = useI18n();
-</script>
-
 <template>
   <div>
     <AppPage
-      :title="t('page.aml_policy')"
+      :title="$t('page.aml_policy')"
       version="1.0"
       date="August 20, 2024"
     >
@@ -177,7 +173,7 @@ const { t } = useI18n();
     </AppPage>
 
     <AppPage
-      :title="t('page.kyc_policy')"
+      :title="$t('page.kyc_policy')"
       version="1.0"
       date="August 20, 2024"
     >

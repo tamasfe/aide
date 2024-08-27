@@ -57,7 +57,7 @@
 <!--           </div> -->
 <!--           <div class="flex flex-col space-y-4 w-full"> -->
 <!--             <h1 class="text-base xl:text-lg font-bold text-center"> -->
-<!--               {{ t("play.login_to_play") }} -->
+<!--               {{ $t("play.login_to_play") }} -->
 <!--             </h1> -->
 <!--             <div class="flex space-x-4 w-full"> -->
 <!--               <BaseButton -->
@@ -66,7 +66,7 @@
 <!--                 type="button" -->
 <!--                 @click="emit('click:login', $event)" -->
 <!--               > -->
-<!--                 {{ t("button.login") }} -->
+<!--                 {{ $t("button.login") }} -->
 <!--               </BaseButton> -->
 <!--               <!-- temporary fix --> -->
 <!--               <div class="mb-[0.35rem] flex-1"> -->
@@ -78,7 +78,7 @@
 <!--                   type="button" -->
 <!--                   @click="emit('click:register', $event)" -->
 <!--                 > -->
-<!--                   {{ t("button.register") }} -->
+<!--                   {{ $t("button.register") }} -->
 <!--                 </BaseButton> -->
 <!--               </div> -->
 <!--             </div> -->
@@ -95,7 +95,7 @@
 <!--         > -->
 <!--           <h3 class="text-lg font-bold">Potion Spells</h3> -->
 <!--           <p class="text-subtle-light"> -->
-<!--             {{ t("play.by_provider", { provider: "TODO" }) }} -->
+<!--             {{ $t("play.by_provider", { provider: "TODO" }) }} -->
 <!--           </p> -->
 <!--         </div> -->
 <!--         <div -->
@@ -108,7 +108,7 @@
 <!--             <div> -->
 <!--               <PhWhatsappLogo :size="26" /> -->
 <!--             </div> -->
-<!--             <p>{{ t("play.share") }}</p> -->
+<!--             <p>{{ $t("play.share") }}</p> -->
 <!--           </button> -->
 <!--           <button -->
 <!--             type="button" -->

@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import type { SupportedCountryCode } from "@/types/constants";
 
-const { t } = useI18n();
-
 // DESIGN STATUS:       ✅
 // ARCHITECTURE STATUS: ✅
 // TRANSLATION STATUS:  ✅
@@ -19,12 +17,12 @@ const currency = ref("BRL");
 <template>
   <BaseForm>
     <div class="mb-2 leading-snug">
-      <h2 class="text-xl font-semibold">{{ t('modal_payments.make_deposit') }}</h2>
-      <h3 class="text-sm font-medium text-subtle">{{ t('modal_payments.make_deposit_subtitle') }}</h3>
+      <h2 class="text-xl font-semibold">{{ $t('modal_payments.make_deposit') }}</h2>
+      <h3 class="text-sm font-medium text-subtle">{{ $t('modal_payments.make_deposit_subtitle') }}</h3>
     </div>
 
     <BaseInputGroup
-      :placeholder="t('placeholder.deposit_amount')"
+      :placeholder="$t('placeholder.deposit_amount')"
       autocomplete="text"
       inputmode="numeric"
       placeholder-placement="default"
@@ -60,7 +58,7 @@ const currency = ref("BRL");
       size="xl"
       class="mt-4 mb-2 w-full"
     >
-      {{ t("button.deposit_now") }}
+      {{ $t("button.deposit_now") }}
     </BaseButton>
   </BaseForm>
 </template>

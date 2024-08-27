@@ -6,8 +6,6 @@ import { type VariantProps, cva } from "class-variance-authority";
 // ARCHITECTURE STATUS: ✅
 // TRANSLATION STATUS:  ✅
 
-const { t } = useI18n();
-
 const open = ref(true);
 
 const promoBarVariants = cva(
@@ -44,7 +42,7 @@ const props = withDefaults(defineProps<{
       )"
     >
       <div class="px-3 py-2 mr-10 text-[0.8rem] md:text-[0.9rem] font-medium leading-tight text-left">
-        {{ t("promo_bar.refer") }}
+        {{ $t("promo_bar.refer") }}
       </div>
       <BaseButton
         variant="ghost"

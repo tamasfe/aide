@@ -1,6 +1,4 @@
 <script setup lang="ts">
-const { t } = useI18n();
-
 // DESIGN STATUS:       ✴️
 //   * user icon size is stupid
 //   * Button might need to be overridden for md size (md size probably shouldnt change as it looks fine elsewhere just not in the menu)
@@ -48,13 +46,13 @@ const authenticated = ref(true);
               variant="secondary"
               class="h-9 md:h-10"
             >
-              {{ t("button.login") }}
+              {{ $t("button.login") }}
             </BaseButton>
             <BaseButton
               variant="primary"
               class="h-9 md:h-10"
             >
-              {{ t("button.register") }}
+              {{ $t("button.register") }}
             </BaseButton>
           </template>
           <template v-else>
@@ -70,7 +68,7 @@ const authenticated = ref(true);
               variant="emphasis"
               class="h-9 md:h-10"
             >
-              {{ t("button.deposit") }}
+              {{ $t("button.deposit") }}
             </BaseButton>
 
             <NuxtLink class="text-subtle hover:text-emphasis cursor-pointer">

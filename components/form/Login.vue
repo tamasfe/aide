@@ -1,6 +1,4 @@
 <script setup lang="ts">
-const { t } = useI18n();
-
 // DESIGN STATUS:       ✅
 // ARCHITECTURE STATUS: ✅
 // TRANSLATION STATUS:  ✅
@@ -21,13 +19,13 @@ const loading = ref(false);
     />
 
     <BaseInputGroup
-      :placeholder="t('field.email')"
+      :placeholder="$t('field.email')"
       autocomplete="email"
       inputmode="email"
     />
 
     <BaseInputGroup
-      :placeholder="t('field.password')"
+      :placeholder="$t('field.password')"
       type="password"
       autocomplete="current-password"
     />
@@ -38,7 +36,7 @@ const loading = ref(false);
         size="ghost"
         class="text-sm text-subtle hover:text-subtle-light"
       >
-        {{ t("modal_auth.forgot_password") }}
+        {{ $t("modal_auth.forgot_password") }}
       </BaseButton>
     </div>
 
@@ -47,18 +45,18 @@ const loading = ref(false);
       size="xl"
       class="w-full"
     >
-      {{ t("button.login") }}
+      {{ $t("button.login") }}
     </BaseButton>
 
     <div class="mt-6 text-center text-sm text-subtle">
-      {{ t("modal_auth.dont_have_account") }}
+      {{ $t("modal_auth.dont_have_account") }}
 
       <BaseButton
         variant="ghost"
         size="ghost"
         class="text-primary hover:underline"
       >
-        {{ t("modal_auth.create_free_account") }}
+        {{ $t("modal_auth.create_free_account") }}
       </BaseButton>
     </div>
   </BaseForm>

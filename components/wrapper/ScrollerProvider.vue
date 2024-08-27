@@ -1,5 +1,4 @@
 <script setup lang="ts">
-const { t } = useI18n();
 const { isMobile } = useDevice();
 const data = ref<unknown[]>(Array.from({ length: 4 }, (_, i) => i + 1));
 const loading = ref(true);
@@ -26,7 +25,7 @@ onMounted(() => {
     :slides-to-scroll="2"
   >
     <template #title>
-      <h2 class="text-xl sm:text-2xl">🏆 {{ t('grid.providers') }}</h2>
+      <h2 class="text-xl sm:text-2xl">🏆 {{ $t('grid.providers') }}</h2>
     </template>
     <template #options>
       <NuxtLink to="TODO">
@@ -34,7 +33,7 @@ onMounted(() => {
           variant="subtle"
           size="sm"
         >
-          {{ t("button.see_all") }}
+          {{ $t("button.see_all") }}
         </BaseButton>
       </NuxtLink>
     </template>
@@ -59,7 +58,7 @@ onMounted(() => {
             <p
               class="py-1 px-2 bg-button-primary text-transparent bg-clip-text"
             >
-              {{ t("grid.game_count", { count: 69 }) }}
+              {{ $t("grid.game_count", { count: 69 }) }}
             </p>
           </div>
         </div>
