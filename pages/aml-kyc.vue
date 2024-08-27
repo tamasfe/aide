@@ -7,7 +7,7 @@
     >
       <h4>Objective of the Policy</h4>
 
-      <p>girobet.com is fully committed to being constantly vigilant to prevent money laundering and combat the financing of terrorism in order to minimize and manage risks such as reputational risk, legal risk, and regulatory risk. It is also committed to its social duty to prevent serious crime and not to allow its systems to be abused in furtherance of these crimes. The company will endeavor to keep itself updated with developments both at national and international levels on any initiatives to prevent money laundering and the financing of terrorism. It commits itself to protect, at all times, the organization, its operations, and its reputation from the threat of money laundering, the funding of terrorism, and other criminal activities.</p>
+      <p>GiroBet.com is fully committed to being constantly vigilant to prevent money laundering and combat the financing of terrorism in order to minimize and manage risks such as reputational risk, legal risk, and regulatory risk. It is also committed to its social duty to prevent serious crime and not to allow its systems to be abused in furtherance of these crimes. The company will endeavor to keep itself updated with developments both at national and international levels on any initiatives to prevent money laundering and the financing of terrorism. It commits itself to protect, at all times, the organization, its operations, and its reputation from the threat of money laundering, the funding of terrorism, and other criminal activities.</p>
 
       <h4>Obligations</h4>
       <p><strong>Appoint a Money Laundering Reporting Officer (MLRO):</strong></p>
@@ -32,7 +32,7 @@
       <p>Systems will be in place to record all transactions for an account, which will be subject to regular and continual checks against fraud and social responsibility indicators.</p>
 
       <p><strong>High-Risk Customer Monitoring:</strong></p>
-      <p>girobet.com will maintain a register of customers identified as high risk or politically exposed. These accounts will be subject to greater scrutiny and frequent checks.</p>
+      <p>GiroBet.com will maintain a register of customers identified as high risk or politically exposed. These accounts will be subject to greater scrutiny and frequent checks.</p>
 
       <p><strong>Staff Investigations:</strong></p>
       <p>In cases of illegal or inappropriate behavior by staff, investigatory and disciplinary procedures will follow those outlined in staff contracts, with potential for suspension in cases such as transactional fraud.</p>
@@ -65,7 +65,7 @@
       <p>Examine with special attention, and to the extent possible, the background and purpose of any complex or large transactions, especially those likely to be related to money laundering or the funding of terrorism.</p>
 
       <p><strong>Account Termination:</strong></p>
-      <p>girobet.com may terminate Accounts with immediate effect and retain all account funds in the event of credible suspicion of fraudulent activity.</p>
+      <p>GiroBet.com may terminate Accounts with immediate effect and retain all account funds in the event of credible suspicion of fraudulent activity.</p>
 
       <p><strong>Suspicious Activity Reporting:</strong></p>
       <p>Report any suspicion or knowledge of money laundering or terrorist financing to the Financial Intelligence Analysis Unit (FIAU).</p>
@@ -125,7 +125,7 @@
 
       <h4>Customer Declaration</h4>
 
-      <p>The customer declares and expressly guarantees that all the amounts deposited and used to participate in girobet.com remote online games come from legitimate sources and are not connected with any fraudulent activity, money laundering, or illicit activities. girobet.com reserves the right to take any steps it considers necessary to comply with these requirements, including supervising any transfer of funds and retaining all a customer’s funds if they derive from or are related to illicit or fraudulent activities.</p>
+      <p>The customer declares and expressly guarantees that all the amounts deposited and used to participate in GiroBet.com remote online games come from legitimate sources and are not connected with any fraudulent activity, money laundering, or illicit activities. girobet.com reserves the right to take any steps it considers necessary to comply with these requirements, including supervising any transfer of funds and retaining all a customer’s funds if they derive from or are related to illicit or fraudulent activities.</p>
 
       <h4>Deposit and Withdrawal Procedures</h4>
 
@@ -139,7 +139,7 @@
       <p>It is the customer’s responsibility to check if their bank imposes any fees on transfers.</p>
 
       <p><strong>Verification of Payment Account:</strong></p>
-      <p>The client must be the holder of the payment account provided to girobet.com.</p>
+      <p>The client must be the holder of the payment account provided to GiroBet.com.</p>
 
       <p><strong>Account Balance Management:</strong></p>
       <p>The total balance of the player account includes Casino Balance, Real Sportsbook Balance, Casino Bonus Balance, and Sportsbook Bonus Balance. The existence of two wallets does not change the behavior of the account during withdrawal requests.</p>
@@ -148,7 +148,7 @@
       <p>Withdrawals must be made by the same method as the deposit. If the deposit method does not allow withdrawals, these must be made by bank transfer.</p>
 
       <p><strong>Verification of Identity:</strong></p>
-      <p>For the first withdrawal request, players should send an email to support@girobet.com with:</p>
+      <p>For the first withdrawal request, players should send an email to <a href="mailto@support@girobet.com">support@GiroBet.com</a> with:</p>
       <ul>
         <li>Document of identity with photo and date of birth</li>
         <li>Proof of address</li>
@@ -156,11 +156,11 @@
       </ul>
 
       <p><strong>Account Usage:</strong></p>
-      <p>The Player Account shall not be used as a bank account. In cases of deposits or withdrawals without gaming activity, girobet.com reserves the right to request explanations before transferring the withdrawal request.</p>
+      <p>The Player Account shall not be used as a bank account. In cases of deposits or withdrawals without gaming activity, GiroBet.com reserves the right to request explanations before transferring the withdrawal request.</p>
 
       <h4>Politically Exposed Persons (PEP)</h4>
 
-      <p>European guidelines regarding “The Prevention of Laundering the Proceeds from Criminal Activity (Money Laundering) and Terrorism Financing” entered into effect, changing the definition of a politically exposed person. girobet.com is obliged by law to identify which clients/beneficiaries should be considered politically exposed persons, their family members, or close associates.</p>
+      <p>European guidelines regarding “The Prevention of Laundering the Proceeds from Criminal Activity (Money Laundering) and Terrorism Financing” entered into effect, changing the definition of a politically exposed person. GiroBet.com is obliged by law to identify which clients/beneficiaries should be considered politically exposed persons, their family members, or close associates.</p>
       <p>A PEP is defined as a person who holds or has held a prominent public position in a country of the European Union or European Economic Area or a third country.</p>
       <p>Family members of a PEP include:</p>
       <ul>
@@ -181,7 +181,7 @@
 
       <h4>Policy Guidelines</h4>
       <p><strong>Right to Request KYC Documentation:</strong></p>
-      <p>The Company reserves the right to request any KYC documentation at any time to determine the identity and location of a user on girobet.com.</p>
+      <p>The Company reserves the right to request any KYC documentation at any time to determine the identity and location of a user on GiroBet.com.</p>
 
       <p><strong>Restrict Service or Payment:</strong></p>
       <p>Service, payment, or withdrawal may be restricted until identity is sufficiently determined or for any other reason based on the legal framework.</p>

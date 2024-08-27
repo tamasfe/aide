@@ -35,6 +35,9 @@ defineProps<{
 :deep(strong) {
   @apply font-semibold;
 }
+:deep(a) {
+  @apply text-emphasis hover:underline;
+}
 :deep(h4) {
   @apply my-6 text-[1.2rem] font-semibold text-emphasis;
 }

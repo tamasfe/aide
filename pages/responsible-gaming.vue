@@ -5,7 +5,7 @@
       version="1.0"
       date="August 20, 2024"
     >
-      <p>girobet.com is here to provide an excellent and enjoyable gaming experience and recognizes its responsibility in preventing problematic activity. Players are advised to take into account the following and not game irresponsibly:</p>
+      <p>GiroBet.com is here to provide an excellent and enjoyable gaming experience and recognizes its responsibility in preventing problematic activity. Players are advised to take into account the following and not game irresponsibly:</p>
 
       <ul>
         <li>Play for entertainment, not to make money.</li>
@@ -42,7 +42,7 @@
 
       <h4>Underage Gambling</h4>
 
-      <p>Players must be of legal gambling age in their jurisdiction (at least 18+) in order to play at girobet.com. It is their responsibility to be aware of the age restriction where they reside and play, and to confirm their legitimacy when creating an account at girobet.com.</p>
+      <p>Players must be of legal gambling age in their jurisdiction (at least 18+) in order to play at GiroBet.com. It is their responsibility to be aware of the age restriction where they reside and play, and to confirm their legitimacy when creating an account at girobet.com.</p>
       <p>Parents are advised to:</p>
       <ul>
         <li>Password protect computer, mobile, and/or tablet.</li>
