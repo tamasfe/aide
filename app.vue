@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const modal = ref("withdrawal");
+const modal = ref("deposit_confirm");
 </script>
 
 <template>
@@ -20,6 +20,9 @@ const modal = ref("withdrawal");
     />
     <ModalDeposit
       v-if="modal === 'deposit'"
+    />
+    <ModalDepositConfirm
+      v-if="modal === 'deposit_confirm'"
     />
     <ModalWithdrawal
       v-if="modal === 'withdrawal'"

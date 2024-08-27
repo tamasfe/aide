@@ -53,6 +53,8 @@
   "modal_payments": {
     "make_deposit": "Make a Deposit",
     "make_deposit_subtitle": "Add funds to your account",
+    "finalize_deposit": "Finalize Deposit",
+    "finalize_deposit_subtitle": "Scan the QR code",
     "completed_payment": "I completed the payment",
     "make_withdrawal": "Make a Withdrawal",
     "make_withdrawal_subtitle": "Withdraw funds from your account",

@@ -3,7 +3,8 @@ import type { SupportedCountryCode } from "@/types/constants";
 
 const { t } = useI18n();
 
-// DESIGN STATUS:       ✅
+// DESIGN STATUS:       ✴️
+//   - finish withdrawal cpf fields just like on bet7k (ignore design)
 // ARCHITECTURE STATUS: ✅
 // TRANSLATION STATUS:  ✅
 // AUTOCOMPLETES:       ✅
