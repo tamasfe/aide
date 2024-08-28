@@ -18,7 +18,7 @@ const max = computed(() => {
 </script>
 
 <template>
-  <div class="flex flex-col gap-y-4 sm:gap-y-8 py-2">
+  <div class="flex flex-col">
     <div
       class="flex flex-col gap-y-4 sm:flex-row sm:items-center sm:justify-between"
     >

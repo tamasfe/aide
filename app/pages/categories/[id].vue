@@ -32,53 +32,49 @@ const getImageId = (idx: number) => {
 </script>
 
 <template>
-  <div>
-    <CarouselHero />
-
-    <div class="giro__container giro__section">
-      <div class="grid grid-cols-1 gap-8">
-        <GridCategory
-          :data="data"
-          :max="60"
-        >
-          <template #title>
-            <h3 class="text-[1.268rem] xl:text-[1.137rem] font-bold">
-              🔥 Top Games
-            </h3>
-          </template>
-          <template #options>
-            <BaseSelect
-              v-model="provider"
-              :options="providers"
-              class="text-emphasis min-w-full sm:min-w-40"
-              wrapper-class="sm:py-0"
-              input-class="!text-emphasis !font-semibold"
-            />
-          </template>
-          <template #default="{ data: datapoint }">
-            <div
-              class="relative bg-subtle rounded-default overflow-hidden pt-[134.26%]"
+  <NuxtLayout name="carousel">
+    <div class="giro__container giro__sections">
+      <GridCategory
+        :data="data"
+        :max="60"
+      >
+        <template #title>
+          <h3 class="text-[1.268rem] xl:text-[1.137rem] font-bold">
+            🔥 Top Games
+          </h3>
+        </template>
+        <template #options>
+          <BaseSelect
+            v-model="provider"
+            :options="providers"
+            class="text-emphasis min-w-full sm:min-w-40"
+            wrapper-class="sm:py-0"
+            input-class="!text-emphasis !font-semibold"
+          />
+        </template>
+        <template #default="{ data: datapoint }">
+          <div
+            class="relative bg-subtle rounded-default overflow-hidden pt-[134.26%]"
+          >
+            <BaseSkeleton
+              :loading="loading"
+              class="absolute left-0 top-0 w-full h-full"
             >
-              <BaseSkeleton
-                :loading="loading"
-                class="absolute left-0 top-0 w-full h-full"
-              >
-                <NuxtLink :to="`/games/${datapoint.index}`">
-                  <span class="block">
-                    <NuxtImg
-                      :src="`/assets/images/games/${getImageId(
-                        datapoint.index,
-                      )}.png`"
-                      alt=""
-                      class="absolute top-0 left-0 w-full object-cover rounded-default transition-transform transform hover:scale-105 cursor-pointer"
-                    />
-                  </span>
-                </NuxtLink>
-              </BaseSkeleton>
-            </div>
-          </template>
-        </GridCategory>
-      </div>
+              <NuxtLink :to="`/games/${datapoint.index}`">
+                <span class="block">
+                  <NuxtImg
+                    :src="`/assets/images/games/${getImageId(
+                      datapoint.index,
+                    )}.png`"
+                    alt=""
+                    class="absolute top-0 left-0 w-full object-cover rounded-default transition-transform transform hover:scale-105 cursor-pointer"
+                  />
+                </span>
+              </NuxtLink>
+            </BaseSkeleton>
+          </div>
+        </template>
+      </GridCategory>
     </div>
-  </div>
+  </NuxtLayout>
 </template>

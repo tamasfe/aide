@@ -10,6 +10,7 @@
   --giro-container-max-width: 1272px;
   --giro-container-padding: 1rem;
   --giro-modal-default-max-width: 30rem;
+  --giro-section-gap: 2rem;
 
   /* background */
 
@@ -125,8 +126,9 @@
   max-width: var(--giro-container-max-width);
 }
 
-.giro__section {
-  @apply py-6;
+.giro__sections {
+  @apply flex flex-col;
+  gap: var(--giro-section-gap);
 }
 
 .giro__select-fade-enter-active,

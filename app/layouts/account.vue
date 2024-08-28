@@ -1,7 +1,5 @@
-<script setup lang="ts"></script>
-
 <template>
-  <div class="giro__container giro__section">
+  <div class="giro__container giro__sections">
     <AccountNavigationTabs />
 
     <slot />

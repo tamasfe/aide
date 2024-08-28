@@ -1,20 +1,11 @@
-<script setup lang="ts">
-const { isMobile } = useDevice();
-</script>
-
 <template>
-  <div class="giro__container">
-    <div class="giro__section">
-      <GameFrameMobile v-if="isMobile" />
-      <GameFrame v-else />
-    </div>
+  <div class="pt-4 pb-12 giro__container giro__sections">
+    <GameFrame />
 
-    <div class="giro__section">
-      <GameDescriptionCard class="bg-subtle" />
-    </div>
+    <GameDescriptionCard
+      class="bg-subtle"
+    />
 
-    <div class=".giro__section">
-      <WrapperScrollerGame />
-    </div>
+    <WrapperScrollerGame />
   </div>
 </template>

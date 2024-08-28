@@ -169,7 +169,7 @@ const scrollToPosition = (target: number, duration: number) => {
 </script>
 
 <template>
-  <div class="flex flex-col gap-y-4 py-2">
+  <div class="flex flex-col gap-y-4">
     <div class="flex items-center justify-between">
       <div class="flex items-center gap-x-8">
         <div class="text-3xl font-bold">
