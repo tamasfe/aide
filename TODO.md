@@ -17,9 +17,6 @@ Turik
   * refactor / clean up your existing components
 
 Todo
-  * nuxt 4
-  * make all images load nicely, make some wrapper
-  * favicon
   * components
   * layouts (all the margins/paddings on pages... finalize them all so we have solid sections/layouts/normalized paddings across layouts/app.vue/pages)
   * disable animation for signup/login/modals like bet7k (make it optional)
