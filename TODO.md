@@ -1,6 +1,8 @@
 ### Refactor
 
 Turik
+  * firefox bug
+    * any other firefix/safari glitches/weirdness
   * floating label
   * clean up tailwind variables
     * better naming like catpuccin with subtext, overlay, surface, base, mantle, crust (https://github.com/catppuccin/nvim/blob/main/lua/catppuccin/palettes/mocha.lua)
