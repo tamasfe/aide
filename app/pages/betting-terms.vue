@@ -1,3 +1,5 @@
 <template>
-  <h1>{{ $t("page.betting_terms") }}</h1>
+  <AppPage :title="$t('page.betting_terms')">
+    <p>content</p>
+  </AppPage>
 </template>
