@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <AppPage :title="$t('page.faq')">
-      <p>content</p>
-    </AppPage>
-  </div>
+  <AppPage :title="$t('page.faq')">
+    <p>content</p>
+  </AppPage>
 </template>
