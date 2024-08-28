@@ -21,14 +21,14 @@
         :key="id"
         to="TODO"
       >
-        <span
-          class="min-w-[18rem] flex items-center space-x-3 bg-subtle p-2 rounded-lg outline-none"
+        <div
+          class="group min-w-[18rem] flex items-center space-x-3 bg-subtle p-2 rounded-lg outline-none"
         >
           <div class="flex-shrink-0 rounded-[0.7rem] w-[4.8rem]">
             <NuxtImg
               src="/assets/images/games/2.png"
               alt=""
-              class="aspect-[300/350] w-full h-auto object-cover object-center rounded-default"
+              class="aspect-[300/350] group-hover:opacity-90 w-full h-auto object-cover object-center rounded-default"
             />
           </div>
           <div class="font-medium leading-tight space-y-1">
@@ -40,7 +40,7 @@
               R$ 32.14
             </div>
           </div>
-        </span>
+        </div>
       </NuxtLink>
     </div>
   </div>
