@@ -17,11 +17,11 @@ Turik
   * refactor / clean up your existing components
 
 Todo
-  * components
-  * layouts (all the margins/paddings on pages... finalize them all so we have solid sections/layouts/normalized paddings across layouts/app.vue/pages)
-  * disable animation for signup/login/modals like bet7k (make it optional)
-  * all pages (other folders)
   * finalize game grid # of columns @ different screen sizes
+  * all pages (other folders)
+  * layouts (all the margins/paddings on pages... finalize them all so we have solid sections/layouts/normalized paddings across layouts/app.vue/pages)
+  * components
+  * disable animation for signup/login/modals like bet7k (make it optional)
   * replace all @phosphor-icons/vue
 
 
