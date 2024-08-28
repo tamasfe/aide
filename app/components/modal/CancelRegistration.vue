@@ -14,19 +14,23 @@ const open = ref(true);
     banner-top="/assets/images/wheel-2.png"
   >
     <div class="flex flex-col items-center gap-2">
-      <h1 class="text-xl font-semibold text-center">
+      <h1 class="text-2xl font-semibold text-center">
         {{ $t("modal_cancel_registration.headline") }}
       </h1>
 
-      <div class="text-emphasis text-base text-center">
+      <div class="text-emphasis text-center">
         {{ $t("modal_cancel_registration.body") }}
       </div>
 
       <BaseButton
         size="xl"
-        class="mt-4 w-full"
+        class="mt-4 w-full gap-1.5"
       >
-        {{ $t("button.continue") }}
+        <span>{{ $t("button.continue") }}</span>
+        <Icon
+          name="lucide:arrow-right"
+          size="20"
+        />
       </BaseButton>
 
       <BaseButton

@@ -64,9 +64,9 @@
     "limits": "limits"
   },
   "modal_cancel_registration": {
-    "headline": "Are you sure you want to cancel registration?",
-    "body": "Thousands of winners cash out every day with our quick withdrawals.",
-    "cancel": "Yes, I want to cancel"
+    "headline": "Wait! Are you sure you want to cancel?",
+    "body": "Players are cashing out everyday with our super fast withdrawals. Click Continue to complete your registration.",
+    "cancel": "No thanks, I want to cancel"
   },
   "modal_restrict": {
     "expanding_headline": "Sorry, {blockedDomain} is not available within {country}",
