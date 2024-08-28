@@ -14,26 +14,19 @@ const generateFakeData = (length: number) => {
   return Array.from({ length }, (_, i) => (i % 10) + 1);
 };
 
-const slidesToScroll = {
+const slidesToScroll = ref({
   sm: 1.5,
   md: 2.5,
   lg: 3,
   xl: 3,
-};
+});
 
-const columns = {
+const columns = ref({
   sm: 2.7,
   md: 3.7,
   lg: 6,
   xl: 6,
-};
-
-const aspectRatios = {
-  sm: "2/1",
-  md: "3/1",
-  lg: "5/1",
-  xl: "5/1",
-};
+});
 
 const data = ref<number[]>(generateFakeData(20));
 const canLoadMore = computed(() => data.value.length <= 100);
@@ -59,10 +52,10 @@ const onLoadData = async () => {
     :data="data"
     :show-controls="!isMobile"
     :loading="loading"
+    :can-load-more="canLoadMore"
     :slides-to-scroll="slidesToScroll"
     :columns="columns"
-    :aspect-ratios="aspectRatios"
-    :can-load-more="canLoadMore"
+    aspect-ratio="3/4"
     @trigger:load="onLoadData"
   >
     <template #title>

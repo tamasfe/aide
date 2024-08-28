@@ -10,28 +10,19 @@ const loading = ref(true);
 //   * just like game... this will come from the API
 // TRANSLATION STATUS:   ✅
 
-// TODO: not final, should be configured
-const scrollerOptions = {
-  slidesToScroll: {
-    sm: 1.5,
-    md: 2.5,
-    lg: 3,
-    xl: 3,
-  },
-  columns: {
-    sm: 1.7,
-    md: 2.7,
-    lg: 3.5,
-    xl: 3.5,
-  },
-  aspectRatio: {
-    sm: "4/1",
-    md: "6/1",
-    lg: "8/1",
-    xl: "8/1",
-  },
-  gap: 3,
-};
+const slidesToScroll = ref({
+  sm: 1.5,
+  md: 2.5,
+  lg: 3,
+  xl: 3,
+});
+
+const columns = ref({
+  sm: 2.7,
+  md: 3.7,
+  lg: 6,
+  xl: 6,
+});
 
 onMounted(() => {
   setTimeout(() => {
@@ -45,10 +36,10 @@ onMounted(() => {
     :data="data"
     :show-controls="!isMobile"
     :loading="loading"
-    :columns="scrollerOptions.columns"
-    :slides-to-scroll="scrollerOptions.slidesToScroll"
-    :gap="scrollerOptions.gap"
-    :aspect-ratio="scrollerOptions.aspectRatio"
+    :columns="columns"
+    :slides-to-scroll="slidesToScroll"
+    :gap="3"
+    aspect-ratio="3/4"
     :can-load-more="false"
   >
     <template #title>

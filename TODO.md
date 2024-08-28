@@ -1,6 +1,7 @@
 ### Refactor
 
 Turik
+  * hydration mismatches?
   * firefox bug
     * any other firefix/safari glitches/weirdness
   * floating label

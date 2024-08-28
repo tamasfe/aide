@@ -1,4 +1,5 @@
 <script setup lang="ts" generic="T extends unknown[]">
+import type { CSSProperties } from "vue";
 import { useInfiniteScroll } from "@vueuse/core";
 import type {
   GridScrollerBreakpointValues,
@@ -13,13 +14,11 @@ type Props = {
   canLoadMore: boolean;
   columns: GridScrollerBreakpointValues;
   slidesToScroll: GridScrollerBreakpointValues;
+  aspectRatio: CSSProperties["aspectRatio"];
   loading?: boolean;
   distance?: number;
   gap?: number;
-  aspectRatios?: GridScrollerAspectRatioValues;
 };
-
-const emit = defineEmits(["trigger:load"]);
 
 const props = withDefaults(defineProps<Props>(), {
   loading: false,
@@ -27,8 +26,19 @@ const props = withDefaults(defineProps<Props>(), {
   gap: 1,
 });
 
+const emit = defineEmits(["trigger:load"]);
+
 // NOTE This component is using any for ref template of GridScroller because generic types are not properly supported current version of Vue, so we have to use the xyz dev dependency. when https://github.com/vuejs/language-tools/issues/3206 is fixed we SHOULD change this to respective type
 const gridScroller = ref<any>(null);
+
+// for now don't make wrapper components specify redundant values. leave functionality
+// however if the situation ever arises where we need this and then it can be broken out
+const aspectRatios: GridScrollerAspectRatioValues = {
+  sm: props.aspectRatio,
+  md: props.aspectRatio,
+  lg: props.aspectRatio,
+  xl: props.aspectRatio,
+};
 
 const onLoadMore = () => {
   if (props.loading) return;
