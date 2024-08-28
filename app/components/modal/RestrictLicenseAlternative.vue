@@ -36,11 +36,13 @@ const country = ref("Brazil"); // request IP jurisdiction
 
       <BaseButton
         size="xl"
-        class="my-4 w-full"
+        class="my-4 w-full gap-1.5"
       >
-        {{ $t("button.take_me_to", {
-          domain: normalizeBrandDomain(allowedDomain),
-        }) }}
+        <span>{{ $t("button.take_me_to", { domain: normalizeBrandDomain(allowedDomain) }) }}</span>
+        <Icon
+          name="lucide:arrow-right"
+          size="20"
+        />
       </BaseButton>
     </div>
   </BaseModal>

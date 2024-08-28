@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const modal = ref("register");
+const modal = ref("cancel_reg");
 </script>
 
 <template>

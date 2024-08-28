@@ -59,7 +59,7 @@ const loading = ref(false);
     <BaseButton
       :loading="loading"
       size="xl"
-      class="w-full space-x-1.5"
+      class="w-full gap-1.5"
     >
       <span>{{ $t("button.create_account") }}</span>
       <Icon
