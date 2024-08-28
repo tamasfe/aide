@@ -179,7 +179,7 @@ defineExpose({
     >
       <div
         ref="container"
-        class="giro__carousel-container gap-4"
+        class="giro__carousel-container gap-4 md:rounded-default overflow-hidden"
       >
         <slot :index="currentIndex" />
       </div>
