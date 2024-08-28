@@ -164,9 +164,11 @@ const scrollToPosition = (target: number, duration: number) => {
   <div class="flex flex-col gap-y-4">
     <div class="flex items-center justify-between">
       <div class="flex items-center gap-x-8">
-        <div class="text-3xl font-bold">
-          <slot name="title" />
-        </div>
+        <slot
+          v-if="$slots.title"
+          name="title"
+        />
+
         <div
           v-if="showControls && !loading"
           class="flex items-center gap-x-4 text-3xl font-bold cursor-pointer"

@@ -1,7 +1,7 @@
 <template>
   <NuxtLayout name="carousel">
     <div class="giro__container giro__sections">
-      <Search class="w-full">
+      <Search>
         <template #default>
           <WrapperScrollerGame />
         </template>

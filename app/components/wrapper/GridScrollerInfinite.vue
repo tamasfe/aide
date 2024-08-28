@@ -3,10 +3,8 @@ import type { CSSProperties } from "vue";
 import { useInfiniteScroll } from "@vueuse/core";
 import type { GridScrollerBreakpointValues } from "../GridScroller.vue";
 
-// ARCHITECTURE STATUS: ✴️
-// * TODO: aspect ratio should be customizable for each screen size
-
 type Props = {
+  title: string;
   data: T;
   canLoadMore: boolean;
   columns: GridScrollerBreakpointValues;
@@ -62,7 +60,7 @@ onMounted(() => {
     :gap="gap"
   >
     <template #title>
-      <slot name="title" />
+      <h2 class="text-xl font-semibold sm:text-2xl">{{ title }}</h2>
     </template>
 
     <template #default="{ item }">

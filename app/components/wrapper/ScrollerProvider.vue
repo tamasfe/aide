@@ -11,17 +11,17 @@ const loading = ref(true);
 // TRANSLATION STATUS:   ✅
 
 const slidesToScroll = ref({
-  sm: 1.5,
-  md: 2.5,
-  lg: 3,
-  xl: 3,
+  sm: 2,
+  md: 2,
+  lg: 2,
+  xl: 2,
 });
 
 const columns = ref({
   sm: 2.7,
-  md: 3.7,
-  lg: 6,
-  xl: 6,
+  md: 2.7,
+  lg: 2.7,
+  xl: 2.7,
 });
 
 onMounted(() => {
@@ -33,18 +33,16 @@ onMounted(() => {
 
 <template>
   <WrapperGridScrollerInfinite
+    :title="`🏆 ${$t('grid.providers')}`"
     :data="data"
     :show-controls="!isMobile"
     :loading="loading"
     :columns="columns"
     :slides-to-scroll="slidesToScroll"
-    :gap="3"
-    aspect-ratio="3/4"
+    :gap="2"
+    aspect-ratio="16/9"
     :can-load-more="false"
   >
-    <template #title>
-      <h2 class="text-xl sm:text-2xl">🏆 {{ $t("grid.providers") }}</h2>
-    </template>
     <template #options>
       <NuxtLink to="TODO">
         <BaseButton
@@ -56,21 +54,17 @@ onMounted(() => {
       </NuxtLink>
     </template>
     <template #default="{ item: index }">
-      <div class="flex flex-col space-y-4 justify-between w-full h-full">
+      <div class="group flex flex-col gap-2 justify-between w-full h-full">
         <div class="flex-1 rounded-[0.7rem] overflow-hidden">
           <NuxtLink to="/TODO">
             <NuxtImg
               :src="`/assets/images/providers/${index}.png`"
               alt=""
-              class="w-full h-full object-cover"
+              class="group-hover:opacity-80 w-full h-full object-cover"
             />
           </NuxtLink>
         </div>
-        <div class="w-full flex justify-center">
-          <p class="py-1 px-2 font-medium bg-button-primary text-transparent bg-clip-text">
-            {{ $t("grid.game_count", { count: 69 }) }}
-          </p>
-        </div>
+        <div class="w-full flex justify-center font-medium bg-button-primary text-transparent bg-clip-text">{{ $t("grid.game_count", { count: 69 }) }}</div>
       </div>
     </template>
   </WrapperGridScrollerInfinite>

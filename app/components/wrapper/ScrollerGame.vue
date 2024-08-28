@@ -7,6 +7,7 @@
 //   * any advanced logic in here should be moved to wrapper as well. if we are having ScrollerGame/ScrollerProvider the only thing it should do is provide some api call metadata and "counts (offsets/limits)" and nothing else
 //   * SEO stuffbelow
 // TRANSLATION STATUS:   ✴️
+//   * I think we dont want to translate every game title obviously... but worth considering
 
 const { isMobile } = useDevice();
 
@@ -49,6 +50,7 @@ const onLoadData = async () => {
 
 <template>
   <WrapperGridScrollerInfinite
+    title="🔥 Top Trending"
     :data="data"
     :show-controls="!isMobile"
     :loading="loading"
@@ -58,9 +60,6 @@ const onLoadData = async () => {
     aspect-ratio="3/4"
     @trigger:load="onLoadData"
   >
-    <template #title>
-      <h2 class="text-xl font-semibold sm:text-2xl">🔥 Top Trending</h2>
-    </template>
     <template #options>
       <NuxtLink :to="`/categories/1`">
         <BaseButton
@@ -72,15 +71,16 @@ const onLoadData = async () => {
       </NuxtLink>
     </template>
     <template #default="{ item: n }">
-      <div class="bg-subtle rounded-default w-full h-full overflow-hidden">
-        <NuxtLink :to="`/games/${n}`">
-          <NuxtImg
-            :src="`/assets/images/games/${n}.png`"
-            alt=""
-            class="block w-full h-full object-cover transition-transform transform hover:scale-105 cursor-pointer"
-          />
-        </NuxtLink>
-      </div>
+      <NuxtLink
+        :to="`/games/${n}`"
+        class="block bg-subtle rounded-default w-full h-full overflow-hidden"
+      >
+        <NuxtImg
+          :src="`/assets/images/games/${n}.png`"
+          alt=""
+          class="block w-full h-full object-cover transition-transform transform hover:scale-105 cursor-pointer"
+        />
+      </NuxtLink>
     </template>
   </WrapperGridScrollerInfinite>
 </template>

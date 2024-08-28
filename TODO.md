@@ -28,6 +28,7 @@ Todo
   * components
   * disable animation for signup/login/modals like bet7k (make it optional)
   * replace all @phosphor-icons/vue
+  * providers page
 
 
 ### Components
