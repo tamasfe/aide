@@ -15,8 +15,8 @@ const generateFakeData = (length: number) => {
 };
 
 const slidesToScroll = ref({
-  sm: 1.5,
-  md: 2.5,
+  sm: 3,
+  md: 3,
   lg: 3,
   xl: 3,
 });
