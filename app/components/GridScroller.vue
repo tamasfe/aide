@@ -13,10 +13,6 @@ export type GridScrollerBreakpointValues = Record<
   GridScrollerBreakpoints,
   number
 >;
-export type GridScrollerAspectRatioValues = Record<
-  GridScrollerBreakpoints,
-  CSSProperties["aspectRatio"]
->;
 
 const emit = defineEmits(["click:nextPage", "click:previousPage"]);
 
@@ -25,9 +21,9 @@ const props = withDefaults(
     data: T;
     slidesToScroll: GridScrollerBreakpointValues;
     columns: GridScrollerBreakpointValues;
+    aspectRatio: CSSProperties["aspectRatio"];
     showControls?: boolean;
     loading?: boolean;
-    aspectRatios?: GridScrollerAspectRatioValues;
     itemClass?: string;
     gap?: number;
   }>(),
@@ -35,12 +31,6 @@ const props = withDefaults(
     showControls: true,
     loading: false,
     gap: 1,
-    aspectRatios: () => ({
-      sm: "auto",
-      md: "auto",
-      lg: "auto",
-      xl: "auto",
-    }),
   },
 );
 
@@ -92,6 +82,7 @@ const nextPage = () => {
   if (container.value) {
     const slideWidth
       = container.value.children[0]?.getBoundingClientRect().width;
+    if (!slideWidth) return;
     const gap = parseInt(getComputedStyle(container.value).gap, 10);
     const numberOfColumnsToScroll
       = props.slidesToScroll[
@@ -109,6 +100,7 @@ const previousPage = () => {
   if (container.value) {
     const slideWidth
       = container.value.children[0]?.getBoundingClientRect().width;
+    if (!slideWidth) return;
     const gap = parseInt(getComputedStyle(container.value).gap, 10);
     const numberOfColumnsToScroll
       = props.slidesToScroll[
@@ -217,13 +209,15 @@ const scrollToPosition = (target: number, duration: number) => {
       <div
         v-for="(item, index) in data"
         :key="index"
-        class="giro__grid-scroller-item w-full h-full flex-shrink-0"
+        class="giro__grid-scroller-item w-full flex-shrink-0"
+        :style="{ aspectRatio: aspectRatio }"
       >
         <slot :item="item" />
       </div>
       <div
         v-if="$slots.loading"
         class="giro__grid-scroller-item w-full h-full flex-shrink-0"
+        :style="{ aspectRatio: aspectRatio }"
       >
         <slot name="loading" />
       </div>
@@ -235,16 +229,10 @@ const scrollToPosition = (target: number, duration: number) => {
 .giro__grid-scroller-item {
   flex-basis: v-bind("columnSizes.sm");
 }
-.giro__grid-scroller-container {
-  aspect-ratio: v-bind("aspectRatios.sm");
-}
 
 @media (min-width: 640px) {
   .giro__grid-scroller-item {
     flex-basis: v-bind("columnSizes.md");
-  }
-  .giro__grid-scroller-container {
-    aspect-ratio: v-bind("aspectRatios.md");
   }
 }
 
@@ -252,17 +240,11 @@ const scrollToPosition = (target: number, duration: number) => {
   .giro__grid-scroller-item {
     flex-basis: v-bind("columnSizes.lg");
   }
-  .giro__grid-scroller-container {
-    aspect-ratio: v-bind("aspectRatios.lg");
-  }
 }
 
 @media (min-width: 1024px) {
   .giro__grid-scroller-item {
     flex-basis: v-bind("columnSizes.xl");
-  }
-  .giro__grid-scroller-container {
-    aspect-ratio: v-bind("aspectRatios.xl");
   }
 }
 </style>

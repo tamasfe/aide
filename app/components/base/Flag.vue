@@ -11,20 +11,17 @@ import type { SupportedCountryCode } from "@/types/constants";
 //   * https://github.com/nuxt/nuxt/issues/14766/#issuecomment-1397365434
 // TRANSLATION STATUS:  ✅
 
-const flagVariants = cva(
-  "flag border-radius",
-  {
-    variants: {
-      size: {
-        md: "w-[1.8rem]",
-        lg: "",
-      },
-    },
-    defaultVariants: {
-      size: "md",
+const flagVariants = cva("flag border-radius", {
+  variants: {
+    size: {
+      md: "w-[1.8rem]",
+      lg: "",
     },
   },
-);
+  defaultVariants: {
+    size: "md",
+  },
+});
 
 type FlagVariants = VariantProps<typeof flagVariants>;
 
@@ -34,13 +31,13 @@ const props = defineProps<{
   class?: HTMLAttributes["class"];
 }>();
 
-// @ts-ignore
+// @ts-expect-error
 const glob = import.meta.glob("~/assets/svg/flags/active/*.svg", {
   eager: true,
 });
 
 const images = Object.fromEntries(
-  // @ts-ignore
+  // @ts-expect-error
   Object.entries(glob).map(([key, value]) => [filename(key), value.default]),
 );
 
@@ -49,10 +46,7 @@ const imageUrl = computed(() => images[props.countryCode]);
 
 <template>
   <img
-    :class="cn(
-      flagVariants({ size }),
-      props.class,
-    )"
+    :class="cn(flagVariants({ size }), props.class)"
     :src="imageUrl"
   >
 </template>

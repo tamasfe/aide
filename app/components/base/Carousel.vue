@@ -29,6 +29,7 @@ const currentIndex = ref(0);
 
 const handleTouchStart = (e: TouchEvent) => {
   const touch = e.touches[0];
+  if (!touch) return;
   const x = touch.clientX;
 
   const handleTouchEnd = () => {
@@ -38,6 +39,10 @@ const handleTouchStart = (e: TouchEvent) => {
 
   const handleTouchMove = (e: TouchEvent) => {
     const touch = e.touches[0];
+    if (!touch) {
+      handleTouchEnd();
+      return;
+    }
     const dx = touch.clientX - x;
     if (dx > 100) {
       prev();
@@ -100,10 +105,11 @@ const transform = () => {
     //   block: "nearest",
     //   inline: "start",
     // });
+    const slide = items.value[currentIndex.value];
+    if (!slide) return;
     const gap = parseFloat(getComputedStyle(container.value).gap);
     container.value.style.transform = `translateX(-${
-      currentIndex.value
-      * items.value[currentIndex.value].getBoundingClientRect().width
+      currentIndex.value * slide.getBoundingClientRect().width
       + gap * currentIndex.value
     }px)`;
   }
@@ -179,7 +185,7 @@ defineExpose({
     >
       <div
         ref="container"
-        class="giro__carousel-container gap-4 md:rounded-default overflow-hidden"
+        class="giro__carousel-container h-full gap-4 md:rounded-default overflow-hidden"
       >
         <slot :index="currentIndex" />
       </div>

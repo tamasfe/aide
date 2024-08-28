@@ -19,7 +19,7 @@ import { type VariantProps, cva } from "class-variance-authority";
 
 const dialogVariants = cva(
   [
-    "fixed inset-0 z-[10] w-full overflow-y-scroll no-scrollbar",
+    "fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[10] w-full overflow-y-scroll no-scrollbar",
   ],
   {
     variants: {
@@ -123,10 +123,7 @@ const onClose = (force: boolean) => {
       >
         <DialogPanel
           v-bind="$attrs"
-          :class="cn(
-            dialogVariants({ variant, size }),
-            props.class,
-          )"
+          :class="cn(dialogVariants({ variant, size }), props.class)"
         >
           <BaseClose
             :disabled="disabled"
