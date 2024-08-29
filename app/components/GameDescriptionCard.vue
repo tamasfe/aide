@@ -17,7 +17,7 @@ import { PhCaretDown } from "@phosphor-icons/vue";
       <div class="flex flex-col space-y-2">
         <h2 class="text-2xl sm:text-xl font-bold leading-3">Potion Spells</h2>
         <p class="text-lg text-subtle-light font-semibold block sm:hidden">
-          By Pragmatic Play
+          Pragmatic Play
         </p>
         <div class="flex items-center space-x-2">
           <button

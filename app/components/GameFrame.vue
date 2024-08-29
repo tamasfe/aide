@@ -4,6 +4,7 @@
 // ARCHITECTURE STATUS:  ✴️
 //   * the [full screen] button needs to load a similar iframe as mobile, maybe the same?
 //   * for performance reasons we CANT be duplicating some heavy iframe around however which loads tons of assets (ie multiple hidden ones)
+//   * this also needs to hide the deposit in menu bar (see me for details, we will do it how bet7k does)
 
 const authenticated = ref(true);
 </script>
@@ -53,9 +54,9 @@ const authenticated = ref(true);
     <div class="rounded-b-default bg-subtle p-4">
       <div class="flex flex-col md:flex-row items-center justify-between gap-4 md:gap-0">
         <div class="w-full flex justify-between md:justify-start flex-row md:flex-col items-center md:items-start font-semibold">
-          <h2 class="text-lg font-semibold">Potion Spells</h2>
+          <h2 class="text-lg md:text-xl font-semibold">Potion Spells</h2>
           <h3 class="text-subtle-light">
-            {{ $t("play.by_provider", { provider: "TODO" }) }}
+            Pragmatic Play
           </h3>
         </div>
         <div class="w-full flex justify-between md:justify-end items-center space-x-8 text-subtle font-semibold">

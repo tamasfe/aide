@@ -43,9 +43,6 @@ account
   - SettingContainer.vue
 base
   - ContentBox.vue
-  - GameDescriptionCard.vue
-  - GameFrame.vue
-  - GameFrameMobile.vue
   - GridCategory.vue
   - Search.vue
   - Select.vue
