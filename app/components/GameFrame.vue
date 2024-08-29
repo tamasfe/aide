@@ -102,6 +102,7 @@ const { isMobile } = useDevice();
           </div>
 
           <BaseButton
+            v-if="authenticated"
             variant="ghost"
             size="ghost"
             class="flex flex-row gap-1 items-center hover:text-subtle-light"
