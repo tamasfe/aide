@@ -1,20 +1,11 @@
 <script setup lang="ts">
-import {
-  PhCornersOut,
-  PhThumbsDown,
-  PhThumbsUp,
-  PhWhatsappLogo,
-} from "@phosphor-icons/vue";
-
 // DESIGN STATUS:        ✴️
-//   * its very likely this component will not come with blurred images and will need a blur overlay on top of a full brightness bg
+//   * we likely will want to only enable the mobile iframe at very small screen sizes... the desktop even if very small isnt practical
 // ARCHITECTURE STATUS:  ✴️
-//   * the [full screen] button needs to work
+//   * the [full screen] button needs to load a similar iframe as mobile, maybe the same?
+//   * for performance reasons we CANT be duplicating some heavy iframe around however which loads tons of assets (ie multiple hidden ones)
 
-
-const authenticated = ref(false);
-
-const { isMobile } = useDevice();
+const authenticated = ref(true);
 </script>
 
 <template>
