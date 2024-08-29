@@ -1,11 +1,14 @@
 <script setup lang="ts">
 // DESIGN STATUS:       ✴️
 //   * user icon size is stupid
-//   * Button might need to be overridden for md size (md size probably shouldnt change as it looks fine elsewhere just not in the menu)
 // ARCHITECTURE STATUS: ✅
 // TRANSLATION STATUS:  ✅
 
 const authenticated = ref(true);
+
+const onClickBalance = async () => {
+  await navigateTo("/account/wallet");
+};
 </script>
 
 <template>
@@ -59,6 +62,7 @@ const authenticated = ref(true);
             <BaseButton
               variant="secondary"
               class="h-9 md:h-10 space-x-1"
+              @click="onClickBalance"
             >
               <div class="bg-button-primary text-transparent bg-clip-text">R$</div>
               <div class="text-white">69,50</div>
