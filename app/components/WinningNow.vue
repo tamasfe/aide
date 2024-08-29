@@ -25,10 +25,11 @@
           class="group min-w-[18rem] flex items-center space-x-3 bg-subtle p-2 rounded-lg outline-none"
         >
           <div class="flex-shrink-0 rounded-[0.7rem] w-[4.8rem]">
-            <NuxtImg
+            <ImageRatio
               src="/assets/images/games/2.png"
               alt=""
-              class="aspect-[300/350] group-hover:opacity-90 w-full h-auto object-cover object-center rounded-default"
+              ratio="300/350"
+              class="group-hover:opacity-90 rounded-default"
             />
           </div>
           <div class="font-medium leading-tight space-y-1">

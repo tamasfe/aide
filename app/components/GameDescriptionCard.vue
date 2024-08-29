@@ -5,13 +5,10 @@ import { PhCaretDown } from "@phosphor-icons/vue";
 <template>
   <div class="p-6 flex gap-x-8 rounded-default">
     <div class="min-w-[12.8rem] hidden md:block">
-      <div class="relative rounded-default overflow-hidden pt-[137%]">
-        <NuxtImg
-          src="https://picsum.photos/200/300"
-          alt=""
-          class="absolute top-0 left-0 w-full h-full rounded-default"
-        />
-      </div>
+      <ImageRatio
+        src="/assets/images/games/3.png"
+        class="rounded-default"
+      />
     </div>
     <div class="flex flex-col space-y-8">
       <div class="flex flex-col space-y-2">
