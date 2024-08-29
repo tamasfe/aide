@@ -7,5 +7,6 @@
     />
 
     <WrapperScrollerGame />
+    <WrapperScrollerGame />
   </div>
 </template>

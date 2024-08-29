@@ -6,112 +6,111 @@ import {
   PhWhatsappLogo,
 } from "@phosphor-icons/vue";
 
+// DESIGN STATUS:        ✴️
+//   * its very likely this component will not come with blurred images and will need a blur overlay on top of a full brightness bg
+// ARCHITECTURE STATUS:  ✴️
+//   * the [full screen] button needs to work
+
+
+const authenticated = ref(false);
+
 const { isMobile } = useDevice();
 </script>
 
 <template>
   <div class="flex flex-col rounded-default">
-    <div class="w-full h-[70vh] relative rounded-t-default bg-emphasis">
-      <NuxtImg
-        class="absolute top-0 left-0 w-full h-full object-cover rounded-t-default"
-        src="/assets/images/fake-game.png"
-        alt=""
+    <div class="w-full h-[70vh] relative rounded-t-default bg-emphasis overflow-hidden">
+      <GameFrameIframe
+        v-if="authenticated"
       />
-      <div
-        class="absolute top-0 left-0 w-full h-full flex justify-center items-center bg-default/50 backdrop-blur sm:rounded-t-default"
-      >
+      <template v-else>
+        <NuxtImg
+          class="absolute top-0 left-0 w-full h-full object-cover"
+          src="/assets/images/games/3.png"
+          alt=""
+        />
         <div
-          class="flex flex-col items-center space-y-4 sm:space-y-10 px-14 sm:p-0"
+          class="bg-default/80 backdrop-blur absolute top-0 left-0 w-full h-full flex justify-center items-center"
         >
-          <div class="w-full px-4 lg:px-0">
-            <div class="relative w-full pb-[20.33%]">
-              <NuxtImg
-                src="/assets/images/logo.svg"
-                alt="logo"
-                class="absolute top-0 left-0 object-cover w-full h-full"
-              />
-            </div>
-          </div>
-          <div class="flex flex-col space-y-4 w-full">
-            <h1 class="text-base xl:text-lg font-bold text-center">
+          <div
+            class="flex flex-col items-center gap-4"
+          >
+            <IconLogo
+              class="w-[14rem]"
+            />
+            <h1 class="text-lg font-semibold text-center">
               {{ $t("play.login_to_play") }}
             </h1>
-            <div class="flex space-x-4 w-full">
+            <div class="flex gap-4 w-full">
               <BaseButton
-                class="bg-subtle hover:bg-emphasis text-subtle px-6 xl:px-8 py-2 xl:py-3.5 !text-base !font-semibold"
-                big
-                type="button"
-                @click="emit('click:login', $event)"
+                variant="subtle"
+                class="px-8"
               >
                 {{ $t("button.login") }}
               </BaseButton>
-              <!-- temporary fix -->
-              <div class="mb-[0.35rem] flex-1">
-                <BaseButton
-                  class="w-full inline-flex justify-center py-2 xl:py-3.5 px-12 !text-base items-center"
-                  variant="primary"
-                  big
-                  shadow
-                  type="button"
-                  @click="emit('click:register', $event)"
-                >
-                  {{ $t("button.register") }}
-                </BaseButton>
-              </div>
+              <BaseButton
+                variant="primary"
+                class="px-12"
+              >
+                {{ $t("button.register") }}
+              </BaseButton>
             </div>
           </div>
         </div>
-      </div>
+      </template>
     </div>
     <div class="rounded-b-default bg-subtle p-4">
-      <div
-        class="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0"
-      >
-        <div
-          class="w-full flex justify-between md:justify-start flex-row md:flex-col items-center md:items-start font-semibold"
-        >
-          <h3 class="text-lg font-bold">Potion Spells</h3>
-          <p class="text-subtle-light">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-4 md:gap-0">
+        <div class="w-full flex justify-between md:justify-start flex-row md:flex-col items-center md:items-start font-semibold">
+          <h2 class="text-lg font-semibold">Potion Spells</h2>
+          <h3 class="text-subtle-light">
             {{ $t("play.by_provider", { provider: "TODO" }) }}
-          </p>
+          </h3>
         </div>
-        <div
-          class="w-full flex justify-between md:justify-end items-center space-x-8 text-subtle font-semibold"
-        >
-          <button
-            type="button"
-            class="outline-none inline-flex items-center space-x-2"
-          >
-            <div>
-              <PhWhatsappLogo :size="26" />
+        <div class="w-full flex justify-between md:justify-end items-center space-x-8 text-subtle font-semibold">
+          <ButtonShare
+            :subject="$t('play.share_subject')"
+            :body="$t('play.share_body')"
+            class="hover:text-subtle-light"
+          />
+
+          <div class="flex flex-row gap-2 items-center">
+            <BaseButton
+              variant="ghost"
+              size="ghost"
+              class="flex flex-row gap-1 items-center hover:text-subtle-light"
+            >
+              <Icon
+                name="lucide:thumbs-down"
+                size="24"
+              />
+            </BaseButton>
+            <div class="flex flex-col gap-1 leading-none whitespace-nowrap items-center text-sm text-center justify-center">
+              <div>75.2%</div>
+              <div class="font-medium">2.425</div>
             </div>
-            <p>{{ $t("play.share") }}</p>
-          </button>
-          <button
-            type="button"
-            class="outline-none inline-flex items-center space-x-2"
+            <BaseButton
+              variant="ghost"
+              size="ghost"
+              class="flex flex-row gap-1 items-center hover:text-subtle-light"
+            >
+              <Icon
+                name="lucide:thumbs-up"
+                size="24"
+              />
+            </BaseButton>
+          </div>
+
+          <BaseButton
+            variant="ghost"
+            size="ghost"
+            class="flex flex-row gap-1 items-center hover:text-subtle-light"
           >
-            <div>
-              <PhThumbsUp :size="26" />
-            </div>
-            <p>74.88% (2.245)</p>
-          </button>
-          <button
-            type="button"
-            class="outline-none inline-flex items-center space-x-2"
-          >
-            <div>
-              <PhThumbsDown :size="26" />
-            </div>
-          </button>
-          <button
-            type="button"
-            class="outline-none inline-flex items-center space-x-2"
-          >
-            <div>
-              <PhCornersOut :size="26" />
-            </div>
-          </button>
+            <Icon
+              name="lucide:maximize"
+              size="24"
+            />
+          </BaseButton>
         </div>
       </div>
     </div>

@@ -37,7 +37,8 @@
     "withdraw": "Withdraw",
     "go_back": "Go Back",
     "take_me_to": "Take me to {domain}",
-    "notify_me": "Notify Me When Available"
+    "notify_me": "Notify Me When Available",
+    "share": "Share"
   },
   "mobile_nav": {
     "menu": "Menu",
@@ -81,9 +82,10 @@
     "summary": "For an easy, secure and simple withdraw process, make sure to follow these guidelines: The minimum withdrawal amount varies by method and is listed above. Withdrawals are always to be processed to the original deposit method unless otherwise specified or if that method doesn't support withdrawals."
   },
   "play": {
-    "login_to_play": "You need to log in to play",
+    "login_to_play": "Please Login to Play",
     "by_provider": "By {provider}",
-    "share": "Share"
+    "share_subject": "YOOO",
+    "share_body": "HEYYYYYYYY"
   },
   "grid": {
     "game_count": "{count} Games",
