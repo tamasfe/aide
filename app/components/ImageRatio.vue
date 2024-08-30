@@ -14,7 +14,7 @@ const props = withDefaults(defineProps<{
     src="/assets/images/games/2.png"
     alt=""
     :class="cn(
-      'w-full object-cover object-center rounded-default',
+      'block w-full h-auto flex-shrink-0 object-cover object-center',
       props.class,
     )"
     :style="{ aspectRatio: aspectRatio }"

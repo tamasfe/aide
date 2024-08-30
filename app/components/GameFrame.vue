@@ -51,7 +51,7 @@ const authenticated = ref(true);
         </div>
       </template>
     </div>
-    <div class="rounded-b-default bg-subtle p-4">
+    <div class="rounded-b-default bg-subtle p-3 md:p-4 lg:px-6">
       <div class="flex flex-col md:flex-row items-center justify-between gap-4 md:gap-0">
         <div class="w-full flex justify-between md:justify-start flex-row md:flex-col items-center md:items-start font-semibold">
           <h2 class="text-lg md:text-xl font-semibold">Potion Spells</h2>
