@@ -46,7 +46,7 @@
       :disabled="true"
     >
       <template #suffix>
-        <div class="ml-5 flex flex-row justify-center items-center">
+        <div class="ml-5 flex justify-center items-center">
           <Icon
             name="lucide:copy"
             size="24"

@@ -101,7 +101,7 @@ const open = computed({
           leave-from="opacity-100"
           leave-to="opacity-0"
         >
-          <div class="fixed inset-0 bg-black/40 z-[0]" />
+          <BaseOverlay />
         </TransitionChild>
 
         <div

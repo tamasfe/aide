@@ -1,5 +1,6 @@
 <script setup lang="ts">
 // DESIGN STATUS:        ✅
+//   * lock scroll when playing: import { useScrollLock } from "@vueuse/core"
 // ARCHITECTURE STATUS:  ✴️
 //   * If clicking "Play" or "Vote" when not logged in, you need to show modal popup
 

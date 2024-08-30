@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // DESIGN STATUS:        ✅
-//   * lock scroll when fullscreen
+//   * lock scroll when fullscreen: import { useScrollLock } from "@vueuse/core"
 // ARCHITECTURE STATUS:  ✅
 
 const authenticated = ref(false);
