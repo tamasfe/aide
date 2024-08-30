@@ -1,8 +1,9 @@
 <script setup lang="ts">
 // DESIGN STATUS:        ✅
+//   * lock scroll when fullscreen
 // ARCHITECTURE STATUS:  ✅
 
-const authenticated = ref(false);
+const authenticated = ref(true);
 const fullScreen = ref(false);
 
 const onToggleFullScreen = () => {
@@ -19,12 +20,13 @@ const onToggleFullScreen = () => {
       <template #authenticated>
         <div
           :class="cn(
-            fullScreen && 'absolute top-0 left-0 w-full h-full z-[10]',
+            'w-full h-full',
+            fullScreen && 'fixed top-0 left-0 z-[11]',
           )"
         >
           <div
             v-if="fullScreen"
-            class="p-4"
+            class="p-4 bg-subtle"
           >
             <div @click="onToggleFullScreen">close</div>
           </div>
