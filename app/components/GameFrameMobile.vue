@@ -9,7 +9,6 @@ const authenticated = ref(false);
   <div class="flex flex-col">
     <GameFrameBackdrop
       :authenticated="authenticated"
-      class="h-[60vh]"
     >
       <template #authenticated>
         <div class="absolute top-0 left-0 w-full h-full z-[10]">
@@ -18,7 +17,7 @@ const authenticated = ref(false);
       </template>
 
       <div
-        class="w-full h-full p-6 flex flex-col justify-between"
+        class="w-full p-6 flex flex-col justify-between"
       >
         <div class="w-full flex flex-row items-center justify-start gap-6">
           <ImageRatio

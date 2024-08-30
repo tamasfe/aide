@@ -20,15 +20,18 @@ const { isMobile } = useDevice();
 </script>
 
 <template>
-  <div class="pt-4 pb-12 giro__container giro__sections">
-    <GameFrameMobile v-if="true" />
-    <GameFrameDesktop v-else />
+  <div>
+    <GameFrameMobile v-if="isMobile" />
 
-    <GameDescription
-      class="bg-subtle"
-    />
+    <div class="pt-4 pb-12 giro__container giro__sections">
+      <GameFrameDesktop v-if="!isMobile" />
 
-    <WrapperScrollerGame />
-    <WrapperScrollerGame />
+      <GameDescription
+        class="bg-subtle"
+      />
+
+      <WrapperScrollerGame />
+      <WrapperScrollerGame />
+    </div>
   </div>
 </template>

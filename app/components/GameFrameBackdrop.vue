@@ -2,6 +2,8 @@
 import type { HTMLAttributes } from "vue";
 
 // DESIGN STATUS:       ✅
+//   * its not very clean having 2 elements in a row absolute positioned without z-indexes. the reason its like this is because the container that holds the slot CANT be absolute as we need the contents of the slot to determine the height (like on mobile).
+//   * maybe it can be done with a standard background image and :after or something
 // ARCHITECTURE STATUS: ✅
 // TRANSLATION STATUS:  ✅
 
@@ -24,13 +26,14 @@ const props = defineProps<{
     />
     <template v-else>
       <NuxtImg
-        class="absolute top-0 left-0 w-full h-full object-cover"
+        class="absolute top-0 left-0 z-[1] w-full h-full object-cover"
         src="/assets/images/games/3.png"
         alt=""
       />
       <div
-        class="bg-default/80 backdrop-blur absolute top-0 left-0 w-full h-full flex justify-center items-center"
-      >
+        class="absolute z-[2] top-0 left-0 w-full h-full bg-default/80 backdrop-blur"
+      />
+      <div class="relative z-[3] flex items-center justify-center">
         <slot />
       </div>
     </template>
