@@ -1,11 +1,7 @@
 <template>
   <NuxtLayout name="carousel">
     <div class="giro__container giro__sections">
-      <Search>
-        <template #default>
-          <WrapperScrollerGame />
-        </template>
-      </Search>
+      <SearchCasino />
 
       <WinningNow />
 

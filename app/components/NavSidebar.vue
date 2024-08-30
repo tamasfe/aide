@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const open = ref(true);
+const open = ref(false);
 
 // DESIGN STATUS:       ✴️
 //   * hide the scrollbar like on bet7k

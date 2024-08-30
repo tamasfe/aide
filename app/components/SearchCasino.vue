@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { Popover, PopoverPanel } from "@headlessui/vue";
 
+// DESIGN STATUS ✴️
+//   - The text is too large on mobile which goes back to refactoring InputGroup in a PROPER way to add size. we might not use "variants" because those can only output ONE string of classes (i think) and what we want is an initial variant that also creates other classes for input class, etc. or we can do inputClass, iconClass, etc, but in general that is ugly
+
 const open = ref(false);
 
 const onOpen = () => {
@@ -20,6 +23,7 @@ const onClose = () => {
       :placeholder="$t('placeholder.search')"
       placeholder-placement="default"
       error-placement="below"
+      class="relative z-[8]"
       @focus="onOpen"
     >
       <template #prefix>
@@ -42,7 +46,7 @@ const onClose = () => {
 
     <BaseOverlay
       v-if="open"
-      class="z-[12]"
+      class="z-[7]"
       @click="onClose"
     />
     <transition
@@ -55,7 +59,7 @@ const onClose = () => {
     >
       <PopoverPanel
         v-if="open"
-        class="absolute left-1/2 z-[13] mt-10 -translate-x-1/2 w-full outline-none"
+        class="absolute z-[8] mt-3 w-full outline-none"
         static
       >
         <div
@@ -63,7 +67,7 @@ const onClose = () => {
           role="dialog"
           aria-modal="true"
         >
-          <slot />
+          <WrapperScrollerGame />
         </div>
       </PopoverPanel>
     </transition>
