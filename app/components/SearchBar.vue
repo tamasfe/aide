@@ -20,6 +20,8 @@ const emit = defineEmits(["focus", "close"]);
       'relative z-[8]',
       open && 'bg-emphasis',
     )"
+    inputmode="search"
+    autocomplete="off"
     placeholder-placement="default"
     error-placement="below"
     @focus="emit('focus')"
