@@ -1,8 +1,9 @@
 <script setup lang="ts">
 // DESIGN STATUS:       ✅
 // ARCHITECTURE STATUS: ✴️
+//   * there are some edge cases we should handle, like what happens when you run out of money (how to display it to the user, etc)
 //   * for performance reasons we CANT be duplicating some heavy iframe around however which loads tons of assets (ie multiple hidden ones)
-//   * this also needs to hide the deposit in menu bar (see me for details, we will do it how bet7k does)
+//   * this also needs to hide the balance in menu bar (see me for details, we will do it how bet7k does)
 //   * look at how Blaze + Bet7k transition between the mobile and desktop frames
 //     based on an exact breakpoint. note that it MUST have more logic than just responsive
 //     because there can only ever be 1 game frame at once. the way these sites handle it
