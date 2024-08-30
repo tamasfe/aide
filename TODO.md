@@ -37,7 +37,6 @@ account
   - RegionalSettings.vue
   - SettingContainer.vue
 components
-  - GameFrameMobile.vue
   - /categories/[id].vue
   - GridCategory.vue
   - ContentBox.vue
