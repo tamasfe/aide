@@ -2,7 +2,7 @@
 // DESIGN STATUS:        ✅
 // ARCHITECTURE STATUS:  ✅
 
-const authenticated = ref(true);
+const authenticated = ref(false);
 const fullScreen = ref(false);
 
 const onToggleFullScreen = () => {
@@ -22,7 +22,10 @@ const onToggleFullScreen = () => {
             fullScreen && 'absolute top-0 left-0 w-full h-full z-[10]',
           )"
         >
-          <div class="p-4">
+          <div
+            v-if="fullScreen"
+            class="p-4"
+          >
             <div @click="onToggleFullScreen">close</div>
           </div>
 
