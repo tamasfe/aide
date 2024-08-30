@@ -40,5 +40,4 @@ components
   - /categories/[id].vue
   - GridCategory.vue
   - ContentBox.vue
-  - Search.vue
   - Select.vue
