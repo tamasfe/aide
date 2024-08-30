@@ -16,8 +16,7 @@
 //   Personally approach 1 seems perfectly fine now as i dont want edge cases with moving iframes in old browsers etc.
 // TRANSLATION STATUS:  ✅
 
-// const { isMobile } = useDevice();
-const isMobile = ref(true);
+const { isMobile } = useDevice();
 </script>
 
 <template>
