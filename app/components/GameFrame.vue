@@ -6,7 +6,7 @@
 //   * for performance reasons we CANT be duplicating some heavy iframe around however which loads tons of assets (ie multiple hidden ones)
 //   * this also needs to hide the deposit in menu bar (see me for details, we will do it how bet7k does)
 
-const authenticated = ref(true);
+const authenticated = ref(false);
 </script>
 
 <template>

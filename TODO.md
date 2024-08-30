@@ -19,13 +19,8 @@ Turik
   * refactor / clean up your existing components
 
 Todo
-  * spacing
-    * get rid of weird spacing on carousel
-    * add more space under carousel ... maybe game winners
   * finalize game grid # of columns @ different screen sizes
-  * all pages (other folders)
   * components
-  * disable animation for signup/login/modals like bet7k (make it optional)
   * replace all @phosphor-icons/vue
   * providers page
 
