@@ -11,46 +11,40 @@ const authenticated = ref(false);
 
 <template>
   <div class="flex flex-col rounded-default">
-    <div class="w-full h-[70vh] relative rounded-t-default bg-emphasis overflow-hidden">
-      <GameFrameIframe
-        v-if="authenticated"
-      />
-      <template v-else>
-        <NuxtImg
-          class="absolute top-0 left-0 w-full h-full object-cover"
-          src="/assets/images/games/3.png"
-          alt=""
-        />
-        <div
-          class="bg-default/80 backdrop-blur absolute top-0 left-0 w-full h-full flex justify-center items-center"
-        >
-          <div
-            class="flex flex-col items-center gap-4"
-          >
-            <IconLogo
-              class="w-[14rem]"
-            />
-            <h1 class="text-lg font-semibold text-center">
-              {{ $t("play.login_to_play") }}
-            </h1>
-            <div class="flex gap-4 w-full">
-              <BaseButton
-                variant="subtle"
-                class="px-8"
-              >
-                {{ $t("button.login") }}
-              </BaseButton>
-              <BaseButton
-                variant="primary"
-                class="px-12"
-              >
-                {{ $t("button.register") }}
-              </BaseButton>
-            </div>
-          </div>
-        </div>
+    <GameFrameBackdrop
+      :authenticated="authenticated"
+      class="h-[70vh] rounded-t-default"
+    >
+      <template #authenticated>
+        <GameFrameIframe />
       </template>
-    </div>
+
+      <div
+        class="flex flex-col items-center gap-4"
+      >
+        <IconLogo
+          class="w-[14rem]"
+        />
+        <h1 class="text-lg font-semibold text-center">
+          {{ $t("play.login_to_play") }}
+        </h1>
+        <div class="flex gap-4 w-full">
+          <BaseButton
+            variant="subtle"
+            class="px-8"
+          >
+            {{ $t("button.login") }}
+          </BaseButton>
+          <BaseButton
+            variant="primary"
+            class="px-12"
+          >
+            {{ $t("button.register") }}
+          </BaseButton>
+        </div>
+      </div>
+    </GameFrameBackdrop>
+
     <div class="rounded-b-default bg-subtle p-3 md:p-4 lg:px-6">
       <div class="flex flex-col md:flex-row items-center justify-between gap-4 md:gap-0">
         <div class="w-full flex justify-between md:justify-start flex-row md:flex-col items-center md:items-start font-semibold">
