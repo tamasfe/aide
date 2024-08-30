@@ -1,4 +1,7 @@
 <script setup lang="ts">
+// DESIGN STATUS: ✴️
+//   * use skeleton loaders and loading spinner inside search bar
+
 const data = ref(
   new Array(30).fill(0).map((d, i) => ({
     index: i,

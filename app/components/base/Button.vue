@@ -62,11 +62,9 @@ const props = withDefaults(defineProps<{
       props.class,
     )"
   >
-    <Icon
+    <BaseSpinner
       v-if="loading"
-      name="tdesign:loading"
-      size="24"
-      class="mr-2 animate-spin"
+      class="mr-2"
     />
     <slot />
   </button>

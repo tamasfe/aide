@@ -78,10 +78,9 @@ onMounted(() => {
       <div
         class="flex items-center justify-center w-full h-full bg-subtle rounded-default"
       >
-        <Icon
-          class="text-subtle animate-spin"
-          name="lucide:loader-circle"
-          size="38"
+        <BaseSpinner
+          class="text-subtle"
+          :size="34"
         />
       </div>
     </template>

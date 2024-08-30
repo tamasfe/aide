@@ -7,6 +7,7 @@
 import { Popover, PopoverPanel } from "@headlessui/vue";
 
 const open = ref(false);
+const loading = ref(false);
 
 const onOpen = () => {
   open.value = true;
@@ -23,6 +24,7 @@ const onClose = () => {
   >
     <SearchBar
       :open="open"
+      :loading="loading"
       @focus="onOpen"
     />
 
