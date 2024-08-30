@@ -3,7 +3,7 @@
 // ARCHITECTURE STATUS:  ✴️
 //   * If clicking "Play" or "Vote" when not logged in, you need to show modal popup
 
-const authenticated = ref(true);
+const authenticated = ref(false);
 const playing = ref(false);
 
 const onTogglePlaying = () => {

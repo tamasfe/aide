@@ -3,7 +3,7 @@
 //   * lock scroll when fullscreen
 // ARCHITECTURE STATUS:  ✅
 
-const authenticated = ref(true);
+const authenticated = ref(false);
 const fullScreen = ref(false);
 
 const onToggleFullScreen = () => {

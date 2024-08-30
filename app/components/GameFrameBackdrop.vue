@@ -21,33 +21,11 @@ const props = defineProps<{
       props.class,
     )"
   >
-    <!-- desktop replace mode -->
-    <template v-if="replace">
-      <slot
-        v-if="authenticated"
-        name="authenticated"
-      />
-      <template v-else>
-        <NuxtImg
-          class="absolute top-0 left-0 z-[1] w-full h-full object-cover"
-          src="/assets/images/games/3.png"
-          alt=""
-        />
-        <div
-          class="absolute z-[2] top-0 left-0 w-full h-full bg-default/80 backdrop-blur"
-        />
-        <div class="h-full relative z-[3] flex items-center justify-center">
-          <slot />
-        </div>
-      </template>
-    </template>
-
-    <!-- mobile always-visible mode -->
-    <template v-else>
-      <slot
-        v-if="authenticated"
-        name="authenticated"
-      />
+    <slot
+      v-if="authenticated"
+      name="authenticated"
+    />
+    <template v-if="!replace || (replace && !authenticated)">
       <NuxtImg
         class="absolute top-0 left-0 z-[1] w-full h-full object-cover"
         src="/assets/images/games/3.png"
