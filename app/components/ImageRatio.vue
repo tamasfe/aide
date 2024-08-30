@@ -2,7 +2,7 @@
 import type { CSSProperties, HTMLAttributes } from "vue";
 
 const props = withDefaults(defineProps<{
-  aspectRatio: CSSProperties["aspectRatio"];
+  aspectRatio?: CSSProperties["aspectRatio"];
   class?: HTMLAttributes["class"];
 }>(), {
   aspectRatio: "3/4",
