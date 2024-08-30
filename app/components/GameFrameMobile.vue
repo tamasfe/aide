@@ -7,6 +7,7 @@ const authenticated = ref(true);
 const playing = ref(false);
 
 const onTogglePlaying = () => {
+  // must check if logged in etc, this is just pseudocode to show UI state
   playing.value = !playing.value;
 };
 </script>
@@ -18,8 +19,11 @@ const onTogglePlaying = () => {
       :replace="false"
     >
       <template #authenticated>
-        <div class="hidden absolute top-0 left-0 w-full h-full z-[10]">
-          <div class="p-4">
+        <div
+          v-if="playing"
+          class="fixed top-0 left-0 w-full h-full z-[11]"
+        >
+          <div class="p-4 bg-subtle">
             <div @click="onTogglePlaying">close</div>
           </div>
 
@@ -56,6 +60,7 @@ const onTogglePlaying = () => {
               variant="primary"
               size="xl"
               class="w-full gap-2"
+              @click="onTogglePlaying"
             >
               <Icon
                 name="lucide:play"
