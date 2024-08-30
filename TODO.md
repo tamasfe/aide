@@ -1,7 +1,7 @@
 ### Refactor
 
 Turik
-  * hydration mismatches?
+  * maybe refactor game grid to be shared with gridcategory (export fields?)
   * search source for all image sources and make them in assets (not in public), figure out better multiple loading images dynamically
     * delete icons folder and make those logos just a standard svg image loaded better
     * find dynamic way to load
