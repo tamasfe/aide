@@ -1,7 +1,7 @@
 <script setup lang="ts">
 // DESIGN STATUS:        ✅
 // ARCHITECTURE STATUS:  ✴️
-//   * If clicking "Play" when not logged in, you need to show modal popup
+//   * If clicking "Play" or "Vote" when not logged in, you need to show modal popup
 
 const authenticated = ref(true);
 const playing = ref(false);
@@ -15,9 +15,10 @@ const onTogglePlaying = () => {
   <div class="flex flex-col">
     <GameFrameBackdrop
       :authenticated="authenticated"
+      :replace="false"
     >
       <template #authenticated>
-        <div class="absolute top-0 left-0 w-full h-full z-[10]">
+        <div class="hidden absolute top-0 left-0 w-full h-full z-[10]">
           <div class="p-4">
             <div @click="onTogglePlaying">close</div>
           </div>

@@ -17,7 +17,7 @@
 // TRANSLATION STATUS:  ✅
 
 // const { isMobile } = useDevice();
-const isMobile = ref(false);
+const isMobile = ref(true);
 </script>
 
 <template>

@@ -15,6 +15,7 @@ const onToggleFullScreen = () => {
   <div class="flex flex-col rounded-default">
     <GameFrameBackdrop
       :authenticated="authenticated"
+      :replace="true"
       class="h-[70vh] rounded-t-default"
     >
       <template #authenticated>

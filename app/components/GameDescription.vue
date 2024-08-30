@@ -11,6 +11,7 @@ const { isMobile } = useDevice();
   <div class="p-3 pb-4 md:p-4 lg:p-6 gap-4 md:gap-6 flex flex-row rounded-default">
     <div class="hidden sm:block min-w-[8rem]">
       <ImageRatio
+        v-if="!isMobile"
         src="/assets/images/games/3.png"
         class="rounded-default"
       />
