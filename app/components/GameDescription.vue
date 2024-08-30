@@ -4,6 +4,7 @@
 //   * we might need to check how softswiss handles multiple languages for the description
 
 // NOTE the entire bottom section might not come from the game API but would be a custom description we add ourself for the most popular games
+const { isMobile } = useDevice();
 </script>
 
 <template>
@@ -17,6 +18,7 @@
     <div class="flex flex-col gap-4 sm:gap-6">
       <div class="flex flex-row gap-4">
         <ImageRatio
+          v-if="!isMobile"
           src="/assets/images/games/3.png"
           class="sm:hidden w-[3rem] rounded-default"
         />

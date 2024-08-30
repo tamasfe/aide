@@ -38,7 +38,8 @@
     "go_back": "Go Back",
     "take_me_to": "Take me to {domain}",
     "notify_me": "Notify Me When Available",
-    "share": "Share"
+    "share": "Share",
+    "play_now": "Play Now"
   },
   "mobile_nav": {
     "menu": "Menu",

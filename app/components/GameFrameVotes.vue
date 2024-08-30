@@ -1,4 +1,12 @@
 <script setup lang="ts">
+import type { HTMLAttributes } from "vue";
+
+// DESIGN STATUS:       ✴️
+//   * icons should be slightly bigger on mobile ONLY (gameframevotes should be refactored slightly to account for this)
+//   * i think the look of the % / votes could look slightly better... maybe its font color?
+// ARCHITECTURE STATUS: ✅
+// TRANSLATION STATUS:  ✅
+
 const props = defineProps<{
   class?: HTMLAttributes["class"];
 }>();

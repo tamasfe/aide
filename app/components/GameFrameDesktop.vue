@@ -1,9 +1,13 @@
 <script setup lang="ts">
 // DESIGN STATUS:        ✅
-//   * NOTE: instead of [70vh] this could be way more fancy and calculate 100vh - height of header - height of menu bar
 // ARCHITECTURE STATUS:  ✅
 
 const authenticated = ref(true);
+const fullScreen = ref(false);
+
+const onToggleFullScreen = () => {
+  fullScreen.value = !fullScreen.value;
+};
 </script>
 
 <template>
@@ -13,7 +17,17 @@ const authenticated = ref(true);
       class="h-[70vh] rounded-t-default"
     >
       <template #authenticated>
-        <GameFrameIframe />
+        <div
+          :class="cn(
+            fullScreen && 'absolute top-0 left-0 w-full h-full z-[10]',
+          )"
+        >
+          <div class="p-4">
+            <div @click="onToggleFullScreen">close</div>
+          </div>
+
+          <GameFrameIframe />
+        </div>
       </template>
 
       <div
@@ -62,6 +76,7 @@ const authenticated = ref(true);
             variant="ghost"
             size="ghost"
             class="flex flex-row gap-1 items-center hover:text-subtle-light"
+            @click="onToggleFullScreen"
           >
             <Icon
               name="lucide:maximize"
