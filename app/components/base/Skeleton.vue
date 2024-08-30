@@ -1,21 +1,29 @@
 <script setup lang="ts">
+import type { HTMLAttributes } from "vue";
+
+// DESIGN STATUS:       ✅
+// ARCHITECTURE STATUS: ✅
+// TRANSLATION STATUS:  ✅
+
 const props = defineProps<{
   loading: boolean;
+  class?: HTMLAttributes["class"];
 }>();
-
-const loadingClass = computed(() => {
-  return props.loading ? "giro__skeleton" : "";
-});
 </script>
 
 <template>
-  <div :class="loadingClass">
+  <div
+    :class="cn(
+      { skeleton: loading },
+      props.class,
+    )"
+  >
     <slot v-if="!loading" />
   </div>
 </template>
 
 <style scoped>
-.giro__skeleton {
+.skeleton {
   background-image: linear-gradient(
     -90deg,
     rgb(var(--giro-bg-subtle)) 0%,
