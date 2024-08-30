@@ -36,9 +36,10 @@ account
   - PixSettings.vue
   - RegionalSettings.vue
   - SettingContainer.vue
-base
-  - ContentBox.vue
+components
+  - GameFrameMobile.vue
+  - /categories/[id].vue
   - GridCategory.vue
+  - ContentBox.vue
   - Search.vue
   - Select.vue
-  - Skeleton.vue
