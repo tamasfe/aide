@@ -16,7 +16,7 @@
     "@floating-ui/vue": "^1.1.4",
     "@headlessui/vue": "^1.7.22",
     "@nuxt/icon": "^1.5.0",
-    "@nuxt/image": "^1.7.1",
+    "@nuxt/image": "^1.8.0",
     "@phosphor-icons/vue": "^2.2.1",
     "@pinia/nuxt": "^0.5.4",
     "@vee-validate/nuxt": "^4.13.2",
@@ -34,7 +34,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@nuxt/eslint": "^0.5.3",
+    "@nuxt/eslint": "^0.5.4",
     "@nuxt/test-utils": "^3.14.1",
     "@nuxtjs/device": "^3.2.2",
     "@nuxtjs/i18n": "^8.5.1",
@@ -44,7 +44,7 @@
     "@vue/test-utils": "^2.4.6",
     "@vue/typescript-plugin": "^2.1.2",
     "eslint": "^9.9.1",
-    "happy-dom": "^15.3.1",
+    "happy-dom": "^15.6.0",
     "tailwindcss": "^3.4.10",
     "typescript": "^5.5.4",
     "vitest": "^2.0.5",
