@@ -2,7 +2,6 @@
 import type { HTMLAttributes } from "vue";
 
 // DESIGN STATUS:       ✅
-//   * could look a little fancier...
 // ARCHITECTURE STATUS: ✅
 // TRANSLATION STATUS:  ✅
 

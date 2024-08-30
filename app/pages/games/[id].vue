@@ -1,6 +1,9 @@
 <script setup lang="ts">
 // DESIGN STATUS:       ✅
 // ARCHITECTURE STATUS: ✴️
+//   * the [full screen] button needs to load a similar iframe as mobile, maybe the same?
+//   * for performance reasons we CANT be duplicating some heavy iframe around however which loads tons of assets (ie multiple hidden ones)
+//   * this also needs to hide the deposit in menu bar (see me for details, we will do it how bet7k does)
 //   * look at how Blaze + Bet7k transition between the mobile and desktop frames
 //     based on an exact breakpoint. note that it MUST have more logic than just responsive
 //     because there can only ever be 1 game frame at once. the way these sites handle it
@@ -12,13 +15,14 @@
 //
 //   Personally approach 1 seems perfectly fine now as i dont want edge cases with moving iframes in old browsers etc.
 // TRANSLATION STATUS:  ✅
+
 const { isMobile } = useDevice();
 </script>
 
 <template>
   <div class="pt-4 pb-12 giro__container giro__sections">
-    <GameFrameMobile v-if="isMobile" />
-    <GameFrame v-else />
+    <GameFrameMobile v-if="true" />
+    <GameFrameDesktop v-else />
 
     <GameDescription
       class="bg-subtle"

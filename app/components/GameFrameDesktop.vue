@@ -1,12 +1,9 @@
 <script setup lang="ts">
-// DESIGN STATUS:        ✴️
-//   * we likely will want to only enable the mobile iframe at very small screen sizes... the desktop even if very small isnt practical
-// ARCHITECTURE STATUS:  ✴️
-//   * the [full screen] button needs to load a similar iframe as mobile, maybe the same?
-//   * for performance reasons we CANT be duplicating some heavy iframe around however which loads tons of assets (ie multiple hidden ones)
-//   * this also needs to hide the deposit in menu bar (see me for details, we will do it how bet7k does)
+// DESIGN STATUS:        ✅
+//   * NOTE: instead of [70vh] this could be way more fancy and calculate 100vh - height of header - height of menu bar
+// ARCHITECTURE STATUS:  ✅
 
-const authenticated = ref(false);
+const authenticated = ref(true);
 </script>
 
 <template>
@@ -49,9 +46,7 @@ const authenticated = ref(false);
       <div class="flex flex-col md:flex-row items-center justify-between gap-4 md:gap-0">
         <div class="w-full flex justify-between md:justify-start flex-row md:flex-col items-center md:items-start font-semibold">
           <h2 class="text-lg md:text-xl font-semibold">Potion Spells</h2>
-          <h3 class="text-subtle-light">
-            Pragmatic Play
-          </h3>
+          <h3 class="text-subtle-light">Pragmatic Play</h3>
         </div>
         <div class="w-full flex justify-between md:justify-end items-center space-x-8 text-subtle font-semibold">
           <ButtonShare
@@ -60,32 +55,7 @@ const authenticated = ref(false);
             class="hover:text-subtle-light"
           />
 
-          <div class="flex flex-row gap-2 items-center">
-            <BaseButton
-              variant="ghost"
-              size="ghost"
-              class="flex flex-row gap-1 items-center hover:text-subtle-light"
-            >
-              <Icon
-                name="lucide:thumbs-down"
-                size="24"
-              />
-            </BaseButton>
-            <div class="flex flex-col gap-1 leading-none whitespace-nowrap items-center text-sm text-center justify-center">
-              <div>75.2%</div>
-              <div class="font-medium">2.425</div>
-            </div>
-            <BaseButton
-              variant="ghost"
-              size="ghost"
-              class="flex flex-row gap-1 items-center hover:text-subtle-light"
-            >
-              <Icon
-                name="lucide:thumbs-up"
-                size="24"
-              />
-            </BaseButton>
-          </div>
+          <GameFrameVotes />
 
           <BaseButton
             v-if="authenticated"
