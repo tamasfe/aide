@@ -1,14 +1,12 @@
-<script setup lang="ts">
-// TODO: Add logic here and props
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <BaseContentBox>
+  <DashboardSection>
     <template #title>
       <h2>Pix Settings</h2>
     </template>
     <div class="space-y-8 sm:space-y-4">
-      <DashboardSection>
+      <DashboardSectionItem>
         <template #title>
           <p>Key Type</p>
         </template>
@@ -25,15 +23,15 @@
             </BaseButton>
           </div>
         </template>
-      </DashboardSection>
-      <DashboardSection>
+      </DashboardSectionItem>
+      <DashboardSectionItem>
         <template #title>
           <p>Key Value</p>
         </template>
         <template #default>
           <p>078.843.426-85</p>
         </template>
-      </DashboardSection>
+      </DashboardSectionItem>
     </div>
-  </BaseContentBox>
+  </DashboardSection>
 </template>

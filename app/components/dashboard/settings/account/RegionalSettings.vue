@@ -1,14 +1,12 @@
-<script setup lang="ts">
-// TODO: Add logic here and props
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <BaseContentBox>
+  <DashboardSection>
     <template #title>
       <h2>Regional Settings</h2>
     </template>
     <div class="space-y-8 sm:space-y-4">
-      <DashboardSection>
+      <DashboardSectionItem>
         <template #title>
           <p>Wallets</p>
         </template>
@@ -21,8 +19,8 @@
             <p>BRL (ID: #292482)</p>
           </div>
         </template>
-      </DashboardSection>
-      <DashboardSection>
+      </DashboardSectionItem>
+      <DashboardSectionItem>
         <template #title>
           <p>Language</p>
         </template>
@@ -39,8 +37,8 @@
             </BaseButton>
           </div>
         </template>
-      </DashboardSection>
-      <DashboardSection>
+      </DashboardSectionItem>
+      <DashboardSectionItem>
         <template #title>
           <p>Time zone</p>
         </template>
@@ -57,7 +55,7 @@
             </BaseButton>
           </div>
         </template>
-      </DashboardSection>
+      </DashboardSectionItem>
     </div>
-  </BaseContentBox>
+  </DashboardSection>
 </template>

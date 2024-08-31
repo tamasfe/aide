@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const { t } = useI18n();
 
-export type NavDashboardSection = "settings" | "history";
+export type NavDashboardSectionItem = "settings" | "history";
 
 type Route = {
   title: string;
@@ -9,7 +9,7 @@ type Route = {
 };
 
 const props = defineProps<{
-  section: NavDashboardSection;
+  section: NavDashboardSectionItem;
 }>();
 
 const settingsRoutes: Route[] = [

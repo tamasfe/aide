@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { NavDashboardSection } from "@/components/NavDashboard.vue";
+import type { NavDashboardSectionItem } from "@/components/NavDashboard.vue";
 
 defineProps<{
-  section: NavDashboardSection;
+  section: NavDashboardSectionItem;
 }>();
 </script>
 

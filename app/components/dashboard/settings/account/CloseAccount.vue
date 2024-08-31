@@ -1,9 +1,7 @@
-<script setup lang="ts">
-// TODO: Add logic here and props
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <BaseContentBox>
+  <DashboardSection>
     <template #title>
       <h2>Close Account</h2>
     </template>
@@ -21,5 +19,5 @@
         </BaseButton>
       </div>
     </div>
-  </BaseContentBox>
+  </DashboardSection>
 </template>

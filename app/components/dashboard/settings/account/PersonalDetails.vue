@@ -1,22 +1,20 @@
-<script setup lang="ts">
-// TODO: Add logic here and props
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <BaseContentBox>
+  <DashboardSection>
     <template #title>
       <h2>Personal Details</h2>
     </template>
     <div class="space-y-8 sm:space-y-4">
-      <DashboardSection>
+      <DashboardSectionItem>
         <template #title>
           <p>Name</p>
         </template>
         <template #default>
           <p>Pedro</p>
         </template>
-      </DashboardSection>
-      <DashboardSection>
+      </DashboardSectionItem>
+      <DashboardSectionItem>
         <template #title>
           <p>Phone</p>
         </template>
@@ -33,16 +31,16 @@
             </BaseButton>
           </div>
         </template>
-      </DashboardSection>
-      <DashboardSection>
+      </DashboardSectionItem>
+      <DashboardSectionItem>
         <template #title>
           <p>Date of Birth</p>
         </template>
         <template #default>
           <p>24.02.1990</p>
         </template>
-      </DashboardSection>
-      <DashboardSection>
+      </DashboardSectionItem>
+      <DashboardSectionItem>
         <template #title>
           <p>Address</p>
         </template>
@@ -59,8 +57,8 @@
             </BaseButton>
           </div>
         </template>
-      </DashboardSection>
-      <DashboardSection>
+      </DashboardSectionItem>
+      <DashboardSectionItem>
         <template #title>
           <p>City</p>
         </template>
@@ -77,8 +75,8 @@
             </BaseButton>
           </div>
         </template>
-      </DashboardSection>
-      <DashboardSection>
+      </DashboardSectionItem>
+      <DashboardSectionItem>
         <template #title>
           <p>Postal Code</p>
         </template>
@@ -95,23 +93,23 @@
             </BaseButton>
           </div>
         </template>
-      </DashboardSection>
-      <DashboardSection>
+      </DashboardSectionItem>
+      <DashboardSectionItem>
         <template #title>
           <p>Country</p>
         </template>
         <template #default>
           <p>Brasil</p>
         </template>
-      </DashboardSection>
-      <DashboardSection>
+      </DashboardSectionItem>
+      <DashboardSectionItem>
         <template #title>
           <p>Document</p>
         </template>
         <template #default>
           <p>CPF: 111-222</p>
         </template>
-      </DashboardSection>
+      </DashboardSectionItem>
     </div>
-  </BaseContentBox>
+  </DashboardSection>
 </template>

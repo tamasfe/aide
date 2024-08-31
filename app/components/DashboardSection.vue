@@ -1,16 +1,10 @@
+<script setup lang="ts"></script>
+
 <template>
-  <div class="flex flex-col sm:flex-row justify-between gap-x-28 gap-y-3">
-    <div class="sm:w-[15%] text-subtle font-medium">
+  <div class="px-4 sm:px-8 py-4 space-y-8 bg-subtle rounded-2xl">
+    <div class="text-[1.137rem] font-bold">
       <slot name="title" />
     </div>
-    <div class="sm:flex-1 space-y-1">
-      <div class="text-emphasis font-medium text-lg">
-        <slot />
-      </div>
-      <div class="text-subtle">
-        <slot name="description" />
-      </div>
-    </div>
-    <slot name="actions" />
+    <slot />
   </div>
 </template>
