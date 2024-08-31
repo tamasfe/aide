@@ -1,5 +1,3 @@
-<script setup lang="ts"></script>
-
 <template>
   <DashboardSection :title="$t('dashboard.settings.account.personal_details')">
     <DashboardSectionItem :name="$t('dashboard.settings.account.name')">
@@ -14,10 +12,10 @@
       <template #actions>
         <div>
           <BaseButton
-            class="w-full bg-emphasis !text-subtle-light hover:!text-emphasis !py-3 !font-medium !rounded-lg"
-            type="button"
+            variant="secondary"
+            size="dashboard"
           >
-            Change
+            {{ $t('button.edit') }}
           </BaseButton>
         </div>
       </template>
@@ -34,10 +32,10 @@
       <template #actions>
         <div>
           <BaseButton
-            class="w-full bg-emphasis !text-subtle-light hover:!text-emphasis !py-3 !font-medium !rounded-lg"
-            type="button"
+            variant="secondary"
+            size="dashboard"
           >
-            Change
+            {{ $t('button.edit') }}
           </BaseButton>
         </div>
       </template>
@@ -49,10 +47,10 @@
       <template #actions>
         <div>
           <BaseButton
-            class="w-full bg-emphasis !text-subtle-light hover:!text-emphasis !py-3 !font-medium !rounded-lg"
-            type="button"
+            variant="secondary"
+            size="dashboard"
           >
-            Change
+            {{ $t('button.edit') }}
           </BaseButton>
         </div>
       </template>
@@ -64,10 +62,10 @@
       <template #actions>
         <div>
           <BaseButton
-            class="w-full bg-emphasis !text-subtle-light hover:!text-emphasis !py-3 !font-medium !rounded-lg"
-            type="button"
+            variant="secondary"
+            size="dashboard"
           >
-            Change
+            {{ $t('button.edit') }}
           </BaseButton>
         </div>
       </template>

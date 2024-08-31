@@ -1,5 +1,3 @@
-<script setup lang="ts"></script>
-
 <template>
   <DashboardSection :title="$t('dashboard.settings.account.account_details')">
     <DashboardSectionItem :name="$t('dashboard.settings.account.username')">
@@ -12,10 +10,10 @@
       <template #actions>
         <div>
           <BaseButton
-            class="w-full bg-emphasis !text-subtle-light hover:!text-emphasis !py-3 !font-medium !rounded-lg"
-            type="button"
+            variant="secondary"
+            size="dashboard"
           >
-            Change
+            {{ $t('button.edit') }}
           </BaseButton>
         </div>
       </template>
@@ -32,10 +30,10 @@
       <template #actions>
         <div>
           <BaseButton
-            class="w-full bg-emphasis !text-subtle-light hover:!text-emphasis !py-3 !font-medium !rounded-lg"
-            type="button"
+            variant="secondary"
+            size="dashboard"
           >
-            Change
+            {{ $t('button.change') }}
           </BaseButton>
         </div>
       </template>
@@ -53,10 +51,15 @@
       <template #actions>
         <div>
           <BaseButton
-            class="w-full bg-emphasis !text-subtle-light hover:!text-emphasis !py-3 !font-medium !rounded-lg"
-            type="button"
+            variant="secondary"
+            size="dashboard"
+            class="gap-2"
           >
-            Copy
+            <Icon
+              name="lucide:copy"
+              size="18"
+            />
+            {{ $t('button.copy') }}
           </BaseButton>
         </div>
       </template>

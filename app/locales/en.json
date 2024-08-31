@@ -40,7 +40,12 @@
     "notify_me": "Notify Me When Available",
     "share": "Share",
     "play_now": "Play Now",
-    "close_account": "Close Account"
+    "close_account": "Close Account",
+    "edit": "Edit",
+    "change": "Change",
+    "copy": "Copy",
+    "upload": "Upload",
+    "confirm": "Confirm"
   },
   "mobile_nav": {
     "menu": "Menu",

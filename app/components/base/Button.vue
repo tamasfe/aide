@@ -26,6 +26,7 @@ const buttonVariants = cva(
         lg: "",
         xl: "h-12 px-6 text-lg font-bold rounded-default",
         input: "h-[var(--giro-field-height)] px-4 text-base font-medium rounded-default",
+        dashboard: "w-full h-10 px-3 sm:h-8 sm:text-sm font-medium rounded-default",
         ghost: "",
       },
     },

@@ -1,5 +1,3 @@
-<script setup lang="ts"></script>
-
 <template>
   <DashboardSection :title="$t('dashboard.settings.account.regional_settings')">
     <DashboardSectionItem :name="$t('dashboard.settings.account.wallets')">
@@ -20,10 +18,10 @@
       <template #actions>
         <div>
           <BaseButton
-            class="w-full bg-emphasis !text-subtle-light hover:!text-emphasis !py-3 !font-medium !rounded-lg"
-            type="button"
+            variant="secondary"
+            size="dashboard"
           >
-            Change
+            {{ $t('button.change') }}
           </BaseButton>
         </div>
       </template>
@@ -35,10 +33,10 @@
       <template #actions>
         <div>
           <BaseButton
-            class="w-full bg-emphasis !text-subtle-light hover:!text-emphasis !py-3 !font-medium !rounded-lg"
-            type="button"
+            variant="secondary"
+            size="dashboard"
           >
-            Change
+            {{ $t('button.change') }}
           </BaseButton>
         </div>
       </template>
