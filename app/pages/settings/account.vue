@@ -3,10 +3,10 @@
     name="dashboard"
     section="settings"
   >
-    <DashboardSettingsAccountMainDetails />
+    <DashboardSettingsAccountDetails />
     <DashboardSettingsAccountPersonalDetails />
     <DashboardSettingsAccountRegionalSettings />
     <DashboardSettingsAccountPixSettings />
-    <DashboardSettingsAccountClose />
+    <DashboardSettingsAccountCloseAccount />
   </NuxtLayout>
 </template>
