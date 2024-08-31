@@ -14,42 +14,42 @@ const props = defineProps<{
 
 const settingsRoutes: Route[] = [
   {
-    title: t("dashboard.wallet"),
+    title: t("dashboard.nav.wallet"),
     to: "/settings/wallet",
   },
   {
-    title: t("dashboard.account"),
+    title: t("dashboard.nav.account"),
     to: "/settings/account",
   },
   {
-    title: t("dashboard.preferences"),
+    title: t("dashboard.nav.preferences"),
     to: "/settings/preferences",
   },
   {
-    title: t("dashboard.verification"),
+    title: t("dashboard.nav.verification"),
     to: "/settings/verification",
   },
   {
-    title: t("dashboard.limits"),
+    title: t("dashboard.nav.limits"),
     to: "/settings/limits",
   },
 ];
 
 const historyRoutes: Route[] = [
   {
-    title: t("dashboard.deposits"),
+    title: t("dashboard.nav.deposits"),
     to: "/history/deposits",
   },
   {
-    title: t("dashboard.withdrawals"),
+    title: t("dashboard.nav.withdrawals"),
     to: "/history/withdrawals",
   },
   {
-    title: t("dashboard.casino"),
+    title: t("dashboard.nav.casino"),
     to: "/history/casino",
   },
   // {
-  //   title: t("dashboard.sportsbook"),
+  //   title: t("dashboard.nav.sportsbook"),
   //   to: "/history/sportsbook",
   // },
 ];

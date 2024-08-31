@@ -115,15 +115,30 @@
     "close": "Close"
   },
   "dashboard": {
-    "wallet": "Wallet",
-    "account": "Account",
-    "preferences": "Preferences",
-    "verification": "Verification",
-    "limits": "Limits",
-    "deposits": "Deposits",
-    "withdrawals": "Withdrawals",
-    "casino": "Casino",
-    "sportsbook": "Sportsbook"
+    "nav": {
+      "wallet": "Wallet",
+      "account": "Account",
+      "preferences": "Preferences",
+      "verification": "Verification",
+      "limits": "Limits",
+      "deposits": "Deposits",
+      "withdrawals": "Withdrawals",
+      "casino": "Casino",
+      "sportsbook": "Sportsbook"
+    },
+    "settings": {
+      "account": {
+        "account_details": "Account Details",
+        "username": "Username",
+        "email": "Email",
+        "password": "Password",
+        "public_id": "Public ID",
+        "personal_details": "Personal Details",
+        "regional_settings": "Regional Settings",
+        "document_settings": "Document Settings",
+        "close_account": "Close Account"
+      }
+    }
   },
   "footer": {
     "summary": "Welcome to The GiroBet Experience the ultimate thrill of online gambling with us. Play slots, poker, blackjack, and more. Win big with our bonuses and promotions.",

@@ -1,10 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <DashboardSection>
-    <template #title>
-      <h2>Close Account</h2>
-    </template>
+  <DashboardSection :title="$t('dashboard.settings.account.close_account')">
     <div class="flex flex-col sm:flex-row sm:justify-between gap-x-24 gap-y-4">
       <p class="text-subtle-light font-medium">
         Your account will be deactivated and you will be excluded from any
