@@ -1,5 +1,11 @@
 ### Refactor
 
+Travis
+  * providers page
+  * finalize game grid # of columns @ different screen sizes
+  * components
+  * replace all @phosphor-icons/vue
+
 Turik
   * convert all "to" nuxt links to "name" so we dont get broken links
   * refactor game grid to be shared with gridcategory (export fields?)
@@ -19,26 +25,8 @@ Turik
     * button animation fade (see comment)
   * refactor / clean up your existing components
 
-Todo
-  * finalize game grid # of columns @ different screen sizes
-  * components
-  * replace all @phosphor-icons/vue
-  * providers page
+### Components Left
 
-
-### Components
-
-account
-  - Close.vue
-  - MainDetails.vue
-  - NavigationTab.vue
-  - NavigationTabs.vue
-  - PersonalDetails.vue
-  - PixSettings.vue
-  - RegionalSettings.vue
-  - SettingContainer.vue
-components
-  - /categories/[id].vue
-  - GridCategory.vue
-  - ContentBox.vue
-  - Select.vue
+  * /categories/[id].vue
+  * GridCategory.vue
+  * Select.vue
