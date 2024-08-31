@@ -8,7 +8,7 @@
       <h2>Account Details</h2>
     </template>
     <div class="space-y-8 sm:space-y-4">
-      <AccountSettingContainer>
+      <DashboardSection>
         <template #title>
           <p>Username</p>
         </template>
@@ -28,16 +28,16 @@
             </BaseButton>
           </div>
         </template>
-      </AccountSettingContainer>
-      <AccountSettingContainer>
+      </DashboardSection>
+      <DashboardSection>
         <template #title>
           <p>Email</p>
         </template>
         <template #default>
           <p>email.example@email.com</p>
         </template>
-      </AccountSettingContainer>
-      <AccountSettingContainer>
+      </DashboardSection>
+      <DashboardSection>
         <template #title>
           <p>Password</p>
         </template>
@@ -54,8 +54,8 @@
             </BaseButton>
           </div>
         </template>
-      </AccountSettingContainer>
-      <AccountSettingContainer>
+      </DashboardSection>
+      <DashboardSection>
         <template #title>
           <p>Public ID</p>
         </template>
@@ -78,7 +78,7 @@
             </BaseButton>
           </div>
         </template>
-      </AccountSettingContainer>
+      </DashboardSection>
     </div>
   </BaseContentBox>
 </template>

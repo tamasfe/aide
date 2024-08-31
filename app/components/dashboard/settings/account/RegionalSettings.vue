@@ -8,7 +8,7 @@
       <h2>Regional Settings</h2>
     </template>
     <div class="space-y-8 sm:space-y-4">
-      <AccountSettingContainer>
+      <DashboardSection>
         <template #title>
           <p>Wallets</p>
         </template>
@@ -21,8 +21,8 @@
             <p>BRL (ID: #292482)</p>
           </div>
         </template>
-      </AccountSettingContainer>
-      <AccountSettingContainer>
+      </DashboardSection>
+      <DashboardSection>
         <template #title>
           <p>Language</p>
         </template>
@@ -39,8 +39,8 @@
             </BaseButton>
           </div>
         </template>
-      </AccountSettingContainer>
-      <AccountSettingContainer>
+      </DashboardSection>
+      <DashboardSection>
         <template #title>
           <p>Time zone</p>
         </template>
@@ -57,7 +57,7 @@
             </BaseButton>
           </div>
         </template>
-      </AccountSettingContainer>
+      </DashboardSection>
     </div>
   </BaseContentBox>
 </template>

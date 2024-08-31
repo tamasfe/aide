@@ -8,7 +8,7 @@
       <h2>Pix Settings</h2>
     </template>
     <div class="space-y-8 sm:space-y-4">
-      <AccountSettingContainer>
+      <DashboardSection>
         <template #title>
           <p>Key Type</p>
         </template>
@@ -25,15 +25,15 @@
             </BaseButton>
           </div>
         </template>
-      </AccountSettingContainer>
-      <AccountSettingContainer>
+      </DashboardSection>
+      <DashboardSection>
         <template #title>
           <p>Key Value</p>
         </template>
         <template #default>
           <p>078.843.426-85</p>
         </template>
-      </AccountSettingContainer>
+      </DashboardSection>
     </div>
   </BaseContentBox>
 </template>

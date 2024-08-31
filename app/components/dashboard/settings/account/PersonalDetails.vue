@@ -8,15 +8,15 @@
       <h2>Personal Details</h2>
     </template>
     <div class="space-y-8 sm:space-y-4">
-      <AccountSettingContainer>
+      <DashboardSection>
         <template #title>
           <p>Name</p>
         </template>
         <template #default>
           <p>Pedro</p>
         </template>
-      </AccountSettingContainer>
-      <AccountSettingContainer>
+      </DashboardSection>
+      <DashboardSection>
         <template #title>
           <p>Phone</p>
         </template>
@@ -33,16 +33,16 @@
             </BaseButton>
           </div>
         </template>
-      </AccountSettingContainer>
-      <AccountSettingContainer>
+      </DashboardSection>
+      <DashboardSection>
         <template #title>
           <p>Date of Birth</p>
         </template>
         <template #default>
           <p>24.02.1990</p>
         </template>
-      </AccountSettingContainer>
-      <AccountSettingContainer>
+      </DashboardSection>
+      <DashboardSection>
         <template #title>
           <p>Address</p>
         </template>
@@ -59,8 +59,8 @@
             </BaseButton>
           </div>
         </template>
-      </AccountSettingContainer>
-      <AccountSettingContainer>
+      </DashboardSection>
+      <DashboardSection>
         <template #title>
           <p>City</p>
         </template>
@@ -77,8 +77,8 @@
             </BaseButton>
           </div>
         </template>
-      </AccountSettingContainer>
-      <AccountSettingContainer>
+      </DashboardSection>
+      <DashboardSection>
         <template #title>
           <p>Postal Code</p>
         </template>
@@ -95,23 +95,23 @@
             </BaseButton>
           </div>
         </template>
-      </AccountSettingContainer>
-      <AccountSettingContainer>
+      </DashboardSection>
+      <DashboardSection>
         <template #title>
           <p>Country</p>
         </template>
         <template #default>
           <p>Brasil</p>
         </template>
-      </AccountSettingContainer>
-      <AccountSettingContainer>
+      </DashboardSection>
+      <DashboardSection>
         <template #title>
           <p>Document</p>
         </template>
         <template #default>
           <p>CPF: 111-222</p>
         </template>
-      </AccountSettingContainer>
+      </DashboardSection>
     </div>
   </BaseContentBox>
 </template>
