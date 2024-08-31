@@ -2,7 +2,7 @@
   <DashboardSection :title="$t('dashboard.settings.account.account_details')">
     <DashboardSectionItem :name="$t('dashboard.settings.account.username')">
       <template #default>
-        <p>username.563778</p>
+        <p>banger69.camaro</p>
       </template>
       <template #description>
         <p>Usernames are public and will show in leaderboards.</p>
@@ -40,7 +40,7 @@
     </DashboardSectionItem>
     <DashboardSectionItem :name="$t('dashboard.settings.account.public_id')">
       <template #default>
-        <p>AA23 N34G PP7T STSA</p>
+        <p>b46d28cc-b26e-49f3-bb01-3621384912c8</p>
       </template>
       <template #description>
         <p>
