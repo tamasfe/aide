@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const { t } = useI18n();
 
-export type DashboardNavSection = "settings" | "history";
+export type NavDashboardSection = "settings" | "history";
 
 type Route = {
   title: string;
@@ -9,7 +9,7 @@ type Route = {
 };
 
 const props = defineProps<{
-  section: DashboardNavSection;
+  section: NavDashboardSection;
 }>();
 
 const settingsRoutes: Route[] = [
