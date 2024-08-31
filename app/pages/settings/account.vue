@@ -6,7 +6,7 @@
     <DashboardSettingsAccountDetails />
     <DashboardSettingsAccountPersonalDetails />
     <DashboardSettingsAccountRegionalSettings />
-    <DashboardSettingsAccountPixSettings />
+    <DashboardSettingsAccountDocumentSettings />
     <DashboardSettingsAccountCloseAccount />
   </NuxtLayout>
 </template>

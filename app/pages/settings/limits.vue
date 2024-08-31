@@ -3,6 +3,6 @@
     name="dashboard"
     section="settings"
   >
-    limits
+    <DashboardSettingsLimitsSuspendAccount />
   </NuxtLayout>
 </template>

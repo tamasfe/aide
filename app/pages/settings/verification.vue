@@ -3,6 +3,7 @@
     name="dashboard"
     section="settings"
   >
-    verifications
+    <DashboardSettingsVerificationIdentity />
+    <DashboardSettingsVerificationAddress />
   </NuxtLayout>
 </template>

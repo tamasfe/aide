@@ -3,6 +3,7 @@
     name="dashboard"
     section="settings"
   >
-    preferences
+    <DashboardSettingsPreferencesBonuses />
+    <DashboardSettingsPreferencesCommunication />
   </NuxtLayout>
 </template>

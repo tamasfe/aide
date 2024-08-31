@@ -137,6 +137,17 @@
         "regional_settings": "Regional Settings",
         "document_settings": "Document Settings",
         "close_account": "Close Account"
+      },
+      "preferences": {
+        "bonuses": "Do You Love Bonuses?",
+        "communication": "Communication"
+      },
+      "verification": {
+        "identity": "Identity",
+        "address": "Address"
+      },
+      "limits": {
+        "suspend_account": "Suspend Account"
       }
     }
   },
