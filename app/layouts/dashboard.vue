@@ -8,43 +8,43 @@ defineProps<{
 const settingsRoutes = [
   {
     title: t("dashboard.wallet"),
-    to: "TODO",
+    to: "/settings/wallet",
   },
   {
     title: t("dashboard.account"),
-    to: "TODO",
+    to: "/settings/account",
   },
   {
     title: t("dashboard.preferences"),
-    to: "TODO",
+    to: "/settings/preferences",
   },
   {
     title: t("dashboard.verification"),
-    to: "TODO",
+    to: "/settings/verification",
   },
   {
     title: t("dashboard.limits"),
-    to: "TODO",
+    to: "/settings/limits",
   },
 ];
 
 const historyRoutes = [
   {
     title: t("dashboard.deposits"),
-    to: "TODO",
+    to: "/history/deposits",
   },
   {
     title: t("dashboard.withdrawals"),
-    to: "TODO",
+    to: "/history/withdrawals",
   },
   {
     title: t("dashboard.casino"),
-    to: "TODO",
+    to: "/history/casino",
   },
-  {
-    title: t("dashboard.sportsbook"),
-    to: "TODO",
-  },
+  // {
+  //   title: t("dashboard.sportsbook"),
+  //   to: "/history/sportsbook",
+  // },
 ];
 </script>
 
