@@ -2,10 +2,7 @@
 
 <template>
   <DashboardSection :title="$t('dashboard.settings.account.document_settings')">
-    <DashboardSectionItem>
-      <template #title>
-        <p>Key Type</p>
-      </template>
+    <DashboardSectionItem :name="$t('dashboard.settings.account.key_type')">
       <template #default>
         <p>CPF</p>
       </template>
@@ -20,10 +17,7 @@
         </div>
       </template>
     </DashboardSectionItem>
-    <DashboardSectionItem>
-      <template #title>
-        <p>Key Value</p>
-      </template>
+    <DashboardSectionItem :name="$t('dashboard.settings.account.key_value')">
       <template #default>
         <p>078.843.426-85</p>
       </template>

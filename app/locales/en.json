@@ -39,7 +39,8 @@
     "take_me_to": "Take me to {domain}",
     "notify_me": "Notify Me When Available",
     "share": "Share",
-    "play_now": "Play Now"
+    "play_now": "Play Now",
+    "close_account": "Close Account"
   },
   "mobile_nav": {
     "menu": "Menu",
@@ -114,6 +115,15 @@
   "i18n": {
     "close": "Close"
   },
+  "footer": {
+    "summary": "Welcome to The GiroBet Experience the ultimate thrill of online gambling with us. Play slots, poker, blackjack, and more. Win big with our bonuses and promotions.",
+    "popular": "Popular",
+    "girobet": "GiroBet",
+    "legal": "Legal",
+    "social_media": "Social Media",
+    "legal_notice": "Prior to engaging in any online gambling activities on our platform, it is imperative to verify that such actions are legally permissible within your jurisdiction. It is your responsibility to ascertain and adhere to the laws and regulations governing online gambling in your country or region.",
+    "copyright": "© {year} GiroBet. All Rights Reserved."
+  },
   "dashboard": {
     "nav": {
       "wallet": "Wallet",
@@ -134,9 +144,23 @@
         "password": "Password",
         "public_id": "Public ID",
         "personal_details": "Personal Details",
-        "regional_settings": "Regional Settings",
+        "name": "Name",
+        "phone": "Phone",
+        "date_of_birth": "Date of Birth",
+        "address": "Address",
+        "city": "City",
+        "postal_code": "Postal Code",
+        "country": "Country",
+        "document": "Document",
         "document_settings": "Document Settings",
-        "close_account": "Close Account"
+        "key_type": "Key Type",
+        "key_value": "Key Value",
+        "regional_settings": "Regional Settings",
+        "wallets": "Wallets",
+        "language": "Language",
+        "time_zone": "Time Zone",
+        "close_account": "Close Account",
+        "close_account_warning": "Your account will be deactivated and you will be excluded from any further communications from GiroBet."
       },
       "preferences": {
         "bonuses": "Do You Love Bonuses?",
@@ -150,15 +174,6 @@
         "suspend_account": "Suspend Account"
       }
     }
-  },
-  "footer": {
-    "summary": "Welcome to The GiroBet Experience the ultimate thrill of online gambling with us. Play slots, poker, blackjack, and more. Win big with our bonuses and promotions.",
-    "popular": "Popular",
-    "girobet": "GiroBet",
-    "legal": "Legal",
-    "social_media": "Social Media",
-    "legal_notice": "Prior to engaging in any online gambling activities on our platform, it is imperative to verify that such actions are legally permissible within your jurisdiction. It is your responsibility to ascertain and adhere to the laws and regulations governing online gambling in your country or region.",
-    "copyright": "© {year} GiroBet. All Rights Reserved."
   },
   "category": {
     "casual": "Casual",

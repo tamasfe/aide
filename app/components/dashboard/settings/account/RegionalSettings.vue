@@ -2,10 +2,7 @@
 
 <template>
   <DashboardSection :title="$t('dashboard.settings.account.regional_settings')">
-    <DashboardSectionItem>
-      <template #title>
-        <p>Wallets</p>
-      </template>
+    <DashboardSectionItem :name="$t('dashboard.settings.account.wallets')">
       <template #default>
         <div class="flex items-center gap-2">
           <BaseFlag
@@ -16,10 +13,7 @@
         </div>
       </template>
     </DashboardSectionItem>
-    <DashboardSectionItem>
-      <template #title>
-        <p>Language</p>
-      </template>
+    <DashboardSectionItem :name="$t('dashboard.settings.account.language')">
       <template #default>
         <p>English</p>
       </template>
@@ -34,10 +28,7 @@
         </div>
       </template>
     </DashboardSectionItem>
-    <DashboardSectionItem>
-      <template #title>
-        <p>Time zone</p>
-      </template>
+    <DashboardSectionItem :name="$t('dashboard.settings.account.time_zone')">
       <template #default>
         <p>Brazil (GMT-3) Monday, April 29, 2024, 15:37</p>
       </template>

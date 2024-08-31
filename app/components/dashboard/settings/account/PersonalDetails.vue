@@ -2,18 +2,12 @@
 
 <template>
   <DashboardSection :title="$t('dashboard.settings.account.personal_details')">
-    <DashboardSectionItem>
-      <template #title>
-        <p>Name</p>
-      </template>
+    <DashboardSectionItem :name="$t('dashboard.settings.account.name')">
       <template #default>
         <p>Pedro</p>
       </template>
     </DashboardSectionItem>
-    <DashboardSectionItem>
-      <template #title>
-        <p>Phone</p>
-      </template>
+    <DashboardSectionItem :name="$t('dashboard.settings.account.phone')">
       <template #default>
         <p>+55 (61) 314 202 63</p>
       </template>
@@ -28,18 +22,12 @@
         </div>
       </template>
     </DashboardSectionItem>
-    <DashboardSectionItem>
-      <template #title>
-        <p>Date of Birth</p>
-      </template>
+    <DashboardSectionItem :name="$t('dashboard.settings.account.date_of_birth')">
       <template #default>
         <p>24.02.1990</p>
       </template>
     </DashboardSectionItem>
-    <DashboardSectionItem>
-      <template #title>
-        <p>Address</p>
-      </template>
+    <DashboardSectionItem :name="$t('dashboard.settings.account.address')">
       <template #default>
         <p>Viaduto do Chá, 15</p>
       </template>
@@ -54,10 +42,7 @@
         </div>
       </template>
     </DashboardSectionItem>
-    <DashboardSectionItem>
-      <template #title>
-        <p>City</p>
-      </template>
+    <DashboardSectionItem :name="$t('dashboard.settings.account.city')">
       <template #default>
         <p>SÃO PAULO - SP</p>
       </template>
@@ -72,10 +57,7 @@
         </div>
       </template>
     </DashboardSectionItem>
-    <DashboardSectionItem>
-      <template #title>
-        <p>Postal Code</p>
-      </template>
+    <DashboardSectionItem :name="$t('dashboard.settings.account.postal_code')">
       <template #default>
         <p>01002-020</p>
       </template>
@@ -90,18 +72,12 @@
         </div>
       </template>
     </DashboardSectionItem>
-    <DashboardSectionItem>
-      <template #title>
-        <p>Country</p>
-      </template>
+    <DashboardSectionItem :name="$t('dashboard.settings.account.country')">
       <template #default>
         <p>Brasil</p>
       </template>
     </DashboardSectionItem>
-    <DashboardSectionItem>
-      <template #title>
-        <p>Document</p>
-      </template>
+    <DashboardSectionItem :name="$t('dashboard.settings.account.document')">
       <template #default>
         <p>CPF: 111-222</p>
       </template>
