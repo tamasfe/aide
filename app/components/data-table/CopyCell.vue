@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // DESIGN STATUS:       ✴️
-//   * show animation when copied (animate + fade out of the value?)
+//   * show animation when copied (animate + fade out of the value?). do this instead of the stupid icon change
 
 const props = defineProps<{
   value: string | number;
