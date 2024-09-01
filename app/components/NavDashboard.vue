@@ -70,8 +70,8 @@ const isActive = (to: string) => currentRoute.value.path === to;
       :key="route.to"
       :to="route.to"
       :class="cn(
-        'rounded-default text-[0.8rem] font-medium text-emphasis py-3 px-6',
-        isActive(route.to) ? 'text-emphasis bg-[#272646]' : 'text-subtle bg-[#181732]',
+        'h-10 px-5 flex items-center justify-center rounded-default text-[0.8rem] font-medium text-emphasis',
+        isActive(route.to) ? 'text-emphasis-light bg-[#272646]' : 'text-subtle bg-[#181732]',
       )"
     >
       {{ route.title }}
