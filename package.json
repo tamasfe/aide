@@ -19,6 +19,7 @@
     "@nuxt/image": "^1.8.0",
     "@phosphor-icons/vue": "^2.2.1",
     "@pinia/nuxt": "^0.5.4",
+    "@tanstack/vue-table": "8.19.3",
     "@vee-validate/nuxt": "^4.13.2",
     "@vee-validate/zod": "^4.13.2",
     "@vueuse/core": "^11.0.3",

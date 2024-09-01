@@ -28,6 +28,8 @@ Turik
 
 ### Components Left
 
+  * /providers/[id].vue
   * /categories/[id].vue
   * GridCategory.vue
   * Select.vue
+  * DataTable.vue
