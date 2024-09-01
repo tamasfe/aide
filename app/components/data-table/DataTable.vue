@@ -124,6 +124,15 @@ table {
   @apply text-left w-full;
 }
 th, td {
-  @apply p-1;
+  @apply p-2 uppercase rounded-sm;
+}
+th {
+  @apply text-xs font-semibold;
+}
+td {
+  @apply text-sm text-subtle-light font-medium;
+}
+tr:nth-child(odd) td {
+  @apply bg-subtle;
 }
 </style>
