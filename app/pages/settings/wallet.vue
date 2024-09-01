@@ -36,6 +36,8 @@ const data = shallowRef<WalletTransaction[]>([
   { id: 1, date: "2024-01-03", type: "DEPOSIT", status: "COMPLETE", amount: "2598.25" },
   { id: 2, date: "2024-02-03", type: "WITHDRAWAL", status: "COMPLETE", amount: "0.15" },
 ]);
+
+const loading = ref(false);
 </script>
 
 <template>
@@ -46,12 +48,14 @@ const data = shallowRef<WalletTransaction[]>([
     <DataTable
       :data="data"
       :columns="columns"
-      :loading="true"
+      :loading="loading"
     >
-      <BaseEmpty
-        title="No Transactions"
-        icon="lucide:wallet-cards"
-      />
+      <template #empty>
+        <BaseEmpty
+          title="No Transactions"
+          icon="lucide:wallet-cards"
+        />
+      </template>
     </DataTable>
   </NuxtLayout>
 </template>

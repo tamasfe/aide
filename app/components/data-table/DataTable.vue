@@ -6,6 +6,9 @@ import {
   useVueTable,
 } from "@tanstack/vue-table";
 
+// DESIGN STATUS:      ✴️
+//   - still needs mobile responsive version of table
+
 // TODO - look at how i do it in the admin component
 // which combines both server + client pagination. for now i have stripped
 // some away just to get the core component in, but ive already done all
@@ -100,10 +103,10 @@ const table = useVueTable(buildTable());
 </template>
 
 <style scoped>
-th, td {
-  @apply p-1;
+table {
+  @apply w-full;
 }
-.td-empty {
-  @apply h-[20rem];
+th, td {
+  @apply p-1 text-left;
 }
 </style>

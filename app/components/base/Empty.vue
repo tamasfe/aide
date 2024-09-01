@@ -11,11 +11,12 @@ withDefaults(
 </script>
 
 <template>
-  <div class="'min-h-[200px] flex flex-row justify-center items-center'">
+  <div class="min-h-[100px] flex flex-row gap-3 justify-center items-center">
     <Icon
       :name="icon"
-      size="30"
+      size="28"
+      class="text-subtle"
     />
-    <div class="font-semibold">{{ title }}</div>
+    <div class="text-subtle text-lg md:text-xl font-medium">{{ title }}</div>
   </div>
 </template>
