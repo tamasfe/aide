@@ -51,7 +51,7 @@ const table = useVueTable(buildTable());
 
 <template>
   <div class="relative whitespace-nowrap">
-    <table>
+    <table v-if="table.getRowModel().rows?.length">
       <thead>
         <tr
           v-for="headerGroup in table.getHeaderGroups()"
@@ -76,41 +76,39 @@ const table = useVueTable(buildTable());
         </tr>
       </thead>
       <tbody>
-        <template v-if="table.getRowModel().rows?.length">
-          <tr
-            v-for="row in table.getRowModel().rows"
-            :key="row.id"
-            class="tr"
+        <tr
+          v-for="row in table.getRowModel().rows"
+          :key="row.id"
+          class="tr"
+        >
+          <td
+            v-for="cell in row.getVisibleCells()"
+            :key="cell.id"
+            :class="cn(
+              'td',
+              cell.column.columnDef.meta?.align === 'center' && 'text-center',
+              cell.column.columnDef.meta?.align === 'right' && 'text-right',
+            )"
           >
-            <td
-              v-for="cell in row.getVisibleCells()"
-              :key="cell.id"
-              :class="cn(
-                'td',
-                cell.column.columnDef.meta?.align === 'center' && 'text-center',
-                cell.column.columnDef.meta?.align === 'right' && 'text-right',
-              )"
-            >
-              <FlexRender
-                :render="cell.column.columnDef.cell"
-                :props="cell.getContext()"
-              />
-            </td>
-          </tr>
-        </template>
-        <template v-else-if="!loading">
-          <tr>
-            <td :colspan="columns.length">
-              <slot
-                v-if="$slots.empty"
-                name="empty"
-              />
-              <BaseEmpty v-else />
-            </td>
-          </tr>
-        </template>
+            <FlexRender
+              :render="cell.column.columnDef.cell"
+              :props="cell.getContext()"
+            />
+          </td>
+        </tr>
       </tbody>
     </table>
+
+    <div
+      v-else-if="!loading"
+      class="bg-subtle rounded-default"
+    >
+      <slot
+        v-if="$slots.empty"
+        name="empty"
+      />
+      <BaseEmpty v-else />
+    </div>
 
     <DataTableLoadingOverlay
       :loading="loading"

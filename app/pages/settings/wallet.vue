@@ -20,7 +20,7 @@ const columns: ColumnDef<WalletTransaction>[] = [
     cell: ({ getValue }) => h(DataTableCopyCell, { value: getValue() }),
   }),
   column.accessor("date", {
-    header: "Transacted",
+    header: "Date",
     cell: ({ getValue }) => formatDate(getValue()),
   }),
   column.accessor("type", {
