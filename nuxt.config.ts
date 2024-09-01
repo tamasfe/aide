@@ -82,7 +82,5 @@ export default defineNuxtConfig({
     vueI18n: "./i18n.config.ts",
   },
   // @pinia/nuxt
-  pinia: {
-    storesDirs: ["./store/**"],
-  },
+  pinia: {},
 });
