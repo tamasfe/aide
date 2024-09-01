@@ -42,12 +42,12 @@
     "@nuxtjs/tailwindcss": "^6.12.1",
     "@vitest/coverage-v8": "^2.0.5",
     "@vue/test-utils": "^2.4.6",
-    "@vue/typescript-plugin": "^2.1.2",
+    "@vue/typescript-plugin": "^2.1.4",
     "eslint": "^9.9.1",
-    "happy-dom": "^15.7.0",
+    "happy-dom": "^15.7.2",
     "tailwindcss": "^3.4.10",
     "typescript": "^5.5.4",
     "vitest": "^2.0.5",
-    "vue-tsc": "^2.1.2"
+    "vue-tsc": "^2.1.4"
   }
 }
