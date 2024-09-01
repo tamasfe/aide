@@ -60,7 +60,9 @@ const props = withDefaults(defineProps<{
   position: "left",
 });
 
-const emit = defineEmits(["update:open"]);
+const emit = defineEmits<{
+  (e: "update:open", value: boolean): void;
+}>();
 
 const positionTransition = computed(() => {
   const position = props.position as keyof typeof positionTransitions.value;

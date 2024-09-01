@@ -10,7 +10,9 @@ withDefaults(defineProps<{
   open: false,
 });
 
-const emit = defineEmits(["focus", "close"]);
+const emit = defineEmits<{
+  (e: "focus" | "close"): void;
+}>();
 </script>
 
 <template>

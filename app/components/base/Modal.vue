@@ -23,7 +23,10 @@ const props = withDefaults(
   },
 );
 
-const emit = defineEmits(["update:open", "close"]);
+const emit = defineEmits<{
+  (e: "update:open", value: boolean): void;
+  (e: "close"): void;
+}>();
 
 const open = computed({
   get: () => props.open,
