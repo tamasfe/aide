@@ -22,15 +22,15 @@ const country = ref("Brazil"); // request IP jurisdiction
       <h1 class="text-2xl font-semibold text-center">
         {{ $t("modal_restrict.license_alternative_headline", {
           country,
-          allowedDomain: normalizeBrandDomain(allowedDomain),
+          allowedDomain: capitalizeBrandDomain(allowedDomain),
         }) }}
       </h1>
 
       <div class="text-emphasis text-center">
         {{ $t("modal_restrict.license_alternative_body", {
           country,
-          blockedDomain: normalizeBrandDomain(blockedDomain),
-          allowedDomain: normalizeBrandDomain(allowedDomain),
+          blockedDomain: capitalizeBrandDomain(blockedDomain),
+          allowedDomain: capitalizeBrandDomain(allowedDomain),
         }) }}
       </div>
 
@@ -38,7 +38,7 @@ const country = ref("Brazil"); // request IP jurisdiction
         size="xl"
         class="my-4 w-full gap-1.5"
       >
-        <span>{{ $t("button.take_me_to", { domain: normalizeBrandDomain(allowedDomain) }) }}</span>
+        <span>{{ $t("button.take_me_to", { domain: capitalizeBrandDomain(allowedDomain) }) }}</span>
         <Icon
           name="lucide:arrow-right"
           size="20"

@@ -21,14 +21,14 @@ const country = ref("Brazil"); // request IP jurisdiction
       <h1 class="text-2xl font-semibold text-center">
         {{ $t("modal_restrict.license_no_alternative_headline", {
           country,
-          blockedDomain: normalizeBrandDomain(blockedDomain),
+          blockedDomain: capitalizeBrandDomain(blockedDomain),
         }) }}
       </h1>
 
       <div class="mb-4 text-emphasis text-center">
         {{ $t("modal_restrict.license_no_alternative_body", {
           country,
-          blockedDomain: normalizeBrandDomain(blockedDomain),
+          blockedDomain: capitalizeBrandDomain(blockedDomain),
         }) }}
       </div>
     </div>

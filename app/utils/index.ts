@@ -5,7 +5,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function normalizeBrandDomain(domain: string) {
+export function capitalizeBrandDomain(domain: string) {
   // replace both domain and tld (GiroBet.com, Giro.Bet, Giro.vip)
   domain = domain.replace(/giro/i, "Giro");
   domain = domain.replace(/bet/i, "Bet");
