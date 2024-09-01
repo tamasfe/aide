@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { createColumnHelper, type ColumnDef } from "@tanstack/vue-table";
+import { DataTableCopyCell } from "#components";
 
 // TODO THIS IS NOT A REAL TYPE!!!!!!! JUST A PLACEHOLDER TO
 // DEMONSTRATE DATA TABLE. DO NOT USE THIS, USE A REAL TYPE
@@ -16,6 +17,7 @@ const column = createColumnHelper<WalletTransaction>();
 const columns: ColumnDef<WalletTransaction>[] = [
   column.accessor("id", {
     header: "Transaction ID",
+    cell: ({ getValue }) => h(DataTableCopyCell, { value: getValue() }),
   }),
   column.accessor("date", {
     header: "Created",
@@ -48,7 +50,7 @@ const data = shallowRef<WalletTransaction[]>([
   { id: 959292, date: "2024-06-21", type: "WITHDRAWAL", status: "COMPLETE", amount: "25.00" },
 ]);
 
-const loading = ref(true);
+const loading = ref(false);
 </script>
 
 <template>
