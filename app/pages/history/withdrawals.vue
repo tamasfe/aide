@@ -15,7 +15,7 @@ const column = createColumnHelper<Withdrawal>();
 
 const columns: ColumnDef<Withdrawal>[] = [
   column.accessor("id", {
-    header: "Transaction ID",
+    header: "ID",
     cell: ({ getValue }) => h(DataTableCopyCell, { value: getValue() }),
   }),
   column.accessor("date", {
@@ -51,7 +51,7 @@ const loading = ref(false);
       <template #empty>
         <BaseEmpty
           title="No Withdrawals"
-          icon="lucide:wallet-cards"
+          icon="lucide:circle-arrow-up"
         />
       </template>
     </DataTable>

@@ -16,7 +16,7 @@ const column = createColumnHelper<WalletTransaction>();
 
 const columns: ColumnDef<WalletTransaction>[] = [
   column.accessor("id", {
-    header: "Transaction ID",
+    header: "ID",
     cell: ({ getValue }) => h(DataTableCopyCell, { value: getValue() }),
   }),
   column.accessor("date", {

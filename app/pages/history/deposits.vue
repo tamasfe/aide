@@ -15,7 +15,7 @@ const column = createColumnHelper<Deposit>();
 
 const columns: ColumnDef<Deposit>[] = [
   column.accessor("id", {
-    header: "Transaction ID",
+    header: "ID",
     cell: ({ getValue }) => h(DataTableCopyCell, { value: getValue() }),
   }),
   column.accessor("date", {
@@ -51,7 +51,7 @@ const loading = ref(false);
       <template #empty>
         <BaseEmpty
           title="No Deposits"
-          icon="lucide:wallet-cards"
+          icon="lucide:circle-arrow-down"
         />
       </template>
     </DataTable>
