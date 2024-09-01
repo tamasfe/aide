@@ -26,15 +26,14 @@ declare module "@tanstack/vue-table" {
 // appropriate javascript parts over to support the additional pagination
 
 interface DataTableProps<TData, TValue> {
-  data?: TData[];
+  data: TData[];
   columns: ColumnDef<TData, TValue>[];
-  loading: boolean;
+  loading?: boolean;
 }
 
 const props = withDefaults(
   defineProps<DataTableProps<TData, TValue>>(),
   {
-    data: () => [],
     loading: false,
   },
 );
