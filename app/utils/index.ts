@@ -17,6 +17,8 @@ export function capitalizeBrandDomain(domain: string) {
 }
 
 export function formatDate(date: string, format: string = "LL") {
+  // TODO this should also potentially use Intl instead of dayjs
+  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat
   // TODO there is more to be desired with the default format here...
   // but we need more customizations than these options
   // https://day.js.org/docs/en/display/format#list-of-localized-formats

@@ -112,7 +112,7 @@ const table = useVueTable(buildTable());
       </tbody>
     </table>
 
-    <LoadingOverlay
+    <DataTableLoadingOverlay
       :loading="loading"
     />
   </div>

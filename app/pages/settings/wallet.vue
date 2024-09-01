@@ -48,7 +48,7 @@ const data = shallowRef<WalletTransaction[]>([
   { id: 959292, date: "2024-06-21", type: "WITHDRAWAL", status: "COMPLETE", amount: "25.00" },
 ]);
 
-const loading = ref(false);
+const loading = ref(true);
 </script>
 
 <template>
