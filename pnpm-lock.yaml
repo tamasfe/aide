@@ -939,8 +939,8 @@ packages:
     resolution: {integrity: sha512-d2CGZR2o7fS6sWB7DG/3a95bGKQyHMACZ5aW8qGkkqQpUoZV6C0X7Pc7l4ZNMZkfNBf4VWNe9E1jRsf0G146Ew==}
     engines: {node: '>=18.18'}
 
-  '@iconify/collections@1.0.454':
-    resolution: {integrity: sha512-bE/6YBUNhNhTLjytCGrCD+rS0hrlkSC0J4e5svggLVnPoOgvA0yKIAxyUtyWl0666o//3CHlnAizwvA1JYm64w==}
+  '@iconify/collections@1.0.455':
+    resolution: {integrity: sha512-jfH6SiRiz4quxh+5ECQDM1ue4+RE2z2MADySYUNZcC2Nz46q5Es29sCdk9s5o4hUpkUKj+vPnzoF0UAF0mXajg==}
 
   '@iconify/types@2.0.0':
     resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
@@ -6172,7 +6172,7 @@ snapshots:
 
   '@humanwhocodes/retry@0.3.0': {}
 
-  '@iconify/collections@1.0.454':
+  '@iconify/collections@1.0.455':
     dependencies:
       '@iconify/types': 2.0.0
 
@@ -6533,7 +6533,7 @@ snapshots:
 
   '@nuxt/icon@1.5.0(magicast@0.3.5)(rollup@4.21.2)(vite@5.4.2(@types/node@22.5.1)(terser@5.31.6))(vue@3.4.38(typescript@5.5.4))':
     dependencies:
-      '@iconify/collections': 1.0.454
+      '@iconify/collections': 1.0.455
       '@iconify/types': 2.0.0
       '@iconify/utils': 2.1.32
       '@iconify/vue': 4.1.3-beta.1(vue@3.4.38(typescript@5.5.4))
