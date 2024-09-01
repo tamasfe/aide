@@ -29,29 +29,31 @@ const scrollToTop = () => {
           />
         </div>
         <p class="text-[0.82rem]">{{ $t("footer.summary") }}</p>
-        <BaseSelect
-          size="sm"
-          class="w-full sm:w-[12rem] gap-2"
-        >
-          <template #selected="{ selected }">
-            <BaseFlag
-              :country-code="selected.countryCode"
-              size="lg"
-            />
-            <span class="block whitespace-nowrap truncate font-medium text-left">
-              {{ selected.title }}
-            </span>
-          </template>
-          <template #option="{ option }">
-            <div class="flex items-center gap-2">
+        <div class="sm:w-[12rem]">
+          <BaseSelect
+            size="sm"
+            class="gap-2"
+          >
+            <template #selected="{ selected }">
               <BaseFlag
-                :country-code="option.countryCode"
+                :country-code="selected.countryCode"
                 size="lg"
               />
-              <span>{{ option.title }}</span>
-            </div>
-          </template>
-        </BaseSelect>
+              <span class="block whitespace-nowrap truncate font-medium text-left">
+                {{ selected.title }}
+              </span>
+            </template>
+            <template #option="{ option }">
+              <div class="flex items-center gap-2">
+                <BaseFlag
+                  :country-code="option.countryCode"
+                  size="lg"
+                />
+                <span>{{ option.title }}</span>
+              </div>
+            </template>
+          </BaseSelect>
+        </div>
         <FooterColumnSocialMedia
           class="hidden md:flex lg:hidden"
         />

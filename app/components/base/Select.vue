@@ -9,7 +9,7 @@ import {
 } from "@headlessui/vue";
 
 // DESIGN STATUS: ✴️
-//   * dropdown width must match input width
+//   * dropdown width must match input width - currently AppFooter has to put a wrapper around the select to define the input widths... this is very ugly and it would be nice of the width specified on the container worked to the options. not sure which way is cleanest though. i think a width prop is kind of ugly, but i also think using JS to detect the size of the input is way uglier. and a wrapper is also ugly. wrapper seems LEAST ugly for now
 //   * md must handle floating labels and all the other stuff
 //   * needs to handle :disabled (and also logic) disabled:opacity-70 (THIS MUTCH MATCH md:baseInput in forms)
 //   * needs to handle placeholder (THIS MUTCH MATCH md:baseInput in forms)
@@ -104,7 +104,7 @@ const selectedOption = ref(options[0]);
         leave-to-class="opacity-0"
       >
         <ListboxOptions
-          class="absolute z-[1] mt-1 text-sm overflow-auto bg-emphasis rounded-default focus-visible:outline-none"
+          class="absolute z-[1] w-full mt-1 text-sm overflow-auto bg-emphasis rounded-default focus-visible:outline-none"
         >
           <ListboxOption
             v-for="option in options"
