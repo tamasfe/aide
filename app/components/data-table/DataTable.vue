@@ -124,10 +124,10 @@ table {
   @apply text-left w-full;
 }
 th, td {
-  @apply p-2 uppercase rounded-sm;
+  @apply p-2 rounded-sm;
 }
 th {
-  @apply text-xs font-semibold;
+  @apply text-xs font-semibold uppercase;
 }
 td {
   @apply text-sm text-subtle-light font-medium;

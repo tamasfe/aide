@@ -19,7 +19,7 @@ const columns: ColumnDef<WalletTransaction>[] = [
   }),
   column.accessor("date", {
     header: "Created",
-    cell: ({ getValue }) => getValue(), // IMPORTANT TODO we should use dayjs probably
+    cell: ({ getValue }) => formatDate(getValue()),
   }),
   column.accessor("type", {
     header: "Type",
