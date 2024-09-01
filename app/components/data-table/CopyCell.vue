@@ -6,9 +6,15 @@ const props = defineProps<{
   value: string | number;
 }>();
 
+const copied = ref(false);
+
 const onCopy = () => {
   const value = String(props.value);
   navigator.clipboard.writeText(value);
+  copied.value = true;
+  setTimeout(() => {
+    copied.value = false;
+  }, 2000);
 };
 </script>
 
@@ -18,7 +24,14 @@ const onCopy = () => {
     @click="onCopy"
   >
     <Icon
+      v-show="!copied"
       name="lucide:copy"
+      size="14"
+      class="text-subtle"
+    />
+    <Icon
+      v-show="copied"
+      name="lucide:circle-check-big"
       size="14"
       class="text-subtle"
     />
