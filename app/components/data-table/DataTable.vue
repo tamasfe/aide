@@ -1,11 +1,20 @@
-<script setup lang="ts" generic="TData, TValue">
-import type { ColumnDef } from "@tanstack/vue-table";
+<script lang="ts">
+import type { RowData, ColumnDef } from "@tanstack/vue-table";
 import {
   FlexRender,
   getCoreRowModel,
   useVueTable,
 } from "@tanstack/vue-table";
 
+declare module "@tanstack/vue-table" {
+  /* eslint-disable @typescript-eslint/no-unused-vars */
+  interface ColumnMeta<TData extends RowData, TValue> {
+    align?: "center" | "right";
+  }
+}
+</script>
+
+<script setup lang="ts" generic="TData, TValue">
 // DESIGN STATUS:      ✴️
 //   - still needs mobile responsive version of table
 
@@ -53,7 +62,11 @@ const table = useVueTable(buildTable());
           <th
             v-for="header in headerGroup.headers"
             :key="header.id"
-            class="th"
+            :class="cn(
+              'th',
+              header.column.columnDef.meta?.align === 'center' && 'text-center',
+              header.column.columnDef.meta?.align === 'right' && 'text-right',
+            )"
           >
             <FlexRender
               v-if="!header.isPlaceholder"
@@ -73,7 +86,11 @@ const table = useVueTable(buildTable());
             <td
               v-for="cell in row.getVisibleCells()"
               :key="cell.id"
-              class="td"
+              :class="cn(
+                'td',
+                cell.column.columnDef.meta?.align === 'center' && 'text-center',
+                cell.column.columnDef.meta?.align === 'right' && 'text-right',
+              )"
             >
               <FlexRender
                 :render="cell.column.columnDef.cell"
@@ -104,9 +121,9 @@ const table = useVueTable(buildTable());
 
 <style scoped>
 table {
-  @apply w-full;
+  @apply text-left w-full;
 }
 th, td {
-  @apply p-1 text-left;
+  @apply p-1;
 }
 </style>

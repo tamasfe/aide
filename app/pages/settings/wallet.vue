@@ -29,6 +29,9 @@ const columns: ColumnDef<WalletTransaction>[] = [
   }),
   column.accessor("amount", {
     header: "Amount",
+    meta: {
+      align: "right",
+    },
   }),
 ] as ColumnDef<WalletTransaction>[];
 
