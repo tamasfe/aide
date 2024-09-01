@@ -16,7 +16,8 @@ const flagVariants = cva(
     variants: {
       size: {
         md: "w-[1.2rem] rounded-[3px]",
-        lg: "w-[1.8rem] rounded-[3px]",
+        lg: "w-[1.4rem] rounded-[3px]",
+        xl: "w-[1.8rem] rounded-[3px]",
       },
     },
     defaultVariants: {

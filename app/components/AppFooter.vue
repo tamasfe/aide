@@ -5,8 +5,6 @@
 //   * logo should be refactored out like the <AppHeader> component
 // TRANSLATION STATUS:  ✅
 
-const language = ref("");
-
 const year = ref(new Date().getFullYear());
 
 const scrollToTop = () => {
@@ -32,20 +30,23 @@ const scrollToTop = () => {
         </div>
         <p class="text-[0.82rem]">{{ $t("footer.summary") }}</p>
         <BaseSelect
-          v-model="language"
-          :options="[]"
+          size="sm"
+          class="w-full sm:w-[12rem] gap-2"
         >
-          <template #prefix>
+          <template #selected="{ selected }">
             <BaseFlag
-              :country-code="'BR'"
-              size="md"
+              :country-code="selected.countryCode"
+              size="lg"
             />
+            <span class="block whitespace-nowrap truncate font-medium text-left">
+              {{ selected.title }}
+            </span>
           </template>
           <template #option="{ option }">
-            <div class="flex items-center space-x-4">
+            <div class="flex items-center gap-2">
               <BaseFlag
-                :country-code="'BR'"
-                size="md"
+                :country-code="option.countryCode"
+                size="lg"
               />
               <span>{{ option.title }}</span>
             </div>

@@ -87,8 +87,6 @@ const fieldClass = computed(() => {
           v-bind="$attrs"
           :required="required"
           :placeholder="fieldPlaceholder"
-          variant="ghost"
-          size="ghost"
           :class="fieldClass"
         />
 

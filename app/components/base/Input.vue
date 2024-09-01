@@ -38,10 +38,10 @@ const props = withDefaults(defineProps<{
 }>(), {
   type: "text",
   required: false,
+  disabled: false,
   autocomplete: "on",
   autocorrect: "off",
   inputmode: "text",
-  disabled: false,
 });
 </script>
 

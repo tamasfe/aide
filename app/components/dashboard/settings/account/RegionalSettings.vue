@@ -5,7 +5,7 @@
         <div class="flex items-center gap-2">
           <BaseFlag
             :country-code="'BR'"
-            size="lg"
+            size="xl"
           />
           <p>BRL (ID: #292482)</p>
         </div>

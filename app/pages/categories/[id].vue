@@ -44,13 +44,7 @@ const getImageId = (idx: number) => {
           </h3>
         </template>
         <template #options>
-          <BaseSelect
-            v-model="provider"
-            :options="providers"
-            class="text-emphasis min-w-full sm:min-w-40"
-            wrapper-class="sm:py-0"
-            input-class="!text-emphasis !font-semibold"
-          />
+          <BaseSelect />
         </template>
         <template #default="{ data: datapoint }">
           <div
