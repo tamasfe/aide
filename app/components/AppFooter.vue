@@ -29,7 +29,7 @@ const scrollToTop = () => {
           />
         </div>
         <p class="text-[0.82rem]">{{ $t("footer.summary") }}</p>
-        <div class="sm:w-[12rem]">
+        <div class="w-full sm:w-[12rem]">
           <BaseSelect
             size="sm"
             class="gap-2"

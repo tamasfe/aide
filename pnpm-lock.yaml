@@ -20,9 +20,6 @@ importers:
       '@nuxt/image':
         specifier: ^1.8.0
         version: 1.8.0(ioredis@5.4.1)(magicast@0.3.5)(rollup@4.21.2)
-      '@phosphor-icons/vue':
-        specifier: ^2.2.1
-        version: 2.2.1(vue@3.4.38(typescript@5.5.4))
       '@pinia/nuxt':
         specifier: ^0.5.4
         version: 0.5.4(magicast@0.3.5)(rollup@4.21.2)(typescript@5.5.4)(vue@3.4.38(typescript@5.5.4))
@@ -1327,12 +1324,6 @@ packages:
   '@parcel/watcher@2.4.1':
     resolution: {integrity: sha512-HNjmfLQEVRZmHRET336f20H/8kOozUGwk7yajvsonjNxbj2wBTK1WsQuHkD5yYh9RxFGL2EyDHryOihOwUoKDA==}
     engines: {node: '>= 10.0.0'}
-
-  '@phosphor-icons/vue@2.2.1':
-    resolution: {integrity: sha512-3RNg1utc2Z5RwPKWFkW3eXI/0BfQAwXgtFxPUPeSzi55jGYUq16b+UqcgbKLazWFlwg5R92OCLKjDiJjeiJcnA==}
-    engines: {node: '>=14'}
-    peerDependencies:
-      vue: '>=3.2.39'
 
   '@pinia/nuxt@0.5.4':
     resolution: {integrity: sha512-nNEs2pq6+Ji5qIyRwmeD9LUdctL8aJ8QMVLTYxUc16cXEOcIIN+MSA8Xudsd0lVETYgEAROT5HiBHnOYRDY3yQ==}
@@ -7089,10 +7080,6 @@ snapshots:
       '@parcel/watcher-win32-arm64': 2.4.1
       '@parcel/watcher-win32-ia32': 2.4.1
       '@parcel/watcher-win32-x64': 2.4.1
-
-  '@phosphor-icons/vue@2.2.1(vue@3.4.38(typescript@5.5.4))':
-    dependencies:
-      vue: 3.4.38(typescript@5.5.4)
 
   '@pinia/nuxt@0.5.4(magicast@0.3.5)(rollup@4.21.2)(typescript@5.5.4)(vue@3.4.38(typescript@5.5.4))':
     dependencies:

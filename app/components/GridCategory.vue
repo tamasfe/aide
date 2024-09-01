@@ -1,6 +1,4 @@
 <script setup lang="ts" generic="T">
-import { PhArrowLeft, PhCaretDown } from "@phosphor-icons/vue";
-
 const emit = defineEmits(["showMore"]);
 
 const onShowMore = () => {

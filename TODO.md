@@ -4,7 +4,10 @@ Travis
   * providers page
   * finalize game grid # of columns @ different screen sizes
   * components
-  * replace all @phosphor-icons/vue
+    * /providers/[id].vue
+    * /categories/[id].vue
+    * GridCategory.vue
+    * Select.vue
 
 Turik
   * refactor game grid to be shared with gridcategory (export fields?)
@@ -25,10 +28,3 @@ Turik
     * drawer/modal anywhere there is animation
     * button animation fade (see comment)
   * refactor / clean up your existing components
-
-### Components Left
-
-  * /providers/[id].vue
-  * /categories/[id].vue
-  * GridCategory.vue
-  * Select.vue
