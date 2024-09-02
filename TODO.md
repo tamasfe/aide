@@ -3,10 +3,12 @@
 Travis
   * providers page
   * finalize game grid # of columns @ different screen sizes
+  * signup form has a phone prefix dropdown
   * components
     * /providers/[id].vue
     * /categories/[id].vue
     * GridCategory.vue
+    * Popover menu
 
 Turik
   * refactor game grid to be shared with gridcategory (export fields?)
