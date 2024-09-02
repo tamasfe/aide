@@ -7,7 +7,6 @@ Travis
     * /providers/[id].vue
     * /categories/[id].vue
     * GridCategory.vue
-    * Select.vue
 
 Turik
   * refactor game grid to be shared with gridcategory (export fields?)
