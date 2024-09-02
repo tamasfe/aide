@@ -58,6 +58,8 @@ const loading = ref(false);
     name="dashboard"
     section="settings"
   >
+    <DashboardSettingsWalletBalance />
+
     <DataTable
       :data="data"
       :columns="columns"
