@@ -43,7 +43,7 @@ const onClickBalance = async () => {
           </NuxtLink>
         </div>
 
-        <div class="flex items-center space-x-[0.625rem] sm:space-x-4">
+        <div class="flex items-center gap-2.5 sm:gap-3">
           <template v-if="!authenticated">
             <BaseButton
               variant="secondary"

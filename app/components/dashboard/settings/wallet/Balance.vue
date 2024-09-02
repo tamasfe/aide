@@ -9,14 +9,14 @@
             country-code="BR"
             size="md"
           />
-          <div class="text-subtle font-medium">BRL</div>
+          <div class="text-subtle">BRL</div>
         </div>
-        <div class="text-subtle">#89242982</div>
+        <div class="text-subtle text-sm">#89242982</div>
       </div>
       <div class="flex items-center justify-center text-3xl font-medium">
         <div><span class="bg-button-primary text-transparent bg-clip-text">R$</span>420.20</div>
       </div>
-      <div class="flex flex-row gap-2">
+      <div class="flex flex-row gap-3">
         <BaseButton
           variant="secondary"
           size="md"
