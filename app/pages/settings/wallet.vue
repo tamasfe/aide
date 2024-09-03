@@ -60,17 +60,20 @@ const loading = ref(false);
   >
     <DashboardSettingsWalletBalance />
 
-    <DataTable
-      :data="data"
-      :columns="columns"
-      :loading="loading"
-    >
-      <template #empty>
-        <BaseEmpty
-          title="No Transactions"
-          icon="lucide:wallet-cards"
-        />
-      </template>
-    </DataTable>
+    <div class="mt-8">
+      <h2 class="mb-4 text-center text-lg font-medium sm:text-xl">Recent Transactions</h2>
+      <DataTable
+        :data="data"
+        :columns="columns"
+        :loading="loading"
+      >
+        <template #empty>
+          <BaseEmpty
+            title="No Transactions"
+            icon="lucide:wallet-cards"
+          />
+        </template>
+      </DataTable>
+    </div>
   </NuxtLayout>
 </template>
