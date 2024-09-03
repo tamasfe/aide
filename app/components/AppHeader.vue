@@ -7,7 +7,7 @@
 const authenticated = ref(true);
 
 const onClickBalance = async () => {
-  await navigateTo("/account/wallet");
+  await navigateTo("/settings/wallet");
 };
 </script>
 

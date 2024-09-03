@@ -14,7 +14,10 @@
         <div class="text-subtle text-sm">#89242982</div>
       </div>
       <div class="flex items-center justify-center text-3xl font-medium">
-        <div><span class="bg-button-primary text-transparent bg-clip-text">R$</span>420.20</div>
+        <div class="flex items-center gap-2">
+          <div class="bg-button-primary text-transparent bg-clip-text">R$</div>
+          <div>420.20</div>
+        </div>
       </div>
       <div class="flex flex-row gap-3">
         <BaseButton
