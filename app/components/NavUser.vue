@@ -6,23 +6,26 @@ import {
   PopoverPanel,
 } from "@headlessui/vue";
 
+// DESIGN STATUS:       ✴️
+//   * close popup when clicking
+
 const { t } = useI18n();
 
 const links = [
   {
     title: t("user_nav.wallet"),
     icon: "lucide:wallet",
-    to: "/TODO",
+    to: "/settings/wallet",
   },
   {
     title: t("user_nav.history"),
     icon: "lucide:table-properties",
-    to: "/TODO",
+    to: "/history/deposits",
   },
   {
     title: t("user_nav.account_settings"),
     icon: "lucide:cog",
-    to: "/TODO",
+    to: "/settings/account",
   },
   {
     title: t("user_nav.live_support"),
@@ -46,7 +49,7 @@ const links = [
       <PopoverOverlay class="fixed inset-0 bg-transparent" />
       <PopoverButton
         :class="cn(
-          'px-2 h-9 text-subtle hover:text-emphasis focus-visible:outline-none',
+          'px-2 h-9 md:h-10 text-subtle hover:text-emphasis focus-visible:outline-none',
           open && 'text-emphasis',
         )"
       >
