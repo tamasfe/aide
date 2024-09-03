@@ -184,6 +184,9 @@
       },
       "limits": {
         "suspend_account": "Suspend Account"
+      },
+      "wallet": {
+        "recent_transactions": "Recent Transactions"
       }
     }
   },
