@@ -10,6 +10,9 @@ withDefaults(defineProps<{
   open: false,
 });
 
+// this needs to hide/show close button
+const query = ref("");
+
 const emit = defineEmits<{
   (e: "focus" | "close"): void;
 }>();
@@ -41,7 +44,10 @@ const emit = defineEmits<{
       </div>
     </template>
     <template #suffix>
-      <div class="ml-4 flex justify-center items-center">
+      <div
+        v-if="query.length"
+        class="ml-4 flex justify-center items-center"
+      >
         <BaseButton
           variant="ghost"
           size="ghost"

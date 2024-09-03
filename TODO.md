@@ -12,7 +12,7 @@ Travis
 
 Turik
   * refactor game grid to be shared with gridcategory (export fields?)
-  * convert all "to" nuxt links to "name" so we dont get broken links
+  * convert all "to" nuxt links to "name" so we dont get broken links (keep prop name as "to" however)
   * mobile version of data table
   * search source for all image sources and make them in assets (not in public), figure out better multiple loading images dynamically
     * delete icons folder and make those logos just a standard svg image loaded better
