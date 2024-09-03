@@ -2,6 +2,7 @@
 import {
   Popover,
   PopoverButton,
+  PopoverOverlay,
   PopoverPanel,
 } from "@headlessui/vue";
 
@@ -42,6 +43,7 @@ const links = [
       v-slot="{ open }"
       class="relative"
     >
+      <PopoverOverlay class="fixed inset-0 bg-transparent" />
       <PopoverButton
         :class="cn(
           'px-2 h-9 text-subtle hover:text-emphasis focus-visible:outline-none',
@@ -49,8 +51,8 @@ const links = [
         )"
       >
         <Icon
-          name="lucide:user"
-          size="26"
+          name="material-symbols:account-circle"
+          size="28"
           class="align-middle"
         />
       </PopoverButton>
