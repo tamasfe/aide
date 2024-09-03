@@ -91,7 +91,6 @@ const selectedOption = ref(options[0]);
         <span class="pointer-events-none absolute z-[1] inset-y-0 right-0 flex items-center pr-2">
           <Icon
             :name="open ? 'lucide:chevron-up' : 'lucide:chevron-down'"
-            aria-hidden="true"
             size="20"
             class="text-subtle"
           />

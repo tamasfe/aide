@@ -75,15 +75,7 @@ const onClickBalance = async () => {
               {{ $t("button.deposit") }}
             </BaseButton>
 
-            <NuxtLink class="text-subtle hover:text-emphasis cursor-pointer">
-              <span class="block">
-                <Icon
-                  name="lucide:user"
-                  size="26"
-                  class="align-middle"
-                />
-              </span>
-            </NuxtLink>
+            <NavUser />
           </template>
         </div>
       </div>

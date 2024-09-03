@@ -54,6 +54,13 @@
     "support": "Support",
     "promos": "Promos"
   },
+  "user_nav": {
+    "wallet": "Wallet",
+    "history": "History",
+    "account_settings": "Account Settings",
+    "live_support": "Live Support",
+    "logout": "Log out"
+  },
   "modal_auth": {
     "dont_have_account": "Don't have an account yet?",
     "create_free_account": "Create a Free account",
