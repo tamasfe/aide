@@ -9,8 +9,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "postinstall": "nuxt prepare",
-    "preview": "nuxt preview",
-    "test": "vitest --coverage"
+    "preview": "nuxt preview"
   },
   "dependencies": {
     "@floating-ui/vue": "^1.1.4",
@@ -36,19 +35,14 @@
   },
   "devDependencies": {
     "@nuxt/eslint": "^0.5.5",
-    "@nuxt/test-utils": "^3.14.1",
     "@nuxtjs/device": "^3.2.2",
     "@nuxtjs/i18n": "^8.5.1",
     "@nuxtjs/seo": "2.0.0-rc.20",
     "@nuxtjs/tailwindcss": "^6.12.1",
-    "@vitest/coverage-v8": "^2.0.5",
-    "@vue/test-utils": "^2.4.6",
     "@vue/typescript-plugin": "^2.1.4",
     "eslint": "^9.9.1",
-    "happy-dom": "^15.7.3",
     "tailwindcss": "^3.4.10",
     "typescript": "^5.5.4",
-    "vitest": "^2.0.5",
     "vue-tsc": "^2.1.4"
   }
 }

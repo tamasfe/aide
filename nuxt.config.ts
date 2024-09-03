@@ -26,7 +26,6 @@ export default defineNuxtConfig({
     "@nuxt/eslint",
     "@nuxt/icon",
     "@nuxt/image",
-    "@nuxt/test-utils/module",
     "@nuxtjs/device",
     "@nuxtjs/i18n",
     "@nuxtjs/seo",
