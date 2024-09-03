@@ -2,6 +2,7 @@
   "name": "girobet-frontend",
   "private": true,
   "type": "module",
+  "packageManager": "pnpm@9.9.0",
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
