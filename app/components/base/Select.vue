@@ -103,7 +103,7 @@ const selectedOption = ref(options[0]);
         leave-to-class="opacity-0"
       >
         <ListboxOptions
-          class="absolute z-[1] w-full mt-1 text-sm overflow-auto bg-emphasis rounded-default focus-visible:outline-none"
+          class="absolute z-[1] w-full mt-1 text-sm text-subtle overflow-auto bg-emphasis rounded-default focus-visible:outline-none"
         >
           <ListboxOption
             v-for="option in options"
