@@ -6,5 +6,5 @@ Icons can be found [here](https://icones.js.org/)
 
 ```bash
 pnpm install
-pnpm run dev
+pnpm dev
 ```

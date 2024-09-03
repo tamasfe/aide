@@ -32,6 +32,7 @@ export default defineNuxtConfig({
     "@nuxtjs/tailwindcss",
     "@pinia/nuxt",
     "@vee-validate/nuxt",
+    "nuxt-gtag",
   ],
   runtimeConfig: {
     public: {
@@ -82,4 +83,9 @@ export default defineNuxtConfig({
   },
   // @pinia/nuxt
   pinia: {},
+  // nuxt-gtag
+  gtag: {
+    id: "G-XXXXXXXXXX",
+    enabled: process.env.NODE_ENV === "production",
+  },
 });
