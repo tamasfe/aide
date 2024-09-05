@@ -1,0 +1,30 @@
+import type { AsyncMessagePublisherI } from "./async-message-publisher";
+import type { AsyncMessagesTypes } from "./async-messages";
+
+import Emittery from "emittery";
+
+Emittery.isDebugEnabled = true;
+
+/**
+ * More information on the Emittery package: https://github.com/sindresorhus/emittery
+ */
+export class EmitteryAsyncMessagePublisher implements AsyncMessagePublisherI {
+  emit<T extends "girobet:commands:modals:open-login">(
+    messageName: T,
+    message: AsyncMessagesTypes[T]
+  ): Promise<void> {
+    return this.emittery.emit(messageName, message);
+  }
+
+  subscribe<T extends "girobet:commands:modals:open-login">(
+    messageName: T,
+    callback: (message: AsyncMessagesTypes[T]) => void
+  ): void {
+    this.emittery.on(messageName, callback);
+  }
+
+  private readonly emittery: Emittery;
+  constructor() {
+    this.emittery = new Emittery();
+  }
+}

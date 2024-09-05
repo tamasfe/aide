@@ -1,5 +1,14 @@
 <script setup lang="ts">
 const modal = ref("");
+
+const { $dependencies } = useNuxtApp();
+$dependencies.asyncMessagePublisher.subscribe(
+  "girobet:commands:modals:open-login",
+  () => {
+    modal.value = "login";
+  } 
+);
+
 </script>
 
 <template>

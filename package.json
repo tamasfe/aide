@@ -10,7 +10,8 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "postinstall": "nuxt prepare",
-    "preview": "nuxt preview"
+    "preview": "nuxt preview",
+    "test": "vitest"
   },
   "dependencies": {
     "@floating-ui/vue": "^1.1.4",
@@ -20,9 +21,11 @@
     "@vee-validate/nuxt": "^4.13.2",
     "@vee-validate/zod": "^4.13.2",
     "@vueuse/core": "^11.0.3",
+    "ajv": "^8.17.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "dayjs": "^1.11.13",
+    "emittery": "^1.0.3",
     "maska": "^3.0.2",
     "nuxt": "^3.13.0",
     "pathe": "^1.1.2",
@@ -36,15 +39,20 @@
     "@nuxt/eslint": "^0.5.5",
     "@nuxt/icon": "^1.5.0",
     "@nuxt/image": "^1.8.0",
+    "@nuxt/test-utils": "^3.14.1",
     "@nuxtjs/device": "^3.2.2",
     "@nuxtjs/i18n": "^8.5.1",
     "@nuxtjs/seo": "2.0.0-rc.20",
     "@nuxtjs/tailwindcss": "^6.12.1",
+    "@vue/test-utils": "^2.4.6",
     "@vue/typescript-plugin": "^2.1.4",
     "eslint": "^9.9.1",
+    "happy-dom": "^15.7.3",
     "nuxt-gtag": "^3.0.1",
+    "playwright-core": "^1.46.1",
     "tailwindcss": "^3.4.10",
     "typescript": "^5.5.4",
+    "vitest": "^2.0.5",
     "vue-tsc": "^2.1.4"
   }
 }

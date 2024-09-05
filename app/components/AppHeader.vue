@@ -3,11 +3,19 @@
 //   * user icon size is stupid
 // ARCHITECTURE STATUS: ✅
 // TRANSLATION STATUS:  ✅
+const { $dependencies } = useNuxtApp();
 
-const authenticated = ref(true);
+const authenticated = ref(false);
 
 const onClickBalance = async () => {
   await navigateTo("/settings/wallet");
+};
+
+const onClickUnauthenticatedAccountLogo = async () => {
+  $dependencies.asyncMessagePublisher.emit(
+    "girobet:commands:modals:open-login",
+    {}
+  );
 };
 </script>
 
@@ -20,20 +28,16 @@ const onClickBalance = async () => {
         class="giro__container flex items-center justify-between py-[0.525rem] sm:py-2"
       >
         <div class="flex items-center gap-x-8">
-          <BaseButton
-            variant="ghost"
-            size="ghost"
-            class="hidden sm:block"
-          >
-            <Icon
-              name="lucide:menu"
-              size="30"
-              class="text-subtle"
-            />
+          <BaseButton variant="ghost" size="ghost" class="hidden sm:block">
+            <Icon name="lucide:menu" size="30" class="text-subtle" />
           </BaseButton>
           <NuxtLink
             to="/"
-            :class="[authenticated ? 'min-w-8 sm:min-w-[8.5rem]' : 'min-w-32 sm:min-w-[8.5rem]']"
+            :class="[
+              authenticated
+                ? 'min-w-8 sm:min-w-[8.5rem]'
+                : 'min-w-32 sm:min-w-[8.5rem]',
+            ]"
           >
             <IconLogo v-if="!authenticated" />
             <template v-else>
@@ -46,15 +50,14 @@ const onClickBalance = async () => {
         <div class="flex items-center gap-2.5 sm:gap-3">
           <template v-if="!authenticated">
             <BaseButton
+              id="app-header-login-button"
               variant="secondary"
               class="h-9 md:h-10"
+              @click="onClickUnauthenticatedAccountLogo"
             >
               {{ $t("button.login") }}
             </BaseButton>
-            <BaseButton
-              variant="primary"
-              class="h-9 md:h-10"
-            >
+            <BaseButton variant="primary" class="h-9 md:h-10">
               {{ $t("button.register") }}
             </BaseButton>
           </template>
@@ -64,14 +67,13 @@ const onClickBalance = async () => {
               class="h-9 md:h-10 space-x-1"
               @click="onClickBalance"
             >
-              <div class="bg-button-primary text-transparent bg-clip-text">R$</div>
+              <div class="bg-button-primary text-transparent bg-clip-text">
+                R$
+              </div>
               <div class="text-white">69,50</div>
             </BaseButton>
 
-            <BaseButton
-              variant="emphasis"
-              class="h-9 md:h-10"
-            >
+            <BaseButton variant="emphasis" class="h-9 md:h-10">
               {{ $t("button.deposit") }}
             </BaseButton>
 

@@ -9,6 +9,7 @@ const loading = ref(false);
 
 <template>
   <BaseModal
+    id="base-modal-login"
     v-model:open="open"
     :disabled="loading"
     banner="left"
