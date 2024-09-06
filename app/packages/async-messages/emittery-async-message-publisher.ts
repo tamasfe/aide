@@ -1,7 +1,6 @@
+import Emittery from "emittery";
 import type { AsyncMessagePublisherI } from "./async-message-publisher";
 import type { AsyncMessagesTypes } from "./async-messages";
-
-import Emittery from "emittery";
 
 Emittery.isDebugEnabled = true;
 
@@ -11,14 +10,14 @@ Emittery.isDebugEnabled = true;
 export class EmitteryAsyncMessagePublisher implements AsyncMessagePublisherI {
   emit<T extends "girobet:commands:modals:open-login">(
     messageName: T,
-    message: AsyncMessagesTypes[T]
+    message: AsyncMessagesTypes[T],
   ): Promise<void> {
     return this.emittery.emit(messageName, message);
   }
 
   subscribe<T extends "girobet:commands:modals:open-login">(
     messageName: T,
-    callback: (message: AsyncMessagesTypes[T]) => void
+    callback: (message: AsyncMessagesTypes[T]) => void,
   ): void {
     this.emittery.on(messageName, callback);
   }

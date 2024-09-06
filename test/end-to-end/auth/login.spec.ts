@@ -19,6 +19,6 @@ describe("Homepage login", async () => {
       await page.click("#app-header-login-button");
 
       expect(await page.isVisible("#base-modal-login")).toBe(true);
-    }
+    },
   );
 });

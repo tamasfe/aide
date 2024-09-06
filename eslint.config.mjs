@@ -2,14 +2,9 @@
 
 import withNuxt from "./.nuxt/eslint.config.mjs";
 
+// see settings in nuxt.config.js
+
 export default withNuxt()
-  .prepend({
-    stylistic: {
-      indent: "tab",
-      semi: true,
-      // ...
-    },
-  })
   .override("nuxt/vue/rules", {
     rules: {
       "vue/singleline-html-element-content-newline": "off",

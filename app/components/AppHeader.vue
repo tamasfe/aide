@@ -14,7 +14,7 @@ const onClickBalance = async () => {
 const onClickUnauthenticatedAccountLogo = async () => {
   $dependencies.asyncMessagePublisher.emit(
     "girobet:commands:modals:open-login",
-    {}
+    {},
   );
 };
 </script>
@@ -28,8 +28,16 @@ const onClickUnauthenticatedAccountLogo = async () => {
         class="giro__container flex items-center justify-between py-[0.525rem] sm:py-2"
       >
         <div class="flex items-center gap-x-8">
-          <BaseButton variant="ghost" size="ghost" class="hidden sm:block">
-            <Icon name="lucide:menu" size="30" class="text-subtle" />
+          <BaseButton
+            variant="ghost"
+            size="ghost"
+            class="hidden sm:block"
+          >
+            <Icon
+              name="lucide:menu"
+              size="30"
+              class="text-subtle"
+            />
           </BaseButton>
           <NuxtLink
             to="/"
@@ -57,7 +65,10 @@ const onClickUnauthenticatedAccountLogo = async () => {
             >
               {{ $t("button.login") }}
             </BaseButton>
-            <BaseButton variant="primary" class="h-9 md:h-10">
+            <BaseButton
+              variant="primary"
+              class="h-9 md:h-10"
+            >
               {{ $t("button.register") }}
             </BaseButton>
           </template>
@@ -73,7 +84,10 @@ const onClickUnauthenticatedAccountLogo = async () => {
               <div class="text-white">69,50</div>
             </BaseButton>
 
-            <BaseButton variant="emphasis" class="h-9 md:h-10">
+            <BaseButton
+              variant="emphasis"
+              class="h-9 md:h-10"
+            >
               {{ $t("button.deposit") }}
             </BaseButton>
 

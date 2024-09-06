@@ -6,9 +6,8 @@ $dependencies.asyncMessagePublisher.subscribe(
   "girobet:commands:modals:open-login",
   () => {
     modal.value = "login";
-  } 
+  },
 );
-
 </script>
 
 <template>
