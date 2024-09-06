@@ -16,6 +16,14 @@ export function capitalizeBrandDomain(domain: string) {
   return domain;
 }
 
+export function consoleWarning(message: string, style: "danger" | "default" = "default") {
+  let css = "font-family:helvetica; font-weight:bold; font-size:24px;";
+  if (style === "danger") {
+    css += "font-size:60px; color:red;";
+  }
+  console.log(`%c${message}`, css);
+};
+
 export function formatDate(date: string, format: string = "LL") {
   // TODO this should also potentially use Intl instead of dayjs
   // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat

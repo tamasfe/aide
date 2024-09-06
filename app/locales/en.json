@@ -136,6 +136,10 @@
     "legal_notice": "Prior to engaging in any online gambling activities on our platform, it is imperative to verify that such actions are legally permissible within your jurisdiction. It is your responsibility to ascertain and adhere to the laws and regulations governing online gambling in your country or region.",
     "copyright": "© {year} GiroBet. All Rights Reserved."
   },
+  "console_warning": {
+    "title": "WARNING!!!",
+    "description": "Do not copy/paste ANYTHING in this window. Scammers are trying to steal your password."
+  },
   "dashboard": {
     "nav": {
       "wallet": "Wallet",
