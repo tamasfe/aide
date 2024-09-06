@@ -93,7 +93,7 @@ const open = computed({
         <NuxtImg
           v-if="bannerLeft"
           :src="bannerLeft"
-          class="banner-left"
+          class="h-full object-cover sm:rounded-l-lg"
         />
       </div>
 
@@ -128,9 +128,6 @@ const open = computed({
 }
 .banner-top {
   @apply w-full aspect-[100/37] object-cover sm:rounded-t-lg;
-}
-.banner-left {
-  @apply h-full object-cover sm:rounded-l-lg;
 }
 .content-padding {
   @apply p-5;
