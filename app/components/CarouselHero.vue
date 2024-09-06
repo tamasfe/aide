@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { BaseCarousel } from "#components";
-
 const { isMobile } = useDevice();
 </script>
 

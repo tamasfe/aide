@@ -1,6 +1,7 @@
 ### Refactor
 
 Travis
+  * Add fully qualified name to component in folder
   * providers page
   * finalize game grid # of columns @ different screen sizes
   * signup form has a phone prefix dropdown

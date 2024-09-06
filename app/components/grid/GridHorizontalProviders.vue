@@ -1,14 +1,6 @@
 <script setup lang="ts">
-const { isMobile } = useDevice();
 const data = ref<unknown[]>(Array.from({ length: 4 }, (_, i) => i + 1));
 const loading = ref(true);
-
-// DESIGN STATUS:        ✴️
-//   * follow all advice of ScrollerGame
-// ARCHITECTURE STATUS:  ✴️
-//   * follow all advice of ScrollerGame
-//   * just like game... this will come from the API
-// TRANSLATION STATUS:   ✅
 
 const slidesToScroll = ref({
   sm: 2,
@@ -29,22 +21,29 @@ onMounted(() => {
     loading.value = false;
   }, 1000);
 });
+
+onMounted(() => {
+  setTimeout(() => {
+    loading.value = false;
+  }, 1000);
+});
 </script>
 
 <template>
-  <WrapperGridScrollerInfinite
-    :title="`🏆 ${$t('grid.providers')}`"
+  <GridHeaderHorizontal
     :data="data"
-    :show-controls="!isMobile"
-    :loading="loading"
     :columns="columns"
     :slides-to-scroll="slidesToScroll"
+    :loading="loading"
     :gap="2"
     aspect-ratio="16/9"
-    :can-load-more="false"
   >
+    <template #title>
+      <GridHeaderTitle title="🏆 Game Studios" />
+    </template>
+
     <template #options>
-      <NuxtLink to="TODO">
+      <NuxtLink :to="`/categories/1`">
         <BaseButton
           variant="subtle"
           size="sm"
@@ -64,8 +63,12 @@ onMounted(() => {
             />
           </NuxtLink>
         </div>
-        <div class="w-full flex justify-center font-medium bg-button-primary text-transparent bg-clip-text">{{ $t("grid.game_count", { count: 69 }) }}</div>
+        <div
+          class="w-full flex justify-center font-medium bg-button-primary text-transparent bg-clip-text"
+        >
+          {{ $t("grid.game_count", { count: 69 }) }}
+        </div>
       </div>
     </template>
-  </WrapperGridScrollerInfinite>
+  </GridHeaderHorizontal>
 </template>

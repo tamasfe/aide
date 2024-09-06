@@ -5,11 +5,11 @@
 
       <WinningNow />
 
-      <WrapperScrollerGame />
-      <WrapperScrollerGame />
-      <WrapperScrollerGame />
+      <GridHorizontalGames />
+      <GridHorizontalGames />
+      <GridHorizontalGames />
 
-      <WrapperScrollerProvider />
+      <GridHorizontalProviders />
     </div>
   </NuxtLayout>
 </template>

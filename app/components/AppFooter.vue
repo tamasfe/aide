@@ -93,8 +93,19 @@ const scrollToTop = () => {
       />
     </section>
 
-    <!-- logos -->
-    <section class="giro__container w-full">logos here</section>
+    <ScrollOffscreen>
+      <div class="flex gap-8">
+        <div class="w-[10rem] h-[4rem] bg-emphasis" />
+        <div class="w-[10rem] h-[4rem] bg-emphasis" />
+        <div class="w-[10rem] h-[4rem] bg-emphasis" />
+        <div class="w-[10rem] h-[4rem] bg-emphasis" />
+        <div class="w-[10rem] h-[4rem] bg-emphasis" />
+        <div class="w-[10rem] h-[4rem] bg-emphasis" />
+        <div class="w-[10rem] h-[4rem] bg-emphasis" />
+        <div class="w-[10rem] h-[4rem] bg-emphasis" />
+        <div class="w-[10rem] h-[4rem] bg-emphasis" />
+      </div>
+    </ScrollOffscreen>
 
     <!-- legal -->
     <section class="giro__container relative w-full flex flex-col text-subtle">

@@ -8,7 +8,9 @@ const props = withDefaults(defineProps<{
   disabled: false,
 });
 
-defineEmits(["close"]);
+defineEmits<{
+  (e: "close"): void;
+}>();
 </script>
 
 <template>

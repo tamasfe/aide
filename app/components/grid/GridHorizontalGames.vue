@@ -1,16 +1,6 @@
 <script setup lang="ts">
-// DESIGN STATUS:        ✴️
-//   * didnt do audit of css
-// ARCHITECTURE STATUS:  ✴️
-//   * infinite scroll logic should be handled WrapperInfiniteScroller and then ScrollerGame uses that. We will have many scrollers and pretty much every single one will be infinite scroll. we shouldnt be re-adding that logic multiple times
-//   * ALSO loading in last position must be extracted to the wrapper as well
-//   * any advanced logic in here should be moved to wrapper as well. if we are having ScrollerGame/ScrollerProvider the only thing it should do is provide some api call metadata and "counts (offsets/limits)" and nothing else
-//   * SEO stuffbelow
-// TRANSLATION STATUS:   ✴️
-//   * I think we dont want to translate every game title obviously... but worth considering
-
-const { isMobile } = useDevice();
-
+// STATUS:
+// - Move loading into wrapper?
 const generateFakeData = (length: number) => {
   return Array.from({ length }, (_, i) => (i % 10) + 1);
 };
@@ -26,11 +16,11 @@ const columns = ref({
   sm: 2.7,
   md: 3.7,
   lg: 6,
-  xl: 6,
+  xl: 8,
 });
 
 const data = ref<number[]>(generateFakeData(20));
-const canLoadMore = computed(() => data.value.length <= 100);
+const canLoadMore = computed(() => data.value.length < 100);
 const loading = ref(true);
 
 onMounted(() => {
@@ -49,10 +39,8 @@ const onLoadData = async () => {
 </script>
 
 <template>
-  <WrapperGridScrollerInfinite
-    title="🔥 Top Trending"
+  <GridHeaderHorizontal
     :data="data"
-    :show-controls="!isMobile"
     :loading="loading"
     :can-load-more="canLoadMore"
     :slides-to-scroll="slidesToScroll"
@@ -60,6 +48,10 @@ const onLoadData = async () => {
     aspect-ratio="3/4"
     @trigger:load="onLoadData"
   >
+    <template #title>
+      <GridHeaderTitle title="🔥 Top Trending" />
+    </template>
+
     <template #options>
       <NuxtLink :to="`/categories/1`">
         <BaseButton
@@ -70,6 +62,7 @@ const onLoadData = async () => {
         </BaseButton>
       </NuxtLink>
     </template>
+
     <template #default="{ item: n }">
       <NuxtLink
         :to="`/games/${n}`"
@@ -82,5 +75,18 @@ const onLoadData = async () => {
         />
       </NuxtLink>
     </template>
-  </WrapperGridScrollerInfinite>
+    <template
+      v-if="canLoadMore"
+      #loading
+    >
+      <div
+        class="flex items-center justify-center w-full h-full bg-subtle rounded-default"
+      >
+        <BaseSpinner
+          class="text-subtle"
+          :size="34"
+        />
+      </div>
+    </template>
+  </GridHeaderHorizontal>
 </template>

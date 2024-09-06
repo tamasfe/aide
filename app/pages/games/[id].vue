@@ -26,12 +26,10 @@ const { isMobile } = useDevice();
     <div class="pt-4 pb-12 giro__container giro__sections">
       <GameFrameDesktop v-if="!isMobile" />
 
-      <GameDescription
-        class="bg-subtle"
-      />
+      <GameDescription class="bg-subtle" />
 
-      <WrapperScrollerGame />
-      <WrapperScrollerGame />
+      <GridHorizontalGames />
+      <GridHorizontalGames />
     </div>
   </div>
 </template>

@@ -62,17 +62,19 @@ const isActive = (to: string) => currentRoute.value.path === to;
 </script>
 
 <template>
-  <div
-    class="flex items-center gap-3 w-full overflow-x-auto no-scrollbar"
-  >
+  <div class="flex items-center gap-3 w-full">
     <NuxtLink
       v-for="route in routes"
       :key="route.to"
       :to="route.to"
-      :class="cn(
-        'h-10 px-5 flex items-center justify-center rounded-default text-[0.8rem] font-medium text-emphasis',
-        isActive(route.to) ? 'text-emphasis-light bg-[#272646]' : 'text-subtle bg-[#181732]',
-      )"
+      :class="
+        cn(
+          'h-10 px-5 flex items-center justify-center rounded-default text-[0.8rem] font-medium text-emphasis',
+          isActive(route.to)
+            ? 'text-emphasis-light bg-[#272646]'
+            : 'text-subtle bg-[#181732]',
+        )
+      "
     >
       {{ route.title }}
     </NuxtLink>
