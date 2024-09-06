@@ -41,7 +41,7 @@ const open = computed({
     :disabled="disabled"
     :class="cn(
       'p-0',
-      { 'lg:w-auto lg:max-w-full': banner === 'left' }, // for lg screensize with left banner, we let the outer modal be very large and let the right-hand content column take over managing the width
+      { 'lg:max-w-max': banner === 'left' }, // for lg screensize with left banner, let content size handle the width
     )"
     @close="emit('close')"
   >
@@ -96,8 +96,7 @@ const open = computed({
         />
       </div>
 
-      <!-- on large screen sizes this is a hardcoded width as max-width does not work with the parent w-auto. given that banner=left components are rare and they will 100% of the time display a form with a fixed width (the one specified below) this is no issue -->
-      <div class="flex flex-col w-full lg:pt-10 lg:w-[var(--giro-modal-default-max-width)]">
+      <div class="flex flex-col lg:pt-10 lg:w-[var(--giro-modal-default-max-width)]">
         <NuxtImg
           v-if="bannerTop"
           :src="bannerTop"
