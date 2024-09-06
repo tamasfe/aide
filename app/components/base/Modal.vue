@@ -88,7 +88,8 @@ const open = computed({
       v-else-if="banner === 'left'"
       class="flex flex-row"
     >
-      <div class="w-[40%] hidden lg:block flex-shrink-0">
+      <!-- hardcode a px value here that mostly works with all "left" size modals -->
+      <div class="w-[300px] hidden lg:block flex-shrink">
         <NuxtImg
           v-if="bannerLeft"
           :src="bannerLeft"
@@ -96,7 +97,7 @@ const open = computed({
         />
       </div>
 
-      <div class="flex flex-col lg:pt-10 lg:w-[var(--giro-modal-default-max-width)]">
+      <div class="flex flex-col lg:pt-10 lg:min-w-[var(--giro-modal-default-max-width)]">
         <NuxtImg
           v-if="bannerTop"
           :src="bannerTop"
