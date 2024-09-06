@@ -114,10 +114,7 @@ const onClose = (force: boolean) => {
         as="template"
         v-bind="overlayTransition"
       >
-        <div
-          class="fixed inset-0 bg-black/40 z-[9]"
-          aria-hidden="true"
-        />
+        <BaseOverlay />
       </TransitionChild>
 
       <TransitionChild
