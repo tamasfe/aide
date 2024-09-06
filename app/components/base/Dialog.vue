@@ -19,7 +19,7 @@ import { type VariantProps, cva } from "class-variance-authority";
 
 const dialogVariants = cva(
   [
-    "fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[10] w-full overflow-y-scroll no-scrollbar",
+    "fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[10] overflow-y-scroll no-scrollbar",
   ],
   {
     variants: {
@@ -27,7 +27,7 @@ const dialogVariants = cva(
         frosted: "bg-emphasis/85 backdrop-blur-2xl",
       },
       size: {
-        md: "p-5 sm:max-w-[var(--giro-modal-default-max-width)] sm:min-h-[6rem] sm:max-h-[95vh] sm:self-center sm:justify-self-center sm:rounded-lg",
+        md: "p-5 w-full h-full sm:max-w-[var(--giro-modal-default-max-width)] sm:h-auto sm:max-h-[95vh] sm:rounded-lg",
       },
     },
     defaultVariants: {
