@@ -40,7 +40,7 @@ const open = computed({
     v-bind="$attrs"
     :disabled="disabled"
     :class="cn(
-      'p-0 h-full sm:h-auto',
+      'p-0',
       { 'lg:w-auto lg:max-w-full': banner === 'left' }, // for lg screensize with left banner, we let the outer modal be very large and let the right-hand content column take over managing the width
     )"
     @close="emit('close')"
