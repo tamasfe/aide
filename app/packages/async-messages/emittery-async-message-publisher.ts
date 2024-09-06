@@ -25,6 +25,10 @@ export class EmitteryAsyncMessagePublisher implements AsyncMessagePublisherI {
 
   private readonly emittery: Emittery;
   constructor() {
-    this.emittery = new Emittery();
+    this.emittery = new Emittery({
+      debug: {
+        name: "client",
+      },
+    });
   }
 }
