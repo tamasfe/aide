@@ -59,6 +59,9 @@ importers:
       tailwind-merge:
         specifier: ^2.5.2
         version: 2.5.2
+      validar-cpf:
+        specifier: ^3.1.0
+        version: 3.1.0
       vue:
         specifier: ^3.5.3
         version: 3.5.3(typescript@5.5.4)
@@ -5262,6 +5265,9 @@ packages:
 
   util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
+
+  validar-cpf@3.1.0:
+    resolution: {integrity: sha512-xnS7Y1YQaqIJXFKfEfcdQafrJbhjl0X+ICBbEKHOlaeRSsTQsWZ2d628XU8OqrGbGW6QHo56xtOtmf3xIeKKaQ==}
 
   validate-npm-package-license@3.0.4:
     resolution: {integrity: sha512-DpKm2Ui/xN7/HQKCtpZxoRWBhZ9Z0kqtygG8XCgNQ8ZlDnxuQmWhj566j8fN4Cu3/JmbhsDo7fcAJq4s9h27Ew==}
@@ -12028,6 +12034,8 @@ snapshots:
   urlpattern-polyfill@8.0.2: {}
 
   util-deprecate@1.0.2: {}
+
+  validar-cpf@3.1.0: {}
 
   validate-npm-package-license@3.0.4:
     dependencies:

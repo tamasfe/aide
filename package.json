@@ -32,6 +32,7 @@
     "pathe": "^1.1.2",
     "pinia": "^2.2.2",
     "tailwind-merge": "^2.5.2",
+    "validar-cpf": "^3.1.0",
     "vue": "^3.5.3",
     "vue-router": "^4.4.3",
     "zod": "^3.23.8"
