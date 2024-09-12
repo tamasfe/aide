@@ -1,6 +1,5 @@
 import validateCpf from "validar-cpf";
 import { CustomError, fail, success, type Result } from "~/packages/result";
-// ^ missing index.d.ts exists in repo but not in npm. i made an issue: https://github.com/guilhermehn/validar-cpf/issues/338#issuecomment-2336333240
 
 export class UserCPF {
   public static new(value: string): Result<UserCPF, InvalidCPF> {
