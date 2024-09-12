@@ -24,6 +24,10 @@ const inputVariants = cva(
 
 type InputVariants = VariantProps<typeof inputVariants>;
 
+defineEmits<{
+  input: [value: string];
+}>();
+
 const props = withDefaults(defineProps<{
   variant?: InputVariants["variant"];
   size?: InputVariants["size"];
@@ -58,5 +62,6 @@ const props = withDefaults(defineProps<{
       inputVariants({ variant, size }),
       props.class,
     )"
+    @input="event => $emit('input', event.target?.value ?? '')"
   >
 </template>

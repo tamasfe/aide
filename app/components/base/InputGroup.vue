@@ -17,25 +17,24 @@ defineOptions({
   inheritAttrs: false,
 });
 
-const props = withDefaults(defineProps<{
-  fieldType?: "input" | "select";
-  required?: boolean;
-  placeholder?: string;
-  placeholderPlacement?: "floating" | "default";
-  errorPlacement?: "floating" | "below";
-  mask?: string;
-  class?: HTMLAttributes["class"];
-}>(), {
-  fieldType: "input",
-  required: true,
-  placeholderPlacement: "floating",
-  errorPlacement: "floating",
-});
-
-const error = ref<string | undefined>();
-setTimeout(() => {
-  error.value = "This field is required";
-}, 10000);
+const props = withDefaults(
+  defineProps<{
+    fieldType?: "input" | "select";
+    required?: boolean;
+    placeholder?: string;
+    placeholderPlacement?: "floating" | "default";
+    errorPlacement?: "floating" | "below";
+    errorMessage?: string;
+    mask?: string;
+    class?: HTMLAttributes["class"];
+  }>(),
+  {
+    fieldType: "input",
+    required: true,
+    placeholderPlacement: "floating",
+    errorPlacement: "floating",
+  },
+);
 
 const fieldPlaceholder = computed(() => {
   if (props.placeholderPlacement === "floating") return undefined;
@@ -46,15 +45,21 @@ const fieldClass = computed(() => {
   if (props.placeholderPlacement === "floating") return "floating-field";
   return "default-field";
 });
+
+defineEmits<{
+  input: [value: string];
+}>();
 </script>
 
 <template>
   <div class="w-full flex flex-col gap-0.5">
     <div
-      :class="cn(
-        'flex flex-row px-5 relative h-[var(--giro-field-height)] rounded-default bg-subtle text-subtle',
-        props.class,
-      )"
+      :class="
+        cn(
+          'flex flex-row px-5 relative h-[var(--giro-field-height)] rounded-default bg-subtle text-subtle',
+          props.class,
+        )
+      "
     >
       <slot
         v-if="$slots.prefix"
@@ -81,6 +86,7 @@ const fieldClass = computed(() => {
           variant="ghost"
           size="ghost"
           :class="fieldClass"
+          @input="(event) => $emit('input', event)"
         />
         <BaseSelect
           v-else-if="fieldType === 'select'"
@@ -88,13 +94,14 @@ const fieldClass = computed(() => {
           :required="required"
           :placeholder="fieldPlaceholder"
           :class="fieldClass"
+          @input="(event) => $emit('input', event)"
         />
 
         <div
-          v-if="errorPlacement === 'floating' && error"
+          v-if="errorPlacement === 'floating' && errorMessage"
           class="error absolute bottom-1 right-0"
         >
-          {{ error }}
+          {{ errorMessage }}
         </div>
       </div>
 
@@ -105,10 +112,10 @@ const fieldClass = computed(() => {
     </div>
 
     <div
-      v-if="errorPlacement === 'below' && error"
+      v-if="errorPlacement === 'below' && errorMessage"
       class="error"
     >
-      {{ error }}
+      {{ errorMessage }}
     </div>
   </div>
 </template>
@@ -117,7 +124,7 @@ const fieldClass = computed(() => {
 .floating-label {
   @apply absolute left-5 top-1/2 -translate-y-1/2 font-medium;
 }
-.floating-field  {
+.floating-field {
   @apply w-full h-[var(--giro-input-group-hidden-field-height)] font-medium bg-transparent;
 }
 .default-field {

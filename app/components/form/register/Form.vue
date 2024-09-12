@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { useField } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/zod";
 import * as zod from "zod";
-import { UpsertSignupFlowOnCpfValueChanged } from "~/modules/signup-flows/infra/ui/UpsertSignupFlowOnCpfValueChanged";
-import { createSignupFlowsDependencyInjection } from "~/modules/signup-flows/infra/SignupFlowsDependencyInjection";
+
 // DESIGN STATUS:       ✅
 // ARCHITECTURE STATUS: ✴️
 //   * currently shows CPF for all jurisdictions and it needs to be BR only
@@ -14,67 +14,39 @@ import { createSignupFlowsDependencyInjection } from "~/modules/signup-flows/inf
 // ZOD SCHEMA:          ✴️
 
 /**
- * Depedency injection
- */
-const signupFlowsDependencies = createSignupFlowsDependencyInjection();
-const { t: translate } = useI18n();
-
-const validateCpfByUpdatingSignupFlow = async (value: unknown) => {
-  const cpfValue = String(value);
-
-  console.log("cpfValue inside validate", cpfValue);
-
-  if (!cpfValue) {
-    return "CPF is required";
-  }
-
-  const resultUpserting = await new UpsertSignupFlowOnCpfValueChanged(
-    signupFlowsDependencies,
-    translate,
-  ).handle(cpfValue);
-
-  // console.log("resultUpserting:", resultUpserting);
-
-  if (resultUpserting.isFailure) {
-    // Here we can even return a translated message
-    return resultUpserting.error.message;
-  }
-
-  return true;
-};
-
-/**
  * Client side direct validation
  */
-const validationSchema = toTypedSchema(
-  zod.object({
-    email: zod
+
+const { handleSubmit } = useForm();
+
+const { value: email, errorMessage: emailErrorMessage } = useField(
+  "email",
+  toTypedSchema(
+    zod
       .string()
       .min(1, { message: "This is required" })
       .email({ message: "Must be a valid email" }),
-    password: zod
+  ),
+);
+const { value: password } = useField(
+  "password",
+  toTypedSchema(
+    zod
       .string()
       .min(1, { message: "This is required" })
       .min(8, { message: "Too short" }),
-    cpf: zod.string().refine(validateCpfByUpdatingSignupFlow),
-    telephone: zod
+  ),
+);
+
+const { value: telephone, errorMessage: telephoneErrorMessage } = useField(
+  "telephone",
+  toTypedSchema(
+    zod
       .string()
       .min(1, { message: "This is required" })
       .length(14, { message: "Must be a valid telephone" }),
-  }),
+  ),
 );
-
-const { handleSubmit, errors, values } = useForm({
-  validationSchema,
-});
-// const { value: email } = useField("email");
-// const { value: password } = useField("password");
-// const {
-//   value: cpfValue,
-//   errorMessage: cpfErrorMessage,
-//   handleChange: handleCpfChange,
-// } = useField("cpf", (value) => validateCpfByUpdatingSignupFlow(value));
-// const { value: telephone } = useField("telephone");
 
 const onSubmit = handleSubmit((values) => {
   alert(JSON.stringify(values, null, 2));
@@ -96,7 +68,7 @@ const loading = ref(false);
       :placeholder="$t('field.email')"
       autocomplete="email"
       inputmode="email"
-      :error-message="errors.email"
+      :error-message="emailErrorMessage"
       @input="(value) => (email = value)"
     />
 
@@ -104,25 +76,17 @@ const loading = ref(false);
       :placeholder="$t('field.password')"
       type="password"
       autocomplete="new-password"
+      @input="(value) => (password = value)"
     />
 
-    <BaseInputGroup
-      :placeholder="$t('field.cpf')"
-      mask="###.###.###-##"
-      inputmode="numeric"
-      :error-message="errors.cpf"
-      @input="
-        (value) => {
-          console.log('from base input group:', value);
-          values.cpf = value;
-        }
-      "
-    />
+    <FormRegisterCpfBaseInputGroup />
 
     <BaseInputGroup
       :placeholder="$t('field.telephone')"
       mask="123"
       inputmode="numeric"
+      :error-message="telephoneErrorMessage"
+      @input="(value) => (telephone = value)"
     />
 
     <div class="my-2 text-sm text-center text-subtle">

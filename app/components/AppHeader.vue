@@ -17,6 +17,13 @@ const onClickUnauthenticatedAccountLogo = async () => {
     {},
   );
 };
+
+const onClickUnauthenticatedRegister = async () => {
+  $dependencies.asyncMessagePublisher.emit(
+    "girobet:commands:modals:open-register",
+    {},
+  );
+};
 </script>
 
 <template>
@@ -68,6 +75,7 @@ const onClickUnauthenticatedAccountLogo = async () => {
             <BaseButton
               variant="primary"
               class="h-9 md:h-10"
+              @click="onClickUnauthenticatedRegister"
             >
               {{ $t("button.register") }}
             </BaseButton>

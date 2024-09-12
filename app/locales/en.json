@@ -68,6 +68,10 @@
     "accept_terms": "By signing up, you agree to our",
     "have_account": "Have an account already?"
   },
+  "modal_registration": {
+    "cpf_invalid": "Invalid CPF",
+    "cpf_required": "CPF is required"
+  },
   "modal_payments": {
     "make_deposit": "Make a Deposit",
     "make_deposit_subtitle": "Add funds to your account",

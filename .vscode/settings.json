@@ -1,4 +1,13 @@
 {
   "i18n-ally.localesPaths": [],
-  "editor.defaultFormatter": "esbenp.prettier-vscode"
+  "eslint.format.enable": true,
+  "[vue]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[ts]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  }
 }
