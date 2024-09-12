@@ -13,8 +13,8 @@
     "postinstall": "nuxt prepare",
     "preview": "nuxt preview",
     "test": "vitest",
-    "test:unit": "vitest --dir ./test/unit",
-    "test:integration": "vitest --dir ./test/integration"
+    "test:integration": "vitest --dir ./test/integration",
+    "test:unit": "vitest --dir ./test/unit"
   },
   "dependencies": {
     "@floating-ui/vue": "^1.1.4",

@@ -25,6 +25,7 @@ export default defineNuxtConfig({
     "@nuxt/eslint",
     "@nuxt/icon",
     "@nuxt/image",
+    "@nuxt/test-utils/module",
     "@nuxtjs/device",
     "@nuxtjs/i18n",
     "@nuxtjs/seo",
@@ -32,7 +33,6 @@ export default defineNuxtConfig({
     "@pinia/nuxt",
     "@vee-validate/nuxt",
     "nuxt-gtag",
-    "@nuxt/test-utils/module",
   ],
   runtimeConfig: {
     public: {
