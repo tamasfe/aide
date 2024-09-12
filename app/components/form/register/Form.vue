@@ -90,7 +90,7 @@ const loading = ref(false);
     />
 
     <div class="my-2 text-sm text-center text-subtle">
-      {{ $t("modal_auth.accept_terms") }}
+      {{ $t("modal_session.accept_terms") }}
       <NuxtLink
         to="/terms"
         target="_blank"
@@ -113,7 +113,7 @@ const loading = ref(false);
     </BaseButton>
 
     <div class="mt-6 text-center text-sm text-subtle">
-      {{ $t("modal_auth.have_account") }}
+      {{ $t("modal_session.have_account") }}
 
       <BaseButton
         variant="ghost"

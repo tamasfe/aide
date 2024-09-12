@@ -36,7 +36,7 @@ const loading = ref(false);
         size="ghost"
         class="text-sm text-subtle hover:text-subtle-light"
       >
-        {{ $t("modal_auth.forgot_password") }}
+        {{ $t("modal_session.forgot_password") }}
       </BaseButton>
     </div>
 
@@ -49,14 +49,14 @@ const loading = ref(false);
     </BaseButton>
 
     <div class="mt-6 text-center text-sm text-subtle">
-      {{ $t("modal_auth.dont_have_account") }}
+      {{ $t("modal_session.dont_have_account") }}
 
       <BaseButton
         variant="ghost"
         size="ghost"
         class="text-primary hover:underline"
       >
-        {{ $t("modal_auth.create_free_account") }}
+        {{ $t("modal_session.create_free_account") }}
       </BaseButton>
     </div>
   </BaseForm>

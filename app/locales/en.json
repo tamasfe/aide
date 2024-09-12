@@ -61,14 +61,12 @@
     "live_support": "Live Support",
     "logout": "Log out"
   },
-  "modal_auth": {
+  "modal_session": {
     "dont_have_account": "Don't have an account yet?",
     "create_free_account": "Create a Free account",
     "forgot_password": "Forgot your password?",
     "accept_terms": "By signing up, you agree to our",
-    "have_account": "Have an account already?"
-  },
-  "modal_registration": {
+    "have_account": "Have an account already?",
     "cpf_invalid": "Invalid CPF",
     "cpf_required": "CPF is required"
   },

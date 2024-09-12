@@ -33,7 +33,7 @@ const loading = ref(false);
     </BaseButton>
 
     <div class="mt-6 text-center text-sm text-subtle">
-      {{ $t("modal_auth.have_account") }}
+      {{ $t("modal_session.have_account") }}
 
       <BaseButton
         variant="ghost"
