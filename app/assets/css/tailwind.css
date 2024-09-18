@@ -116,6 +116,7 @@
 
 .giro__container {
   margin: 0 auto;
+  width: 100%;
   max-width: var(--giro-container-max-width);
   padding-left: var(--giro-container-padding);
   padding-right: var(--giro-container-padding);
@@ -123,6 +124,7 @@
 
 .giro__container-full-width {
   margin: 0 auto;
+  width: 100%;
   max-width: var(--giro-container-max-width);
 }
 

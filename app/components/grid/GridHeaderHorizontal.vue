@@ -15,34 +15,22 @@ const grid = ref<any>(null);
 
 const { isMobile } = useDevice();
 
-const scrollBack = () => {
-  if (props.direction === "ltr") {
-    grid.value?.scrollBack();
-    return;
-  }
-  grid.value?.scrollForward();
+const scrollPrev = () => {
+  grid.value?.scrollPrev();
 };
 
-const scrollForward = () => {
-  if (props.direction === "ltr") {
-    grid.value?.scrollForward();
-    return;
-  }
-  grid.value?.scrollBack();
+const scrollNext = () => {
+  grid.value?.scrollNext();
 };
 
-const canScrollLeft = computed(() => {
+const canScrollPrev = computed(() => {
   if (!grid.value) return false;
-  return props.direction === "ltr"
-    ? !grid.value.isBeginning
-    : !grid.value.isEnd;
+  return grid.value.canScrollPrev;
 });
 
-const canScrollRight = computed(() => {
+const canScrollNext = computed(() => {
   if (!grid.value) return false;
-  return props.direction === "ltr"
-    ? !grid.value.isEnd
-    : !grid.value.isBeginning;
+  return grid.value.canScrollNext;
 });
 </script>
 
@@ -60,8 +48,8 @@ const canScrollRight = computed(() => {
             variant="subtle"
             size="sm"
             class="p-1.5"
-            :disabled="!canScrollLeft"
-            @click="scrollBack"
+            :disabled="!canScrollPrev"
+            @click="scrollPrev"
           >
             <Icon
               name="lucide:chevron-left"
@@ -72,8 +60,8 @@ const canScrollRight = computed(() => {
             variant="subtle"
             size="sm"
             class="p-1.5"
-            :disabled="!canScrollRight"
-            @click="scrollForward"
+            :disabled="!canScrollNext"
+            @click="scrollNext"
           >
             <Icon
               name="lucide:chevron-right"

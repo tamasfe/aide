@@ -30,6 +30,8 @@ onMounted(() => {
 });
 
 const onLoadData = async () => {
+  if (!canLoadMore.value) return;
+  if (loading.value) return;
   // fake loading
   loading.value = true;
   await new Promise(resolve => setTimeout(resolve, 1000));
@@ -45,6 +47,7 @@ const onLoadData = async () => {
     :can-load-more="canLoadMore"
     :slides-to-scroll="slidesToScroll"
     :columns="columns"
+    :slides-before-load="10"
     aspect-ratio="3/4"
     @trigger:load="onLoadData"
   >

@@ -16,7 +16,7 @@ const scrollToTop = () => {
   <footer class="mt-8 pt-6 pb-2 md:py-12 bg-subtle flex flex-col space-y-10">
     <!-- main -->
     <section
-      class="giro__container w-full flex flex-col md:flex-row md:justify-between sm:space-x-8 md:space-x-12 text-subtle"
+      class="giro__container flex flex-col md:flex-row md:justify-between sm:space-x-8 md:space-x-12 text-subtle"
     >
       <div
         class="flex-1 md:max-w-xs lg:max-w-sm flex flex-col items-center md:items-start space-y-6 md:space-y-8"
@@ -54,13 +54,9 @@ const scrollToTop = () => {
             </template>
           </BaseSelect>
         </div>
-        <FooterColumnSocialMedia
-          class="hidden md:flex lg:hidden"
-        />
+        <FooterColumnSocialMedia class="hidden md:flex lg:hidden" />
       </div>
-      <FooterColumnSocialMedia
-        class="md:hidden"
-      />
+      <FooterColumnSocialMedia class="md:hidden" />
       <FooterColumn
         :title="$t('footer.popular')"
         :links="[
@@ -88,41 +84,43 @@ const scrollToTop = () => {
           { title: $t('page.responsible_gaming'), to: '/responsible-gaming' },
         ]"
       />
-      <FooterColumnSocialMedia
-        class="hidden lg:flex"
-      />
+      <FooterColumnSocialMedia class="hidden lg:flex" />
     </section>
 
-    <ScrollOffscreen>
-      <div class="flex gap-8">
-        <div class="w-[10rem] h-[4rem] bg-emphasis" />
-        <div class="w-[10rem] h-[4rem] bg-emphasis" />
-        <div class="w-[10rem] h-[4rem] bg-emphasis" />
-        <div class="w-[10rem] h-[4rem] bg-emphasis" />
-        <div class="w-[10rem] h-[4rem] bg-emphasis" />
-        <div class="w-[10rem] h-[4rem] bg-emphasis" />
-        <div class="w-[10rem] h-[4rem] bg-emphasis" />
-        <div class="w-[10rem] h-[4rem] bg-emphasis" />
-        <div class="w-[10rem] h-[4rem] bg-emphasis" />
-      </div>
-    </ScrollOffscreen>
+    <section class="giro__container">
+      <GridHorizontal
+        class="w-full"
+        :data="Array(20).fill(0)"
+        :gap="1"
+        :columns="{ sm: 3.5, md: 5.5, lg: 6.5, xl: 7.5 }"
+        aspect-ratio="16 / 9"
+      >
+        <template #default>
+          <div class="w-full h-full bg-emphasis" />
+        </template>
+      </GridHorizontal>
+    </section>
 
-    <!-- legal -->
-    <section class="giro__container relative w-full flex flex-col text-subtle">
+    <section class="giro__container relative flex flex-col text-subtle">
       <div class="flex flex-col items-center space-y-5 md:space-y-8">
-        <p class="max-w-[42rem] lg:max-w-[52rem] text-[0.7rem] sm:text-center">{{ $t("footer.legal_notice") }}</p>
-        <p class="text-center text-[0.82rem]">{{ $t("footer.copyright", { year }) }}</p>
+        <div class="max-w-[42rem] lg:max-w-[52rem] text-[0.7rem] sm:text-center">
+          {{ $t("footer.legal_notice") }}
+        </div>
+        <div class="text-center text-[0.82rem]">
+          {{ $t("footer.copyright", { year }) }}
+        </div>
       </div>
-      <button
-        type="button"
-        class="mt-6 outline-none w-full md:w-auto bg-emphasis hover:bg-active p-3 rounded-default text-subtle inline-flex justify-center md:absolute right-6 bottom-0"
+      <BaseButton
+        variant="secondary"
+        size="xl"
+        class="px-3 my-6 w-full md:m-0 md:w-auto md:absolute md:right-6 md:bottom-0"
         @click="scrollToTop"
       >
         <Icon
           name="lucide:chevron-up"
           size="26"
         />
-      </button>
+      </BaseButton>
     </section>
   </footer>
 </template>

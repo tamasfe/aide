@@ -1,18 +1,11 @@
 <script setup lang="ts">
-import { clamp } from "@vueuse/core";
+import emblaCarouselVue from "embla-carousel-vue";
 import type { CSSProperties } from "vue";
+import type { EmblaOptionsType } from "embla-carousel";
 
-// DESIGN STATUS:       ✴️
-//   * controls should disappear if a single slide
-//   * most importantly... each slide should NOT be responsible for its own ratio. that should be defined in CarouselHero, so it "configures" the carousel with props or whatever. Then, adding slides very simply can be done with simple wrapping divs which automatically style with w-full/h-full, and then anything in that div can be styled with normal css (whether its an image, a button, etc)
-//   * the button should be what gets the @click event... not the div wrapping it
-// ARCHITECTURE STATUS: ✴️
-//   * currently quite messy and should be refactored
-//   * maybe: https://swiperjs.com/get-started
-// TRANSLATION STATUS:  ✅
-
-withDefaults(
+const props = withDefaults(
   defineProps<{
+    options?: EmblaOptionsType;
     bottomControls?: boolean;
     sideControls?: boolean;
     ratio?: CSSProperties["aspectRatio"];
@@ -23,115 +16,69 @@ withDefaults(
   },
 );
 
-const container = ref<HTMLElement | null>(null);
-const items = ref<HTMLElement[]>([]);
-const currentIndex = ref(0);
+const { options } = toRefs(props);
 
-const handleTouchStart = (e: TouchEvent) => {
-  const touch = e.touches[0];
-  if (!touch) return;
-  const x = touch.clientX;
+const [emblaRef, emblaApi] = emblaCarouselVue(options.value);
 
-  const handleTouchEnd = () => {
-    container.value?.removeEventListener("touchmove", handleTouchMove);
-    container.value?.removeEventListener("touchend", handleTouchEnd);
-  };
-
-  const handleTouchMove = (e: TouchEvent) => {
-    const touch = e.touches[0];
-    if (!touch) {
-      handleTouchEnd();
-      return;
-    }
-    const dx = touch.clientX - x;
-    if (dx > 100) {
-      prev();
-      handleTouchEnd();
-    }
-    else if (dx < -100) {
-      next();
-      handleTouchEnd();
-    }
-  };
-
-  container.value?.addEventListener("touchmove", handleTouchMove);
-  container.value?.addEventListener("touchend", handleTouchEnd);
-};
-
-const onMutation = (list: MutationRecord[]) => {
-  if (!container.value) {
-    return;
-  }
-  for (const mutation of list) {
-    if (mutation.type === "childList") {
-      items.value = Array.from(container.value?.children) as HTMLElement[];
-    }
-  }
-};
-
-onMounted(() => {
-  if (container.value) {
-    items.value = Array.from(container.value.children) as HTMLElement[];
-    container.value.addEventListener("touchstart", handleTouchStart);
-
-    const observer = new MutationObserver(onMutation);
-
-    observer.observe(container.value, {
-      childList: true,
-    });
-  }
-});
+const items = ref<number[]>([]);
+const hasMultipleSlides = ref(false);
+const currentIndex = ref<number>(0);
 
 const goto = (index: number) => {
-  currentIndex.value = clamp(index, 0, items.value.length - 1);
+  emblaApi.value?.scrollTo(index);
 };
 
 const next = () => {
-  goto(currentIndex.value + 1);
+  emblaApi.value?.scrollNext();
 };
 
 const prev = () => {
-  goto(currentIndex.value - 1);
-};
-
-const isFirst = computed(() => currentIndex.value === 0);
-const isLast = computed(() => currentIndex.value === items.value.length - 1);
-
-const transform = () => {
-  if (container.value) {
-    // check why isn't it working browser related or?
-    // items.value[currentIndex.value].scrollIntoView({
-    //   behavior: "smooth",
-    //   block: "nearest",
-    //   inline: "start",
-    // });
-    const slide = items.value[currentIndex.value];
-    if (!slide) return;
-    const gap = parseFloat(getComputedStyle(container.value).gap);
-    container.value.style.transform = `translateX(-${
-      currentIndex.value * slide.getBoundingClientRect().width
-      + gap * currentIndex.value
-    }px)`;
-  }
+  emblaApi.value?.scrollPrev();
 };
 
 const bottomControlColorClass = (index: number) =>
   index === currentIndex.value ? "bg-text-emphasis" : "bg-text-subtle";
 
-const hasMultipleSlides = computed(() => items.value.length > 1);
+const getCarouselMetadata = () => {
+  const index = emblaApi.value?.selectedScrollSnap();
+  if (index !== undefined) {
+    currentIndex.value = index;
+  }
 
-watch(currentIndex, transform);
+  const slides = emblaApi.value?.scrollSnapList();
+  if (slides) {
+    hasMultipleSlides.value = slides.length > 1;
+    items.value = slides;
+  }
+};
+
+onMounted(() => {
+  emblaApi.value
+    ?.on("init", getCarouselMetadata)
+    ?.on("reInit", getCarouselMetadata)
+    ?.on("select", getCarouselMetadata);
+});
+
+onBeforeUnmount(() => {
+  emblaApi.value?.off("init", getCarouselMetadata);
+  emblaApi.value?.off("reInit", getCarouselMetadata);
+  emblaApi.value?.off("select", getCarouselMetadata);
+  emblaApi.value?.destroy();
+});
 
 defineExpose({
   next,
   prev,
-  isFirst,
-  isLast,
 });
 </script>
 
 <template>
-  <div class="relative">
+  <div
+    class="relative"
+    :style="{
+      aspectRatio: ratio,
+    }"
+  >
     <slot
       v-if="sideControls && hasMultipleSlides"
       name="controls"
@@ -178,16 +125,11 @@ defineExpose({
       </div>
     </div>
     <div
-      class="giro__carousel"
-      :style="{
-        aspectRatio: ratio,
-      }"
+      ref="emblaRef"
+      class="giro__carousel h-full"
     >
-      <div
-        ref="container"
-        class="giro__carousel-container h-full gap-4 md:rounded-default overflow-hidden"
-      >
-        <slot :index="currentIndex" />
+      <div class="giro__carousel-container h-full select-none">
+        <slot />
       </div>
     </div>
   </div>
@@ -200,7 +142,6 @@ defineExpose({
 
 .giro__carousel-container {
   display: flex;
-  transition: transform 0.5s;
 }
 
 :deep(.giro__carousel-container > *) {
