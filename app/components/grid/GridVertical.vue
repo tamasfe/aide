@@ -17,8 +17,7 @@ const props = withDefaults(
     pagination?: boolean;
     aspectRatio?: CSSProperties["aspectRatio"];
     max?: number;
-  }>(),
-  {
+  }>(), {
     pagination: false,
   },
 );
@@ -44,7 +43,7 @@ const max = computed(() => {
       </div>
     </div>
     <div
-      v-if="pagination"
+      v-if="pagination && data.length < max"
       class="mt-10 flex flex-col justify-center items-center gap-4"
     >
       <div class="relative w-[12rem] h-1.5 rounded-full bg-emphasis">
@@ -57,7 +56,6 @@ const max = computed(() => {
         {{ data.length }} of {{ max }}
       </div>
       <BaseButton
-        v-if="data.length < max"
         variant="secondary"
         size="md"
         @click="onShowMore"
