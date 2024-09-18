@@ -45,30 +45,28 @@ const max = computed(() => {
     </div>
     <div
       v-if="pagination"
-      class="flex justify-center items-center flex-col gap-4 mt-4"
+      class="mt-10 flex flex-col justify-center items-center gap-4"
     >
-      <div
-        class="relative w-1/2 md:w-[20%] lg:w-[15%] h-1.5 rounded-lg bg-emphasis"
-      >
+      <div class="relative w-[12rem] h-1.5 rounded-full bg-emphasis">
         <div
-          class="absolute left-0 top-0 h-1.5 bg-text-subtle rounded-lg"
+          class="absolute left-0 top-0 h-1.5 bg-text-subtle rounded-full"
           :style="{ width: `${(data.length / max) * 100}%` }"
         />
       </div>
-      <p class="text-emphasis font-medium text-xl sm:text-base">
+      <div class="text-subtle-light font-medium">
         {{ data.length }} of {{ max }}
-      </p>
+      </div>
       <BaseButton
         v-if="data.length < max"
-        class="bg-emphasis inline-flex justify-center text-subtle hover:text-emphasis w-full sm:w-max text-base font-medium px-4 py-3 sm:px-6 sm:py-2.5 rounded-md"
-        big
+        variant="secondary"
+        size="md"
         @click="onShowMore"
       >
-        <div class="inline-flex items-center gap-x-2">
-          <p class="text-xl sm:text-base">Show more</p>
+        <div class="flex items-center gap-2">
+          <div>Load More</div>
           <Icon
             name="lucide:chevron-down"
-            :size="24"
+            size="24"
           />
         </div>
       </BaseButton>
