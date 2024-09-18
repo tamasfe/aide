@@ -1,49 +1,64 @@
 import { UserCPF } from "~/modules/users/domain/UserCPF";
 import { UserEmail } from "~/modules/users/domain/UserEmail";
-import { success, type CustomError, type Result } from "~/packages/result";
+import { UserPassword } from "~/modules/users/domain/UserPassword";
+import { success } from "~/packages/result";
+
+export interface SignupFlowPropsI {
+  id: string;
+  email: null | string;
+  password: null | string;
+  cpf: null | string;
+  telephone: null | string;
+}
 
 export class SignupFlow {
-  public static newFromProps(
-    id: string,
-    email: null | string,
-    password: null | string,
-    cpf: null | string,
-  ) {
-    const userEmailResult = email ? UserEmail.new(email) : success(null);
+  public static newFromProps(props: SignupFlowPropsI) {
+    const userEmailResult = props.email ? UserEmail.new(props.email) : success(null);
     if (userEmailResult.isFailure) {
       return userEmailResult;
     }
 
-    const userCPFResult = cpf ? UserCPF.new(cpf) : success(null);
+    const userCPFResult = props.cpf ? UserCPF.new(props.cpf) : success(null);
     if (userCPFResult.isFailure) {
       return userCPFResult;
     }
 
+    const userPasswordResult = props.password ? UserPassword.new(props.password) : success(null);
+    if (userPasswordResult.isFailure) {
+      return userPasswordResult;
+    }
+
     return success(
-      new SignupFlow(id, userEmailResult.value, password, userCPFResult.value),
+      new SignupFlow(props.id, userEmailResult.value, userPasswordResult.value, userCPFResult.value, props.telephone),
     );
   }
 
-  public newUpdatingCpf(cpf: UserCPF): Result<SignupFlow, CustomError> {
-    return success(
-      new SignupFlow(this.id, this.email, this.password, cpf, true),
-    );
+  public newUpdatingProps(props: Partial<SignupFlowPropsI>) {
+    return SignupFlow.newFromProps({
+      id: this.id,
+      email: props.email ?? this.email?.value ?? null,
+      password: props.password ?? this.password?.value ?? null,
+      cpf: props.cpf ?? this.cpf?.value ?? null,
+      telephone: props.telephone ?? this.telephone ?? null,
+    });
   }
 
   private constructor(
     public readonly id: string,
     public readonly email: null | UserEmail,
-    public readonly password: null | string,
+    public readonly password: null | UserPassword,
     public readonly cpf: null | UserCPF,
+    public readonly telephone: null | string,
     public readonly needsPersisting = false,
   ) {}
 
-  public toJSON() {
+  public toJSON(): SignupFlowPropsI {
     return {
       id: this.id,
       email: this.email?.value ?? null,
-      password: this.password,
+      password: this.password?.value ?? null,
       cpf: this.cpf?.value ?? null,
+      telephone: this.telephone,
     };
   }
 }

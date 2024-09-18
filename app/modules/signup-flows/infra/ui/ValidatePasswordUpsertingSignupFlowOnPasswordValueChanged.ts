@@ -2,27 +2,32 @@ import { UpsertSignupFlow } from "../../application/UpsertSignupFlow";
 import type { SignupFlowsDependencyInjectionI } from "../SignupFlowsDependencyInjection";
 import type { TranslateFunctionType } from "~/packages/translation/TranslateFunctionType";
 
-export class ValidateCpfUpsertingSignupFlowOnCpfValueChanged {
+export class ValidatePasswordUpsertingSignupFlowOnPasswordValueChanged {
   public async handle(value: unknown): Promise<boolean | string> {
-    const cpfValue = String(value);
+    const passwordValue = String(value).trim();
 
-    if (!cpfValue) {
-      return this.translateFunction("modal_session.cpf_required");
+    if (!passwordValue) {
+      return this.translateFunction("modal_session.password_required");
     }
 
     const resultUpsertingSignupFlow = await this.upsertSignupFlow.handle({
-      CPF: cpfValue,
+      CPF: null,
       email: null,
-      password: null,
       telephone: null,
+      password: passwordValue,
     });
 
     if (resultUpsertingSignupFlow.isFailure) {
-      // TODO: depending of the typed error: handle returning a translation key or another
-      if (resultUpsertingSignupFlow.error.name === "InvalidCPF") {
-        return this.translateFunction("modal_session.cpf_invalid");
+      if (resultUpsertingSignupFlow.error.name === "InvalidUserPassword") {
+        return ((): string => {
+          switch (resultUpsertingSignupFlow.error.reason) {
+            case "too_long":
+              return this.translateFunction("modal_session.password_invalid_too_long");
+            case "too_short":
+              return this.translateFunction("modal_session.password_invalid_too_short");
+          }
+        })();
       }
-
       return resultUpsertingSignupFlow.error.message;
     }
 

@@ -12,14 +12,14 @@ const onClickBalance = async () => {
 };
 
 const onClickUnauthenticatedAccountLogo = async () => {
-  $dependencies.asyncMessagePublisher.emit(
+  $dependencies.common.asyncMessagePublisher.emit(
     "girobet:commands:modals:open-login",
     {},
   );
 };
 
 const onClickUnauthenticatedRegister = async () => {
-  $dependencies.asyncMessagePublisher.emit(
+  $dependencies.common.asyncMessagePublisher.emit(
     "girobet:commands:modals:open-register",
     {},
   );

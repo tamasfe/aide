@@ -1,9 +1,8 @@
-import type { SignupFlow } from "../domain/SignupFlow";
 import type { SignupFlowApiRepositoryI } from "../domain/SignupFlowApiRepositoryI";
 import type { SignupFlowIdClientRepositoryI } from "../domain/SignupFlowIdClientRepositoryI";
 import { UserCPF } from "~/modules/users/domain/UserCPF";
 import { UserEmail } from "~/modules/users/domain/UserEmail";
-import type { CustomError, Result } from "~/packages/result";
+import { UserPassword } from "~/modules/users/domain/UserPassword";
 import { success } from "~/packages/result";
 
 export class UpsertSignupFlow {
@@ -15,7 +14,7 @@ export class UpsertSignupFlow {
   public async handle(signupFlowPayload: {
     email: null | string;
     password: null | string;
-    phone: null | string;
+    telephone: null | string;
     CPF: null | string;
   }) {
     const userEmailResult = signupFlowPayload.email
@@ -32,8 +31,15 @@ export class UpsertSignupFlow {
       return userCPFResult;
     }
 
+    const userPasswordResult = signupFlowPayload.password
+      ? UserPassword.new(signupFlowPayload.password)
+      : success(null);
+    if (userPasswordResult.isFailure) {
+      return userPasswordResult;
+    }
+
     const currentSignupFlowIdResult
-      = await this.clientSignupFlowIdRepository.searchCurrentFlowId();
+      = await this.clientSignupFlowIdRepository.searchCurrent();
     if (currentSignupFlowIdResult.isFailure) {
       return currentSignupFlowIdResult;
     }
@@ -45,28 +51,33 @@ export class UpsertSignupFlow {
       return currentSignupFlowResult;
     }
 
-    let updatedSignupFlow = currentSignupFlowResult.value;
-
-    if (userCPFResult.value) {
-      const updatedSignupFlowResult = updatedSignupFlow.newUpdatingCpf(
-        userCPFResult.value,
-      );
-      if (updatedSignupFlowResult.isFailure) {
-        return updatedSignupFlowResult;
-      }
-      updatedSignupFlow = updatedSignupFlowResult.value;
+    const errorSavingCurrentFlowId = await this.clientSignupFlowIdRepository.saveCurrent(currentSignupFlowResult.value.id);
+    if (errorSavingCurrentFlowId.isFailure) {
+      return errorSavingCurrentFlowId;
     }
 
-    if (!updatedSignupFlow.needsPersisting) {
+    const updatedSignupFlowResult = currentSignupFlowResult.value.newUpdatingProps(
+      {
+        email: signupFlowPayload.email,
+        cpf: signupFlowPayload.CPF,
+        password: signupFlowPayload.password,
+        telephone: signupFlowPayload.telephone,
+      },
+    );
+    if (updatedSignupFlowResult.isFailure) {
+      return updatedSignupFlowResult;
+    }
+
+    if (!updatedSignupFlowResult.value.needsPersisting) {
       return success();
     }
 
-    return this.signupFlowApiRepositoryI.update(updatedSignupFlow);
+    return this.signupFlowApiRepositoryI.update(updatedSignupFlowResult.value);
   }
 
   private async createOrGetSignupFlow(
     signupFlowIdOrEmpty: string | null,
-  ): Promise<Result<SignupFlow, CustomError>> {
+  ) {
     if (signupFlowIdOrEmpty === null) {
       return this.signupFlowApiRepositoryI.create();
     }

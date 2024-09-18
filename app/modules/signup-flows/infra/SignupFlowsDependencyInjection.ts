@@ -8,7 +8,7 @@ export interface SignupFlowsDependencyInjectionI {
   clientSignupFlowIdRepository: SignupFlowIdClientRepositoryI;
 }
 
-export const createSignupFlowsDependencyInjection = () => {
+export const createSignupFlowsDependencyInjection = (): SignupFlowsDependencyInjectionI => {
   return {
     signupFlowApiRepository: new SignupFlowApiRepositoryDumb(),
     clientSignupFlowIdRepository: new ClientSignupFlowIdRepositoryDumb(),

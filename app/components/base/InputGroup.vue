@@ -11,7 +11,7 @@ import type { HTMLAttributes } from "vue";
 // ✅ error (floating and below)
 // ✴️  jiggle animation on error
 // ✅ prefix/suffix
-// ✴️  maska (use mask prop already on this component)
+// ✅ maska (use mask prop already on this component)
 
 defineOptions({
   inheritAttrs: false,
@@ -80,6 +80,7 @@ defineEmits<{
       <div class="flex items-end w-full h-full relative">
         <BaseInput
           v-if="fieldType === 'input'"
+          :mask-pattern="mask"
           v-bind="$attrs"
           :required="required"
           :placeholder="fieldPlaceholder"

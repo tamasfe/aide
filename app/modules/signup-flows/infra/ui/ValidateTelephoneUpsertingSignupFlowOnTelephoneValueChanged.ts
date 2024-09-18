@@ -2,27 +2,22 @@ import { UpsertSignupFlow } from "../../application/UpsertSignupFlow";
 import type { SignupFlowsDependencyInjectionI } from "../SignupFlowsDependencyInjection";
 import type { TranslateFunctionType } from "~/packages/translation/TranslateFunctionType";
 
-export class ValidateCpfUpsertingSignupFlowOnCpfValueChanged {
+export class ValidateTelephoneUpsertingSignupFlowOnTelephoneValueChanged {
   public async handle(value: unknown): Promise<boolean | string> {
-    const cpfValue = String(value);
+    const telephoneValue = String(value);
 
-    if (!cpfValue) {
-      return this.translateFunction("modal_session.cpf_required");
+    if (!telephoneValue) {
+      return this.translateFunction("modal_session.telephone_required");
     }
 
     const resultUpsertingSignupFlow = await this.upsertSignupFlow.handle({
-      CPF: cpfValue,
+      CPF: null,
       email: null,
       password: null,
-      telephone: null,
+      telephone: telephoneValue,
     });
 
     if (resultUpsertingSignupFlow.isFailure) {
-      // TODO: depending of the typed error: handle returning a translation key or another
-      if (resultUpsertingSignupFlow.error.name === "InvalidCPF") {
-        return this.translateFunction("modal_session.cpf_invalid");
-      }
-
       return resultUpsertingSignupFlow.error.message;
     }
 

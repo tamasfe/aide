@@ -13,14 +13,14 @@ setTimeout(() => {
 
 const { $dependencies } = useNuxtApp();
 
-$dependencies.asyncMessagePublisher.subscribe(
+$dependencies.common.asyncMessagePublisher.subscribe(
   "girobet:commands:modals:open-login",
   () => {
     modal.value = "login";
   },
 );
 
-$dependencies.asyncMessagePublisher.subscribe(
+$dependencies.common.asyncMessagePublisher.subscribe(
   "girobet:commands:modals:open-register",
   () => {
     modal.value = "register";

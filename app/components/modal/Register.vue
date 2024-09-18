@@ -17,6 +17,6 @@ const loading = ref(false);
     banner-top="/assets/images/wheel-2.png"
   >
     <!-- FormRegister -->
-    <FormRegisterForm />
+    <FormRegister />
   </BaseModal>
 </template>

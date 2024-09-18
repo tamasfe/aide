@@ -2,25 +2,25 @@ import { UpsertSignupFlow } from "../../application/UpsertSignupFlow";
 import type { SignupFlowsDependencyInjectionI } from "../SignupFlowsDependencyInjection";
 import type { TranslateFunctionType } from "~/packages/translation/TranslateFunctionType";
 
-export class ValidateCpfUpsertingSignupFlowOnCpfValueChanged {
+export class ValidateEmailUpsertingSignupFlowOnEmailValueChanged {
   public async handle(value: unknown): Promise<boolean | string> {
-    const cpfValue = String(value);
+    const emailValue = String(value);
 
-    if (!cpfValue) {
-      return this.translateFunction("modal_session.cpf_required");
+    if (!emailValue) {
+      return this.translateFunction("modal_session.email_required");
     }
 
     const resultUpsertingSignupFlow = await this.upsertSignupFlow.handle({
-      CPF: cpfValue,
-      email: null,
+      CPF: null,
+      email: emailValue,
       password: null,
       telephone: null,
     });
 
     if (resultUpsertingSignupFlow.isFailure) {
       // TODO: depending of the typed error: handle returning a translation key or another
-      if (resultUpsertingSignupFlow.error.name === "InvalidCPF") {
-        return this.translateFunction("modal_session.cpf_invalid");
+      if (resultUpsertingSignupFlow.error.name === "InvalidUserEmail") {
+        return this.translateFunction("modal_session.email_invalid");
       }
 
       return resultUpsertingSignupFlow.error.message;

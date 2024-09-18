@@ -8,14 +8,14 @@ Emittery.isDebugEnabled = true;
  * More information on the Emittery package: https://github.com/sindresorhus/emittery
  */
 export class EmitteryAsyncMessagePublisher implements AsyncMessagePublisherI {
-  emit<T extends "girobet:commands:modals:open-login">(
+  emit<T extends keyof AsyncMessagesTypes>(
     messageName: T,
     message: AsyncMessagesTypes[T],
   ): Promise<void> {
     return this.emittery.emit(messageName, message);
   }
 
-  subscribe<T extends "girobet:commands:modals:open-login">(
+  subscribe<T extends keyof AsyncMessagesTypes>(
     messageName: T,
     callback: (message: AsyncMessagesTypes[T]) => void,
   ): void {

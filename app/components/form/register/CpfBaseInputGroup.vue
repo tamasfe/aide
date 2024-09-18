@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { useField } from "vee-validate";
-import { createSignupFlowsDependencyInjection } from "~/modules/signup-flows/infra/SignupFlowsDependencyInjection";
 import { ValidateCpfUpsertingSignupFlowOnCpfValueChanged } from "~/modules/signup-flows/infra/ui/ValidateCpfUpsertingSignupFlowOnCpfValueChanged";
 
 /**
  * Depedency injection
  */
-const signupFlowsDependencies = createSignupFlowsDependencyInjection();
+const { $dependencies } = useNuxtApp();
 const { t: translate } = useI18n();
 
 /**
@@ -14,7 +13,7 @@ const { t: translate } = useI18n();
  */
 const { value: cpf, errorMessage: cpfErrorMessage } = useField("cpf", value =>
   new ValidateCpfUpsertingSignupFlowOnCpfValueChanged(
-    signupFlowsDependencies,
+    $dependencies.signupFlows,
     translate,
   ).handle(value),
 );
