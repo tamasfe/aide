@@ -43,7 +43,7 @@ onMounted(() => {
     </template>
 
     <template #options>
-      <NuxtLink :to="`/categories/1`">
+      <NuxtLink :to="`/providers/1`">
         <BaseButton
           variant="subtle"
           size="sm"

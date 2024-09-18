@@ -93,7 +93,7 @@ const scrollToTop = () => {
         :data="Array(20).fill(0)"
         :gap="1"
         :columns="{ sm: 3.5, md: 5.5, lg: 6.5, xl: 7.5 }"
-        aspect-ratio="16 / 9"
+        aspect-ratio="16/9"
       >
         <template #default>
           <div class="w-full h-full bg-emphasis" />
