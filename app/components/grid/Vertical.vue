@@ -2,6 +2,7 @@
 // STATUS:
 // - Missing translations
 import type { CSSProperties } from "vue";
+import type { BreakpointValues } from "~/types/utils";
 
 const emit = defineEmits<{
   (e: "trigger:load"): void;
@@ -13,47 +14,51 @@ const onShowMore = () => {
 
 const props = withDefaults(
   defineProps<{
+    columns: BreakpointValues;
     data: T;
+    gap?: number;
     pagination?: boolean;
     aspectRatio?: CSSProperties["aspectRatio"];
-    max?: number;
+    totalCount?: number;
   }>(), {
     pagination: false,
+    gap: 0.8,
   },
 );
 
 const { data } = toRefs(props);
 
-const max = computed(() => {
-  return props.max !== undefined ? props.max : props.data.length;
+const totalCount = computed(() => {
+  return props.totalCount !== undefined ? props.totalCount : props.data.length;
 });
 </script>
 
 <template>
   <div>
-    <div class="grid grid-cols-2 sm:grid-cols-6 gap-4">
+    <div
+      class="giro__grid-vertical-container"
+      :style="{ gap: `${gap}rem` }"
+    >
       <div
         v-for="(datapoint, index) in data"
         :key="index"
-        :style="{
-          aspectRatio: aspectRatio,
-        }"
+        :style="{ aspectRatio: aspectRatio }"
       >
         <slot :data="datapoint" />
       </div>
     </div>
     <div
-      v-if="pagination && data.length < max"
+      v-if="pagination && data.length < totalCount"
       class="mt-10 flex flex-col justify-center items-center gap-4"
     >
       <div class="relative w-[12rem] h-1.5 rounded-full bg-emphasis">
         <div
           class="absolute left-0 top-0 h-1.5 bg-text-subtle rounded-full"
-          :style="{ width: `${(data.length / max) * 100}%` }"
+          :style="{ width: `${(data.length / totalCount) * 100}%` }"
         />
       </div>
       <div class="text-subtle-light font-medium">
-        {{ data.length }} of {{ max }}
+        {{ data.length }} of {{ totalCount }}
       </div>
       <BaseButton
         variant="secondary"
@@ -71,3 +76,28 @@ const max = computed(() => {
     </div>
   </div>
 </template>
+
+<style scoped lang="postcss">
+.giro__grid-vertical-container {
+  @apply grid;
+  grid-template-columns: repeat(v-bind("columns.sm"), minmax(0, 1fr));
+}
+
+@media (min-width: 640px) {
+  .giro__grid-vertical-container {
+    grid-template-columns: repeat(v-bind("columns.md"), minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 768px) {
+  .giro__grid-vertical-container {
+    grid-template-columns: repeat(v-bind("columns.lg"), minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .giro__grid-vertical-container {
+    grid-template-columns: repeat(v-bind("columns.xl"), minmax(0, 1fr));
+  }
+}
+</style>

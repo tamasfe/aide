@@ -75,9 +75,7 @@ defineExpose({
 <template>
   <div
     class="relative"
-    :style="{
-      aspectRatio: ratio,
-    }"
+    :style="{ aspectRatio: ratio }"
   >
     <slot
       v-if="sideControls && hasMultipleSlides"

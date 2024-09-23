@@ -31,9 +31,7 @@ const onClickUnauthenticatedRegister = async () => {
     <PromoBar />
 
     <div class="w-full bg-subtle">
-      <div
-        class="giro__container flex items-center justify-between py-[0.525rem] sm:py-2"
-      >
+      <div class="giro__container flex items-center justify-between py-[0.525rem] sm:py-2">
         <div class="flex items-center gap-x-8">
           <BaseButton
             variant="ghost"
@@ -47,7 +45,7 @@ const onClickUnauthenticatedRegister = async () => {
             />
           </BaseButton>
           <NuxtLink
-            to="/"
+            :to="{ name: 'index' }"
             :class="[
               authenticated
                 ? 'min-w-8 sm:min-w-[8.5rem]'

@@ -31,9 +31,7 @@ const props = defineProps<{
         src="/assets/images/games/3.png"
         alt=""
       />
-      <div
-        class="absolute z-[2] top-0 left-0 w-full h-full bg-default/80 backdrop-blur"
-      />
+      <div class="absolute z-[2] top-0 left-0 w-full h-full bg-default/80 backdrop-blur" />
       <div class="h-full relative z-[3] flex items-center justify-center">
         <slot />
       </div>

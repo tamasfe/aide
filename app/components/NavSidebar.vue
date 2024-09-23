@@ -16,90 +16,114 @@ const links = [
       {
         title: "All Games",
         icon: "emojione-v1:palm-tree",
-        to: "TODO",
+        to: {
+          name: "todo",
+        },
       },
       {
         title: "Top 20 in Brazil", // bind "Brazil" to {country} in nuxt/i18n
         icon: "emojione-v1:up-arrow",
-        to: "TODO",
+        to: {
+          name: "todo",
+        },
       },
       {
         title: "Crash Games",
         icon: "emojione-v1:fire",
-        to: "TODO",
+        to: {
+          name: "todo",
+        },
       },
       {
         title: "Slot Games",
         icon: "emojione-v1:slot-machine",
-        to: "TODO",
+        to: {
+          name: "todo",
+        },
       },
       {
         title: "Roulette Games",
         icon: "emojione-v1:eight-spoked-asterisk",
-        to: "TODO",
+        to: {
+          name: "todo",
+        },
       },
       {
         title: "Live Casino",
         icon: "emojione-v1:woman",
-        to: "TODO",
+        to: {
+          name: "todo",
+        },
       },
       {
         title: "Providers",
         icon: "emojione-v1:diamond-suit",
-        to: "TODO",
+        to: {
+          name: "todo",
+        },
       },
       {
         title: "Aviator",
         icon: "emojione-v1:airplane",
-        to: "TODO",
+        to: {
+          name: "todo",
+        },
       },
       {
         title: "Fortune Tiger",
         icon: "emojione-v1:tiger",
-        to: "TODO",
+        to: {
+          name: "todo",
+        },
       },
       {
         title: "JetX",
         icon: "emojione-v1:rocket",
-        to: "TODO",
+        to: {
+          name: "todo",
+        },
       },
     ],
   },
   {
     title: "Live Support",
     icon: "emojione-v1:speech-balloon",
-    to: "TODO",
+    to: {
+      name: "todo",
+    },
   },
   {
     title: "Aviator",
     icon: "emojione-v1:airplane",
-    to: "TODO",
+    to: {
+      name: "todo",
+    },
   },
   {
     title: "Fortune Tiger",
     icon: "emojione-v1:tiger",
-    to: "TODO",
+    to: {
+      name: "todo",
+    },
   },
   {
     title: "Live Casino",
     icon: "emojione-v1:woman",
-    to: "TODO",
+    to: {
+      name: "todo",
+    },
   },
 ];
 </script>
 
 <template>
-  <BaseDrawer
-    v-model:open="open"
-  >
+  <BaseDrawer v-model:open="open">
     <template #title>
       <div class="flex items-center justify-between pt-1 pl-4 max-w-[10rem]">
         <IconLogo />
       </div>
     </template>
-    <div
-      class="no-scrollbar min-w-[20rem] mt-5 flex flex-col overflow-y-auto space-y-2"
-    >
+    <div class="no-scrollbar min-w-[20rem] mt-5 flex flex-col overflow-y-auto space-y-2">
       <template v-for="(link, index) in links">
         <NavSidebarLinkGroup
           v-if="link.children"

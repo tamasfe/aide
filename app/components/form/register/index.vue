@@ -13,14 +13,17 @@
 
 const { handleSubmit, errors } = useForm();
 
-const onSubmit = handleSubmit((values) => {
-  alert(JSON.stringify(values, null, 2));
-}, ({ results }) => {
-  console.warn("Validation failed", results);
-  // console.log(values); // current form values
-  // console.log(errors); // a map of field names and their first error message
-  // console.log(results); // a detailed map of field names and their validation results
-});
+const onSubmit = handleSubmit(
+  (values) => {
+    alert(JSON.stringify(values, null, 2));
+  },
+  ({ results }) => {
+    console.warn("Validation failed", results);
+    // console.log(values); // current form values
+    // console.log(errors); // a map of field names and their first error message
+    // console.log(results); // a detailed map of field names and their validation results
+  },
+);
 
 const error = ref();
 const loading = ref(false);
@@ -45,7 +48,7 @@ const loading = ref(false);
     <div class="my-2 text-sm text-center text-subtle">
       {{ $t("modal_session.accept_terms") }}
       <NuxtLink
-        to="/terms"
+        :to="{ name: 'terms' }"
         target="_blank"
         class="font-semibold hover:text-subtle-light"
       >

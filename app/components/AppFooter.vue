@@ -18,9 +18,7 @@ const scrollToTop = () => {
     <section
       class="giro__container flex flex-col md:flex-row md:justify-between sm:space-x-8 md:space-x-12 text-subtle"
     >
-      <div
-        class="flex-1 md:max-w-xs lg:max-w-sm flex flex-col items-center md:items-start space-y-6 md:space-y-8"
-      >
+      <div class="flex-1 md:max-w-xs lg:max-w-sm flex flex-col items-center md:items-start space-y-6 md:space-y-8">
         <div class="w-40">
           <NuxtImg
             src="/assets/images/logo-unsaturated.svg"
@@ -60,28 +58,28 @@ const scrollToTop = () => {
       <FooterColumn
         :title="$t('footer.popular')"
         :links="[
-          { title: $t('page.aviator'), to: 'TODO' },
-          { title: $t('page.slots'), to: 'TODO' },
-          { title: $t('page.live_casino'), to: 'TODO' },
+          { title: $t('page.aviator'), to: { name: 'todo' } },
+          { title: $t('page.slots'), to: { name: 'todo' } },
+          { title: $t('page.live_casino'), to: { name: 'todo' } },
         ]"
       />
       <FooterColumn
         :title="$t('footer.girobet')"
         :links="[
-          { title: $t('page.affiliate_program'), to: '/affiliate-program' },
-          { title: $t('page.faq'), to: '/faq' },
-          { title: $t('page.support'), to: '/support' },
-          { title: $t('page.telegram'), to: 'TODO' },
+          { title: $t('page.affiliate_program'), to: { name: 'affiliate-program' } },
+          { title: $t('page.faq'), to: { name: 'faq' } },
+          { title: $t('page.support'), to: { name: 'support' } },
+          { title: $t('page.telegram'), to: { name: 'todo' } },
         ]"
       />
       <FooterColumn
         :title="$t('footer.legal')"
         :links="[
-          { title: $t('page.betting_terms'), to: '/betting-terms' },
-          { title: $t('page.terms'), to: '/terms' },
-          { title: $t('page.privacy'), to: '/privacy' },
-          { title: $t('page.aml_kyc'), to: '/aml-kyc' },
-          { title: $t('page.responsible_gaming'), to: '/responsible-gaming' },
+          { title: $t('page.betting_terms'), to: { name: 'betting-terms' } },
+          { title: $t('page.terms'), to: { name: 'terms' } },
+          { title: $t('page.privacy'), to: { name: 'privacy' } },
+          { title: $t('page.aml_kyc'), to: { name: 'aml-kyc' } },
+          { title: $t('page.responsible_gaming'), to: { name: 'responsible-gaming' } },
         ]"
       />
       <FooterColumnSocialMedia class="hidden lg:flex" />

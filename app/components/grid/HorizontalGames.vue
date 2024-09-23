@@ -56,7 +56,9 @@ const onLoadData = async () => {
     </template>
 
     <template #options>
-      <NuxtLink :to="`/categories/1`">
+      <NuxtLink
+        :to="{ name: 'categories-id', params: { id: 1 } }"
+      >
         <BaseButton
           variant="subtle"
           size="sm"
@@ -68,7 +70,7 @@ const onLoadData = async () => {
 
     <template #default="{ item: n }">
       <NuxtLink
-        :to="`/games/${n}`"
+        :to="{ name: 'games-id', params: { id: 123 } }"
         class="block bg-subtle rounded-default w-full h-full overflow-hidden"
       >
         <NuxtImg
@@ -82,9 +84,7 @@ const onLoadData = async () => {
       v-if="canLoadMore"
       #loading
     >
-      <div
-        class="flex items-center justify-center w-full h-full bg-subtle rounded-default"
-      >
+      <div class="flex items-center justify-center w-full h-full bg-subtle rounded-default">
         <BaseSpinner
           class="text-subtle"
           :size="34"

@@ -1,5 +1,5 @@
 <script setup lang="ts" generic="T extends unknown[]">
-import type { GridHorizontalProps } from "./GridHorizontal.vue";
+import type { GridHorizontalProps } from "./Horizontal.vue";
 
 const props = withDefaults(defineProps<GridHorizontalProps<T>>(), {
   direction: "ltr",

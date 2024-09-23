@@ -32,9 +32,7 @@ const onTogglePlaying = () => {
         </div>
       </template>
 
-      <div
-        class="w-full max-w-[35rem] p-6 flex flex-col justify-between gap-6"
-      >
+      <div class="w-full max-w-[35rem] p-6 flex flex-col justify-between gap-6">
         <div class="w-full flex flex-row items-center justify-start gap-6">
           <ImageRatio
             src="/assets/images/games/3.png"

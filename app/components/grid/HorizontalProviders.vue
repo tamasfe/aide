@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const data = ref<unknown[]>(Array.from({ length: 4 }, (_, i) => i + 1));
+const data = ref<number[]>(Array.from({ length: 4 }, (_, i) => i + 1));
 const loading = ref(true);
 
 const slidesToScroll = ref({
@@ -43,7 +43,12 @@ onMounted(() => {
     </template>
 
     <template #options>
-      <NuxtLink :to="`/providers/1`">
+      <NuxtLink
+        :to="{
+          name: 'providers-id',
+          params: { id: '1' },
+        }"
+      >
         <BaseButton
           variant="subtle"
           size="sm"
@@ -55,7 +60,12 @@ onMounted(() => {
     <template #default="{ item: index }">
       <div class="group flex flex-col gap-2 justify-between w-full h-full">
         <div class="flex-1 rounded-[0.7rem] overflow-hidden">
-          <NuxtLink to="/TODO">
+          <NuxtLink
+            :to="{
+              name: 'providers-id',
+              params: { id: index },
+            }"
+          >
             <NuxtImg
               :src="`/assets/images/providers/${index}.png`"
               alt=""
@@ -63,9 +73,7 @@ onMounted(() => {
             />
           </NuxtLink>
         </div>
-        <div
-          class="w-full flex justify-center font-medium bg-button-primary text-transparent bg-clip-text"
-        >
+        <div class="w-full flex justify-center font-medium bg-button-primary text-transparent bg-clip-text">
           {{ $t("grid.game_count", { count: 69 }) }}
         </div>
       </div>

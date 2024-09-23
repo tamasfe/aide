@@ -27,6 +27,7 @@ const props = withDefaults(
     errorMessage?: string;
     mask?: string;
     class?: HTMLAttributes["class"];
+    value?: unknown;
   }>(),
   {
     fieldType: "input",
@@ -35,6 +36,9 @@ const props = withDefaults(
     errorPlacement: "floating",
   },
 );
+
+const inputGroupContainer = ref<HTMLElement | null>(null);
+const floatingLabel = ref<HTMLElement | null>(null);
 
 const fieldPlaceholder = computed(() => {
   if (props.placeholderPlacement === "floating") return undefined;
@@ -49,17 +53,49 @@ const fieldClass = computed(() => {
 defineEmits<{
   input: [value: string];
 }>();
+
+const onFloatFocus = () => {
+  floatingLabel.value?.classList.add("focused");
+};
+
+const onFloatBlur = () => {
+  floatingLabel.value?.classList.remove("focused");
+};
+
+const setupFloatingLabel = () => {
+  if (props.placeholderPlacement !== "floating") return;
+  const input = inputGroupContainer.value?.querySelector("input");
+  if (input) {
+    input.addEventListener("focus", onFloatFocus);
+    input.addEventListener("blur", onFloatBlur);
+  }
+};
+
+const destroyFloatingLabel = () => {
+  if (props.placeholderPlacement !== "floating") return;
+  const input = inputGroupContainer.value?.querySelector("input");
+  if (input) {
+    input.removeEventListener("focus", onFloatFocus);
+    input.removeEventListener("blur", onFloatBlur);
+  }
+};
+
+onMounted(() => {
+  setupFloatingLabel();
+});
+
+onBeforeUnmount(() => {
+  destroyFloatingLabel();
+});
 </script>
 
 <template>
   <div class="w-full flex flex-col gap-0.5">
     <div
-      :class="
-        cn(
-          'flex flex-row px-5 relative h-[var(--giro-field-height)] rounded-default bg-subtle text-subtle',
-          props.class,
-        )
-      "
+      :class="cn(
+        'flex flex-row px-5 relative h-[var(--giro-field-height)] rounded-default bg-subtle text-subtle',
+        props.class,
+      )"
     >
       <slot
         v-if="$slots.prefix"
@@ -68,7 +104,9 @@ defineEmits<{
 
       <label
         v-if="placeholderPlacement === 'floating' && placeholder"
-        class="floating-label"
+        ref="floatingLabel"
+        class="floating-label pointer-events-none"
+        :class="{ 'giro__input-has-value': !!props.value }"
       >
         <span>{{ placeholder }}</span>
         <span
@@ -77,7 +115,10 @@ defineEmits<{
         >*</span>
       </label>
 
-      <div class="flex items-end w-full h-full relative">
+      <div
+        ref="inputGroupContainer"
+        class="giro__input-group-container flex items-end w-full h-full relative"
+      >
         <BaseInput
           v-if="fieldType === 'input'"
           :mask-pattern="mask"
@@ -86,7 +127,10 @@ defineEmits<{
           :placeholder="fieldPlaceholder"
           variant="ghost"
           size="ghost"
-          :class="fieldClass"
+          :class="cn(
+            fieldClass,
+            'text-emphasis',
+          )"
           @input="(event) => $emit('input', event)"
         />
         <BaseSelect
@@ -124,6 +168,12 @@ defineEmits<{
 <style scoped>
 .floating-label {
   @apply absolute left-5 top-1/2 -translate-y-1/2 font-medium;
+  transition: transform 0.20s cubic-bezier(0.25, 0, 0.25, 1);
+  transform-origin: 0 0;
+}
+.floating-label.focused,
+.floating-label.giro__input-has-value {
+  transform: scale(0.9) translateY(-100%);
 }
 .floating-field {
   @apply w-full h-[var(--giro-input-group-hidden-field-height)] font-medium bg-transparent;

@@ -1,11 +1,13 @@
 <script setup lang="ts">
+import type { RouteLocationNamedRaw } from "vue-router";
+
 // DESIGN STATUS:       ✅
 // ARCHITECTURE STATUS: ✅
 // TRANSLATION STATUS:  ✅
 
 defineProps<{
   title: string;
-  to: string;
+  to: RouteLocationNamedRaw;
   icon: string;
 }>();
 </script>

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { RouteLocationNamedRaw } from "vue-router";
+
 // DESIGN STATUS:       ✅
 //   * currently this is hardcoded as a nav sidebar component and not generalized, because theres so much sidebar specific css. when we get a PROPER "collapse" component we can use that
 // ARCHITECTURE STATUS: ✅
@@ -6,7 +8,7 @@
 
 type Link = {
   title: string;
-  to: string;
+  to: RouteLocationNamedRaw;
   icon: string;
 };
 
@@ -38,7 +40,9 @@ const onToggle = () => {
           class="flex-shrink-0 text-subtle"
           size="22"
         />
-        <div class="w-full ml-4 text-[0.90rem] font-medium">{{ parent.title }}</div>
+        <div class="w-full ml-4 text-[0.90rem] font-medium">
+          {{ parent.title }}
+        </div>
       </div>
       <BaseButton
         variant="ghost"

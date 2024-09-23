@@ -1,17 +1,13 @@
 <script setup lang="ts" generic="T extends unknown[]">
 import type { EmblaOptionsType } from "embla-carousel";
 import type { CSSProperties } from "vue";
+import type { BreakpointValues } from "~/types/utils";
 
-export type GridHorizontalBreakpoints = "sm" | "md" | "lg" | "xl";
-export type GridHorizontalBreakpointValues = Record<
-  GridHorizontalBreakpoints,
-  number
->;
 export type GridHorizontalDirection = "ltr" | "rtl";
 export type GridHorizontalProps<T> = {
   data: T;
-  slidesToScroll?: GridHorizontalBreakpointValues;
-  columns: GridHorizontalBreakpointValues;
+  slidesToScroll?: BreakpointValues;
+  columns: BreakpointValues;
   aspectRatio: CSSProperties["aspectRatio"];
   duration?: number;
   manualScroll?: boolean;
@@ -24,7 +20,7 @@ export type GridHorizontalProps<T> = {
 
 const props = withDefaults(defineProps<GridHorizontalProps<T>>(), {
   loading: false,
-  gap: 1,
+  gap: 0.8,
   canLoadMore: false,
   duration: 30,
 });

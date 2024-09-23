@@ -1,10 +1,6 @@
 <script lang="ts">
 import type { RowData, ColumnDef } from "@tanstack/vue-table";
-import {
-  FlexRender,
-  getCoreRowModel,
-  useVueTable,
-} from "@tanstack/vue-table";
+import { FlexRender, getCoreRowModel, useVueTable } from "@tanstack/vue-table";
 
 declare module "@tanstack/vue-table" {
   /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -31,17 +27,18 @@ interface DataTableProps<TData, TValue> {
   loading?: boolean;
 }
 
-const props = withDefaults(
-  defineProps<DataTableProps<TData, TValue>>(),
-  {
-    loading: false,
-  },
-);
+const props = withDefaults(defineProps<DataTableProps<TData, TValue>>(), {
+  loading: false,
+});
 
 const buildTable = () => {
   return {
-    get data() { return props.data; },
-    get columns() { return props.columns; },
+    get data() {
+      return props.data;
+    },
+    get columns() {
+      return props.columns;
+    },
     getCoreRowModel: getCoreRowModel(),
   };
 };
@@ -52,7 +49,7 @@ const table = useVueTable(buildTable());
 <template>
   <div class="relative whitespace-nowrap">
     <table v-if="table.getRowModel().rows?.length">
-      <thead>
+      <thead class="hidden sm:table-header-group">
         <tr
           v-for="headerGroup in table.getHeaderGroups()"
           :key="headerGroup.id"
@@ -79,7 +76,7 @@ const table = useVueTable(buildTable());
         <tr
           v-for="row in table.getRowModel().rows"
           :key="row.id"
-          class="tr"
+          class="tr flex flex-col sm:table-row"
         >
           <td
             v-for="cell in row.getVisibleCells()"
@@ -88,12 +85,21 @@ const table = useVueTable(buildTable());
               'td',
               cell.column.columnDef.meta?.align === 'center' && 'text-center',
               cell.column.columnDef.meta?.align === 'right' && 'text-right',
+              'w-full sm:w-auto flex justify-between items-center sm:table-cell',
             )"
           >
-            <FlexRender
-              :render="cell.column.columnDef.cell"
-              :props="cell.getContext()"
-            />
+            <div class="block sm:hidden">
+              <FlexRender
+                :render="cell.column.columnDef.header"
+                :props="cell.getContext()"
+              />
+            </div>
+            <div>
+              <FlexRender
+                :render="cell.column.columnDef.cell"
+                :props="cell.getContext()"
+              />
+            </div>
           </td>
         </tr>
       </tbody>
@@ -110,9 +116,7 @@ const table = useVueTable(buildTable());
       <BaseEmpty v-else />
     </div>
 
-    <DataTableLoadingOverlay
-      :loading="loading"
-    />
+    <DataTableLoadingOverlay :loading="loading" />
   </div>
 </template>
 
@@ -120,8 +124,9 @@ const table = useVueTable(buildTable());
 table {
   @apply text-left w-full;
 }
-th, td {
-  @apply p-2 rounded-sm;
+th,
+td {
+  @apply px-2 py-1.5 sm:p-2 rounded-sm;
 }
 th {
   @apply text-xs font-semibold uppercase;

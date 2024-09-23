@@ -110,10 +110,8 @@ onMounted(() => {
       }"
     >
       <template #default="{ item }">
-        <NuxtLink to="TODO">
-          <div
-            class="group flex items-center space-x-3 bg-subtle p-2 rounded-lg outline-none"
-          >
+        <NuxtLink :to="{ name: 'todo' }">
+          <div class="group flex items-center space-x-3 bg-subtle p-2 rounded-lg outline-none">
             <div class="flex-shrink-0 rounded-[0.7rem] w-[4.8rem]">
               <ImageRatio
                 :src="`/assets/images/games/${item.value}.png`"
@@ -123,11 +121,9 @@ onMounted(() => {
               />
             </div>
             <div class="font-medium leading-tight space-y-1">
-              <div class="">{{ item.name }}</div>
+              <div>{{ item.name }}</div>
               <div class="text-subtle text-sm">Golden rush inferno</div>
-              <div
-                class="sm:text-lg font-semibold bg-button-primary text-transparent bg-clip-text"
-              >
+              <div class="sm:text-lg font-semibold bg-button-primary text-transparent bg-clip-text">
                 R$ 32.14
               </div>
             </div>

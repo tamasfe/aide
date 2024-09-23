@@ -1,7 +1,11 @@
 <script setup lang="ts"></script>
 
 <template>
-  <NuxtLink to="/todo">
+  <NuxtLink
+    :to="{
+      name: 'todo',
+    }"
+  >
     <NuxtImg
       src="/assets/images/wheel-2.png"
       alt=""

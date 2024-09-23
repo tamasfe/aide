@@ -60,21 +60,25 @@ const onClickHome = async () => {
 
     <template #options>
       <div class="w-full max-w-[12rem]">
-        <BaseSelect
-          size="sm"
-        />
+        <BaseSelect size="sm" />
       </div>
     </template>
     <GridVertical
       :data="data"
-      :max="max"
+      :total-count="max"
+      :columns="{ sm: 3, md: 4, lg: 5, xl: 6 }"
       aspect-ratio="3/4"
       pagination
       @trigger:load="onLoadMore"
     >
       <template #default="{ data: datapoint }">
         <NuxtLink
-          :to="`/games/${datapoint.index}`"
+          :to="{
+            name: 'games-id',
+            params: {
+              id: datapoint.index,
+            },
+          }"
           class="block bg-subtle rounded-default w-full h-full overflow-hidden"
         >
           <NuxtImg
