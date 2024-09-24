@@ -52,6 +52,7 @@ const fieldClass = computed(() => {
 
 defineEmits<{
   input: [value: string];
+  change: [value: string];
 }>();
 
 const onFloatFocus = () => {
@@ -132,6 +133,7 @@ onBeforeUnmount(() => {
             'text-emphasis',
           )"
           @input="(event) => $emit('input', event)"
+          @change="(event) => $emit('change', event)"
         />
         <BaseSelect
           v-else-if="fieldType === 'select'"
@@ -140,6 +142,7 @@ onBeforeUnmount(() => {
           :placeholder="fieldPlaceholder"
           :class="fieldClass"
           @input="(event) => $emit('input', event)"
+          @change="(event) => $emit('change', event)"
         />
 
         <div

@@ -1,6 +1,7 @@
 import { SignupFlow } from "../domain/SignupFlow";
 import type { SignupFlowApiRepositoryI } from "../domain/SignupFlowApiRepositoryI";
-import { success, unfold } from "~/packages/result";
+import type { InfrastructureError } from "~/packages/result/infrastructure-error";
+import { success, unfold, type EmptyResult } from "~/packages/result";
 
 export class SignupFlowApiRepositoryDumb implements SignupFlowApiRepositoryI {
   public async getById(
@@ -20,6 +21,11 @@ export class SignupFlowApiRepositoryDumb implements SignupFlowApiRepositoryI {
   public async create() {
     console.debug("SignupFlowApiRepositoryDumb.create called");
     return success("1");
+  }
+
+  public async submit(flowId: string): Promise<EmptyResult<InfrastructureError>> {
+    console.debug("SignupFlowApiRepositoryDumb.submit called with flowId: ", flowId);
+    return success();
   }
 
   public async update(

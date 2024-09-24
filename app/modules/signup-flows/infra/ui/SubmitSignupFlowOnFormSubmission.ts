@@ -1,0 +1,23 @@
+import { SubmitSignupFlow } from "../../application/SubmitSignupFlow";
+import type { SignupFlowApiRepositoryI } from "../../domain/SignupFlowApiRepositoryI";
+import type { SignupFlowIdClientRepositoryI } from "../../domain/SignupFlowIdClientRepositoryI";
+
+export class SubmitSignupFlowOnFormSubmission {
+  constructor(
+    private flowIdClientRepository: SignupFlowIdClientRepositoryI,
+    private apiRepository: SignupFlowApiRepositoryI,
+  ) {}
+
+  public async handle(): Promise<string | null> {
+    console.log("SubmitSignupFlowOnFormSubmission.handle called");
+
+    const result = await new SubmitSignupFlow(this.flowIdClientRepository, this.apiRepository).handle();
+
+    if (result.isFailure) {
+      // TODO: Handle common API errors here with translation
+      return result.error.message;
+    }
+
+    return null;
+  }
+}

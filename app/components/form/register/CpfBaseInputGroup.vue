@@ -26,6 +26,7 @@ const { value: cpf, errorMessage: cpfErrorMessage } = useField("cpf", value =>
     mask="###.###.###-##"
     inputmode="numeric"
     :error-message="cpfErrorMessage"
-    @input="(value) => (cpf = value)"
+    @input="(value) => cpf ? (cpf = value) : null"
+    @change="(value) => cpf ? null : cpf = value"
   />
 </template>

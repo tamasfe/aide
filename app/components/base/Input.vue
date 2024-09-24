@@ -26,6 +26,7 @@ type InputVariants = VariantProps<typeof inputVariants>;
 
 defineEmits<{
   input: [value: string];
+  change: [value: string];
 }>();
 
 const props = withDefaults(defineProps<{
@@ -65,5 +66,6 @@ const props = withDefaults(defineProps<{
       props.class,
     )"
     @input="event => $emit('input', event.target?.value ?? '')"
+    @change="event => $emit('change', event.target?.value ?? '')"
   >
 </template>

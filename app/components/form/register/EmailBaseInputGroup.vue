@@ -26,6 +26,7 @@ const { value: email, errorMessage: emailErrorMessage } = useField("email", valu
     inputmode="email"
     name="email"
     :error-message="emailErrorMessage"
-    @input="(value) => (email = value)"
+    @input="(value) => email ? (email = value) : null"
+    @change="(value) => email ? null : email = value"
   />
 </template>

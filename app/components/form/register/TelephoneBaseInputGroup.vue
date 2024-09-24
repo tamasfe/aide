@@ -25,6 +25,7 @@ const { value: telehpone, errorMessage: telehponeErrorMessage } = useField("tele
     inputmode="numeric"
     name="telephone"
     :error-message="telehponeErrorMessage"
-    @input="(value) => (telehpone = value)"
+    @input="(value) => telehpone ? (telehpone = value) : null"
+    @change="(value) => telehpone ? null : telehpone = value"
   />
 </template>

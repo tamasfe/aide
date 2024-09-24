@@ -11,29 +11,31 @@
 // Submitting to backend:       ❌
 // Integration testing:         ❌
 
-const { handleSubmit, errors } = useForm();
+const { handleSubmit, errors: formErrors } = useForm();
+const { $dependencies } = useNuxtApp();
 
-const onSubmit = handleSubmit(
-  (values) => {
-    alert(JSON.stringify(values, null, 2));
-  },
-  ({ results }) => {
-    console.warn("Validation failed", results);
-    // console.log(values); // current form values
-    // console.log(errors); // a map of field names and their first error message
-    // console.log(results); // a detailed map of field names and their validation results
-  },
-);
-
-const error = ref();
+const errorMessage = ref<null | string>(null);
 const loading = ref(false);
+
+const onSubmit = handleSubmit(async () => {
+  loading.value = true;
+  const errorSubmitting = await $dependencies.signupFlows.ui.submitSignupFlowOnFormSubmission.handle();
+  loading.value = false;
+  errorMessage.value = errorSubmitting;
+}
+, ({ results }) => {
+  console.warn("Validation failed", results);
+  // console.log(values); // current form values
+  // console.log(errors); // a map of field names and their first error message
+  // console.log(results); // a detailed map of field names and their validation results
+});
 </script>
 
 <template>
   <BaseForm :on-submit="onSubmit">
     <BaseAlert
-      v-if="error"
-      :message="error"
+      v-if="errorMessage"
+      :message="errorMessage"
       level="error"
     />
 
@@ -57,11 +59,13 @@ const loading = ref(false);
     </div>
 
     <BaseButton
+      id="submit-signup-flow-form-button"
       :loading="loading"
       size="xl"
       class="w-full gap-1.5"
       type="submit"
-      :disabled="errors ? Object.keys(errors).length > 0 : false"
+      :disabled="formErrors ? Object.keys(formErrors).length > 0 : false"
+      @click="onSubmit"
     >
       <span>{{ $t("button.create_account") }}</span>
       <Icon

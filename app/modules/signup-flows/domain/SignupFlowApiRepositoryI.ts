@@ -8,5 +8,6 @@ export interface SignupFlowApiRepositoryI {
     id: string,
   ): Promise<Result<SignupFlow, SignupFlowNotFound | InfrastructureError>>;
   create(): Promise<Result<string, InfrastructureError>>;
+  submit(flowId: string): Promise<EmptyResult<InfrastructureError>>;
   update(signupFlow: SignupFlow): Promise<EmptyResult<InfrastructureError>>;
 }

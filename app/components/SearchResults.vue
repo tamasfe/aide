@@ -4,5 +4,5 @@
 </script>
 
 <template>
-  <GridVerticalGames />
+  <GridVerticalSearch />
 </template>

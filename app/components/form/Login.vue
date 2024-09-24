@@ -6,15 +6,15 @@
 // INPUTMODES:          ✅
 // ZOD SCHEMA:          ✴️
 
-const error = ref("There was a problem");
+const errorMessage = ref("There was a problem");
 const loading = ref(false);
 </script>
 
 <template>
   <BaseForm>
     <BaseAlert
-      v-if="error"
-      :message="error"
+      v-if="errorMessage"
+      :message="errorMessage"
       level="error"
     />
 

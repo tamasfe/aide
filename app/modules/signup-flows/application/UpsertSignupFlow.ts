@@ -44,7 +44,7 @@ export class UpsertSignupFlow {
       return currentSignupFlowIdResult;
     }
 
-    const currentSignupFlowResult = await this.createOrGetSignupFlow(
+    const currentSignupFlowResult = await this.getCurrentSignupFlowOrCreateNew(
       currentSignupFlowIdResult.value,
     );
     if (currentSignupFlowResult.isFailure) {
@@ -75,18 +75,26 @@ export class UpsertSignupFlow {
     return this.signupFlowApiRepositoryI.update(updatedSignupFlowResult.value);
   }
 
-  private async createOrGetSignupFlow(
+  private async getCurrentSignupFlowOrCreateNew(
     signupFlowIdOrEmpty: string | null,
   ) {
     if (signupFlowIdOrEmpty === null) {
-      return this.signupFlowApiRepositoryI.create();
+      const signupFlowIdResult = await this.signupFlowApiRepositoryI.create();
+      if (signupFlowIdResult.isFailure) {
+        return signupFlowIdResult;
+      }
+      return this.signupFlowApiRepositoryI.getById(signupFlowIdResult.value);
     }
 
     const signupFlowResult
       = await this.signupFlowApiRepositoryI.getById(signupFlowIdOrEmpty);
     if (signupFlowResult.isFailure) {
       if (signupFlowResult.error.name === "SignupFlowNotFound") {
-        return this.signupFlowApiRepositoryI.create();
+        const signupFlowIdResult = await this.signupFlowApiRepositoryI.create();
+        if (signupFlowIdResult.isFailure) {
+          return signupFlowIdResult;
+        }
+        return this.signupFlowApiRepositoryI.getById(signupFlowIdResult.value);
       }
     }
     return signupFlowResult;
