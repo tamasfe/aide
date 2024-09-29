@@ -1,9 +1,12 @@
 <script setup lang="ts">
 // STATUS:
 // - Move loading into wrapper?
-const generateFakeData = (length: number) => {
-  return Array.from({ length }, (_, i) => (i % 10) + 1);
-};
+
+const props = defineProps<{
+  categoryIdentifier: string;
+}>();
+
+const { $dependencies } = useNuxtApp();
 
 const slidesToScroll = ref({
   sm: 3,
@@ -19,30 +22,32 @@ const columns = ref({
   xl: 8,
 });
 
-const data = ref<number[]>(generateFakeData(20));
-const canLoadMore = computed(() => data.value.length < 100);
-const loading = ref(true);
+const query = $dependencies.games.ui.searchGamesByCategoryPaginatingOnHorizontalSlider;
 
-onMounted(() => {
-  setTimeout(() => {
-    loading.value = false;
-  }, 1000);
-});
+const loading = ref(false);
+const nextGamesPageToSearch = ref(0);
+const gameIds = ref<number[]>([]);
+const canLoadMore = ref(true);
 
 const onLoadData = async () => {
   if (!canLoadMore.value) return;
   if (loading.value) return;
-  // fake loading
   loading.value = true;
-  await new Promise(resolve => setTimeout(resolve, 1000));
-  data.value?.push(...generateFakeData(20));
+
+  const { games: foundGames, canLoadMore: updatedCanLoadMore } = await query.handle(props.categoryIdentifier, nextGamesPageToSearch.value);
+  gameIds.value.push(...foundGames.map(game => game.id));
+  canLoadMore.value = updatedCanLoadMore;
+  nextGamesPageToSearch.value += 1;
+
   loading.value = false;
 };
+
+await onLoadData();
 </script>
 
 <template>
   <GridHeaderHorizontal
-    :data="data"
+    :data="gameIds"
     :loading="loading"
     :can-load-more="canLoadMore"
     :slides-to-scroll="slidesToScroll"
@@ -57,7 +62,7 @@ const onLoadData = async () => {
 
     <template #options>
       <NuxtLink
-        :to="{ name: 'categories-id', params: { id: 1 } }"
+        :to="{ name: 'categories-id', params: { id: props.categoryIdentifier } }"
       >
         <BaseButton
           variant="subtle"
@@ -68,18 +73,15 @@ const onLoadData = async () => {
       </NuxtLink>
     </template>
 
-    <template #default="{ item: n }">
+    <template #default="{ item: gameId }">
       <NuxtLink
-        :to="{ name: 'games-id', params: { id: 123 } }"
+        :to="{ name: 'games-id', params: { id: gameId } }"
         class="block bg-subtle rounded-default w-full h-full overflow-hidden"
       >
-        <NuxtImg
-          :src="`/assets/images/games/${n}.png`"
-          alt=""
-          class="block w-full h-full object-cover transition-transform transform hover:scale-105 cursor-pointer"
-        />
+        <GamesImageLoader :game-id="gameId" />
       </NuxtLink>
     </template>
+
     <template
       v-if="canLoadMore"
       #loading

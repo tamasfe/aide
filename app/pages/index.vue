@@ -5,9 +5,9 @@
 
       <WinningNow />
 
-      <GridHorizontalGames />
-      <GridHorizontalGames />
-      <GridHorizontalGames />
+      <GridHorizontalGames category-identifier="top-games" />
+      <GridHorizontalGames category-identifier="popular-games" />
+      <GridHorizontalGames category-identifier="exclusive-games" />
 
       <GridHorizontalProviders />
     </div>
