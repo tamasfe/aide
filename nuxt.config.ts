@@ -34,9 +34,13 @@ export default defineNuxtConfig({
     "@vee-validate/nuxt",
     "nuxt-gtag",
   ],
+  // More info about runtime config & environment variables @https://nuxt.com/docs/guide/going-further/runtime-config
   runtimeConfig: {
     public: {
-      apiBaseUrl: "http://localhost:3050",
+      games: {
+        apiBaseUrl: process.env.NUXT_PUBLIC_GAMES_API_BASE_URL,
+      },
+      apiBaseUrl: process.env.NUXT_PUBLIC_API_BASE_URL,
     },
   },
   site: {

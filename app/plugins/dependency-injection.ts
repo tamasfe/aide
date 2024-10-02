@@ -5,6 +5,8 @@ import { createSignupFlowsDependencyInjection } from "~/modules/signup-flows/inf
 export default defineNuxtPlugin({
   name: "dependency-injection",
   async setup(_nuxtApp) {
+    const config = useRuntimeConfig();
+
     const commonDependencies = await loadDependencies();
 
     return {
@@ -12,7 +14,7 @@ export default defineNuxtPlugin({
         dependencies: {
           common: commonDependencies,
           signupFlows: createSignupFlowsDependencyInjection(),
-          games: await createGamesDependencyInjection(),
+          games: await createGamesDependencyInjection(config.public.games.apiBaseUrl),
         },
       },
     };

@@ -1,0 +1,3684 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Girobet Casino API Docs",
+    "description": "# Introduction\n\nThe API to the **GiroBet Casino** system. This API aims to be *highly scalable* and to be *independent of any frontend implementations*.\nAuthentication is done only via **HTTP cookies**, which are set by the server after a successful login.\nThe API is *stateless* and does not store any session data on the server, other than some session metadata such as the useragent and the IP address.\n\n## Architecture\n\nThe API consists of **two servers**:\n\n1. The endpoint you're in right now, which is the *main casino API*\n2. The *api API* that is used for internal administrative tasks and can be found [here](http://localhost:8000/docs)\n\nThe servers are running on different ports and are separated for security reasons. The main casino API is the one that is exposed to the public and is the one that handles all the requests from the frontend.\n\n## Jurisdiction Checking System\n\nOur online casino API implements a *sophisticated jurisdiction checking system* to ensure compliance with various licensing requirements. This document outlines how the system works and what frontend developers need to know when interacting with the API.\n\n### Key Concepts\n\n- **Sites**: A Site represents a *logical grouping* of one or more domains.\n- **Licenses**: Licenses are mapped to Sites via a *many-to-many relationship*.\n- **Jurisdiction Enforcement**: The API enforces jurisdictions based on the *incoming request's headers* and *user account information*.\n\n### Header Requirements\n\nThe API relies on **two crucial headers** to enforce jurisdictions:\n\n1. `CF-IPCountry`: Provided by Cloudflare, indicating the *country of origin* for the request.\n2. `Host`: The *domain name* of the requested site.\n\n**Important**: The `Host` header is interchangeable with the `Forwarded` or `X-Forwarded-Host` headers. The API will check for these headers in the following order of preference: `Forwarded`, `X-Forwarded-Host`, `Host`. Use whichever is most appropriate for your setup.\n\n#### Important Notes\n\n- In production, the `CF-IPCountry` header is *typically always set*, as we use Cloudflare to proxy all requests.\n- If either the country header (`CF-IPCountry`) or a host header (`Host`, `Forwarded`, or `X-Forwarded-Host`) is missing, the API will *not force a jurisdiction*. Most requests will still succeed, except for certain operations like signup that require jurisdiction information.\n\n### Jurisdiction Enforcement Flow\n\n#### For Anonymous Users\n\n1. The API checks for the presence of both `CF-IPCountry` and a host header (`Host`, `Forwarded`, or `X-Forwarded-Host`).\n2. If both headers are present, the API determines the appropriate jurisdiction based on the Site and License mappings.\n3. If either header is missing, no jurisdiction is enforced, but certain operations may be restricted.\n\n#### For Logged-in Users\n\nFor logged-in users, the process is more complex to account for potential VPN usage:\n\n1. The API performs the same checks as for anonymous users (CF-IPCountry and host headers).\n2. Additionally, the API retrieves the jurisdiction associated with the user's account.\n3. The system then performs the following checks:\n   1. Verifies that the jurisdiction indicated by the CF-IPCountry header is covered by at least one license, that has a mapping to a Site that also covers the host.\n   2. Checks if the user's account jurisdiction is also covered by at least one license that fulfills step *3.1*.\n4. Possible scenarios:\n   - If both jurisdictions (CF-IPCountry and user's account) are covered by the same license, the request is allowed.\n   - If the CF-IPCountry jurisdiction is a blocked jurisdiction for the relevant license(s), the request is denied.\n   - If the user's account jurisdiction is not covered by the same license as the CF-IPCountry jurisdiction, the request is denied.\n\nThis approach allows for *legitimate VPN usage* while maintaining compliance with licensing requirements.\n\n### For Frontend Developers\n\n#### Standard API Requests\n\nEnsure that your requests to the API include either the `Host`, `Forwarded`, or `X-Forwarded-Host` header. The `CF-IPCountry` header will be automatically set by Cloudflare in production environments.\n\n#### Server-Side Rendering (SSR) Approach\n\nIf you're using an SSR approach:\n\n1. Your server will receive the original host information from the client request.\n2. When making internal requests from your SSR server to our API, you must proxy this host information using one of the accepted headers.\n3. You should also forward the `CF-IPCountry` header, as we're not interested in the SSR server's country, but the client's country of origin.\n\nYou have **several options** for forwarding the host information:\n\n1. Proxy the original `Host` header\n2. Use the `Forwarded` header\n3. Use the `X-Forwarded-Host` header\n\nExample using the `Host` and `CF-IPCountry` headers:\n\n```javascript\n// In your SSR server\napp.get('/some-route', async (req, res) => {\n  const apiResponse = await fetch('https://api.ourcasino.com/endpoint', {\n    headers: {\n      'Host': req.headers.host, // Proxy the original Host header\n      'CF-IPCountry': req.headers['cf-ipcountry'] || 'XX', // Proxy CF-IPCountry or use a default value\n    },\n  });\n  // Process the response...\n});\n```\n\nExample using the `Forwarded` header and `CF-IPCountry`:\n\n```javascript\napp.get('/some-route', async (req, res) => {\n  const apiResponse = await fetch('https://api.ourcasino.com/endpoint', {\n    headers: {\n      'Forwarded': `host=${req.headers.host}`, // Use the Forwarded header\n      'CF-IPCountry': req.headers['cf-ipcountry'] || 'XX', // Proxy CF-IPCountry or use a default value\n    },\n  });\n  // Process the response...\n});\n```\n\nExample using the `X-Forwarded-Host` header and `CF-IPCountry`:\n\n```javascript\napp.get('/some-route', async (req, res) => {\n  const apiResponse = await fetch('https://api.ourcasino.com/endpoint', {\n    headers: {\n      'X-Forwarded-Host': req.headers.host, // Use the X-Forwarded-Host header\n      'CF-IPCountry': req.headers['cf-ipcountry'] || 'XX', // Proxy CF-IPCountry or use a default value\n    },\n  });\n  // Process the response...\n});\n```\n\nChoose the method that best fits your infrastructure and security requirements. The `Forwarded` header is the *standardized version*, while `X-Forwarded-Host` is a *commonly used non-standard header*. The original `Host` header is the *most straightforward* but may not always be suitable in complex setups.\n\nRemember to handle the `CF-IPCountry` header appropriately in your development environment. You may need to set it manually or use a default value (like 'XX' in the examples above) to simulate different jurisdictions during testing.\n\n### Error Handling\n\nFrontend developers should be prepared to handle the following scenarios:\n\n1. Jurisdiction mismatch errors for logged-in users (e.g., when VPN jurisdiction doesn't match account jurisdiction).\n2. Blocked jurisdiction errors.\n3. Missing header errors (in development environments).\n\nThe API will return appropriate error codes and messages for these scenarios, which should be displayed to the user or used to redirect them as needed.\n\n### Testing and Development\n\nFor testing and development purposes, you may need to manually set both the `CF-IPCountry` and the appropriate host header to simulate different jurisdictions and domains. In production, the `CF-IPCountry` header will be reliably set by Cloudflare, while the host information will come from the client's request.\n\n**Remember** that the jurisdiction checking system is *critical* for maintaining compliance with various regulatory requirements. Always ensure that your frontend implementation correctly handles jurisdiction-based restrictions and redirects as specified by the API responses.\n\n\n## Errors\n\nAPI error responses generally follow this structure:\n\n```json\n{\n    \"code\": \"ERR_CODE\",\n    \"message\": \"Error message\",\n    \"metadata\": {\n      \"key\": \"value\"\n    }\n}\n```\n\nIn the table below, you'll find an exhaustive list of error codes and their descriptions.\nThese codes are used across the API to indicate specific error conditions.\nYou should handle these errors in your frontend implementation to provide a good user experience.\n\n> Note that in the OpenAPI schema, errors don't contain the `message` field, as they're not meant to be handled by the client, and should solely be used for debugging purposes.\n\n<br>\n\n\n\n---\n\n### Wallet was not found\n\n\n`WALLET_NOT_FOUND`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- The wallet ID provided doesn't exist\n\n- The wallet belongs to a different user\n\n- The wallet has been deleted or deactivated\n\n**Resolution:** Double-check the wallet ID and ensure you're using the correct currency.\n\n</details>\n\n\n---\n\n### Pending payment flow\n\n\n`WALLET_PENDING_FLOW`\n\n<details>\n<summary>Details</summary>\nThis error occurs when attempting to initiate a new payment flow while an existing one is still in progress. The existing flow must be completed by either:\n\n- Approving - Rejecting - Failing - Completing\n\n**Resolution:** Wait for the current flow to be processed or cancel it if possible.\n\n</details>\n\n\n---\n\n### Wallet Is Missing a Payment Method\n\n\n`WALLET_MISSING_PAYMENT_METHOD`\n\n<details>\n<summary>Details</summary>\nThis typically occurs when:\n\n- It's a new wallet that hasn't been used for deposits yet - The previously attached payment method has been removed or invalidated\n\n**Note:** A payment method is usually attached to the wallet on the first successful deposit. Subsequent deposits and withdrawals can only be made using the same payment method.\n\n**Resolution:** Make an initial deposit to link a payment method to the wallet.\n\n</details>\n\n\n---\n\n### Wallet Has Insufficient Funds\n\n\n`WALLET_INSUFFICIENT_FUNDS`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- Attempting to withdraw more than the available balance - Trying to place a bet that exceeds the wallet balance\n\n**Resolution:** Deposit additional funds into the wallet before attempting the operation again.\n\n</details>\n\n\n---\n\n### Wallet Has No Deposit\n\n\n`WALLET_MISSING_DEPOSIT`\n\n<details>\n<summary>Details</summary>\nThis error occurs when trying to withdraw or bet with a wallet that has never received any funds.\n\n**Resolution:** Make an initial deposit into the wallet before attempting withdrawals or bets.\n\n</details>\n\n\n---\n\n### Wallet Has Insufficient Wagers\n\n\n`WALLET_INSUFFICIENT_WAGERS`\n\n<details>\n<summary>Details</summary>\nThis error is typically thrown when:\n\n- The user tries to withdraw more money than allowed by the anti-money laundering system - The wallet hasn't met the minimum wagering requirements for withdrawals\n\n**Resolution:** Place more wagers or bets before attempting to withdraw funds.\n\n</details>\n\n\n---\n\n### Wallet Payment Cooldown\n\n\n`WALLET_PAYMENT_COOLDOWN`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- A user attempts to make multiple withdrawals within a short time frame - The cooldown period (usually 24 hours) hasn't elapsed since the last withdrawal\n\n**Purpose:** This ensures that users don't abuse the system by making multiple withdrawals in a short period to circumvent withdrawal limits or the anti-money laundering system.\n\n**Resolution:** Wait for the specified time before attempting another withdrawal.\n\n</details>\n\n\n---\n\n### Payment Method Not Allowed\n\n\n`PAYMENT_METHOD_NOT_ALLOWED`\n\n<details>\n<summary>Details</summary>\nThis can happen when:\n\n- The user tries to trigger a payment outside of the attached payment method - The user tries to use a payment method that is not allowed in their jurisdiction\n\n**Resolution:** Choose a different, allowed payment method for the operation.\n\n</details>\n\n\n---\n\n### Payment Amount Exceeds Limits\n\n\n`PAYMENT_AMOUNT_EXCEEDS_LIMITS`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- The payment amount is below the minimum allowed - The payment amount exceeds the maximum allowed\n\n**Resolution:** Adjust the payment amount to be within the specified limits.\n\n</details>\n\n\n---\n\n### Payment Amount Exceeds Timeframe Limits\n\n\n`PAYMENT_AMOUNT_EXCEEDS_TIMEFRAME_LIMITS`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- A user attempts to make payments exceeding a certain amount in a specific timeframe - The limit may exist on a wallet or global currency level\n\n**Note:** A user can have multiple such timeframe limits, all of which are checked before a payment is allowed.\n\n**Resolution:** Wait for the timeframe to reset or make smaller payments spread over time.\n\n</details>\n\n\n---\n\n### Payment Amount Out of Bounds\n\n\n`PAYMENT_AMOUNT_OUT_OF_BOUNDS`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- A user attempts to make a payment with a non-positive amount\n\n**Resolution:** Ensure the payment amount is a positive value.\n\n</details>\n\n\n---\n\n### Payment Flow Not Found\n\n\n`PAYMENT_FLOW_NOT_FOUND`\n\n<details>\n<summary>Details</summary>\nThis usually means that:\n\n- The user is trying to use a flow that doesn't exist - The flow doesn't belong to them - The flow has expired or been completed\n\n**Resolution:** Initiate a new payment flow or check the flow ID.\n\n</details>\n\n\n---\n\n### Payment Flow Not Awaiting Approval\n\n\n`PAYMENT_FLOW_NOT_AWAITING_APPROVAL`\n\n<details>\n<summary>Details</summary>\nThis error is usually thrown when:\n\n- An administrator tries to approve a flow that is not in the \"awaiting approval\" state - The flow has already been processed or cancelled\n\n**Resolution:** Check the current status of the payment flow before attempting approval.\n\n</details>\n\n\n---\n\n### Search Index Not Found\n\n\n`SEARCH_INDEX_NOT_FOUND`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- The search index requested doesn't exist in the system - The requester doesn't have access to the specified search index\n\n**Resolution:** Verify the search index name and ensure the requester has the necessary permissions.\n\n</details>\n\n\n---\n\n### User Could Not Be Found\n\n\n`USER_NOT_FOUND`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- The user doesn't exist in the system - The user account has been disabled or deleted\n\n**Resolution:** Verify the user ID and ensure the account is active.\n\n</details>\n\n\n---\n\n### User Is Missing a Required Payment Method Key Value\n\n\n`USER_MISSING_PAYMENT_METHOD_ACCOUNT_TYPE_IDENTIFIER`\n\n<details>\n<summary>Details</summary>\nPayment methods may support multiple sub-accounts the user has with the method. As an example, PIX supports the following payment key types:\n\n- CPF (individual taxpayer registry) - CNPJ (corporate taxpayer registry) - Email - Bank-provided UUID\n\nThis error occurs when the user has not set up a Payment method key value for the specified type.\n\n**Resolution:** Add the required payment method key value for the specified type in the user's profile.\n\n</details>\n\n\n---\n\n### User Is Missing a Document\n\n\n`USER_MISSING_DOCUMENT`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- The user attempts to interact with an API that requires a document - The user's profile does not have a document associated with it\n\n**Resolution:** Add a valid document to the user's profile.\n\n</details>\n\n\n---\n\n### User Has an Invalid document\n\n\n`USER_INVALID_DOCUMENT`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- The user attempts to interact with an API that requires a valid document - The document associated with the user's profile is not valid or properly formatted\n\n**Resolution:** Update the user's profile with a valid document.\n\n</details>\n\n\n---\n\n### The Jurisdiction Is Not Supported\n\n\n`JURISDICTION_NOT_SUPPORTED`\n\n<details>\n<summary>Details</summary>\nThe jurisdiction from which the API is being accessed is not supported. This may be due to missing licenses or the jurisdiction not being enabled in the system.\n\n</details>\n\n\n---\n\n### The Jurisdiction Is Not Supported, Alternative Site Available\n\n\n`JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE`\n\n<details>\n<summary>Details</summary>\nThe jurisdiction from which the API is being accessed is not supported, but an alternative site is available.\n\n</details>\n\n\n---\n\n### The Jurisdiction Is Not Supported, Network Configuration Issue\n\n\n`JURISDICTION_NOT_SUPPORTED_NETWORK_CONFIGURATION`\n\n<details>\n<summary>Details</summary>\nThe request jurisdiction deviates from the user's signup jurisdiction. This can happen if the user uses a VPN or proxy to access the service. While using a VPN is valid, and is allowed by our system, it's important that the user's request may only be processed if the user's signup jurisdiction and the request jurisdiction are covered by the same license. This ensures compliance with regulatory requirements, while still allowing users to access the service from different locations.\n\n**Important:** Compliance regulations usually forbid us from telling the user that their VPN or proxy is the reason for the error. Instead, we should inform them that their network configuration is not supported. This might serve as a hint to the user that they should disable or change their VPN or proxy.\n\n</details>\n\n\n---\n\n### Host Not Supported\n\n\n`HOST_NOT_SUPPORTED`\n\n<details>\n<summary>Details</summary>\nThe requested Site (identified via the `Host` header) is not set up in the system.\n\nThis error occurs when:\n\n- The API request is made to a hostname that is not recognized or configured in the system - The Site corresponding to the hostname has been deactivated or removed\n\n**Resolution:** Verify the correct hostname for the API request or contact support to set up the required Site.\n\n</details>\n\n\n---\n\n### Game Not Found\n\n\n`GAME_NOT_FOUND`\n\n<details>\n<summary>Details</summary>\nThe requested game was not found in the system.\n\nThis error occurs when:\n\n- The game ID provided doesn't exist in the system - The game has been removed or deactivated\n\n**Resolution:** Verify the game ID and ensure it's still active in the system.\n\n</details>\n\n\n---\n\n### Game Provider Not Reachable\n\n\n`GAME_PROVIDER_NOT_REACHABLE`\n\n<details>\n<summary>Details</summary>\nThe game provider or aggregator is not reachable.\n\nThis error occurs when:\n\n- The system cannot establish a connection with the game provider or aggregator - The game provider or aggregator service is down or experiencing issues\n\n**Resolution:** Try again later or contact support if the issue persists.\n\n</details>\n\n\n---\n\n### Game Provider Not Found\n\n\n`GAME_PROVIDER_NOT_FOUND`\n\n<details>\n<summary>Details</summary>\nThe game provider was not found. This error occurs when: - The game provider ID provided doesn't exist in the system\n\n</details>\n\n\n---\n\n### Game Aggregator Game Provider Mapping Not Found\n\n\n`GAME_AGGREGATOR_PROVIDER_MAPPING_NOT_FOUND`\n\n<details>\n<summary>Details</summary>\nThe game aggregator game provider mapping was not found. This error occurs when: - The game aggregator is not yet mapped to the game provider in the system\n\n</details>\n\n\n---\n\n### Game Aggregator Not Supported\n\n\n`GAME_AGGREGATOR_NOT_SUPPORTED`\n\n<details>\n<summary>Details</summary>\nThe game aggregator for the requested game is not supported by the system.\n\nThis error occurs when:\n\n- The system doesn't have integration with the required game aggregator - The aggregator support has been removed or is temporarily disabled\n\n**Resolution:** Choose a game from a supported aggregator or contact support for more information.\n\n</details>\n\n\n---\n\n### Game Aggregator Missing\n\n\n`GAME_AGGREGATOR_MISSING`\n\n<details>\n<summary>Details</summary>\nThis error may occur when: - A game aggregator is removed from our system, leaving orphaned games if no other aggregator publishes them\n\n</details>\n\n\n---\n\n### Game Aggregator Not Found\n\n\n`GAME_AGGREGATOR_NOT_FOUND`\n\n<details>\n<summary>Details</summary>\nThe game aggregator was not found. This error occurs when: - The game aggregator ID provided doesn't exist in the system\n\n</details>\n\n\n---\n\n### Game URL Invalid\n\n\n`GAME_URL_INVALID`\n\n<details>\n<summary>Details</summary>\nThe game URL returned by the game provider is invalid.\n\nThis error occurs when:\n\n- The game provider returns a malformed or non-existent URL - The game might have been removed or relocated by the provider\n\n**Resolution:** Try again or choose a different game. If the issue persists, contact support.\n\n</details>\n\n\n---\n\n### Signup Flow Not Found\n\n\n`SIGNUP_FLOW_NOT_FOUND`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- The signup flow has already been completed - The flow has expired and been garbage collected - The flow ID provided never existed\n\n**Resolution:** Start a new signup flow or verify the flow ID if you believe this is an error.\n\n</details>\n\n\n---\n\n### Signup With Invalid Profile\n\n\n`SIGNUP_INVALID_PROFILE`\n\n<details>\n<summary>Details</summary>\nThis error can occur due to various reasons:\n\n- The user is blacklisted - The user's profile is incomplete or invalid - The user is underage for the service - Other regulatory or compliance issues\n\n**Resolution:** Review the signup requirements and ensure all necessary information is provided and valid.\n\n</details>\n\n\n---\n\n### Exchange Rate Not Found\n\n\n`EXCHANGE_RATE_NOT_FOUND`\n\n<details>\n<summary>Details</summary>\nThe required exchange rate for the requested currency conversion could not be found.\n\nThis error occurs when:\n\n- The system doesn't have up-to-date exchange rate information for the requested currency pair - One or both of the currencies in the conversion are not supported\n\n**Resolution:** Try again later or use a different currency pair. If the issue persists, contact support.\n\n</details>\n\n\n---\n\n### Payload Signature Verification Failed\n\n\n`INVALID_SIGNATURE`\n\n<details>\n<summary>Details</summary>\nThis error mainly occurs with integrations that send signed payloads. It can happen when:\n\n- The signature is missing or malformed - The signature doesn't match the payload content - The signing key used is invalid or has been revoked\n\n**Resolution:** Check the signature generation process and ensure the correct keys are being used.\n\n</details>\n\n\n---\n\n### Invalid Payload Encoding\n\n\n`INVALID_ENCODING`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- The payload is malformed or corrupted - The payload format doesn't match the expected format (e.g., invalid JSON) - The payload encoding is not recognized by the system\n\n**Resolution:** Verify the payload format and encoding, ensuring it matches the API specifications.\n\n</details>\n\n\n---\n\n### Missing Sec-WebSocket-Protocol Header\n\n\n`MISSING_SEC_WEB_SOCKET_PROTOCOL`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- A client attempts to establish a WebSocket connection without providing the necessary protocol header - The header is malformed or contains unsupported protocols\n\n**Resolution:** Ensure the WebSocket connection request includes a valid `Sec-WebSocket-Protocol` header.\n\n</details>\n\n\n---\n\n### Invalid User Geolocation\n\n\n`INVALID_USER_GEOLOCATION`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- A request that requires geolocation data (e.g., CF-IPCountry) is made without this information - The geolocation information is present but invalid or in an unsupported format\n\n**Resolution:** Ensure the request includes valid geolocation information, typically provided through specific headers.\n\n</details>\n\n\n---\n\n### Invalid Bot Header\n\n\n`INVALID_BOT_HEADER`\n\n<details>\n<summary>Details</summary>\nThis error occurs when: - A request sends a `X-Bot` header with an invalid value\n\n</details>\n\n\n---\n\n### Lease Not Found\n\n\n`LEASE_NOT_FOUND`\n\n<details>\n<summary>Details</summary>\nThe requested lease for establishing a WebSocket connection could not be found or has expired.\n\nLeases are used by the WebSocket system to create short-lived tickets that the user uses to establish a WebSocket connection. This error occurs when:\n\n- The lease ID provided doesn't exist - The lease has expired before the WebSocket connection was established - The lease has already been used and is no longer valid\n\n**Resolution:** Request a new lease and attempt to establish the WebSocket connection again.\n\n</details>\n\n\n---\n\n### Validation Failed\n\n\n`VALIDATION`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- The payload doesn't meet the required format or data constraints - Required fields are missing or contain invalid values - The payload violates business logic rules\n\n**Resolution:** Review the API documentation for the correct payload format and constraints. Adjust the payload accordingly.\n\n</details>\n\n\n---\n\n### Unauthorized\n\n\n`UNAUTHORIZED`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- The user is not authenticated - The user lacks the necessary permissions to access the resource - The authentication token has expired or is invalid\n\n**Resolution:** Ensure the user is properly authenticated and has the required permissions. If necessary, refresh the authentication token.\n\n</details>\n\n\n---\n\n### Internal Error\n\n\n`INTERNAL`\n\n<details>\n<summary>Details</summary>\nThis error should never be thrown under normal circumstances. If it occurs, it indicates a severe problem within the system.\n\nPossible causes include:\n\n- Unhandled exceptions in the server code - Database connection failures - Critical system resource exhaustion\n\n**Resolution:** Contact the system administrators or support team immediately. Provide them with any error codes or messages received.\n\n</details>\n\n",
+    "version": ""
+  },
+  "paths": {
+    "/auth/whoami": {
+      "get": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Whoami",
+        "description": "The whoami endpoint returns some basic information about the currently logged in user.\nThis is primarily used for verifying that the user is logged in.",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WhoamiResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Login",
+        "description": "User login form.\nThe response will set a cookie and redirect to the 'next' URL, if provided.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "no content"
+          },
+          "302": {
+            "description": "no content"
+          },
+          "4XX": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "get": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Logout",
+        "description": "User logout, that will unset the login session cookie if naviaged to.",
+        "responses": {
+          "4XX": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/signup/flow": {
+      "get": {
+        "tags": [
+          "Signup"
+        ],
+        "summary": "Create Signup Flow",
+        "description": "Create a new signup flow that can be incrementally patched and the submitted for completion.\nThis endpoint requires the `CF-IPCountry` header to be set and to be a valid jurisdiction.\nThis header is normally set by Cloudflare and is used to determine the jurisdiction of the user,\nbuy you may also set it manually during development.\nNote that you may need to configure the CORS settings to allow the `CF-IPCountry` header to be sent.\n\nThe ID returned by the signup flow can be stored in the frontend URL or other storage\nto recover the signup flow if the user reloads the page or does other destructive actions.",
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FlowCreateResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/signup/flow/{flow_id}": {
+      "get": {
+        "tags": [
+          "Signup"
+        ],
+        "summary": "Get Signup Flow",
+        "description": "Get the specified signup flow and all the fields that have been added to it.\nUse this for recovering form data if the user reloads the page or does other destructive actions.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "flow_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "style": "simple"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SignupFlow"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Signup"
+        ],
+        "summary": "Submit Signup Flow",
+        "description": "Submit the specified signup flow and create the user entry.\nThis can fail if certain validation of fields and jurisdiction dependent information is unsuccessful.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "flow_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "style": "simple"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "no content"
+          },
+          "4XX": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Signup"
+        ],
+        "summary": "Update Signup Flow",
+        "description": "\nPatch the specified signup flow with additional information.\n\nExample request body for brazilian users:\n```\n {\n\t\"first_name\": \"John\",\n\t\"last_name\": \"Doe\",\n\t\"email\": \"john@doe.com\",\n\t\"password\": \"test\",\n\t\"CPF\": \"536.726.824-20\"\n}\n````",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "flow_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "style": "simple"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SignupPatchFlowRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "no content"
+          },
+          "4XX": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payment/deposit": {
+      "post": {
+        "tags": [
+          "Payment"
+        ],
+        "summary": "Create Deposit Flow",
+        "description": "Create a new deposit flow.\n    This flow will be active as long as we don't receive a\n    confirmation from our payment providers, that a deposit has been completed.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PaymentTransactionRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentMethodDepositResponsePayload"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payment/withdraw": {
+      "post": {
+        "tags": [
+          "Payment"
+        ],
+        "summary": "Create Withdrawal Flow",
+        "description": "Create a withdrawal flow.\n    This flow will be active as long as we don't receive a confirmation from our payment provider,\n    that they have successfully withdrawn the desired amount into the user's bank account.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PaymentTransactionRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentMethodDepositResponsePayload"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payment/list": {
+      "post": {
+        "tags": [
+          "Payment"
+        ],
+        "summary": "Get Payment Flows",
+        "description": "List all payment flows for the currently logged in user.",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PaymentFlowResult"
+                  }
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payment/limits": {
+      "get": {
+        "tags": [
+          "Payment"
+        ],
+        "summary": "Get Payment Limits",
+        "description": "Get the payment limits for the currently logged in user.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "currency",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/SystemCurrency"
+            },
+            "style": "form"
+          },
+          {
+            "in": "query",
+            "name": "payment_method",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/PaymentMethod"
+            },
+            "style": "form"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LimitOverrides"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/system/licenses": {
+      "get": {
+        "tags": [
+          "System"
+        ],
+        "summary": "Get Matched Licenses",
+        "description": "Get the available system licenses for the requested jurisdiction/site header combination.\n        The licenses are ordered in their priority order,\n        and thus the first license in the list is the most preferred one.",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LicenseResponse"
+                  }
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/system/site": {
+      "get": {
+        "tags": [
+          "System"
+        ],
+        "summary": "Get Matched Site",
+        "description": "The the matched site based on the host header.\n        Use this to differentiate between different sites in a multi-site setup,\n        allowing for different configurations, themes, etc.",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SiteResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/system/preflight": {
+      "get": {
+        "tags": [
+          "System"
+        ],
+        "summary": "Preflight Check",
+        "description": "This preflight endpoint should be the first endpoint\n        to be called by the client or the SSR implementation.\n        It is used to check if the user is able to access the\n        host + jurisdiction combination. Should they not be allowed to access\n        the site, the endpoint will return a `JURISDICTION_NOT_SUPPORTED` error,\n        possibly containing a list of alternative sites that the user can access.\n        ",
+        "responses": {
+          "200": {
+            "description": "no content"
+          },
+          "4XX": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/game/{game_id}/session": {
+      "get": {
+        "tags": [
+          "Game"
+        ],
+        "summary": "Create Game Session",
+        "description": "Create a new game session by providing the game ID,\n    as well as the currency with which the game should be played with,\n    and the client type of the user.\n    The response will redirect the user to the third party URL of the game provider.\n    Please note that this request should be used in conjunction with an iframe,\n    so that the user does not get redirected from the casino website.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "game_id",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/GameId"
+            },
+            "style": "simple"
+          },
+          {
+            "in": "query",
+            "name": "client_type",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/SystemDevice"
+            },
+            "style": "form"
+          },
+          {
+            "in": "query",
+            "name": "currency",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/SystemCurrency"
+            },
+            "style": "form"
+          }
+        ],
+        "responses": {
+          "307": {
+            "description": "no content"
+          },
+          "4XX": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/game/search": {
+      "get": {
+        "tags": [
+          "Game"
+        ],
+        "summary": "Search Games",
+        "description": "Search for games by providing a search query.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "category",
+            "schema": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "style": "form"
+          },
+          {
+            "in": "query",
+            "name": "query",
+            "schema": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "style": "form"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "default": 20,
+              "type": "integer",
+              "format": "uint",
+              "maximum": 100.0,
+              "minimum": 1.0
+            },
+            "style": "form"
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "schema": {
+              "default": 0,
+              "type": "integer",
+              "format": "uint",
+              "minimum": 0.0
+            },
+            "style": "form"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatorResponse_for_GameSearchResult_and_GameSearchQuery"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/game/category/list": {
+      "get": {
+        "tags": [
+          "Game"
+        ],
+        "summary": "Get Available Game Categories",
+        "description": "Get a list of all game categories available in the casino.\n    This can be used to show a list of game categories to the user,\n    so that they can choose which category they want to explore.\n    There are two major types of categories, staic and dynamic.\n    Static categories are predefined by the casino, while dynamic categories\n    cover games based on user behavior and other factors.\n    Dynamic categories are recalcuated periodically.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "group",
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/CategoryGroup"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "style": "form"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GameCategory"
+                  }
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/game/{game_id}/rating": {
+      "post": {
+        "tags": [
+          "Game"
+        ],
+        "summary": "Rate Game",
+        "description": "Rate a game by its ID.\n    This can be used to allow users to rate games,\n    so that other users can see the rating of the game.\n    Sending a rating of null will remove the rating of the user.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "game_id",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/GameId"
+            },
+            "style": "simple"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateGameRating"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "no content"
+          },
+          "4XX": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/game/{game_id}": {
+      "get": {
+        "tags": [
+          "Game"
+        ],
+        "summary": "Get Game",
+        "description": "Get a game by its ID. This can be used to show a more detailed view of a game,\n    including its name, description,\n    and other metadata, that might be required to display the game on the frontend.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "game_id",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/GameId"
+            },
+            "style": "simple"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Game"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/game/{game_id}/image": {
+      "get": {
+        "tags": [
+          "Game"
+        ],
+        "summary": "Get Game Image",
+        "description": "Get the image of a game by its ID.\n    This can be used to show the image of a game to the user,\n    so that they can see what the game looks like.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "variant",
+            "schema": {
+              "$ref": "#/components/schemas/GameImageVariant"
+            },
+            "style": "form"
+          },
+          {
+            "in": "path",
+            "name": "game_id",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/GameId"
+            },
+            "style": "simple"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "no content"
+          },
+          "4XX": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/notification/list": {
+      "get": {
+        "tags": [
+          "Notification"
+        ],
+        "summary": "Get All Notifications",
+        "description": "Get a list of all notifications for the current user.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "read_status",
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/ReadStatus"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "style": "form"
+          },
+          {
+            "in": "query",
+            "name": "types",
+            "schema": {
+              "type": [
+                "array",
+                "null"
+              ],
+              "items": {
+                "$ref": "#/components/schemas/NotificationTypeDiscriminants"
+              }
+            },
+            "style": "form"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "default": 20,
+              "type": "integer",
+              "format": "uint",
+              "maximum": 100.0,
+              "minimum": 1.0
+            },
+            "style": "form"
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "schema": {
+              "default": 0,
+              "type": "integer",
+              "format": "uint",
+              "minimum": 0.0
+            },
+            "style": "form"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatorResponse_for_Notification_and_NotificationListFilter"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/notification/{notification_id}/read-status": {
+      "patch": {
+        "tags": [
+          "Notification"
+        ],
+        "summary": "Update Notification Read Status",
+        "description": "Mark a notification as read.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "notification_id",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/NotificationId"
+            },
+            "style": "simple"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReadStatus"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "no content"
+          },
+          "4XX": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/profile": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Get User Profile",
+        "description": "Get the user profile of the currently logged in user.",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserAccount"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/balance": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Get User Balance",
+        "description": "Get the balance of the currently logged in user.",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WalletBalance"
+                  }
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/settings": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Get User Settings",
+        "description": "Get the settings of the currently logged in user.",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserSettings"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Update User Settings",
+        "description": "Update the settings of the currently logged in user.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserSettings"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "no content"
+          },
+          "4XX": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ws/": {
+      "get": {
+        "tags": [
+          "WebSocket"
+        ],
+        "summary": "Establish WebSocket Connection",
+        "description": "This route is the entry point for WebSocket connections in our system.\n\n## Authentication\n\n- Authentication is required for all WebSocket connections.\n- Use a lease token obtained from the lease handler endpoint.\n\n## Connection Process\n\n1. Obtain a lease token from the lease handler endpoint.\n2. Connect to this endpoint using the WebSocket protocol.\n3. Set the `sec-websocket-protocol` header as follows:\n\n   ```text\n   Authorization,<lease-token>\n   ```\n\n## Example (JavaScript)\n\n```javascript\nconst leaseToken = \"your-lease-token\";\nconst socket = new WebSocket(\"wss://your-domain.com/ws\", [\"Authorization\", leaseToken]);\n```\n\n## Important Notes\n\n- Lease tokens are valid for 60 seconds.\n- Ensure your client can handle reconnection if the lease expires.\n- The server may close the connection if authentication fails.\n\nFor detailed information on lease generation and management, refer to the main WebSocket authentication documentation found [here](#tag/websocket/GET/ws/lease).",
+        "responses": {
+          "200": {
+            "description": "no content"
+          },
+          "4XX": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ws/lease": {
+      "get": {
+        "tags": [
+          "WebSocket"
+        ],
+        "summary": "Issue WebSocket Lease",
+        "description": "This endpoint is used to generate authentication tokens (leases) for WebSocket connections in our system.\n\n## Lease Generation\n\n1. Send a request to the lease issuer endpoint.\n2. Specify the channel for which you want a lease.\n3. The endpoint will return a lease token.\n\n## Lease Properties\n\n- Leases are short-lived tokens, valid for 60 seconds from the time of generation.\n- Each lease is tied to a specific channel.\n\n## Usage\n\n- Use the generated lease token when establishing a WebSocket connection.\n- For detailed information on how to use the lease token in a WebSocket connection, refer to the documentation found [here](#tag/websocket/GET/ws/).\n\n## Important Notes\n\n- Always generate a new lease before attempting to establish a WebSocket connection.\n- Ensure your client handles lease expiration and reconnection scenarios.\n\nFor any issues or questions, please contact our support team.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "channel",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/WebSocketChannel"
+            },
+            "style": "form"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LeaseTokenResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CategoryGroup": {
+        "type": "string",
+        "enum": [
+          "home",
+          "game_page",
+          "inventory"
+        ]
+      },
+      "CreateGameRating": {
+        "type": "object",
+        "properties": {
+          "rating": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/GameRating"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      },
+      "CreateGameSessionRequestQuery": {
+        "type": "object",
+        "required": [
+          "client_type",
+          "currency"
+        ],
+        "properties": {
+          "client_type": {
+            "$ref": "#/components/schemas/SystemDevice"
+          },
+          "currency": {
+            "$ref": "#/components/schemas/SystemCurrency"
+          }
+        }
+      },
+      "DurationSeconds": {
+        "type": "integer",
+        "format": "int64"
+      },
+      "FlowCreateResponse": {
+        "type": "object",
+        "required": [
+          "flow_id"
+        ],
+        "properties": {
+          "flow_id": {
+            "type": "string"
+          }
+        }
+      },
+      "Game": {
+        "type": "object",
+        "required": [
+          "created_at",
+          "devices",
+          "id",
+          "is_hd",
+          "jurisdiction_strategy",
+          "metadata",
+          "name",
+          "payout",
+          "slug",
+          "volatility"
+        ],
+        "properties": {
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "description": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "devices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SystemDevice"
+            }
+          },
+          "id": {
+            "$ref": "#/components/schemas/GameId"
+          },
+          "is_hd": {
+            "type": "boolean"
+          },
+          "jurisdiction_strategy": {
+            "$ref": "#/components/schemas/JurisdictionStrategyDiscriminants"
+          },
+          "metadata": {
+            "type": "object"
+          },
+          "name": {
+            "type": "string"
+          },
+          "payout": {
+            "type": "string",
+            "pattern": "^-?[0-9]+(\\.[0-9]+)?$"
+          },
+          "recalled_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date"
+          },
+          "released_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "volatility": {
+            "$ref": "#/components/schemas/SystemGameVolatility"
+          }
+        }
+      },
+      "GameCategory": {
+        "type": "object",
+        "required": [
+          "id",
+          "identifier"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/GameCategoryId"
+          },
+          "identifier": {
+            "type": "string"
+          }
+        }
+      },
+      "GameCategoryId": {
+        "type": "integer",
+        "format": "int64"
+      },
+      "GameCategoryListFilter": {
+        "type": "object",
+        "properties": {
+          "group": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CategoryGroup"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      },
+      "GameId": {
+        "type": "integer",
+        "format": "int64"
+      },
+      "GameImageVariant": {
+        "type": "string",
+        "enum": [
+          "extra_small",
+          "small",
+          "medium",
+          "large",
+          "background"
+        ]
+      },
+      "GamePathParams": {
+        "type": "object",
+        "required": [
+          "game_id"
+        ],
+        "properties": {
+          "game_id": {
+            "$ref": "#/components/schemas/GameId"
+          }
+        }
+      },
+      "GameProviderId": {
+        "type": "integer",
+        "format": "int64"
+      },
+      "GameRating": {
+        "type": "string",
+        "enum": [
+          "Like",
+          "Dislike"
+        ]
+      },
+      "GameSearchQuery": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "query": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      },
+      "GameSearchResult": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "provider",
+          "slug"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/GameId"
+          },
+          "name": {
+            "type": "string"
+          },
+          "provider": {
+            "$ref": "#/components/schemas/ProviderSearchResult"
+          },
+          "slug": {
+            "type": "string"
+          }
+        }
+      },
+      "GetGameImageQuery": {
+        "type": "object",
+        "properties": {
+          "variant": {
+            "$ref": "#/components/schemas/GameImageVariant"
+          }
+        }
+      },
+      "GetPaymentLimitsQuery": {
+        "type": "object",
+        "required": [
+          "currency",
+          "payment_method"
+        ],
+        "properties": {
+          "currency": {
+            "$ref": "#/components/schemas/SystemCurrency"
+          },
+          "payment_method": {
+            "$ref": "#/components/schemas/PaymentMethod"
+          }
+        }
+      },
+      "InternalError": {
+        "type": "string"
+      },
+      "Jurisdiction": {
+        "type": "object",
+        "required": [
+          "code",
+          "currencies",
+          "name"
+        ],
+        "properties": {
+          "code": {
+            "$ref": "#/components/schemas/SystemCountry"
+          },
+          "currencies": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SystemCurrency"
+            }
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "JurisdictionStrategyDiscriminants": {
+        "description": "Auto-generated discriminant enum variants",
+        "type": "string",
+        "enum": [
+          "include",
+          "exclude"
+        ]
+      },
+      "LeaseTokenResponse": {
+        "type": "object",
+        "required": [
+          "token"
+        ],
+        "properties": {
+          "token": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "LicenseId": {
+        "type": "integer",
+        "format": "int64"
+      },
+      "LicenseResponse": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "root_jurisdiction"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/LicenseId"
+          },
+          "name": {
+            "type": "string"
+          },
+          "root_jurisdiction": {
+            "$ref": "#/components/schemas/SystemCountry"
+          }
+        }
+      },
+      "LimitOverrides": {
+        "type": "object",
+        "required": [
+          "timeframe_limits"
+        ],
+        "properties": {
+          "deposit_cooldown": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DurationSeconds"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "deposit_max": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^-?[0-9]+(\\.[0-9]+)?$"
+          },
+          "deposit_max_first": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^-?[0-9]+(\\.[0-9]+)?$"
+          },
+          "deposit_min": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^-?[0-9]+(\\.[0-9]+)?$"
+          },
+          "deposit_min_first": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^-?[0-9]+(\\.[0-9]+)?$"
+          },
+          "timeframe_limits": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TimeframeLimit"
+            }
+          },
+          "withdrawal_cooldown": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DurationSeconds"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "withdrawal_max": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^-?[0-9]+(\\.[0-9]+)?$"
+          },
+          "withdrawal_max_first": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^-?[0-9]+(\\.[0-9]+)?$"
+          },
+          "withdrawal_min": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^-?[0-9]+(\\.[0-9]+)?$"
+          },
+          "withdrawal_min_first": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^-?[0-9]+(\\.[0-9]+)?$"
+          }
+        }
+      },
+      "LoginRequestBody": {
+        "examples": [
+          {
+            "next": null,
+            "password": "test",
+            "username": "john@doe.com"
+          }
+        ],
+        "type": "object",
+        "required": [
+          "password",
+          "username"
+        ],
+        "properties": {
+          "next": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "password": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          }
+        }
+      },
+      "MaybeOperator": {},
+      "Notification": {
+        "type": "object",
+        "required": [
+          "created_at",
+          "data",
+          "id"
+        ],
+        "properties": {
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "data": {
+            "$ref": "#/components/schemas/NotificationType"
+          },
+          "id": {
+            "$ref": "#/components/schemas/NotificationId"
+          },
+          "read_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          }
+        }
+      },
+      "NotificationId": {
+        "type": "integer",
+        "format": "int64"
+      },
+      "NotificationListFilter": {
+        "type": "object",
+        "properties": {
+          "read_status": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ReadStatus"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "types": {
+            "type": [
+              "array",
+              "null"
+            ],
+            "items": {
+              "$ref": "#/components/schemas/NotificationTypeDiscriminants"
+            }
+          }
+        }
+      },
+      "NotificationType": {
+        "oneOf": [
+          {
+            "type": "object",
+            "required": [
+              "data",
+              "type"
+            ],
+            "properties": {
+              "data": {
+                "type": "object",
+                "required": [
+                  "flow_id",
+                  "status"
+                ],
+                "properties": {
+                  "flow_id": {
+                    "$ref": "#/components/schemas/PaymentFlowId"
+                  },
+                  "status": {
+                    "$ref": "#/components/schemas/PaymentStatus"
+                  }
+                }
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "payment_status_update"
+                ]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "required": [
+              "data",
+              "type"
+            ],
+            "properties": {
+              "data": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "test_status"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "NotificationTypeDiscriminants": {
+        "description": "Auto-generated discriminant enum variants",
+        "type": "string",
+        "enum": [
+          "payment_status_update",
+          "test_status"
+        ]
+      },
+      "PaginatorMetadata_for_GameSearchQuery": {
+        "type": "object",
+        "required": [
+          "pagination"
+        ],
+        "properties": {
+          "filters": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/GameSearchQuery"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "pagination": {
+            "$ref": "#/components/schemas/PaginatorPosition"
+          }
+        }
+      },
+      "PaginatorMetadata_for_NotificationListFilter": {
+        "type": "object",
+        "required": [
+          "pagination"
+        ],
+        "properties": {
+          "filters": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/NotificationListFilter"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "pagination": {
+            "$ref": "#/components/schemas/PaginatorPosition"
+          }
+        }
+      },
+      "PaginatorPosition": {
+        "type": "object",
+        "required": [
+          "total_items"
+        ],
+        "properties": {
+          "limit": {
+            "default": 20,
+            "type": "integer",
+            "format": "uint",
+            "maximum": 100.0,
+            "minimum": 1.0
+          },
+          "offset": {
+            "default": 0,
+            "type": "integer",
+            "format": "uint",
+            "minimum": 0.0
+          },
+          "total_items": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "PaginatorResponse_for_GameSearchResult_and_GameSearchQuery": {
+        "type": "object",
+        "required": [
+          "data",
+          "metadata"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GameSearchResult"
+            }
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/PaginatorMetadata_for_GameSearchQuery"
+          }
+        }
+      },
+      "PaginatorResponse_for_Notification_and_NotificationListFilter": {
+        "type": "object",
+        "required": [
+          "data",
+          "metadata"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Notification"
+            }
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/PaginatorMetadata_for_NotificationListFilter"
+          }
+        }
+      },
+      "PaginatorSelection": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "default": 20,
+            "type": "integer",
+            "format": "uint",
+            "maximum": 100.0,
+            "minimum": 1.0
+          },
+          "offset": {
+            "default": 0,
+            "type": "integer",
+            "format": "uint",
+            "minimum": 0.0
+          }
+        }
+      },
+      "PathParams": {
+        "type": "object",
+        "required": [
+          "flow_id"
+        ],
+        "properties": {
+          "flow_id": {
+            "type": "string"
+          }
+        }
+      },
+      "PathParams2": {
+        "type": "object",
+        "required": [
+          "notification_id"
+        ],
+        "properties": {
+          "notification_id": {
+            "$ref": "#/components/schemas/NotificationId"
+          }
+        }
+      },
+      "PaymentFlowId": {
+        "type": "integer",
+        "format": "int64"
+      },
+      "PaymentFlowResult": {
+        "type": "object",
+        "required": [
+          "amount",
+          "created_at",
+          "currency",
+          "id",
+          "identifier",
+          "payment_method",
+          "payment_provider",
+          "payment_type",
+          "wallet_id"
+        ],
+        "properties": {
+          "amount": {
+            "type": "string",
+            "pattern": "^-?[0-9]+(\\.[0-9]+)?$"
+          },
+          "completed_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "currency": {
+            "$ref": "#/components/schemas/SystemCurrency"
+          },
+          "id": {
+            "$ref": "#/components/schemas/PaymentFlowId"
+          },
+          "identifier": {
+            "type": "string"
+          },
+          "payment_method": {
+            "$ref": "#/components/schemas/PaymentMethod"
+          },
+          "payment_provider": {
+            "$ref": "#/components/schemas/PaymentProvider"
+          },
+          "payment_type": {
+            "$ref": "#/components/schemas/PaymentType"
+          },
+          "wallet_id": {
+            "$ref": "#/components/schemas/WalletId"
+          }
+        }
+      },
+      "PaymentLimitBound": {
+        "type": "string",
+        "enum": [
+          "min",
+          "max"
+        ]
+      },
+      "PaymentMethod": {
+        "type": "string",
+        "enum": [
+          "pix"
+        ]
+      },
+      "PaymentMethodDepositResponsePayload": {
+        "oneOf": [
+          {
+            "type": "object",
+            "required": [
+              "pix"
+            ],
+            "properties": {
+              "pix": {
+                "type": "object",
+                "required": [
+                  "flow_id",
+                  "url"
+                ],
+                "properties": {
+                  "flow_id": {
+                    "type": "string"
+                  },
+                  "url": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "additionalProperties": false
+          }
+        ]
+      },
+      "PaymentProvider": {
+        "type": "string",
+        "enum": [
+          "paybrokers",
+          "starspay"
+        ]
+      },
+      "PaymentStatus": {
+        "type": "string",
+        "enum": [
+          "pending",
+          "waiting_for_approval",
+          "approved",
+          "processing",
+          "completed",
+          "failed",
+          "cancelled",
+          "rejected",
+          "refunded"
+        ]
+      },
+      "PaymentTransactionRequestBody": {
+        "type": "object",
+        "required": [
+          "amount",
+          "currency",
+          "payment_method"
+        ],
+        "properties": {
+          "amount": {
+            "type": "string",
+            "pattern": "^-?[0-9]+(\\.[0-9]+)?$"
+          },
+          "currency": {
+            "$ref": "#/components/schemas/SystemCurrency"
+          },
+          "payment_method": {
+            "$ref": "#/components/schemas/PaymentMethod"
+          }
+        }
+      },
+      "PaymentType": {
+        "type": "string",
+        "enum": [
+          "deposit",
+          "withdrawal"
+        ]
+      },
+      "ProviderSearchResult": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "slug"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/GameProviderId"
+          },
+          "name": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          }
+        }
+      },
+      "ReadStatus": {
+        "type": "string",
+        "enum": [
+          "read",
+          "unread"
+        ]
+      },
+      "ServerError": {
+        "description": "Represents various errors that can occur during server operations.\n\nThis enum covers a wide range of error scenarios, from wallet-related issues to payment processing problems, user authentication errors, and more.",
+        "oneOf": [
+          {
+            "title": "Wallet was not found",
+            "description": "This error occurs when:\n\n- The wallet ID provided doesn't exist\n\n- The wallet belongs to a different user\n\n- The wallet has been deleted or deactivated\n\n**Resolution:** Double-check the wallet ID and ensure you're using the correct currency.",
+            "type": "object",
+            "required": [
+              "code"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "WALLET_NOT_FOUND"
+                ]
+              }
+            }
+          },
+          {
+            "title": "Pending payment flow",
+            "description": "This error occurs when attempting to initiate a new payment flow while an existing one is still in progress. The existing flow must be completed by either:\n\n- Approving - Rejecting - Failing - Completing\n\n**Resolution:** Wait for the current flow to be processed or cancel it if possible.",
+            "type": "object",
+            "required": [
+              "code",
+              "metadata"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "WALLET_PENDING_FLOW"
+                ]
+              },
+              "metadata": {
+                "$ref": "#/components/schemas/PaymentType"
+              }
+            }
+          },
+          {
+            "title": "Wallet Is Missing a Payment Method",
+            "description": "This typically occurs when:\n\n- It's a new wallet that hasn't been used for deposits yet - The previously attached payment method has been removed or invalidated\n\n**Note:** A payment method is usually attached to the wallet on the first successful deposit. Subsequent deposits and withdrawals can only be made using the same payment method.\n\n**Resolution:** Make an initial deposit to link a payment method to the wallet.",
+            "type": "object",
+            "required": [
+              "code"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "WALLET_MISSING_PAYMENT_METHOD"
+                ]
+              }
+            }
+          },
+          {
+            "title": "Wallet Has Insufficient Funds",
+            "description": "This error occurs when:\n\n- Attempting to withdraw more than the available balance - Trying to place a bet that exceeds the wallet balance\n\n**Resolution:** Deposit additional funds into the wallet before attempting the operation again.",
+            "type": "object",
+            "required": [
+              "code"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "WALLET_INSUFFICIENT_FUNDS"
+                ]
+              }
+            }
+          },
+          {
+            "title": "Wallet Has No Deposit",
+            "description": "This error occurs when trying to withdraw or bet with a wallet that has never received any funds.\n\n**Resolution:** Make an initial deposit into the wallet before attempting withdrawals or bets.",
+            "type": "object",
+            "required": [
+              "code"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "WALLET_MISSING_DEPOSIT"
+                ]
+              }
+            }
+          },
+          {
+            "title": "Wallet Has Insufficient Wagers",
+            "description": "This error is typically thrown when:\n\n- The user tries to withdraw more money than allowed by the anti-money laundering system - The wallet hasn't met the minimum wagering requirements for withdrawals\n\n**Resolution:** Place more wagers or bets before attempting to withdraw funds.",
+            "type": "object",
+            "required": [
+              "code"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "WALLET_INSUFFICIENT_WAGERS"
+                ]
+              }
+            }
+          },
+          {
+            "title": "Wallet Payment Cooldown",
+            "description": "This error occurs when:\n\n- A user attempts to make multiple withdrawals within a short time frame - The cooldown period (usually 24 hours) hasn't elapsed since the last withdrawal\n\n**Purpose:** This ensures that users don't abuse the system by making multiple withdrawals in a short period to circumvent withdrawal limits or the anti-money laundering system.\n\n**Resolution:** Wait for the specified time before attempting another withdrawal.",
+            "type": "object",
+            "required": [
+              "code",
+              "metadata"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "WALLET_PAYMENT_COOLDOWN"
+                ]
+              },
+              "metadata": {
+                "type": "object",
+                "required": [
+                  "minutes_left"
+                ],
+                "properties": {
+                  "minutes_left": {
+                    "description": "Minutes left until the user is allowed to make another payment",
+                    "type": "integer",
+                    "format": "int64"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "title": "Payment Method Not Allowed",
+            "description": "This can happen when:\n\n- The user tries to trigger a payment outside of the attached payment method - The user tries to use a payment method that is not allowed in their jurisdiction\n\n**Resolution:** Choose a different, allowed payment method for the operation.",
+            "type": "object",
+            "required": [
+              "code"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "PAYMENT_METHOD_NOT_ALLOWED"
+                ]
+              }
+            }
+          },
+          {
+            "title": "Payment Amount Exceeds Limits",
+            "description": "This error occurs when:\n\n- The payment amount is below the minimum allowed - The payment amount exceeds the maximum allowed\n\n**Resolution:** Adjust the payment amount to be within the specified limits.",
+            "type": "object",
+            "required": [
+              "code",
+              "metadata"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "PAYMENT_AMOUNT_EXCEEDS_LIMITS"
+                ]
+              },
+              "metadata": {
+                "type": "object",
+                "required": [
+                  "bound"
+                ],
+                "properties": {
+                  "bound": {
+                    "description": "If the payment exceeds the minimum or maximum limit bound",
+                    "$ref": "#/components/schemas/PaymentLimitBound"
+                  },
+                  "max": {
+                    "description": "The maximum allowed payment amount",
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "pattern": "^-?[0-9]+(\\.[0-9]+)?$"
+                  },
+                  "min": {
+                    "description": "The minimum allowed payment amount",
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "pattern": "^-?[0-9]+(\\.[0-9]+)?$"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "title": "Payment Amount Exceeds Timeframe Limits",
+            "description": "This error occurs when:\n\n- A user attempts to make payments exceeding a certain amount in a specific timeframe - The limit may exist on a wallet or global currency level\n\n**Note:** A user can have multiple such timeframe limits, all of which are checked before a payment is allowed.\n\n**Resolution:** Wait for the timeframe to reset or make smaller payments spread over time.",
+            "type": "object",
+            "required": [
+              "code",
+              "metadata"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "PAYMENT_AMOUNT_EXCEEDS_TIMEFRAME_LIMITS"
+                ]
+              },
+              "metadata": {
+                "type": "object",
+                "required": [
+                  "days",
+                  "limit"
+                ],
+                "properties": {
+                  "days": {
+                    "description": "The number of past days the limit is enforced for",
+                    "type": "integer",
+                    "format": "int64"
+                  },
+                  "limit": {
+                    "description": "The monetary limit that is not allowed to be exceeded",
+                    "type": "string",
+                    "pattern": "^-?[0-9]+(\\.[0-9]+)?$"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "title": "Payment Amount Out of Bounds",
+            "description": "This error occurs when:\n\n- A user attempts to make a payment with a non-positive amount\n\n**Resolution:** Ensure the payment amount is a positive value.",
+            "type": "object",
+            "required": [
+              "code"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "PAYMENT_AMOUNT_OUT_OF_BOUNDS"
+                ]
+              }
+            }
+          },
+          {
+            "title": "Payment Flow Not Found",
+            "description": "This usually means that:\n\n- The user is trying to use a flow that doesn't exist - The flow doesn't belong to them - The flow has expired or been completed\n\n**Resolution:** Initiate a new payment flow or check the flow ID.",
+            "type": "object",
+            "required": [
+              "code"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "PAYMENT_FLOW_NOT_FOUND"
+                ]
+              }
+            }
+          },
+          {
+            "title": "Payment Flow Not Awaiting Approval",
+            "description": "This error is usually thrown when:\n\n- An administrator tries to approve a flow that is not in the \"awaiting approval\" state - The flow has already been processed or cancelled\n\n**Resolution:** Check the current status of the payment flow before attempting approval.",
+            "type": "object",
+            "required": [
+              "code"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "PAYMENT_FLOW_NOT_AWAITING_APPROVAL"
+                ]
+              }
+            }
+          },
+          {
+            "title": "Search Index Not Found",
+            "description": "This error occurs when:\n\n- The search index requested doesn't exist in the system - The requester doesn't have access to the specified search index\n\n**Resolution:** Verify the search index name and ensure the requester has the necessary permissions.",
+            "type": "object",
+            "required": [
+              "code"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "SEARCH_INDEX_NOT_FOUND"
+                ]
+              }
+            }
+          },
+          {
+            "title": "User Could Not Be Found",
+            "description": "This error occurs when:\n\n- The user doesn't exist in the system - The user account has been disabled or deleted\n\n**Resolution:** Verify the user ID and ensure the account is active.",
+            "type": "object",
+            "required": [
+              "code"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "USER_NOT_FOUND"
+                ]
+              }
+            }
+          },
+          {
+            "title": "User Is Missing a Required Payment Method Key Value",
+            "description": "Payment methods may support multiple sub-accounts the user has with the method. As an example, PIX supports the following payment key types:\n\n- CPF (individual taxpayer registry) - CNPJ (corporate taxpayer registry) - Email - Bank-provided UUID\n\nThis error occurs when the user has not set up a Payment method key value for the specified type.\n\n**Resolution:** Add the required payment method key value for the specified type in the user's profile.",
+            "type": "object",
+            "required": [
+              "code",
+              "metadata"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "USER_MISSING_PAYMENT_METHOD_ACCOUNT_TYPE_IDENTIFIER"
+                ]
+              },
+              "metadata": {
+                "type": "object",
+                "required": [
+                  "account_type",
+                  "payment_method"
+                ],
+                "properties": {
+                  "account_type": {
+                    "type": "string"
+                  },
+                  "payment_method": {
+                    "$ref": "#/components/schemas/PaymentMethod"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "title": "User Is Missing a Document",
+            "description": "This error occurs when:\n\n- The user attempts to interact with an API that requires a document - The user's profile does not have a document associated with it\n\n**Resolution:** Add a valid document to the user's profile.",
+            "type": "object",
+            "required": [
+              "code"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "USER_MISSING_DOCUMENT"
+                ]
+              }
+            }
+          },
+          {
+            "title": "User Has an Invalid document",
+            "description": "This error occurs when:\n\n- The user attempts to interact with an API that requires a valid document - The document associated with the user's profile is not valid or properly formatted\n\n**Resolution:** Update the user's profile with a valid document.",
+            "type": "object",
+            "required": [
+              "code"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "USER_INVALID_DOCUMENT"
+                ]
+              }
+            }
+          },
+          {
+            "title": "The Jurisdiction Is Not Supported",
+            "description": "The jurisdiction from which the API is being accessed is not supported. This may be due to missing licenses or the jurisdiction not being enabled in the system.",
+            "type": "object",
+            "required": [
+              "code",
+              "metadata"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "JURISDICTION_NOT_SUPPORTED"
+                ]
+              },
+              "metadata": {
+                "type": "object",
+                "required": [
+                  "jurisdiction"
+                ],
+                "properties": {
+                  "jurisdiction": {
+                    "description": "The violating jurisdiction.",
+                    "$ref": "#/components/schemas/SystemCountry"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "title": "The Jurisdiction Is Not Supported, Alternative Site Available",
+            "description": "The jurisdiction from which the API is being accessed is not supported, but an alternative site is available.",
+            "type": "object",
+            "required": [
+              "code",
+              "metadata"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE"
+                ]
+              },
+              "metadata": {
+                "type": "object",
+                "required": [
+                  "alternative_site",
+                  "jurisdiction"
+                ],
+                "properties": {
+                  "alternative_site": {
+                    "description": "Alternative site that the user may be redirected to",
+                    "$ref": "#/components/schemas/SiteResponse"
+                  },
+                  "jurisdiction": {
+                    "description": "The violating jurisdiction.",
+                    "$ref": "#/components/schemas/SystemCountry"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "title": "The Jurisdiction Is Not Supported, Network Configuration Issue",
+            "description": "The request jurisdiction deviates from the user's signup jurisdiction. This can happen if the user uses a VPN or proxy to access the service. While using a VPN is valid, and is allowed by our system, it's important that the user's request may only be processed if the user's signup jurisdiction and the request jurisdiction are covered by the same license. This ensures compliance with regulatory requirements, while still allowing users to access the service from different locations.\n\n**Important:** Compliance regulations usually forbid us from telling the user that their VPN or proxy is the reason for the error. Instead, we should inform them that their network configuration is not supported. This might serve as a hint to the user that they should disable or change their VPN or proxy.",
+            "type": "object",
+            "required": [
+              "code",
+              "metadata"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "JURISDICTION_NOT_SUPPORTED_NETWORK_CONFIGURATION"
+                ]
+              },
+              "metadata": {
+                "type": "object",
+                "required": [
+                  "jurisdiction"
+                ],
+                "properties": {
+                  "jurisdiction": {
+                    "description": "The violating jurisdiction.",
+                    "$ref": "#/components/schemas/SystemCountry"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "title": "Host Not Supported",
+            "description": "The requested Site (identified via the `Host` header) is not set up in the system.\n\nThis error occurs when:\n\n- The API request is made to a hostname that is not recognized or configured in the system - The Site corresponding to the hostname has been deactivated or removed\n\n**Resolution:** Verify the correct hostname for the API request or contact support to set up the required Site.",
+            "type": "object",
+            "required": [
+              "code"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "HOST_NOT_SUPPORTED"
+                ]
+              }
+            }
+          },
+          {
+            "title": "Game Not Found",
+            "description": "The requested game was not found in the system.\n\nThis error occurs when:\n\n- The game ID provided doesn't exist in the system - The game has been removed or deactivated\n\n**Resolution:** Verify the game ID and ensure it's still active in the system.",
+            "type": "object",
+            "required": [
+              "code"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "GAME_NOT_FOUND"
+                ]
+              }
+            }
+          },
+          {
+            "title": "Game Provider Not Reachable",
+            "description": "The game provider or aggregator is not reachable.\n\nThis error occurs when:\n\n- The system cannot establish a connection with the game provider or aggregator - The game provider or aggregator service is down or experiencing issues\n\n**Resolution:** Try again later or contact support if the issue persists.",
+            "type": "object",
+            "required": [
+              "code"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "GAME_PROVIDER_NOT_REACHABLE"
+                ]
+              }
+            }
+          },
+          {
+            "title": "Game Provider Not Found",
+            "description": "The game provider was not found. This error occurs when: - The game provider ID provided doesn't exist in the system",
+            "type": "object",
+            "required": [
+              "code"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "GAME_PROVIDER_NOT_FOUND"
+                ]
+              }
+            }
+          },
+          {
+            "title": "Game Aggregator Game Provider Mapping Not Found",
+            "description": "The game aggregator game provider mapping was not found. This error occurs when: - The game aggregator is not yet mapped to the game provider in the system",
+            "type": "object",
+            "required": [
+              "code"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "GAME_AGGREGATOR_PROVIDER_MAPPING_NOT_FOUND"
+                ]
+              }
+            }
+          },
+          {
+            "title": "Game Aggregator Not Supported",
+            "description": "The game aggregator for the requested game is not supported by the system.\n\nThis error occurs when:\n\n- The system doesn't have integration with the required game aggregator - The aggregator support has been removed or is temporarily disabled\n\n**Resolution:** Choose a game from a supported aggregator or contact support for more information.",
+            "type": "object",
+            "required": [
+              "code"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "GAME_AGGREGATOR_NOT_SUPPORTED"
+                ]
+              }
+            }
+          },
+          {
+            "title": "Game Aggregator Missing",
+            "description": "This error may occur when: - A game aggregator is removed from our system, leaving orphaned games if no other aggregator publishes them",
+            "type": "object",
+            "required": [
+              "code"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "GAME_AGGREGATOR_MISSING"
+                ]
+              }
+            }
+          },
+          {
+            "title": "Game Aggregator Not Found",
+            "description": "The game aggregator was not found. This error occurs when: - The game aggregator ID provided doesn't exist in the system",
+            "type": "object",
+            "required": [
+              "code"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "GAME_AGGREGATOR_NOT_FOUND"
+                ]
+              }
+            }
+          },
+          {
+            "title": "Game URL Invalid",
+            "description": "The game URL returned by the game provider is invalid.\n\nThis error occurs when:\n\n- The game provider returns a malformed or non-existent URL - The game might have been removed or relocated by the provider\n\n**Resolution:** Try again or choose a different game. If the issue persists, contact support.",
+            "type": "object",
+            "required": [
+              "code"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "GAME_URL_INVALID"
+                ]
+              }
+            }
+          },
+          {
+            "title": "Signup Flow Not Found",
+            "description": "This error occurs when:\n\n- The signup flow has already been completed - The flow has expired and been garbage collected - The flow ID provided never existed\n\n**Resolution:** Start a new signup flow or verify the flow ID if you believe this is an error.",
+            "type": "object",
+            "required": [
+              "code"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "SIGNUP_FLOW_NOT_FOUND"
+                ]
+              }
+            }
+          },
+          {
+            "title": "Signup With Invalid Profile",
+            "description": "This error can occur due to various reasons:\n\n- The user is blacklisted - The user's profile is incomplete or invalid - The user is underage for the service - Other regulatory or compliance issues\n\n**Resolution:** Review the signup requirements and ensure all necessary information is provided and valid.",
+            "type": "object",
+            "required": [
+              "code"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "SIGNUP_INVALID_PROFILE"
+                ]
+              }
+            }
+          },
+          {
+            "title": "Exchange Rate Not Found",
+            "description": "The required exchange rate for the requested currency conversion could not be found.\n\nThis error occurs when:\n\n- The system doesn't have up-to-date exchange rate information for the requested currency pair - One or both of the currencies in the conversion are not supported\n\n**Resolution:** Try again later or use a different currency pair. If the issue persists, contact support.",
+            "type": "object",
+            "required": [
+              "code",
+              "metadata"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "EXCHANGE_RATE_NOT_FOUND"
+                ]
+              },
+              "metadata": {
+                "type": "object",
+                "required": [
+                  "from",
+                  "to"
+                ],
+                "properties": {
+                  "from": {
+                    "$ref": "#/components/schemas/SystemCurrency"
+                  },
+                  "to": {
+                    "$ref": "#/components/schemas/SystemCurrency"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "title": "Payload Signature Verification Failed",
+            "description": "This error mainly occurs with integrations that send signed payloads. It can happen when:\n\n- The signature is missing or malformed - The signature doesn't match the payload content - The signing key used is invalid or has been revoked\n\n**Resolution:** Check the signature generation process and ensure the correct keys are being used.",
+            "type": "object",
+            "required": [
+              "code"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "INVALID_SIGNATURE"
+                ]
+              }
+            }
+          },
+          {
+            "title": "Invalid Payload Encoding",
+            "description": "This error occurs when:\n\n- The payload is malformed or corrupted - The payload format doesn't match the expected format (e.g., invalid JSON) - The payload encoding is not recognized by the system\n\n**Resolution:** Verify the payload format and encoding, ensuring it matches the API specifications.",
+            "type": "object",
+            "required": [
+              "code"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "INVALID_ENCODING"
+                ]
+              }
+            }
+          },
+          {
+            "title": "Missing Sec-WebSocket-Protocol Header",
+            "description": "This error occurs when:\n\n- A client attempts to establish a WebSocket connection without providing the necessary protocol header - The header is malformed or contains unsupported protocols\n\n**Resolution:** Ensure the WebSocket connection request includes a valid `Sec-WebSocket-Protocol` header.",
+            "type": "object",
+            "required": [
+              "code"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "MISSING_SEC_WEB_SOCKET_PROTOCOL"
+                ]
+              }
+            }
+          },
+          {
+            "title": "Invalid User Geolocation",
+            "description": "This error occurs when:\n\n- A request that requires geolocation data (e.g., CF-IPCountry) is made without this information - The geolocation information is present but invalid or in an unsupported format\n\n**Resolution:** Ensure the request includes valid geolocation information, typically provided through specific headers.",
+            "type": "object",
+            "required": [
+              "code"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "INVALID_USER_GEOLOCATION"
+                ]
+              }
+            }
+          },
+          {
+            "title": "Invalid Bot Header",
+            "description": "This error occurs when: - A request sends a `X-Bot` header with an invalid value",
+            "type": "object",
+            "required": [
+              "code"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "INVALID_BOT_HEADER"
+                ]
+              }
+            }
+          },
+          {
+            "title": "Lease Not Found",
+            "description": "The requested lease for establishing a WebSocket connection could not be found or has expired.\n\nLeases are used by the WebSocket system to create short-lived tickets that the user uses to establish a WebSocket connection. This error occurs when:\n\n- The lease ID provided doesn't exist - The lease has expired before the WebSocket connection was established - The lease has already been used and is no longer valid\n\n**Resolution:** Request a new lease and attempt to establish the WebSocket connection again.",
+            "type": "object",
+            "required": [
+              "code"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "LEASE_NOT_FOUND"
+                ]
+              }
+            }
+          },
+          {
+            "title": "Validation Failed",
+            "description": "This error occurs when:\n\n- The payload doesn't meet the required format or data constraints - Required fields are missing or contain invalid values - The payload violates business logic rules\n\n**Resolution:** Review the API documentation for the correct payload format and constraints. Adjust the payload accordingly.",
+            "type": "object",
+            "required": [
+              "code",
+              "metadata"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "VALIDATION"
+                ]
+              },
+              "metadata": {
+                "$ref": "#/components/schemas/SystemValidationErrors"
+              }
+            }
+          },
+          {
+            "title": "Unauthorized",
+            "description": "This error occurs when:\n\n- The user is not authenticated - The user lacks the necessary permissions to access the resource - The authentication token has expired or is invalid\n\n**Resolution:** Ensure the user is properly authenticated and has the required permissions. If necessary, refresh the authentication token.",
+            "type": "object",
+            "required": [
+              "code"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "UNAUTHORIZED"
+                ]
+              }
+            }
+          },
+          {
+            "title": "Internal Error",
+            "description": "This error should never be thrown under normal circumstances. If it occurs, it indicates a severe problem within the system.\n\nPossible causes include:\n\n- Unhandled exceptions in the server code - Database connection failures - Critical system resource exhaustion\n\n**Resolution:** Contact the system administrators or support team immediately. Provide them with any error codes or messages received.",
+            "type": "object",
+            "required": [
+              "code",
+              "metadata"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "INTERNAL"
+                ]
+              },
+              "metadata": {
+                "$ref": "#/components/schemas/InternalError"
+              }
+            }
+          }
+        ]
+      },
+      "SignupFlow": {
+        "type": "object",
+        "required": [
+          "created_at",
+          "fields",
+          "id",
+          "jurisdiction"
+        ],
+        "properties": {
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "fields": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "id": {
+            "type": "string"
+          },
+          "jurisdiction": {
+            "$ref": "#/components/schemas/SystemCountry"
+          }
+        }
+      },
+      "SignupPatchFlowRequestBody": {
+        "type": "object",
+        "additionalProperties": true
+      },
+      "SiteResponse": {
+        "type": "object",
+        "required": [
+          "name",
+          "redirect_url",
+          "servable"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "redirect_url": {
+            "type": "string"
+          },
+          "servable": {
+            "type": "boolean"
+          }
+        }
+      },
+      "SystemCountry": {
+        "description": "A country represented by its ISO 3166-1 alpha-2 code.",
+        "examples": [
+          "US",
+          "DE",
+          "BR"
+        ],
+        "enum": [
+          "AF",
+          "AX",
+          "AL",
+          "DZ",
+          "AS",
+          "AD",
+          "AO",
+          "AI",
+          "AQ",
+          "AG",
+          "AR",
+          "AM",
+          "AW",
+          "AU",
+          "AT",
+          "AZ",
+          "BS",
+          "BH",
+          "BD",
+          "BB",
+          "BY",
+          "BE",
+          "BZ",
+          "BJ",
+          "BM",
+          "BT",
+          "BO",
+          "BQ",
+          "BA",
+          "BW",
+          "BV",
+          "BR",
+          "IO",
+          "BN",
+          "BG",
+          "BF",
+          "BI",
+          "CV",
+          "KH",
+          "CM",
+          "CA",
+          "KY",
+          "CF",
+          "TD",
+          "CL",
+          "CN",
+          "CX",
+          "CC",
+          "CO",
+          "KM",
+          "CG",
+          "CD",
+          "CK",
+          "CR",
+          "CI",
+          "HR",
+          "CU",
+          "CW",
+          "CY",
+          "CZ",
+          "DK",
+          "DJ",
+          "DM",
+          "DO",
+          "EC",
+          "EG",
+          "SV",
+          "GQ",
+          "ER",
+          "EE",
+          "SZ",
+          "ET",
+          "FK",
+          "FO",
+          "FJ",
+          "FI",
+          "FR",
+          "GF",
+          "PF",
+          "TF",
+          "GA",
+          "GM",
+          "GE",
+          "DE",
+          "GH",
+          "GI",
+          "GR",
+          "GL",
+          "GD",
+          "GP",
+          "GU",
+          "GT",
+          "GG",
+          "GN",
+          "GW",
+          "GY",
+          "HT",
+          "HM",
+          "VA",
+          "HN",
+          "HK",
+          "HU",
+          "IS",
+          "IN",
+          "ID",
+          "IR",
+          "IQ",
+          "IE",
+          "IM",
+          "IL",
+          "IT",
+          "JM",
+          "JP",
+          "JE",
+          "JO",
+          "KZ",
+          "KE",
+          "KI",
+          "KP",
+          "KR",
+          "KW",
+          "KG",
+          "LA",
+          "LV",
+          "LB",
+          "LS",
+          "LR",
+          "LY",
+          "LI",
+          "LT",
+          "LU",
+          "MO",
+          "MG",
+          "MW",
+          "MY",
+          "MV",
+          "ML",
+          "MT",
+          "MH",
+          "MQ",
+          "MR",
+          "MU",
+          "YT",
+          "MX",
+          "FM",
+          "MD",
+          "MC",
+          "MN",
+          "ME",
+          "MS",
+          "MA",
+          "MZ",
+          "MM",
+          "NA",
+          "NR",
+          "NP",
+          "NL",
+          "NC",
+          "NZ",
+          "NI",
+          "NE",
+          "NG",
+          "NU",
+          "NF",
+          "MK",
+          "MP",
+          "NO",
+          "OM",
+          "PK",
+          "PW",
+          "PS",
+          "PA",
+          "PG",
+          "PY",
+          "PE",
+          "PH",
+          "PN",
+          "PL",
+          "PT",
+          "PR",
+          "QA",
+          "RE",
+          "RO",
+          "RU",
+          "RW",
+          "BL",
+          "SH",
+          "KN",
+          "LC",
+          "MF",
+          "PM",
+          "VC",
+          "WS",
+          "SM",
+          "ST",
+          "SA",
+          "SN",
+          "RS",
+          "SC",
+          "SL",
+          "SG",
+          "SX",
+          "SK",
+          "SI",
+          "SB",
+          "SO",
+          "ZA",
+          "GS",
+          "SS",
+          "ES",
+          "LK",
+          "SD",
+          "SR",
+          "SJ",
+          "SE",
+          "CH",
+          "SY",
+          "TW",
+          "TJ",
+          "TZ",
+          "TH",
+          "TL",
+          "TG",
+          "TK",
+          "TO",
+          "TT",
+          "TN",
+          "TR",
+          "TM",
+          "TC",
+          "TV",
+          "UG",
+          "UA",
+          "AE",
+          "GB",
+          "US",
+          "UM",
+          "UY",
+          "UZ",
+          "VU",
+          "VE",
+          "VN",
+          "VG",
+          "VI",
+          "WF",
+          "EH",
+          "YE",
+          "ZM",
+          "ZW"
+        ]
+      },
+      "SystemCurrency": {
+        "description": "ISO 4217 3-letter currency code or 3/4-letter crypto currency code",
+        "examples": [
+          "AED",
+          "AFN",
+          "ALL",
+          "AMD",
+          "ANG",
+          "AOA",
+          "ARS",
+          "AUD",
+          "AWG",
+          "AZN",
+          "BAM",
+          "BBD",
+          "BDT",
+          "BGN",
+          "BHD",
+          "BIF",
+          "BMD",
+          "BND",
+          "BOB",
+          "BOV",
+          "BRL",
+          "BSD",
+          "BTN",
+          "BWP",
+          "BYN",
+          "BZD",
+          "CAD",
+          "CDF",
+          "CHE",
+          "CHF",
+          "CHW",
+          "CLF",
+          "CLP",
+          "CNY",
+          "COP",
+          "COU",
+          "CRC",
+          "CUC",
+          "CUP",
+          "CVE",
+          "CZK",
+          "DJF",
+          "DKK",
+          "DOP",
+          "DZD",
+          "EGP",
+          "ERN",
+          "ETB",
+          "EUR",
+          "FJD",
+          "FKP",
+          "GBP",
+          "GEL",
+          "GHS",
+          "GIP",
+          "GMD",
+          "GNF",
+          "GTQ",
+          "GYD",
+          "HKD",
+          "HNL",
+          "HRK",
+          "HTG",
+          "HUF",
+          "IDR",
+          "ILS",
+          "INR",
+          "IQD",
+          "IRR",
+          "ISK",
+          "JMD",
+          "JOD",
+          "JPY",
+          "KES",
+          "KGS",
+          "KHR",
+          "KMF",
+          "KPW",
+          "KRW",
+          "KWD",
+          "KYD",
+          "KZT",
+          "LAK",
+          "LBP",
+          "LKR",
+          "LRD",
+          "LSL",
+          "LYD",
+          "MAD",
+          "MDL",
+          "MGA",
+          "MKD",
+          "MMK",
+          "MNT",
+          "MOP",
+          "MRU",
+          "MUR",
+          "MVR",
+          "MWK",
+          "MXN",
+          "MXV",
+          "MYR",
+          "MZN",
+          "NAD",
+          "NGN",
+          "NIO",
+          "NOK",
+          "NPR",
+          "NZD",
+          "OMR",
+          "PAB",
+          "PEN",
+          "PGK",
+          "PHP",
+          "PKR",
+          "PLN",
+          "PYG",
+          "QAR",
+          "RON",
+          "RSD",
+          "RUB",
+          "RWF",
+          "SAR",
+          "SBD",
+          "SCR",
+          "SDG",
+          "SEK",
+          "SGD",
+          "SHP",
+          "SLE",
+          "SLL",
+          "SOS",
+          "SRD",
+          "SSP",
+          "STN",
+          "SVC",
+          "SYP",
+          "SZL",
+          "THB",
+          "TJS",
+          "TMT",
+          "TND",
+          "TOP",
+          "TRY",
+          "TTD",
+          "TWD",
+          "TZS",
+          "UAH",
+          "UGX",
+          "USD",
+          "USN",
+          "UYI",
+          "UYU",
+          "UYW",
+          "UZS",
+          "VED",
+          "VES",
+          "VND",
+          "VUV",
+          "WST",
+          "XAF",
+          "XAG",
+          "XAU",
+          "XBA",
+          "XBB",
+          "XBC",
+          "XBD",
+          "XCD",
+          "XDR",
+          "XOF",
+          "XPD",
+          "XPF",
+          "XPT",
+          "XSU",
+          "XTS",
+          "XUA",
+          "XXX",
+          "YER",
+          "ZAR",
+          "ZMW",
+          "ZWL",
+          "BTC",
+          "ETH",
+          "USDC",
+          "USDT",
+          "BCH",
+          "XRP",
+          "FUN",
+          "ADA",
+          "TRX",
+          "BSV",
+          "BNB",
+          "NEO"
+        ],
+        "maxLength": 4,
+        "minLength": 3,
+        "pattern": "^[A-Z]{3,4}$"
+      },
+      "SystemDevice": {
+        "type": "string",
+        "enum": [
+          "mobile",
+          "desktop"
+        ]
+      },
+      "SystemGameVolatility": {
+        "type": "string",
+        "enum": [
+          "none",
+          "very-low",
+          "low",
+          "medium-low",
+          "medium",
+          "medium-high",
+          "high",
+          "very-high",
+          "extreme"
+        ]
+      },
+      "SystemGender": {
+        "type": "string",
+        "enum": [
+          "male",
+          "female",
+          "other"
+        ]
+      },
+      "SystemPhoneNumber": {
+        "required": [
+          "code",
+          "national"
+        ],
+        "properties": {
+          "carrier": {
+            "type": "string",
+            "maxLength": 20
+          },
+          "code": {
+            "required": [
+              "source",
+              "value"
+            ],
+            "properties": {
+              "source": {
+                "type": "string",
+                "enum": [
+                  "plus",
+                  "idd",
+                  "number",
+                  "default"
+                ]
+              },
+              "value": {
+                "type": "number",
+                "multipleOf": 1.0
+              }
+            }
+          },
+          "extension": {
+            "type": "string",
+            "maxLength": 20
+          },
+          "national": {
+            "required": [
+              "value"
+            ],
+            "properties": {
+              "value": {
+                "type": "number",
+                "multipleOf": 1.0
+              }
+            }
+          }
+        }
+      },
+      "SystemValidationError": {
+        "type": "object",
+        "required": [
+          "code",
+          "params"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "message": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "params": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      },
+      "SystemValidationErrors": {
+        "type": "object",
+        "additionalProperties": {
+          "$ref": "#/components/schemas/SystemValidationErrorsKind"
+        }
+      },
+      "SystemValidationErrorsKind": {
+        "anyOf": [
+          {
+            "$ref": "#/components/schemas/SystemValidationErrors"
+          },
+          {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/SystemValidationErrors"
+            }
+          },
+          {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SystemValidationError"
+            }
+          }
+        ]
+      },
+      "TimeframeLimit": {
+        "type": "object",
+        "required": [
+          "days"
+        ],
+        "properties": {
+          "days": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "deposit": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^-?[0-9]+(\\.[0-9]+)?$"
+          },
+          "withdrawal": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^-?[0-9]+(\\.[0-9]+)?$"
+          }
+        }
+      },
+      "UserAccount": {
+        "type": "object",
+        "required": [
+          "attributes",
+          "birthdate",
+          "created_at",
+          "email",
+          "email_verified",
+          "id",
+          "jurisdiction",
+          "language",
+          "name",
+          "phone",
+          "phone_verified",
+          "settings",
+          "time_zone",
+          "updated_at"
+        ],
+        "properties": {
+          "attributes": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "birthdate": {
+            "type": "string",
+            "format": "date"
+          },
+          "blocked_until": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "deleted_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "email": {
+            "type": "string"
+          },
+          "email_verified": {
+            "type": "boolean"
+          },
+          "excluded_until": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "family_name": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "gender": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SystemGender"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "id": {
+            "$ref": "#/components/schemas/UserId"
+          },
+          "jurisdiction": {
+            "$ref": "#/components/schemas/Jurisdiction"
+          },
+          "language": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "phone": {
+            "$ref": "#/components/schemas/SystemPhoneNumber"
+          },
+          "phone_verified": {
+            "type": "boolean"
+          },
+          "settings": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "time_zone": {
+            "type": "string"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "UserId": {
+        "type": "integer",
+        "format": "int64"
+      },
+      "UserSettings": {
+        "type": "object",
+        "properties": {
+          "language": {
+            "maxLength": 5,
+            "minLength": 2,
+            "maxItems": 5,
+            "minItems": 2,
+            "$ref": "#/components/schemas/MaybeOperator"
+          },
+          "pix_payment_key": {
+            "$ref": "#/components/schemas/MaybeOperator"
+          },
+          "primary_currency": {
+            "$ref": "#/components/schemas/MaybeOperator"
+          }
+        }
+      },
+      "WalletBalance": {
+        "type": "object",
+        "required": [
+          "balance",
+          "currency"
+        ],
+        "properties": {
+          "balance": {
+            "type": "string",
+            "pattern": "^-?[0-9]+(\\.[0-9]+)?$"
+          },
+          "currency": {
+            "$ref": "#/components/schemas/SystemCurrency"
+          }
+        }
+      },
+      "WalletId": {
+        "type": "integer",
+        "format": "int64"
+      },
+      "WebSocketChannel": {
+        "type": "string",
+        "enum": [
+          "user",
+          "newest_wins"
+        ]
+      },
+      "WebsocketLeaseQuery": {
+        "type": "object",
+        "required": [
+          "channel"
+        ],
+        "properties": {
+          "channel": {
+            "$ref": "#/components/schemas/WebSocketChannel"
+          }
+        }
+      },
+      "WhoamiResponse": {
+        "type": "object",
+        "required": [
+          "email",
+          "id"
+        ],
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "id": {
+            "$ref": "#/components/schemas/UserId"
+          }
+        }
+      }
+    }
+  }
+}

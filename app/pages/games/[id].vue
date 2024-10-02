@@ -28,8 +28,8 @@ const { isMobile } = useDevice();
 
       <GameDescription class="bg-subtle" />
 
-      <GridHorizontalGames />
-      <GridHorizontalGames />
+      <GridHorizontalGames category-identifier="top-games" />
+      <GridHorizontalGames category-identifier="top-games" />
     </div>
   </div>
 </template>

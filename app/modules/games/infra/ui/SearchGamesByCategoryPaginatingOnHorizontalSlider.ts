@@ -17,6 +17,7 @@ export class SearchGamesByCategoryPaginatingOnHorizontalSlider {
 
     if (result.isFailure) {
       // TODO: log exception so we can track it. And perhaps alert the customer somehow
+      console.error("SearchGamesByCategoryPaginating failed: ", JSON.stringify(result.error));
       return {
         games: [],
         canLoadMore: false,

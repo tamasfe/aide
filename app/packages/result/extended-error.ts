@@ -88,7 +88,7 @@ export abstract class AbstractExtendedError extends CustomError {
       ...super.toJSON(),
       type: this.name,
       cause:
-        this.cause instanceof ExtendedError
+        this.cause instanceof ExtendedError || this.cause instanceof CustomError
           ? this.cause.toJSON()
           : {
               type: this.cause.name,
