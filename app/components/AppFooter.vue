@@ -1,15 +1,29 @@
 <script setup lang="ts">
+import { ACTIVE_LOCALES } from "~/constants";
+import type { Locale } from "~/types/constants";
+
 // DESIGN STATUS:       ✴️
 //   * logos for payment providers
 // ARCHITECTURE STATUS: ✴️
 //   * logo should be refactored out like the <AppHeader> component
 // TRANSLATION STATUS:  ✅
 
+const { localeProperties } = useI18n();
+
 const year = ref(new Date().getFullYear());
 
 const scrollToTop = () => {
   window.scrollTo({ top: 0, behavior: "smooth" });
 };
+
+const initialOption: Locale | undefined = ACTIVE_LOCALES.find(
+  (option) => {
+    const exactMatch = option.value === localeProperties.value.language;
+    if (exactMatch) return true;
+    const partialMatch = option.value.split("-")[0] === localeProperties.value.code.split("-")[0];
+    return partialMatch;
+  },
+);
 </script>
 
 <template>
@@ -29,16 +43,19 @@ const scrollToTop = () => {
         <p class="text-[0.82rem]">{{ $t("footer.summary") }}</p>
         <div class="w-full sm:w-[12rem]">
           <BaseSelect
+            :options="ACTIVE_LOCALES"
+            :initial-selected-option="initialOption"
             size="sm"
             class="gap-2"
           >
             <template #selected="{ selected }">
               <BaseFlag
+                v-if="selected"
                 :country-code="selected.countryCode"
                 size="lg"
               />
               <span class="block whitespace-nowrap truncate font-medium text-left">
-                {{ selected.title }}
+                {{ selected?.title }}
               </span>
             </template>
             <template #option="{ option }">

@@ -1,4 +1,10 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="T extends {
+  id?: string;
+  value: string;
+  title: string;
+  disabled?: boolean;
+}"
+>
 import type { HTMLAttributes } from "vue";
 import { type VariantProps, cva } from "class-variance-authority";
 import {
@@ -34,11 +40,24 @@ const selectVariants = cva(
 
 );
 type SelectVariants = VariantProps<typeof selectVariants>;
+type OptionsOffset = {
+  right?: number;
+  left?: number;
+  top?: number;
+  bottom?: number;
+};
+
+const emit = defineEmits<{
+  (e: "change", value: T): void;
+}>();
 
 const props = withDefaults(
   defineProps<{
+    options: T[];
+    initialSelectedOption?: T;
     variant?: SelectVariants["variant"];
     size?: SelectVariants["size"];
+    optionsOffset?: OptionsOffset;
     required?: boolean;
     disabled?: boolean;
     class?: HTMLAttributes["class"];
@@ -50,25 +69,32 @@ const props = withDefaults(
   },
 );
 
-// TODO DEMO DATA DELETE ME
-// TODO DEMO DATA DELETE ME
-// TODO DEMO DATA DELETE ME
-// TODO then obviously move it to a prop thats strongly typed for options
-const options = [
-  { id: 1, title: "Portuguese", countryCode: "BR" },
-  { id: 2, title: "English", countryCode: "US" },
-  { id: 3, title: "Spanish", countryCode: "ES" },
-  { id: 4, title: "Spanish (Mexico)", countryCode: "MX" },
-  { id: 5, title: "German", countryCode: "DE" },
-];
-const selectedOption = ref(options[0]);
+const selectedOption = ref<T | undefined>(props.initialSelectedOption);
+
+const optionsOffset = computed(() => {
+  if (!props.optionsOffset) return {};
+  return Object.entries(props.optionsOffset).reduce((acc, [key, value]) => {
+    return {
+      ...acc,
+      [key]: `${value}px`,
+    };
+  }, {} as OptionsOffset);
+});
+
+const onUpdateModelValue = (event: T) => {
+  if (selectedOption.value?.value !== event.value) {
+    selectedOption.value = event;
+    emit("change", event);
+  }
+};
 </script>
 
 <template>
   <Listbox
     v-slot="{ open }"
-    v-model="selectedOption"
+    :model-value="selectedOption"
     class="w-full"
+    @update:model-value="(event) => onUpdateModelValue(event)"
   >
     <div class="relative">
       <ListboxButton
@@ -84,9 +110,9 @@ const selectedOption = ref(options[0]);
         />
         <span
           v-else
-          class="block whitespace-nowrap truncate font-medium text-left"
+          class="min-w-3 block whitespace-nowrap truncate font-medium text-left"
         >
-          {{ selectedOption.title }}
+          {{ selectedOption?.title || '' }}
         </span>
         <span class="pointer-events-none absolute z-[1] inset-y-0 right-0 flex items-center pr-2">
           <Icon
@@ -103,12 +129,13 @@ const selectedOption = ref(options[0]);
         leave-to-class="opacity-0"
       >
         <ListboxOptions
-          class="absolute z-[1] w-full mt-1 text-sm text-subtle overflow-auto bg-emphasis rounded-default focus-visible:outline-none"
+          class="absolute z-[1] mt-1 w-max text-sm text-subtle overflow-auto bg-emphasis rounded-default focus-visible:outline-none"
+          :style="optionsOffset"
         >
           <ListboxOption
             v-for="option in options"
             v-slot="{ active, selected }"
-            :key="option.title"
+            :key="option.id || option.title"
             :value="option"
             as="template"
           >

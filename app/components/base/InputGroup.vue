@@ -26,6 +26,7 @@ const props = withDefaults(
     errorPlacement?: "floating" | "below";
     errorMessage?: string;
     mask?: string;
+    maskBehaviourEager?: boolean;
     class?: HTMLAttributes["class"];
     value?: unknown;
   }>(),
@@ -123,6 +124,7 @@ onBeforeUnmount(() => {
         <BaseInput
           v-if="fieldType === 'input'"
           :mask-pattern="mask"
+          :mask-behaviour-eager="maskBehaviourEager"
           v-bind="$attrs"
           :required="required"
           :placeholder="fieldPlaceholder"
@@ -141,8 +143,7 @@ onBeforeUnmount(() => {
           :required="required"
           :placeholder="fieldPlaceholder"
           :class="fieldClass"
-          @input="(event) => $emit('input', event)"
-          @change="(event) => $emit('change', event)"
+          @change="(event) => { $emit('change', event.value); $emit('input', event.value); }"
         />
 
         <div

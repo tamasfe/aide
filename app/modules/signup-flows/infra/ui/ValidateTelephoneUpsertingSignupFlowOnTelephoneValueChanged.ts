@@ -3,18 +3,23 @@ import type { SignupFlowsDependencyInjectionI } from "../SignupFlowsDependencyIn
 import type { TranslateFunctionType } from "~/packages/translation/TranslateFunctionType";
 
 export class ValidateTelephoneUpsertingSignupFlowOnTelephoneValueChanged {
-  public async handle(value: unknown): Promise<boolean | string> {
+  public async handle(value: unknown, prefixValue: string): Promise<boolean | string> {
     const telephoneValue = String(value);
 
-    if (!telephoneValue) {
+    // TODO: move this validation to a Telephone value object
+    const cleanTelephoneValue = telephoneValue.replace(/\D/g, "");
+
+    if (!cleanTelephoneValue) {
       return this.translateFunction("modal_session.telephone_required");
     }
+
+    const telephoneWithPrefix = `${prefixValue}${cleanTelephoneValue}`;
 
     const resultUpsertingSignupFlow = await this.upsertSignupFlow.handle({
       CPF: null,
       email: null,
       password: null,
-      telephone: telephoneValue,
+      telephone: telephoneWithPrefix,
     });
 
     if (resultUpsertingSignupFlow.isFailure) {

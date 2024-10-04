@@ -6,11 +6,11 @@ import type {
 
 // IMPORTANT: when you update this, move the associated flag
 // from assets/flags to assets/flags/active
-export const LOCALES: Locale[] = [
-  { language: "en", countryCode: "US" },
-  { language: "pt", countryCode: "BR" },
-  { language: "es", countryCode: "ES" },
-  { language: "es", countryCode: "MX" },
+export const ACTIVE_LOCALES: Locale[] = [
+  { title: "English (US)", value: "en-US" as const, countryCode: "US" },
+  { title: "Portuguese (Brasil)", value: "pt-BR" as const, countryCode: "BR" },
+  { title: "Spanish (Mexico)", value: "es-MX" as const, countryCode: "MX" },
+  { title: "Spanish (Spain)", value: "es-ES" as const, countryCode: "ES" },
 ];
 
 // shows in phone dropdown

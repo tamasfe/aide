@@ -8,15 +8,12 @@ export type SupportedCurrencyCode =
   | "BRL";
 
 export type SupportedLanguageCode =
-  | "en"
-  | "es"
-  | "pt";
+  "pt-BR" | "en-US" | "es-ES" | "es-MX";
 
-export type SupportedCountryCode =
-  | "AR"
+export type SupportedCountryFlagCode =
   | "BR"
+  | "DE"
   | "ES"
-  | "IN"
   | "MX"
   | "US";
 
@@ -30,12 +27,13 @@ export type Currency = {
 };
 
 export type Locale = {
-  language: SupportedLanguageCode;
-  countryCode: SupportedCountryCode;
+  title: string;
+  value: SupportedLanguageCode;
+  countryCode: SupportedCountryFlagCode;
 };
 
 export type Country = {
-  code: SupportedCountryCode;
+  code: string;
   dialCode: string;
   masks: Masks;
 };

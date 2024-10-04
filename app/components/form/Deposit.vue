@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { SupportedCountryCode } from "@/types/constants";
+import type { SupportedCountryFlagCode } from "@/types/constants";
 
 // DESIGN STATUS:       ✅
 // ARCHITECTURE STATUS: ✴️
@@ -11,7 +11,7 @@ import type { SupportedCountryCode } from "@/types/constants";
 
 const loading = ref(false);
 const presetAmounts = ref([10, 50, 100]);
-const countryCode = ref<SupportedCountryCode>("BR");
+const countryCode = ref<SupportedCountryFlagCode>("BR");
 const currency = ref("BRL");
 </script>
 

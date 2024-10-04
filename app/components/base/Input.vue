@@ -37,6 +37,7 @@ const props = withDefaults(defineProps<{
   disabled?: boolean;
   placeholder?: string;
   maskPattern?: string;
+  maskBehaviourEager?: boolean;
   autocomplete?: InputHTMLAttributes["autocomplete"];
   autocorrect?: "off";
   inputmode?: "text" | "decimal" | "numeric" | "tel" | "search" | "email";
@@ -54,6 +55,7 @@ const props = withDefaults(defineProps<{
 <template>
   <input
     v-maska="maskPattern"
+    :data-maska-eager="maskBehaviourEager ?? false"
     :type="type"
     :required="required"
     :disabled="disabled"

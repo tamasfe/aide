@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { SupportedCountryCode } from "@/types/constants";
+import type { SupportedCountryFlagCode } from "@/types/constants";
 
 // DESIGN STATUS:       ✴️
 //   - finish withdrawal cpf fields just like on bet7k (ignore design)
@@ -10,7 +10,7 @@ import type { SupportedCountryCode } from "@/types/constants";
 // ZOD SCHEMA:          ✴️
 
 const loading = ref(false);
-const countryCode = ref<SupportedCountryCode>("BR");
+const countryCode = ref<SupportedCountryFlagCode>("BR");
 const currency = ref("BRL");
 
 const showLimits = ref(false);
