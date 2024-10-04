@@ -37,10 +37,15 @@ export default defineNuxtConfig({
   // More info about runtime config & environment variables @https://nuxt.com/docs/guide/going-further/runtime-config
   runtimeConfig: {
     public: {
+      apiBaseUrl: process.env.NUXT_PUBLIC_API_BASE_URL,
       games: {
         apiBaseUrl: process.env.NUXT_PUBLIC_GAMES_API_BASE_URL,
       },
-      apiBaseUrl: process.env.NUXT_PUBLIC_API_BASE_URL,
+      signupFlows: {
+        idsClientRepo: process.env.NUXT_PUBLIC_SIGNUP_FLOWS_IDS_CLIENT_REPO as "mock" | "local_storage",
+        apiBaseUrl: process.env.NUXT_PUBLIC_SIGNUP_FLOWS_API_CLIENT_BASE_URL || "",
+        apiClientFixedUserJurisdiction: process.env.NUXT_PUBLIC_SIGNUP_FLOWS_API_CLIENT_FIXED_USER_JURISDICTION || "",
+      },
     },
   },
   site: {

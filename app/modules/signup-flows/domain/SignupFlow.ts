@@ -33,13 +33,11 @@ export class SignupFlow {
     );
   }
 
-  public newUpdatingProps(props: Partial<SignupFlowPropsI>) {
+  public newUpdatingProps(props: Omit<Partial<SignupFlowPropsI>, "id">) {
     return SignupFlow.newFromProps({
+      ...this.toJSON(),
+      ...props,
       id: this.id,
-      email: props.email ?? this.email?.value ?? null,
-      password: props.password ?? this.password?.value ?? null,
-      cpf: props.cpf ?? this.cpf?.value ?? null,
-      telephone: props.telephone ?? this.telephone ?? null,
     });
   }
 
@@ -49,7 +47,6 @@ export class SignupFlow {
     public readonly password: null | UserPassword,
     public readonly cpf: null | UserCPF,
     public readonly telephone: null | string,
-    public readonly needsPersisting = false,
   ) {}
 
   public toJSON(): SignupFlowPropsI {

@@ -9,6 +9,11 @@ declare module "nuxt/schema" {
     games: {
       apiBaseUrl: string | undefined;
     };
+    signupFlows: {
+      idsClientRepo: "mock" | "local_storage";
+      apiBaseUrl: string | undefined;
+      apiClientFixedUserJurisdiction: string | undefined;
+    };
   }
 }
 

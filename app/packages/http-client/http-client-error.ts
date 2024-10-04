@@ -5,6 +5,8 @@ export class HttpBackendApiError extends CustomError {
     return new HttpBackendApiError(backendError.code, backendError.metadata, response);
   }
 
+  public status: number;
+
   override name = "HttpBackendApiError" as const;
 
   constructor(code: string, errorMetadata: Record<string, unknown> | string | undefined, response: Response) {
@@ -18,5 +20,7 @@ export class HttpBackendApiError extends CustomError {
         statusText: response.statusText,
       },
     });
+
+    this.status = response.status;
   }
 }

@@ -1,3 +1,4 @@
+import type { PublicRuntimeConfig } from "nuxt/schema";
 import { SearchGamesByCategoryPaginating } from "../application/SearchGamesByCategoryPaginating";
 import { GamesApiRepositoryDumb } from "./GamesApiRepositoryDumb";
 import { GamesApiRepositoryGirobet } from "./GamesApiRepositoryGirobet";
@@ -11,7 +12,9 @@ export interface GamesDependencyInjectionI {
   };
 }
 
-export const createGamesDependencyInjection = async (apiBaseUrl: string | undefined): Promise<GamesDependencyInjectionI> => {
+export const createGamesDependencyInjection = async (publicConfig: PublicRuntimeConfig): Promise<GamesDependencyInjectionI> => {
+  const apiBaseUrl = publicConfig.games.apiBaseUrl;
+
   if (!apiBaseUrl || apiBaseUrl === "") {
     const searchGamesByCategoryPaginatingQuery = new SearchGamesByCategoryPaginating(
       new GamesApiRepositoryDumb(),

@@ -5,6 +5,6 @@ import type { EmptyResult, Result } from "~/packages/result";
 
 export interface SignupFlowIdClientRepositoryI {
   searchCurrent(): Promise<Result<string | null, ErrorRetrievingSignupFlowId>>;
-  findCurrent(): Promise<Result<string, SignupFlowIdNotFound>>;
+  findCurrent(): Promise<Result<string, SignupFlowIdNotFound | ErrorRetrievingSignupFlowId>>;
   saveCurrent(flowId: string): Promise<EmptyResult<ErrorSavingSignupFlowId>>;
 }

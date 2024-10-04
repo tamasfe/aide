@@ -2,7 +2,7 @@ import type { SignupFlowIdNotFound } from "../domain/errors/SignupFlowIdNotFound
 import type { SignupFlowIdClientRepositoryI } from "../domain/SignupFlowIdClientRepositoryI";
 import { success, type Result } from "~/packages/result";
 
-export class ClientSignupFlowIdRepositoryDumb
+export class SignupFlowIdClientRepositoryDumb
 implements SignupFlowIdClientRepositoryI {
   public async findCurrent(): Promise<Result<string, SignupFlowIdNotFound>> {
     console.debug("DumbClientSignupFlowIdRepository.findCurrent called");

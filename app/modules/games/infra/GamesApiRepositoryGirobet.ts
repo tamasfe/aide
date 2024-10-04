@@ -3,7 +3,7 @@ import type { GamesApiRepositoryI } from "../domain/GamesApiRepository";
 import { fail, success, type Result } from "~/packages/result";
 import { InfrastructureError } from "~/packages/result/infrastructure-error";
 import { createBackendOpenApiClient } from "~/packages/http-client/create-backend-open-api-client";
-import { HttpBackendApiError } from "~/packages/http-client/HttpClientError";
+import { HttpBackendApiError } from "~/packages/http-client/http-client-error";
 
 export class GamesApiRepositoryGirobet implements GamesApiRepositoryI {
   constructor(apiBaseUrl: string) {

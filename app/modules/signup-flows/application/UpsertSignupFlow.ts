@@ -5,18 +5,35 @@ import { UserEmail } from "~/modules/users/domain/UserEmail";
 import { UserPassword } from "~/modules/users/domain/UserPassword";
 import { success } from "~/packages/result";
 
+type Payload = {
+  email: string;
+  password: null;
+  telephone: null;
+  CPF: null;
+} | {
+  email: null;
+  password: null | string;
+  telephone: null;
+  CPF: null;
+} |
+{
+  email: null;
+  password: null;
+  telephone: string;
+  CPF: null;
+} | {
+  email: null;
+  password: null;
+  telephone: null;
+  CPF: string;
+};
 export class UpsertSignupFlow {
   constructor(
     private readonly clientSignupFlowIdRepository: SignupFlowIdClientRepositoryI,
     private readonly signupFlowApiRepositoryI: SignupFlowApiRepositoryI,
   ) {}
 
-  public async handle(signupFlowPayload: {
-    email: null | string;
-    password: null | string;
-    telephone: null | string;
-    CPF: null | string;
-  }) {
+  public async handle(signupFlowPayload: Payload) {
     const userEmailResult = signupFlowPayload.email
       ? UserEmail.new(signupFlowPayload.email)
       : success(null);
@@ -51,25 +68,22 @@ export class UpsertSignupFlow {
       return currentSignupFlowResult;
     }
 
-    const errorSavingCurrentFlowId = await this.clientSignupFlowIdRepository.saveCurrent(currentSignupFlowResult.value.id);
-    if (errorSavingCurrentFlowId.isFailure) {
-      return errorSavingCurrentFlowId;
+    const errorSavingCurrentFlowIdResult = await this.clientSignupFlowIdRepository.saveCurrent(currentSignupFlowResult.value.id);
+    if (errorSavingCurrentFlowIdResult.isFailure) {
+      return errorSavingCurrentFlowIdResult;
     }
 
     const updatedSignupFlowResult = currentSignupFlowResult.value.newUpdatingProps(
       {
-        email: signupFlowPayload.email,
-        cpf: signupFlowPayload.CPF,
-        password: signupFlowPayload.password,
+        email: userEmailResult.value?.value,
+        cpf: userCPFResult.value?.value,
+        password: userPasswordResult.value?.value,
         telephone: signupFlowPayload.telephone,
       },
     );
+
     if (updatedSignupFlowResult.isFailure) {
       return updatedSignupFlowResult;
-    }
-
-    if (!updatedSignupFlowResult.value.needsPersisting) {
-      return success();
     }
 
     return this.signupFlowApiRepositoryI.update(updatedSignupFlowResult.value);

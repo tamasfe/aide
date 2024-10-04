@@ -147,7 +147,7 @@ onBeforeUnmount(() => {
 
         <div
           v-if="errorPlacement === 'floating' && errorMessage"
-          class="error absolute bottom-1 right-0"
+          class="px-1 error absolute bottom-1 right-0 bg-subtle"
         >
           {{ errorMessage }}
         </div>

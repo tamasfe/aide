@@ -75,8 +75,8 @@
     "telephone_required": "Phone is required",
     "password_invalid": "Invalid password",
     "password_required": "Password is required",
-    "password_invalid_too_short": "Password is too short",
-    "password_invalid_too_long": "Password is too long"
+    "password_invalid_too_short": "Password must be longer than {min}",
+    "password_invalid_too_long": "Password must be shorter than {max}"
   },
   "modal_payments": {
     "make_deposit": "Make a Deposit",

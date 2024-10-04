@@ -23,6 +23,6 @@ import type { paths } from "./girobet-backend-generated-http-client/openapi-type
 //   }
 // }
 
-export const createBackendOpenApiClient = (baseUrl: string) => {
-  return createClient<paths>({ baseUrl });
+export const createBackendOpenApiClient = (baseUrl: string, headers: Record<string, string> = {}) => {
+  return createClient<paths>({ baseUrl, headers });
 };
