@@ -13,8 +13,8 @@ export default defineNuxtPlugin({
       provide: {
         dependencies: {
           common: commonDependencies,
-          signupFlows: createSignupFlowsDependencyInjection(config.public),
-          games: await createGamesDependencyInjection(config.public),
+          signupFlows: createSignupFlowsDependencyInjection(config.public, commonDependencies),
+          games: await createGamesDependencyInjection(config.public, commonDependencies),
         },
       },
     };

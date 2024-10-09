@@ -6,7 +6,7 @@ export class ValidateCpfUpsertingSignupFlowOnCpfValueChanged {
   public async handle(value: unknown): Promise<boolean | string> {
     const cpfValue = String(value);
 
-    if (!cpfValue) {
+    if (!value || !cpfValue) {
       return this.translateFunction("modal_session.cpf_required");
     }
 

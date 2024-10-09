@@ -6,7 +6,7 @@ export class ValidateEmailUpsertingSignupFlowOnEmailValueChanged {
   public async handle(value: unknown): Promise<boolean | string> {
     const emailValue = String(value);
 
-    if (!emailValue) {
+    if (!value || !emailValue) {
       return this.translateFunction("modal_session.email_required");
     }
 

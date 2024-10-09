@@ -5,6 +5,7 @@ import { InfrastructureError } from "~/packages/result/infrastructure-error";
 import { fail, success, unfold, type EmptyResult } from "~/packages/result";
 import { createBackendOpenApiClient } from "~/packages/http-client/create-backend-open-api-client";
 import { HttpBackendApiError } from "~/packages/http-client/http-client-error";
+import type { AsyncMessagePublisherI } from "~/packages/async-messages/async-message-publisher";
 
 export class SignupFlowApiRepositoryGirobet implements SignupFlowApiRepositoryI {
   public async getById(
@@ -117,7 +118,7 @@ export class SignupFlowApiRepositoryGirobet implements SignupFlowApiRepositoryI 
     throw new Error("Unexpected scenario: library did not return data nor error. This should never happen. Response: " + JSON.stringify(response));
   }
 
-  constructor(apiBaseUrl: string, userJurisdiction: string | undefined) {
+  constructor(apiBaseUrl: string, userJurisdiction: string | undefined, asyncMessagePublisher: AsyncMessagePublisherI) {
     const headers: Record<string, string> = {
       "Content-Type": "application/json",
     };
@@ -126,7 +127,7 @@ export class SignupFlowApiRepositoryGirobet implements SignupFlowApiRepositoryI 
       headers["CF-IPCountry"] = userJurisdiction;
     }
 
-    this.apiClient = createBackendOpenApiClient(apiBaseUrl, headers);
+    this.apiClient = createBackendOpenApiClient({ baseUrl: apiBaseUrl, headers }, asyncMessagePublisher);
   }
 
   private apiClient: ReturnType<typeof createBackendOpenApiClient>;

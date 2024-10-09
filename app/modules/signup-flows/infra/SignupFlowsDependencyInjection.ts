@@ -6,6 +6,7 @@ import { SignupFlowApiRepositoryDumb } from "./SignupFlowApiRepositoryDumb";
 import { SubmitSignupFlowOnFormSubmission } from "./ui/SubmitSignupFlowOnFormSubmission";
 import { SignupFlowIdClientRepositoryLocalStorage } from "./SignupFlowIdClientRepositoryLocalStorage";
 import { SignupFlowApiRepositoryGirobet } from "./SignupFlowApiRepositoryGirobet";
+import type { CommonDependenciesI } from "~/dependency-injection/load-di";
 
 export interface SignupFlowsDependencyInjectionI {
   signupFlowApiRepository: SignupFlowApiRepositoryI;
@@ -15,13 +16,13 @@ export interface SignupFlowsDependencyInjectionI {
   };
 }
 
-export const createSignupFlowsDependencyInjection = (publicConfig: PublicRuntimeConfig): SignupFlowsDependencyInjectionI => {
+export const createSignupFlowsDependencyInjection = (publicConfig: PublicRuntimeConfig, commonDependencies: CommonDependenciesI): SignupFlowsDependencyInjectionI => {
   const signupFlowApiRepository: SignupFlowApiRepositoryI = (() => {
     if (!publicConfig.signupFlows.apiBaseUrl) {
       return new SignupFlowApiRepositoryDumb();
     }
 
-    return new SignupFlowApiRepositoryGirobet(publicConfig.signupFlows.apiBaseUrl, publicConfig.signupFlows.apiClientFixedUserJurisdiction);
+    return new SignupFlowApiRepositoryGirobet(publicConfig.signupFlows.apiBaseUrl, publicConfig.signupFlows.apiClientFixedUserJurisdiction, commonDependencies.asyncMessagePublisher);
   })();
 
   const clientSignupFlowIdRepository: SignupFlowIdClientRepositoryI = (() => {

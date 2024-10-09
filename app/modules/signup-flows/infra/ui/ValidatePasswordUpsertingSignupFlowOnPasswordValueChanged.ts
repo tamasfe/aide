@@ -7,7 +7,7 @@ export class ValidatePasswordUpsertingSignupFlowOnPasswordValueChanged {
   public async handle(value: unknown): Promise<boolean | string> {
     const passwordValue = String(value).trim();
 
-    if (!passwordValue) {
+    if (!value || !passwordValue) {
       return this.translateFunction("modal_session.password_required");
     }
 

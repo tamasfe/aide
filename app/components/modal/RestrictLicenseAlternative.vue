@@ -5,9 +5,21 @@ const open = ref(true);
 // ARCHITECTURE STATUS: ✴️
 //   * we need to load the appropriate domain
 // TRANSLATION STATUS:  ✅
-const blockedDomain = ref("girobet.com");
-const allowedDomain = ref("giro.vip");
-const country = ref("Brazil"); // request IP jurisdiction
+
+defineProps({
+  blockedDomain: {
+    type: String,
+    required: true,
+  },
+  allowedDomain: {
+    type: String,
+    required: true,
+  },
+  blockedCountry: {
+    type: String,
+    required: true,
+  },
+});
 </script>
 
 <template>
@@ -21,14 +33,14 @@ const country = ref("Brazil"); // request IP jurisdiction
     <div class="flex flex-col items-center gap-4">
       <h1 class="text-2xl font-semibold text-center">
         {{ $t("modal_restrict.license_alternative_headline", {
-          country,
+          country: blockedCountry,
           allowedDomain: capitalizeBrandDomain(allowedDomain),
         }) }}
       </h1>
 
       <div class="text-emphasis text-center">
         {{ $t("modal_restrict.license_alternative_body", {
-          country,
+          country: blockedCountry,
           blockedDomain: capitalizeBrandDomain(blockedDomain),
           allowedDomain: capitalizeBrandDomain(allowedDomain),
         }) }}

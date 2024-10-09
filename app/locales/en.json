@@ -218,5 +218,13 @@
   "language": {
     "en": "English",
     "pt": "Portuguese"
+  },
+  "jurisdiction": {
+    "ES": "Spain",
+    "PT": "Portugal",
+    "BR": "Brazil",
+    "IN": "India",
+    "US": "United States",
+    "DE": "Germany"
   }
 }

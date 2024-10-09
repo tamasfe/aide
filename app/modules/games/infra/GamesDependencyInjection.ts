@@ -4,6 +4,7 @@ import { GamesApiRepositoryDumb } from "./GamesApiRepositoryDumb";
 import { GamesApiRepositoryGirobet } from "./GamesApiRepositoryGirobet";
 import { FindGameImageSrcByGameId } from "./ui/FindGameImageSrcByGameId";
 import { SearchGamesByCategoryPaginatingOnHorizontalSlider } from "./ui/SearchGamesByCategoryPaginatingOnHorizontalSlider";
+import type { CommonDependenciesI } from "~/dependency-injection/load-di";
 
 export interface GamesDependencyInjectionI {
   ui: {
@@ -12,7 +13,7 @@ export interface GamesDependencyInjectionI {
   };
 }
 
-export const createGamesDependencyInjection = async (publicConfig: PublicRuntimeConfig): Promise<GamesDependencyInjectionI> => {
+export const createGamesDependencyInjection = async (publicConfig: PublicRuntimeConfig, commonDependencies: CommonDependenciesI): Promise<GamesDependencyInjectionI> => {
   const apiBaseUrl = publicConfig.games.apiBaseUrl;
 
   if (!apiBaseUrl || apiBaseUrl === "") {
@@ -29,7 +30,7 @@ export const createGamesDependencyInjection = async (publicConfig: PublicRuntime
   }
 
   const searchGamesByCategoryPaginatingQuery = new SearchGamesByCategoryPaginating(
-    new GamesApiRepositoryGirobet(apiBaseUrl),
+    new GamesApiRepositoryGirobet(apiBaseUrl, commonDependencies.asyncMessagePublisher),
   );
 
   return {

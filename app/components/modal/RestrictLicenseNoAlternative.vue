@@ -6,7 +6,13 @@ const open = ref(true);
 //   * we need to load the appropriate domain
 // TRANSLATION STATUS:  ✅
 const blockedDomain = ref("girobet.com");
-const country = ref("Brazil"); // request IP jurisdiction
+
+defineProps({
+  blockedCountry: {
+    type: String,
+    required: true,
+  },
+});
 </script>
 
 <template>
@@ -20,14 +26,14 @@ const country = ref("Brazil"); // request IP jurisdiction
     <div class="flex flex-col items-center gap-4">
       <h1 class="text-2xl font-semibold text-center">
         {{ $t("modal_restrict.license_no_alternative_headline", {
-          country,
+          country: blockedCountry,
           blockedDomain: capitalizeBrandDomain(blockedDomain),
         }) }}
       </h1>
 
       <div class="mb-4 text-emphasis text-center">
         {{ $t("modal_restrict.license_no_alternative_body", {
-          country,
+          country: blockedCountry,
           blockedDomain: capitalizeBrandDomain(blockedDomain),
         }) }}
       </div>

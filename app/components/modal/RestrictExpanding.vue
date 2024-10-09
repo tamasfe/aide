@@ -6,15 +6,24 @@ const open = ref(true);
 // ARCHITECTURE STATUS: ✴️
 //   * we need to load the appropriate domain
 // TRANSLATION STATUS:  ✅
-const blockedDomain = ref("girobet.com");
-const country = ref("Brazil"); // request IP jurisdiction
+
+const props = defineProps({
+  blockedDomain: {
+    type: String,
+    required: true,
+  },
+  blockedCountry: {
+    type: String,
+    required: true,
+  },
+});
 
 const onNotify = () => {
-  const domain = t("modal_restrict.expanding_subject", {
-    country: country.value,
-    blockedDomain: capitalizeBrandDomain(blockedDomain.value),
+  const notifyMeEmailSubject = t("modal_restrict.expanding_subject", {
+    country: props.blockedCountry,
+    blockedDomain: capitalizeBrandDomain(props.blockedDomain),
   });
-  window.location.href = `mailto:support@girobet.com?subject=${encodeURIComponent(domain)}`;
+  window.location.href = `mailto:support@girobet.com?subject=${encodeURIComponent(notifyMeEmailSubject)}`;
 };
 </script>
 
@@ -29,13 +38,13 @@ const onNotify = () => {
     <div class="flex flex-col items-center gap-4">
       <h1 class="text-2xl font-semibold text-center">
         {{ $t("modal_restrict.expanding_headline", {
-          country,
+          country: blockedCountry,
           blockedDomain: capitalizeBrandDomain(blockedDomain),
         }) }}
       </h1>
 
       <div class="mb-4 text-emphasis text-center">
-        {{ $t("modal_restrict.expanding_body", { country }) }}
+        {{ $t("modal_restrict.expanding_body", { country: blockedCountry }) }}
       </div>
 
       <BaseButton

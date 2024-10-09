@@ -4,10 +4,11 @@ import { fail, success, type Result } from "~/packages/result";
 import { InfrastructureError } from "~/packages/result/infrastructure-error";
 import { createBackendOpenApiClient } from "~/packages/http-client/create-backend-open-api-client";
 import { HttpBackendApiError } from "~/packages/http-client/http-client-error";
+import type { AsyncMessagePublisherI } from "~/packages/async-messages/async-message-publisher";
 
 export class GamesApiRepositoryGirobet implements GamesApiRepositoryI {
-  constructor(apiBaseUrl: string) {
-    this.apiClient = createBackendOpenApiClient(apiBaseUrl);
+  constructor(apiBaseUrl: string, asyncMessagePublisher: AsyncMessagePublisherI) {
+    this.apiClient = createBackendOpenApiClient({ baseUrl: apiBaseUrl }, asyncMessagePublisher);
   }
 
   public async searchByCategoryPaginating(category: string, limit: number, offset: number): Promise<Result<{ games: GameI[]; pagination: { limit: number; offset: number; totalItems: number } }, InfrastructureError>> {
