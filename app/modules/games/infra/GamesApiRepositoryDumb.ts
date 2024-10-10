@@ -5,7 +5,7 @@ import type { InfrastructureError } from "~/packages/result/infrastructure-error
 
 export class GamesApiRepositoryDumb implements GamesApiRepositoryI {
   public async searchByCategoryPaginating(category: string, limit: number, offset: number): Promise<Result<{ games: GameI[]; pagination: { limit: number; offset: number; totalItems: number } }, InfrastructureError>> {
-    console.debug("GamesApiRepositoryDumb.searchByCategoryPaginating called with...", category, limit, offset);
+    console.debug("searchByCategoryPaginating called with...", category, limit, offset);
     return success({
       games: this.games.slice(offset, offset + limit),
       pagination: {

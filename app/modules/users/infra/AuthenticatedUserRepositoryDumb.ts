@@ -1,0 +1,27 @@
+import type { AuthenticatedUserRepositoryI } from "../domain/AuthenticatedUserRepository";
+import type { User } from "../domain/User";
+import type { LoggerI } from "~/packages/logger/Logger";
+import { success, type Result } from "~/packages/result";
+import type { InfrastructureError } from "~/packages/result/infrastructure-error";
+
+export class AuthenticatedUserRepositoryDumb implements AuthenticatedUserRepositoryI {
+  constructor(private logger: LoggerI) {}
+
+  public async searchProfile(): Promise<Result<User | null, InfrastructureError>> {
+    this.logger.debug("searchProfile called");
+    // return fail(
+    //   InfrastructureError.newFromError({}, new Error("fuckall")),
+    // );
+    // return success(
+    //   User.newFromProps({
+    //     id: 1,
+    //     locale: "pt-BR",
+    //     timeZone: "America/Sao_Paulo",
+    //     jurisdiction: "BR",
+    //     email: "ivan@girobet.com",
+    //     telephone: "+5511999999999",
+    //   }),
+    // );
+    return success(null);
+  }
+}

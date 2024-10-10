@@ -8,6 +8,8 @@
 
 const errorMessage = ref();
 const loading = ref(false);
+
+const { $dependencies } = useNuxtApp();
 </script>
 
 <template>
@@ -39,6 +41,7 @@ const loading = ref(false);
         variant="ghost"
         size="ghost"
         class="text-primary hover:underline"
+        @click="$dependencies.users.ui.emitCommandOpenLoginModal.handle()"
       >
         {{ $t("button.login") }}
       </BaseButton>

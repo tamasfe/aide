@@ -4,18 +4,12 @@
 // ARCHITECTURE STATUS: ✅
 // TRANSLATION STATUS:  ✅
 const { $dependencies } = useNuxtApp();
+const userStore = useUserStore();
 
-const authenticated = ref(false);
+await useAsyncData("user-authentication", () => userStore.refreshAuthenticatedUser());
 
 const onClickBalance = async () => {
   await navigateTo("/settings/wallet");
-};
-
-const onClickUnauthenticatedAccountLogo = async () => {
-  $dependencies.common.asyncMessagePublisher.emit(
-    "girobet:commands:modals:open-login",
-    {},
-  );
 };
 
 const onClickUnauthenticatedRegister = async () => {
@@ -47,12 +41,12 @@ const onClickUnauthenticatedRegister = async () => {
           <NuxtLink
             :to="{ name: 'index' }"
             :class="[
-              authenticated
+              userStore.isAuthenticated
                 ? 'min-w-8 sm:min-w-[8.5rem]'
                 : 'min-w-32 sm:min-w-[8.5rem]',
             ]"
           >
-            <IconLogo v-if="!authenticated" />
+            <IconLogo v-if="!userStore.isAuthenticated" />
             <template v-else>
               <IconLogoSmall class="sm:hidden" />
               <IconLogo class="hidden sm:block" />
@@ -61,12 +55,12 @@ const onClickUnauthenticatedRegister = async () => {
         </div>
 
         <div class="flex items-center gap-2.5 sm:gap-3">
-          <template v-if="!authenticated">
+          <template v-if="!userStore.isAuthenticated">
             <BaseButton
               id="app-header-login-button"
               variant="secondary"
               class="h-9 md:h-10"
-              @click="onClickUnauthenticatedAccountLogo"
+              @click="$dependencies.users.ui.emitCommandOpenLoginModal.handle()"
             >
               {{ $t("button.login") }}
             </BaseButton>

@@ -6,6 +6,8 @@
 const authenticated = ref(false);
 const fullScreen = ref(false);
 
+const { $dependencies } = useNuxtApp();
+
 const onToggleFullScreen = () => {
   fullScreen.value = !fullScreen.value;
 };
@@ -47,6 +49,7 @@ const onToggleFullScreen = () => {
           <BaseButton
             variant="subtle"
             class="px-8"
+            @click="$dependencies.users.ui.emitCommandOpenLoginModal.handle()"
           >
             {{ $t("button.login") }}
           </BaseButton>
