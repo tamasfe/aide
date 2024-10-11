@@ -46,6 +46,12 @@ $dependencies.common.asyncMessagePublisher.subscribe(
     currentHost.value = useRequestURL().hostname;
   },
 );
+$dependencies.common.asyncMessagePublisher.subscribe(
+  "girobet:commands:modals:close-user-interaction-modal",
+  () => {
+    modal.value = "";
+  },
+);
 </script>
 
 <template>

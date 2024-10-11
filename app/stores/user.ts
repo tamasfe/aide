@@ -17,18 +17,22 @@ export const useUserStore = defineStore("userStore", {
   }),
 
   actions: {
-    async refreshAuthenticatedUser() {
+    async refreshUser() {
       const { $dependencies } = useNuxtApp();
       const result = await $dependencies.users.queries.searchAuthenticatedUser.handle();
       if (result.isFailure) {
         $dependencies.common.logger.error("Error searching authenticated user inside user store", { error: result.error });
-        return false;
+        this.isAuthenticated = false;
+        this.user = null;
+        return;
       }
+
+      $dependencies.common.logger.debug("Called refreshUser method", { result });
 
       if (result.value === null) {
         this.isAuthenticated = false;
         this.user = null;
-        return false;
+        return;
       }
 
       this.isAuthenticated = true;
@@ -37,7 +41,7 @@ export const useUserStore = defineStore("userStore", {
         locale: result.value.locale,
         timeZone: result.value.timeZone,
       };
-      return true;
+      return;
     },
   },
 });

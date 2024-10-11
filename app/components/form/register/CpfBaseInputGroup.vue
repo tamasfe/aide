@@ -3,7 +3,7 @@ import { useField } from "vee-validate";
 import { ValidateCpfUpsertingSignupFlowOnCpfValueChanged } from "~/modules/signup-flows/infra/ui/ValidateCpfUpsertingSignupFlowOnCpfValueChanged";
 
 /**
- * Depedency injection
+ * Dependency injection
  */
 const { $dependencies } = useNuxtApp();
 const { t: translate } = useI18n();

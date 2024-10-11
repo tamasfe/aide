@@ -4,7 +4,7 @@ import { ValidateTelephoneUpsertingSignupFlowOnTelephoneValueChanged } from "~/m
 import type { SupportedCountryFlagCode } from "~/types/constants";
 
 /**
- * Depedency injection
+ * Dependency injection
  */
 const { $dependencies } = useNuxtApp();
 const { t: translate } = useI18n();

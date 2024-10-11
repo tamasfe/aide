@@ -3,7 +3,7 @@ import type { HTMLAttributes } from "vue";
 
 const props = defineProps<{
   class?: HTMLAttributes["class"];
-  onSubmit?: (values: Record<string, unknown>) => void;
+  onSubmit?: (e?: Event) => void;
 }>();
 </script>
 

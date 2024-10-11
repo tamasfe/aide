@@ -7,16 +7,16 @@ export default defineNuxtPlugin({
   name: "dependency-injection",
   async setup(_nuxtApp) {
     const config = useRuntimeConfig();
-
     const commonDependencies = await loadDependencies();
+    const requestHeaders = useRequestHeaders();
 
     return {
       provide: {
         dependencies: {
           common: commonDependencies,
-          signupFlows: createSignupFlowsDependencyInjection(config.public, commonDependencies),
-          games: await createGamesDependencyInjection(config.public, commonDependencies),
-          users: await createUsersDependencyInjection(commonDependencies),
+          signupFlows: createSignupFlowsDependencyInjection(config.public, commonDependencies, requestHeaders),
+          games: await createGamesDependencyInjection(config.public, commonDependencies, requestHeaders),
+          users: await createUsersDependencyInjection(config.public, commonDependencies, requestHeaders),
         },
       },
     };

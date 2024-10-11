@@ -13,7 +13,7 @@ export interface GamesDependencyInjectionI {
   };
 }
 
-export const createGamesDependencyInjection = async (publicConfig: PublicRuntimeConfig, commonDependencies: CommonDependenciesI): Promise<GamesDependencyInjectionI> => {
+export const createGamesDependencyInjection = async (publicConfig: PublicRuntimeConfig, commonDependencies: CommonDependenciesI, requestHeaders?: Record<string, string>): Promise<GamesDependencyInjectionI> => {
   const apiBaseUrl = publicConfig.games.apiBaseUrl;
 
   if (!apiBaseUrl || apiBaseUrl === "") {
@@ -30,7 +30,7 @@ export const createGamesDependencyInjection = async (publicConfig: PublicRuntime
   }
 
   const searchGamesByCategoryPaginatingQuery = new SearchGamesByCategoryPaginating(
-    new GamesApiRepositoryGirobet(apiBaseUrl, commonDependencies.asyncMessagePublisher),
+    new GamesApiRepositoryGirobet({ baseUrl: apiBaseUrl, headers: requestHeaders, userJurisdiction: publicConfig.genericFixedUserJurisdiction }, commonDependencies.asyncMessagePublisher),
   );
 
   return {

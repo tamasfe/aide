@@ -6,6 +6,7 @@ declare module "nuxt/schema" {
   // }
   interface PublicRuntimeConfig {
     apiBaseUrl: string;
+    genericFixedUserJurisdiction: string | undefined;
     games: {
       apiBaseUrl: string | undefined;
     };
@@ -13,6 +14,9 @@ declare module "nuxt/schema" {
       idsClientRepo: "mock" | "local_storage";
       apiBaseUrl: string | undefined;
       apiClientFixedUserJurisdiction: string | undefined;
+    };
+    users: {
+      authenticatedRepoBaseUrl: string;
     };
   }
 }

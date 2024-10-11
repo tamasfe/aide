@@ -17,7 +17,6 @@
     "withdrawal_amount": "Withdrawal amount"
   },
   "api_client": {
-    "invalid_credentials": "Your email or password is incorrect",
     "signup_try_again": "An error occurred while trying to create your account. Please try again.",
     "signup_success": "Your account has been created successfully"
   },
@@ -60,6 +59,10 @@
     "account_settings": "Account Settings",
     "live_support": "Live Support",
     "logout": "Log out"
+  },
+  "modal_login": {
+    "error_invalid_credentials": "Your email or password are incorrect",
+    "error_unknown": "An error occurred while trying to log in. Please try again."
   },
   "modal_session": {
     "dont_have_account": "Don't have an account yet?",

@@ -5,6 +5,11 @@ const loading = ref(false);
 // DESIGN STATUS:       ✅
 // ARCHITECTURE STATUS: ✅
 // TRANSLATION STATUS:  ✅
+
+const { $dependencies } = useNuxtApp();
+const onClosed = () => {
+  $dependencies.common.asyncMessagePublisher.emit("girobet:commands:modals:close-user-interaction-modal", {});
+};
 </script>
 
 <template>
@@ -15,8 +20,8 @@ const loading = ref(false);
     banner="left"
     banner-left="/assets/images/wheel-2-vertical.png"
     banner-top="/assets/images/wheel-2.png"
+    @close="onClosed"
   >
-    <!-- FormRegister -->
     <FormRegister />
   </BaseModal>
 </template>

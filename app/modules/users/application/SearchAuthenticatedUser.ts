@@ -8,10 +8,10 @@ interface UserResponseI {
 }
 
 export class SearchAuthenticatedUser {
-  constructor(private readonly authenticatedUserSearcher: AuthenticatedUserRepositoryI) {}
+  constructor(private readonly authenticatedUserRepo: AuthenticatedUserRepositoryI) {}
 
   public async handle() {
-    const authenticatedUserResult = await this.authenticatedUserSearcher.searchProfile();
+    const authenticatedUserResult = await this.authenticatedUserRepo.searchProfile();
     if (authenticatedUserResult.isFailure) {
       return authenticatedUserResult;
     }

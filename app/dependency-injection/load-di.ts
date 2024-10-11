@@ -9,8 +9,9 @@ export interface CommonDependenciesI {
 }
 
 export async function loadDependencies(): Promise<CommonDependenciesI> {
+  const logger = new LoggerConsole();
   return {
-    asyncMessagePublisher: new EmitteryAsyncMessagePublisher(),
-    logger: new LoggerConsole(),
+    asyncMessagePublisher: new EmitteryAsyncMessagePublisher(logger),
+    logger,
   };
 }

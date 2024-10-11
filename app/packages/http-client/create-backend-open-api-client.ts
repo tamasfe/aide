@@ -42,8 +42,12 @@ const createMiddlewareJurisdictionErrorHandler: (asyncMessagePublisher: AsyncMes
   };
 };
 
-export const createBackendOpenApiClient = (clientOptions: { baseUrl: string; headers?: Record<string, string> }, asyncMessagePublisher: AsyncMessagePublisherI) => {
-  const client = createClient<paths>({ baseUrl: clientOptions.baseUrl, headers: clientOptions.headers });
+export const createBackendOpenApiClient = (clientOptions: { baseUrl: string; userJurisdiction?: string; headers?: Record<string, string> }, asyncMessagePublisher: AsyncMessagePublisherI) => {
+  const client = createClient<paths>({ baseUrl: clientOptions.baseUrl, credentials: "include", headers: {
+    ...(clientOptions.userJurisdiction ? { "CF-IPCountry": clientOptions.userJurisdiction } : {}),
+    "Content-Type": "application/json",
+    ...clientOptions.headers,
+  } });
   client.use(createMiddlewareJurisdictionErrorHandler(asyncMessagePublisher));
   return client;
 };

@@ -4,17 +4,63 @@
 // TRANSLATION STATUS:  ✅
 // AUTOCOMPLETES:       ✅
 // INPUTMODES:          ✅
-// ZOD SCHEMA:          ✴️
+// ZOD SCHEMA:          ✅
 
-const errorMessage = ref("There was a problem");
-const loading = ref(false);
+import { toTypedSchema } from "@vee-validate/zod";
+import { z } from "zod";
+import { AttemptUserLoginOnFormSubmission } from "~/modules/users/infra/ui/AttemptUserLoginOnFormSubmission";
+
+/**
+ * Dependencies
+ */
+const { $dependencies } = useNuxtApp();
+const { t } = useI18n();
+
+/**
+ * Login Form
+ */
+const validationSchema = toTypedSchema(
+  z.object({
+    email: z.string().email(),
+    password: z.string(),
+  }),
+);
+const { handleSubmit, errors: formErrors, defineField } = useForm({ validationSchema });
+const formErrorMessage = ref("");
+const loadingForm = ref(false);
+const [email, emailAttrs] = defineField("email");
+const [password, passwordAttrs] = defineField("password");
+
+const formIsReadyToSubmit = computed(() =>
+  !loadingForm.value
+  && email.value
+  && password.value
+  && !formErrors.value.email
+  && !formErrors.value.password,
+);
+
+const onSubmit = handleSubmit(async (formData) => {
+  loadingForm.value = true;
+  const errorSubmitting = await new AttemptUserLoginOnFormSubmission(
+    $dependencies.users.queries.loginUser,
+    t,
+    $dependencies.common.logger,
+    $dependencies.common.asyncMessagePublisher,
+  ).handle(
+    formData.email, formData.password,
+  );
+  formErrorMessage.value = errorSubmitting || "";
+  loadingForm.value = false;
+}, ({ results }) => {
+  $dependencies.common.logger.warn("Validation failed", { validationResults: results });
+});
 </script>
 
 <template>
-  <BaseForm>
+  <BaseForm @submit="onSubmit">
     <BaseAlert
-      v-if="errorMessage"
-      :message="errorMessage"
+      v-if="formErrorMessage"
+      :message="formErrorMessage"
       level="error"
     />
 
@@ -22,12 +68,21 @@ const loading = ref(false);
       :placeholder="$t('field.email')"
       autocomplete="email"
       inputmode="email"
+      name="email"
+      :error-message="formErrors.email"
+      v-bind="emailAttrs"
+      @input="(value) => email ? (email = value) : null"
+      @change="(value) => email ? null : email = value"
     />
 
     <BaseInputGroup
       :placeholder="$t('field.password')"
       type="password"
       autocomplete="current-password"
+      name="password"
+      :error-message="formErrors.password"
+      v-bind="passwordAttrs"
+      @input="(value) => password = value"
     />
 
     <div class="mb-4 flex justify-end">
@@ -41,9 +96,11 @@ const loading = ref(false);
     </div>
 
     <BaseButton
-      :loading="loading"
+      :loading="loadingForm"
       size="xl"
       class="w-full"
+      type="submit"
+      :disabled="!formIsReadyToSubmit"
     >
       {{ $t("button.login") }}
     </BaseButton>

@@ -6,8 +6,6 @@
 const { $dependencies } = useNuxtApp();
 const userStore = useUserStore();
 
-await useAsyncData("user-authentication", () => userStore.refreshAuthenticatedUser());
-
 const onClickBalance = async () => {
   await navigateTo("/settings/wallet");
 };

@@ -16,13 +16,13 @@ export interface SignupFlowsDependencyInjectionI {
   };
 }
 
-export const createSignupFlowsDependencyInjection = (publicConfig: PublicRuntimeConfig, commonDependencies: CommonDependenciesI): SignupFlowsDependencyInjectionI => {
+export const createSignupFlowsDependencyInjection = (publicConfig: PublicRuntimeConfig, commonDependencies: CommonDependenciesI, requestHeaders?: Record<string, string>): SignupFlowsDependencyInjectionI => {
   const signupFlowApiRepository: SignupFlowApiRepositoryI = (() => {
     if (!publicConfig.signupFlows.apiBaseUrl) {
       return new SignupFlowApiRepositoryDumb();
     }
 
-    return new SignupFlowApiRepositoryGirobet(publicConfig.signupFlows.apiBaseUrl, publicConfig.signupFlows.apiClientFixedUserJurisdiction, commonDependencies.asyncMessagePublisher);
+    return new SignupFlowApiRepositoryGirobet({ baseUrl: publicConfig.signupFlows.apiBaseUrl, headers: requestHeaders, userJurisdiction: publicConfig.signupFlows.apiClientFixedUserJurisdiction }, commonDependencies.asyncMessagePublisher);
   })();
 
   const clientSignupFlowIdRepository: SignupFlowIdClientRepositoryI = (() => {
@@ -46,6 +46,7 @@ export const createSignupFlowsDependencyInjection = (publicConfig: PublicRuntime
       submitSignupFlowOnFormSubmission: new SubmitSignupFlowOnFormSubmission(
         clientSignupFlowIdRepository,
         signupFlowApiRepository,
+        commonDependencies.asyncMessagePublisher,
       ),
     },
   };

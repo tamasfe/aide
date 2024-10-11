@@ -118,16 +118,8 @@ export class SignupFlowApiRepositoryGirobet implements SignupFlowApiRepositoryI 
     throw new Error("Unexpected scenario: library did not return data nor error. This should never happen. Response: " + JSON.stringify(response));
   }
 
-  constructor(apiBaseUrl: string, userJurisdiction: string | undefined, asyncMessagePublisher: AsyncMessagePublisherI) {
-    const headers: Record<string, string> = {
-      "Content-Type": "application/json",
-    };
-
-    if (userJurisdiction) {
-      headers["CF-IPCountry"] = userJurisdiction;
-    }
-
-    this.apiClient = createBackendOpenApiClient({ baseUrl: apiBaseUrl, headers }, asyncMessagePublisher);
+  constructor(clientOptions: { baseUrl: string; headers?: Record<string, string>; userJurisdiction?: string }, asyncMessagePublisher: AsyncMessagePublisherI) {
+    this.apiClient = createBackendOpenApiClient(clientOptions, asyncMessagePublisher);
   }
 
   private apiClient: ReturnType<typeof createBackendOpenApiClient>;
