@@ -5,9 +5,11 @@ import { createUsersDependencyInjection } from "~/modules/users/infra/UsersDepen
 
 export default defineNuxtPlugin({
   name: "dependency-injection",
+  dependsOn: ["i18n:plugin", "i18n:plugin:switch-locale-path-ssr"],
   async setup(_nuxtApp) {
+    const { $i18n } = useNuxtApp();
     const config = useRuntimeConfig();
-    const commonDependencies = await loadDependencies();
+    const commonDependencies = await loadDependencies($i18n.t);
     const requestHeaders = useRequestHeaders();
 
     return {

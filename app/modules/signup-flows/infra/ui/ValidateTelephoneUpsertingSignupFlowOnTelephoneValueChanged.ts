@@ -10,7 +10,7 @@ export class ValidateTelephoneUpsertingSignupFlowOnTelephoneValueChanged {
     const cleanTelephoneValue = telephoneValue.replace(/\D/g, "");
 
     if (!value || !cleanTelephoneValue) {
-      return this.translateFunction("modal_session.telephone_required");
+      return this.translateFunction("validation.telephone_required");
     }
 
     const telephoneWithPrefix = `${prefixValue}${cleanTelephoneValue}`;

@@ -47,6 +47,8 @@ export const createSignupFlowsDependencyInjection = (publicConfig: PublicRuntime
         clientSignupFlowIdRepository,
         signupFlowApiRepository,
         commonDependencies.asyncMessagePublisher,
+        commonDependencies.translateFunction,
+        commonDependencies.logger,
       ),
     },
   };

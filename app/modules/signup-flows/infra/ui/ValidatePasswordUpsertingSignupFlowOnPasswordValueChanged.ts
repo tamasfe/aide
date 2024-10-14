@@ -8,7 +8,7 @@ export class ValidatePasswordUpsertingSignupFlowOnPasswordValueChanged {
     const passwordValue = String(value).trim();
 
     if (!value || !passwordValue) {
-      return this.translateFunction("modal_session.password_required");
+      return this.translateFunction("validation.password_required");
     }
 
     const resultUpsertingSignupFlow = await this.upsertSignupFlow.handle({
@@ -23,9 +23,9 @@ export class ValidatePasswordUpsertingSignupFlowOnPasswordValueChanged {
         return ((): string => {
           switch (resultUpsertingSignupFlow.error.reason) {
             case "too_long":
-              return this.translateFunction("modal_session.password_invalid_too_long", { max: String(UserPassword.MAX_PASSWORD_LENGTH) });
+              return this.translateFunction("validation.password_invalid_too_long", { max: String(UserPassword.MAX_PASSWORD_LENGTH) });
             case "too_short":
-              return this.translateFunction("modal_session.password_invalid_too_short", { min: String(UserPassword.MIN_PASSWORD_LENGTH) });
+              return this.translateFunction("validation.password_invalid_too_short", { min: String(UserPassword.MIN_PASSWORD_LENGTH) });
           }
         })();
       }

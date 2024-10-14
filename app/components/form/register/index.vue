@@ -11,7 +11,7 @@
 // Submitting to backend:       ❌
 // Integration testing:         ❌
 
-const { handleSubmit, errors: formErrors } = useForm();
+const { handleSubmit, meta } = useForm();
 const { $dependencies } = useNuxtApp();
 
 const errorMessage = ref<null | string>(null);
@@ -25,9 +25,6 @@ const onSubmit = handleSubmit(async () => {
 }
 , ({ results }) => {
   console.warn("Validation failed", results);
-  // console.log(values); // current form values
-  // console.log(errors); // a map of field names and their first error message
-  // console.log(results); // a detailed map of field names and their validation results
 });
 </script>
 
@@ -64,7 +61,7 @@ const onSubmit = handleSubmit(async () => {
       size="xl"
       class="w-full gap-1.5"
       type="submit"
-      :disabled="formErrors ? Object.keys(formErrors).length > 0 : false"
+      :disabled="!meta.valid"
       @click="onSubmit"
     >
       <span>{{ $t("button.create_account") }}</span>

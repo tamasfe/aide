@@ -70,16 +70,7 @@
     "forgot_password": "Forgot your password?",
     "accept_terms": "By signing up, you agree to our",
     "have_account": "Have an account already?",
-    "cpf_invalid": "Invalid CPF",
-    "cpf_required": "CPF is required",
-    "email_invalid": "Invalid email",
-    "email_required": "Email is required",
-    "telephone_invalid": "Invalid phone",
-    "telephone_required": "Phone is required",
-    "password_invalid": "Invalid password",
-    "password_required": "Password is required",
-    "password_invalid_too_short": "Password must be longer than {min}",
-    "password_invalid_too_long": "Password must be shorter than {max}"
+    "error_submitting_flow": "An error occurred while registering your account. Please try again."
   },
   "modal_payments": {
     "make_deposit": "Make a Deposit",
@@ -104,6 +95,18 @@
     "license_alternative_body": "Due to the restrictions of our gaming license, the url {blockedDomain} cannot accept players located in {country}. However, we can provide you a full unrestricted experience on our dedicated {country} website at {allowedDomain}!",
     "license_no_alternative_headline": "Sorry, {blockedDomain} is not available within {country}",
     "license_no_alternative_body": "Due to the restrictions of our gaming license, the url {blockedDomain} cannot accept players located in {country}. If you think this is a mistake, please check your connection or with your ISP. We apologize for the inconvenience and hope to serve you in the near future."
+  },
+  "validation": {
+    "cpf_invalid": "Invalid CPF",
+    "cpf_required": "CPF is required",
+    "email_invalid": "Invalid email",
+    "email_required": "Email is required",
+    "password_invalid": "Invalid password",
+    "password_required": "Password is required",
+    "password_invalid_too_short": "Password must be longer than {min}",
+    "password_invalid_too_long": "Password must be shorter than {max}",
+    "telephone_invalid": "Invalid phone",
+    "telephone_required": "Phone is required"
   },
   "withdrawal_limits": {
     "summary": "For an easy, secure and simple withdraw process, make sure to follow these guidelines: The minimum withdrawal amount varies by method and is listed above. Withdrawals are always to be processed to the original deposit method unless otherwise specified or if that method doesn't support withdrawals."

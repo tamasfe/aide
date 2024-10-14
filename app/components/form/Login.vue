@@ -21,23 +21,15 @@ const { t } = useI18n();
  */
 const validationSchema = toTypedSchema(
   z.object({
-    email: z.string().email(),
-    password: z.string(),
+    email: z.string({ required_error: t("validation.email_required"), invalid_type_error: t("validation.email_invalid") }).email(),
+    password: z.string({ required_error: t("validation.password_required") }),
   }),
 );
-const { handleSubmit, errors: formErrors, defineField } = useForm({ validationSchema });
+const { handleSubmit, errors: formErrors, defineField, meta } = useForm({ validationSchema });
 const formErrorMessage = ref("");
 const loadingForm = ref(false);
 const [email, emailAttrs] = defineField("email");
 const [password, passwordAttrs] = defineField("password");
-
-const formIsReadyToSubmit = computed(() =>
-  !loadingForm.value
-  && email.value
-  && password.value
-  && !formErrors.value.email
-  && !formErrors.value.password,
-);
 
 const onSubmit = handleSubmit(async (formData) => {
   loadingForm.value = true;
@@ -100,7 +92,7 @@ const onSubmit = handleSubmit(async (formData) => {
       size="xl"
       class="w-full"
       type="submit"
-      :disabled="!formIsReadyToSubmit"
+      :disabled="!meta.valid"
     >
       {{ $t("button.login") }}
     </BaseButton>

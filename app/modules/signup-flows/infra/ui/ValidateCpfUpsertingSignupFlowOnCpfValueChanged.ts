@@ -7,7 +7,7 @@ export class ValidateCpfUpsertingSignupFlowOnCpfValueChanged {
     const cpfValue = String(value);
 
     if (!value || !cpfValue) {
-      return this.translateFunction("modal_session.cpf_required");
+      return this.translateFunction("validation.cpf_required");
     }
 
     const resultUpsertingSignupFlow = await this.upsertSignupFlow.handle({
@@ -20,7 +20,7 @@ export class ValidateCpfUpsertingSignupFlowOnCpfValueChanged {
     if (resultUpsertingSignupFlow.isFailure) {
       // TODO: depending of the typed error: handle returning a translation key or another
       if (resultUpsertingSignupFlow.error.name === "InvalidCPF") {
-        return this.translateFunction("modal_session.cpf_invalid");
+        return this.translateFunction("validation.cpf_invalid");
       }
 
       return resultUpsertingSignupFlow.error.message;

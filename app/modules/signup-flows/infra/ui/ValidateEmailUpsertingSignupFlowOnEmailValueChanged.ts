@@ -7,7 +7,7 @@ export class ValidateEmailUpsertingSignupFlowOnEmailValueChanged {
     const emailValue = String(value);
 
     if (!value || !emailValue) {
-      return this.translateFunction("modal_session.email_required");
+      return this.translateFunction("validation.email_required");
     }
 
     const resultUpsertingSignupFlow = await this.upsertSignupFlow.handle({
@@ -20,7 +20,7 @@ export class ValidateEmailUpsertingSignupFlowOnEmailValueChanged {
     if (resultUpsertingSignupFlow.isFailure) {
       // TODO: depending of the typed error: handle returning a translation key or another
       if (resultUpsertingSignupFlow.error.name === "InvalidUserEmail") {
-        return this.translateFunction("modal_session.email_invalid");
+        return this.translateFunction("validation.email_invalid");
       }
 
       return resultUpsertingSignupFlow.error.message;
