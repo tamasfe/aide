@@ -11,4 +11,9 @@ export class AuthenticationRepositoryDumb implements AuthenticationRepositoryI {
     this.logger.debug("login called", { email });
     return success();
   }
+
+  public async logout(): Promise<EmptyResult<InfrastructureError>> {
+    this.logger.debug("logout called", {});
+    return success();
+  }
 }

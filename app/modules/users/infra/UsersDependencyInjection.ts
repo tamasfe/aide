@@ -3,20 +3,24 @@ import { SearchAuthenticatedUser } from "../application/SearchAuthenticatedUser"
 import type { AuthenticatedUserRepositoryI } from "../domain/AuthenticatedUserRepository";
 import type { AuthenticationRepositoryI } from "../domain/AuthenticationRepository";
 import { LoginUser } from "../application/LoginUser";
+import { LogoutUser } from "../application/LogoutUser";
 import { AuthenticatedUserRepositoryDumb } from "./AuthenticatedUserRepositoryDumb";
 import { EmitCommandOpenLoginModal } from "./ui/EmitCommandOpenLoginModal";
 import { AuthenticatedUserSearcherGirobet } from "./AuthenticatedUserRepositoryGirobet";
 import { AuthenticationRepositoryDumb } from "./AuthenticationRepositoryDumb";
 import { AuthenticationRepositoryGirobet } from "./AuthenticationRepositoryGirobet";
+import { AttemptUserLoginOnFormSubmission } from "./ui/AttemptUserLoginOnFormSubmission";
+import { LogoutCurrentUserFromButtonClick } from "./ui/LogoutCurrentUserFromButtonClick";
 import type { CommonDependenciesI } from "~/dependency-injection/load-di";
 
 export interface UsersDependencyInjectionI {
   queries: {
     searchAuthenticatedUser: SearchAuthenticatedUser;
-    loginUser: LoginUser;
   };
   ui: {
     emitCommandOpenLoginModal: EmitCommandOpenLoginModal;
+    attemptUserLoginOnFormSubmission: AttemptUserLoginOnFormSubmission;
+    logoutCurrentUserFromButtonClick: LogoutCurrentUserFromButtonClick;
   };
 }
 export const createUsersDependencyInjection = async (config: PublicRuntimeConfig, commonDependencies: CommonDependenciesI, requestHeaders?: Record<string, string>): Promise<UsersDependencyInjectionI> => {
@@ -37,10 +41,19 @@ export const createUsersDependencyInjection = async (config: PublicRuntimeConfig
   return {
     queries: {
       searchAuthenticatedUser: new SearchAuthenticatedUser(authenticatedUserRepo),
-      loginUser: new LoginUser(authenticationRepo),
     },
     ui: {
       emitCommandOpenLoginModal: new EmitCommandOpenLoginModal(commonDependencies.asyncMessagePublisher),
+      attemptUserLoginOnFormSubmission: new AttemptUserLoginOnFormSubmission(
+        new LoginUser(authenticationRepo, commonDependencies.asyncMessagePublisher),
+        commonDependencies.translateFunction,
+        commonDependencies.logger,
+        commonDependencies.asyncMessagePublisher,
+      ),
+      logoutCurrentUserFromButtonClick: new LogoutCurrentUserFromButtonClick(
+        new LogoutUser(authenticationRepo, commonDependencies.asyncMessagePublisher),
+        commonDependencies.logger,
+      ),
     },
   };
 };

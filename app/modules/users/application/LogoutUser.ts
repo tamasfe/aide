@@ -2,22 +2,21 @@ import type { AuthenticationRepositoryI } from "../domain/AuthenticationReposito
 import type { AsyncMessagePublisherI } from "~/packages/async-messages/async-message-publisher";
 import { success } from "~/packages/result";
 
-export class LoginUser {
+export class LogoutUser {
   constructor(
     private authenticationRepository: AuthenticationRepositoryI,
     private asyncMessagePublisher: AsyncMessagePublisherI,
   ) {}
 
   public async handle(
-    username: string,
-    password: string,
   ) {
-    const result = await this.authenticationRepository.login(username, password);
+    const result = await this.authenticationRepository.logout();
     if (result.isFailure) {
       return result;
     }
 
-    this.asyncMessagePublisher.emit("girobet:events:users:user-logged-in", {});
+    this.asyncMessagePublisher.emit("girobet:events:users:user-logged-out", {});
+
     return success();
   }
 }

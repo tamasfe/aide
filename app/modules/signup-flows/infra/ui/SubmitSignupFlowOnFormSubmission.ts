@@ -15,7 +15,7 @@ export class SubmitSignupFlowOnFormSubmission {
   ) {}
 
   public async handle(): Promise<string | null> {
-    const result = await new SubmitSignupFlow(this.flowIdClientRepository, this.apiRepository).handle();
+    const result = await new SubmitSignupFlow(this.flowIdClientRepository, this.apiRepository, this.asyncMessagePublisher).handle();
 
     if (result.isFailure) {
       // TODO: Handle common API errors
@@ -23,7 +23,6 @@ export class SubmitSignupFlowOnFormSubmission {
       return this.translateFunction("modal_session.error_submitting_flow");
     }
 
-    this.asyncMessagePublisher.emit("girobet:events:users:user-logged-in", { });
     this.asyncMessagePublisher.emit("girobet:commands:modals:close-user-interaction-modal", {});
 
     return null;

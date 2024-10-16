@@ -41,5 +41,29 @@ export class AuthenticationRepositoryGirobet implements AuthenticationRepository
     return fail(InfrastructureError.newFromError({ data, error, response }, new Error("Unexpected scenario: library did not return data nor error. This should never happen")));
   }
 
+  public async logout(): Promise<EmptyResult<InfrastructureError>> {
+    try {
+      const { data, error, response } = await this.apiClient.GET("/auth/logout", {
+        redirect: "follow",
+      });
+
+      if (data) {
+        return success();
+      }
+
+      if (error) {
+        const httpError = HttpBackendApiError.newFromBackendError(error, response);
+        return fail(
+          InfrastructureError.newFromError({}, httpError),
+        );
+      }
+
+      return fail(InfrastructureError.newFromError({ data, error, response }, new Error("Unexpected scenario: library did not return data nor error. This should never happen")));
+    }
+    catch (error) {
+      return fail(InfrastructureError.newFromUnknownError({ }, error));
+    }
+  }
+
   private apiClient: ReturnType<typeof createBackendOpenApiClient>;
 }

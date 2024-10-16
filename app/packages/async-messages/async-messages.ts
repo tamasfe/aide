@@ -14,4 +14,5 @@ export interface AsyncMessagesTypes {
   "girobet:commands:modals:close-user-interaction-modal": object;
 
   "girobet:events:users:user-logged-in": object;
+  "girobet:events:users:user-logged-out": object;
 }

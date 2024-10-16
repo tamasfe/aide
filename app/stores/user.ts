@@ -22,19 +22,16 @@ export const useUserStore = defineStore("userStore", {
       const result = await $dependencies.users.queries.searchAuthenticatedUser.handle();
       if (result.isFailure) {
         $dependencies.common.logger.error("Error searching authenticated user inside user store", { error: result.error });
+      }
+
+      // Remove previously logged in user
+      if (result.isFailure || result.value === null) {
         this.isAuthenticated = false;
         this.user = null;
         return;
       }
 
-      $dependencies.common.logger.debug("Called refreshUser method", { result });
-
-      if (result.value === null) {
-        this.isAuthenticated = false;
-        this.user = null;
-        return;
-      }
-
+      // Save logged in user
       this.isAuthenticated = true;
       this.user = {
         id: result.value.id,

@@ -10,41 +10,49 @@ import {
 //   * close popup when clicking
 
 const { t } = useI18n();
+const { $dependencies } = useNuxtApp();
+
+const onClickLogout = async () => $dependencies.users.ui.logoutCurrentUserFromButtonClick.handle();
 
 const links = [
   {
+    key: "wallet",
     title: t("user_nav.wallet"),
     icon: "lucide:wallet",
-    to: {
-      name: "settings-wallet",
+    action: {
+      toPage: "settings-wallet",
     },
   },
   {
+    key: "history",
     title: t("user_nav.history"),
     icon: "lucide:table-properties",
-    to: {
-      name: "history-deposits",
+    action: {
+      toPage: "history-deposits",
     },
   },
   {
+    key: "account_settings",
     title: t("user_nav.account_settings"),
     icon: "lucide:cog",
-    to: {
-      name: "settings-account",
+    action: {
+      toPage: "settings-account",
     },
   },
   {
+    key: "live_support",
     title: t("user_nav.live_support"),
     icon: "lucide:message-circle-question",
-    to: {
-      name: "todo",
+    action: {
+      toPage: "todo",
     },
   },
   {
+    key: "logout",
     title: t("user_nav.logout"),
     icon: "lucide:log-out",
-    to: {
-      name: "todo",
+    action: {
+      buttonOnClick: onClickLogout,
     },
   },
 ];
@@ -80,21 +88,42 @@ const links = [
       >
         <PopoverPanel class="absolute right-0 z-10 mt-4">
           <div class="flex flex-col py-2 bg-emphasis/85 backdrop-blur-xl rounded-default">
-            <NuxtLink
-              v-for="(link, index) in links"
-              :key="index"
-              :to="link.to"
-              class="border-emphasis px-6 h-10 min-w-[14rem] flex items-center text-emphasis hover:text-white whitespace-nowrap"
+            <div
+              v-for="item in links"
+              :key="item.key"
             >
-              <Icon
-                :name="link.icon"
-                size="22"
-                class="flex-shrink-0 text-subtle"
-              />
-              <span class="block w-full ml-4 text-[0.85rem]">
-                {{ link.title }}
-              </span>
-            </NuxtLink>
+              <NuxtLink
+                v-if="item.action.toPage"
+                :to="item.action.toPage"
+                class="border-emphasis px-6 h-10 min-w-[14rem] flex items-center text-emphasis hover:text-white whitespace-nowrap"
+              >
+                <Icon
+                  :name="item.icon"
+                  size="22"
+                  class="flex-shrink-0 text-subtle"
+                />
+                <span class="block w-full ml-4 text-[0.85rem]">
+                  {{ item.title }}
+                </span>
+              </NuxtLink>
+
+              <BaseButton
+                v-if="item.action.buttonOnClick"
+                variant="ghost"
+                type="button"
+                class="border-emphasis px-6 h-10 min-w-[14rem] flex items-center justify-start text-emphasis hover:text-white whitespace-nowrap font-normal w-full"
+                @click="item.action.buttonOnClick"
+              >
+                <Icon
+                  :name="item.icon"
+                  size="22"
+                  class="flex-shrink-0 text-subtle"
+                />
+                <span class="block ml-4 text-[0.85rem]">
+                  {{ item.title }}
+                </span>
+              </BaseButton>
+            </div>
           </div>
         </PopoverPanel>
       </transition>

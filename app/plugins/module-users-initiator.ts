@@ -14,6 +14,10 @@ export default defineNuxtPlugin({
       "girobet:events:users:user-logged-in",
       () => userStore.refreshUser(),
     );
+    $dependencies.common.asyncMessagePublisher.subscribe(
+      "girobet:events:users:user-logged-out",
+      () => userStore.refreshUser(),
+    );
 
     /**
      *

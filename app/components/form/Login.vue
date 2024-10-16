@@ -8,7 +8,6 @@
 
 import { toTypedSchema } from "@vee-validate/zod";
 import { z } from "zod";
-import { AttemptUserLoginOnFormSubmission } from "~/modules/users/infra/ui/AttemptUserLoginOnFormSubmission";
 
 /**
  * Dependencies
@@ -33,12 +32,7 @@ const [password, passwordAttrs] = defineField("password");
 
 const onSubmit = handleSubmit(async (formData) => {
   loadingForm.value = true;
-  const errorSubmitting = await new AttemptUserLoginOnFormSubmission(
-    $dependencies.users.queries.loginUser,
-    t,
-    $dependencies.common.logger,
-    $dependencies.common.asyncMessagePublisher,
-  ).handle(
+  const errorSubmitting = await $dependencies.users.ui.attemptUserLoginOnFormSubmission.handle(
     formData.email, formData.password,
   );
   formErrorMessage.value = errorSubmitting || "";
