@@ -1,5 +1,7 @@
 import type { SignupFlowApiRepositoryI } from "../domain/SignupFlowApiRepositoryI";
 import type { SignupFlowIdClientRepositoryI } from "../domain/SignupFlowIdClientRepositoryI";
+import type { UserLanguageRetrieverI } from "../domain/UserLanguageRetriever";
+import type { UserTimeZoneRetrieverI } from "../domain/UserTimeZoneRetriever";
 import { UserCPF } from "~/modules/users/domain/UserCPF";
 import { UserEmail } from "~/modules/users/domain/UserEmail";
 import { UserPassword } from "~/modules/users/domain/UserPassword";
@@ -31,6 +33,8 @@ export class UpsertSignupFlow {
   constructor(
     private readonly clientSignupFlowIdRepository: SignupFlowIdClientRepositoryI,
     private readonly signupFlowApiRepositoryI: SignupFlowApiRepositoryI,
+    private readonly userTimeZoneRetriever: UserTimeZoneRetrieverI,
+    private readonly userLanguageRetriever: UserLanguageRetrieverI,
   ) {}
 
   public async handle(signupFlowPayload: Payload) {
@@ -73,12 +77,24 @@ export class UpsertSignupFlow {
       return errorSavingCurrentFlowIdResult;
     }
 
+    const userLocaleResult = await this.userLanguageRetriever.search();
+    if (userLocaleResult.isFailure) {
+      return userLocaleResult;
+    }
+
+    const userTimeZoneResult = await this.userTimeZoneRetriever.search();
+    if (userTimeZoneResult.isFailure) {
+      return userTimeZoneResult;
+    }
+
     const updatedSignupFlowResult = currentSignupFlowResult.value.newUpdatingProps(
       {
         email: userEmailResult.value?.value,
         cpf: userCPFResult.value?.value,
         password: userPasswordResult.value?.value,
         telephone: signupFlowPayload.telephone,
+        locale: userLocaleResult.value,
+        timeZone: userTimeZoneResult.value,
       },
     );
 

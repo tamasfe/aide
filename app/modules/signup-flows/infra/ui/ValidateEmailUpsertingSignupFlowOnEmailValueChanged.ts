@@ -1,5 +1,5 @@
-import { UpsertSignupFlow } from "../../application/UpsertSignupFlow";
-import type { SignupFlowsDependencyInjectionI } from "../SignupFlowsDependencyInjection";
+import type { UpsertSignupFlow } from "../../application/UpsertSignupFlow";
+import type { LoggerI } from "~/packages/logger/Logger";
 import type { TranslateFunctionType } from "~/packages/translation/TranslateFunctionType";
 
 export class ValidateEmailUpsertingSignupFlowOnEmailValueChanged {
@@ -18,26 +18,22 @@ export class ValidateEmailUpsertingSignupFlowOnEmailValueChanged {
     });
 
     if (resultUpsertingSignupFlow.isFailure) {
-      // TODO: depending of the typed error: handle returning a translation key or another
       if (resultUpsertingSignupFlow.error.name === "InvalidUserEmail") {
         return this.translateFunction("validation.email_invalid");
       }
 
-      return resultUpsertingSignupFlow.error.message;
+      this.logger.error("Error while upserting the signup flow with the email", { error: resultUpsertingSignupFlow.error });
+      return this.translateFunction("modal_session.error_validating_field");
     }
 
     return true;
   }
 
-  private upsertSignupFlow: UpsertSignupFlow;
-
   constructor(
-    dependencies: SignupFlowsDependencyInjectionI,
+    private upsertSignupFlow: UpsertSignupFlow,
     private translateFunction: TranslateFunctionType,
+    private logger: LoggerI,
   ) {
-    this.upsertSignupFlow = new UpsertSignupFlow(
-      dependencies.clientSignupFlowIdRepository,
-      dependencies.signupFlowApiRepository,
-    );
+
   }
 }

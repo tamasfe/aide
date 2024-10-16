@@ -14,6 +14,8 @@ export class SignupFlowApiRepositoryDumb implements SignupFlowApiRepositoryI {
       password: null,
       cpf: null,
       telephone: null,
+      timeZone: null,
+      locale: null,
     },
     )));
   }

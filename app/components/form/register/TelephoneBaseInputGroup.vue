@@ -1,22 +1,17 @@
 <script setup lang="ts">
 import { useField } from "vee-validate";
-import { ValidateTelephoneUpsertingSignupFlowOnTelephoneValueChanged } from "~/modules/signup-flows/infra/ui/ValidateTelephoneUpsertingSignupFlowOnTelephoneValueChanged";
 import type { SupportedCountryFlagCode } from "~/types/constants";
 
 /**
  * Dependency injection
  */
 const { $dependencies } = useNuxtApp();
-const { t: translate } = useI18n();
 
 /**
  * Due to the need of using Zod's "parseAsync" I haven't found a way to concat min and max length validations with the use case
  */
 const { value: telephone, errorMessage: telephoneErrorMessage, validate: validateTelephoneChange } = useField("telephone", value =>
-  new ValidateTelephoneUpsertingSignupFlowOnTelephoneValueChanged(
-    $dependencies.signupFlows,
-    translate,
-  ).handle(value, selectedPrefix.value.value),
+  $dependencies.signupFlows.ui.validateTelephoneUpsertingSignupFlowOnTelephoneValueChanged.handle(value, selectedPrefix.value.value),
 );
 
 type TelephonePrefixOption = {

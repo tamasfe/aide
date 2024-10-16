@@ -34,6 +34,8 @@ export class SignupFlowApiRepositoryGirobet implements SignupFlowApiRepositoryI 
         password: (data.fields.password || null) as string | null,
         cpf: (data.fields.cpf || null) as string | null,
         telephone: (data.fields.telephone || null) as string | null,
+        locale: (data.fields.locale || null) as string | null,
+        timeZone: (data.fields.timezone || null) as string | null,
       },
       )));
     }
@@ -96,6 +98,12 @@ export class SignupFlowApiRepositoryGirobet implements SignupFlowApiRepositoryI 
     }
     if (signupFlow.telephone !== null) {
       requestBody.phone = signupFlow.telephone;
+    }
+    if (signupFlow.timeZone !== null) {
+      requestBody.time_zone = signupFlow.timeZone;
+    }
+    if (signupFlow.locale !== null) {
+      requestBody.language = signupFlow.locale;
     }
     const { data, error, response } = await this.apiClient.PATCH("/signup/flow/{flow_id}", {
       params: {

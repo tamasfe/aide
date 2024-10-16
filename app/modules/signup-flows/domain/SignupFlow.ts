@@ -9,6 +9,8 @@ export interface SignupFlowPropsI {
   password: null | string;
   cpf: null | string;
   telephone: null | string;
+  locale: null | string;
+  timeZone: null | string;
 }
 
 export class SignupFlow {
@@ -29,7 +31,7 @@ export class SignupFlow {
     }
 
     return success(
-      new SignupFlow(props.id, userEmailResult.value, userPasswordResult.value, userCPFResult.value, props.telephone),
+      new SignupFlow(props.id, userEmailResult.value, userPasswordResult.value, userCPFResult.value, props.telephone, props.locale, props.timeZone),
     );
   }
 
@@ -47,6 +49,8 @@ export class SignupFlow {
     public readonly password: null | UserPassword,
     public readonly cpf: null | UserCPF,
     public readonly telephone: null | string,
+    public readonly locale: null | string,
+    public readonly timeZone: null | string,
   ) {}
 
   public toJSON(): SignupFlowPropsI {
@@ -56,6 +60,8 @@ export class SignupFlow {
       password: this.password?.value ?? null,
       cpf: this.cpf?.value ?? null,
       telephone: this.telephone,
+      locale: this.locale,
+      timeZone: this.timeZone,
     };
   }
 }

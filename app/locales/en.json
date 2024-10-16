@@ -70,7 +70,8 @@
     "forgot_password": "Forgot your password?",
     "accept_terms": "By signing up, you agree to our",
     "have_account": "Have an account already?",
-    "error_submitting_flow": "An error occurred while registering your account. Please try again."
+    "error_submitting_flow": "An error occurred while registering your account. Please try again.",
+    "error_validating_field": "Error validating field. Please refresh and try again"
   },
   "modal_payments": {
     "make_deposit": "Make a Deposit",

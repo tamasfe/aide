@@ -1,5 +1,5 @@
-import { UpsertSignupFlow } from "../../application/UpsertSignupFlow";
-import type { SignupFlowsDependencyInjectionI } from "../SignupFlowsDependencyInjection";
+import type { UpsertSignupFlow } from "../../application/UpsertSignupFlow";
+import type { LoggerI } from "~/packages/logger/Logger";
 import type { TranslateFunctionType } from "~/packages/translation/TranslateFunctionType";
 
 export class ValidateTelephoneUpsertingSignupFlowOnTelephoneValueChanged {
@@ -23,21 +23,17 @@ export class ValidateTelephoneUpsertingSignupFlowOnTelephoneValueChanged {
     });
 
     if (resultUpsertingSignupFlow.isFailure) {
-      return resultUpsertingSignupFlow.error.message;
+      this.logger.error("Error while upserting the signup flow with the telephone", { error: resultUpsertingSignupFlow.error });
+      return this.translateFunction("modal_session.error_validating_field");
     }
 
     return true;
   }
 
-  private upsertSignupFlow: UpsertSignupFlow;
-
   constructor(
-    dependencies: SignupFlowsDependencyInjectionI,
+    private upsertSignupFlow: UpsertSignupFlow,
     private translateFunction: TranslateFunctionType,
+    private logger: LoggerI,
   ) {
-    this.upsertSignupFlow = new UpsertSignupFlow(
-      dependencies.clientSignupFlowIdRepository,
-      dependencies.signupFlowApiRepository,
-    );
   }
 }
