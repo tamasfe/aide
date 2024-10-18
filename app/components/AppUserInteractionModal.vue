@@ -1,9 +1,12 @@
 <script setup lang="ts">
 const { $dependencies } = useNuxtApp();
 const { t } = useI18n();
+const { hostname } = useRequestURL();
 
-const modal = ref("");
-const blockedCountry = ref("");
+const modal = useState("user-modal", () => "");
+const blockedCountry = useState("user-modal-blocked-country", () => "");
+const currentHost = useState("user-modal-current-host", () => "");
+const allowedDomain = useState<string | null>("user-modal-allowed-domain", () => null);
 
 $dependencies.common.asyncMessagePublisher.subscribe(
   "girobet:commands:modals:open-login",
@@ -11,22 +14,18 @@ $dependencies.common.asyncMessagePublisher.subscribe(
     modal.value = "login";
   },
 );
-
 $dependencies.common.asyncMessagePublisher.subscribe(
   "girobet:commands:modals:open-register",
   () => {
     modal.value = "register";
   },
 );
-
-const currentHost = ref("");
-const allowedDomain = ref<string | null>(null);
 $dependencies.common.asyncMessagePublisher.subscribe(
   "girobet:commands:modals:open-restrict-expanding",
   (eventData) => {
     modal.value = "restrict_expanding";
     blockedCountry.value = t("jurisdiction." + eventData.jurisdiction, eventData.jurisdiction);
-    currentHost.value = useRequestURL().hostname;
+    currentHost.value = hostname;
   },
 );
 $dependencies.common.asyncMessagePublisher.subscribe(
@@ -35,7 +34,7 @@ $dependencies.common.asyncMessagePublisher.subscribe(
     modal.value = "restrict_license_alternative";
     blockedCountry.value = t("jurisdiction." + eventData.jurisdiction, eventData.jurisdiction);
     allowedDomain.value = eventData.allowedDomain;
-    currentHost.value = useRequestURL().hostname;
+    currentHost.value = hostname;
   },
 );
 $dependencies.common.asyncMessagePublisher.subscribe(
@@ -43,7 +42,7 @@ $dependencies.common.asyncMessagePublisher.subscribe(
   (eventData) => {
     modal.value = "restrict_license_no_alternative";
     blockedCountry.value = t("jurisdiction." + eventData.jurisdiction, eventData.jurisdiction);
-    currentHost.value = useRequestURL().hostname;
+    currentHost.value = hostname;
   },
 );
 $dependencies.common.asyncMessagePublisher.subscribe(

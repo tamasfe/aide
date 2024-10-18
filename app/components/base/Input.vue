@@ -71,3 +71,12 @@ const props = withDefaults(defineProps<{
     @change="event => $emit('change', event.target?.value ?? '')"
   >
 </template>
+
+<style scoped>
+  /* To remove the MacOS auto-fill styles */
+  input:-webkit-autofill {
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: rgb(var(--giro-bg-text-emphasis)) !important;
+    -webkit-text-stroke: unset;
+  }
+</style>

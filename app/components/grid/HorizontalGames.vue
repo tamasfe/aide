@@ -1,12 +1,10 @@
 <script setup lang="ts">
-// STATUS:
-// - Move loading into wrapper?
-
 const props = defineProps<{
   categoryIdentifier: string;
 }>();
 
 const { $dependencies } = useNuxtApp();
+const { t } = useI18n();
 
 const slidesToScroll = ref({
   sm: 3,
@@ -22,12 +20,12 @@ const columns = ref({
   xl: 8,
 });
 
-const query = $dependencies.games.ui.searchGamesByCategoryPaginatingOnHorizontalSlider;
+const query = $dependencies.games.ui.searchGamesByCategoryPaginatingOnSlider;
 
 const loading = ref(false);
-const nextGamesPageToSearch = ref(0);
-const gameIds = ref<number[]>([]);
-const canLoadMore = ref(true);
+const nextGamesPageToSearch = useState(`grid-horizontal-games-next-page-for-${props.categoryIdentifier}`, () => 0);
+const gameIds = useState<number[]>(`grid-horizontal-games-ids-for-${props.categoryIdentifier}`, () => []);
+const canLoadMore = useState(`grid-horizontal-games-can-load-more-for-${props.categoryIdentifier}`, () => true);
 
 const onLoadData = async () => {
   if (!canLoadMore.value) return;
@@ -42,11 +40,12 @@ const onLoadData = async () => {
   loading.value = false;
 };
 
-await onLoadData();
+await useAsyncData(`load-games-for-${props.categoryIdentifier}`, () => onLoadData().then(() => true));
 </script>
 
 <template>
   <GridHeaderHorizontal
+    v-if="gameIds.length > 0"
     :data="gameIds"
     :loading="loading"
     :can-load-more="canLoadMore"
@@ -57,7 +56,7 @@ await onLoadData();
     @trigger:load="onLoadData"
   >
     <template #title>
-      <GridHeaderTitle title="🔥 Top Trending" />
+      <GridHeaderTitle :title="t(`category.${categoryIdentifier}`)" />
     </template>
 
     <template #options>

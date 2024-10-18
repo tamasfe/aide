@@ -18,7 +18,7 @@ const createMiddlewareJurisdictionErrorHandler: (asyncMessagePublisher: AsyncMes
         switch (jsonResponse.code) {
           case "JURISDICTION_NOT_SUPPORTED":
             error = ErrorJurisdictionIsNotSupported.newNotSupported(jsonResponse.metadata.jurisdiction);
-            emitOpenJurisdictionModalOnJurisdictionNotSupported.handle(error);
+            await emitOpenJurisdictionModalOnJurisdictionNotSupported.handle(error);
             return;
 
           case "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE":
@@ -26,12 +26,12 @@ const createMiddlewareJurisdictionErrorHandler: (asyncMessagePublisher: AsyncMes
               jsonResponse.metadata.jurisdiction,
               [jsonResponse.metadata.alternative_site.redirect_url],
             );
-            emitOpenJurisdictionModalOnJurisdictionNotSupported.handle(error);
+            await emitOpenJurisdictionModalOnJurisdictionNotSupported.handle(error);
             return;
 
           case "JURISDICTION_NOT_SUPPORTED_NETWORK_CONFIGURATION":
             error = ErrorJurisdictionIsNotSupported.newNotSupportedForUser(jsonResponse.metadata.jurisdiction);
-            emitOpenJurisdictionModalOnJurisdictionNotSupported.handle(error);
+            await emitOpenJurisdictionModalOnJurisdictionNotSupported.handle(error);
             return;
 
           default:

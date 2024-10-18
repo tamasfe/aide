@@ -17,6 +17,13 @@
 // TRANSLATION STATUS:  ✅
 
 const { isMobile } = useDevice();
+const { params } = useRoute();
+
+const { $dependencies } = useNuxtApp();
+
+const { data: categories } = await useAsyncData(`game-${params.id}-categories`, async () => {
+  return $dependencies.games.ui.searchGameCategoriesByGroup.handle("game_page");
+});
 </script>
 
 <template>
@@ -28,8 +35,11 @@ const { isMobile } = useDevice();
 
       <GameDescription class="bg-subtle" />
 
-      <GridHorizontalGames category-identifier="top-games" />
-      <GridHorizontalGames category-identifier="top-games" />
+      <GridHorizontalGames
+        v-for="category in categories"
+        :key="category.identifier"
+        :category-identifier="category.identifier"
+      />
     </div>
   </div>
 </template>

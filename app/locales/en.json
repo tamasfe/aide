@@ -212,13 +212,21 @@
     }
   },
   "category": {
+    "blackjack": "Blackjack",
     "casual": "Casual",
+    "card": "Card",
     "craps": "Craps",
     "crash": "Crash",
     "fishing": "Fishing",
+    "jackpot": "Jackpot",
+    "live": "Live",
     "lottery": "Lottery",
     "mines": "Mines",
+    "poker": "Poker",
     "scratch": "Scratch",
+    "slots": "Slots",
+    "table": "Table",
+    "roulette": "Roulette",
     "video_poker": "Video Poker",
     "virtual_sports": "Virtual Sports"
   },

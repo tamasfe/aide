@@ -1,41 +1,35 @@
 <script setup lang="ts">
-// STATUS:
-// - Title will come from props
-const generateFakeData = (max: number) => {
-  return new Array(max).fill(0).map((d, i) => ({
-    index: i,
-    title: `Game ${i + 1}`,
-    value: d,
-  }));
+const props = defineProps<{
+  categoryIdentifier: string;
+}>();
+
+const { $dependencies } = useNuxtApp();
+const { t } = useI18n();
+const { navigateBackOrHome } = useNavigateBackOrHome();
+
+const query = $dependencies.games.ui.searchGamesByCategoryPaginatingOnSlider;
+
+const loading = ref(false);
+const totalGamesOfCategory = useState(`grid-vertical-games-total-for-${props.categoryIdentifier}`, () => 0);
+const nextGamesPageToSearch = useState(`grid-vertical-games-next-page-for-${props.categoryIdentifier}`, () => 0);
+const gameIds = useState<number[]>(`grid-vertical-games-ids-for-${props.categoryIdentifier}`, () => []);
+const canLoadMore = useState(`grid-vertical-games-can-load-more-for-${props.categoryIdentifier}`, () => true);
+
+const onLoadData = async () => {
+  if (!canLoadMore.value) return;
+  if (loading.value) return;
+  loading.value = true;
+
+  const { games: foundGames, canLoadMore: updatedCanLoadMore, totalGames } = await query.handle(props.categoryIdentifier, nextGamesPageToSearch.value);
+  gameIds.value.push(...foundGames.map(game => game.id));
+  canLoadMore.value = updatedCanLoadMore;
+  nextGamesPageToSearch.value += 1;
+  totalGamesOfCategory.value = totalGames;
+
+  loading.value = false;
 };
 
-// GameCategory related
-const data = ref(generateFakeData(30));
-const max = 60;
-
-const loading = ref(true);
-
-const onLoadMore = () => {
-  const newData = generateFakeData(10);
-  data.value = [...data.value, ...newData];
-};
-
-// temp utils
-const getImageId = (idx: number) => {
-  const index = idx;
-  // 8 max images will not anyways be used in the final version
-  return (index % 8) + 1;
-};
-
-onMounted(() => {
-  setTimeout(() => {
-    loading.value = false;
-  }, 1000);
-});
-
-const onClickHome = async () => {
-  await navigateTo("/");
-};
+await useAsyncData(`load-games-for-${props.categoryIdentifier}`, () => onLoadData().then(() => true));
 </script>
 
 <template>
@@ -46,7 +40,7 @@ const onClickHome = async () => {
           variant="subtle"
           size="sm"
           class="p-1.5"
-          @click="onClickHome"
+          @click="navigateBackOrHome"
         >
           <Icon
             name="lucide:arrow-left"
@@ -54,38 +48,42 @@ const onClickHome = async () => {
           />
         </BaseButton>
 
-        <GridHeaderTitle title="🔥 Top Trending" />
+        <GridHeaderTitle :title="t(`category.${categoryIdentifier}`)" />
       </div>
     </template>
+
+    <!--
+    (Extract from @Travis on Slack 16/10/2024) TODO in the future:
+    The base select here will allow, eventually, people to be able to sort games by:
+    - most popular
+    - name
+    - if they click a category like "blackjack" which includes multiple providers: it will also allow filtering by provider name
 
     <template #options>
       <div class="w-full max-w-[12rem]">
         <BaseSelect size="sm" />
       </div>
-    </template>
+    </template> -->
+
     <GridVertical
-      :data="data"
-      :total-count="max"
+      :data="gameIds"
+      :total-count="totalGamesOfCategory"
       :columns="{ sm: 3, md: 4, lg: 5, xl: 6 }"
       aspect-ratio="3/4"
       pagination
-      @trigger:load="onLoadMore"
+      @trigger:load="onLoadData"
     >
-      <template #default="{ data: datapoint }">
+      <template #default="{ data: gameId }">
         <NuxtLink
           :to="{
             name: 'games-id',
             params: {
-              id: datapoint.index,
+              id: gameId,
             },
           }"
           class="block bg-subtle rounded-default w-full h-full overflow-hidden"
         >
-          <NuxtImg
-            :src="`/assets/images/games/${getImageId(datapoint.index)}.png`"
-            alt=""
-            class="block w-full h-full object-cover transition-transform transform hover:scale-105 cursor-pointer"
-          />
+          <GamesImageLoader :game-id="gameId" />
         </NuxtLink>
       </template>
     </GridVertical>

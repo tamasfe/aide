@@ -6,19 +6,19 @@ export class EmitOpenJurisdictionModalOnJurisdictionNotSupported {
 
   public async handle(error: ErrorJurisdictionIsNotSupported): Promise<void> {
     if (error.recommendedAlternativeSite) {
-      this.asyncMessagePublisher.emit("girobet:commands:modals:open-restrict-alternative", {
+      await this.asyncMessagePublisher.emit("girobet:commands:modals:open-restrict-alternative", {
         jurisdiction: error.jurisdiction,
         allowedDomain: error.recommendedAlternativeSite,
       });
       return;
     }
     if (error.userJurisdictionDoesNotMatchNetwork) {
-      this.asyncMessagePublisher.emit("girobet:commands:modals:open-restrict-network-issues", {
+      await this.asyncMessagePublisher.emit("girobet:commands:modals:open-restrict-network-issues", {
         jurisdiction: error.jurisdiction,
       });
       return;
     }
-    this.asyncMessagePublisher.emit("girobet:commands:modals:open-restrict-expanding", {
+    await this.asyncMessagePublisher.emit("girobet:commands:modals:open-restrict-expanding", {
       jurisdiction: error.jurisdiction,
     });
     return;
