@@ -9,8 +9,7 @@ use crate::{
 use axum::{
     body::Body,
     extract::{
-        Extension, Form, Host, Json, MatchedPath, OriginalUri, Path, Query, RawQuery,
-        State,
+        Extension, Form, Host, Json, MatchedPath, OriginalUri, Path, Query, RawQuery, State,
     },
 };
 
@@ -105,6 +104,16 @@ where
                 extensions: IndexMap::default(),
             },
         );
+    }
+}
+
+#[cfg(feature = "axum-extra-json-deserializer")]
+impl<T> OperationInput for axum_extra::extract::JsonDeserializer<T>
+where
+    T: JsonSchema,
+{
+    fn operation_input(ctx: &mut crate::gen::GenContext, operation: &mut Operation) {
+        Json::<T>::operation_input(ctx, operation);
     }
 }
 

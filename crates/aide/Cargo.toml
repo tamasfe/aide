@@ -47,6 +47,7 @@ axum-extra-cookie = ["axum", "axum-extra", "axum-extra/cookie"]
 axum-extra-cookie-private = ["axum", "axum-extra", "axum-extra/cookie-private"]
 axum-extra-form = ["axum", "axum-extra", "axum-extra/form"]
 axum-extra-query = ["axum", "axum-extra", "axum-extra/query"]
+axum-extra-json-deserializer = ["axum", "axum-extra", "axum-extra/json-deserializer"]
 axum-wasm = ["axum"]
 
 
