@@ -1,0 +1,50 @@
+name: Release
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+jobs:
+  build-container:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          role-to-assume: arn:aws:iam::891377191070:role/github-actions-role
+          role-session-name: github-actions
+          aws-region: sa-east-1
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+        with:
+          registries: 891377191070
+          mask-password: "true"
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build
+        run: pnpm build
+
+      - name: Build and Push
+        id: docker_build
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          tags: |
+            891377191070.dkr.ecr.sa-east-1.amazonaws.com/girobet-frontend
+            891377191070.dkr.ecr.sa-east-1.amazonaws.com/girobet-frontend:${{ github.sha }}
