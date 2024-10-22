@@ -128,6 +128,13 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
                 "4XX": {
                     headers: {
                         [name: string]: unknown;
@@ -140,6 +147,110 @@ export interface paths {
         };
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/forgot-password": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Password reset request
+         * @description This endpoint will take a user email and send out a password reset email to the user.
+         *     The email will contain a link that the user can click on to reset their password. The link will be valid for 60 minutes.
+         *     Note that this endpoint will always return a 200 status code, even if the email does not exist in the database.
+         *     This is to prevent attackers from using this endpoint to determine if an email exists in the database.
+         *     The endpoint will also always take the same amount of time to respond, regardless of whether the email exists in the database or not.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["PasswordResetRequestBody"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/reset-password": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Password reset
+         * @description This endpoint takes a password reset token and the newly chosen password from the user.
+         *     The token is sent to the user's email when they request a password reset.
+         *     If the token is valid, the user's password will be updated to the new password.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["PasswordResetBody"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
         delete?: never;
         options?: never;
         head?: never;
@@ -173,12 +284,12 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                201: {
+                200: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["FlowCreateResponse"];
+                        "application/json": components["schemas"]["SignupFlowCreateResponse"];
                     };
                 };
                 "4XX": {
@@ -227,7 +338,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["SignupFlow"];
+                        "application/json": components["schemas"]["SignupFlowResponse"];
                     };
                 };
                 "4XX": {
@@ -407,13 +518,12 @@ export interface paths {
                 };
             };
             responses: {
+                /** @description no content */
                 200: {
                     headers: {
                         [name: string]: unknown;
                     };
-                    content: {
-                        "application/json": components["schemas"]["PaymentMethodDepositResponsePayload"];
-                    };
+                    content?: never;
                 };
                 "4XX": {
                     headers: {
@@ -458,7 +568,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["PaymentFlowResult"][];
+                        "application/json": components["schemas"]["PaymentFlowResponse"][];
                     };
                 };
                 "4XX": {
@@ -492,7 +602,7 @@ export interface paths {
             parameters: {
                 query: {
                     currency: components["schemas"]["SystemCurrency"];
-                    payment_method: components["schemas"]["PaymentMethod"];
+                    payment_method_id: components["schemas"]["PaymentMethodId"];
                 };
                 header?: never;
                 path?: never;
@@ -758,7 +868,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["PaginatorResponse_for_GameSearchResult_and_GameSearchQuery"];
+                        "application/json": components["schemas"]["PaginatorResponse_for_GameSearchResponse_and_GameSearchQuery"];
                     };
                 };
                 "4XX": {
@@ -812,7 +922,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["GameCategory"][];
+                        "application/json": components["schemas"]["CategoryResponse"][];
                     };
                 };
                 "4XX": {
@@ -860,7 +970,7 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["CreateGameRating"];
+                    "application/json": components["schemas"]["GameRatingRequestBody"];
                 };
             };
             responses: {
@@ -916,7 +1026,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["Game"];
+                        "application/json": components["schemas"]["GameResponse"];
                     };
                 };
                 "4XX": {
@@ -963,12 +1073,14 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                /** @description no content */
+                /** @description byte stream */
                 200: {
                     headers: {
                         [name: string]: unknown;
                     };
-                    content?: never;
+                    content: {
+                        "application/octet-stream": unknown;
+                    };
                 };
                 "4XX": {
                     headers: {
@@ -1018,7 +1130,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["PaginatorResponse_for_Notification_and_NotificationListFilter"];
+                        "application/json": components["schemas"]["PaginatorResponse_for_NotificationResponse_and_NotificationListFilterRequestQuery"];
                     };
                 };
                 "4XX": {
@@ -1115,7 +1227,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["UserAccount"];
+                        "application/json": components["schemas"]["UserResponse"];
                     };
                 };
                 "4XX": {
@@ -1161,7 +1273,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["WalletBalance"][];
+                        "application/json": components["schemas"]["WalletBalanceResponse"][];
                     };
                 };
                 "4XX": {
@@ -1407,46 +1519,81 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/kyc/token": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get KYC Access Token
+         * @description This endpoint returns a temporary short-lived token that is bound to the user.
+         *     It can be used in conjunction with a KYC provider's SDK to perform KYC validation in the frontend.
+         *
+         *
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AccessTokenResponse"];
+                    };
+                };
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        AccessTokenResponse: {
+            /** @description KYC provider identifier. This should be used to differentiate which WebSDK/flow to use. */
+            provider_identifier: components["schemas"]["KycProviderIdentifier"];
+            /** @description Access token provided by the KYC integration */
+            token: string;
+            /** @description User ID, this is the current user, and should never deviate from the current user */
+            user_id: components["schemas"]["UserId"];
+            user_metadata: components["schemas"]["KycUserMetadata"];
+        };
+        AlternativeSite: {
+            base_url: components["schemas"]["SystemUrl"];
+            name: string;
+            servable: boolean;
+        };
         /** @enum {string} */
         CategoryGroup: "home" | "game_page" | "inventory";
-        CreateGameRating: {
-            rating?: components["schemas"]["GameRating"] | null;
-        };
-        CreateGameSessionRequestQuery: {
-            client_type: components["schemas"]["SystemDevice"];
-            currency: components["schemas"]["SystemCurrency"];
-        };
-        /** Format: int64 */
-        DurationSeconds: number;
-        FlowCreateResponse: {
-            flow_id: string;
-        };
-        Game: {
-            /** Format: date-time */
-            created_at: string;
-            description?: string | null;
-            devices: components["schemas"]["SystemDevice"][];
-            id: components["schemas"]["GameId"];
-            is_hd: boolean;
-            jurisdiction_strategy: components["schemas"]["JurisdictionStrategyDiscriminants"];
-            metadata: Record<string, never>;
-            name: string;
-            payout: string;
-            /** Format: date */
-            recalled_at?: string | null;
-            /** Format: date */
-            released_at?: string | null;
-            slug: string;
-            volatility: components["schemas"]["SystemGameVolatility"];
-        };
-        GameCategory: {
+        CategoryResponse: {
             id: components["schemas"]["GameCategoryId"];
             identifier: string;
         };
+        /** Format: int64 */
+        DurationSeconds: number;
         /** Format: int64 */
         GameCategoryId: number;
         GameCategoryListFilter: {
@@ -1454,43 +1601,65 @@ export interface components {
         };
         /** Format: int64 */
         GameId: number;
+        GameImageRequestQuery: {
+            variant?: components["schemas"]["GameImageVariant"];
+        };
         /** @enum {string} */
         GameImageVariant: "extra_small" | "small" | "medium" | "large" | "background";
-        GamePathParams: {
-            game_id: components["schemas"]["GameId"];
-        };
         /** Format: int64 */
         GameProviderId: number;
         /** @enum {string} */
         GameRating: "Like" | "Dislike";
+        GameRatingRequestBody: {
+            rating?: components["schemas"]["GameRating"] | null;
+        };
+        GameRequestPathParams: {
+            game_id: components["schemas"]["GameId"];
+        };
+        GameResponse: {
+            /** Format: date-time */
+            created_at: string;
+            description?: string | null;
+            devices: components["schemas"]["SystemDevice"][];
+            id: components["schemas"]["GameId"];
+            is_hd: boolean;
+            metadata?: {
+                [key: string]: unknown;
+            } | null;
+            name: string;
+            /** Format: date */
+            recalled_at?: string | null;
+            /** Format: date */
+            released_at?: string | null;
+            slug: string;
+        };
         GameSearchQuery: {
             category?: string | null;
             query?: string | null;
         };
-        GameSearchResult: {
+        GameSearchResponse: {
             id: components["schemas"]["GameId"];
             name: string;
-            provider: components["schemas"]["ProviderSearchResult"];
+            provider: components["schemas"]["ProviderSearchResponse"];
             slug: string;
         };
-        GetGameImageQuery: {
-            variant?: components["schemas"]["GameImageVariant"];
-        };
-        GetPaymentLimitsQuery: {
+        GameSessionRequestQuery: {
+            client_type: components["schemas"]["SystemDevice"];
             currency: components["schemas"]["SystemCurrency"];
-            payment_method: components["schemas"]["PaymentMethod"];
         };
         InternalError: string;
-        Jurisdiction: {
-            code: components["schemas"]["SystemCountry"];
-            currencies: components["schemas"]["SystemCurrency"][];
-            name: string;
+        /** @enum {string} */
+        KycProviderIdentifier: "sumsub";
+        KycUserMetadata: {
+            /** @description User's jurisdiction country code in ISO 3166-1 alpha-2 format */
+            country_alpha2: string;
+            /** @description User's email */
+            email: string;
+            /** @description User's jurisdiction country code in ISO 3166-1 alpha-3 format User's language in ISO 639-1 format */
+            language: string;
+            /** @description User's phone number in E.164 format */
+            phone_number: string;
         };
-        /**
-         * @description Auto-generated discriminant enum variants
-         * @enum {string}
-         */
-        JurisdictionStrategyDiscriminants: "include" | "exclude";
         LeaseTokenResponse: {
             /** Format: uuid */
             token: string;
@@ -1521,19 +1690,22 @@ export interface components {
             username: string;
         };
         MaybeOperator: unknown;
-        Notification: {
+        /** Format: int64 */
+        NotificationId: number;
+        NotificationListFilterRequestQuery: {
+            read_status?: components["schemas"]["ReadStatus"] | null;
+            types?: components["schemas"]["NotificationTypeDiscriminants"][] | null;
+        };
+        NotificationRequestPathParams: {
+            notification_id: components["schemas"]["NotificationId"];
+        };
+        NotificationResponse: {
             /** Format: date-time */
             created_at: string;
             data: components["schemas"]["NotificationType"];
             id: components["schemas"]["NotificationId"];
             /** Format: date-time */
             read_at?: string | null;
-        };
-        /** Format: int64 */
-        NotificationId: number;
-        NotificationListFilter: {
-            read_status?: components["schemas"]["ReadStatus"] | null;
-            types?: components["schemas"]["NotificationTypeDiscriminants"][] | null;
         };
         NotificationType: {
             data: {
@@ -1543,6 +1715,9 @@ export interface components {
             /** @enum {string} */
             type: "payment_status_update";
         } | {
+            /** @enum {string} */
+            type: "kyc_completed";
+        } | {
             data: string;
             /** @enum {string} */
             type: "test_status";
@@ -1551,13 +1726,13 @@ export interface components {
          * @description Auto-generated discriminant enum variants
          * @enum {string}
          */
-        NotificationTypeDiscriminants: "payment_status_update" | "test_status";
+        NotificationTypeDiscriminants: "payment_status_update" | "kyc_completed" | "test_status";
         PaginatorMetadata_for_GameSearchQuery: {
             filters?: components["schemas"]["GameSearchQuery"] | null;
             pagination: components["schemas"]["PaginatorPosition"];
         };
-        PaginatorMetadata_for_NotificationListFilter: {
-            filters?: components["schemas"]["NotificationListFilter"] | null;
+        PaginatorMetadata_for_NotificationListFilterRequestQuery: {
+            filters?: components["schemas"]["NotificationListFilterRequestQuery"] | null;
             pagination: components["schemas"]["PaginatorPosition"];
         };
         PaginatorPosition: {
@@ -1574,13 +1749,13 @@ export interface components {
             /** Format: int64 */
             total_items: number;
         };
-        PaginatorResponse_for_GameSearchResult_and_GameSearchQuery: {
-            data: components["schemas"]["GameSearchResult"][];
+        PaginatorResponse_for_GameSearchResponse_and_GameSearchQuery: {
+            data: components["schemas"]["GameSearchResponse"][];
             metadata: components["schemas"]["PaginatorMetadata_for_GameSearchQuery"];
         };
-        PaginatorResponse_for_Notification_and_NotificationListFilter: {
-            data: components["schemas"]["Notification"][];
-            metadata: components["schemas"]["PaginatorMetadata_for_NotificationListFilter"];
+        PaginatorResponse_for_NotificationResponse_and_NotificationListFilterRequestQuery: {
+            data: components["schemas"]["NotificationResponse"][];
+            metadata: components["schemas"]["PaginatorMetadata_for_NotificationListFilterRequestQuery"];
         };
         PaginatorSelection: {
             /**
@@ -1594,15 +1769,17 @@ export interface components {
              */
             offset: number;
         };
-        PathParams: {
-            flow_id: string;
+        PasswordResetBody: {
+            password: string;
+            /** Format: uuid */
+            token: string;
         };
-        PathParams2: {
-            notification_id: components["schemas"]["NotificationId"];
+        PasswordResetRequestBody: {
+            email: string;
         };
         /** Format: int64 */
         PaymentFlowId: number;
-        PaymentFlowResult: {
+        PaymentFlowResponse: {
             amount: string;
             /** Format: date-time */
             completed_at?: string | null;
@@ -1611,33 +1788,39 @@ export interface components {
             currency: components["schemas"]["SystemCurrency"];
             id: components["schemas"]["PaymentFlowId"];
             identifier: string;
-            payment_method: components["schemas"]["PaymentMethod"];
-            payment_provider: components["schemas"]["PaymentProvider"];
+            payment_method_id: components["schemas"]["PaymentMethodId"];
+            payment_provider_id: components["schemas"]["PaymentProviderId"];
             payment_type: components["schemas"]["PaymentType"];
             wallet_id: components["schemas"]["WalletId"];
         };
         /** @enum {string} */
         PaymentLimitBound: "min" | "max";
-        /** @enum {string} */
-        PaymentMethod: "pix";
+        PaymentLimitsRequestQuery: {
+            currency: components["schemas"]["SystemCurrency"];
+            payment_method_id: components["schemas"]["PaymentMethodId"];
+        };
         PaymentMethodDepositResponsePayload: {
             pix: {
                 flow_id: string;
                 url: string;
             };
         };
+        /** Format: int64 */
+        PaymentMethodId: number;
         /** @enum {string} */
-        PaymentProvider: "paybrokers" | "starspay";
+        PaymentMethodIdentifier: "pix";
+        /** Format: int64 */
+        PaymentProviderId: number;
         /** @enum {string} */
         PaymentStatus: "pending" | "waiting_for_approval" | "approved" | "processing" | "completed" | "failed" | "cancelled" | "rejected" | "refunded";
         PaymentTransactionRequestBody: {
             amount: string;
             currency: components["schemas"]["SystemCurrency"];
-            payment_method: components["schemas"]["PaymentMethod"];
+            payment_method_id: components["schemas"]["PaymentMethodId"];
         };
         /** @enum {string} */
         PaymentType: "deposit" | "withdrawal";
-        ProviderSearchResult: {
+        ProviderSearchResponse: {
             id: components["schemas"]["GameProviderId"];
             name: string;
             slug: string;
@@ -1713,6 +1896,15 @@ export interface components {
             code: "PAYMENT_FLOW_NOT_AWAITING_APPROVAL";
         } | {
             /** @enum {string} */
+            code: "PAYMENT_PROVIDER_NOT_FOUND";
+        } | {
+            /** @enum {string} */
+            code: "PAYMENT_METHOD_NOT_FOUND";
+        } | {
+            /** @enum {string} */
+            code: "KYC_PROVIDER_NOT_FOUND";
+        } | {
+            /** @enum {string} */
             code: "SEARCH_INDEX_NOT_FOUND";
         } | {
             /** @enum {string} */
@@ -1722,7 +1914,7 @@ export interface components {
             code: "USER_MISSING_PAYMENT_METHOD_ACCOUNT_TYPE_IDENTIFIER";
             metadata: {
                 account_type: string;
-                payment_method: components["schemas"]["PaymentMethod"];
+                payment_method: components["schemas"]["PaymentMethodIdentifier"];
             };
         } | {
             /** @enum {string} */
@@ -1730,6 +1922,12 @@ export interface components {
         } | {
             /** @enum {string} */
             code: "USER_INVALID_DOCUMENT";
+        } | {
+            /** @enum {string} */
+            code: "USER_ADDRESS_MISSING";
+        } | {
+            /** @enum {string} */
+            code: "USER_KYC_REQUIRED";
         } | {
             /** @enum {string} */
             code: "JURISDICTION_NOT_SUPPORTED";
@@ -1742,7 +1940,7 @@ export interface components {
             code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
             metadata: {
                 /** @description Alternative site that the user may be redirected to */
-                alternative_site: components["schemas"]["SiteResponse"];
+                alternative_site: components["schemas"]["AlternativeSite"];
                 /** @description The violating jurisdiction. */
                 jurisdiction: components["schemas"]["SystemCountry"];
             };
@@ -1823,7 +2021,13 @@ export interface components {
             code: "INTERNAL";
             metadata: components["schemas"]["InternalError"];
         };
-        SignupFlow: {
+        SignupFlowCreateResponse: {
+            flow_id: string;
+        };
+        SignupFlowRequestPathParams: {
+            flow_id: string;
+        };
+        SignupFlowResponse: {
             /** Format: date-time */
             created_at: string;
             fields: {
@@ -1836,8 +2040,8 @@ export interface components {
             [key: string]: unknown;
         };
         SiteResponse: {
+            base_url: components["schemas"]["SystemUrl"];
             name: string;
-            redirect_url: string;
             servable: boolean;
         };
         /**
@@ -1849,8 +2053,6 @@ export interface components {
         SystemCurrency: unknown;
         /** @enum {string} */
         SystemDevice: "mobile" | "desktop";
-        /** @enum {string} */
-        SystemGameVolatility: "none" | "very-low" | "low" | "medium-low" | "medium" | "medium-high" | "high" | "very-high" | "extreme";
         /** @enum {string} */
         SystemGender: "male" | "female" | "other";
         SystemPhoneNumber: {
@@ -1865,6 +2067,8 @@ export interface components {
                 value: number;
             };
         };
+        /** Format: uri */
+        SystemUrl: string;
         SystemValidationError: {
             code: string;
             message?: string | null;
@@ -1884,45 +2088,27 @@ export interface components {
             deposit?: string | null;
             withdrawal?: string | null;
         };
-        UserAccount: {
-            attributes: {
-                [key: string]: unknown;
-            };
+        /** Format: int64 */
+        UserId: number;
+        UserResponse: {
             /** Format: date */
             birthdate: string;
-            /** Format: date-time */
-            blocked_until?: string | null;
-            /** Format: date-time */
-            created_at: string;
-            /** Format: date-time */
-            deleted_at?: string | null;
             email: string;
-            email_verified: boolean;
-            /** Format: date-time */
-            excluded_until?: string | null;
             family_name?: string | null;
             gender?: components["schemas"]["SystemGender"] | null;
             id: components["schemas"]["UserId"];
-            jurisdiction: components["schemas"]["Jurisdiction"];
+            jurisdiction: components["schemas"]["SystemCountry"];
             language: string;
             name: string;
             phone: components["schemas"]["SystemPhoneNumber"];
-            phone_verified: boolean;
-            settings: {
-                [key: string]: unknown;
-            };
             time_zone: string;
-            /** Format: date-time */
-            updated_at: string;
         };
-        /** Format: int64 */
-        UserId: number;
         UserSettings: {
             language?: components["schemas"]["MaybeOperator"];
             pix_payment_key?: components["schemas"]["MaybeOperator"];
             primary_currency?: components["schemas"]["MaybeOperator"];
         };
-        WalletBalance: {
+        WalletBalanceResponse: {
             balance: string;
             currency: components["schemas"]["SystemCurrency"];
         };
