@@ -67,8 +67,8 @@ const props = withDefaults(defineProps<{
       inputVariants({ variant, size }),
       props.class,
     )"
-    @input="event => $emit('input', event.target?.value ?? '')"
-    @change="event => $emit('change', event.target?.value ?? '')"
+    @input="event => $emit('input', (event.target as HTMLInputElement)?.value ?? '')"
+    @change="event => $emit('change', (event.target as HTMLInputElement)?.value ?? '')"
   >
 </template>
 

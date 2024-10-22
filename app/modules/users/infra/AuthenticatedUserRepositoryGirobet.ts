@@ -29,7 +29,7 @@ export class AuthenticatedUserSearcherGirobet implements AuthenticatedUserReposi
           id: data.id,
           locale: data.language,
           timeZone: data.time_zone,
-          jurisdiction: data.jurisdiction.code,
+          jurisdiction: data.jurisdiction,
           email: data.email,
           telephone: `+${data.phone.code.value}${data.phone.national.value}`,
         }));

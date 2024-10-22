@@ -1,4 +1,4 @@
-<script setup lang="ts" generic="T extends unknown[]">
+<script setup lang="ts" generic="T extends number[]">
 // STATUS:
 // - Missing translations
 import type { CSSProperties } from "vue";

@@ -2,11 +2,7 @@
 // STATUS:
 // - Title will come from props
 const generateFakeData = (max: number) => {
-  return new Array(max).fill(0).map((d, i) => ({
-    index: i,
-    title: `Game ${i + 1}`,
-    value: d,
-  }));
+  return new Array(max).fill(0).map((d, i) => (i));
 };
 
 // GameCategory related
@@ -59,9 +55,10 @@ const onClickHome = async () => {
     </template>
 
     <template #options>
+      <!-- TODO: allow options for search
       <div class="w-full max-w-[12rem]">
         <BaseSelect size="sm" />
-      </div>
+      </div> -->
     </template>
     <GridVertical
       :data="data"
@@ -71,18 +68,18 @@ const onClickHome = async () => {
       pagination
       @trigger:load="onLoadMore"
     >
-      <template #default="{ data: datapoint }">
+      <template #default="{ data: gameId }">
         <NuxtLink
           :to="{
             name: 'games-id',
             params: {
-              id: datapoint.index,
+              id: gameId,
             },
           }"
           class="block bg-subtle rounded-default w-full h-full overflow-hidden"
         >
           <NuxtImg
-            :src="`/assets/images/games/${getImageId(datapoint.index)}.png`"
+            :src="`/assets/images/games/${getImageId(gameId)}.png`"
             alt=""
             class="block w-full h-full object-cover transition-transform transform hover:scale-105 cursor-pointer"
           />
