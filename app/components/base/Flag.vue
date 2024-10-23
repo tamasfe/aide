@@ -33,7 +33,7 @@ const props = defineProps<{
   class?: HTMLAttributes["class"];
 }>();
 
-// @ts-expect-error - Yeah glob
+// @ts-expect-error - proper type isn't exported from nuxt
 const glob = import.meta.glob("~/assets/svg/flags/active/*.svg", {
   eager: true,
 });
