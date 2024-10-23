@@ -55,13 +55,7 @@ jobs:
             891377191070.dkr.ecr.sa-east-1.amazonaws.com/girobet-frontend:${{ github.sha }}
 
       - name: Update image tag
-        run: |
-          # First install yq
-          wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/local/bin/yq
-          chmod +x /usr/local/bin/yq
-
-          # Update using yq
-          yq -i '.spec.template.spec.containers[0].image = "891377191070.dkr.ecr.sa-east-1.amazonaws.com/girobet-frontend:${{ github.sha }}"' .argocd/chart/templates/deployment.yaml
+        run: yq -i '.image.tag = "${{ github.sha }}"' helm/values.yaml
 
 
       - name: Deploy to ArgoCD
