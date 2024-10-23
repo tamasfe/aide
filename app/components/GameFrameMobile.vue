@@ -4,10 +4,31 @@
 // ARCHITECTURE STATUS:  ✴️
 //   * If clicking "Play" or "Vote" when not logged in, you need to show modal popup
 
-const authenticated = ref(false);
+const props = defineProps({
+  gameTitle: {
+    type: String,
+    required: true,
+  },
+  gameId: {
+    type: Number,
+    required: true,
+  },
+  authenticated: {
+    type: Boolean,
+    required: true,
+  },
+});
+
 const playing = ref(false);
 
-const onTogglePlaying = () => {
+const { $dependencies } = useNuxtApp();
+
+const onTogglePlaying = async () => {
+  if (!props.authenticated) {
+    await $dependencies.users.ui.emitCommandOpenUserActionModal.handle("login");
+    return;
+  }
+
   // must check if logged in etc, this is just pseudocode to show UI state
   playing.value = !playing.value;
 };
@@ -16,6 +37,7 @@ const onTogglePlaying = () => {
 <template>
   <div class="flex flex-col">
     <GameFrameBackdrop
+      :game-id="gameId"
       :authenticated="authenticated"
       :replace="false"
     >
@@ -34,13 +56,13 @@ const onTogglePlaying = () => {
 
       <div class="w-full max-w-[35rem] p-6 flex flex-col justify-between gap-6">
         <div class="w-full flex flex-row items-center justify-start gap-6">
-          <ImageRatio
-            src="/assets/images/games/3.png"
+          <GamesImageLoader
+            :game-id="gameId"
             class="w-[32%] rounded-default"
           />
           <div class="flex flex-col gap-1">
-            <h2 class="text-2xl font-semibold">Potion Spells</h2>
-            <h3 class="text-lg text-subtle-light font-medium">Pragmatic Play</h3>
+            <h2 class="text-2xl font-semibold">{{ gameTitle }}</h2>
+            <!-- <h3 class="text-lg text-subtle-light font-medium">Pragmatic Play</h3> -->
             <GameFrameVotes
               class="mt-4 gap-4 text-subtle-light"
             />

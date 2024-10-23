@@ -53,6 +53,11 @@
     "support": "Support",
     "promos": "Promos"
   },
+  "game_page": {
+    "device_not_supported": "This game is not supported on your current device",
+    "device_not_supported_alternative_desktop": "Please try playing it on a computer or laptop",
+    "device_not_supported_alternative_mobile": "Please try playing it on a mobile device"
+  },
   "user_nav": {
     "wallet": "Wallet",
     "history": "History",

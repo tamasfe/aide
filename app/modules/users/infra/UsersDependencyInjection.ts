@@ -5,7 +5,7 @@ import type { AuthenticationRepositoryI } from "../domain/AuthenticationReposito
 import { LoginUser } from "../application/LoginUser";
 import { LogoutUser } from "../application/LogoutUser";
 import { AuthenticatedUserRepositoryDumb } from "./AuthenticatedUserRepositoryDumb";
-import { EmitCommandOpenLoginModal } from "./ui/EmitCommandOpenLoginModal";
+import { EmitCommandOpenUserActionModalModal } from "./ui/EmitCommandOpenUserActionModal";
 import { AuthenticatedUserSearcherGirobet } from "./AuthenticatedUserRepositoryGirobet";
 import { AuthenticationRepositoryDumb } from "./AuthenticationRepositoryDumb";
 import { AuthenticationRepositoryGirobet } from "./AuthenticationRepositoryGirobet";
@@ -18,7 +18,7 @@ export interface UsersDependencyInjectionI {
     searchAuthenticatedUser: SearchAuthenticatedUser;
   };
   ui: {
-    emitCommandOpenLoginModal: EmitCommandOpenLoginModal;
+    emitCommandOpenUserActionModal: EmitCommandOpenUserActionModalModal;
     attemptUserLoginOnFormSubmission: AttemptUserLoginOnFormSubmission;
     logoutCurrentUserFromButtonClick: LogoutCurrentUserFromButtonClick;
   };
@@ -43,7 +43,7 @@ export const createUsersDependencyInjection = async (config: PublicRuntimeConfig
       searchAuthenticatedUser: new SearchAuthenticatedUser(authenticatedUserRepo),
     },
     ui: {
-      emitCommandOpenLoginModal: new EmitCommandOpenLoginModal(commonDependencies.asyncMessagePublisher),
+      emitCommandOpenUserActionModal: new EmitCommandOpenUserActionModalModal(commonDependencies.asyncMessagePublisher),
       attemptUserLoginOnFormSubmission: new AttemptUserLoginOnFormSubmission(
         new LoginUser(authenticationRepo, commonDependencies.asyncMessagePublisher),
         commonDependencies.translateFunction,

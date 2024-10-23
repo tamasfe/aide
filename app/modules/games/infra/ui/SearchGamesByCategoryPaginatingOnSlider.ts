@@ -19,7 +19,7 @@ export class SearchGamesByCategoryPaginatingOnSlider {
     const result = await this.query.handle(categoryIdentifier, pageToSearch, SearchGamesByCategoryPaginatingOnSlider.PAGINATION_SIZE);
 
     if (result.isFailure) {
-      // TODO: log exception so we can track it. And perhaps alert the customer somehow
+      // Optional TODO: alert the customer somehow in case of error
       this.logger.error("SearchGamesByCategoryPaginating failed: ", { error: result.error });
       return {
         games: [],

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { FindGameCompatibilityByIdResponseI } from "~/modules/games/application/FindGameCompatibilityById";
+
 // DESIGN STATUS:       ✅
 // ARCHITECTURE STATUS: ✴️
 //   * there are some edge cases we should handle, like what happens when you run out of money (how to display it to the user, etc)
@@ -17,26 +19,67 @@
 // TRANSLATION STATUS:  ✅
 
 const { isMobile } = useDevice();
+const currentDevice = isMobile ? "mobile" : "desktop";
 const { params } = useRoute();
-
 const { $dependencies } = useNuxtApp();
+const userStore = useUserStore();
 
-const { data: categories } = await useAsyncData(`game-${params.id}-categories`, async () => {
+const gameId = Number(params.id);
+if (!params.id || isNaN(gameId)) {
+  $dependencies.common.logger.error("Game ID route parameter should be a number", { gameId });
+  await navigateTo("/");
+}
+
+const { data: gameFromApi } = await useAsyncData(`game-${params.id}`, async () => {
+  return $dependencies.games.ui.findGameCompatibilityByIdOnGamePage.handle(gameId, currentDevice);
+});
+if (!gameFromApi.value) {
+  await navigateTo("/");
+}
+const game = gameFromApi.value as FindGameCompatibilityByIdResponseI;
+
+const { data: pageCategories } = await useAsyncData(`game-${params.id}-categories`, async () => {
   return $dependencies.games.ui.searchGameCategoriesByGroup.handle("game_page");
 });
 </script>
 
 <template>
   <div>
-    <GameFrameMobile v-if="isMobile" />
+    <GameFrameMobile
+      v-if="isMobile && game.isCompatibleWithDevice"
+      :game-title="game.name"
+      :game-id="game.id"
+      :authenticated="userStore.isAuthenticated"
+    />
+    <GameFloatTextNotSupportedOnDevice
+      v-else-if="isMobile && !game.isCompatibleWithDevice"
+      class="px-6 h-96"
+      :current-device="currentDevice"
+    />
 
     <div class="pt-4 pb-12 giro__container giro__sections">
-      <GameFrameDesktop v-if="!isMobile" />
+      <GameFrameDesktop
+        v-if="!isMobile && game.isCompatibleWithDevice"
+        :game-title="game.name"
+        :game-id="game.id"
+        :authenticated="userStore.isAuthenticated"
+      />
+      <GameFloatTextNotSupportedOnDevice
+        v-else-if="!isMobile && !game.isCompatibleWithDevice"
+        class="px-6 h-96"
+        :current-device="currentDevice"
+      />
 
-      <GameDescription class="bg-subtle" />
+      <GameDescription
+        :id="gameId"
+        class="bg-subtle"
+        :description="game.description"
+        :title="game.name"
+        :categories="['card', 'table', 'poker']"
+      />
 
       <GridHorizontalGames
-        v-for="category in categories"
+        v-for="category in pageCategories"
         :key="category.identifier"
         :category-identifier="category.identifier"
       />

@@ -1,11 +1,13 @@
-import type { GameI } from "../domain/Game";
+import { ErrorGameNotFound } from "../domain/ErrorGameNotFound";
+import type { GameI, GameSummaryI } from "../domain/Game";
 import type { GamesApiRepositoryI } from "../domain/GamesApiRepository";
-import { success, type Result } from "~/packages/result";
+import type { LoggerI } from "~/packages/logger/Logger";
+import { fail, success, type Result } from "~/packages/result";
 import type { InfrastructureError } from "~/packages/result/infrastructure-error";
 
 export class GamesApiRepositoryDumb implements GamesApiRepositoryI {
-  public async searchByCategoryPaginating(category: string, limit: number, offset: number): Promise<Result<{ games: GameI[]; pagination: { limit: number; offset: number; totalItems: number } }, InfrastructureError>> {
-    console.debug("searchByCategoryPaginating called with...", category, limit, offset);
+  public async searchByCategoryPaginating(category: string, limit: number, offset: number): Promise<Result<{ games: GameSummaryI[]; pagination: { limit: number; offset: number; totalItems: number } }, InfrastructureError>> {
+    this.logger.debug("searchByCategoryPaginating called", { category, limit, offset });
     return success({
       games: this.games.slice(offset, offset + limit),
       pagination: {
@@ -16,12 +18,23 @@ export class GamesApiRepositoryDumb implements GamesApiRepositoryI {
     });
   }
 
+  public async findById(gameId: number): Promise<Result<GameI, ErrorGameNotFound | InfrastructureError>> {
+    this.logger.debug("findById called", { gameId });
+    const game = this.games.find(game => game.id === gameId);
+    if (!game) {
+      return fail(ErrorGameNotFound.newFromGameId(gameId));
+    }
+    return success(game);
+  }
+
   private games: GameI[];
-  constructor() {
+  constructor(private logger: LoggerI) {
     this.games = Array.from({ length: 50 }, (_, i) => ({
       id: i,
       name: `Game ${i}`,
       slug: `game-${i}`,
+      description: `Description of game ${i}`,
+      devices: ["desktop" as const],
     })).filter((_, i) => i !== 0);
   }
 }

@@ -11,6 +11,7 @@ const props = defineProps<{
   authenticated: boolean;
   replace: boolean;
   class?: HTMLAttributes["class"];
+  gameId: number;
 }>();
 </script>
 
@@ -26,9 +27,9 @@ const props = defineProps<{
       name="authenticated"
     />
     <template v-if="!replace || (replace && !authenticated)">
-      <NuxtImg
+      <GamesImageLoader
+        :game-id="gameId"
         class="absolute top-0 left-0 z-[1] w-full h-full object-cover"
-        src="/assets/images/games/3.png"
         alt=""
       />
       <div class="absolute z-[2] top-0 left-0 w-full h-full bg-default/80 backdrop-blur" />

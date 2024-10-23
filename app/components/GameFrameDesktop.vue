@@ -3,10 +3,24 @@
 //   * lock scroll when fullscreen: import { useScrollLock } from "@vueuse/core"
 // ARCHITECTURE STATUS:  ✅
 
-const authenticated = ref(false);
 const fullScreen = ref(false);
 
 const { $dependencies } = useNuxtApp();
+
+defineProps({
+  gameTitle: {
+    type: String,
+    required: true,
+  },
+  gameId: {
+    type: Number,
+    required: true,
+  },
+  authenticated: {
+    type: Boolean,
+    required: true,
+  },
+});
 
 const onToggleFullScreen = () => {
   fullScreen.value = !fullScreen.value;
@@ -16,6 +30,7 @@ const onToggleFullScreen = () => {
 <template>
   <div class="flex flex-col rounded-default">
     <GameFrameBackdrop
+      :game-id="gameId"
       :authenticated="authenticated"
       :replace="true"
       class="h-[70vh] rounded-t-default"
@@ -49,13 +64,14 @@ const onToggleFullScreen = () => {
           <BaseButton
             variant="subtle"
             class="px-8"
-            @click="$dependencies.users.ui.emitCommandOpenLoginModal.handle()"
+            @click="$dependencies.users.ui.emitCommandOpenUserActionModal.handle('login')"
           >
             {{ $t("button.login") }}
           </BaseButton>
           <BaseButton
             variant="primary"
             class="px-12"
+            @click="$dependencies.users.ui.emitCommandOpenUserActionModal.handle('register')"
           >
             {{ $t("button.register") }}
           </BaseButton>
@@ -66,8 +82,8 @@ const onToggleFullScreen = () => {
     <div class="rounded-b-default bg-subtle p-3 md:p-4 lg:px-6">
       <div class="flex flex-col md:flex-row items-center justify-between gap-4 md:gap-0">
         <div class="w-full flex justify-between md:justify-start flex-row md:flex-col items-center md:items-start font-semibold">
-          <h2 class="text-lg md:text-xl font-semibold">Potion Spells</h2>
-          <h3 class="text-subtle-light">Pragmatic Play</h3>
+          <h2 class="text-lg md:text-xl font-semibold">{{ gameTitle }}</h2>
+          <!-- <h3 class="text-subtle-light">Pragmatic Play</h3> -->
         </div>
         <div class="w-full flex justify-between md:justify-end items-center space-x-8 text-subtle font-semibold">
           <ButtonShare

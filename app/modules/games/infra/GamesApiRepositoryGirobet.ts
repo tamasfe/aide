@@ -1,5 +1,6 @@
-import type { GameI } from "../domain/Game";
+import type { GameI, GameSummaryI } from "../domain/Game";
 import type { GamesApiRepositoryI } from "../domain/GamesApiRepository";
+import { ErrorGameNotFound } from "../domain/ErrorGameNotFound";
 import { fail, success, type Result } from "~/packages/result";
 import { InfrastructureError } from "~/packages/result/infrastructure-error";
 import { createBackendOpenApiClient } from "~/packages/http-client/create-backend-open-api-client";
@@ -11,7 +12,7 @@ export class GamesApiRepositoryGirobet implements GamesApiRepositoryI {
     this.apiClient = createBackendOpenApiClient(clientOptions, asyncMessagePublisher);
   }
 
-  public async searchByCategoryPaginating(category: string, limit: number, offset: number): Promise<Result<{ games: GameI[]; pagination: { limit: number; offset: number; totalItems: number } }, InfrastructureError>> {
+  public async searchByCategoryPaginating(category: string, limit: number, offset: number): Promise<Result<{ games: GameSummaryI[]; pagination: { limit: number; offset: number; totalItems: number } }, InfrastructureError>> {
     try {
       const { data, error, response } = await this.apiClient.GET("/game/search", {
         params: {
@@ -41,6 +42,12 @@ export class GamesApiRepositoryGirobet implements GamesApiRepositoryI {
           }, HttpBackendApiError.newFromBackendError(error, response)),
         );
       }
+
+      return fail(
+        InfrastructureError.newFromUnknownError({
+          category, limit, offset,
+        }, new Error("Unexpected scenario: library did not return data nor error. This should never happen")),
+      );
     }
     catch (error: unknown) {
       return fail(
@@ -49,8 +56,54 @@ export class GamesApiRepositoryGirobet implements GamesApiRepositoryI {
         }, error),
       );
     }
+  }
 
-    throw new Error("Unexpected scenario: library did not return data nor error. This should never happen");
+  public async findById(gameId: number): Promise<Result<GameI, ErrorGameNotFound | InfrastructureError>> {
+    try {
+      const { data, error, response } = await this.apiClient.GET("/game/{game_id}", {
+        params: {
+          path: {
+            game_id: gameId,
+          },
+        },
+      });
+
+      if (data) {
+        return success({
+          id: data.id,
+          name: data.name,
+          slug: data.slug,
+          description: data.description || null,
+          devices: data.devices,
+        });
+      }
+
+      if (error) {
+        if (error.code === "GAME_NOT_FOUND") {
+          return fail(
+            ErrorGameNotFound.newFromGameId(gameId),
+          );
+        }
+        return fail(
+          InfrastructureError.newFromError({
+            gameId,
+          }, HttpBackendApiError.newFromBackendError(error, response)),
+        );
+      }
+
+      return fail(
+        InfrastructureError.newFromUnknownError({
+          gameId,
+        }, new Error("Unexpected scenario: library did not return data nor error. This should never happen")),
+      );
+    }
+    catch (error: unknown) {
+      return fail(
+        InfrastructureError.newFromUnknownError({
+          gameId,
+        }, error),
+      );
+    }
   }
 
   private apiClient: ReturnType<typeof createBackendOpenApiClient>;

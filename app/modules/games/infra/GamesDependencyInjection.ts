@@ -1,6 +1,7 @@
 import type { PublicRuntimeConfig } from "nuxt/schema";
 import { SearchGamesByCategoryPaginating } from "../application/SearchGamesByCategoryPaginating";
 import { SearchGameCategoriesByCategoryGroup } from "../application/SearchGameCategoriesByCategoryGroup";
+import { FindGameCompatibilityById } from "../application/FindGameCompatibilityById";
 import { GamesApiRepositoryDumb } from "./GamesApiRepositoryDumb";
 import { GamesApiRepositoryGirobet } from "./GamesApiRepositoryGirobet";
 import { FindGameImageSrcByGameId } from "./ui/FindGameImageSrcByGameId";
@@ -8,6 +9,7 @@ import { SearchGamesByCategoryPaginatingOnSlider } from "./ui/SearchGamesByCateg
 import { SearchGameCategoriesByGroup } from "./ui/SearchGameCategoriesByGroup";
 import { GameCategoriesRepositoryDumb } from "./GameCategoriesRepositoryDumb";
 import { GameCategoriesRepositoryGirobet } from "./GameCategoriesRepositoryGirobet";
+import { FindGameCompatibilityByIdOnGamePage } from "./ui/FindGameCompatibilityByIdOnGamePage";
 import type { CommonDependenciesI } from "~/dependency-injection/load-di";
 
 export interface GamesDependencyInjectionI {
@@ -15,6 +17,7 @@ export interface GamesDependencyInjectionI {
     searchGamesByCategoryPaginatingOnSlider: SearchGamesByCategoryPaginatingOnSlider;
     findGameImageSrcByGameId: FindGameImageSrcByGameId;
     searchGameCategoriesByGroup: SearchGameCategoriesByGroup;
+    findGameCompatibilityByIdOnGamePage: FindGameCompatibilityByIdOnGamePage;
   };
 }
 
@@ -22,10 +25,9 @@ export const createGamesDependencyInjection = async (publicConfig: PublicRuntime
   const apiBaseUrl = publicConfig.games.apiBaseUrl;
 
   if (!apiBaseUrl || apiBaseUrl === "") {
-    const searchGamesByCategoryPaginatingQuery = new SearchGamesByCategoryPaginating(
-      new GamesApiRepositoryDumb(),
-    );
+    const gamesApiRepository = new GamesApiRepositoryDumb(commonDependencies.logger);
 
+    const searchGamesByCategoryPaginatingQuery = new SearchGamesByCategoryPaginating(gamesApiRepository);
     const searchGameCategoriesByGroupQuery = new SearchGameCategoriesByCategoryGroup(
       new GameCategoriesRepositoryDumb(),
     );
@@ -38,12 +40,15 @@ export const createGamesDependencyInjection = async (publicConfig: PublicRuntime
           searchGameCategoriesByGroupQuery,
           commonDependencies.logger,
         ),
+        findGameCompatibilityByIdOnGamePage: new FindGameCompatibilityByIdOnGamePage(new FindGameCompatibilityById(gamesApiRepository), commonDependencies.logger),
       },
     };
   }
 
+  const gamesApiRepository = new GamesApiRepositoryGirobet({ baseUrl: apiBaseUrl, headers: requestHeaders, userJurisdiction: publicConfig.genericFixedUserJurisdiction }, commonDependencies.asyncMessagePublisher);
+
   const searchGamesByCategoryPaginatingQuery = new SearchGamesByCategoryPaginating(
-    new GamesApiRepositoryGirobet({ baseUrl: apiBaseUrl, headers: requestHeaders, userJurisdiction: publicConfig.genericFixedUserJurisdiction }, commonDependencies.asyncMessagePublisher),
+    gamesApiRepository,
   );
   const searchGameCategoriesByGroupQuery = new SearchGameCategoriesByCategoryGroup(
     new GameCategoriesRepositoryGirobet({
@@ -62,6 +67,7 @@ export const createGamesDependencyInjection = async (publicConfig: PublicRuntime
         searchGameCategoriesByGroupQuery,
         commonDependencies.logger,
       ),
+      findGameCompatibilityByIdOnGamePage: new FindGameCompatibilityByIdOnGamePage(new FindGameCompatibilityById(gamesApiRepository), commonDependencies.logger),
     },
   };
 };

@@ -9,13 +9,6 @@ const userStore = useUserStore();
 const onClickBalance = async () => {
   await navigateTo("/settings/wallet");
 };
-
-const onClickUnauthenticatedRegister = async () => {
-  $dependencies.common.asyncMessagePublisher.emit(
-    "girobet:commands:modals:open-register",
-    {},
-  );
-};
 </script>
 
 <template>
@@ -58,14 +51,14 @@ const onClickUnauthenticatedRegister = async () => {
               id="app-header-login-button"
               variant="secondary"
               class="h-9 md:h-10"
-              @click="$dependencies.users.ui.emitCommandOpenLoginModal.handle()"
+              @click="$dependencies.users.ui.emitCommandOpenUserActionModal.handle('login')"
             >
               {{ $t("button.login") }}
             </BaseButton>
             <BaseButton
               variant="primary"
               class="h-9 md:h-10"
-              @click="onClickUnauthenticatedRegister"
+              @click="$dependencies.users.ui.emitCommandOpenUserActionModal.handle('register')"
             >
               {{ $t("button.register") }}
             </BaseButton>

@@ -1,14 +1,17 @@
-import type { GameI } from "./Game";
+import type { GameI, GameSummaryI } from "./Game";
+import type { ErrorGameNotFound } from "./ErrorGameNotFound";
 import type { Result } from "~/packages/result";
 import type { InfrastructureError } from "~/packages/result/infrastructure-error";
 
 export interface GamesApiRepositoryI {
   searchByCategoryPaginating(category: string, limit: number, offset: number): Promise<Result<{
-    games: GameI[];
+    games: GameSummaryI[];
     pagination: {
       limit: number;
       offset: number;
       totalItems: number;
     };
   }, InfrastructureError>>;
+
+  findById(gameId: number): Promise<Result<GameI, ErrorGameNotFound | InfrastructureError>>;
 }
