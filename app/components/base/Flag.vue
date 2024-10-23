@@ -33,13 +33,12 @@ const props = defineProps<{
   class?: HTMLAttributes["class"];
 }>();
 
-// @ts-expect-error proper type isn't exported from nuxt
 const glob = import.meta.glob("~/assets/svg/flags/active/*.svg", {
   eager: true,
 });
 
 const images = Object.fromEntries(
-  // @ts-expect-error proper type isn't exported from nuxt
+  // @ts-expect-error - TS doesn't like Object.fromEntries
   Object.entries(glob).map(([key, value]) => [filename(key), value.default]),
 );
 
