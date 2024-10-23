@@ -1,5 +1,5 @@
 // https://nuxt.com/docs/api/nuxt-config
-
+// This is the config
 export default defineNuxtConfig({
   app: {
     head: {
@@ -38,17 +38,24 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       apiBaseUrl: process.env.NUXT_PUBLIC_API_BASE_URL,
-      genericFixedUserJurisdiction: process.env.NUXT_PUBLIC_GENERIC_API_CLIENT_FIXED_USER_JURISDICTION,
+      genericFixedUserJurisdiction:
+        process.env.NUXT_PUBLIC_GENERIC_API_CLIENT_FIXED_USER_JURISDICTION,
       games: {
         apiBaseUrl: process.env.NUXT_PUBLIC_GAMES_API_BASE_URL,
       },
       signupFlows: {
-        idsClientRepo: process.env.NUXT_PUBLIC_SIGNUP_FLOWS_IDS_CLIENT_REPO as "mock" | "local_storage",
-        apiBaseUrl: process.env.NUXT_PUBLIC_SIGNUP_FLOWS_API_CLIENT_BASE_URL || "",
-        apiClientFixedUserJurisdiction: process.env.NUXT_PUBLIC_SIGNUP_FLOWS_API_CLIENT_FIXED_USER_JURISDICTION || "",
+        idsClientRepo: process.env.NUXT_PUBLIC_SIGNUP_FLOWS_IDS_CLIENT_REPO as
+          | "mock"
+          | "local_storage",
+        apiBaseUrl:
+          process.env.NUXT_PUBLIC_SIGNUP_FLOWS_API_CLIENT_BASE_URL || "",
+        apiClientFixedUserJurisdiction:
+          process.env
+            .NUXT_PUBLIC_SIGNUP_FLOWS_API_CLIENT_FIXED_USER_JURISDICTION || "",
       },
       users: {
-        authenticatedRepositoryBaseUrl: process.env.NUXT_PUBLIC_USERS_AUTHENTICATED_REPO_BASE_URL || "",
+        authenticatedRepositoryBaseUrl:
+          process.env.NUXT_PUBLIC_USERS_AUTHENTICATED_REPO_BASE_URL || "",
       },
     },
   },
