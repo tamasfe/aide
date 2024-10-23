@@ -2,7 +2,7 @@ name: Release
 
 permissions:
   id-token: write # This is required for requesting the JWT
-  contents: read
+  contents: write
 
 on:
   push:
@@ -12,8 +12,6 @@ on:
 jobs:
   build-container:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
       - uses: actions/checkout@v4
 
