@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "{{ .Release.Name }}"
+data:
+  NUXT_PUBLIC_API_BASE_URL: https://api.girobet.vip
+  NUXT_PUBLIC_GAMES_API_BASE_URL: "https://api.girobet.vip"
+  NUXT_PUBLIC_SIGNUP_FLOWS_IDS_CLIENT_REPO: "local_storage"
+  NUXT_PUBLIC_SIGNUP_FLOWS_API_CLIENT_BASE_URL: "https://api.girobet.vip"
+  NUXT_PUBLIC_USERS_AUTHENTICATED_REPO_BASE_URL: "https://api.girobet.vip"
