@@ -1,4 +1,8 @@
 // More info @https://nuxt.com/docs/guide/going-further/runtime-config#typing-runtime-config
+import type {
+  ComponentCustomOptions as _ComponentCustomOptions,
+  ComponentCustomProperties as _ComponentCustomProperties,
+} from "vue";
 
 declare module "nuxt/schema" {
   // interface RuntimeConfig {
@@ -22,6 +26,11 @@ declare module "nuxt/schema" {
       apiBaseUrl: string;
     };
   }
+}
+
+declare module "@vue/runtime-core" {
+  interface ComponentCustomProperties extends _ComponentCustomProperties {}
+  interface ComponentCustomOptions extends _ComponentCustomOptions {}
 }
 
 // It is always important to ensure you import/export something when augmenting a type
