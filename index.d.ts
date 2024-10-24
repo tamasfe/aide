@@ -18,6 +18,9 @@ declare module "nuxt/schema" {
     users: {
       authenticatedRepoBaseUrl: string;
     };
+    wallets: {
+      apiBaseUrl: string;
+    };
   }
 }
 

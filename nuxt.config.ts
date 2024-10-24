@@ -57,6 +57,9 @@ export default defineNuxtConfig({
         authenticatedRepositoryBaseUrl:
           process.env.NUXT_PUBLIC_USERS_AUTHENTICATED_REPO_BASE_URL || "",
       },
+      wallets: {
+        apiBaseUrl: process.env.NUXT_PUBLIC_WALLETS_API_BASE_URL || "",
+      },
     },
   },
   site: {

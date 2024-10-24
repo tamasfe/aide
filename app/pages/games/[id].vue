@@ -25,7 +25,7 @@ const { $dependencies } = useNuxtApp();
 const userStore = useUserStore();
 
 const gameId = Number(params.id);
-if (!params.id || isNaN(gameId)) {
+if (!params.id || Number.isNaN(gameId)) {
   $dependencies.common.logger.error("Game ID route parameter should be a number", { gameId });
   await navigateTo("/");
 }

@@ -1,10 +1,10 @@
 export default defineNuxtPlugin({
-  name: "module-users-initiator",
+  name: "module-wallets-initiator",
   dependsOn: ["dependency-injection"],
   parallel: true,
   async setup(_nuxtApp) {
     const { $dependencies } = useNuxtApp();
-    const userStore = useUserStore();
+    const walletStore = useWalletStore();
 
     /**
      *
@@ -13,11 +13,11 @@ export default defineNuxtPlugin({
      */
     $dependencies.common.asyncMessagePublisher.subscribe(
       "girobet:events:users:user-logged-in",
-      () => userStore.refreshUser(),
+      () => walletStore.refresh(),
     );
     $dependencies.common.asyncMessagePublisher.subscribe(
       "girobet:events:users:user-logged-out",
-      () => userStore.refreshUser(),
+      () => walletStore.refresh(),
     );
 
     /**
@@ -25,7 +25,7 @@ export default defineNuxtPlugin({
      * Init user pinia store
      *
      */
-    await useAsyncData("user-authentication", () => userStore.refreshUser().then(() => true));
+    await useAsyncData("wallet-store-initiation", () => walletStore.refresh().then(() => true));
 
     return {};
   },

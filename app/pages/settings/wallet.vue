@@ -2,6 +2,13 @@
 import { createColumnHelper, type ColumnDef } from "@tanstack/vue-table";
 import { DataTableCopyCell } from "#components";
 
+const walletStore = useWalletStore();
+
+// TODO: do we want this behaviour? Or should we (for example) keep the user in the page and show them a "log in to see your balance & transactions" message?
+if (!walletStore.isInit) {
+  await navigateTo("/");
+}
+
 // TODO THIS IS NOT A REAL TYPE!!!!!!! JUST A PLACEHOLDER TO
 // DEMONSTRATE DATA TABLE. DO NOT USE THIS, USE A REAL TYPE
 type WalletTransaction = {
@@ -58,22 +65,27 @@ const loading = ref(false);
     name="dashboard"
     section="settings"
   >
-    <DashboardSettingsWalletBalance />
+    <div v-if="walletStore.isInit">
+      <DashboardSettingsWalletBalance
+        :balance="walletStore.wallet.balanceValue"
+        :currency="walletStore.wallet.currency"
+      />
 
-    <div class="mt-8">
-      <h2 class="mb-4 text-center text-lg font-medium">{{ $t('dashboard.settings.wallet.recent_transactions') }}</h2>
-      <DataTable
-        :data="data"
-        :columns="columns"
-        :loading="loading"
-      >
-        <template #empty>
-          <BaseEmpty
-            title="No Transactions"
-            icon="lucide:wallet-cards"
-          />
-        </template>
-      </DataTable>
+      <div class="mt-8">
+        <h2 class="mb-4 text-center text-lg font-medium">{{ $t('dashboard.settings.wallet.recent_transactions') }}</h2>
+        <DataTable
+          :data="data"
+          :columns="columns"
+          :loading="loading"
+        >
+          <template #empty>
+            <BaseEmpty
+              title="No Transactions"
+              icon="lucide:wallet-cards"
+            />
+          </template>
+        </DataTable>
+      </div>
     </div>
   </NuxtLayout>
 </template>

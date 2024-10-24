@@ -5,6 +5,7 @@
 // TRANSLATION STATUS:  ✅
 const { $dependencies } = useNuxtApp();
 const userStore = useUserStore();
+const walletStore = useWalletStore();
 
 const onClickBalance = async () => {
   await navigateTo("/settings/wallet");
@@ -46,7 +47,7 @@ const onClickBalance = async () => {
         </div>
 
         <div class="flex items-center gap-2.5 sm:gap-3">
-          <template v-if="!userStore.isAuthenticated">
+          <template v-if="!walletStore.isInit">
             <BaseButton
               id="app-header-login-button"
               variant="secondary"
@@ -69,10 +70,11 @@ const onClickBalance = async () => {
               class="h-9 md:h-10 space-x-1"
               @click="onClickBalance"
             >
-              <div class="bg-button-primary text-transparent bg-clip-text">
-                R$
-              </div>
-              <div class="text-white">69,50</div>
+              <BaseCurrency
+                class="text-white"
+                :currency="walletStore.wallet.currency"
+                :value="walletStore.wallet.balanceValue"
+              />
             </BaseButton>
 
             <BaseButton
