@@ -20,6 +20,10 @@ defineProps({
     type: Boolean,
     required: true,
   },
+  iFrameUrl: {
+    type: String,
+    required: false,
+  },
 });
 
 const onToggleFullScreen = () => {
@@ -44,12 +48,15 @@ const onToggleFullScreen = () => {
         >
           <div
             v-if="fullScreen"
-            class="p-4 bg-subtle"
+            class="p-0 bg-subtle"
           >
-            <div @click="onToggleFullScreen">close</div>
+            <BaseClose
+              class="p-1 rounded-full bg-button-subtle"
+              @close="onToggleFullScreen"
+            />
           </div>
 
-          <GameFrameIframe />
+          <GameFrameIframe :i-frame-url="iFrameUrl" />
         </div>
       </template>
 

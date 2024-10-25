@@ -98,6 +98,7 @@ const onSubmit = handleSubmit(async (formData) => {
         variant="ghost"
         size="ghost"
         class="text-primary hover:underline"
+        @click="$dependencies.users.ui.emitCommandOpenUserActionModal.handle('register')"
       >
         {{ $t("modal_session.create_free_account") }}
       </BaseButton>

@@ -48,6 +48,7 @@ const props = withDefaults(defineProps<{
         variant="ghost"
         size="ghost"
         class="p-2 absolute right-1"
+        @click="open = false"
       >
         <Icon
           name="lucide:x"

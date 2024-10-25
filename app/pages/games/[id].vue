@@ -22,7 +22,7 @@ const { isMobile } = useDevice();
 const currentDevice = isMobile ? "mobile" : "desktop";
 const { params } = useRoute();
 const { $dependencies } = useNuxtApp();
-const userStore = useUserStore();
+const walletStore = useWalletStore();
 
 const gameId = Number(params.id);
 if (!params.id || Number.isNaN(gameId)) {
@@ -41,6 +41,13 @@ const game = gameFromApi.value as FindGameCompatibilityByIdResponseI;
 const { data: pageCategories } = await useAsyncData(`game-${params.id}-categories`, async () => {
   return $dependencies.games.ui.searchGameCategoriesByGroup.handle("game_page");
 });
+
+const iFrameUrl = computed(() => {
+  if (walletStore.isInit) {
+    return $dependencies.games.ui.buildGameSessionIFrameUrl.handle(gameId, currentDevice, walletStore.wallet.currency);
+  }
+  return "";
+});
 </script>
 
 <template>
@@ -49,7 +56,8 @@ const { data: pageCategories } = await useAsyncData(`game-${params.id}-categorie
       v-if="isMobile && game.isCompatibleWithDevice"
       :game-title="game.name"
       :game-id="game.id"
-      :authenticated="userStore.isAuthenticated"
+      :authenticated="walletStore.isInit"
+      :i-frame-url="iFrameUrl"
     />
     <GameFloatTextNotSupportedOnDevice
       v-else-if="isMobile && !game.isCompatibleWithDevice"
@@ -62,7 +70,8 @@ const { data: pageCategories } = await useAsyncData(`game-${params.id}-categorie
         v-if="!isMobile && game.isCompatibleWithDevice"
         :game-title="game.name"
         :game-id="game.id"
-        :authenticated="userStore.isAuthenticated"
+        :authenticated="walletStore.isInit"
+        :i-frame-url="iFrameUrl"
       />
       <GameFloatTextNotSupportedOnDevice
         v-else-if="!isMobile && !game.isCompatibleWithDevice"

@@ -10,6 +10,7 @@ import { SearchGameCategoriesByGroup } from "./ui/SearchGameCategoriesByGroup";
 import { GameCategoriesRepositoryDumb } from "./GameCategoriesRepositoryDumb";
 import { GameCategoriesRepositoryGirobet } from "./GameCategoriesRepositoryGirobet";
 import { FindGameCompatibilityByIdOnGamePage } from "./ui/FindGameCompatibilityByIdOnGamePage";
+import { BuildGameSessionIFrameUrl } from "./ui/BuildGameSessionIFrameUrl";
 import type { CommonDependenciesI } from "~/dependency-injection/load-di";
 
 export interface GamesDependencyInjectionI {
@@ -18,6 +19,7 @@ export interface GamesDependencyInjectionI {
     findGameImageSrcByGameId: FindGameImageSrcByGameId;
     searchGameCategoriesByGroup: SearchGameCategoriesByGroup;
     findGameCompatibilityByIdOnGamePage: FindGameCompatibilityByIdOnGamePage;
+    buildGameSessionIFrameUrl: BuildGameSessionIFrameUrl;
   };
 }
 
@@ -41,6 +43,7 @@ export const createGamesDependencyInjection = async (publicConfig: PublicRuntime
           commonDependencies.logger,
         ),
         findGameCompatibilityByIdOnGamePage: new FindGameCompatibilityByIdOnGamePage(new FindGameCompatibilityById(gamesApiRepository), commonDependencies.logger),
+        buildGameSessionIFrameUrl: new BuildGameSessionIFrameUrl(apiBaseUrl || ""),
       },
     };
   }
@@ -68,6 +71,7 @@ export const createGamesDependencyInjection = async (publicConfig: PublicRuntime
         commonDependencies.logger,
       ),
       findGameCompatibilityByIdOnGamePage: new FindGameCompatibilityByIdOnGamePage(new FindGameCompatibilityById(gamesApiRepository), commonDependencies.logger),
+      buildGameSessionIFrameUrl: new BuildGameSessionIFrameUrl(apiBaseUrl || ""),
     },
   };
 };

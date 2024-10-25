@@ -1,6 +1,15 @@
+<script setup lang="ts">
+defineProps({
+  iFrameUrl: {
+    type: String,
+    required: false,
+  },
+});
+</script>
+
 <template>
   <iframe
-    src="https://example.com"
+    :src="iFrameUrl"
     loading="eager"
     width="100%"
     height="100%"

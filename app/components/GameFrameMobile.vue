@@ -17,6 +17,10 @@ const props = defineProps({
     type: Boolean,
     required: true,
   },
+  iFrameUrl: {
+    type: String,
+    required: false,
+  },
 });
 
 const playing = ref(false);
@@ -46,11 +50,14 @@ const onTogglePlaying = async () => {
           v-if="playing"
           class="fixed top-0 left-0 w-full h-full z-[11]"
         >
-          <div class="p-4 bg-subtle">
-            <div @click="onTogglePlaying">close</div>
+          <div class="p-5 bg-subtle">
+            <BaseClose
+              class="p-0 pr-2"
+              @close="onTogglePlaying"
+            />
           </div>
 
-          <GameFrameIframe />
+          <GameFrameIframe :i-frame-url="iFrameUrl" />
         </div>
       </template>
 
