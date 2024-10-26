@@ -34,7 +34,7 @@ const tiktokUrl = computed(() => {
   return "https://www.tiktok.com/@girobetofficial";
 });
 
-const links = [
+const links: Array<{ icon: string; url: ComputedRef }> = [
   { icon: "ph:telegram-logo", url: telegramUrl },
   { icon: "ph:instagram-logo", url: instagramUrl },
   { icon: "ph:x-logo", url: xUrl },
