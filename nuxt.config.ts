@@ -1,26 +1,6 @@
 // https://nuxt.com/docs/api/nuxt-config
 // This is the config
 export default defineNuxtConfig({
-  app: {
-    head: {
-      charset: "utf-8",
-      viewport:
-        "width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, viewport-fit=cover, user-scalable=no, shrink-to-fit=no",
-      link: [{ rel: "icon", type: "image/png", href: "/favicon.png" }],
-    },
-    rootId: "app",
-  },
-  build: {
-    transpile: ["applicationinsights"],
-  },
-  compatibilityDate: "2024-07-03",
-  debug: false,
-  devtools: {
-    enabled: true,
-  },
-  future: {
-    compatibilityVersion: 4,
-  },
   modules: [
     "@nuxt/eslint",
     "@nuxt/icon",
@@ -34,6 +14,25 @@ export default defineNuxtConfig({
     "@vee-validate/nuxt",
     "nuxt-gtag",
   ],
+  ssr: true,
+  devtools: {
+    enabled: true,
+  },
+  app: {
+    head: {
+      charset: "utf-8",
+      viewport:
+        "width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, viewport-fit=cover, user-scalable=no, shrink-to-fit=no",
+      link: [{ rel: "icon", type: "image/png", href: "/favicon.png" }],
+    },
+    rootId: "app",
+  },
+  site: {
+    url: "https://girobet.vip",
+    name: "GiroBet",
+    // description: "Welcome to my awesome site!", // TODO
+    // defaultLocale: "en", // TODO not needed if you have @nuxtjs/i18n installed
+  },
   // More info about runtime config & environment variables @https://nuxt.com/docs/guide/going-further/runtime-config
   runtimeConfig: {
     public: {
@@ -45,8 +44,8 @@ export default defineNuxtConfig({
       },
       signupFlows: {
         idsClientRepo: process.env.NUXT_PUBLIC_SIGNUP_FLOWS_IDS_CLIENT_REPO as
-          | "mock"
-          | "local_storage",
+        | "mock"
+        | "local_storage",
         apiBaseUrl:
           process.env.NUXT_PUBLIC_SIGNUP_FLOWS_API_CLIENT_BASE_URL || "",
         apiClientFixedUserJurisdiction:
@@ -62,17 +61,18 @@ export default defineNuxtConfig({
       },
     },
   },
-  site: {
-    url: "https://girobet.vip",
-    name: "GiroBet",
-    // description: "Welcome to my awesome site!", // TODO
-    // defaultLocale: "en", // TODO not needed if you have @nuxtjs/i18n installed
+  build: {
+    transpile: ["applicationinsights"],
   },
-  ssr: true,
+  future: {
+    compatibilityVersion: 4,
+  },
+  compatibilityDate: "2024-07-03",
   typescript: {
     strict: true,
     typeCheck: true,
   },
+  debug: false,
   // @nuxtjs/eslint
   eslint: {
     config: {
@@ -87,6 +87,11 @@ export default defineNuxtConfig({
         semi: true,
       },
     },
+  },
+  // nuxt-gtag
+  gtag: {
+    id: "G-XXXXXXXXXX",
+    enabled: process.env.NODE_ENV === "production",
   },
   // @nuxtjs/i18n
   i18n: {
@@ -106,9 +111,4 @@ export default defineNuxtConfig({
   },
   // @pinia/nuxt
   pinia: {},
-  // nuxt-gtag
-  gtag: {
-    id: "G-XXXXXXXXXX",
-    enabled: process.env.NODE_ENV === "production",
-  },
 });
