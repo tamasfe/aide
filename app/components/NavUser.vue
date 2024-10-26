@@ -20,7 +20,7 @@ const links = [
     title: t("user_nav.wallet"),
     icon: "lucide:wallet",
     action: {
-      toPage: "settings-wallet",
+      toPage: { name: "settings-wallet" },
     },
   },
   {
@@ -28,7 +28,7 @@ const links = [
     title: t("user_nav.history"),
     icon: "lucide:table-properties",
     action: {
-      toPage: "history-deposits",
+      toPage: { name: "history-deposits" },
     },
   },
   {
@@ -36,7 +36,7 @@ const links = [
     title: t("user_nav.account_settings"),
     icon: "lucide:cog",
     action: {
-      toPage: "settings-account",
+      toPage: { name: "settings-account" },
     },
   },
   {
@@ -44,7 +44,7 @@ const links = [
     title: t("user_nav.live_support"),
     icon: "lucide:message-circle-question",
     action: {
-      toPage: "todo",
+      toPage: { name: "todo" },
     },
   },
   {
