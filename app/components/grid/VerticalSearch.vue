@@ -5,22 +5,24 @@ const generateFakeData = (max: number) => {
   return new Array(max).fill(0).map((_, i) => i);
 };
 
+// IMPORTANT REDO ALL OF THIS JAVASCRIPT CODE THIS IS THE OLD VERSION. MAKE
+// SURE TO JUST COPY SIMILAR CODE + PROPS FROM VERTICALGAMES.VUE
+// IMPORTANT REDO ALL OF THIS JAVASCRIPT CODE THIS IS THE OLD VERSION. MAKE
+// SURE TO JUST COPY SIMILAR CODE + PROPS FROM VERTICALGAMES.VUE
+// IMPORTANT REDO ALL OF THIS JAVASCRIPT CODE THIS IS THE OLD VERSION. MAKE
+// SURE TO JUST COPY SIMILAR CODE + PROPS FROM VERTICALGAMES.VUE
+// IMPORTANT REDO ALL OF THIS JAVASCRIPT CODE THIS IS THE OLD VERSION. MAKE
+// SURE TO JUST COPY SIMILAR CODE + PROPS FROM VERTICALGAMES.VUE
+
 // GameCategory related
 const data = ref(generateFakeData(30));
-const max = 60;
+const totalResultsOfSearch = ref(60);
 
 const loading = ref(true);
 
 const onLoadMore = () => {
   const newData = generateFakeData(10);
   data.value = [...data.value, ...newData];
-};
-
-// temp utils
-const getImageId = (idx: number) => {
-  const index = idx;
-  // 8 max images will not anyways be used in the final version
-  return (index % 8) + 1;
 };
 
 onMounted(() => {
@@ -40,7 +42,8 @@ onMounted(() => {
 
     <GridVertical
       :data="data"
-      :max="max"
+      :total-count="totalResultsOfSearch"
+      :columns="{ sm: 3, md: 4, lg: 6, xl: 8 }"
       aspect-ratio="3/4"
       pagination
       @trigger:load="onLoadMore"
@@ -50,11 +53,7 @@ onMounted(() => {
           :to="`/games/${gameId}`"
           class="block bg-subtle rounded-default w-full h-full overflow-hidden"
         >
-          <NuxtImg
-            :src="`/assets/images/games/${getImageId(gameId)}.png`"
-            alt=""
-            class="block w-full h-full object-cover transition-transform transform hover:scale-105 cursor-pointer"
-          />
+          <GamesImageLoader :game-id="gameId" />
         </NuxtLink>
       </template>
     </GridVertical>

@@ -69,7 +69,7 @@ await useAsyncData(`load-games-for-${props.categoryIdentifier}`, () => onLoadDat
     <GridVertical
       :data="gameIds"
       :total-count="totalGamesOfCategory"
-      :columns="{ sm: 3, md: 4, lg: 5, xl: 6 }"
+      :columns="{ sm: 3, md: 4, lg: 6, xl: 8 }"
       aspect-ratio="3/4"
       pagination
       @trigger:load="onLoadData"
