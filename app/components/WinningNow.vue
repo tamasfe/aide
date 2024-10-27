@@ -93,9 +93,10 @@ onMounted(() => {
     <h3 class="min-w-[6rem] sm:min-w-[8rem] text-center flex flex-col items-center justify-center">
       <div class="mb-2 leading-none text-5xl">🏆</div>
       <div
-        class="text-sm sm:text-base leading-tight bg-button-primary text-transparent bg-clip-text font-semibold"
-        v-html="$t('winning_now.title', { br: '<br>' })"
-      />
+        class="whitespace-pre-wrap text-sm sm:text-base leading-tight bg-button-primary text-transparent bg-clip-text font-semibold"
+      >
+        {{ $t('winning_now.title') }}
+      </div>
     </h3>
     <BaseSlider
       ref="slider"
