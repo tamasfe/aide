@@ -33,12 +33,11 @@ export default defineNuxtConfig({
     // description: "Welcome to my awesome site!", // TODO
     // defaultLocale: "en", // TODO not needed if you have @nuxtjs/i18n installed
   },
-  // More info about runtime config & environment variables @https://nuxt.com/docs/guide/going-further/runtime-config
+  // More info about runtime config & environment variables @ https://nuxt.com/docs/guide/going-further/runtime-config
   runtimeConfig: {
     public: {
       apiBaseUrl: process.env.NUXT_PUBLIC_API_BASE_URL,
-      genericFixedUserJurisdiction:
-        process.env.NUXT_PUBLIC_GENERIC_API_CLIENT_FIXED_USER_JURISDICTION,
+      genericFixedUserJurisdiction: process.env.NUXT_PUBLIC_GENERIC_API_CLIENT_FIXED_USER_JURISDICTION,
       games: {
         apiBaseUrl: process.env.NUXT_PUBLIC_GAMES_API_BASE_URL,
       },
@@ -46,15 +45,11 @@ export default defineNuxtConfig({
         idsClientRepo: process.env.NUXT_PUBLIC_SIGNUP_FLOWS_IDS_CLIENT_REPO as
         | "mock"
         | "local_storage",
-        apiBaseUrl:
-          process.env.NUXT_PUBLIC_SIGNUP_FLOWS_API_CLIENT_BASE_URL || "",
-        apiClientFixedUserJurisdiction:
-          process.env
-            .NUXT_PUBLIC_SIGNUP_FLOWS_API_CLIENT_FIXED_USER_JURISDICTION || "",
+        apiBaseUrl: process.env.NUXT_PUBLIC_SIGNUP_FLOWS_API_CLIENT_BASE_URL || "",
+        apiClientFixedUserJurisdiction: process.env.NUXT_PUBLIC_SIGNUP_FLOWS_API_CLIENT_FIXED_USER_JURISDICTION || "",
       },
       users: {
-        authenticatedRepositoryBaseUrl:
-          process.env.NUXT_PUBLIC_USERS_AUTHENTICATED_REPO_BASE_URL || "",
+        authenticatedRepositoryBaseUrl: process.env.NUXT_PUBLIC_USERS_AUTHENTICATED_REPO_BASE_URL || "",
       },
       wallets: {
         apiBaseUrl: process.env.NUXT_PUBLIC_WALLETS_API_BASE_URL || "",
