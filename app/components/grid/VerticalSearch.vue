@@ -2,7 +2,7 @@
 // STATUS:
 // - Title will come from props
 const generateFakeData = (max: number) => {
-  return new Array(max).fill(0).map((d, i) => i);
+  return new Array(max).fill(0).map((_, i) => i);
 };
 
 // GameCategory related
