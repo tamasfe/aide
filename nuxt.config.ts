@@ -69,7 +69,6 @@ export default defineNuxtConfig({
   debug: false,
   // @nuxtjs/eslint
   eslint: {
-    ignores: "app/packages/http-client/girobet-backend-generated-http-client/openapi-typescript.d.ts",
     config: {
       stylistic: {
         arrowParens: false,
