@@ -53,7 +53,7 @@ await useAsyncData(`load-games-for-${props.categoryIdentifier}`, () => onLoadDat
     </template>
 
     <!--
-    (Extract from @Travis on Slack 16/10/2024) TODO in the future:
+    (Extract from from Slack 16/10/2024) TODO in the future:
     The base select here will allow, eventually, people to be able to sort games by:
     - most popular
     - name
@@ -63,7 +63,8 @@ await useAsyncData(`load-games-for-${props.categoryIdentifier}`, () => onLoadDat
       <div class="w-full max-w-[12rem]">
         <BaseSelect size="sm" />
       </div>
-    </template> -->
+    </template>
+    -->
 
     <GridVertical
       :data="gameIds"
