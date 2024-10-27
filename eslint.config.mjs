@@ -2,9 +2,11 @@
 
 import withNuxt from "./.nuxt/eslint.config.mjs";
 
-// see settings in nuxt.config.js
-
-export default withNuxt().override("nuxt/vue/rules", {
+export default withNuxt({
+  ignores: [
+    "app/packages/http-client/girobet-backend-generated-http-client/openapi-typescript.d.ts",
+  ],
+}).override("nuxt/vue/rules", {
   rules: {
     "vue/singleline-html-element-content-newline": "off",
   },

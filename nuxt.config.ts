@@ -21,8 +21,7 @@ export default defineNuxtConfig({
   app: {
     head: {
       charset: "utf-8",
-      viewport:
-        "width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, viewport-fit=cover, user-scalable=no, shrink-to-fit=no",
+      viewport: "width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, viewport-fit=cover, user-scalable=no, shrink-to-fit=no",
       link: [{ rel: "icon", type: "image/png", href: "/favicon.png" }],
     },
     rootId: "app",
@@ -70,6 +69,7 @@ export default defineNuxtConfig({
   debug: false,
   // @nuxtjs/eslint
   eslint: {
+    ignores: "app/packages/http-client/girobet-backend-generated-http-client/openapi-typescript.d.ts",
     config: {
       stylistic: {
         arrowParens: false,
