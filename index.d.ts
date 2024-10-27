@@ -1,13 +1,11 @@
-// More info @https://nuxt.com/docs/guide/going-further/runtime-config#typing-runtime-config
+// More info https://nuxt.com/docs/guide/going-further/runtime-config#typing-runtime-config
+
 import type {
   ComponentCustomOptions as _ComponentCustomOptions,
   ComponentCustomProperties as _ComponentCustomProperties,
 } from "vue";
 
 declare module "nuxt/schema" {
-  // interface RuntimeConfig {
-  //   apiSecret: string;
-  // }
   interface PublicRuntimeConfig {
     apiBaseUrl: string;
     genericFixedUserJurisdiction: string | undefined;
