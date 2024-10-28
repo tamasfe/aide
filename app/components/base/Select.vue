@@ -28,8 +28,8 @@ const selectVariants = cva(
         primary: "bg-emphasis text-subtle-light",
       },
       size: {
-        sm: "h-9 pl-3 pr-10 text-sm rounded-default",
-        md: "h-[var(--giro-field-height)] pl-4 pr-10 text-base rounded-default",
+        sm: "h-9 px-3 text-sm rounded-default",
+        md: "h-[var(--giro-field-height)] px-4 text-base rounded-default",
       },
     },
     defaultVariants: {
@@ -61,6 +61,7 @@ const props = withDefaults(
     required?: boolean;
     disabled?: boolean;
     class?: HTMLAttributes["class"];
+    containerClass?: HTMLAttributes["class"];
   }>(), {
     variant: "primary",
     size: "md",
@@ -93,7 +94,10 @@ const onUpdateModelValue = (event: T) => {
   <Listbox
     v-slot="{ open }"
     :model-value="selectedOption"
-    class="w-full"
+    :class="cn(
+      'w-full',
+      containerClass,
+    )"
     @update:model-value="(event) => onUpdateModelValue(event)"
   >
     <div class="relative">
@@ -101,6 +105,7 @@ const onUpdateModelValue = (event: T) => {
         :class="cn(
           selectVariants({ variant, size }),
           props.class,
+          'flex items-center gap-2',
         )"
       >
         <slot
@@ -114,7 +119,7 @@ const onUpdateModelValue = (event: T) => {
         >
           {{ selectedOption?.title || '' }}
         </span>
-        <span class="pointer-events-none absolute z-[1] inset-y-0 right-0 flex items-center pr-2">
+        <span class="pointer-events-none flex items-center ml-auto">
           <Icon
             :name="open ? 'lucide:chevron-up' : 'lucide:chevron-down'"
             size="20"
@@ -129,7 +134,7 @@ const onUpdateModelValue = (event: T) => {
         leave-to-class="opacity-0"
       >
         <ListboxOptions
-          class="absolute z-[1] mt-1 w-max text-sm text-subtle overflow-auto bg-emphasis rounded-default focus-visible:outline-none"
+          class="absolute z-[1] mt-1 min-w-full w-max text-sm text-subtle overflow-auto bg-emphasis rounded-default focus-visible:outline-none"
           :style="optionsOffset"
         >
           <ListboxOption

@@ -50,7 +50,6 @@ const mask = computed(() => {
   <BaseInputGroup
     class="items-center"
     :placeholder="$t('field.telephone')"
-    placeholder-placement="default"
     inputmode="numeric"
     name="telephone"
     :mask="mask"
@@ -59,38 +58,35 @@ const mask = computed(() => {
     @input="(value) => telephone ? (telephone = value) : null"
     @change="(value) => telephone ? null : telephone = value"
   >
-    <template #prefix>
-      <div class="w-24">
-        <BaseSelect
-          :options="prefixOptions"
-          class="gap-2 bg-subtle text-emphasis px-0"
-          :options-offset="{
-            left: -20,
-          }"
-          :initial-selected-option="selectedPrefix"
-          @change="onTelephonePrefixChange"
-        >
-          <template #selected="{ selected }">
-            <div class="flex items-center gap-1">
-              <BaseFlag
-                v-if="selected"
-                :country-code="selected.countryCode"
-                size="md"
-              />
-              <span class="text-default">{{ selected?.value }}</span>
-            </div>
-          </template>
-          <template #option="{ option }">
-            <div class="flex items-center gap-1 px-2">
-              <BaseFlag
-                :country-code="option.countryCode"
-                size="md"
-              />
-              <span>{{ option.title }} ({{ option.value }})</span>
-            </div>
-          </template>
-        </BaseSelect>
-      </div>
+    <template #suffix>
+      <BaseSelect
+        :options="prefixOptions"
+        :options-offset="{ right: -20 }"
+        :initial-selected-option="selectedPrefix"
+        container-class="w-auto"
+        class="pr-0 bg-subtle"
+        @change="onTelephonePrefixChange"
+      >
+        <template #selected="{ selected }">
+          <div class="flex flex-shrink-0 items-center gap-2">
+            <BaseFlag
+              v-if="selected"
+              :country-code="selected.countryCode"
+              size="md"
+            />
+            <span class="text-default">{{ selected?.value }}</span>
+          </div>
+        </template>
+        <template #option="{ option }">
+          <div class="flex flex-shrink-0 items-center gap-2">
+            <BaseFlag
+              :country-code="option.countryCode"
+              size="md"
+            />
+            <span>{{ option.title }} ({{ option.value }})</span>
+          </div>
+        </template>
+      </BaseSelect>
     </template>
   </BaseInputGroup>
 </template>

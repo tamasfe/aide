@@ -46,7 +46,6 @@ const initialOption: Locale | undefined = ACTIVE_LOCALES.find(
             :options="ACTIVE_LOCALES"
             :initial-selected-option="initialOption"
             size="sm"
-            class="gap-2"
           >
             <template #selected="{ selected }">
               <BaseFlag

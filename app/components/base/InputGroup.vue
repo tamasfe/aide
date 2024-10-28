@@ -119,7 +119,7 @@ onBeforeUnmount(() => {
 
       <div
         ref="inputGroupContainer"
-        class="giro__input-group-container flex items-end w-full h-full relative"
+        class="giro__input-group-container flex-1 flex items-end h-full relative"
       >
         <BaseInput
           v-if="fieldType === 'input'"
