@@ -127,7 +127,7 @@ const onClose = (force: boolean) => {
         >
           <BaseClose
             :disabled="disabled"
-            class="p-1 bg-button-subtle-hover rounded-full"
+            class="p-1 rounded-full"
             @close="onClose(true)"
           />
 
