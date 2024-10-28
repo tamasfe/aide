@@ -12,8 +12,6 @@ setTimeout(() => {
 
 <template>
   <div>
-    <NavSidebar />
-
     <AppUserInteractionModal />
 
     <NuxtLayout>

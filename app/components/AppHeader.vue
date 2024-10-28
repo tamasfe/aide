@@ -10,6 +10,10 @@ const walletStore = useWalletStore();
 const onClickBalance = async () => {
   await navigateTo("/settings/wallet");
 };
+
+const emit = defineEmits([
+  "click:menu",
+]);
 </script>
 
 <template>
@@ -23,6 +27,7 @@ const onClickBalance = async () => {
             variant="ghost"
             size="ghost"
             class="hidden sm:block"
+            @click="emit('click:menu')"
           >
             <Icon
               name="lucide:menu"

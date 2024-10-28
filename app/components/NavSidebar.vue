@@ -1,12 +1,19 @@
 <script setup lang="ts">
-const open = ref(false);
-
 // DESIGN STATUS:       ✴️
 //   * hide the scrollbar like on bet7k
 // ARCHITECTURE STATUS: ✴️
-//   * sidebar needs to close after clicking a link
+//   * ✅ sidebar needs to close after clicking a link
 // TRANSLATION STATUS:  ✴️
 //   * translate final menu items
+
+const open = defineModel("open", { default: false, type: Boolean });
+
+const { afterEach } = useRouter();
+afterEach(() => {
+  if (open.value) {
+    open.value = false;
+  }
+});
 
 const links = [
   {
