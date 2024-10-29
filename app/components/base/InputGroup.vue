@@ -28,7 +28,6 @@ const props = withDefaults(
     mask?: string;
     maskBehaviourEager?: boolean;
     class?: HTMLAttributes["class"];
-    value?: unknown;
   }>(),
   {
     fieldType: "input",
@@ -89,6 +88,10 @@ onMounted(() => {
 onBeforeUnmount(() => {
   destroyFloatingLabel();
 });
+
+const value = defineModel({
+  type: String,
+});
 </script>
 
 <template>
@@ -108,7 +111,7 @@ onBeforeUnmount(() => {
         v-if="placeholderPlacement === 'floating' && placeholder"
         ref="floatingLabel"
         class="floating-label pointer-events-none"
-        :class="{ 'giro__input-has-value': !!props.value }"
+        :class="{ 'giro__input-has-value': !!value }"
       >
         <span>{{ placeholder }}</span>
         <span
@@ -123,6 +126,7 @@ onBeforeUnmount(() => {
       >
         <BaseInput
           v-if="fieldType === 'input'"
+          v-model="value"
           :mask-pattern="mask"
           :mask-behaviour-eager="maskBehaviourEager"
           v-bind="$attrs"
@@ -139,6 +143,7 @@ onBeforeUnmount(() => {
         />
         <BaseSelect
           v-else-if="fieldType === 'select'"
+          v-model="value"
           v-bind="$attrs"
           :required="required"
           :placeholder="fieldPlaceholder"

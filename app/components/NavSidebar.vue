@@ -126,7 +126,7 @@ const links = [
 <template>
   <BaseDrawer v-model:open="open">
     <template #title>
-      <div class="flex items-center justify-between pt-1 pl-4 max-w-[10rem]">
+      <div class="flex items-center justify-between pt-1 pl-2 max-w-[10rem]">
         <IconLogo />
       </div>
     </template>

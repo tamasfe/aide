@@ -11,6 +11,7 @@ import { AuthenticationRepositoryDumb } from "./AuthenticationRepositoryDumb";
 import { AuthenticationRepositoryGirobet } from "./AuthenticationRepositoryGirobet";
 import { AttemptUserLoginOnFormSubmission } from "./ui/AttemptUserLoginOnFormSubmission";
 import { LogoutCurrentUserFromButtonClick } from "./ui/LogoutCurrentUserFromButtonClick";
+import { EmitCommandCloseUserActionModal } from "./ui/EmitCommandCloseUserActionModal";
 import type { CommonDependenciesI } from "~/dependency-injection/load-di";
 
 export interface UsersDependencyInjectionI {
@@ -19,6 +20,7 @@ export interface UsersDependencyInjectionI {
   };
   ui: {
     emitCommandOpenUserActionModal: EmitCommandOpenUserActionModalModal;
+    emitCommandCloseUserActionModal: EmitCommandCloseUserActionModal;
     attemptUserLoginOnFormSubmission: AttemptUserLoginOnFormSubmission;
     logoutCurrentUserFromButtonClick: LogoutCurrentUserFromButtonClick;
   };
@@ -44,6 +46,7 @@ export const createUsersDependencyInjection = async (config: PublicRuntimeConfig
     },
     ui: {
       emitCommandOpenUserActionModal: new EmitCommandOpenUserActionModalModal(commonDependencies.asyncMessagePublisher),
+      emitCommandCloseUserActionModal: new EmitCommandCloseUserActionModal(commonDependencies.asyncMessagePublisher),
       attemptUserLoginOnFormSubmission: new AttemptUserLoginOnFormSubmission(
         new LoginUser(authenticationRepo, commonDependencies.asyncMessagePublisher),
         commonDependencies.translateFunction,

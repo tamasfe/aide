@@ -11,6 +11,7 @@ export interface AsyncMessagesTypes {
   "girobet:commands:modals:open-restrict-network-issues": {
     jurisdiction: string;
   };
+  "girobet:commands:modals:open-search": object;
   "girobet:commands:modals:close-user-interaction-modal": object;
 
   "girobet:events:users:user-logged-in": object;

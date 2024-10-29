@@ -8,6 +8,7 @@ import { Popover, PopoverPanel } from "@headlessui/vue";
 
 const open = ref(false);
 const loading = ref(false);
+const query = ref("");
 
 const onOpen = () => {
   open.value = true;
@@ -25,7 +26,10 @@ const onClose = () => {
     <SearchBar
       :open="open"
       :loading="loading"
+      :class="{ 'bg-emphasis': open }"
       @focus="onOpen"
+      @close="onClose"
+      @input="value => query = value"
     />
 
     <BaseOverlay
@@ -42,16 +46,16 @@ const onClose = () => {
       leave-to-class="translate-y-1 opacity-0"
     >
       <PopoverPanel
-        v-if="open"
+        v-if="open && query !== ''"
         class="absolute z-[8] mt-3 w-full outline-none"
         static
       >
         <div
-          class="rounded-default bg-emphasis/85 backdrop-blur text-default p-4 outline-none"
+          class="rounded-default bg-emphasis/85 backdrop-blur text-default px-5 py-4 outline-none"
           role="dialog"
           aria-modal="true"
         >
-          <SearchResults />
+          <SearchResults :query="query" />
         </div>
       </PopoverPanel>
     </transition>

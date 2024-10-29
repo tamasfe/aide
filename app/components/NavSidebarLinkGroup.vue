@@ -47,7 +47,6 @@ const onToggle = () => {
       <BaseButton
         variant="ghost"
         size="ghost"
-        class="mr-2"
         :class="open ? 'rotate-180' : 'rotate-0'"
       >
         <Icon

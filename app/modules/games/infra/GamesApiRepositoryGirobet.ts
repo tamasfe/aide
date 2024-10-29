@@ -12,12 +12,13 @@ export class GamesApiRepositoryGirobet implements GamesApiRepositoryI {
     this.apiClient = createBackendOpenApiClient(clientOptions, asyncMessagePublisher);
   }
 
-  public async searchByCategoryPaginating(category: string, limit: number, offset: number): Promise<Result<{ games: GameSummaryI[]; pagination: { limit: number; offset: number; totalItems: number } }, InfrastructureError>> {
+  public async searchPaginating(searchParams: { category: string | null; query: string | null }, limit: number, offset: number): Promise<Result<{ games: GameSummaryI[]; pagination: { limit: number; offset: number; totalItems: number } }, InfrastructureError>> {
     try {
       const { data, error, response } = await this.apiClient.GET("/game/search", {
         params: {
           query: {
-            category,
+            category: searchParams.category,
+            query: searchParams.query,
             limit,
             offset,
           },
@@ -38,21 +39,21 @@ export class GamesApiRepositoryGirobet implements GamesApiRepositoryI {
       if (error) {
         return fail(
           InfrastructureError.newFromError({
-            category, limit, offset,
+            searchParams, limit, offset,
           }, HttpBackendApiError.newFromBackendError(error, response)),
         );
       }
 
       return fail(
         InfrastructureError.newFromUnknownError({
-          category, limit, offset,
+          searchParams, limit, offset,
         }, new Error("Unexpected scenario: library did not return data nor error. This should never happen")),
       );
     }
     catch (error: unknown) {
       return fail(
         InfrastructureError.newFromUnknownError({
-          category, limit, offset,
+          searchParams, limit, offset,
         }, error),
       );
     }

@@ -50,10 +50,15 @@ const props = withDefaults(defineProps<{
   autocorrect: "off",
   inputmode: "text",
 });
+
+const value = defineModel({
+  type: String,
+});
 </script>
 
 <template>
   <input
+    v-model="value"
     v-maska="maskPattern"
     :data-maska-eager="maskBehaviourEager ?? false"
     :type="type"

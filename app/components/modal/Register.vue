@@ -8,7 +8,7 @@ const loading = ref(false);
 
 const { $dependencies } = useNuxtApp();
 const onClosed = () => {
-  $dependencies.common.asyncMessagePublisher.emit("girobet:commands:modals:close-user-interaction-modal", {});
+  $dependencies.users.ui.emitCommandCloseUserActionModal.handle();
 };
 </script>
 

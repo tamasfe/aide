@@ -6,7 +6,7 @@ export class EmitCommandOpenUserActionModalModal {
 
   }
 
-  public async handle(modalToOpen: "login" | "register"): Promise<EmptySuccessResult> {
+  public async handle(modalToOpen: "login" | "register" | "search"): Promise<EmptySuccessResult> {
     switch (modalToOpen) {
       case "login":
         await this.asyncMessagePublisher.emit("girobet:commands:modals:open-login", {});
@@ -14,6 +14,10 @@ export class EmitCommandOpenUserActionModalModal {
 
       case "register":
         await this.asyncMessagePublisher.emit("girobet:commands:modals:open-register", {});
+        return success();
+
+      case "search":
+        await this.asyncMessagePublisher.emit("girobet:commands:modals:open-search", {});
         return success();
     }
   }

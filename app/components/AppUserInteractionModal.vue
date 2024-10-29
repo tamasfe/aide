@@ -3,7 +3,11 @@ const { $dependencies } = useNuxtApp();
 const { t } = useI18n();
 const { hostname } = useRequestURL();
 
-const modal = useState("user-modal", () => "");
+const modal = defineModel("modal", {
+  type: String,
+  default: "",
+});
+
 const blockedCountry = useState("user-modal-blocked-country", () => "");
 const currentHost = useState("user-modal-current-host", () => "");
 const allowedDomain = useState<string | null>("user-modal-allowed-domain", () => null);
@@ -45,6 +49,13 @@ $dependencies.common.asyncMessagePublisher.subscribe(
     currentHost.value = hostname;
   },
 );
+$dependencies.common.asyncMessagePublisher.subscribe(
+  "girobet:commands:modals:open-search",
+  () => {
+    modal.value = "search";
+  },
+);
+
 $dependencies.common.asyncMessagePublisher.subscribe(
   "girobet:commands:modals:close-user-interaction-modal",
   () => {
@@ -90,6 +101,9 @@ $dependencies.common.asyncMessagePublisher.subscribe(
     <ModalRestrictLicenseNoAlternative
       v-if="modal === 'restrict_license_no_alternative'"
       :blocked-country="blockedCountry"
+    />
+    <ModalSearch
+      v-if="modal === 'search'"
     />
   </div>
 </template>

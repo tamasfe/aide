@@ -40,8 +40,8 @@ const totalCount = computed(() => {
       :style="{ gap: `${gap}rem` }"
     >
       <div
-        v-for="(datapoint, index) in data"
-        :key="index"
+        v-for="(datapoint) in data"
+        :key="datapoint"
         :style="{ aspectRatio: aspectRatio }"
       >
         <slot :data="datapoint" />
