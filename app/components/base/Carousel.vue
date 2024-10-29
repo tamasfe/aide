@@ -37,7 +37,7 @@ const prev = () => {
 };
 
 const bottomControlColorClass = (index: number) =>
-  index === currentIndex.value ? "bg-text-emphasis" : "bg-text-subtle";
+  index === currentIndex.value ? "opacity-70 bg-white" : "opacity-30 bg-white";
 
 const getCarouselMetadata = () => {
   const index = emblaApi.value?.selectedScrollSnap();
