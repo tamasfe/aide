@@ -7,7 +7,7 @@
     }"
   >
     <NuxtImg
-      src="/assets/images/wheel-2.png"
+      src="/assets/images/slides/aviator.jpg"
       alt=""
       class="object-cover object-center w-full h-full"
     />

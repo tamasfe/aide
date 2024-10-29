@@ -10,9 +10,9 @@ const { isMobile } = useDevice();
       ratio="3/1"
     >
       <SlideAviator />
+      <SlideFortuneRabbit />
+      <SlideJetX />
       <SlideFortuneTiger />
-      <SlideRoleta />
-      <SlideMines />
       <SlideWin10K />
       <SlideChooseGiroBet />
     </BaseCarousel>
