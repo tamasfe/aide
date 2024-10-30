@@ -1,5 +1,7 @@
 import type { LoggerI } from "./Logger";
 
+type LogLevel = "debug" | "info" | "warn" | "error";
+
 export class LoggerConsole implements LoggerI {
   public debug(message: string, data: Record<string, unknown> = {}): void {
     if (!this.levelIsAllowed("debug")) {
@@ -7,7 +9,7 @@ export class LoggerConsole implements LoggerI {
     }
 
     if (this.format === "json") {
-      console.debug(this.toStringifiedJSON(message, data));
+      console.debug(this.toStringifiedJSON("debug", message, data));
       return;
     }
     console.debug(message, this.metadataMerging(data));
@@ -19,7 +21,7 @@ export class LoggerConsole implements LoggerI {
     }
 
     if (this.format === "json") {
-      console.info(this.toStringifiedJSON(message, data));
+      console.info(this.toStringifiedJSON("info", message, data));
       return;
     }
     console.info(message, this.metadataMerging(data));
@@ -31,7 +33,7 @@ export class LoggerConsole implements LoggerI {
     }
 
     if (this.format === "json") {
-      console.warn(this.toStringifiedJSON(message, data));
+      console.warn(this.toStringifiedJSON("warn", message, data));
       return;
     }
     console.warn(message, this.metadataMerging(data));
@@ -43,7 +45,7 @@ export class LoggerConsole implements LoggerI {
     }
 
     if (this.format === "json") {
-      console.error(this.toStringifiedJSON(message, data));
+      console.error(this.toStringifiedJSON("error", message, data));
       return;
     }
     console.error(message, this.metadataMerging(data));
@@ -52,28 +54,18 @@ export class LoggerConsole implements LoggerI {
   constructor(
     private serviceName: string,
     private format: "json" | "prettyPrint",
-    private level: "debug" | "info" | "warn" | "error",
+    private level: LogLevel,
   ) {}
 
-  private findRuntime(): "client" | "server" | "unknown" {
-    if (import.meta.client) {
-      return "client";
-    }
-    if (import.meta.server) {
-      return "server";
-    }
-    return "unknown";
-  }
-
-  private toStringifiedJSON(message: string, data: Record<string, unknown> = {}) {
-    return JSON.stringify({ message, ...this.metadataMerging(data) });
+  private toStringifiedJSON(level: LogLevel, message: string, data: Record<string, unknown> = {}) {
+    return JSON.stringify({ message, level, ...this.metadataMerging(data) });
   }
 
   private metadataMerging(data: Record<string, unknown>) {
     return { timestamp: new Date().toISOString(), service: this.serviceName, runtime: this.findRuntime(), ...data };
   }
 
-  private levelIsAllowed(level: "debug" | "info" | "warn" | "error") {
+  private levelIsAllowed(level: LogLevel) {
     if (this.level === "debug") {
       return true;
     }
@@ -86,5 +78,17 @@ export class LoggerConsole implements LoggerI {
     if (this.level === "error" && level === "error") {
       return true;
     }
+
+    return false;
+  }
+
+  private findRuntime(): "client" | "server" | "unknown" {
+    if (import.meta.client) {
+      return "client";
+    }
+    if (import.meta.server) {
+      return "server";
+    }
+    return "unknown";
   }
 }
