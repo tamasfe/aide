@@ -47,6 +47,7 @@ export const createBackendOpenApiClient = (clientOptions: { baseUrl: string; use
     ...(clientOptions.userJurisdiction ? { "CF-IPCountry": clientOptions.userJurisdiction } : {}),
     "Content-Type": "application/json",
     "User-Agent": "girobet-frontend",
+    "X-Forwarded-Host": clientOptions.headers?.["Host"],
     ...clientOptions.headers,
   } });
   client.use(createMiddlewareJurisdictionErrorHandler(asyncMessagePublisher));
