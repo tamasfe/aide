@@ -34,15 +34,24 @@ const onTelephonePrefixChange = (option: TelephonePrefixOption) => {
 
 /**
  * TODO: once we know all telephone country codes that we support, refactor this to a class or file of its own "TelephoneMaskSelector"
- * that will depend on (countryCode, telephoneValue)
+ * that will depend on (countryCode, telephoneValue). Those 2 params should allow us to correctly pick the correct mask for all use cases.
  */
 const mask = computed(() => {
-  const BRASIL_MASK_MOBILE = "(##) #####-####";
-  const BRASIL_MASK_FIXED = "(##) ####-####";
+  switch (selectedPrefix.value.countryCode) {
+    case "BR":
+    {
+      const BRASIL_MASK_MOBILE = "(##) #####-####";
+      const BRASIL_MASK_FIXED = "(##) ####-####";
 
-  const thirdDigitOfUnmaskedTelephone = String(telephone.value).replace(/\D/g, "").slice(2, 3);
-  const isBrasilianMobileTelephone = thirdDigitOfUnmaskedTelephone === "9";
-  return isBrasilianMobileTelephone ? BRASIL_MASK_MOBILE : BRASIL_MASK_FIXED;
+      const thirdDigitOfUnmaskedTelephone = String(telephone.value).replace(/\D/g, "").slice(2, 3);
+      const isBrasilianMobileTelephone = thirdDigitOfUnmaskedTelephone === "9";
+      return isBrasilianMobileTelephone ? BRASIL_MASK_MOBILE : BRASIL_MASK_FIXED;
+    }
+    case "US":
+      return "(###) ###-####";
+    default:
+      return "";
+  }
 });
 </script>
 

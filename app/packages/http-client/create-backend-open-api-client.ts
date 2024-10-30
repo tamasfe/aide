@@ -46,6 +46,7 @@ export const createBackendOpenApiClient = (clientOptions: { baseUrl: string; use
   const client = createClient<paths>({ baseUrl: clientOptions.baseUrl, credentials: "include", headers: {
     ...(clientOptions.userJurisdiction ? { "CF-IPCountry": clientOptions.userJurisdiction } : {}),
     "Content-Type": "application/json",
+    "User-Agent": "girobet-frontend",
     ...clientOptions.headers,
   } });
   client.use(createMiddlewareJurisdictionErrorHandler(asyncMessagePublisher));

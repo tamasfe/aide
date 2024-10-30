@@ -44,7 +44,7 @@ export class SignupFlowApiRepositoryGirobet implements SignupFlowApiRepositoryI 
       return fail(SignupFlowNotFound.newFromId(id));
     }
 
-    throw new Error("Unexpected scenario: library did not return data nor error. This should never happen. Response: " + JSON.stringify(response));
+    return fail(InfrastructureError.newFromError({ data, error, response }, new Error("Unexpected scenario: library did not return data nor error. This should never happen. Response: ")));
   }
 
   public async create() {
@@ -59,7 +59,7 @@ export class SignupFlowApiRepositoryGirobet implements SignupFlowApiRepositoryI 
       return success(data.flow_id);
     }
 
-    throw new Error("Unexpected scenario: library did not return data nor error. This should never happen. Response: " + JSON.stringify(response));
+    return fail(InfrastructureError.newFromError({ data, error, response }, new Error("Unexpected scenario: library did not return data nor error. This should never happen. Response: ")));
   }
 
   public async submit(signupFlowId: string): Promise<EmptyResult<InfrastructureError>> {
@@ -76,11 +76,11 @@ export class SignupFlowApiRepositoryGirobet implements SignupFlowApiRepositoryI 
       return fail(InfrastructureError.newFromError({ signupFlowId }, httpError));
     }
 
-    if (data) {
+    if (data || response.ok) {
       return success();
     }
 
-    throw new Error("Unexpected scenario: library did not return data nor error. This should never happen. Response: " + JSON.stringify(response));
+    return fail(InfrastructureError.newFromError({ data, error, response, signupFlowId }, new Error("Unexpected scenario: library did not return data nor error. This should never happen. Response: ")));
   }
 
   public async update(
@@ -119,11 +119,11 @@ export class SignupFlowApiRepositoryGirobet implements SignupFlowApiRepositoryI 
       return fail(InfrastructureError.newFromError({ signupFlow }, httpError));
     }
 
-    if (data) {
+    if (data || response.ok) {
       return success();
     }
 
-    throw new Error("Unexpected scenario: library did not return data nor error. This should never happen. Response: " + JSON.stringify(response));
+    return fail(InfrastructureError.newFromError({ data, error, response }, new Error("Unexpected scenario: library did not return data nor error. This should never happen. Response: ")));
   }
 
   constructor(clientOptions: { baseUrl: string; headers?: Record<string, string>; userJurisdiction?: string }, asyncMessagePublisher: AsyncMessagePublisherI) {
