@@ -19,7 +19,7 @@ export class AuthenticationRepositoryGirobet implements AuthenticationRepository
       },
     });
 
-    if (data) {
+    if (data || response.ok) {
       return success();
     }
 
@@ -47,7 +47,7 @@ export class AuthenticationRepositoryGirobet implements AuthenticationRepository
         redirect: "follow",
       });
 
-      if (data) {
+      if (data || response.ok) {
         return success();
       }
 
