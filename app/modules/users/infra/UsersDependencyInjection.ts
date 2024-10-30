@@ -26,19 +26,22 @@ export interface UsersDependencyInjectionI {
   };
 }
 export const createUsersDependencyInjection = async (config: PublicRuntimeConfig, commonDependencies: CommonDependenciesI, requestHeaders?: Record<string, string>): Promise<UsersDependencyInjectionI> => {
+  const isServer = import.meta.server;
+  const auhtenticatedApiBaseUrl = isServer ? config.users.authenticatedRepositoryBaseUrlServer : config.users.authenticatedRepositoryBaseUrlClient;
+
   const authenticatedUserRepo: AuthenticatedUserRepositoryI = ((repoBaseUrl: string) => {
     if (repoBaseUrl) {
       return new AuthenticatedUserSearcherGirobet({ baseUrl: repoBaseUrl, userJurisdiction: config.genericFixedUserJurisdiction, headers: requestHeaders }, commonDependencies.asyncMessagePublisher);
     }
     return new AuthenticatedUserRepositoryDumb(commonDependencies.logger);
-  })(config.users.authenticatedRepositoryBaseUrl);
+  })(auhtenticatedApiBaseUrl);
 
   const authenticationRepo: AuthenticationRepositoryI = ((repoBaseUrl: string) => {
     if (repoBaseUrl) {
       return new AuthenticationRepositoryGirobet({ baseUrl: repoBaseUrl, userJurisdiction: config.genericFixedUserJurisdiction, headers: requestHeaders }, commonDependencies.asyncMessagePublisher);
     }
     return new AuthenticationRepositoryDumb(commonDependencies.logger);
-  })(config.users.authenticatedRepositoryBaseUrl);
+  })(auhtenticatedApiBaseUrl);
 
   return {
     queries: {

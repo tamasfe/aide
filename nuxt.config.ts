@@ -38,20 +38,23 @@ export default defineNuxtConfig({
       apiBaseUrl: process.env.NUXT_PUBLIC_API_BASE_URL,
       genericFixedUserJurisdiction: process.env.NUXT_PUBLIC_GENERIC_API_CLIENT_FIXED_USER_JURISDICTION,
       games: {
-        apiBaseUrl: process.env.NUXT_PUBLIC_GAMES_API_BASE_URL,
+        apiBaseUrlClient: process.env.NUXT_PUBLIC_GAMES_API_BASE_URL_CLIENT,
+        apiBaseUrlServer: process.env.NUXT_PUBLIC_GAMES_API_BASE_URL_SERVER,
       },
       signupFlows: {
         idsClientRepo: process.env.NUXT_PUBLIC_SIGNUP_FLOWS_IDS_CLIENT_REPO as
         | "mock"
         | "local_storage",
-        apiBaseUrl: process.env.NUXT_PUBLIC_SIGNUP_FLOWS_API_CLIENT_BASE_URL || "",
-        apiClientFixedUserJurisdiction: process.env.NUXT_PUBLIC_SIGNUP_FLOWS_API_CLIENT_FIXED_USER_JURISDICTION || "",
+        apiBaseUrlClient: process.env.NUXT_PUBLIC_SIGNUP_FLOWS_API_BASE_URL_CLIENT,
+        apiBaseUrlServer: process.env.NUXT_PUBLIC_SIGNUP_FLOWS_API_BASE_URL_SERVER,
       },
       users: {
-        authenticatedRepositoryBaseUrl: process.env.NUXT_PUBLIC_USERS_AUTHENTICATED_REPO_BASE_URL || "",
+        authenticatedRepositoryBaseUrlClient: process.env.NUXT_PUBLIC_USERS_AUTHENTICATED_REPO_BASE_URL_SERVER,
+        authenticatedRepositoryBaseUrlServer: process.env.NUXT_PUBLIC_USERS_AUTHENTICATED_REPO_BASE_URL_CLIENT,
       },
       wallets: {
-        apiBaseUrl: process.env.NUXT_PUBLIC_WALLETS_API_BASE_URL || "",
+        apiBaseUrlClient: process.env.NUXT_PUBLIC_WALLETS_API_BASE_URL_CLIENT,
+        apiBaseUrlServer: process.env.NUXT_PUBLIC_WALLETS_API_BASE_URL_SERVER,
       },
     },
   },

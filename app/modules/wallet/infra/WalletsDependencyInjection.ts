@@ -12,7 +12,8 @@ export interface WalletsDependencyInjectionI {
 }
 
 export const createWalletsDependencyInjection = (publicConfig: PublicRuntimeConfig, commonDependencies: CommonDependenciesI, requestHeaders?: Record<string, string>): WalletsDependencyInjectionI => {
-  const apiBaseUrl = publicConfig.wallets.apiBaseUrl;
+  const isServer = import.meta.server;
+  const apiBaseUrl = isServer ? publicConfig.wallets.apiBaseUrlServer : publicConfig.wallets.apiBaseUrlClient;
 
   const walletsRepository: WalletRepositoryI = (() => {
     if (apiBaseUrl) {

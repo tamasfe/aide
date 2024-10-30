@@ -27,7 +27,8 @@ export interface GamesDependencyInjectionI {
 }
 
 export const createGamesDependencyInjection = async (publicConfig: PublicRuntimeConfig, commonDependencies: CommonDependenciesI, requestHeaders?: Record<string, string>): Promise<GamesDependencyInjectionI> => {
-  const apiBaseUrl = publicConfig.games.apiBaseUrl;
+  const isServer = import.meta.server;
+  const apiBaseUrl = isServer ? publicConfig.games.apiBaseUrlServer : publicConfig.games.apiBaseUrlClient;
 
   const gamesApiRepository: GamesApiRepositoryI = (() => {
     if (!apiBaseUrl || apiBaseUrl === "") {

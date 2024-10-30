@@ -10,18 +10,21 @@ declare module "nuxt/schema" {
     apiBaseUrl: string;
     genericFixedUserJurisdiction: string | undefined;
     games: {
-      apiBaseUrl: string | undefined;
+      apiBaseUrlClient: string | undefined;
+      apiBaseUrlServer: string | undefined;
     };
     signupFlows: {
       idsClientRepo: "mock" | "local_storage";
-      apiBaseUrl: string | undefined;
-      apiClientFixedUserJurisdiction: string | undefined;
+      apiBaseUrlClient: string | undefined;
+      apiBaseUrlServer: string | undefined;
     };
     users: {
-      authenticatedRepoBaseUrl: string;
+      authenticatedRepositoryBaseUrlClient: string | undefined;
+      authenticatedRepositoryBaseUrlServer: string | undefined;
     };
     wallets: {
-      apiBaseUrl: string;
+      apiBaseUrlClient: string;
+      apiBaseUrlServer: string;
     };
   }
 }
