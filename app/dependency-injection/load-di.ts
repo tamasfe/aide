@@ -1,3 +1,4 @@
+import type { PublicRuntimeConfig } from "nuxt/schema";
 import type { AsyncMessagePublisherI } from "~/packages/async-messages/async-message-publisher";
 import { EmitteryAsyncMessagePublisher } from "~/packages/async-messages/emittery-async-message-publisher";
 import type { LoggerI } from "~/packages/logger/Logger";
@@ -10,8 +11,11 @@ export interface CommonDependenciesI {
   translateFunction: TranslateFunctionType;
 }
 
-export async function loadDependencies(translateFunction: TranslateFunctionType): Promise<CommonDependenciesI> {
-  const logger = new LoggerConsole();
+export async function loadDependencies(config: PublicRuntimeConfig, translateFunction: TranslateFunctionType): Promise<CommonDependenciesI> {
+  const isServer = import.meta.server;
+  const logFormat = isServer ? "json" : "prettyPrint";
+  const logger = new LoggerConsole(config.serviceName, logFormat, config.log.level as "debug" | "info" | "warn" | "error");
+
   return {
     asyncMessagePublisher: new EmitteryAsyncMessagePublisher(logger),
     logger,

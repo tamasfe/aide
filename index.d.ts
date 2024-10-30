@@ -9,6 +9,10 @@ declare module "nuxt/schema" {
   interface PublicRuntimeConfig {
     apiBaseUrl: string;
     genericFixedUserJurisdiction: string | undefined;
+    log: {
+      level: "debug" | "info" | "warn" | "error";
+    };
+    serviceName: string;
     games: {
       apiBaseUrlClient: string | undefined;
       apiBaseUrlServer: string | undefined;

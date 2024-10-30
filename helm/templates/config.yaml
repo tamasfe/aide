@@ -5,6 +5,10 @@ metadata:
 data:
   NUXT_PUBLIC_API_BASE_URL: https://api.girobet.vip
 
+  LOG_LEVEL: "info" # Some libraries use it to set their log level. Should match the below "NUXT_PUBLIC_LOG_LEVEL"
+  NUXT_PUBLIC_LOG_LEVEL: "info"
+  NUXT_PUBLIC_SERVICE_NAME: "girobet-frontend"
+
   # Games module
   NUXT_PUBLIC_GAMES_API_BASE_URL_CLIENT: "https://api.girobet.vip"
   NUXT_PUBLIC_GAMES_API_BASE_URL_SERVER: "http://girobet-api.default.svc.cluster.local"

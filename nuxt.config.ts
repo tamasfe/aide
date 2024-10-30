@@ -37,6 +37,10 @@ export default defineNuxtConfig({
     public: {
       apiBaseUrl: process.env.NUXT_PUBLIC_API_BASE_URL,
       genericFixedUserJurisdiction: process.env.NUXT_PUBLIC_GENERIC_API_CLIENT_FIXED_USER_JURISDICTION,
+      log: {
+        level: process.env.NUXT_PUBLIC_LOG_LEVEL,
+      },
+      serviceName: process.env.NUXT_PUBLIC_SERVICE_NAME || "girobet-frontend",
       games: {
         apiBaseUrlClient: process.env.NUXT_PUBLIC_GAMES_API_BASE_URL_CLIENT,
         apiBaseUrlServer: process.env.NUXT_PUBLIC_GAMES_API_BASE_URL_SERVER,
