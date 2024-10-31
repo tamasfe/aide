@@ -74,7 +74,7 @@ defineExpose({
 
 <template>
   <div
-    class="relative"
+    class="relative rounded-lg overflow-hidden"
     :style="{ aspectRatio: ratio }"
   >
     <slot
