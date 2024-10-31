@@ -73,7 +73,7 @@ export const createGamesDependencyInjection = async (publicConfig: PublicRuntime
     ui: {
       searchGamesByCategoryPaginatingOnSlider: new SearchGamesByCategoryPaginatingOnSlider(searchGamesPaginatingQuery, commonDependencies.logger),
       searchGamesByQueryPaginatingOnSearchBar: new SearchGamesByQueryPaginatingOnSearchBar(searchGamesPaginatingQuery, commonDependencies.logger),
-      findGameImageSrcByGameId: new FindGameImageSrcByGameId(apiBaseUrl || ""),
+      findGameImageSrcByGameId: new FindGameImageSrcByGameId(publicConfig.games.apiBaseUrlClient || ""),
       searchGameCategoriesByGroup: new SearchGameCategoriesByGroup(
         searchGameCategoriesByGroupQuery,
         commonDependencies.logger,
