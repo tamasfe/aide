@@ -74,7 +74,7 @@ defineExpose({
 
 <template>
   <div
-    class="relative rounded-lg overflow-hidden"
+    class="relative md:rounded overflow-hidden"
     :style="{ aspectRatio: ratio }"
   >
     <slot
@@ -106,7 +106,7 @@ defineExpose({
     </slot>
     <div
       v-if="bottomControls && hasMultipleSlides"
-      class="absolute z-[2] left-1/2 bottom-3 transform -translate-x-1/2 flex items-center space-x-2"
+      class="pointer-events-none md:pointer-events-auto absolute z-[2] left-1/2 bottom-3 transform -translate-x-1/2 flex items-center space-x-2"
     >
       <div
         v-for="(_, index) in items"
