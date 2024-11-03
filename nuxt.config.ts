@@ -96,7 +96,6 @@ export default defineNuxtConfig({
   },
   // @nuxtjs/i18n
   i18n: {
-    langDir: "locales/",
     locales: [
       {
         language: "en-US",
