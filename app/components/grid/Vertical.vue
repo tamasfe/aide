@@ -54,7 +54,7 @@ const dataToRender = computed(() => {
         :style="{ aspectRatio: aspectRatio }"
       >
         <slot v-if="loading === true && data.length === 0" name="loading">
-          <BaseSkeleton :loading="loading" class="h-full w-full" />
+          <BaseSkeleton :loading="loading" class="h-full w-full rounded-default" />
         </slot>
         <slot v-else :data="datapoint" />
       </div>
