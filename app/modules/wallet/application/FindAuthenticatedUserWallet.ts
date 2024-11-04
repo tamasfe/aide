@@ -1,6 +1,6 @@
 import type { WalletRepositoryI } from "../domain/WalletRepository";
-import { ErrorNoAuthenticatedWalletsFound } from "../domain/ErrorNoAuthenticatedWalletsFound";
-import { fail, success } from "~/packages/result";
+import { newEmptyWallet } from "../domain/Wallet";
+import { success } from "~/packages/result";
 
 export class FindAuthenticatedUserWallet {
   constructor(private walletRepository: WalletRepositoryI) {}
@@ -13,7 +13,7 @@ export class FindAuthenticatedUserWallet {
 
     const selectedWallet = walletsResult.value[0];
     if (!selectedWallet) {
-      return fail(new ErrorNoAuthenticatedWalletsFound({}));
+      return success(newEmptyWallet());
     }
 
     return success(selectedWallet);

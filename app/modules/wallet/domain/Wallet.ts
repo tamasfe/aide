@@ -5,3 +5,9 @@ export interface WalletI {
   balanceValue: number;
   currency: WalletCurrency;
 }
+
+export const newEmptyWallet = (): WalletI => ({
+  balance: "0",
+  balanceValue: 0,
+  currency: "BRL",
+});
