@@ -53,8 +53,8 @@ export default defineNuxtConfig({
         apiBaseUrlServer: process.env.NUXT_PUBLIC_SIGNUP_FLOWS_API_BASE_URL_SERVER,
       },
       users: {
-        authenticatedRepositoryBaseUrlClient: process.env.NUXT_PUBLIC_USERS_AUTHENTICATED_REPO_BASE_URL_SERVER,
-        authenticatedRepositoryBaseUrlServer: process.env.NUXT_PUBLIC_USERS_AUTHENTICATED_REPO_BASE_URL_CLIENT,
+        authenticatedRepositoryBaseUrlClient: process.env.NUXT_PUBLIC_USERS_AUTHENTICATED_REPO_BASE_URL_CLIENT,
+        authenticatedRepositoryBaseUrlServer: process.env.NUXT_PUBLIC_USERS_AUTHENTICATED_REPO_BASE_URL_SERVER,
       },
       wallets: {
         apiBaseUrlClient: process.env.NUXT_PUBLIC_WALLETS_API_BASE_URL_CLIENT,
