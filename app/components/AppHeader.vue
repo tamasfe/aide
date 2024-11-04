@@ -52,7 +52,7 @@ const emit = defineEmits([
         </div>
 
         <div class="flex items-center gap-2.5 sm:gap-3">
-          <template v-if="!walletStore.isInit">
+          <template v-if="!userStore.isAuthenticated">
             <BaseButton
               id="app-header-login-button"
               variant="secondary"
@@ -71,6 +71,7 @@ const emit = defineEmits([
           </template>
           <template v-else>
             <BaseButton
+              v-if="walletStore.isInit"
               variant="secondary"
               class="h-9 md:h-10 space-x-1"
               @click="onClickBalance"
