@@ -19,8 +19,8 @@ data:
   NUXT_PUBLIC_SIGNUP_FLOWS_API_BASE_URL_SERVER: "http://girobet-api.default.svc.cluster.local"
 
   # Users module
-  NUXT_PUBLIC_USERS_AUTHENTICATED_REPO_BASE_URL_CLIENT: "https://api.girobet.vip"
-  NUXT_PUBLIC_USERS_AUTHENTICATED_REPO_BASE_URL_SERVER: "http://girobet-api.default.svc.cluster.local"
+  NUXT_PUBLIC_USERS_AUTHENTICATED_REPOSITORY_BASE_URL_CLIENT: "https://api.girobet.vip"
+  NUXT_PUBLIC_USERS_AUTHENTICATED_REPOSITORY_BASE_URL_SERVER: "http://girobet-api.default.svc.cluster.local"
 
   # Wallet module
   NUXT_PUBLIC_WALLETS_API_BASE_URL_CLIENT: "https://api.girobet.vip"

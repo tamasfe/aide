@@ -27,21 +27,21 @@ export interface UsersDependencyInjectionI {
 }
 export const createUsersDependencyInjection = async (config: PublicRuntimeConfig, commonDependencies: CommonDependenciesI, requestHeaders?: Record<string, string>): Promise<UsersDependencyInjectionI> => {
   const isServer = import.meta.server;
-  const auhtenticatedApiBaseUrl = isServer ? config.users.authenticatedRepositoryBaseUrlServer : config.users.authenticatedRepositoryBaseUrlClient;
+  const authenticatedRepositoryBaseUrl = isServer ? config.users.authenticatedRepositoryBaseUrlServer : config.users.authenticatedRepositoryBaseUrlClient;
 
-  const authenticatedUserRepo: AuthenticatedUserRepositoryI = ((repoBaseUrl: string) => {
-    if (repoBaseUrl) {
-      return new AuthenticatedUserSearcherGirobet({ baseUrl: repoBaseUrl, userJurisdiction: config.genericFixedUserJurisdiction, headers: requestHeaders }, commonDependencies.asyncMessagePublisher);
+  const authenticatedUserRepo: AuthenticatedUserRepositoryI = (() => {
+    if (authenticatedRepositoryBaseUrl) {
+      return new AuthenticatedUserSearcherGirobet({ baseUrl: authenticatedRepositoryBaseUrl, userJurisdiction: config.genericFixedUserJurisdiction, headers: requestHeaders }, commonDependencies.asyncMessagePublisher);
     }
     return new AuthenticatedUserRepositoryDumb(commonDependencies.logger);
-  })(auhtenticatedApiBaseUrl || "");
+  })();
 
-  const authenticationRepo: AuthenticationRepositoryI = ((repoBaseUrl: string) => {
-    if (repoBaseUrl) {
-      return new AuthenticationRepositoryGirobet({ baseUrl: repoBaseUrl, userJurisdiction: config.genericFixedUserJurisdiction, headers: requestHeaders }, commonDependencies.asyncMessagePublisher, commonDependencies.logger);
+  const authenticationRepo: AuthenticationRepositoryI = (() => {
+    if (authenticatedRepositoryBaseUrl) {
+      return new AuthenticationRepositoryGirobet({ baseUrl: authenticatedRepositoryBaseUrl, userJurisdiction: config.genericFixedUserJurisdiction, headers: requestHeaders }, commonDependencies.asyncMessagePublisher, commonDependencies.logger);
     }
     return new AuthenticationRepositoryDumb(commonDependencies.logger);
-  })(auhtenticatedApiBaseUrl || "");
+  })();
 
   return {
     queries: {
