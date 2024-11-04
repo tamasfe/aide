@@ -34,14 +34,14 @@ export const createUsersDependencyInjection = async (config: PublicRuntimeConfig
       return new AuthenticatedUserSearcherGirobet({ baseUrl: repoBaseUrl, userJurisdiction: config.genericFixedUserJurisdiction, headers: requestHeaders }, commonDependencies.asyncMessagePublisher);
     }
     return new AuthenticatedUserRepositoryDumb(commonDependencies.logger);
-  })(auhtenticatedApiBaseUrl);
+  })(auhtenticatedApiBaseUrl || "");
 
   const authenticationRepo: AuthenticationRepositoryI = ((repoBaseUrl: string) => {
     if (repoBaseUrl) {
-      return new AuthenticationRepositoryGirobet({ baseUrl: repoBaseUrl, userJurisdiction: config.genericFixedUserJurisdiction, headers: requestHeaders }, commonDependencies.asyncMessagePublisher);
+      return new AuthenticationRepositoryGirobet({ baseUrl: repoBaseUrl, userJurisdiction: config.genericFixedUserJurisdiction, headers: requestHeaders }, commonDependencies.asyncMessagePublisher, commonDependencies.logger);
     }
     return new AuthenticationRepositoryDumb(commonDependencies.logger);
-  })(auhtenticatedApiBaseUrl);
+  })(auhtenticatedApiBaseUrl || "");
 
   return {
     queries: {

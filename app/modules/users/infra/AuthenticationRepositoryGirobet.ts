@@ -5,13 +5,15 @@ import { fail, success, type EmptyResult } from "~/packages/result";
 import { InfrastructureError } from "~/packages/result/infrastructure-error";
 import type { AsyncMessagePublisherI } from "~/packages/async-messages/async-message-publisher";
 import { HttpBackendApiError } from "~/packages/http-client/http-client-error";
+import type { LoggerI } from "~/packages/logger/Logger";
 
 export class AuthenticationRepositoryGirobet implements AuthenticationRepositoryI {
-  constructor(clientOptions: { baseUrl: string; userJurisdiction: string; headers?: Record<string, string> }, asyncMessagePublisher: AsyncMessagePublisherI) {
+  constructor(clientOptions: { baseUrl: string; userJurisdiction?: string; headers?: Record<string, string> }, asyncMessagePublisher: AsyncMessagePublisherI, private logger: LoggerI) {
     this.apiClient = createBackendOpenApiClient(clientOptions, asyncMessagePublisher);
   }
 
   public async login(username: string, password: string): Promise<EmptyResult<ErrorInvalidAuthCredentials | InfrastructureError>> {
+    this.logger.debug("Calling login", { username });
     const { data, error, response } = await this.apiClient.POST("/auth/login", {
       body: {
         username,
