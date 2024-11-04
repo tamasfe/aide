@@ -38,36 +38,15 @@ export const createGamesDependencyInjection = async (publicConfig: PublicRuntime
     return new GamesApiRepositoryGirobet({ baseUrl: apiBaseUrl, headers: requestHeaders, userJurisdiction: publicConfig.genericFixedUserJurisdiction }, commonDependencies.asyncMessagePublisher);
   })();
 
+  const gameCategoriesRepositoryDumb: GameCategoriesRepositoryDumb = (() => {
+    if (!apiBaseUrl || apiBaseUrl === "") {
+      return new GameCategoriesRepositoryDumb();
+    }
+
+    return new GameCategoriesRepositoryGirobet({ baseUrl: apiBaseUrl, headers: requestHeaders, userJurisdiction: publicConfig.genericFixedUserJurisdiction }, commonDependencies.asyncMessagePublisher);
+  })();
+
   const searchGamesPaginatingQuery = new SearchGamesPaginating(gamesApiRepository);
-
-  if (!apiBaseUrl || apiBaseUrl === "") {
-    const searchGameCategoriesByGroupQuery = new SearchGameCategoriesByCategoryGroup(
-      new GameCategoriesRepositoryDumb(),
-    );
-
-    return {
-      ui: {
-        searchGamesByCategoryPaginatingOnSlider: new SearchGamesByCategoryPaginatingOnSlider(searchGamesPaginatingQuery, commonDependencies.logger),
-        searchGamesByQueryPaginatingOnSearchBar: new SearchGamesByQueryPaginatingOnSearchBar(searchGamesPaginatingQuery, commonDependencies.logger),
-        findGameImageSrcByGameId: new FindGameImageSrcByGameId(apiBaseUrl || ""),
-        searchGameCategoriesByGroup: new SearchGameCategoriesByGroup(
-          searchGameCategoriesByGroupQuery,
-          commonDependencies.logger,
-        ),
-        findGameCompatibilityByIdOnGamePage: new FindGameCompatibilityByIdOnGamePage(new FindGameCompatibilityById(gamesApiRepository), commonDependencies.logger),
-        buildGameSessionIFrameUrl: new BuildGameSessionIFrameUrl(apiBaseUrl || ""),
-      },
-    };
-  }
-
-  const searchGameCategoriesByGroupQuery = new SearchGameCategoriesByCategoryGroup(
-    new GameCategoriesRepositoryGirobet({
-      baseUrl: apiBaseUrl,
-      headers: requestHeaders,
-      userJurisdiction: publicConfig.genericFixedUserJurisdiction,
-    },
-    commonDependencies.asyncMessagePublisher),
-  );
 
   return {
     ui: {
@@ -75,11 +54,13 @@ export const createGamesDependencyInjection = async (publicConfig: PublicRuntime
       searchGamesByQueryPaginatingOnSearchBar: new SearchGamesByQueryPaginatingOnSearchBar(searchGamesPaginatingQuery, commonDependencies.logger),
       findGameImageSrcByGameId: new FindGameImageSrcByGameId(publicConfig.games.apiBaseUrlClient || ""),
       searchGameCategoriesByGroup: new SearchGameCategoriesByGroup(
-        searchGameCategoriesByGroupQuery,
+        new SearchGameCategoriesByCategoryGroup(
+          gameCategoriesRepositoryDumb,
+        ),
         commonDependencies.logger,
       ),
       findGameCompatibilityByIdOnGamePage: new FindGameCompatibilityByIdOnGamePage(new FindGameCompatibilityById(gamesApiRepository), commonDependencies.logger),
-      buildGameSessionIFrameUrl: new BuildGameSessionIFrameUrl(apiBaseUrl || ""),
+      buildGameSessionIFrameUrl: new BuildGameSessionIFrameUrl(publicConfig.games.apiBaseUrlClient || ""),
     },
   };
 };
