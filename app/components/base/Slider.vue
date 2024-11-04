@@ -165,6 +165,16 @@ defineExpose({
   canScrollNext,
   canScrollPrev,
 });
+
+const SKELETON_ITEMS_TO_SHOW = 8;
+const dataLoadingSkeleton = Array.from({ length: SKELETON_ITEMS_TO_SHOW }).map((_elem, index) => (index)) as T;
+
+const dataToRender = computed(() => {
+  if (props.loading === undefined) {
+    return props.data;
+  }
+  return props.data.length > 0 ? props.data : dataLoadingSkeleton;
+});
 </script>
 
 <template>
@@ -177,11 +187,13 @@ defineExpose({
       :style="{ gap: `${gap}rem` }"
     >
       <div
-        v-for="(item, idx) in data"
+        v-for="(item, idx) in dataToRender"
         :key="idx"
         class="giro__slider-slide"
       >
+        <BaseSkeleton v-if="loading === true && data.length === 0" :loading="loading" class="h-full w-full" />
         <slot
+          v-else
           :item="item"
           :index="idx"
         />

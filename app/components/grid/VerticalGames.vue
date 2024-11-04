@@ -9,7 +9,10 @@ const { navigateBackOrHome } = useNavigateBackOrHome();
 
 const query = $dependencies.games.ui.searchGamesByCategoryPaginatingOnSlider;
 
-const loading = ref(false);
+const ENABLE_SERVER_SIDE_RENDERING = false;
+const DEFER_CLIENT_SIDE_LOADING = true;
+
+const loading = ref(true);
 const totalGamesOfCategory = useState(`grid-vertical-games-total-for-${props.categoryIdentifier}`, () => 0);
 const nextGamesPageToSearch = useState(`grid-vertical-games-next-page-for-${props.categoryIdentifier}`, () => 0);
 const gameIds = useState<number[]>(`grid-vertical-games-ids-for-${props.categoryIdentifier}`, () => []);
@@ -17,7 +20,6 @@ const canLoadMore = useState(`grid-vertical-games-can-load-more-for-${props.cate
 
 const onLoadData = async () => {
   if (!canLoadMore.value) return;
-  if (loading.value) return;
   loading.value = true;
 
   const { games: foundGames, canLoadMore: updatedCanLoadMore, totalGames } = await query.handle(props.categoryIdentifier, nextGamesPageToSearch.value);
@@ -29,7 +31,7 @@ const onLoadData = async () => {
   loading.value = false;
 };
 
-await useAsyncData(`load-games-for-${props.categoryIdentifier}`, () => onLoadData().then(() => true));
+await useAsyncData(`load-games-for-${props.categoryIdentifier}`, () => onLoadData().then(() => true), { lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING });
 </script>
 
 <template>
@@ -69,6 +71,7 @@ await useAsyncData(`load-games-for-${props.categoryIdentifier}`, () => onLoadDat
     <GridVertical
       :data="gameIds"
       :total-count="totalGamesOfCategory"
+      :loading="loading"
       :columns="{ sm: 3, md: 4, lg: 6, xl: 8 }"
       aspect-ratio="3/4"
       pagination

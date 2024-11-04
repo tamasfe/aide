@@ -20,16 +20,25 @@ const props = withDefaults(
     pagination?: boolean;
     aspectRatio?: CSSProperties["aspectRatio"];
     totalCount?: number;
+    loading?: boolean;
   }>(), {
     pagination: false,
     gap: 0.8,
   },
 );
 
-const { data } = toRefs(props);
-
 const totalCount = computed(() => {
   return props.totalCount !== undefined ? props.totalCount : props.data.length;
+});
+
+const SKELETON_ITEMS_TO_SHOW = 24;
+const dataLoadingSkeleton = Array.from({ length: SKELETON_ITEMS_TO_SHOW }).map((_elem, index) => (index));
+
+const dataToRender = computed(() => {
+  if (props.loading === undefined) {
+    return props.data;
+  }
+  return props.data.length > 0 ? props.data : dataLoadingSkeleton;
 });
 </script>
 
@@ -40,11 +49,14 @@ const totalCount = computed(() => {
       :style="{ gap: `${gap}rem` }"
     >
       <div
-        v-for="(datapoint) in data"
+        v-for="(datapoint) in dataToRender"
         :key="datapoint"
         :style="{ aspectRatio: aspectRatio }"
       >
-        <slot :data="datapoint" />
+        <slot v-if="loading === true && data.length === 0" name="loading">
+          <BaseSkeleton :loading="loading" class="h-full w-full" />
+        </slot>
+        <slot v-else :data="datapoint" />
       </div>
     </div>
     <div
@@ -67,10 +79,7 @@ const totalCount = computed(() => {
       >
         <div class="flex items-center gap-2">
           <div>Load More</div>
-          <Icon
-            name="lucide:chevron-down"
-            size="24"
-          />
+          <Icon name="lucide:chevron-down" size="24" />
         </div>
       </BaseButton>
     </div>
