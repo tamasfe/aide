@@ -4,6 +4,7 @@ import type { WalletI } from "../domain/Wallet";
 import { WalletCurrencies, type WalletCurrency } from "../domain/WalletCurrency";
 import { ErrorCurrencyNotRecognized } from "../domain/ErrorCurrencyNotRecognized";
 import { ErrorInvalidBalance } from "../domain/ErrorInvalidBalance";
+import { ErrorUserNotAuthorized } from "../domain/ErrorUserNotAuthorized";
 import { fail, success, type Result } from "~/packages/result";
 import { InfrastructureError } from "~/packages/result/infrastructure-error";
 import { createBackendOpenApiClient } from "~/packages/http-client/create-backend-open-api-client";
@@ -15,7 +16,7 @@ export class WalletsRepositoryGirobet implements WalletRepositoryI {
     this.apiClient = createBackendOpenApiClient(clientOptions, asyncMessagePublisher);
   }
 
-  public async findAuthenticated(): Promise<Result<WalletI[], InfrastructureError | ErrorCurrencyNotRecognized | ErrorNoAuthenticatedWalletsFound | ErrorInvalidBalance>> {
+  public async findAuthenticated(): Promise<Result<WalletI[], InfrastructureError | ErrorCurrencyNotRecognized | ErrorNoAuthenticatedWalletsFound | ErrorInvalidBalance | ErrorUserNotAuthorized>> {
     try {
       const { data, error, response } = await this.apiClient.GET("/user/balance", {});
 
@@ -52,6 +53,13 @@ export class WalletsRepositoryGirobet implements WalletRepositoryI {
             new ErrorNoAuthenticatedWalletsFound({}),
           );
         }
+
+        if (error.code === "UNAUTHORIZED") {
+          return fail(
+            new ErrorUserNotAuthorized({}),
+          );
+        }
+
         return fail(
           InfrastructureError.newFromError({}, HttpBackendApiError.newFromBackendError(error, response)),
         );

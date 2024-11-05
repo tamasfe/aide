@@ -1,5 +1,6 @@
 import { loadDependencies } from "~/dependency-injection/load-di";
 import { createGamesDependencyInjection } from "~/modules/games/infra/GamesDependencyInjection";
+import { createProvidersDependencyInjection } from "~/modules/providers/infra/ProvidersDependencyInjection";
 import { createSignupFlowsDependencyInjection } from "~/modules/signup-flows/infra/SignupFlowsDependencyInjection";
 import { createUsersDependencyInjection } from "~/modules/users/infra/UsersDependencyInjection";
 import { createWalletsDependencyInjection } from "~/modules/wallet/infra/WalletsDependencyInjection";
@@ -21,6 +22,7 @@ export default defineNuxtPlugin({
           games: await createGamesDependencyInjection(config.public, commonDependencies, requestHeaders),
           users: await createUsersDependencyInjection(config.public, commonDependencies, requestHeaders),
           wallets: createWalletsDependencyInjection(config.public, commonDependencies, requestHeaders),
+          providers: await createProvidersDependencyInjection(config.public, commonDependencies, requestHeaders),
         },
       },
     };

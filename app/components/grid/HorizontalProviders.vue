@@ -1,48 +1,57 @@
 <script setup lang="ts">
-const data = ref<number[]>(Array.from({ length: 4 }, (_, i) => i + 1));
-const loading = ref(true);
+const { $dependencies } = useNuxtApp();
+const { t } = useI18n();
 
-const slidesToScroll = ref({
-  sm: 2,
-  md: 2,
-  lg: 2,
-  xl: 2,
-});
+const loading = ref(false);
+const nextProvidersPageToSearch = useState(`grid-horizontal-providers-next-page`, () => 0);
+const providerIds = useState<number[]>(`grid-horizontal-providers-ids`, () => []);
+const canLoadMore = useState(`grid-horizontal-providers-can-load-more`, () => true);
 
-const columns = ref({
-  sm: 2.7,
-  md: 2.7,
-  lg: 2.7,
-  xl: 2.7,
-});
+const BLOCK_SERVER_SIDE_REQUEST = false;
+const BLOCK_CLIENT_SIDE_REQUEST = false;
 
-onMounted(() => {
-  setTimeout(() => {
-    loading.value = false;
-  }, 1000);
-});
+const onLoadData = async () => {
+  if (!canLoadMore.value) return;
+  if (loading.value) return;
+  loading.value = true;
 
-onMounted(() => {
-  setTimeout(() => {
-    loading.value = false;
-  }, 1000);
-});
+  const { providers: foundProviders, canLoadMore: updatedCanLoadMore } = await $dependencies.providers.ui.searchAllProvidersOnHorizontalGrid.handle(nextProvidersPageToSearch.value);
+  providerIds.value.push(...foundProviders.map(game => game.id));
+  canLoadMore.value = updatedCanLoadMore;
+  nextProvidersPageToSearch.value += 1;
+
+  loading.value = false;
+};
+
+await useAsyncData(`load-providers`, () => onLoadData().then(() => true), { lazy: !BLOCK_CLIENT_SIDE_REQUEST, server: BLOCK_SERVER_SIDE_REQUEST });
 </script>
 
 <template>
   <GridHeaderHorizontal
-    :data="data"
-    :columns="columns"
-    :slides-to-scroll="slidesToScroll"
+    v-show="providerIds.length > 0"
+    :data="providerIds"
+    :columns="{
+      sm: 2.7,
+      md: 2.7,
+      lg: 2.7,
+      xl: 2.7,
+    }"
+    :slides-to-scroll="{
+      sm: 2,
+      md: 2,
+      lg: 2,
+      xl: 2,
+    }"
     :loading="loading"
     :gap="2"
     aspect-ratio="16/9"
   >
     <template #title>
-      <GridHeaderTitle title="🏆 Game Studios" />
+      <GridHeaderTitle :title="t('grid.providers')" />
     </template>
 
-    <template #options>
+    <!-- Commenting pending to decide where to take the user when clicking the "see all providers" -->
+    <!-- <template #options>
       <NuxtLink
         :to="{
           name: 'providers-id',
@@ -53,29 +62,28 @@ onMounted(() => {
           variant="subtle"
           size="sm"
         >
-          {{ $t("button.see_all") }}
+          {{ t("button.see_all") }}
         </BaseButton>
       </NuxtLink>
-    </template>
-    <template #default="{ item: index }">
+    </template> -->
+
+    <template #default="{ item: providerId }">
       <div class="group flex flex-col gap-2 justify-between w-full h-full">
         <div class="flex-1 rounded-[0.7rem] overflow-hidden">
           <NuxtLink
             :to="{
               name: 'providers-id',
-              params: { id: index },
+              params: { id: providerId },
             }"
           >
-            <NuxtImg
-              :src="`/assets/images/providers/${index}.png`"
-              alt=""
-              class="group-hover:opacity-80 w-full h-full object-cover"
-            />
+            <ProviderImageLoader :provider-id="providerId" />
           </NuxtLink>
         </div>
-        <div class="w-full flex justify-center font-medium bg-button-primary text-transparent bg-clip-text">
-          {{ $t("grid.game_count", { count: 69 }) }}
-        </div>
+
+        <!-- Commenting until the endpoint returns how many games the provider has  -->
+        <!-- <div class="w-full flex justify-center font-medium bg-button-primary text-transparent bg-clip-text">
+          {{ t("grid.game_count", { count: 69 }) }}
+        </div> -->
       </div>
     </template>
   </GridHeaderHorizontal>

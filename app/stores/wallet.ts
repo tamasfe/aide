@@ -1,3 +1,5 @@
+import { ErrorUserNotAuthorized } from "~/modules/wallet/domain/ErrorUserNotAuthorized";
+
 type WalletStoreI = {
   isInit: false;
   wallet: null;
@@ -21,7 +23,9 @@ export const useWalletStore = defineStore("walletStore", {
       const { $dependencies } = useNuxtApp();
       const result = await $dependencies.wallets.queries.findAuthenticatedUserWallet.handle();
       if (result.isFailure) {
-        $dependencies.common.logger.error("Error searching for the authenticated user balance inside balance store", { error: result.error });
+        if (!(result.error instanceof ErrorUserNotAuthorized)) {
+          $dependencies.common.logger.error("Unexpected error while fetching the wallet's balance of the authenticated user", { error: result.error });
+        }
       }
 
       // Remove previous wallet

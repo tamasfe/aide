@@ -25,3 +25,7 @@ data:
   # Wallet module
   NUXT_PUBLIC_WALLETS_API_BASE_URL_CLIENT: "https://api.girobet.vip"
   NUXT_PUBLIC_WALLETS_API_BASE_URL_SERVER: "http://girobet-api.default.svc.cluster.local"
+
+  # Providers domain
+  NUXT_PUBLIC_PROVIDERS_API_BASE_URL_CLIENT: "https://api.girobet.vip"
+  NUXT_PUBLIC_PROVIDERS_API_BASE_URL_SERVER: "http://girobet-api.default.svc.cluster.local"

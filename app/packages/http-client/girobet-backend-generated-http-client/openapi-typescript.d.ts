@@ -783,6 +783,161 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/game-provider/search": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Search Game Providers
+         * @description Search for games providers by providing a search query.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    category?: string | null;
+                    query?: string | null;
+                    limit?: number;
+                    offset?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PaginatorResponse_for_GameProviderSearchResponse_and_GameProviderSearchQuery"];
+                    };
+                };
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/game-provider/{provider_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Game Provider
+         * @description Get a game provider by its ID.
+         *             This can be used to show a more detailed view of of the
+         *             provider profile in the frontend, which may require more data than
+         *             the search endpoint provides.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    provider_id: components["schemas"]["GameProviderId"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["GameProviderResponse"];
+                    };
+                };
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/game-provider/{provider_id}/image": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Game Provider Image
+         * @description Get the image of a game provider by its ID.
+         *         This can be used to show the image of the game provider to the user.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    color?: components["schemas"]["GameProviderImageColor"];
+                    size?: components["schemas"]["GameProviderImageSize"];
+                };
+                header?: never;
+                path: {
+                    provider_id: components["schemas"]["GameProviderId"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description byte stream */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/octet-stream": unknown;
+                    };
+                };
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/game/{game_id}/session": {
         parameters: {
             query?: never;
@@ -943,7 +1098,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/game/{game_id}/rating": {
+    "/game/{game_id}/rate": {
         parameters: {
             query?: never;
             header?: never;
@@ -991,6 +1146,61 @@ export interface paths {
                 };
             };
         };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/game/{game_id}/ratings": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Game Ratings
+         * @description User ratings split up into likes and dislikes
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    game_id: components["schemas"]["GameId"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["GameRatingsResponse"];
+                    };
+                };
+                /** @description no content */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -1582,8 +1792,11 @@ export interface components {
             user_metadata: components["schemas"]["KycUserMetadata"];
         };
         AlternativeSite: {
+            /** @description The base URL of the alternative site. This url should be used to redirect the user to the alternative site. The URL may include a path too, so this needs to be taken into account. */
             base_url: components["schemas"]["SystemUrl"];
+            /** @description The name of the alternative site. */
             name: string;
+            /** @description The field "servable" indicates if this site is able to be served by the current casino instance. If there's an alternative, which can not be served by the current casino instance, but can be served by another casino instance, this is false. Example scenario: Cross-regional deployments of this system, with independent databases require the ability to point to each other as alternatives, as they can't serve the requested site themselves. */
             servable: boolean;
         };
         /** @enum {string} */
@@ -1609,9 +1822,41 @@ export interface components {
         /** Format: int64 */
         GameProviderId: number;
         /** @enum {string} */
-        GameRating: "Like" | "Dislike";
+        GameProviderImageColor: "white" | "black" | "color";
+        GameProviderImageRequestQuery: {
+            color?: components["schemas"]["GameProviderImageColor"];
+            size?: components["schemas"]["GameProviderImageSize"];
+        };
+        /** @enum {string} */
+        GameProviderImageSize: "small" | "default";
+        GameProviderRequestPathParams: {
+            provider_id: components["schemas"]["GameProviderId"];
+        };
+        GameProviderResponse: {
+            description?: string | null;
+            id: components["schemas"]["GameProviderId"];
+            name: string;
+            slug: string;
+        };
+        GameProviderSearchQuery: {
+            category?: string | null;
+            query?: string | null;
+        };
+        GameProviderSearchResponse: {
+            id: components["schemas"]["GameProviderId"];
+            name: string;
+            slug: string;
+        };
+        /** @enum {string} */
+        GameRating: "like" | "dislike";
         GameRatingRequestBody: {
             rating?: components["schemas"]["GameRating"] | null;
+        };
+        GameRatingsResponse: {
+            /** Format: int64 */
+            dislikes: number;
+            /** Format: int64 */
+            likes: number;
         };
         GameRequestPathParams: {
             game_id: components["schemas"]["GameId"];
@@ -1727,6 +1972,10 @@ export interface components {
          * @enum {string}
          */
         NotificationTypeDiscriminants: "payment_status_update" | "kyc_completed" | "test_status";
+        PaginatorMetadata_for_GameProviderSearchQuery: {
+            filters?: components["schemas"]["GameProviderSearchQuery"] | null;
+            pagination: components["schemas"]["PaginatorPosition"];
+        };
         PaginatorMetadata_for_GameSearchQuery: {
             filters?: components["schemas"]["GameSearchQuery"] | null;
             pagination: components["schemas"]["PaginatorPosition"];
@@ -1748,6 +1997,10 @@ export interface components {
             offset: number;
             /** Format: int64 */
             total_items: number;
+        };
+        PaginatorResponse_for_GameProviderSearchResponse_and_GameProviderSearchQuery: {
+            data: components["schemas"]["GameProviderSearchResponse"][];
+            metadata: components["schemas"]["PaginatorMetadata_for_GameProviderSearchQuery"];
         };
         PaginatorResponse_for_GameSearchResponse_and_GameSearchQuery: {
             data: components["schemas"]["GameSearchResponse"][];

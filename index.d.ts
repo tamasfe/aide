@@ -30,6 +30,10 @@ declare module "nuxt/schema" {
       apiBaseUrlClient: string;
       apiBaseUrlServer: string;
     };
+    providers: {
+      apiBaseUrlClient: string;
+      apiBaseUrlServer: string;
+    };
   }
 }
 

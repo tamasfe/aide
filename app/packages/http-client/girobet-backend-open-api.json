@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Girobet Casino API Docs",
-    "description": "# Introduction\n\nThe API to the **GiroBet Casino** system. This API aims to be *highly scalable* and to be *independent of any frontend implementations*.\nAuthentication is done only via **HTTP cookies**, which are set by the server after a successful login.\nThe API is *stateless* and does not store any session data on the server, other than some session metadata such as the useragent and the IP address.\n\n## Architecture\n\nThe API consists of **two servers**:\n\n1. The endpoint you're in right now, which is the *main casino API*\n2. The *api API* that is used for internal administrative tasks and can be found [here](http://localhost:8000/docs)\n\nThe servers are running on different ports and are separated for security reasons. The main casino API is the one that is exposed to the public and is the one that handles all the requests from the frontend.\n\n## Jurisdiction Checking System\n\nOur online casino API implements a *sophisticated jurisdiction checking system* to ensure compliance with various licensing requirements. This document outlines how the system works and what frontend developers need to know when interacting with the API.\n\n### Key Concepts\n\n- **Sites**: A Site represents a *logical grouping* of one or more domains.\n- **Licenses**: Licenses are mapped to Sites via a *many-to-many relationship*.\n- **Jurisdiction Enforcement**: The API enforces jurisdictions based on the *incoming request's headers* and *user account information*.\n\n### Header Requirements\n\nThe API relies on **two crucial headers** to enforce jurisdictions:\n\n1. `CF-IPCountry`: Provided by Cloudflare, indicating the *country of origin* for the request.\n2. `Host`: The *domain name* of the requested site.\n\n**Important**: The `Host` header is interchangeable with the `Forwarded` or `X-Forwarded-Host` headers. The API will check for these headers in the following order of preference: `Forwarded`, `X-Forwarded-Host`, `Host`. Use whichever is most appropriate for your setup.\n\n#### Important Notes\n\n- In production, the `CF-IPCountry` header is *typically always set*, as we use Cloudflare to proxy all requests.\n- If either the country header (`CF-IPCountry`) or a host header (`Host`, `Forwarded`, or `X-Forwarded-Host`) is missing, the API will *not force a jurisdiction*. Most requests will still succeed, except for certain operations like signup that require jurisdiction information.\n\n### Jurisdiction Enforcement Flow\n\n#### For Anonymous Users\n\n1. The API checks for the presence of both `CF-IPCountry` and a host header (`Host`, `Forwarded`, or `X-Forwarded-Host`).\n2. If both headers are present, the API determines the appropriate jurisdiction based on the Site and License mappings.\n3. If either header is missing, no jurisdiction is enforced, but certain operations may be restricted.\n\n#### For Logged-in Users\n\nFor logged-in users, the process is more complex to account for potential VPN usage:\n\n1. The API performs the same checks as for anonymous users (CF-IPCountry and host headers).\n2. Additionally, the API retrieves the jurisdiction associated with the user's account.\n3. The system then performs the following checks:\n   1. Verifies that the jurisdiction indicated by the CF-IPCountry header is covered by at least one license, that has a mapping to a Site that also covers the host.\n   2. Checks if the user's account jurisdiction is also covered by at least one license that fulfills step *3.1*.\n4. Possible scenarios:\n   - If both jurisdictions (CF-IPCountry and user's account) are covered by the same license, the request is allowed.\n   - If the CF-IPCountry jurisdiction is a blocked jurisdiction for the relevant license(s), the request is denied.\n   - If the user's account jurisdiction is not covered by the same license as the CF-IPCountry jurisdiction, the request is denied.\n\nThis approach allows for *legitimate VPN usage* while maintaining compliance with licensing requirements.\n\n### For Frontend Developers\n\n#### Standard API Requests\n\nEnsure that your requests to the API include either the `Host`, `Forwarded`, or `X-Forwarded-Host` header. The `CF-IPCountry` header will be automatically set by Cloudflare in production environments.\n\n#### Server-Side Rendering (SSR) Approach\n\nIf you're using an SSR approach:\n\n1. Your server will receive the original host information from the client request.\n2. When making internal requests from your SSR server to our API, you must proxy this host information using one of the accepted headers.\n3. You should also forward the `CF-IPCountry` header, as we're not interested in the SSR server's country, but the client's country of origin.\n\nYou have **several options** for forwarding the host information:\n\n1. Proxy the original `Host` header\n2. Use the `Forwarded` header\n3. Use the `X-Forwarded-Host` header\n\nExample using the `Host` and `CF-IPCountry` headers:\n\n```javascript\n// In your SSR server\napp.get('/some-route', async (req, res) => {\n  const apiResponse = await fetch('https://api.ourcasino.com/endpoint', {\n    headers: {\n      'Host': req.headers.host, // Proxy the original Host header\n      'CF-IPCountry': req.headers['cf-ipcountry'] || 'XX', // Proxy CF-IPCountry or use a default value\n    },\n  });\n  // Process the response...\n});\n```\n\nExample using the `Forwarded` header and `CF-IPCountry`:\n\n```javascript\napp.get('/some-route', async (req, res) => {\n  const apiResponse = await fetch('https://api.ourcasino.com/endpoint', {\n    headers: {\n      'Forwarded': `host=${req.headers.host}`, // Use the Forwarded header\n      'CF-IPCountry': req.headers['cf-ipcountry'] || 'XX', // Proxy CF-IPCountry or use a default value\n    },\n  });\n  // Process the response...\n});\n```\n\nExample using the `X-Forwarded-Host` header and `CF-IPCountry`:\n\n```javascript\napp.get('/some-route', async (req, res) => {\n  const apiResponse = await fetch('https://api.ourcasino.com/endpoint', {\n    headers: {\n      'X-Forwarded-Host': req.headers.host, // Use the X-Forwarded-Host header\n      'CF-IPCountry': req.headers['cf-ipcountry'] || 'XX', // Proxy CF-IPCountry or use a default value\n    },\n  });\n  // Process the response...\n});\n```\n\nChoose the method that best fits your infrastructure and security requirements. The `Forwarded` header is the *standardized version*, while `X-Forwarded-Host` is a *commonly used non-standard header*. The original `Host` header is the *most straightforward* but may not always be suitable in complex setups.\n\nRemember to handle the `CF-IPCountry` header appropriately in your development environment. You may need to set it manually or use a default value (like 'XX' in the examples above) to simulate different jurisdictions during testing.\n\n### Error Handling\n\nFrontend developers should be prepared to handle the following scenarios:\n\n1. Jurisdiction mismatch errors for logged-in users (e.g., when VPN jurisdiction doesn't match account jurisdiction).\n2. Blocked jurisdiction errors.\n3. Missing header errors (in development environments).\n\nThe API will return appropriate error codes and messages for these scenarios, which should be displayed to the user or used to redirect them as needed.\n\n### Testing and Development\n\nFor testing and development purposes, you may need to manually set both the `CF-IPCountry` and the appropriate host header to simulate different jurisdictions and domains. In production, the `CF-IPCountry` header will be reliably set by Cloudflare, while the host information will come from the client's request.\n\n**Remember** that the jurisdiction checking system is *critical* for maintaining compliance with various regulatory requirements. Always ensure that your frontend implementation correctly handles jurisdiction-based restrictions and redirects as specified by the API responses.\n\n\n## Errors\n\nAPI error responses generally follow this structure:\n\n```json\n{\n    \"code\": \"ERR_CODE\",\n    \"message\": \"Error message\",\n    \"metadata\": {\n      \"key\": \"value\"\n    }\n}\n```\n\nIn the table below, you'll find an exhaustive list of error codes and their descriptions.\nThese codes are used across the API to indicate specific error conditions.\nYou should handle these errors in your frontend implementation to provide a good user experience.\n\n> Note that in the OpenAPI schema, errors don't contain the `message` field, as they're not meant to be handled by the client, and should solely be used for debugging purposes.\n\n<br>\n\n\n\n---\n\n### Wallet was not found\n\n\n`WALLET_NOT_FOUND`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- The wallet ID provided doesn't exist\n\n- The wallet belongs to a different user\n\n- The wallet has been deleted or deactivated\n\n**Resolution:** Double-check the wallet ID and ensure you're using the correct currency.\n\n</details>\n\n\n---\n\n### Pending payment flow\n\n\n`WALLET_PENDING_FLOW`\n\n<details>\n<summary>Details</summary>\nThis error occurs when attempting to initiate a new payment flow while an existing one is still in progress. The existing flow must be completed by either:\n\n- Approving - Rejecting - Failing - Completing\n\n**Resolution:** Wait for the current flow to be processed or cancel it if possible.\n\n</details>\n\n\n---\n\n### Wallet Is Missing a Payment Method\n\n\n`WALLET_MISSING_PAYMENT_METHOD`\n\n<details>\n<summary>Details</summary>\nThis typically occurs when:\n\n- It's a new wallet that hasn't been used for deposits yet - The previously attached payment method has been removed or invalidated\n\n**Note:** A payment method is usually attached to the wallet on the first successful deposit. Subsequent deposits and withdrawals can only be made using the same payment method.\n\n**Resolution:** Make an initial deposit to link a payment method to the wallet.\n\n</details>\n\n\n---\n\n### Wallet Has Insufficient Funds\n\n\n`WALLET_INSUFFICIENT_FUNDS`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- Attempting to withdraw more than the available balance - Trying to place a bet that exceeds the wallet balance\n\n**Resolution:** Deposit additional funds into the wallet before attempting the operation again.\n\n</details>\n\n\n---\n\n### Wallet Has No Deposit\n\n\n`WALLET_MISSING_DEPOSIT`\n\n<details>\n<summary>Details</summary>\nThis error occurs when trying to withdraw or bet with a wallet that has never received any funds.\n\n**Resolution:** Make an initial deposit into the wallet before attempting withdrawals or bets.\n\n</details>\n\n\n---\n\n### Wallet Has Insufficient Wagers\n\n\n`WALLET_INSUFFICIENT_WAGERS`\n\n<details>\n<summary>Details</summary>\nThis error is typically thrown when:\n\n- The user tries to withdraw more money than allowed by the anti-money laundering system - The wallet hasn't met the minimum wagering requirements for withdrawals\n\n**Resolution:** Place more wagers or bets before attempting to withdraw funds.\n\n</details>\n\n\n---\n\n### Wallet Payment Cooldown\n\n\n`WALLET_PAYMENT_COOLDOWN`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- A user attempts to make multiple withdrawals within a short time frame - The cooldown period (usually 24 hours) hasn't elapsed since the last withdrawal\n\n**Purpose:** This ensures that users don't abuse the system by making multiple withdrawals in a short period to circumvent withdrawal limits or the anti-money laundering system.\n\n**Resolution:** Wait for the specified time before attempting another withdrawal.\n\n</details>\n\n\n---\n\n### Payment Method Not Allowed\n\n\n`PAYMENT_METHOD_NOT_ALLOWED`\n\n<details>\n<summary>Details</summary>\nThis can happen when:\n\n- The user tries to trigger a payment outside of the attached payment method - The user tries to use a payment method that is not allowed in their jurisdiction\n\n**Resolution:** Choose a different, allowed payment method for the operation.\n\n</details>\n\n\n---\n\n### Payment Amount Exceeds Limits\n\n\n`PAYMENT_AMOUNT_EXCEEDS_LIMITS`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- The payment amount is below the minimum allowed - The payment amount exceeds the maximum allowed\n\n**Resolution:** Adjust the payment amount to be within the specified limits.\n\n</details>\n\n\n---\n\n### Payment Amount Exceeds Timeframe Limits\n\n\n`PAYMENT_AMOUNT_EXCEEDS_TIMEFRAME_LIMITS`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- A user attempts to make payments exceeding a certain amount in a specific timeframe - The limit may exist on a wallet or global currency level\n\n**Note:** A user can have multiple such timeframe limits, all of which are checked before a payment is allowed.\n\n**Resolution:** Wait for the timeframe to reset or make smaller payments spread over time.\n\n</details>\n\n\n---\n\n### Payment Amount Out of Bounds\n\n\n`PAYMENT_AMOUNT_OUT_OF_BOUNDS`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- A user attempts to make a payment with a non-positive amount\n\n**Resolution:** Ensure the payment amount is a positive value.\n\n</details>\n\n\n---\n\n### Payment Flow Not Found\n\n\n`PAYMENT_FLOW_NOT_FOUND`\n\n<details>\n<summary>Details</summary>\nThis usually means that:\n\n- The user is trying to use a flow that doesn't exist - The flow doesn't belong to them - The flow has expired or been completed\n\n**Resolution:** Initiate a new payment flow or check the flow ID.\n\n</details>\n\n\n---\n\n### Payment Flow Not Awaiting Approval\n\n\n`PAYMENT_FLOW_NOT_AWAITING_APPROVAL`\n\n<details>\n<summary>Details</summary>\nThis error is usually thrown when:\n\n- An administrator tries to approve a flow that is not in the \"awaiting approval\" state - The flow has already been processed or cancelled\n\n**Resolution:** Check the current status of the payment flow before attempting approval.\n\n</details>\n\n\n---\n\n### Payment Provider Not Found\n\n\n`PAYMENT_PROVIDER_NOT_FOUND`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- The payment provider ID provided doesn't exist in the system - The payment provider has been removed or deactivated - We could not choose a payment provider for the payment operation\n\n**Resolution:** Verify the payment provider ID and ensure it's still active in the system.\n\n</details>\n\n\n---\n\n### Payment method Not Found\n\n\n`PAYMENT_METHOD_NOT_FOUND`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- The payment method ID provided doesn't exist in the system - The payment method has been removed or deactivated - We could not choose a payment method for the payment operation\n\n**Resolution:** Verify the payment method ID and ensure it's still active in the system.\n\n</details>\n\n\n---\n\n### KYC Provider Not Found\n\n\n`KYC_PROVIDER_NOT_FOUND`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- The KYC provider ID provided doesn't exist in the system - The KYC provider has been removed or deactivated - We could not choose a KYC provider for the KYC operation\n\n**Resolution:** Verify the KYC provider ID and ensure it's still active in the system.\n\n</details>\n\n\n---\n\n### Search Index Not Found\n\n\n`SEARCH_INDEX_NOT_FOUND`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- The search index requested doesn't exist in the system - The requester doesn't have access to the specified search index\n\n**Resolution:** Verify the search index name and ensure the requester has the necessary permissions.\n\n</details>\n\n\n---\n\n### User Could Not Be Found\n\n\n`USER_NOT_FOUND`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- The user doesn't exist in the system - The user account has been disabled or deleted\n\n**Resolution:** Verify the user ID and ensure the account is active.\n\n</details>\n\n\n---\n\n### User Is Missing a Required Payment Method Key Value\n\n\n`USER_MISSING_PAYMENT_METHOD_ACCOUNT_TYPE_IDENTIFIER`\n\n<details>\n<summary>Details</summary>\nPayment methods may support multiple sub-accounts the user has with the method. As an example, PIX supports the following payment key types:\n\n- CPF (individual taxpayer registry) - CNPJ (corporate taxpayer registry) - Email - Bank-provided UUID\n\nThis error occurs when the user has not set up a Payment method key value for the specified type.\n\n**Resolution:** Add the required payment method key value for the specified type in the user's profile.\n\n</details>\n\n\n---\n\n### User Is Missing a Document\n\n\n`USER_MISSING_DOCUMENT`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- The user attempts to interact with an API that requires a document - The user's profile does not have a document associated with it\n\n**Resolution:** Add a valid document to the user's profile.\n\n</details>\n\n\n---\n\n### User Has an Invalid document\n\n\n`USER_INVALID_DOCUMENT`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- The user attempts to interact with an API that requires a valid document - The document associated with the user's profile is not valid or properly formatted\n\n**Resolution:** Update the user's profile with a valid document.\n\n</details>\n\n\n---\n\n### User Address Missing\n\n\n`USER_ADDRESS_MISSING`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- The user attempts to interact with API endpoints that require an address, such as payments\n\n**Resolution:** Add an address to the user's profile.\n\n</details>\n\n\n---\n\n### User KYC required\n\n\n`USER_KYC_REQUIRED`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- The user does not yet have a KYC completion - The old KYC completion has expired\n\n**Resolution:** Complete the KYC process before proceeding, by completing the KYC flow.\n\n</details>\n\n\n---\n\n### The Jurisdiction Is Not Supported\n\n\n`JURISDICTION_NOT_SUPPORTED`\n\n<details>\n<summary>Details</summary>\nThe jurisdiction from which the API is being accessed is not supported. This may be due to missing licenses or the jurisdiction not being enabled in the system.\n\n</details>\n\n\n---\n\n### The Jurisdiction Is Not Supported, Alternative Site Available\n\n\n`JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE`\n\n<details>\n<summary>Details</summary>\nThe jurisdiction from which the API is being accessed is not supported, but an alternative site is available.\n\n</details>\n\n\n---\n\n### The Jurisdiction Is Not Supported, Network Configuration Issue\n\n\n`JURISDICTION_NOT_SUPPORTED_NETWORK_CONFIGURATION`\n\n<details>\n<summary>Details</summary>\nThe request jurisdiction deviates from the user's signup jurisdiction. This can happen if the user uses a VPN or proxy to access the service. While using a VPN is valid, and is allowed by our system, it's important that the user's request may only be processed if the user's signup jurisdiction and the request jurisdiction are covered by the same license. This ensures compliance with regulatory requirements, while still allowing users to access the service from different locations.\n\n**Important:** Compliance regulations usually forbid us from telling the user that their VPN or proxy is the reason for the error. Instead, we should inform them that their network configuration is not supported. This might serve as a hint to the user that they should disable or change their VPN or proxy.\n\n</details>\n\n\n---\n\n### Host Not Supported\n\n\n`HOST_NOT_SUPPORTED`\n\n<details>\n<summary>Details</summary>\nThe requested Site (identified via the `Host` header) is not set up in the system.\n\nThis error occurs when:\n\n- The API request is made to a hostname that is not recognized or configured in the system - The Site corresponding to the hostname has been deactivated or removed\n\n**Resolution:** Verify the correct hostname for the API request or contact support to set up the required Site.\n\n</details>\n\n\n---\n\n### Game Not Found\n\n\n`GAME_NOT_FOUND`\n\n<details>\n<summary>Details</summary>\nThe requested game was not found in the system.\n\nThis error occurs when:\n\n- The game ID provided doesn't exist in the system - The game has been removed or deactivated\n\n**Resolution:** Verify the game ID and ensure it's still active in the system.\n\n</details>\n\n\n---\n\n### Game Provider Not Reachable\n\n\n`GAME_PROVIDER_NOT_REACHABLE`\n\n<details>\n<summary>Details</summary>\nThe game provider or aggregator is not reachable.\n\nThis error occurs when:\n\n- The system cannot establish a connection with the game provider or aggregator - The game provider or aggregator service is down or experiencing issues\n\n**Resolution:** Try again later or contact support if the issue persists.\n\n</details>\n\n\n---\n\n### Game Provider Not Found\n\n\n`GAME_PROVIDER_NOT_FOUND`\n\n<details>\n<summary>Details</summary>\nThe game provider was not found. This error occurs when: - The game provider ID provided doesn't exist in the system\n\n</details>\n\n\n---\n\n### Game Aggregator Game Provider Mapping Not Found\n\n\n`GAME_AGGREGATOR_PROVIDER_MAPPING_NOT_FOUND`\n\n<details>\n<summary>Details</summary>\nThe game aggregator game provider mapping was not found. This error occurs when: - The game aggregator is not yet mapped to the game provider in the system\n\n</details>\n\n\n---\n\n### Game Aggregator Not Supported\n\n\n`GAME_AGGREGATOR_NOT_SUPPORTED`\n\n<details>\n<summary>Details</summary>\nThe game aggregator for the requested game is not supported by the system.\n\nThis error occurs when:\n\n- The system doesn't have integration with the required game aggregator - The aggregator support has been removed or is temporarily disabled\n\n**Resolution:** Choose a game from a supported aggregator or contact support for more information.\n\n</details>\n\n\n---\n\n### Game Aggregator Missing\n\n\n`GAME_AGGREGATOR_MISSING`\n\n<details>\n<summary>Details</summary>\nThis error may occur when: - A game aggregator is removed from our system, leaving orphaned games if no other aggregator publishes them\n\n</details>\n\n\n---\n\n### Game Aggregator Not Found\n\n\n`GAME_AGGREGATOR_NOT_FOUND`\n\n<details>\n<summary>Details</summary>\nThe game aggregator was not found. This error occurs when: - The game aggregator ID provided doesn't exist in the system\n\n</details>\n\n\n---\n\n### Game URL Invalid\n\n\n`GAME_URL_INVALID`\n\n<details>\n<summary>Details</summary>\nThe game URL returned by the game provider is invalid.\n\nThis error occurs when:\n\n- The game provider returns a malformed or non-existent URL - The game might have been removed or relocated by the provider\n\n**Resolution:** Try again or choose a different game. If the issue persists, contact support.\n\n</details>\n\n\n---\n\n### Signup Flow Not Found\n\n\n`SIGNUP_FLOW_NOT_FOUND`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- The signup flow has already been completed - The flow has expired and been garbage collected - The flow ID provided never existed\n\n**Resolution:** Start a new signup flow or verify the flow ID if you believe this is an error.\n\n</details>\n\n\n---\n\n### Signup With Invalid Profile\n\n\n`SIGNUP_INVALID_PROFILE`\n\n<details>\n<summary>Details</summary>\nThis error can occur due to various reasons:\n\n- The user is blacklisted - The user's profile is incomplete or invalid - The user is underage for the service - Other regulatory or compliance issues\n\n**Resolution:** Review the signup requirements and ensure all necessary information is provided and valid.\n\n</details>\n\n\n---\n\n### Exchange Rate Not Found\n\n\n`EXCHANGE_RATE_NOT_FOUND`\n\n<details>\n<summary>Details</summary>\nThe required exchange rate for the requested currency conversion could not be found.\n\nThis error occurs when:\n\n- The system doesn't have up-to-date exchange rate information for the requested currency pair - One or both of the currencies in the conversion are not supported\n\n**Resolution:** Try again later or use a different currency pair. If the issue persists, contact support.\n\n</details>\n\n\n---\n\n### Payload Signature Verification Failed\n\n\n`INVALID_SIGNATURE`\n\n<details>\n<summary>Details</summary>\nThis error mainly occurs with integrations that send signed payloads. It can happen when:\n\n- The signature is missing or malformed - The signature doesn't match the payload content - The signing key used is invalid or has been revoked\n\n**Resolution:** Check the signature generation process and ensure the correct keys are being used.\n\n</details>\n\n\n---\n\n### Invalid Payload Encoding\n\n\n`INVALID_ENCODING`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- The payload is malformed or corrupted - The payload format doesn't match the expected format (e.g., invalid JSON) - The payload encoding is not recognized by the system\n\n**Resolution:** Verify the payload format and encoding, ensuring it matches the API specifications.\n\n</details>\n\n\n---\n\n### Missing Sec-WebSocket-Protocol Header\n\n\n`MISSING_SEC_WEB_SOCKET_PROTOCOL`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- A client attempts to establish a WebSocket connection without providing the necessary protocol header - The header is malformed or contains unsupported protocols\n\n**Resolution:** Ensure the WebSocket connection request includes a valid `Sec-WebSocket-Protocol` header.\n\n</details>\n\n\n---\n\n### Invalid User Geolocation\n\n\n`INVALID_USER_GEOLOCATION`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- A request that requires geolocation data (e.g., CF-IPCountry) is made without this information - The geolocation information is present but invalid or in an unsupported format\n\n**Resolution:** Ensure the request includes valid geolocation information, typically provided through specific headers.\n\n</details>\n\n\n---\n\n### Invalid Bot Header\n\n\n`INVALID_BOT_HEADER`\n\n<details>\n<summary>Details</summary>\nThis error occurs when: - A request sends a `X-Bot` header with an invalid value\n\n</details>\n\n\n---\n\n### Lease Not Found\n\n\n`LEASE_NOT_FOUND`\n\n<details>\n<summary>Details</summary>\nThe requested lease for establishing a WebSocket connection could not be found or has expired.\n\nLeases are used by the WebSocket system to create short-lived tickets that the user uses to establish a WebSocket connection. This error occurs when:\n\n- The lease ID provided doesn't exist - The lease has expired before the WebSocket connection was established - The lease has already been used and is no longer valid\n\n**Resolution:** Request a new lease and attempt to establish the WebSocket connection again.\n\n</details>\n\n\n---\n\n### Validation Failed\n\n\n`VALIDATION`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- The payload doesn't meet the required format or data constraints - Required fields are missing or contain invalid values - The payload violates business logic rules\n\n**Resolution:** Review the API documentation for the correct payload format and constraints. Adjust the payload accordingly.\n\n</details>\n\n\n---\n\n### Unauthorized\n\n\n`UNAUTHORIZED`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- The user is not authenticated - The user lacks the necessary permissions to access the resource - The authentication token has expired or is invalid\n\n**Resolution:** Ensure the user is properly authenticated and has the required permissions. If necessary, refresh the authentication token.\n\n</details>\n\n\n---\n\n### Internal Error\n\n\n`INTERNAL`\n\n<details>\n<summary>Details</summary>\nThis error should never be thrown under normal circumstances. If it occurs, it indicates a severe problem within the system.\n\nPossible causes include:\n\n- Unhandled exceptions in the server code - Database connection failures - Critical system resource exhaustion\n\n**Resolution:** Contact the system administrators or support team immediately. Provide them with any error codes or messages received.\n\n</details>\n\n",
+    "description": "# Introduction\n\nThe API to the **GiroBet Casino** system. This API aims to be *highly scalable* and to be *independent of any frontend implementations*.\nAuthentication is done only via **HTTP cookies**, which are set by the server after a successful login.\nThe API is *stateless* and does not store any session data on the server, other than some session metadata such as the useragent and the IP address.\n\n### Endpoints\n\n- API can be accessed [here](http://[::1]:3050).\n- JSON schema can be found [here](http://[::1]:3050/docs/private/api.json).\n\n## Jurisdiction Checking System\n\nOur online casino API implements a *sophisticated jurisdiction checking system* to ensure compliance with various licensing requirements. This document outlines how the system works and what frontend developers need to know when interacting with the API.\n\n### Key Concepts\n\n- **Sites**: A Site represents a *logical grouping* of one or more domains.\n- **Licenses**: Licenses are mapped to Sites via a *many-to-many relationship*.\n- **Jurisdiction Enforcement**: The API enforces jurisdictions based on the *incoming request's headers* and *user account information*.\n\n### Header Requirements\n\nThe API relies on **two crucial headers** to enforce jurisdictions:\n\n1. `CF-IPCountry`: Provided by Cloudflare, indicating the *country of origin* for the request.\n2. `Host`: The *domain name* of the requested site.\n\n**Important**: The `Host` header is interchangeable with the `Forwarded` or `X-Forwarded-Host` headers. The API will check for these headers in the following order of preference: `Forwarded`, `X-Forwarded-Host`, `Host`. Use whichever is most appropriate for your setup.\n\n#### Important Notes\n\n- In production, the `CF-IPCountry` header is *typically always set*, as we use Cloudflare to proxy all requests.\n- If either the country header (`CF-IPCountry`) or a host header (`Host`, `Forwarded`, or `X-Forwarded-Host`) is missing, the API will *not force a jurisdiction*. Most requests will still succeed, except for certain operations like signup that require jurisdiction information.\n\n### Jurisdiction Enforcement Flow\n\n#### For Anonymous Users\n\n1. The API checks for the presence of both `CF-IPCountry` and a host header (`Host`, `Forwarded`, or `X-Forwarded-Host`).\n2. If both headers are present, the API determines the appropriate jurisdiction based on the Site and License mappings.\n3. If either header is missing, no jurisdiction is enforced, but certain operations may be restricted.\n\n#### For Logged-in Users\n\nFor logged-in users, the process is more complex to account for potential VPN usage:\n\n1. The API performs the same checks as for anonymous users (CF-IPCountry and host headers).\n2. Additionally, the API retrieves the jurisdiction associated with the user's account.\n3. The system then performs the following checks:\n   1. Verifies that the jurisdiction indicated by the CF-IPCountry header is covered by at least one license, that has a mapping to a Site that also covers the host.\n   2. Checks if the user's account jurisdiction is also covered by at least one license that fulfills step *3.1*.\n4. Possible scenarios:\n   - If both jurisdictions (CF-IPCountry and user's account) are covered by the same license, the request is allowed.\n   - If the CF-IPCountry jurisdiction is a blocked jurisdiction for the relevant license(s), the request is denied.\n   - If the user's account jurisdiction is not covered by the same license as the CF-IPCountry jurisdiction, the request is denied.\n\nThis approach allows for *legitimate VPN usage* while maintaining compliance with licensing requirements.\n\n### For Frontend Developers\n\n#### Standard API Requests\n\nEnsure that your requests to the API include either the `Host`, `Forwarded`, or `X-Forwarded-Host` header. The `CF-IPCountry` header will be automatically set by Cloudflare in production environments.\n\n#### Server-Side Rendering (SSR) Approach\n\nIf you're using an SSR approach:\n\n1. Your server will receive the original host information from the client request.\n2. When making internal requests from your SSR server to our API, you must proxy this host information using one of the accepted headers.\n3. You should also forward the `CF-IPCountry` header, as we're not interested in the SSR server's country, but the client's country of origin.\n\nYou have **several options** for forwarding the host information:\n\n1. Proxy the original `Host` header\n2. Use the `Forwarded` header\n3. Use the `X-Forwarded-Host` header\n\nExample using the `Host` and `CF-IPCountry` headers:\n\n```javascript\n// In your SSR server\napp.get('/some-route', async (req, res) => {\n  const apiResponse = await fetch('https://api.ourcasino.com/endpoint', {\n    headers: {\n      'Host': req.headers.host, // Proxy the original Host header\n      'CF-IPCountry': req.headers['cf-ipcountry'] || 'XX', // Proxy CF-IPCountry or use a default value\n    },\n  });\n  // Process the response...\n});\n```\n\nExample using the `Forwarded` header and `CF-IPCountry`:\n\n```javascript\napp.get('/some-route', async (req, res) => {\n  const apiResponse = await fetch('https://api.ourcasino.com/endpoint', {\n    headers: {\n      'Forwarded': `host=${req.headers.host}`, // Use the Forwarded header\n      'CF-IPCountry': req.headers['cf-ipcountry'] || 'XX', // Proxy CF-IPCountry or use a default value\n    },\n  });\n  // Process the response...\n});\n```\n\nExample using the `X-Forwarded-Host` header and `CF-IPCountry`:\n\n```javascript\napp.get('/some-route', async (req, res) => {\n  const apiResponse = await fetch('https://api.ourcasino.com/endpoint', {\n    headers: {\n      'X-Forwarded-Host': req.headers.host, // Use the X-Forwarded-Host header\n      'CF-IPCountry': req.headers['cf-ipcountry'] || 'XX', // Proxy CF-IPCountry or use a default value\n    },\n  });\n  // Process the response...\n});\n```\n\nChoose the method that best fits your infrastructure and security requirements. The `Forwarded` header is the *standardized version*, while `X-Forwarded-Host` is a *commonly used non-standard header*. The original `Host` header is the *most straightforward* but may not always be suitable in complex setups.\n\nRemember to handle the `CF-IPCountry` header appropriately in your development environment. You may need to set it manually or use a default value (like 'XX' in the examples above) to simulate different jurisdictions during testing.\n\n### Error Handling\n\nFrontend developers should be prepared to handle the following scenarios:\n\n1. Jurisdiction mismatch errors for logged-in users (e.g., when VPN jurisdiction doesn't match account jurisdiction).\n2. Blocked jurisdiction errors.\n3. Missing header errors (in development environments).\n\nThe API will return appropriate error codes and messages for these scenarios, which should be displayed to the user or used to redirect them as needed.\n\n### Testing and Development\n\nFor testing and development purposes, you may need to manually set both the `CF-IPCountry` and the appropriate host header to simulate different jurisdictions and domains. In production, the `CF-IPCountry` header will be reliably set by Cloudflare, while the host information will come from the client's request.\n\n**Remember** that the jurisdiction checking system is *critical* for maintaining compliance with various regulatory requirements. Always ensure that your frontend implementation correctly handles jurisdiction-based restrictions and redirects as specified by the API responses.\n\n\n## Errors\n\nAPI error responses generally follow this structure:\n\n```json\n{\n    \"code\": \"ERR_CODE\",\n    \"message\": \"Error message\",\n    \"metadata\": {\n      \"key\": \"value\"\n    }\n}\n```\n\nIn the table below, you'll find an exhaustive list of error codes and their descriptions.\nThese codes are used across the API to indicate specific error conditions.\nYou should handle these errors in your frontend implementation to provide a good user experience.\n\n> Note that in the OpenAPI schema, errors don't contain the `message` field, as they're not meant to be handled by the client, and should solely be used for debugging purposes.\n\n<br>\n\n\n\n---\n\n### Wallet was not found\n\n\n`WALLET_NOT_FOUND`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- The wallet ID provided doesn't exist\n\n- The wallet belongs to a different user\n\n- The wallet has been deleted or deactivated\n\n**Resolution:** Double-check the wallet ID and ensure you're using the correct currency.\n\n</details>\n\n\n---\n\n### Pending payment flow\n\n\n`WALLET_PENDING_FLOW`\n\n<details>\n<summary>Details</summary>\nThis error occurs when attempting to initiate a new payment flow while an existing one is still in progress. The existing flow must be completed by either:\n\n- Approving - Rejecting - Failing - Completing\n\n**Resolution:** Wait for the current flow to be processed or cancel it if possible.\n\n</details>\n\n\n---\n\n### Wallet Is Missing a Payment Method\n\n\n`WALLET_MISSING_PAYMENT_METHOD`\n\n<details>\n<summary>Details</summary>\nThis typically occurs when:\n\n- It's a new wallet that hasn't been used for deposits yet - The previously attached payment method has been removed or invalidated\n\n**Note:** A payment method is usually attached to the wallet on the first successful deposit. Subsequent deposits and withdrawals can only be made using the same payment method.\n\n**Resolution:** Make an initial deposit to link a payment method to the wallet.\n\n</details>\n\n\n---\n\n### Wallet Has Insufficient Funds\n\n\n`WALLET_INSUFFICIENT_FUNDS`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- Attempting to withdraw more than the available balance - Trying to place a bet that exceeds the wallet balance\n\n**Resolution:** Deposit additional funds into the wallet before attempting the operation again.\n\n</details>\n\n\n---\n\n### Wallet Has No Deposit\n\n\n`WALLET_MISSING_DEPOSIT`\n\n<details>\n<summary>Details</summary>\nThis error occurs when trying to withdraw or bet with a wallet that has never received any funds.\n\n**Resolution:** Make an initial deposit into the wallet before attempting withdrawals or bets.\n\n</details>\n\n\n---\n\n### Wallet Has Insufficient Wagers\n\n\n`WALLET_INSUFFICIENT_WAGERS`\n\n<details>\n<summary>Details</summary>\nThis error is typically thrown when:\n\n- The user tries to withdraw more money than allowed by the anti-money laundering system - The wallet hasn't met the minimum wagering requirements for withdrawals\n\n**Resolution:** Place more wagers or bets before attempting to withdraw funds.\n\n</details>\n\n\n---\n\n### Wallet Payment Cooldown\n\n\n`WALLET_PAYMENT_COOLDOWN`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- A user attempts to make multiple withdrawals within a short time frame - The cooldown period (usually 24 hours) hasn't elapsed since the last withdrawal\n\n**Purpose:** This ensures that users don't abuse the system by making multiple withdrawals in a short period to circumvent withdrawal limits or the anti-money laundering system.\n\n**Resolution:** Wait for the specified time before attempting another withdrawal.\n\n</details>\n\n\n---\n\n### Payment Method Not Allowed\n\n\n`PAYMENT_METHOD_NOT_ALLOWED`\n\n<details>\n<summary>Details</summary>\nThis can happen when:\n\n- The user tries to trigger a payment outside of the attached payment method - The user tries to use a payment method that is not allowed in their jurisdiction\n\n**Resolution:** Choose a different, allowed payment method for the operation.\n\n</details>\n\n\n---\n\n### Payment Amount Exceeds Limits\n\n\n`PAYMENT_AMOUNT_EXCEEDS_LIMITS`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- The payment amount is below the minimum allowed - The payment amount exceeds the maximum allowed\n\n**Resolution:** Adjust the payment amount to be within the specified limits.\n\n</details>\n\n\n---\n\n### Payment Amount Exceeds Timeframe Limits\n\n\n`PAYMENT_AMOUNT_EXCEEDS_TIMEFRAME_LIMITS`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- A user attempts to make payments exceeding a certain amount in a specific timeframe - The limit may exist on a wallet or global currency level\n\n**Note:** A user can have multiple such timeframe limits, all of which are checked before a payment is allowed.\n\n**Resolution:** Wait for the timeframe to reset or make smaller payments spread over time.\n\n</details>\n\n\n---\n\n### Payment Amount Out of Bounds\n\n\n`PAYMENT_AMOUNT_OUT_OF_BOUNDS`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- A user attempts to make a payment with a non-positive amount\n\n**Resolution:** Ensure the payment amount is a positive value.\n\n</details>\n\n\n---\n\n### Payment Flow Not Found\n\n\n`PAYMENT_FLOW_NOT_FOUND`\n\n<details>\n<summary>Details</summary>\nThis usually means that:\n\n- The user is trying to use a flow that doesn't exist - The flow doesn't belong to them - The flow has expired or been completed\n\n**Resolution:** Initiate a new payment flow or check the flow ID.\n\n</details>\n\n\n---\n\n### Payment Flow Not Awaiting Approval\n\n\n`PAYMENT_FLOW_NOT_AWAITING_APPROVAL`\n\n<details>\n<summary>Details</summary>\nThis error is usually thrown when:\n\n- An administrator tries to approve a flow that is not in the \"awaiting approval\" state - The flow has already been processed or cancelled\n\n**Resolution:** Check the current status of the payment flow before attempting approval.\n\n</details>\n\n\n---\n\n### Payment Provider Not Found\n\n\n`PAYMENT_PROVIDER_NOT_FOUND`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- The payment provider ID provided doesn't exist in the system - The payment provider has been removed or deactivated - We could not choose a payment provider for the payment operation\n\n**Resolution:** Verify the payment provider ID and ensure it's still active in the system.\n\n</details>\n\n\n---\n\n### Payment method Not Found\n\n\n`PAYMENT_METHOD_NOT_FOUND`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- The payment method ID provided doesn't exist in the system - The payment method has been removed or deactivated - We could not choose a payment method for the payment operation\n\n**Resolution:** Verify the payment method ID and ensure it's still active in the system.\n\n</details>\n\n\n---\n\n### KYC Provider Not Found\n\n\n`KYC_PROVIDER_NOT_FOUND`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- The KYC provider ID provided doesn't exist in the system - The KYC provider has been removed or deactivated - We could not choose a KYC provider for the KYC operation\n\n**Resolution:** Verify the KYC provider ID and ensure it's still active in the system.\n\n</details>\n\n\n---\n\n### Search Index Not Found\n\n\n`SEARCH_INDEX_NOT_FOUND`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- The search index requested doesn't exist in the system - The requester doesn't have access to the specified search index\n\n**Resolution:** Verify the search index name and ensure the requester has the necessary permissions.\n\n</details>\n\n\n---\n\n### User Could Not Be Found\n\n\n`USER_NOT_FOUND`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- The user doesn't exist in the system - The user account has been disabled or deleted\n\n**Resolution:** Verify the user ID and ensure the account is active.\n\n</details>\n\n\n---\n\n### User Is Missing a Required Payment Method Key Value\n\n\n`USER_MISSING_PAYMENT_METHOD_ACCOUNT_TYPE_IDENTIFIER`\n\n<details>\n<summary>Details</summary>\nPayment methods may support multiple sub-accounts the user has with the method. As an example, PIX supports the following payment key types:\n\n- CPF (individual taxpayer registry) - CNPJ (corporate taxpayer registry) - Email - Bank-provided UUID\n\nThis error occurs when the user has not set up a Payment method key value for the specified type.\n\n**Resolution:** Add the required payment method key value for the specified type in the user's profile.\n\n</details>\n\n\n---\n\n### User Is Missing a Document\n\n\n`USER_MISSING_DOCUMENT`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- The user attempts to interact with an API that requires a document - The user's profile does not have a document associated with it\n\n**Resolution:** Add a valid document to the user's profile.\n\n</details>\n\n\n---\n\n### User Has an Invalid document\n\n\n`USER_INVALID_DOCUMENT`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- The user attempts to interact with an API that requires a valid document - The document associated with the user's profile is not valid or properly formatted\n\n**Resolution:** Update the user's profile with a valid document.\n\n</details>\n\n\n---\n\n### User Address Missing\n\n\n`USER_ADDRESS_MISSING`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- The user attempts to interact with API endpoints that require an address, such as payments\n\n**Resolution:** Add an address to the user's profile.\n\n</details>\n\n\n---\n\n### User KYC required\n\n\n`USER_KYC_REQUIRED`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- The user does not yet have a KYC completion - The old KYC completion has expired\n\n**Resolution:** Complete the KYC process before proceeding, by completing the KYC flow.\n\n</details>\n\n\n---\n\n### The Jurisdiction Is Not Supported\n\n\n`JURISDICTION_NOT_SUPPORTED`\n\n<details>\n<summary>Details</summary>\nThe jurisdiction from which the API is being accessed is not supported. This may be due to missing licenses or the jurisdiction not being enabled in the system.\n\n</details>\n\n\n---\n\n### The Jurisdiction Is Not Supported, Alternative Site Available\n\n\n`JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE`\n\n<details>\n<summary>Details</summary>\nThe jurisdiction from which the API is being accessed is not supported, but an alternative site is available.\n\n</details>\n\n\n---\n\n### The Jurisdiction Is Not Supported, Network Configuration Issue\n\n\n`JURISDICTION_NOT_SUPPORTED_NETWORK_CONFIGURATION`\n\n<details>\n<summary>Details</summary>\nThe request jurisdiction deviates from the user's signup jurisdiction. This can happen if the user uses a VPN or proxy to access the service. While using a VPN is valid, and is allowed by our system, it's important that the user's request may only be processed if the user's signup jurisdiction and the request jurisdiction are covered by the same license. This ensures compliance with regulatory requirements, while still allowing users to access the service from different locations.\n\n**Important:** Compliance regulations usually forbid us from telling the user that their VPN or proxy is the reason for the error. Instead, we should inform them that their network configuration is not supported. This might serve as a hint to the user that they should disable or change their VPN or proxy.\n\n</details>\n\n\n---\n\n### Host Not Supported\n\n\n`HOST_NOT_SUPPORTED`\n\n<details>\n<summary>Details</summary>\nThe requested Site (identified via the `Host` header) is not set up in the system.\n\nThis error occurs when:\n\n- The API request is made to a hostname that is not recognized or configured in the system - The Site corresponding to the hostname has been deactivated or removed\n\n**Resolution:** Verify the correct hostname for the API request or contact support to set up the required Site.\n\n</details>\n\n\n---\n\n### Game Not Found\n\n\n`GAME_NOT_FOUND`\n\n<details>\n<summary>Details</summary>\nThe requested game was not found in the system.\n\nThis error occurs when:\n\n- The game ID provided doesn't exist in the system - The game has been removed or deactivated\n\n**Resolution:** Verify the game ID and ensure it's still active in the system.\n\n</details>\n\n\n---\n\n### Game Provider Not Reachable\n\n\n`GAME_PROVIDER_NOT_REACHABLE`\n\n<details>\n<summary>Details</summary>\nThe game provider or aggregator is not reachable.\n\nThis error occurs when:\n\n- The system cannot establish a connection with the game provider or aggregator - The game provider or aggregator service is down or experiencing issues\n\n**Resolution:** Try again later or contact support if the issue persists.\n\n</details>\n\n\n---\n\n### Game Provider Not Found\n\n\n`GAME_PROVIDER_NOT_FOUND`\n\n<details>\n<summary>Details</summary>\nThe game provider was not found. This error occurs when: - The game provider ID provided doesn't exist in the system\n\n</details>\n\n\n---\n\n### Game Aggregator Game Provider Mapping Not Found\n\n\n`GAME_AGGREGATOR_PROVIDER_MAPPING_NOT_FOUND`\n\n<details>\n<summary>Details</summary>\nThe game aggregator game provider mapping was not found. This error occurs when: - The game aggregator is not yet mapped to the game provider in the system\n\n</details>\n\n\n---\n\n### Game Aggregator Not Supported\n\n\n`GAME_AGGREGATOR_NOT_SUPPORTED`\n\n<details>\n<summary>Details</summary>\nThe game aggregator for the requested game is not supported by the system.\n\nThis error occurs when:\n\n- The system doesn't have integration with the required game aggregator - The aggregator support has been removed or is temporarily disabled\n\n**Resolution:** Choose a game from a supported aggregator or contact support for more information.\n\n</details>\n\n\n---\n\n### Game Aggregator Missing\n\n\n`GAME_AGGREGATOR_MISSING`\n\n<details>\n<summary>Details</summary>\nThis error may occur when: - A game aggregator is removed from our system, leaving orphaned games if no other aggregator publishes them\n\n</details>\n\n\n---\n\n### Game Aggregator Not Found\n\n\n`GAME_AGGREGATOR_NOT_FOUND`\n\n<details>\n<summary>Details</summary>\nThe game aggregator was not found. This error occurs when: - The game aggregator ID provided doesn't exist in the system\n\n</details>\n\n\n---\n\n### Game URL Invalid\n\n\n`GAME_URL_INVALID`\n\n<details>\n<summary>Details</summary>\nThe game URL returned by the game provider is invalid.\n\nThis error occurs when:\n\n- The game provider returns a malformed or non-existent URL - The game might have been removed or relocated by the provider\n\n**Resolution:** Try again or choose a different game. If the issue persists, contact support.\n\n</details>\n\n\n---\n\n### Signup Flow Not Found\n\n\n`SIGNUP_FLOW_NOT_FOUND`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- The signup flow has already been completed - The flow has expired and been garbage collected - The flow ID provided never existed\n\n**Resolution:** Start a new signup flow or verify the flow ID if you believe this is an error.\n\n</details>\n\n\n---\n\n### Signup With Invalid Profile\n\n\n`SIGNUP_INVALID_PROFILE`\n\n<details>\n<summary>Details</summary>\nThis error can occur due to various reasons:\n\n- The user is blacklisted - The user's profile is incomplete or invalid - The user is underage for the service - Other regulatory or compliance issues\n\n**Resolution:** Review the signup requirements and ensure all necessary information is provided and valid.\n\n</details>\n\n\n---\n\n### Exchange Rate Not Found\n\n\n`EXCHANGE_RATE_NOT_FOUND`\n\n<details>\n<summary>Details</summary>\nThe required exchange rate for the requested currency conversion could not be found.\n\nThis error occurs when:\n\n- The system doesn't have up-to-date exchange rate information for the requested currency pair - One or both of the currencies in the conversion are not supported\n\n**Resolution:** Try again later or use a different currency pair. If the issue persists, contact support.\n\n</details>\n\n\n---\n\n### Payload Signature Verification Failed\n\n\n`INVALID_SIGNATURE`\n\n<details>\n<summary>Details</summary>\nThis error mainly occurs with integrations that send signed payloads. It can happen when:\n\n- The signature is missing or malformed - The signature doesn't match the payload content - The signing key used is invalid or has been revoked\n\n**Resolution:** Check the signature generation process and ensure the correct keys are being used.\n\n</details>\n\n\n---\n\n### Invalid Payload Encoding\n\n\n`INVALID_ENCODING`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- The payload is malformed or corrupted - The payload format doesn't match the expected format (e.g., invalid JSON) - The payload encoding is not recognized by the system\n\n**Resolution:** Verify the payload format and encoding, ensuring it matches the API specifications.\n\n</details>\n\n\n---\n\n### Missing Sec-WebSocket-Protocol Header\n\n\n`MISSING_SEC_WEB_SOCKET_PROTOCOL`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- A client attempts to establish a WebSocket connection without providing the necessary protocol header - The header is malformed or contains unsupported protocols\n\n**Resolution:** Ensure the WebSocket connection request includes a valid `Sec-WebSocket-Protocol` header.\n\n</details>\n\n\n---\n\n### Invalid User Geolocation\n\n\n`INVALID_USER_GEOLOCATION`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- A request that requires geolocation data (e.g., CF-IPCountry) is made without this information - The geolocation information is present but invalid or in an unsupported format\n\n**Resolution:** Ensure the request includes valid geolocation information, typically provided through specific headers.\n\n</details>\n\n\n---\n\n### Invalid Bot Header\n\n\n`INVALID_BOT_HEADER`\n\n<details>\n<summary>Details</summary>\nThis error occurs when: - A request sends a `X-Bot` header with an invalid value\n\n</details>\n\n\n---\n\n### Lease Not Found\n\n\n`LEASE_NOT_FOUND`\n\n<details>\n<summary>Details</summary>\nThe requested lease for establishing a WebSocket connection could not be found or has expired.\n\nLeases are used by the WebSocket system to create short-lived tickets that the user uses to establish a WebSocket connection. This error occurs when:\n\n- The lease ID provided doesn't exist - The lease has expired before the WebSocket connection was established - The lease has already been used and is no longer valid\n\n**Resolution:** Request a new lease and attempt to establish the WebSocket connection again.\n\n</details>\n\n\n---\n\n### Validation Failed\n\n\n`VALIDATION`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- The payload doesn't meet the required format or data constraints - Required fields are missing or contain invalid values - The payload violates business logic rules\n\n**Resolution:** Review the API documentation for the correct payload format and constraints. Adjust the payload accordingly.\n\n</details>\n\n\n---\n\n### Unauthorized\n\n\n`UNAUTHORIZED`\n\n<details>\n<summary>Details</summary>\nThis error occurs when:\n\n- The user is not authenticated - The user lacks the necessary permissions to access the resource - The authentication token has expired or is invalid\n\n**Resolution:** Ensure the user is properly authenticated and has the required permissions. If necessary, refresh the authentication token.\n\n</details>\n\n\n---\n\n### Internal Error\n\n\n`INTERNAL`\n\n<details>\n<summary>Details</summary>\nThis error should never be thrown under normal circumstances. If it occurs, it indicates a severe problem within the system.\n\nPossible causes include:\n\n- Unhandled exceptions in the server code - Database connection failures - Critical system resource exhaustion\n\n**Resolution:** Contact the system administrators or support team immediately. Provide them with any error codes or messages received.\n\n</details>\n\n",
     "version": ""
   },
   "paths": {
@@ -564,6 +564,180 @@
         }
       }
     },
+    "/game-provider/search": {
+      "get": {
+        "tags": [
+          "Game Provider"
+        ],
+        "summary": "Search Game Providers",
+        "description": "Search for games providers by providing a search query.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "category",
+            "schema": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "style": "form"
+          },
+          {
+            "in": "query",
+            "name": "query",
+            "schema": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "style": "form"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "default": 20,
+              "type": "integer",
+              "format": "uint",
+              "maximum": 100.0,
+              "minimum": 1.0
+            },
+            "style": "form"
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "schema": {
+              "default": 0,
+              "type": "integer",
+              "format": "uint",
+              "minimum": 0.0
+            },
+            "style": "form"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatorResponse_for_GameProviderSearchResponse_and_GameProviderSearchQuery"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/game-provider/{provider_id}": {
+      "get": {
+        "tags": [
+          "Game Provider"
+        ],
+        "summary": "Get Game Provider",
+        "description": "Get a game provider by its ID.\n        This can be used to show a more detailed view of of the\n        provider profile in the frontend, which may require more data than\n        the search endpoint provides.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "provider_id",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/GameProviderId"
+            },
+            "style": "simple"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GameProviderResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/game-provider/{provider_id}/image": {
+      "get": {
+        "tags": [
+          "Game Provider"
+        ],
+        "summary": "Get Game Provider Image",
+        "description": "Get the image of a game provider by its ID.\n    This can be used to show the image of the game provider to the user.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "color",
+            "schema": {
+              "$ref": "#/components/schemas/GameProviderImageColor"
+            },
+            "style": "form"
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "schema": {
+              "$ref": "#/components/schemas/GameProviderImageSize"
+            },
+            "style": "form"
+          },
+          {
+            "in": "path",
+            "name": "provider_id",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/GameProviderId"
+            },
+            "style": "simple"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "byte stream",
+            "content": {
+              "application/octet-stream": {}
+            }
+          },
+          "4XX": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/game/{game_id}/session": {
       "get": {
         "tags": [
@@ -746,7 +920,7 @@
         }
       }
     },
-    "/game/{game_id}/rating": {
+    "/game/{game_id}/rate": {
       "post": {
         "tags": [
           "Game"
@@ -775,6 +949,51 @@
           "required": true
         },
         "responses": {
+          "204": {
+            "description": "no content"
+          },
+          "4XX": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/game/{game_id}/ratings": {
+      "get": {
+        "tags": [
+          "Game"
+        ],
+        "summary": "Get Game Ratings",
+        "description": "User ratings split up into likes and dislikes",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "game_id",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/GameId"
+            },
+            "style": "simple"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GameRatingsResponse"
+                }
+              }
+            }
+          },
           "204": {
             "description": "no content"
           },
@@ -1272,12 +1491,15 @@
         ],
         "properties": {
           "base_url": {
+            "description": "The base URL of the alternative site. This url should be used to redirect the user to the alternative site. The URL may include a path too, so this needs to be taken into account.",
             "$ref": "#/components/schemas/SystemUrl"
           },
           "name": {
+            "description": "The name of the alternative site.",
             "type": "string"
           },
           "servable": {
+            "description": "The field \"servable\" indicates if this site is able to be served by the current casino instance. If there's an alternative, which can not be served by the current casino instance, but can be served by another casino instance, this is false. Example scenario: Cross-regional deployments of this system, with independent databases require the ability to point to each other as alternatives, as they can't serve the requested site themselves.",
             "type": "boolean"
           }
         }
@@ -1354,11 +1576,109 @@
         "type": "integer",
         "format": "int64"
       },
+      "GameProviderImageColor": {
+        "type": "string",
+        "enum": [
+          "white",
+          "black",
+          "color"
+        ]
+      },
+      "GameProviderImageRequestQuery": {
+        "type": "object",
+        "properties": {
+          "color": {
+            "$ref": "#/components/schemas/GameProviderImageColor"
+          },
+          "size": {
+            "$ref": "#/components/schemas/GameProviderImageSize"
+          }
+        }
+      },
+      "GameProviderImageSize": {
+        "type": "string",
+        "enum": [
+          "small",
+          "default"
+        ]
+      },
+      "GameProviderRequestPathParams": {
+        "type": "object",
+        "required": [
+          "provider_id"
+        ],
+        "properties": {
+          "provider_id": {
+            "$ref": "#/components/schemas/GameProviderId"
+          }
+        }
+      },
+      "GameProviderResponse": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "slug"
+        ],
+        "properties": {
+          "description": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "id": {
+            "$ref": "#/components/schemas/GameProviderId"
+          },
+          "name": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          }
+        }
+      },
+      "GameProviderSearchQuery": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "query": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      },
+      "GameProviderSearchResponse": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "slug"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/GameProviderId"
+          },
+          "name": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          }
+        }
+      },
       "GameRating": {
         "type": "string",
         "enum": [
-          "Like",
-          "Dislike"
+          "like",
+          "dislike"
         ]
       },
       "GameRatingRequestBody": {
@@ -1373,6 +1693,23 @@
                 "type": "null"
               }
             ]
+          }
+        }
+      },
+      "GameRatingsResponse": {
+        "type": "object",
+        "required": [
+          "dislikes",
+          "likes"
+        ],
+        "properties": {
+          "dislikes": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "likes": {
+            "type": "integer",
+            "format": "int64"
           }
         }
       },
@@ -1835,6 +2172,27 @@
           "test_status"
         ]
       },
+      "PaginatorMetadata_for_GameProviderSearchQuery": {
+        "type": "object",
+        "required": [
+          "pagination"
+        ],
+        "properties": {
+          "filters": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/GameProviderSearchQuery"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "pagination": {
+            "$ref": "#/components/schemas/PaginatorPosition"
+          }
+        }
+      },
       "PaginatorMetadata_for_GameSearchQuery": {
         "type": "object",
         "required": [
@@ -1899,6 +2257,24 @@
           "total_items": {
             "type": "integer",
             "format": "int64"
+          }
+        }
+      },
+      "PaginatorResponse_for_GameProviderSearchResponse_and_GameProviderSearchQuery": {
+        "type": "object",
+        "required": [
+          "data",
+          "metadata"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GameProviderSearchResponse"
+            }
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/PaginatorMetadata_for_GameProviderSearchQuery"
           }
         }
       },
