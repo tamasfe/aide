@@ -25,7 +25,7 @@ const query = $dependencies.games.ui.searchGamesByCategoryPaginatingOnSlider;
 const ENABLE_SERVER_SIDE_RENDERING = false;
 const DEFER_CLIENT_SIDE_LOADING = true;
 
-const loading = ref(true);
+const loading = useState(`grid-horizontal-games-loading-for-${props.categoryIdentifier}`, () => true);
 const nextGamesPageToSearch = useState(`grid-horizontal-games-next-page-for-${props.categoryIdentifier}`, () => 0);
 const gameIds = useState<number[]>(`grid-horizontal-games-ids-for-${props.categoryIdentifier}`, () => []);
 const canLoadMore = useState(`grid-horizontal-games-can-load-more-for-${props.categoryIdentifier}`, () => true);

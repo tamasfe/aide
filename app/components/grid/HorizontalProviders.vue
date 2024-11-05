@@ -2,7 +2,7 @@
 const { $dependencies } = useNuxtApp();
 const { t } = useI18n();
 
-const loading = ref(true);
+const loading = useState(`grid-horizontal-providers-loading`, () => true);
 const nextProvidersPageToSearch = useState(`grid-horizontal-providers-next-page`, () => 0);
 const providerIds = useState<number[]>(`grid-horizontal-providers-ids`, () => []);
 const canLoadMore = useState(`grid-horizontal-providers-can-load-more`, () => true);
