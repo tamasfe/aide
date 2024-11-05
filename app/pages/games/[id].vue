@@ -24,6 +24,9 @@ const { params } = useRoute();
 const { $dependencies } = useNuxtApp();
 const walletStore = useWalletStore();
 
+const ENABLE_SERVER_SIDE_RENDERING = false;
+const DEFER_CLIENT_SIDE_LOADING = true;
+
 const gameId = Number(params.id);
 if (!params.id || Number.isNaN(gameId)) {
   $dependencies.common.logger.error("Game ID route parameter should be a number", { gameId });
@@ -40,7 +43,7 @@ const game = gameFromApi.value as FindGameCompatibilityByIdResponseI;
 
 const { data: pageCategories } = await useAsyncData(`game-${params.id}-categories`, async () => {
   return $dependencies.games.ui.searchGameCategoriesByGroup.handle("game_page");
-});
+}, { lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING });
 
 const iFrameUrl = computed(() => {
   if (walletStore.isInit) {
