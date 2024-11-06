@@ -4,8 +4,8 @@ import { success } from "~/packages/result";
 export class SearchGamesPaginating {
   constructor(private apiRepository: GamesApiRepositoryI) {}
 
-  public async handle(categoryIdentifier: string | null, query: string | null, page: number, pageSize: number) {
-    const gamesResult = await this.apiRepository.searchPaginating({ category: categoryIdentifier, query }, pageSize, page * pageSize);
+  public async handle(categoryIdentifier: string | null, query: string | null, providerId: number | null, page: number, pageSize: number) {
+    const gamesResult = await this.apiRepository.searchPaginating({ category: categoryIdentifier, query, providerId }, pageSize, page * pageSize);
     if (gamesResult.isFailure) {
       return gamesResult;
     }

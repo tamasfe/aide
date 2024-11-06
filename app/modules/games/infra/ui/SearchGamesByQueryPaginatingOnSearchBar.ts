@@ -16,7 +16,7 @@ export class SearchGamesByQueryPaginatingOnSearchBar {
     canLoadMore: boolean;
     totalGames: number;
   }> {
-    const result = await this.query.handle(null, query, pageToSearch, SearchGamesByQueryPaginatingOnSearchBar.PAGINATION_SIZE);
+    const result = await this.query.handle(null, query, null, pageToSearch, SearchGamesByQueryPaginatingOnSearchBar.PAGINATION_SIZE);
 
     if (result.isFailure) {
       // Optional TODO: alert the customer somehow in case of error

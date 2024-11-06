@@ -12,13 +12,14 @@ export class GamesApiRepositoryGirobet implements GamesApiRepositoryI {
     this.apiClient = createBackendOpenApiClient(clientOptions, asyncMessagePublisher);
   }
 
-  public async searchPaginating(searchParams: { category: string | null; query: string | null }, limit: number, offset: number): Promise<Result<{ games: GameSummaryI[]; pagination: { limit: number; offset: number; totalItems: number } }, InfrastructureError>> {
+  public async searchPaginating(searchParams: { category: string | null; query: string | null; providerId: number | null }, limit: number, offset: number): Promise<Result<{ games: GameSummaryI[]; pagination: { limit: number; offset: number; totalItems: number } }, InfrastructureError>> {
     try {
       const { data, error, response } = await this.apiClient.GET("/game/search", {
         params: {
           query: {
             category: searchParams.category,
             query: searchParams.query,
+            provider_id: searchParams.providerId,
             limit,
             offset,
           },

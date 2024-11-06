@@ -1,7 +1,7 @@
 import type { SearchGamesPaginating } from "../../application/SearchGamesPaginating";
 import type { LoggerI } from "~/packages/logger/Logger";
 
-export class SearchGamesByCategoryPaginatingOnSlider {
+export class SearchGamesPaginatingOnGrid {
   constructor(
     private query: SearchGamesPaginating,
     private logger: LoggerI,
@@ -11,16 +11,16 @@ export class SearchGamesByCategoryPaginatingOnSlider {
 
   public static PAGINATION_SIZE = 25;
 
-  public async handle(categoryIdentifier: string, pageToSearch: number): Promise<{
+  public async handle(categoryIdentifier: string | null, providerId: number | null, pageToSearch: number): Promise<{
     games: { id: number }[];
     canLoadMore: boolean;
     totalGames: number;
   }> {
-    const result = await this.query.handle(categoryIdentifier, null, pageToSearch, SearchGamesByCategoryPaginatingOnSlider.PAGINATION_SIZE);
+    const result = await this.query.handle(categoryIdentifier, null, providerId, pageToSearch, SearchGamesPaginatingOnGrid.PAGINATION_SIZE);
 
     if (result.isFailure) {
       // Optional TODO: alert the customer somehow in case of error
-      this.logger.error("SearchGamesByCategoryPaginating failed: ", { error: result.error });
+      this.logger.error("SearchGamesPaginatingOnGrid failed", { error: result.error });
       return {
         games: [],
         canLoadMore: false,
@@ -28,7 +28,7 @@ export class SearchGamesByCategoryPaginatingOnSlider {
       };
     }
 
-    const canLoadMore = result.value.games.length === SearchGamesByCategoryPaginatingOnSlider.PAGINATION_SIZE;
+    const canLoadMore = result.value.games.length === SearchGamesPaginatingOnGrid.PAGINATION_SIZE;
 
     return {
       games: result.value.games.map(game => ({ id: game.id })),

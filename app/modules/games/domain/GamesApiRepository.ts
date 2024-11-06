@@ -4,7 +4,7 @@ import type { Result } from "~/packages/result";
 import type { InfrastructureError } from "~/packages/result/infrastructure-error";
 
 export interface GamesApiRepositoryI {
-  searchPaginating(searchParams: { category: string | null; query: string | null }, limit: number, offset: number): Promise<Result<{
+  searchPaginating(searchParams: { category: string | null; query: string | null; providerId: number | null }, limit: number, offset: number): Promise<Result<{
     games: GameSummaryI[];
     pagination: {
       limit: number;

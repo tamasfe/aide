@@ -6,18 +6,18 @@ import type { GamesApiRepositoryI } from "../domain/GamesApiRepository";
 import { GamesApiRepositoryDumb } from "./GamesApiRepositoryDumb";
 import { GamesApiRepositoryGirobet } from "./GamesApiRepositoryGirobet";
 import { FindGameImageSrcByGameId } from "./ui/FindGameImageSrcByGameId";
-import { SearchGamesByCategoryPaginatingOnSlider } from "./ui/SearchGamesByCategoryPaginatingOnSlider";
 import { SearchGameCategoriesByGroup } from "./ui/SearchGameCategoriesByGroup";
 import { GameCategoriesRepositoryDumb } from "./GameCategoriesRepositoryDumb";
 import { GameCategoriesRepositoryGirobet } from "./GameCategoriesRepositoryGirobet";
 import { FindGameCompatibilityByIdOnGamePage } from "./ui/FindGameCompatibilityByIdOnGamePage";
 import { BuildGameSessionIFrameUrl } from "./ui/BuildGameSessionIFrameUrl";
 import { SearchGamesByQueryPaginatingOnSearchBar } from "./ui/SearchGamesByQueryPaginatingOnSearchBar";
+import { SearchGamesPaginatingOnGrid } from "./ui/SearchGamesPaginatingOnGrid";
 import type { CommonDependenciesI } from "~/dependency-injection/load-di";
 
 export interface GamesDependencyInjectionI {
   ui: {
-    searchGamesByCategoryPaginatingOnSlider: SearchGamesByCategoryPaginatingOnSlider;
+    searchGamesPaginatingOnGrid: SearchGamesPaginatingOnGrid;
     searchGamesByQueryPaginatingOnSearchBar: SearchGamesByQueryPaginatingOnSearchBar;
     findGameImageSrcByGameId: FindGameImageSrcByGameId;
     searchGameCategoriesByGroup: SearchGameCategoriesByGroup;
@@ -50,7 +50,7 @@ export const createGamesDependencyInjection = async (publicConfig: PublicRuntime
 
   return {
     ui: {
-      searchGamesByCategoryPaginatingOnSlider: new SearchGamesByCategoryPaginatingOnSlider(searchGamesPaginatingQuery, commonDependencies.logger),
+      searchGamesPaginatingOnGrid: new SearchGamesPaginatingOnGrid(searchGamesPaginatingQuery, commonDependencies.logger),
       searchGamesByQueryPaginatingOnSearchBar: new SearchGamesByQueryPaginatingOnSearchBar(searchGamesPaginatingQuery, commonDependencies.logger),
       findGameImageSrcByGameId: new FindGameImageSrcByGameId(publicConfig.games.apiBaseUrlClient || ""),
       searchGameCategoriesByGroup: new SearchGameCategoriesByGroup(

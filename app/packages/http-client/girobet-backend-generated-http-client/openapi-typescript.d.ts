@@ -327,6 +327,7 @@ export interface paths {
                 query?: never;
                 header?: never;
                 path: {
+                    /** @description The ID of the signup flow to retrieve. */
                     flow_id: string;
                 };
                 cookie?: never;
@@ -362,6 +363,7 @@ export interface paths {
                 query?: never;
                 header?: never;
                 path: {
+                    /** @description The ID of the signup flow to retrieve. */
                     flow_id: string;
                 };
                 cookie?: never;
@@ -409,6 +411,7 @@ export interface paths {
                 query?: never;
                 header?: never;
                 path: {
+                    /** @description The ID of the signup flow to retrieve. */
                     flow_id: string;
                 };
                 cookie?: never;
@@ -601,7 +604,9 @@ export interface paths {
         get: {
             parameters: {
                 query: {
+                    /** @description The currency to get the payment limits for. */
                     currency: components["schemas"]["SystemCurrency"];
+                    /** @description The payment method to get the payment limits for. */
                     payment_method_id: components["schemas"]["PaymentMethodId"];
                 };
                 header?: never;
@@ -797,7 +802,7 @@ export interface paths {
         get: {
             parameters: {
                 query?: {
-                    category?: string | null;
+                    /** @description An organic search query to find game providers by. Searched fields include but are not limited to: name, description, slug... */
                     query?: string | null;
                     limit?: number;
                     offset?: number;
@@ -853,6 +858,7 @@ export interface paths {
                 query?: never;
                 header?: never;
                 path: {
+                    /** @description The ID of the game provider. */
                     provider_id: components["schemas"]["GameProviderId"];
                 };
                 cookie?: never;
@@ -900,11 +906,14 @@ export interface paths {
         get: {
             parameters: {
                 query?: {
+                    /** @description The color of the image to return. */
                     color?: components["schemas"]["GameProviderImageColor"];
+                    /** @description The size of the image to return. */
                     size?: components["schemas"]["GameProviderImageSize"];
                 };
                 header?: never;
                 path: {
+                    /** @description The ID of the game provider. */
                     provider_id: components["schemas"]["GameProviderId"];
                 };
                 cookie?: never;
@@ -957,11 +966,14 @@ export interface paths {
         get: {
             parameters: {
                 query: {
+                    /** @description The device type the game session is started on. Some games may only be available on certain devices. */
                     client_type: components["schemas"]["SystemDevice"];
+                    /** @description The currency (wallet) to use for the game session. It can not be changed during the session. */
                     currency: components["schemas"]["SystemCurrency"];
                 };
                 header?: never;
                 path: {
+                    /** @description The ID of the game to retrieve. */
                     game_id: components["schemas"]["GameId"];
                 };
                 cookie?: never;
@@ -1007,7 +1019,11 @@ export interface paths {
         get: {
             parameters: {
                 query?: {
+                    /** @description The category identifier to filter games by. If set, only games in this category are returned. Note: this is not the category ID, but the identifier. */
                     category?: string | null;
+                    /** @description The provider to filter games by. If set, only games by this provider are returned. */
+                    provider_id?: number | null;
+                    /** @description An organic search query to find games by. Searched fields include but are not limited to: name, description, provider name... */
                     query?: string | null;
                     limit?: number;
                     offset?: number;
@@ -1119,6 +1135,7 @@ export interface paths {
                 query?: never;
                 header?: never;
                 path: {
+                    /** @description The ID of the game to retrieve. */
                     game_id: components["schemas"]["GameId"];
                 };
                 cookie?: never;
@@ -1168,6 +1185,7 @@ export interface paths {
                 query?: never;
                 header?: never;
                 path: {
+                    /** @description The ID of the game to retrieve. */
                     game_id: components["schemas"]["GameId"];
                 };
                 cookie?: never;
@@ -1225,6 +1243,7 @@ export interface paths {
                 query?: never;
                 header?: never;
                 path: {
+                    /** @description The ID of the game to retrieve. */
                     game_id: components["schemas"]["GameId"];
                 };
                 cookie?: never;
@@ -1273,10 +1292,12 @@ export interface paths {
         get: {
             parameters: {
                 query?: {
+                    /** @description The variant of the image to retrieve. */
                     variant?: components["schemas"]["GameImageVariant"];
                 };
                 header?: never;
                 path: {
+                    /** @description The ID of the game to retrieve. */
                     game_id: components["schemas"]["GameId"];
                 };
                 cookie?: never;
@@ -1324,7 +1345,9 @@ export interface paths {
         get: {
             parameters: {
                 query?: {
+                    /** @description The read status of the notifications to filter by. */
                     read_status?: components["schemas"]["ReadStatus"] | null;
+                    /** @description The types of the notifications to filter by. */
                     types?: components["schemas"]["NotificationTypeDiscriminants"][] | null;
                     limit?: number;
                     offset?: number;
@@ -1383,6 +1406,7 @@ export interface paths {
                 query?: never;
                 header?: never;
                 path: {
+                    /** @description The ID of the notification to retrieve. */
                     notification_id: components["schemas"]["NotificationId"];
                 };
                 cookie?: never;
@@ -1695,6 +1719,7 @@ export interface paths {
         get: {
             parameters: {
                 query: {
+                    /** @description The channel to subscribe to. */
                     channel: components["schemas"]["WebSocketChannel"];
                 };
                 header?: never;
@@ -1789,6 +1814,7 @@ export interface components {
             token: string;
             /** @description User ID, this is the current user, and should never deviate from the current user */
             user_id: components["schemas"]["UserId"];
+            /** @description User metadata that can be used to pre-fill KYC information */
             user_metadata: components["schemas"]["KycUserMetadata"];
         };
         AlternativeSite: {
@@ -1802,7 +1828,9 @@ export interface components {
         /** @enum {string} */
         CategoryGroup: "home" | "game_page" | "inventory";
         CategoryResponse: {
+            /** @description The ID of the game category. */
             id: components["schemas"]["GameCategoryId"];
+            /** @description The identifier of the game category. This is a unique string that can be used to identify the category in the game search endpoint. */
             identifier: string;
         };
         /** Format: int64 */
@@ -1815,6 +1843,7 @@ export interface components {
         /** Format: int64 */
         GameId: number;
         GameImageRequestQuery: {
+            /** @description The variant of the image to retrieve. */
             variant?: components["schemas"]["GameImageVariant"];
         };
         /** @enum {string} */
@@ -1824,85 +1853,146 @@ export interface components {
         /** @enum {string} */
         GameProviderImageColor: "white" | "black" | "color";
         GameProviderImageRequestQuery: {
+            /** @description The color of the image to return. */
             color?: components["schemas"]["GameProviderImageColor"];
+            /** @description The size of the image to return. */
             size?: components["schemas"]["GameProviderImageSize"];
         };
         /** @enum {string} */
         GameProviderImageSize: "small" | "default";
         GameProviderRequestPathParams: {
+            /** @description The ID of the game provider. */
             provider_id: components["schemas"]["GameProviderId"];
         };
+        /** @description The response to a game provider request. It contains all available information about the provider. */
         GameProviderResponse: {
+            /** @description The description of the game provider. This text does not follow HTML or Markdown, so newlines may need to be handled explicitly. */
             description?: string | null;
+            /** @description The ID of the game provider. */
             id: components["schemas"]["GameProviderId"];
+            /** @description The name of the game provider. Do not use this in URLs, as it may contain special characters. */
             name: string;
+            /** @description The slug of the game provider. This may be used in URLs. */
             slug: string;
         };
         GameProviderSearchQuery: {
-            category?: string | null;
+            /** @description An organic search query to find game providers by. Searched fields include but are not limited to: name, description, slug... */
             query?: string | null;
         };
+        /** @description The response to a game provider search request. It only contains a limited set of information about the provider. If more information is needed, the provider ID can be used to fetch the full provider details via the "get provider" endpoint. */
         GameProviderSearchResponse: {
+            /** @description The ID of the game provider. */
             id: components["schemas"]["GameProviderId"];
+            /** @description The name of the game provider. Do not use this in URLs, as it may contain special characters. */
             name: string;
+            /**
+             * Format: double
+             * @description The search score of the game provider.
+             */
+            score?: number | null;
+            /** @description The slug of the game provider. This may be used in URLs. */
             slug: string;
         };
         /** @enum {string} */
         GameRating: "like" | "dislike";
         GameRatingRequestBody: {
+            /** @description The rating to set for the game. If `null` the rating for the current user is removed. */
             rating?: components["schemas"]["GameRating"] | null;
         };
         GameRatingsResponse: {
-            /** Format: int64 */
+            /**
+             * Format: int64
+             * @description The number of dislikes the game has received.
+             */
             dislikes: number;
-            /** Format: int64 */
+            /**
+             * Format: int64
+             * @description The number of likes the game has received.
+             */
             likes: number;
         };
         GameRequestPathParams: {
+            /** @description The ID of the game to retrieve. */
             game_id: components["schemas"]["GameId"];
         };
         GameResponse: {
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description The date and time the game was created.
+             */
             created_at: string;
+            /** @description The description of the game. This text does not follow HTML or Markdown, so newlines may need to be handled explicitly. */
             description?: string | null;
+            /** @description The devices the game is available on. */
             devices: components["schemas"]["SystemDevice"][];
+            /** @description The ID of the game. */
             id: components["schemas"]["GameId"];
+            /** @description Whether the game is available in HD. */
             is_hd: boolean;
+            /** @description Additional metadata about the game. This is used to store arbitrary unstructured data and can thus not be relied upon to return a specific data. */
             metadata?: {
                 [key: string]: unknown;
             } | null;
+            /** @description The name of the game. Do not use this in URLs, as it may contain special characters. */
             name: string;
-            /** Format: date */
+            /**
+             * Format: date
+             * @description The date the game was recalled. If the game has been recalled, this field contains the date of the recall. Recalled games are not available to play.
+             */
             recalled_at?: string | null;
-            /** Format: date */
+            /**
+             * Format: date
+             * @description The date the game was released. If the game has not been released yet, this field is `null`. Unreleased games are not available to play.
+             */
             released_at?: string | null;
+            /** @description The slug of the game. This may be used in URLs. */
             slug: string;
         };
         GameSearchQuery: {
+            /** @description The category identifier to filter games by. If set, only games in this category are returned. Note: this is not the category ID, but the identifier. */
             category?: string | null;
+            /**
+             * Format: int64
+             * @description The provider to filter games by. If set, only games by this provider are returned.
+             */
+            provider_id?: number | null;
+            /** @description An organic search query to find games by. Searched fields include but are not limited to: name, description, provider name... */
             query?: string | null;
         };
+        /** @description The response to a game search request. It only contains a limited set of information about the game. If more information is needed, the game ID can be used to fetch the full game details via the "get game" endpoint. */
         GameSearchResponse: {
+            /** @description The ID of the game. */
             id: components["schemas"]["GameId"];
+            /** @description The name of the game. Do not use this in URLs, as it may contain special characters. */
             name: string;
-            provider: components["schemas"]["ProviderSearchResponse"];
+            /** @description The provider of the game. */
+            provider: components["schemas"]["GameProviderSearchResponse"];
+            /**
+             * Format: double
+             * @description The search score of the game.
+             */
+            score?: number | null;
+            /** @description The slug of the game. This may be used in URLs. */
             slug: string;
         };
         GameSessionRequestQuery: {
+            /** @description The device type the game session is started on. Some games may only be available on certain devices. */
             client_type: components["schemas"]["SystemDevice"];
+            /** @description The currency (wallet) to use for the game session. It can not be changed during the session. */
             currency: components["schemas"]["SystemCurrency"];
         };
         InternalError: string;
         /** @enum {string} */
         KycProviderIdentifier: "sumsub";
+        /** @description Metadata that can be used to pre-fill KYC information. */
         KycUserMetadata: {
             /** @description User's jurisdiction country code in ISO 3166-1 alpha-2 format */
             country_alpha2: string;
-            /** @description User's email */
+            /** @description The user's email */
             email: string;
             /** @description User's jurisdiction country code in ISO 3166-1 alpha-3 format User's language in ISO 639-1 format */
             language: string;
-            /** @description User's phone number in E.164 format */
+            /** @description The user's phone number in E.164 format */
             phone_number: string;
         };
         LeaseTokenResponse: {
@@ -1912,8 +2002,11 @@ export interface components {
         /** Format: int64 */
         LicenseId: number;
         LicenseResponse: {
+            /** @description The ID of the license. */
             id: components["schemas"]["LicenseId"];
+            /** @description The name of the license. */
             name: string;
+            /** @description The root jurisdiction of the license. While licenses can cover multiple jurisdictions, this is the jurisdiction that the license is rooted in. Examples include Curacao, Anjouan, etc. */
             root_jurisdiction: components["schemas"]["SystemCountry"];
         };
         LimitOverrides: {
@@ -1930,26 +2023,40 @@ export interface components {
             withdrawal_min_first?: string | null;
         };
         LoginRequestBody: {
+            /** @description The URL to redirect to after login. If not set a 200 OK response is returned. */
             next?: string | null;
+            /** @description The password of the user. */
             password: string;
+            /** @description The email address of the user. */
             username: string;
         };
         MaybeOperator: unknown;
         /** Format: int64 */
         NotificationId: number;
         NotificationListFilterRequestQuery: {
+            /** @description The read status of the notifications to filter by. */
             read_status?: components["schemas"]["ReadStatus"] | null;
+            /** @description The types of the notifications to filter by. */
             types?: components["schemas"]["NotificationTypeDiscriminants"][] | null;
         };
         NotificationRequestPathParams: {
+            /** @description The ID of the notification to retrieve. */
             notification_id: components["schemas"]["NotificationId"];
         };
         NotificationResponse: {
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description The time the notification was created.
+             */
             created_at: string;
+            /** @description The data of the notification. */
             data: components["schemas"]["NotificationType"];
+            /** @description The ID of the notification. */
             id: components["schemas"]["NotificationId"];
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description The time the notification was read. If `null` the notification has not been read.
+             */
             read_at?: string | null;
         };
         NotificationType: {
@@ -2023,33 +2130,54 @@ export interface components {
             offset: number;
         };
         PasswordResetBody: {
+            /** @description The new password for the user. */
             password: string;
-            /** Format: uuid */
+            /**
+             * Format: uuid
+             * @description The token that was sent to the user and has to be included for the reset to succeed.
+             */
             token: string;
         };
         PasswordResetRequestBody: {
+            /** @description The email address of the user to reset the password for. */
             email: string;
         };
         /** Format: int64 */
         PaymentFlowId: number;
         PaymentFlowResponse: {
+            /** @description The amount of the payment flow. */
             amount: string;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description The time the payment flow was completed. If `null` the payment flow has not been completed.
+             */
             completed_at?: string | null;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description The time the payment flow was created.
+             */
             created_at: string;
+            /** @description The currency of the payment flow. */
             currency: components["schemas"]["SystemCurrency"];
+            /** @description The ID of the payment flow. */
             id: components["schemas"]["PaymentFlowId"];
+            /** @description The identifier of the payment flow. This is a unique identifier that can be used to reference the payment flow. */
             identifier: string;
+            /** @description The payment method ID the payment flow is associated with. */
             payment_method_id: components["schemas"]["PaymentMethodId"];
+            /** @description The payment provider ID the payment flow is associated with. */
             payment_provider_id: components["schemas"]["PaymentProviderId"];
+            /** @description The type of the payment flow. */
             payment_type: components["schemas"]["PaymentType"];
+            /** @description The wallet ID the payment flow is associated with. */
             wallet_id: components["schemas"]["WalletId"];
         };
         /** @enum {string} */
         PaymentLimitBound: "min" | "max";
         PaymentLimitsRequestQuery: {
+            /** @description The currency to get the payment limits for. */
             currency: components["schemas"]["SystemCurrency"];
+            /** @description The payment method to get the payment limits for. */
             payment_method_id: components["schemas"]["PaymentMethodId"];
         };
         PaymentMethodDepositResponsePayload: {
@@ -2067,17 +2195,15 @@ export interface components {
         /** @enum {string} */
         PaymentStatus: "pending" | "waiting_for_approval" | "approved" | "processing" | "completed" | "failed" | "cancelled" | "rejected" | "refunded";
         PaymentTransactionRequestBody: {
+            /** @description The amount of the payment transaction. */
             amount: string;
+            /** @description The currency of the payment transaction. */
             currency: components["schemas"]["SystemCurrency"];
+            /** @description The payment method ID to use for the payment transaction. */
             payment_method_id: components["schemas"]["PaymentMethodId"];
         };
         /** @enum {string} */
         PaymentType: "deposit" | "withdrawal";
-        ProviderSearchResponse: {
-            id: components["schemas"]["GameProviderId"];
-            name: string;
-            slug: string;
-        };
         /** @enum {string} */
         ReadStatus: "read" | "unread";
         /** @description Represents various errors that can occur during server operations.
@@ -2275,26 +2401,37 @@ export interface components {
             metadata: components["schemas"]["InternalError"];
         };
         SignupFlowCreateResponse: {
+            /** @description The ID of the created signup flow. */
             flow_id: string;
         };
         SignupFlowRequestPathParams: {
+            /** @description The ID of the signup flow to retrieve. */
             flow_id: string;
         };
         SignupFlowResponse: {
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description The time the signup flow was created.
+             */
             created_at: string;
+            /** @description The fields of the signup flow. */
             fields: {
                 [key: string]: unknown;
             };
+            /** @description The ID of the signup flow. */
             id: string;
+            /** @description The jurisdiction of the signup flow. This field can not be changed once set. The user will be created in this jurisdiction and thus is subject to the laws of this jurisdiction. Changing a user jurisdiction after signup is not easily possible without additional verification, information and setup. */
             jurisdiction: components["schemas"]["SystemCountry"];
         };
         SignupPatchFlowRequestBody: {
             [key: string]: unknown;
         };
         SiteResponse: {
+            /** @description The base URL of the site. This may be used for redirects, links, etc. */
             base_url: components["schemas"]["SystemUrl"];
+            /** @description The name of the site. */
             name: string;
+            /** @description Whether the site is servable by the current instance. If `false` the site is not servable but is accessible by a different casino instance of the owning company. */
             servable: boolean;
         };
         /**
@@ -2344,16 +2481,28 @@ export interface components {
         /** Format: int64 */
         UserId: number;
         UserResponse: {
-            /** Format: date */
+            /**
+             * Format: date
+             * @description The birthdate of the user.
+             */
             birthdate: string;
+            /** @description The email of the user. */
             email: string;
+            /** @description The family name of the user. We have methods of deriving the family name should we only get a name from e.g. a KYC provider, but they may not be 100% reliable and thus the existence of this field can not be guaranteed. */
             family_name?: string | null;
+            /** @description The gender of the user. */
             gender?: components["schemas"]["SystemGender"] | null;
+            /** @description The ID of the user. */
             id: components["schemas"]["UserId"];
+            /** @description The jurisdiction of the user. This field can not be easily changed once set. */
             jurisdiction: components["schemas"]["SystemCountry"];
+            /** @description The language of the user in ISO 639-1 format. */
             language: string;
+            /** @description The name of the user. */
             name: string;
+            /** @description The phone number of the user. */
             phone: components["schemas"]["SystemPhoneNumber"];
+            /** @description The time zone of the user in IANA time zone format. */
             time_zone: string;
         };
         UserSettings: {
@@ -2362,7 +2511,9 @@ export interface components {
             primary_currency?: components["schemas"]["MaybeOperator"];
         };
         WalletBalanceResponse: {
+            /** @description The balance of the wallet. */
             balance: string;
+            /** @description The ID of the wallet. */
             currency: components["schemas"]["SystemCurrency"];
         };
         /** Format: int64 */
@@ -2370,10 +2521,13 @@ export interface components {
         /** @enum {string} */
         WebSocketChannel: "user" | "newest_wins";
         WebsocketLeaseQuery: {
+            /** @description The channel to subscribe to. */
             channel: components["schemas"]["WebSocketChannel"];
         };
         WhoamiResponse: {
+            /** @description The email address of the currently authenticated user. */
             email: string;
+            /** @description The user ID of the currently authenticated user. */
             id: components["schemas"]["UserId"];
         };
     };

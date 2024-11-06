@@ -20,7 +20,7 @@ const columns = ref({
   xl: 8,
 });
 
-const query = $dependencies.games.ui.searchGamesByCategoryPaginatingOnSlider;
+const query = $dependencies.games.ui.searchGamesPaginatingOnGrid;
 
 const ENABLE_SERVER_SIDE_RENDERING = false;
 const DEFER_CLIENT_SIDE_LOADING = true;
@@ -34,7 +34,7 @@ const onLoadData = async () => {
   if (!canLoadMore.value) return;
   loading.value = true;
 
-  const { games: foundGames, canLoadMore: updatedCanLoadMore } = await query.handle(props.categoryIdentifier, nextGamesPageToSearch.value);
+  const { games: foundGames, canLoadMore: updatedCanLoadMore } = await query.handle(props.categoryIdentifier, null, nextGamesPageToSearch.value);
   gameIds.value.push(...foundGames.map(game => game.id));
   canLoadMore.value = updatedCanLoadMore;
   nextGamesPageToSearch.value += 1;

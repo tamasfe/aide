@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const { params } = useRoute();
 const { $dependencies } = useNuxtApp();
+const { t } = useI18n();
 
 const categoryIdentifier = params.id;
 if (!categoryIdentifier || typeof categoryIdentifier !== "string") {
@@ -12,7 +13,7 @@ if (!categoryIdentifier || typeof categoryIdentifier !== "string") {
 <template>
   <NuxtLayout name="carousel">
     <div class="giro__container giro__sections">
-      <GridVerticalGames :category-identifier="categoryIdentifier as string" />
+      <GridVerticalGames :title="t(`category.${categoryIdentifier}`)" :category-identifier="String(categoryIdentifier)" :provider-id="null" />
     </div>
   </NuxtLayout>
 </template>
