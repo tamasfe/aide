@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { FindGameCompatibilityByIdResponseI } from "~/modules/games/application/FindGameCompatibilityById";
-
 // DESIGN STATUS:       ✅
 // ARCHITECTURE STATUS: ✴️
 //   * there are some edge cases we should handle, like what happens when you run out of money (how to display it to the user, etc)
@@ -33,13 +31,12 @@ if (!params.id || Number.isNaN(gameId)) {
   await navigateTo("/");
 }
 
-const { data: gameFromApi } = await useAsyncData(`game-${params.id}`, async () => {
+const { data: game } = await useAsyncData(`game-${params.id}`, async () => {
   return $dependencies.games.ui.findGameCompatibilityByIdOnGamePage.handle(gameId, currentDevice);
 });
-if (!gameFromApi.value) {
+if (!game.value) {
   await navigateTo("/");
 }
-const game = gameFromApi.value as FindGameCompatibilityByIdResponseI;
 
 const { data: pageCategories } = await useAsyncData(`game-${params.id}-categories`, async () => {
   return $dependencies.games.ui.searchGameCategoriesByGroup.handle("game_page");
@@ -54,7 +51,7 @@ const iFrameUrl = computed(() => {
 </script>
 
 <template>
-  <div>
+  <div v-if="game">
     <GameFrameMobile
       v-if="isMobile && game.isCompatibleWithDevice"
       :game-title="game.name"
