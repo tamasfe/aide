@@ -34,14 +34,14 @@ await useAsyncData(`load-providers`, () => onLoadData().then(() => true), { lazy
     :columns="{
       sm: 2.7,
       md: 2.7,
-      lg: 2.7,
-      xl: 2.7,
+      lg: 3.7,
+      xl: 4.7,
     }"
     :slides-to-scroll="{
       sm: 2,
       md: 2,
-      lg: 2,
-      xl: 2,
+      lg: 3,
+      xl: 4,
     }"
     :loading="loading"
     :gap="2"
