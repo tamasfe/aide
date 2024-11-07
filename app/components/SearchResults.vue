@@ -142,6 +142,8 @@ watch(() => query, useThrottleFn(onQueryChange, 100, true, true, true), { immedi
     v-if="!loading && noResults"
     :title="$t('search.no_results')"
     icon="lucide:search-x"
+    size="32"
+    text-class="text-xl"
   />
 
   <div v-if="loading && noResults" class="flex items-center justify-center py-10">

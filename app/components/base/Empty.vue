@@ -1,11 +1,17 @@
 <script setup lang="ts">
+import type { HTMLAttributes } from "vue";
+
 withDefaults(
   defineProps<{
     title?: string;
     icon?: string;
+    size?: string;
+    textClass?: HTMLAttributes["class"];
   }>(), {
     title: "No Results",
     icon: "lucide:box-select",
+    size: "24",
+    textClass: "",
   },
 );
 </script>
@@ -14,9 +20,16 @@ withDefaults(
   <div class="min-h-[100px] flex flex-row gap-3 justify-center items-center">
     <Icon
       :name="icon"
-      size="24"
+      :size="size"
       class="text-subtle"
     />
-    <div class="text-subtle text-lg font-medium">{{ title }}</div>
+    <div
+      :class="cn(
+        'text-subtle text-lg font-medium',
+        textClass,
+      )"
+    >
+      {{ title }}
+    </div>
   </div>
 </template>
