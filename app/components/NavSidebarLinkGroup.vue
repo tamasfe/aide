@@ -47,7 +47,10 @@ const onToggle = () => {
       <BaseButton
         variant="ghost"
         size="ghost"
-        :class="open ? 'rotate-180' : 'rotate-0'"
+        :class="cn(
+          'mr-1.5',
+          open ? 'rotate-180' : 'rotate-0',
+        )"
       >
         <Icon
           name="lucide:chevron-down"
