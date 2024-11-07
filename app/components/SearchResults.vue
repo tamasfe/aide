@@ -147,6 +147,9 @@ watch(() => query, useThrottleFn(onQueryChange, 100, true, true, true), { immedi
   />
 
   <div v-if="loading && noResults" class="flex items-center justify-center py-10">
-    <BaseSpinner />
+    <BaseSpinner
+      :size="40"
+      class="text-subtle"
+    />
   </div>
 </template>
