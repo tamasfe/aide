@@ -22,7 +22,7 @@ const { data: imageSrc, status: loadingStatus } = await useAsyncData(String(prov
       v-if="imageSrc && loadingStatus === 'success'"
       :src="imageSrc"
       :alt="`Provider ${providerId} logo`"
-      class="w-full h-full object-cover group-hover:opacity-80"
+      class="w-full h-full object-contain group-hover:opacity-80"
     />
     <BaseSpinner
       v-else

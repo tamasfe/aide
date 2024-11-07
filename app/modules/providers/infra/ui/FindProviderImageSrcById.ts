@@ -12,7 +12,7 @@ export class FindProviderImageSrcById {
   }
 
   private imageSrcFromGirobetBackend(providerId: number): string {
-    return `${this.baseUrl}/game-provider/${providerId}/image`;
+    return `${this.baseUrl}/game-provider/${providerId}/image?variant=small&color=white`;
   }
 
   private dumbImageSrcFromLocal(providerId: number): string {

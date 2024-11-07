@@ -6,9 +6,9 @@
 
 import { Popover, PopoverPanel } from "@headlessui/vue";
 
-const open = ref(false);
-const loading = ref(false);
-const query = ref("");
+const open = useState("search-popover-open", () => false);
+const loading = useState("search-popover-loading", () => false);
+const query = useState("search-popover-query", () => "");
 
 const onOpen = () => {
   open.value = true;

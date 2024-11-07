@@ -2,10 +2,22 @@
 const { t } = useI18n();
 
 defineProps<{
-  gameIds: number[];
+  itemType: "game" | "provider";
+  itemIds: number[];
   totalResults: number;
   onLoadMore: () => Promise<void>;
+  loading?: boolean;
 }>();
+
+const itemTypeToAspectRatio = {
+  game: "3/4",
+  provider: "16/9",
+};
+
+const itemTypeToColumns = {
+  game: { sm: 3, md: 4, lg: 6, xl: 8 },
+  provider: { sm: 2, md: 2, lg: 3, xl: 3 },
+};
 </script>
 
 <template>
@@ -17,20 +29,16 @@ defineProps<{
     </template>
 
     <GridVertical
-      :data="gameIds"
-      :columns="{ sm: 3, md: 4, lg: 6, xl: 8 }"
-      aspect-ratio="3/4"
+      :data="itemIds"
+      :columns="itemTypeToColumns[itemType]"
+      :aspect-ratio="itemTypeToAspectRatio[itemType]"
       pagination
       :total-count="totalResults"
+      :loading="loading"
       @trigger:load="onLoadMore"
     >
-      <template #default="{ data: gameId }">
-        <NuxtLink
-          :to="`/games/${gameId}`"
-          class="block bg-subtle rounded-default w-full h-full overflow-hidden"
-        >
-          <GamesImageLoader :game-id="gameId" />
-        </NuxtLink>
+      <template #default="{ data: itemId }">
+        <slot :item-id="itemId" />
       </template>
     </GridVertical>
   </GridHeader>

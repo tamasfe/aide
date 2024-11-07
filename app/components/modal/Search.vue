@@ -2,7 +2,7 @@
 const { $dependencies } = useNuxtApp();
 const open = ref(true);
 const loading = ref(false);
-const query = ref("");
+const query = useState("search-modal-query", () => "");
 
 const onOpen = () => {
   open.value = true;

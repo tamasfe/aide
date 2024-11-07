@@ -5,14 +5,14 @@ import { FindProviderById } from "../application/FindProviderById";
 import { FindProviderImageSrcById } from "./ui/FindProviderImageSrcById";
 import { ProvidersRepositoryDumb } from "./ProvidersRepositoryDumb";
 import { ProvidersRepositoryGirobet } from "./ProvidersRepositoryGirobet";
-import { SearchAllProvidersOnHorizontalGrid } from "./ui/SearchAllProvidersOnHorizontalGrid";
+import { SearchProvidersOnGrid } from "./ui/SearchProvidersOnGrid";
 import { FindProviderByIdOnProviderPage } from "./ui/FindProviderByIdOnProviderPage";
 import type { CommonDependenciesI } from "~/dependency-injection/load-di";
 
 export interface ProvidersDependencyInjectionI {
   ui: {
     findProviderImageSrcById: FindProviderImageSrcById;
-    searchAllProvidersOnHorizontalGrid: SearchAllProvidersOnHorizontalGrid;
+    searchProvidersOnGrid: SearchProvidersOnGrid;
     findProviderByIdOnProviderPage: FindProviderByIdOnProviderPage;
   };
 }
@@ -31,7 +31,7 @@ export const createProvidersDependencyInjection = async (publicConfig: PublicRun
   return {
     ui: {
       findProviderImageSrcById: new FindProviderImageSrcById(publicConfig.providers.apiBaseUrlClient || ""),
-      searchAllProvidersOnHorizontalGrid: new SearchAllProvidersOnHorizontalGrid(
+      searchProvidersOnGrid: new SearchProvidersOnGrid(
         new SearchProvidersPaginating(providersApiRepository),
         commonDependencies.logger,
       ),

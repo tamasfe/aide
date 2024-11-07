@@ -14,7 +14,7 @@ const onLoadData = async () => {
   if (!canLoadMore.value) return;
   loading.value = true;
 
-  const { providers: foundProviders, canLoadMore: updatedCanLoadMore } = await $dependencies.providers.ui.searchAllProvidersOnHorizontalGrid.handle(nextProvidersPageToSearch.value);
+  const { providers: foundProviders, canLoadMore: updatedCanLoadMore } = await $dependencies.providers.ui.searchProvidersOnGrid.handle(null, nextProvidersPageToSearch.value);
   providerIds.value.push(...foundProviders.map(provider => provider.id));
   canLoadMore.value = updatedCanLoadMore;
   nextProvidersPageToSearch.value += 1;
