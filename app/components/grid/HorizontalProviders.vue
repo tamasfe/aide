@@ -45,7 +45,7 @@ await useAsyncData(`load-providers`, () => onLoadData().then(() => true), { lazy
     }"
     :loading="loading"
     :gap="2"
-    aspect-ratio="16/9"
+    aspect-ratio="16/6"
     @trigger:load="onLoadData"
   >
     <template #title>
