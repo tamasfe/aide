@@ -78,7 +78,7 @@ watch(() => query, useThrottleFn(onQueryChange, 100, true, true), { immediate: t
       <BaseSpinner />
     </div>
     <BaseEmpty
-      v-else
+      v-else-if="!loading"
       :title="$t('search.no_results')"
       icon="lucide:search-x"
     />
