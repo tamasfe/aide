@@ -1,12 +1,7 @@
 <script setup lang="ts">
-// UNCOMMENT TO TRY DEBOUNCED WATCH
-// import { debouncedWatch } from "@vueuse/core";
-
-// COMMENT OUT TO TRY DEBOUNCED WATCH
+// 2 alternates if ever needed...
 import { useThrottleFn } from "@vueuse/core";
-
-// DESIGN STATUS: ✴️
-//   * use skeleton loaders and loading spinner inside search bar IF it looks good. loading spinner in search input might give impression that its "slow" (bitstarz doesnt do this and it feels faster psychologically.... will just have to see it and decide)
+// import { debouncedWatch } from "@vueuse/core";
 
 const { $dependencies } = useNuxtApp();
 
@@ -92,11 +87,9 @@ const onQueryChange = async () => {
 const loading = computed(() => gamesLoading.value || providersLoading.value);
 const noResults = computed(() => gamesIds.value.length === 0 && providersIds.value.length === 0);
 
-// COMMENT OUT TO TRY THROTTLE WATCH
-watch(() => query, useThrottleFn(onQueryChange, 100, true, true, true), { immediate: true });
-
-// UNCOMMENT TO TRY DEBOUNCED WATCH
-// debouncedWatch(() => query, onQueryChange, { debounce: 200, immediate: true });
+// 2 alternate methods if ever needed
+watch(() => query, useThrottleFn(onQueryChange, 150, true, true, true), { immediate: true });
+// debouncedWatch(() => query, onQueryChange, { debounce: 150, immediate: true });
 </script>
 
 <template>
