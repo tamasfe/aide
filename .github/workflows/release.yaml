@@ -50,6 +50,7 @@ jobs:
         run: pnpm build
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          NUXT_PUBLIC_RELEASE: ${{ github.sha }}
 
       - name: Build and Push
         id: docker_build
@@ -57,6 +58,8 @@ jobs:
         with:
           context: .
           push: true
+          build-args: |
+            VERSION=${{ github.sha }}
           tags: |
             891377191070.dkr.ecr.sa-east-1.amazonaws.com/girobet-frontend
             891377191070.dkr.ecr.sa-east-1.amazonaws.com/girobet-frontend:${{ github.sha }}

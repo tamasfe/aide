@@ -4,6 +4,8 @@ import * as Sentry from "@sentry/nuxt";
  *
  * More information about this file & Sentry with Nuxt @https://docs.sentry.io/platforms/javascript/guides/nuxt/
  *
+ * The runtime configuration is not available at this stage, it has to be shared through env variables. More info @https://docs.sentry.io/platforms/javascript/guides/nuxt/#server-side-setup
+ *
  */
 
 Sentry.init({
@@ -14,6 +16,8 @@ Sentry.init({
   // Set 'tracePropagationTargets' to control for which URLs distributed tracing should be enabled
   tracePropagationTargets: ["localhost", /^https:\/\/girobet\.vip/],
 
-  environment: process?.env?.NODE_ENV === "production" ? "production" : "development",
+  environment: process.env.NODE_ENV === "production" ? "production" : "development",
+
+  release: process.env.NUXT_PUBLIC_RELEASE || "development",
 
 });

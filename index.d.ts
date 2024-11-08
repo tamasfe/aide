@@ -10,6 +10,7 @@ declare module "nuxt/schema" {
     apiBaseUrl: string;
     genericFixedUserJurisdiction: string | undefined;
     errorCapturingEnabled: boolean;
+    release: string;
     log: {
       level: "debug" | "info" | "warn" | "error";
     };

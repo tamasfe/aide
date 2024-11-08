@@ -58,9 +58,12 @@ export class LoggerConsole implements LoggerI {
   }
 
   constructor(
-    private serviceName: string,
     private format: "json" | "prettyPrint",
     private level: LogLevel,
+    private serviceInfo: {
+      name: string;
+      release: string;
+    },
     private middlewares: LoggerMiddleware[] = [],
   ) {}
 
@@ -69,7 +72,7 @@ export class LoggerConsole implements LoggerI {
   }
 
   private metadataMerging(data: Record<string, unknown>) {
-    return { timestamp: new Date().toISOString(), service: this.serviceName, runtime: this.findRuntime(), ...data };
+    return { timestamp: new Date().toISOString(), service: this.serviceInfo.name, release: this.serviceInfo.release, runtime: this.findRuntime(), ...data };
   }
 
   private levelIsAllowed(level: LogLevel) {

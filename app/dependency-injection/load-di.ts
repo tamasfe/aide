@@ -34,7 +34,7 @@ export async function loadDependencies(config: PublicRuntimeConfig, translateFun
       ]
     : [];
 
-  const logger = new LoggerConsole(config.serviceName, logFormat, config.log.level as "debug" | "info" | "warn" | "error", loggerMiddlewares);
+  const logger = new LoggerConsole(logFormat, config.log.level as "debug" | "info" | "warn" | "error", { name: config.serviceName, release: config.release }, loggerMiddlewares);
 
   return {
     asyncMessagePublisher: new EmitteryAsyncMessagePublisher(logger),

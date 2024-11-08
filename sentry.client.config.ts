@@ -1,5 +1,7 @@
 import * as Sentry from "@sentry/nuxt";
 
+const runtimeConfig = useRuntimeConfig();
+
 /**
  *
  * More information about this file & Sentry with Nuxt @https://docs.sentry.io/platforms/javascript/guides/nuxt/
@@ -24,5 +26,7 @@ Sentry.init({
   replaysOnErrorSampleRate: 1.0, // If you're not already sampling the entire session, change the sample rate to 100% when sampling sessions where errors occur.
 
   environment: location?.hostname === "localhost" ? "development" : "production",
+
+  release: runtimeConfig.public.release,
 
 });
