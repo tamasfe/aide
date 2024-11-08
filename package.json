@@ -48,6 +48,8 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@iconify-json/emojione-v1": "^1.2.0",
+    "@iconify-json/lucide": "^1.2.12",
     "@nuxt/eslint": "^0.6.1",
     "@nuxt/icon": "^1.6.1",
     "@nuxt/image": "^1.8.1",

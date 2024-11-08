@@ -90,6 +90,12 @@ importers:
         specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
+      '@iconify-json/emojione-v1':
+        specifier: ^1.2.0
+        version: 1.2.0
+      '@iconify-json/lucide':
+        specifier: ^1.2.12
+        version: 1.2.12
       '@nuxt/eslint':
         specifier: ^0.6.1
         version: 0.6.1(eslint@9.14.0(jiti@2.4.0))(magicast@0.3.5)(rollup@4.24.4)(typescript@5.6.3)(vite@5.4.10(@types/node@22.9.0)(terser@5.36.0))(webpack-sources@3.2.3)
@@ -716,6 +722,12 @@ packages:
   '@humanwhocodes/retry@0.4.1':
     resolution: {integrity: sha512-c7hNEllBlenFTHBky65mhq8WD2kbN9Q6gk0bTk8lSBvc554jpXSkST1iePudpt7+A/AQvuHs9EMqjHDXMY1lrA==}
     engines: {node: '>=18.18'}
+
+  '@iconify-json/emojione-v1@1.2.0':
+    resolution: {integrity: sha512-2A04zoEBur+kas7vCrKK9XunymmJkFZn+yRK+NLhDPZW/9nki8YW+a4V6J8k0UVmD5vXoDekuQuRYQz1Om130g==}
+
+  '@iconify-json/lucide@1.2.12':
+    resolution: {integrity: sha512-pzcEQx7LuDoBZWHS1PSdCUBGcUU7/zpu3LINNiEixMz8i1zTWoxnvA2mQMciIn+yTRk4FsjRn/tGC69Rs9mbaA==}
 
   '@iconify/collections@1.0.480':
     resolution: {integrity: sha512-NXupTwRQABEGN4lL2KgikaYNWliBNvpXEDlqGTUJbMLPylZv+E/dMsinhm7WXUNebhANj2koWNluboOnR5apAw==}
@@ -6426,6 +6438,14 @@ snapshots:
   '@humanwhocodes/retry@0.3.1': {}
 
   '@humanwhocodes/retry@0.4.1': {}
+
+  '@iconify-json/emojione-v1@1.2.0':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/lucide@1.2.12':
+    dependencies:
+      '@iconify/types': 2.0.0
 
   '@iconify/collections@1.0.480':
     dependencies:
