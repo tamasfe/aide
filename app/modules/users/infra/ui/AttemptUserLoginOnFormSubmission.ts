@@ -19,7 +19,7 @@ export class AttemptUserLoginOnFormSubmission {
         return this.translateFunction("modal_login.error_invalid_credentials");
       }
 
-      this.logger.error("Something went wrong while trying to login the user", { error: loginResult.error });
+      this.logger.error("Something went wrong while trying to login the user", loginResult.error);
       return this.translateFunction("modal_login.error_unknown");
     }
 

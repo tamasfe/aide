@@ -20,7 +20,7 @@ export class SearchGamesByQueryPaginatingOnSearchBar {
 
     if (result.isFailure) {
       // Optional TODO: alert the customer somehow in case of error
-      this.logger.error("SearchGamesByQueryPaginatingOnSearchBar failed: ", { error: result.error, query });
+      this.logger.error("SearchGamesByQueryPaginatingOnSearchBar failed: ", result.error, { query });
       return {
         games: [],
         canLoadMore: false,

@@ -23,7 +23,7 @@ export class ValidateTelephoneUpsertingSignupFlowOnTelephoneValueChanged {
     });
 
     if (resultUpsertingSignupFlow.isFailure) {
-      this.logger.error("Error while upserting the signup flow with the telephone", { error: resultUpsertingSignupFlow.error });
+      this.logger.error("Error while upserting the signup flow with the telephone", resultUpsertingSignupFlow.error);
       return this.translateFunction("modal_session.error_validating_field");
     }
 

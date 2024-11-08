@@ -10,7 +10,7 @@ export class SearchGameCategoriesByGroup {
   public async handle(group: string) {
     const result = await this.query.handle(group);
     if (result.isFailure) {
-      this.logger.error("Error while searching game categories by group", { error: result.error });
+      this.logger.error("Error while searching game categories by group", result.error);
       return [];
     }
 

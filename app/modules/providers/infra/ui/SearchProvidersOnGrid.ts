@@ -9,7 +9,7 @@ export class SearchProvidersOnGrid {
   public async handle(query: string | null, page: number) {
     const result = await this.query.handle(null, query, page, SearchProvidersOnGrid.PAGE_SIZE);
     if (result.isFailure) {
-      this.logger.error("Unexpected error while trying to search for providers", { error: result.error, page, pageSize: SearchProvidersOnGrid.PAGE_SIZE });
+      this.logger.error("Unexpected error while trying to search for providers", result.error, { page, pageSize: SearchProvidersOnGrid.PAGE_SIZE });
       return { providers: [], totalProviders: 0, canLoadMore: false };
     }
 

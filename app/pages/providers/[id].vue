@@ -7,7 +7,7 @@ const DEFER_CLIENT_SIDE_LOADING = true;
 
 const providerId = Number(params.id);
 if (!providerId || Number.isNaN(providerId)) {
-  $dependencies.common.logger.error("Provider ID route parameter should be a number", { providerId });
+  $dependencies.common.logger.warn("Provider ID route parameter should be a number", { providerId });
   await navigateTo("/");
 }
 

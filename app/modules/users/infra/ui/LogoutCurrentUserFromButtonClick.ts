@@ -10,7 +10,7 @@ export class LogoutCurrentUserFromButtonClick {
   public async handle() {
     const result = await this.command.handle();
     if (result.isFailure) {
-      this.logger.error("Failed to logout user from nav bar", { error: result.error });
+      this.logger.error("Failed to logout user from nav bar", result.error);
     }
 
     return;

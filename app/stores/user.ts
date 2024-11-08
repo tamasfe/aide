@@ -21,7 +21,7 @@ export const useUserStore = defineStore("userStore", {
       const { $dependencies } = useNuxtApp();
       const result = await $dependencies.users.queries.searchAuthenticatedUser.handle();
       if (result.isFailure) {
-        $dependencies.common.logger.error("Error searching authenticated user inside user store", { error: result.error });
+        $dependencies.common.logger.error("Error searching authenticated user inside user store", result.error);
       }
 
       // Remove previously logged in user

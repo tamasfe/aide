@@ -2,6 +2,7 @@
 // This is the config
 export default defineNuxtConfig({
   modules: [
+    "@sentry/nuxt/module",
     "@nuxt/eslint",
     "@nuxt/icon",
     "@nuxt/image",
@@ -37,6 +38,7 @@ export default defineNuxtConfig({
     public: {
       apiBaseUrl: process.env.NUXT_PUBLIC_API_BASE_URL,
       genericFixedUserJurisdiction: process.env.NUXT_PUBLIC_GENERIC_API_CLIENT_FIXED_USER_JURISDICTION,
+      errorCapturingEnabled: process.env.NUXT_PUBLIC_ERROR_CAPTURING_ENABLED === "true",
       log: {
         level: process.env.NUXT_PUBLIC_LOG_LEVEL,
       },
@@ -69,6 +71,7 @@ export default defineNuxtConfig({
   build: {
     transpile: ["applicationinsights"],
   },
+  sourcemap: { client: true },
   future: {
     compatibilityVersion: 4,
   },
@@ -115,4 +118,12 @@ export default defineNuxtConfig({
   },
   // @pinia/nuxt
   pinia: {},
+  sentry: {
+    // dynamicImportForServerEntry: true,
+    sourceMapsUploadOptions: {
+      org: "girobet",
+      project: "girobet-frontend",
+      authToken: process.env.SENTRY_AUTH_TOKEN || "placeholder_sentry_auth_token",
+    },
+  },
 });

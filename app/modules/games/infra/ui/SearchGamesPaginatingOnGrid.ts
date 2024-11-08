@@ -20,7 +20,7 @@ export class SearchGamesPaginatingOnGrid {
 
     if (result.isFailure) {
       // Optional TODO: alert the customer somehow in case of error
-      this.logger.error("SearchGamesPaginatingOnGrid failed", { error: result.error });
+      this.logger.error("SearchGamesPaginatingOnGrid failed", result.error);
       return {
         games: [],
         canLoadMore: false,

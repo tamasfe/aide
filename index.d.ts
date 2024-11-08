@@ -9,6 +9,7 @@ declare module "nuxt/schema" {
   interface PublicRuntimeConfig {
     apiBaseUrl: string;
     genericFixedUserJurisdiction: string | undefined;
+    errorCapturingEnabled: boolean;
     log: {
       level: "debug" | "info" | "warn" | "error";
     };

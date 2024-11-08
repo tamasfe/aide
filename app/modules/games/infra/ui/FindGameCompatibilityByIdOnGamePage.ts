@@ -13,7 +13,7 @@ export class FindGameCompatibilityByIdOnGamePage {
         return null;
       }
 
-      this.logger.error("Unexpected error while trying to find a game by its id in the game/:game_id page", { error: gameResult.error, gameId, userDevice });
+      this.logger.error("Unexpected error while trying to find a game by its id in the game/:game_id page", gameResult.error, { gameId, userDevice });
       return null;
     }
 

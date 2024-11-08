@@ -22,7 +22,7 @@ export class ValidateCpfUpsertingSignupFlowOnCpfValueChanged {
         return this.translateFunction("validation.cpf_invalid");
       }
 
-      this.logger.error("Error while upserting the signup flow with the cpf", { error: resultUpsertingSignupFlow.error });
+      this.logger.error("Error while upserting the signup flow with the cpf", resultUpsertingSignupFlow.error);
       return this.translateFunction("modal_session.error_validating_field");
     }
 

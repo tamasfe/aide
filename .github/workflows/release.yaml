@@ -41,13 +41,15 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'pnpm'
+          cache: "pnpm"
 
       - name: Install dependencies
         run: pnpm install
 
       - name: Build
         run: pnpm build
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
 
       - name: Build and Push
         id: docker_build
@@ -61,7 +63,6 @@ jobs:
 
       - name: Update image tag
         run: yq -i '.image.tag = "${{ github.sha }}"' helm/values.yaml
-
 
       - name: Deploy to ArgoCD
         uses: stefanzweifel/git-auto-commit-action@v5

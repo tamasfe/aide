@@ -24,7 +24,7 @@ export const useWalletStore = defineStore("walletStore", {
       const result = await $dependencies.wallets.queries.findAuthenticatedUserWallet.handle();
       if (result.isFailure) {
         if (!(result.error instanceof ErrorUserNotAuthorized)) {
-          $dependencies.common.logger.error("Unexpected error while fetching the wallet's balance of the authenticated user", { error: result.error });
+          $dependencies.common.logger.error("Unexpected error while fetching the wallet's balance of the authenticated user", result.error);
         }
       }
 

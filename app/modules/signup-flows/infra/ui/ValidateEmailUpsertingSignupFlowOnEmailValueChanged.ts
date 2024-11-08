@@ -22,7 +22,7 @@ export class ValidateEmailUpsertingSignupFlowOnEmailValueChanged {
         return this.translateFunction("validation.email_invalid");
       }
 
-      this.logger.error("Error while upserting the signup flow with the email", { error: resultUpsertingSignupFlow.error });
+      this.logger.error("Error while upserting the signup flow with the email", resultUpsertingSignupFlow.error);
       return this.translateFunction("modal_session.error_validating_field");
     }
 

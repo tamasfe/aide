@@ -19,7 +19,7 @@ export class SubmitSignupFlowOnFormSubmission {
 
     if (result.isFailure) {
       // TODO: Handle common API errors
-      this.logger.error("Error submitting the signup flow. More info in the cause", { error: result.error });
+      this.logger.error("Error submitting the signup flow. More info in the cause", result.error);
       return this.translateFunction("modal_session.error_submitting_flow");
     }
 

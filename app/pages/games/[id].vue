@@ -27,7 +27,7 @@ const DEFER_CLIENT_SIDE_LOADING = true;
 
 const gameId = Number(params.id);
 if (!params.id || Number.isNaN(gameId)) {
-  $dependencies.common.logger.error("Game ID route parameter should be a number", { gameId });
+  $dependencies.common.logger.warn("Game ID route parameter should be a number", { gameId });
   await navigateTo("/");
 }
 

@@ -1,6 +1,5 @@
-import type { LoggerI } from "./Logger";
-
-type LogLevel = "debug" | "info" | "warn" | "error";
+import type { CustomError } from "../result";
+import type { LoggerI, LoggerMiddleware, LogLevel } from "./Logger";
 
 export class LoggerConsole implements LoggerI {
   public debug(message: string, data: Record<string, unknown> = {}): void {
@@ -39,22 +38,30 @@ export class LoggerConsole implements LoggerI {
     console.warn(message, this.metadataMerging(data));
   }
 
-  public error(message: string, data: Record<string, unknown> = {}): void {
+  public error(message: string, error: CustomError, data: Record<string, unknown> = {}): void {
     if (!this.levelIsAllowed("error")) {
       return;
     }
 
-    if (this.format === "json") {
-      console.error(this.toStringifiedJSON("error", message, data));
-      return;
-    }
-    console.error(message, this.metadataMerging(data));
+    const dataWithError = {
+      ...data,
+      error,
+    };
+
+    this.runMiddlewaresAroundCallback("error", message, error, dataWithError, () => {
+      if (this.format === "json") {
+        console.error(this.toStringifiedJSON("error", message, dataWithError));
+        return;
+      }
+      console.error(message, this.metadataMerging(dataWithError));
+    });
   }
 
   constructor(
     private serviceName: string,
     private format: "json" | "prettyPrint",
     private level: LogLevel,
+    private middlewares: LoggerMiddleware[] = [],
   ) {}
 
   private toStringifiedJSON(level: LogLevel, message: string, data: Record<string, unknown> = {}) {
@@ -90,5 +97,20 @@ export class LoggerConsole implements LoggerI {
       return "server";
     }
     return "unknown";
+  }
+
+  private runMiddlewaresAroundCallback(level: LogLevel, message: string, error: CustomError | undefined, data: Record<string, unknown>, callback: () => void) {
+    const endMiddlewareCallbacks: ReturnType<LoggerMiddleware["callback"]>[] = [];
+    for (const middleware of this.middlewares) {
+      if (middleware.levels.includes(level)) {
+        endMiddlewareCallbacks.push(middleware.callback(level, message, error, data));
+      }
+    }
+
+    callback();
+
+    for (const middlewareEndCallbacks of endMiddlewareCallbacks) {
+      middlewareEndCallbacks("error", message, error, data);
+    }
   }
 }

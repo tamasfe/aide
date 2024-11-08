@@ -30,7 +30,7 @@ export class ValidatePasswordUpsertingSignupFlowOnPasswordValueChanged {
         })();
       }
 
-      this.logger.error("Error while upserting the signup flow with the password", { error: resultUpsertingSignupFlow.error });
+      this.logger.error("Error while upserting the signup flow with the password", resultUpsertingSignupFlow.error);
       return this.translateFunction("modal_session.error_validating_field");
     }
 

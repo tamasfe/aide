@@ -14,7 +14,7 @@ export class FindProviderByIdOnProviderPage {
         return null;
       }
 
-      this.logger.error("Unexpected error while trying to find a provider by its id in the provider/:provider_id page", { error: result.error, providerId });
+      this.logger.error("Unexpected error while trying to find a provider by its id in the provider/:provider_id page", result.error, { providerId });
       return null;
     }
 
