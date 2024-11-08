@@ -1,6 +1,7 @@
 import type { GameI, GameSummaryI } from "../domain/Game";
 import type { GamesApiRepositoryI } from "../domain/GamesApiRepository";
 import { ErrorGameNotFound } from "../domain/ErrorGameNotFound";
+import { ErrorSearchIndexNotFound } from "../domain/ErrorSearchIndexNotFound";
 import { fail, success, type Result } from "~/packages/result";
 import { InfrastructureError } from "~/packages/result/infrastructure-error";
 import { createBackendOpenApiClient } from "~/packages/http-client/create-backend-open-api-client";
@@ -12,7 +13,7 @@ export class GamesApiRepositoryGirobet implements GamesApiRepositoryI {
     this.apiClient = createBackendOpenApiClient(clientOptions, asyncMessagePublisher);
   }
 
-  public async searchPaginating(searchParams: { category: string | null; query: string | null; providerId: number | null }, limit: number, offset: number): Promise<Result<{ games: GameSummaryI[]; pagination: { limit: number; offset: number; totalItems: number } }, InfrastructureError>> {
+  public async searchPaginating(searchParams: { category: string | null; query: string | null; providerId: number | null }, limit: number, offset: number): Promise<Result<{ games: GameSummaryI[]; pagination: { limit: number; offset: number; totalItems: number } }, ErrorSearchIndexNotFound | InfrastructureError>> {
     try {
       const { data, error, response } = await this.apiClient.GET("/game/search", {
         params: {
@@ -38,6 +39,12 @@ export class GamesApiRepositoryGirobet implements GamesApiRepositoryI {
       }
 
       if (error) {
+        if (error.code === "SEARCH_INDEX_NOT_FOUND") {
+          return fail(
+            ErrorSearchIndexNotFound.new({ searchParams }),
+          );
+        }
+
         return fail(
           InfrastructureError.newFromError({
             searchParams, limit, offset,

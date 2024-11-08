@@ -121,6 +121,7 @@ export default defineNuxtConfig({
   sentry: {
     // dynamicImportForServerEntry: true,
     sourceMapsUploadOptions: {
+      enabled: process.env.SENTRY_AUTH_TOKEN !== undefined && process.env.SENTRY_AUTH_TOKEN !== "",
       org: "girobet",
       project: "girobet-frontend",
       authToken: process.env.SENTRY_AUTH_TOKEN || "placeholder_sentry_auth_token",

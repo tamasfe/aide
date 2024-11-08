@@ -1,4 +1,5 @@
 import type { SearchGamesPaginating } from "../../application/SearchGamesPaginating";
+import { ErrorSearchIndexNotFound } from "../../domain/ErrorSearchIndexNotFound";
 import type { LoggerI } from "~/packages/logger/Logger";
 
 export class SearchGamesPaginatingOnGrid {
@@ -19,6 +20,15 @@ export class SearchGamesPaginatingOnGrid {
     const result = await this.query.handle(categoryIdentifier, null, providerId, pageToSearch, SearchGamesPaginatingOnGrid.PAGINATION_SIZE);
 
     if (result.isFailure) {
+      if (result.error instanceof ErrorSearchIndexNotFound) {
+        this.logger.warn("The search index was not found", { error: result.error });
+        return {
+          games: [],
+          canLoadMore: false,
+          totalGames: 0,
+        };
+      }
+
       // Optional TODO: alert the customer somehow in case of error
       this.logger.error("SearchGamesPaginatingOnGrid failed", result.error);
       return {

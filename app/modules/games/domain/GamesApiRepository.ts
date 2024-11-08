@@ -1,5 +1,6 @@
 import type { GameI, GameSummaryI } from "./Game";
 import type { ErrorGameNotFound } from "./ErrorGameNotFound";
+import type { ErrorSearchIndexNotFound } from "./ErrorSearchIndexNotFound";
 import type { Result } from "~/packages/result";
 import type { InfrastructureError } from "~/packages/result/infrastructure-error";
 
@@ -11,7 +12,7 @@ export interface GamesApiRepositoryI {
       offset: number;
       totalItems: number;
     };
-  }, InfrastructureError>>;
+  }, ErrorSearchIndexNotFound | InfrastructureError>>;
 
   findById(gameId: number): Promise<Result<GameI, ErrorGameNotFound | InfrastructureError>>;
 }
