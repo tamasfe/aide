@@ -21,7 +21,7 @@
   "dependencies": {
     "@floating-ui/vue": "^1.1.5",
     "@headlessui/vue": "^1.7.23",
-    "@pinia/nuxt": "^0.6.1",
+    "@pinia/nuxt": "^0.7.0",
     "@sentry/nuxt": "^8.37.1",
     "@tanstack/vue-table": "8.19.3",
     "@vee-validate/nuxt": "^4.14.6",
