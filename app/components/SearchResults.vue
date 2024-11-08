@@ -90,6 +90,10 @@ const noResults = computed(() => gamesIds.value.length === 0 && providersIds.val
 // 2 alternate methods if ever needed
 watch(() => query, useThrottleFn(onQueryChange, 150, true, true, true), { immediate: true });
 // debouncedWatch(() => query, onQueryChange, { debounce: 150, immediate: true });
+
+const onClickLink = () => {
+  $dependencies.users.ui.emitCommandCloseUserActionModal.handle();
+};
 </script>
 
 <template>
@@ -106,6 +110,7 @@ watch(() => query, useThrottleFn(onQueryChange, 150, true, true, true), { immedi
         <NuxtLink
           :to="`/games/${itemId}`"
           class="block bg-subtle rounded-default w-full h-full overflow-hidden"
+          @click="onClickLink"
         >
           <GamesImageLoader :game-id="itemId" />
         </NuxtLink>
@@ -124,6 +129,7 @@ watch(() => query, useThrottleFn(onQueryChange, 150, true, true, true), { immedi
         <NuxtLink
           :to="`/providers/${itemId}`"
           class="block bg-subtle rounded-default w-full h-full overflow-hidden"
+          @click="onClickLink"
         >
           <ProviderImageLoader :provider-id="itemId" />
         </NuxtLink>
