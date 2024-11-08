@@ -1,10 +1,6 @@
 <script setup lang="ts">
-import { useDebounceFn } from "@vueuse/core";
-
 // DESIGN STATUS ✴️
 //   - The text is too large on mobile which goes back to refactoring InputGroup in a PROPER way to add size. we might not use "variants" because those can only output ONE string of classes (i think) and what we want is an initial variant that also creates other classes for input class, etc. or we can do inputClass, iconClass, etc, but in general that is ugly
-
-const DEBOUNCE_INPUT_MS = 100;
 
 withDefaults(defineProps<{
   loading?: boolean;
@@ -15,19 +11,19 @@ withDefaults(defineProps<{
 });
 
 // this needs to hide/show close button
-const query = ref("");
+const query = defineModel({
+  type: String,
+  required: true,
+});
 
 const emit = defineEmits<{
   (e: "focus" | "close"): void;
-  (e: "input", value: string): void;
 }>();
 
 const onClickCloseButton = () => {
   emit("close");
   query.value = "";
 };
-
-watch(query, useDebounceFn((value: string) => emit("input", value), DEBOUNCE_INPUT_MS));
 </script>
 
 <template>

@@ -6,8 +6,8 @@
 
 import { Popover, PopoverPanel } from "@headlessui/vue";
 
-const open = useState("search-popover-open", () => false);
-const loading = useState("search-popover-loading", () => false);
+const open = ref(false);
+const loading = ref(false);
 const query = useState("search-popover-query", () => "");
 
 const onOpen = () => {
@@ -24,12 +24,12 @@ const onClose = () => {
     class="relative"
   >
     <SearchBar
+      v-model="query"
       :open="open"
       :loading="loading"
       :class="{ 'bg-emphasis': open }"
       @focus="onOpen"
       @close="onClose"
-      @input="value => query = value"
     />
 
     <BaseOverlay

@@ -22,11 +22,11 @@ const onClose = () => {
     @close="onClose"
   >
     <SearchBar
+      v-model="query"
       :open="open"
       :loading="loading"
       @focus="onOpen"
       @close="onClose"
-      @input="value => query = value"
     />
 
     <transition
