@@ -64,10 +64,14 @@ jobs:
             891377191070.dkr.ecr.sa-east-1.amazonaws.com/girobet-frontend
             891377191070.dkr.ecr.sa-east-1.amazonaws.com/girobet-frontend:${{ github.sha }}
 
-      - name: Update image tag
-        run: yq -i '.image.tag = "${{ github.sha }}"' helm/values.yaml
-
-      - name: Deploy to ArgoCD
-        uses: stefanzweifel/git-auto-commit-action@v5
+      - name: Get Time
+        id: time
+        uses: nanzm/get-time-action@master
         with:
-          commit_message: "chore: update helm image tag"
+          format: 'YYYYMMDDHHmmss'
+
+      - name: Helm Package
+        run: helm package helm --app-version ${{ github.sha }} --version 1.0.0-${{ steps.time.outputs.time }}
+
+      - name: Helm Push
+        run: helm push girobet-frontend-*.tgz oci://891377191070.dkr.ecr.sa-east-1.amazonaws.com/

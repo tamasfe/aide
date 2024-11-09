@@ -31,7 +31,7 @@ spec:
               topologyKey: "kubernetes.io/hostname"
       containers:
         - name: "{{ .Release.Name }}"
-          image: "891377191070.dkr.ecr.sa-east-1.amazonaws.com/girobet-frontend:{{ .Values.image.tag }}"
+          image: "891377191070.dkr.ecr.sa-east-1.amazonaws.com/girobet-frontend:{{ .Chart.AppVersion }}"
           ports:
             - name: http
               containerPort: 3000
