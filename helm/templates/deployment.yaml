@@ -5,7 +5,8 @@ metadata:
   labels:
     app: "{{ .Release.Name }}"
 spec:
-  replicas: 1
+  revisionHistoryLimit: 3
+  replicas: 3
   selector:
     matchLabels:
       app: "{{ .Release.Name }}"
@@ -13,22 +14,33 @@ spec:
     type: RollingUpdate
     rollingUpdate:
       maxSurge: 1
-      maxUnavailable: 1
+      maxUnavailable: 0
   template:
     metadata:
       labels:
         app: "{{ .Release.Name }}"
     spec:
+      # Improved pod spreading
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app: "{{ .Release.Name }}"
+      # Keep anti-affinity as backup
       affinity:
         podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchExpressions:
-                  - key: "app"
-                    operator: In
-                    values:
-                      - "{{ .Release.Name }}"
-              topologyKey: "kubernetes.io/hostname"
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: "app"
+                      operator: In
+                      values:
+                        - "{{ .Release.Name }}"
+                topologyKey: "kubernetes.io/hostname"
       containers:
         - name: "{{ .Release.Name }}"
           image: "891377191070.dkr.ecr.sa-east-1.amazonaws.com/girobet-frontend:{{ .Chart.AppVersion }}"
