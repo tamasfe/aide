@@ -49,6 +49,7 @@ jobs:
       - name: Build
         run: pnpm build
         env:
+          NODE_OPTIONS: "--max_old_space_size=4096"
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           NUXT_PUBLIC_RELEASE: ${{ github.sha }}
 
