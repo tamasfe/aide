@@ -194,7 +194,7 @@
         "postal_code": "Postal Code",
         "country": "Country",
         "document": "Document",
-        "document_settings": "Document Settings",
+        "payment_settings": "Payment Settings",
         "key_type": "Key Type",
         "key_value": "Key Value",
         "regional_settings": "Regional Settings",

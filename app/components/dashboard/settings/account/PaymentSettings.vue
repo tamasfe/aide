@@ -1,5 +1,5 @@
 <template>
-  <DashboardSection :title="$t('dashboard.settings.account.document_settings')">
+  <DashboardSection :title="$t('dashboard.settings.account.payment_settings')">
     <DashboardSectionItem :name="$t('dashboard.settings.account.key_type')">
       <template #default>
         <p>CPF</p>

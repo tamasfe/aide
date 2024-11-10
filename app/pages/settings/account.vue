@@ -5,7 +5,7 @@
   >
     <DashboardSettingsAccountDetails />
     <DashboardSettingsAccountPersonalDetails />
-    <DashboardSettingsAccountDocumentSettings />
+    <DashboardSettingsAccountPaymentSettings />
     <DashboardSettingsAccountRegionalSettings />
     <DashboardSettingsAccountCloseAccount />
   </NuxtLayout>
