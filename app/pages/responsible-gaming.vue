@@ -24,7 +24,7 @@
     <h4>3. Self-Assessment: Is Your Gaming Healthy?</h4>
 
     <p>If you answer "YES" to any of the following questions, we strongly advise you to consider taking proactive steps to prevent gambling from negatively impacting your life:</p>
-    
+
     <ul>
       <li>Does gambling affect your work or academic performance?</li>
       <li>Has gambling caused conflicts with family or friends?</li>
@@ -45,7 +45,6 @@
     </ul>
 
     <p>These organizations provide confidential advice and support to help individuals regain control over their gambling habits.</p>
-
 
     <h4>5. Self-Exclusion and Cooling-Off Periods</h4>
 

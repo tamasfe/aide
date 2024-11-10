@@ -27,7 +27,8 @@
       <h4>3. Staff Training and Compliance Awareness</h4>
 
       <ul>
-        <li><strong>Comprehensive Training Programs:</strong> GiroBet.com will provide initial and ongoing AML training to all relevant staff. Training topics include:
+        <li>
+          <strong>Comprehensive Training Programs:</strong> GiroBet.com will provide initial and ongoing AML training to all relevant staff. Training topics include:
           <ul>
             <li>Personal responsibilities regarding AML.</li>
             <li>Procedures for identifying and verifying customers.</li>
@@ -44,7 +45,8 @@
 
       <ul>
         <li><strong>Risk-Based CDD Approach:</strong> GiroBet.com will employ a risk-based approach to CDD, adjusting the level of verification based on the customer's risk profile. This includes verifying identity, address, and other relevant information.</li>
-        <li><strong>Enhanced Due Diligence for High-Risk Customers:</strong> For customers identified as high risk, including PEPs, GiroBet.com will conduct EDD, which may involve:
+        <li>
+          <strong>Enhanced Due Diligence for High-Risk Customers:</strong> For customers identified as high risk, including PEPs, GiroBet.com will conduct EDD, which may involve:
           <ul>
             <li>Additional verification of identity and source of funds.</li>
             <li>Continuous monitoring of transactions.</li>
@@ -96,7 +98,8 @@
         <li><strong>Minimum Deposit Amount:</strong> The minimum deposit amount is set at the discretion of GiroBet.com and will be clearly communicated to players.</li>
         <li><strong>Verification of Payment Accounts:</strong> Customers must ensure that the payment accounts used for transactions are in their name. GiroBet.com reserves the right to verify ownership of these accounts.</li>
         <li><strong>Withdrawal Methods:</strong> Withdrawals must be made using the same method as the deposit whenever possible. If the deposit method does not allow for withdrawals, alternative methods such as bank transfers will be used.</li>
-        <li><strong>Identity Verification for Withdrawals:</strong> For the first withdrawal request, customers must provide:
+        <li>
+          <strong>Identity Verification for Withdrawals:</strong> For the first withdrawal request, customers must provide:
           <ul>
             <li>A government-issued photo ID with date of birth.</li>
             <li>Proof of address (e.g., a utility bill or bank statement).</li>
@@ -105,8 +108,6 @@
         </li>
         <li><strong>Use of Player Accounts:</strong> Player accounts must not be used as bank accounts. In cases of deposits or withdrawals without gaming activity, GiroBet.com reserves the right to request explanations before processing the withdrawal.</li>
       </ul>
-
-
     </AppPage>
 
     <AppPage
@@ -114,93 +115,97 @@
       version="2.0"
       date="September 1, 2024"
     >
+      <h4>1. Objective</h4>
 
-    <h4>1. Objective</h4>
+      <p>GiroBet.com is committed to adhering to "Know Your Customer" (KYC) principles to prevent financial crime and money laundering. Our policy ensures thorough client identification, due diligence, and ongoing monitoring in compliance with global standards.</p>
 
-    <p>GiroBet.com is committed to adhering to "Know Your Customer" (KYC) principles to prevent financial crime and money laundering. Our policy ensures thorough client identification, due diligence, and ongoing monitoring in compliance with global standards.</p>
+      <h4>2. KYC Documentation and Verification</h4>
 
-    <h4>2. KYC Documentation and Verification</h4>
+      <p>GiroBet.com reserves the right to request any KYC documentation necessary to verify the identity and location of users at any time. Service restrictions, payment holds, or withdrawal delays may be applied until identity verification is satisfactorily completed.</p>
 
-    <p>GiroBet.com reserves the right to request any KYC documentation necessary to verify the identity and location of users at any time. Service restrictions, payment holds, or withdrawal delays may be applied until identity verification is satisfactorily completed.</p>
+      <h4>3. Risk-Based Approach</h4>
 
-    <h4>3. Risk-Based Approach</h4>
+      <p>We employ a dynamic, risk-based approach to KYC, performing due diligence checks tailored to the user's risk profile:</p>
+      <ul>
+        <li><strong>Simplified Due Diligence (SDD):</strong> For low-risk transactions below specific thresholds.</li>
+        <li><strong>Customer Due Diligence (CDD):</strong> Standard verification for most users.</li>
+        <li><strong>Enhanced Due Diligence (EDD):</strong> For high-risk customers, large transactions, or suspicious activity.</li>
+      </ul>
 
-    <p>We employ a dynamic, risk-based approach to KYC, performing due diligence checks tailored to the user's risk profile:</p>
-    <ul>
-      <li><strong>Simplified Due Diligence (SDD):</strong> For low-risk transactions below specific thresholds.</li>
-      <li><strong>Customer Due Diligence (CDD):</strong> Standard verification for most users.</li>
-      <li><strong>Enhanced Due Diligence (EDD):</strong> For high-risk customers, large transactions, or suspicious activity.</li>
-    </ul>
+      <h4>4. Full KYC Process</h4>
 
-    <h4>4. Full KYC Process</h4>
+      <p> When a user’s aggregate lifetime deposits exceed EUR 5,000, requests a withdrawal, or engages in suspicious activity, a full KYC process is mandatory. This includes:</p>
+      <ol>
+        <li><strong>Proof of ID:</strong> A government-issued photo ID, potentially requiring front and back images.</li>
+        <li><strong>Selfie Verification:</strong> A selfie of the user holding the ID document.</li>
+        <li><strong>Proof of Address</strong> A bank statement or utility bill issued within the last three months.</li>
+      </ol>
 
-    <p> When a user’s aggregate lifetime deposits exceed EUR 5,000, requests a withdrawal, or engages in suspicious activity, a full KYC process is mandatory. This includes:</p>
-    <ol>
-      <li><strong>Proof of ID:</strong> A government-issued photo ID, potentially requiring front and back images.</li>
-      <li><strong>Selfie Verification:</strong> A selfie of the user holding the ID document.</li>
-      <li><strong>Proof of Address</strong> A bank statement or utility bill issued within the last three months.</li>
-    </ol>
+      <h4>5. Document Verification Guidelines</h4>
 
-    <h4>5. Document Verification Guidelines</h4>
+      <ol>
+        <li>
+          <strong>Proof of ID:</strong>
+          <ul>
+            <li>Must include a clear signature.</li>
+            <li>Issued by a non-restricted country.</li>
+            <li>Full name must match the user’s account.</li>
+            <li>Must not expire within the next three months.</li>
+            <li>The user must be over 18 years of age.</li>
+          </ul>
+        </li>
+        <li>
+          <strong>Countries Considered Restricted for Proof of ID:</strong>
+          <ul>
+            <li>Austria</li>
+            <li>France and its territories</li>
+            <li>Germany</li>
+            <li>Netherlands and its territories</li>
+            <li>Spain</li>
+            <li>Union of Comoros</li>
+            <li>United Kingdom</li>
+            <li>USA and its territories</li>
+            <li>All FATF Blacklisted countries, and any other jurisdictions deemed prohibited by the Anjouan Offshore Financial Authority.</li>
+          </ul>
+        </li>
+        <li>
+          <strong>Proof of Address:</strong>
+          <ul>
+            <li>Must be a bank statement or utility bill.</li>
+            <li>Issued by a non-restricted country.</li>
+            <li>Full name must match the user’s name as in the proof of ID.</li>
+            <li>The document must be issued within the last three months.</li>
+          </ul>
+        </li>
+        <li>
+          <strong>Countries Considered Restricted for Proof of Address:</strong>
+          <ul>
+            <li>Austria</li>
+            <li>France and its territories</li>
+            <li>Germany</li>
+            <li>Netherlands and its territories</li>
+            <li>Spain</li>
+            <li>Union of Comoros</li>
+            <li>United Kingdom</li>
+            <li>USA and its territories</li>
+            <li>All FATF Blacklisted countries, and any other jurisdictions deemed prohibited by the Anjouan Offshore Financial Authority.</li>
+          </ul>
+        </li>
+        <li>
+          <strong>Selfie with ID:</strong>
+          <ul>
+            <li>The person in the selfie must be the same as in the ID document.</li>
+            <li>The ID document in the selfie must match the one provided for Proof of ID, including the photo and ID number.</li>
+          </ul>
+        </li>
+      </ol>
 
-    <ol>
-      <li><strong>Proof of ID:</strong>
-        <ul>
-          <li>Must include a clear signature.</li>
-          <li>Issued by a non-restricted country.</li>
-          <li>Full name must match the user’s account.</li>
-          <li>Must not expire within the next three months.</li>
-          <li>The user must be over 18 years of age.</li>
-        </ul>
-      </li>
-      <li><strong>Countries Considered Restricted for Proof of ID:</strong>
-        <ul>
-          <li>Austria</li>
-          <li>France and its territories</li>
-          <li>Germany</li>
-          <li>Netherlands and its territories</li>
-          <li>Spain</li>
-          <li>Union of Comoros</li>
-          <li>United Kingdom</li>
-          <li>USA and its territories</li>
-          <li>All FATF Blacklisted countries, and any other jurisdictions deemed prohibited by the Anjouan Offshore Financial Authority.</li>
-        </ul>
-      </li>
-      <li><strong>Proof of Address:</strong>
-        <ul>
-          <li>Must be a bank statement or utility bill.</li>
-          <li>Issued by a non-restricted country.</li>
-          <li>Full name must match the user’s name as in the proof of ID.</li>
-          <li>The document must be issued within the last three months.</li>
-        </ul>
-      </li>
-      <li><strong>Countries Considered Restricted for Proof of Address:</strong>
-        <ul>
-          <li>Austria</li>
-          <li>France and its territories</li>
-          <li>Germany</li>
-          <li>Netherlands and its territories</li>
-          <li>Spain</li>
-          <li>Union of Comoros</li>
-          <li>United Kingdom</li>
-          <li>USA and its territories</li>
-          <li>All FATF Blacklisted countries, and any other jurisdictions deemed prohibited by the Anjouan Offshore Financial Authority.</li>
-        </ul>
-      </li>
-      <li><strong>Selfie with ID:</strong>
-        <ul>
-          <li>The person in the selfie must be the same as in the ID document.</li>
-          <li>The ID document in the selfie must match the one provided for Proof of ID, including the photo and ID number.</li>
-        </ul>
-      </li>
-    </ol>
+      <h4>6. Notes on the KYC Process</h4>
 
-    <h4>6. Notes on the KYC Process</h4>
-
-    <ol>
-      <li><strong>Failed Verification:</strong> If the KYC process is unsuccessful, the reason will be documented, and a support ticket will be created in the system. The ticket number, along with an explanation, will be communicated to the user.</li>
-      <li><strong>Account Approval</strong> Once all proper documents are in our possession and verified, the account will be approved.</li>
-    </ol>
+      <ol>
+        <li><strong>Failed Verification:</strong> If the KYC process is unsuccessful, the reason will be documented, and a support ticket will be created in the system. The ticket number, along with an explanation, will be communicated to the user.</li>
+        <li><strong>Account Approval</strong> Once all proper documents are in our possession and verified, the account will be approved.</li>
+      </ol>
     </AppPage>
   </div>
 </template>
