@@ -1,54 +1,76 @@
 <template>
   <AppPage
     :title="$t('page.responsible_gaming')"
-    version="1.0"
-    date="August 20, 2024"
+    version="2.0"
+    date="September 1, 2024"
   >
-    <p>GiroBet.com is here to provide an excellent and enjoyable gaming experience and recognizes its responsibility in preventing problematic activity. Players are advised to take into account the following and not game irresponsibly:</p>
+    <h4>1. Commitment to Responsible Gaming</h4>
+
+    <p>GiroBet.com is committed to providing an excellent and enjoyable gaming experience while recognizing our responsibility to prevent and mitigate problematic gambling behaviors. We encourage all players to engage in gaming as a form of entertainment and to be mindful of their gaming habits.</p>
+
+    <h4>2. Guidelines for Responsible Gaming</h4>
+
+    <p>To ensure a safe and enjoyable gaming experience, we advise all players to consider the following guidelines:</p>
 
     <ul>
-      <li>Play for entertainment, not to make money.</li>
-      <li>Avoid chasing losses.</li>
-      <li>Establish limits for yourself.</li>
-      <li>Do not let gambling interfere with your daily responsibilities.</li>
-      <li>Never gamble unless you can cover losses.</li>
-      <li>Take breaks.</li>
+      <li><strong>Play for Entertainment:</strong> Engage in gaming for enjoyment, not as a means to make money.</li>
+      <li><strong>Avoid Chasing Losses:</strong> Understand that losses are part of gaming and avoid trying to recover them immediately.</li>
+      <li><strong>Set Personal Limits:</strong> Establish both time and financial limits for yourself before you start gaming.</li>
+      <li><strong>Maintain Balance:</strong> Ensure that gambling does not interfere with your daily responsibilities and obligations.</li>
+      <li><strong>Gamble Within Your Means:</strong> Only gamble with money you can afford to lose.</li>
+      <li><strong>Take Regular Breaks:</strong> Regular breaks can help keep your gaming experience enjoyable and within control.</li>
     </ul>
 
-    <p>If you answer "YES" to the majority of the following questions, you are advised to take action to prevent gambling from negatively impacting your life:</p>
+    <h4>3. Self-Assessment: Is Your Gaming Healthy?</h4>
+
+    <p>If you answer "YES" to any of the following questions, we strongly advise you to consider taking proactive steps to prevent gambling from negatively impacting your life:</p>
+    
     <ul>
-      <li>Does gambling affect your work?</li>
-      <li>Has gambling caused arguments with family/friends?</li>
-      <li>Do you always return to win back your losses?</li>
-      <li>Have you borrowed money to gamble?</li>
-      <li>Do you see gambling as a source of income?</li>
-      <li>Do you find it difficult to limit your gambling?</li>
+      <li>Does gambling affect your work or academic performance?</li>
+      <li>Has gambling caused conflicts with family or friends?</li>
+      <li>Do you often return to gambling to try to win back your losses?</li>
+      <li>Have you borrowed money or sold possessions to gamble?</li>
+      <li>Do you view gambling as a source of income?</li>
+      <li>Do you find it challenging to limit the time or money spent on gambling?</li>
     </ul>
 
-    <h4>What to Do</h4>
+    <h4>4. Resources for Support</h4>
 
-    <p>Listed below are reputable organizations committed to helping those who struggle with gambling problems, and can be contacted at any time:</p>
+    <p>For those who may be struggling with gambling issues, we recommend reaching out to the following reputable organizations that offer support and resources:</p>
+
     <ul>
-      <li>Gamblers Anonymous</li>
-      <li>Gambling Therapy</li>
-      <li>GamCare</li>
+      <li><strong>Gamblers Anonymous</strong></li>
+      <li><strong>Gambling Therapy</strong></li>
+      <li><strong>GamCare</strong></li>
     </ul>
 
-    <h4>How We Can Help</h4>
+    <p>These organizations provide confidential advice and support to help individuals regain control over their gambling habits.</p>
 
-    <p>We advise all players concerned about their gambling behavior to self-exclude from their gaming account. Self-exclusion will lock your account for a minimum of 6 months, and no promotional material will be sent.</p>
-    <p>Contact our experienced Customer Support team at any time to request self-exclusion. A 7-day cooling-off period is also available.</p>
 
-    <h4>Underage Gambling</h4>
+    <h4>5. Self-Exclusion and Cooling-Off Periods</h4>
 
-    <p>Players must be of legal gambling age in their jurisdiction (at least 18+) in order to play at GiroBet.com. It is their responsibility to be aware of the age restriction where they reside and play, and to confirm their legitimacy when creating an account at girobet.com.</p>
-    <p>Parents are advised to:</p>
+    <p>If you are concerned about your gambling behavior, GiroBet.com offers tools to help you manage or take a break from gaming:</p>
+
     <ul>
-      <li>Password protect computer, mobile, and/or tablet.</li>
-      <li>Do not leave the device unattended when logged into your account.</li>
-      <li>Make sure all account details and credit cards are inaccessible to children.</li>
-      <li>Do not save passwords on your computer; write them down and keep them out of reach.</li>
-      <li>Download filtering software (e.g., Net Nanny) to prevent minors from accessing inappropriate sites.</li>
+      <li><strong>Self-Exclusion:</strong> You can request to exclude yourself from your gaming account for a minimum of 30 days. During this period, your account will be locked, and no promotional material will be sent to you.</li>
+      <li><strong>Cooling-Off Period:</strong> A 7-day cooling-off period is also available, allowing you to take a short break from gaming.</li>
+    </ul>
+
+    <p>To request self-exclusion or a cooling-off period, please contact our experienced Customer Support team, who are available to assist you at any time. We also recommend contacting other gambling platforms where you have an account to request self-exclusion there as well.</p>
+
+    <h4>6. Monitoring and Intervention</h4>
+
+    <p>GiroBet.com utilizes advanced monitoring tools to detect and assess potentially problematic gambling behaviors. This includes real-time analysis of gaming patterns, spending habits, and self-assessment data. If our system identifies risky behavior, we may reach out to offer support, provide resources, or suggest self-exclusion options. Our aim is to ensure a safe and responsible gaming environment for all players.</p>
+
+    <h4>7. Preventing Underage Gambling</h4>
+
+    <p>GiroBet.com strictly prohibits underage gambling. Players must be of legal gambling age in their jurisdiction (at least 18+) to create an account and play. It is the responsibility of the player to ensure they meet the legal age requirements of their location. To assist in preventing underage gambling, we advise parents and guardians to:</p>
+
+    <ul>
+      <li><strong>Protect Access:</strong> Use strong passwords for computers, mobiles, and tablets.</li>
+      <li><strong>Supervise Devices:</strong> Do not leave devices unattended while logged into your account.</li>
+      <li><strong>Secure Account Information:</strong> Ensure all account details and credit cards are inaccessible to minors.</li>
+      <li><strong>Use Filtering Software:</strong> Install filtering software (e.g., Net Nanny) to block access to gambling sites and other inappropriate content.</li>
     </ul>
   </AppPage>
 </template>

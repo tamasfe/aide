@@ -2,233 +2,205 @@
   <div>
     <AppPage
       :title="$t('page.aml_policy')"
-      version="1.0"
-      date="August 20, 2024"
+      version="2.0"
+      date="September 1, 2024"
     >
-      <h4>Objective of the Policy</h4>
+      <h4>1. Objective of the Policy</h4>
 
-      <p>GiroBet.com is fully committed to being constantly vigilant to prevent money laundering and combat the financing of terrorism in order to minimize and manage risks such as reputational risk, legal risk, and regulatory risk. It is also committed to its social duty to prevent serious crime and not to allow its systems to be abused in furtherance of these crimes. The company will endeavor to keep itself updated with developments both at national and international levels on any initiatives to prevent money laundering and the financing of terrorism. It commits itself to protect, at all times, the organization, its operations, and its reputation from the threat of money laundering, the funding of terrorism, and other criminal activities.</p>
+      <p>GiroBet.com is fully committed to preventing money laundering and combating the financing of terrorism across all jurisdictions in which it operates. This policy outlines the measures and procedures implemented to mitigate risks, safeguard the company’s reputation, and comply with local and international AML regulations.</p>
 
-      <h4>Obligations</h4>
-      <p><strong>Appoint a Money Laundering Reporting Officer (MLRO):</strong></p>
-      <p>One of the senior officers will be appointed as the designated MLRO, whose responsibilities include the duties required by the laws, regulations, and guidance notes.</p>
+      <h4>2. Obligations</h4>
 
-      <p><strong>Reporting Suspected Money Laundering:</strong></p>
-      <p>All instances of suspected Money Laundering attempts must be reported to the MLRO without conveying suspicion to the customer. Further actions must await consent from the relevant authority.</p>
-
-      <p><strong>Establishing Customer Identity:</strong></p>
-      <p>Take reasonable steps to establish the identity of any person for whom it is proposed to provide service. Implement a FULL ‘Know Your Customer’ policy to assist in tackling not just Money Laundering threats but other fraud threats generally.</p>
-
-      <p><strong>Maintain Secure Player List:</strong></p>
-      <p>Keep a secure online list of all registered players at all times.</p>
-
-      <p><strong>Retain Documentation:</strong></p>
-      <p>Retain identification and transactional documentation as defined by the laws, regulations, and guidance notes.</p>
-
-      <p><strong>No Cash Elements:</strong></p>
-      <p>The business will not have any cash elements, mitigating risks associated with counterfeit monies.</p>
-
-      <p><strong>Account Transaction History Monitoring:</strong></p>
-      <p>Systems will be in place to record all transactions for an account, which will be subject to regular and continual checks against fraud and social responsibility indicators.</p>
-
-      <p><strong>High-Risk Customer Monitoring:</strong></p>
-      <p>GiroBet.com will maintain a register of customers identified as high risk or politically exposed. These accounts will be subject to greater scrutiny and frequent checks.</p>
-
-      <p><strong>Staff Investigations:</strong></p>
-      <p>In cases of illegal or inappropriate behavior by staff, investigatory and disciplinary procedures will follow those outlined in staff contracts, with potential for suspension in cases such as transactional fraud.</p>
-
-      <p><strong>Suspicious Transactions:</strong></p>
-      <p>All transactions carried out on our site may be controlled to avoid money laundering or terrorist financing activities. Suspicious transactions will be reported to the relevant authority.</p>
-
-      <p><strong>Fraud Suspicion:</strong></p>
-      <p>If the risk and fraud department suspects fraud, it may require the player to provide appropriate documentation. The account will be suspended until the situation is cleared, with communication to the relevant authority.</p>
-
-      <p><strong>Staff Training:</strong></p>
-      <p>Provide initial and ongoing training to all relevant staff, including but not limited to:</p>
       <ul>
-        <li>Staff personal responsibilities</li>
-        <li>Procedures for identifying Players</li>
-        <li>Monitoring Player activity</li>
-        <li>Record-keeping</li>
-        <li>Reporting any unusual/suspicious transactions</li>
-        <li>Monitoring unusual Betting Patterns, suspicious deposit and withdrawal patterns, and reliability of Card Data</li>
-        <li>Addressing customer verification issues and Identity Theft</li>
-        <li>Handling Account linkage/multiple accounting</li>
-        <li>Managing accounts from High-Risk Jurisdictions</li>
-        <li>Conducting Client due diligence (CDD), including enhanced requirements for high-risk clients, such as PEPs</li>
+        <li><strong>Appointment of Money Laundering Reporting Officer (MLRO):</strong> GiroBet.com will appoint a senior officer as the designated MLRO, responsible for fulfilling duties as required by laws, regulations, and guidance notes. The MLRO will oversee the company's AML strategies, report suspicious activities, and ensure compliance with relevant legal frameworks.</li>
+        <li><strong>Reporting Suspected Money Laundering:</strong> All instances of suspected money laundering must be reported to the MLRO. Employees must not convey suspicion to the customer and must await further instructions from the relevant authority.</li>
+        <li><strong>Customer Identification and Verification (KYC):</strong> GiroBet.com will implement a comprehensive "Know Your Customer" (KYC) policy. The company will take all reasonable steps to establish and verify the identity of its customers through document verification, automated tools, and risk assessment procedures.</li>
+        <li><strong>Maintaining a Secure Player List:</strong> GiroBet.com will maintain a secure, up-to-date list of all registered players, ensuring that player data is stored securely and accessed only by authorized personnel.</li>
+        <li><strong>Document Retention:</strong> GiroBet.com will retain all identification and transactional documentation in compliance with applicable laws and regulations. This includes maintaining records for the required duration and ensuring their secure storage.</li>
+        <li><strong>No Cash Elements:</strong> The business will operate cashless transactions only, eliminating risks associated with counterfeit money.</li>
+        <li><strong>Monitoring Account Transaction Histories:</strong> GiroBet.com will implement systems to record and regularly review all account transactions. These systems will check for unusual betting patterns, social responsibility indicators, and potential fraud.</li>
+        <li><strong>Monitoring High-Risk Customers:</strong> GiroBet.com will maintain a register of high-risk customers and politically exposed persons (PEPs). These accounts will undergo enhanced due diligence (EDD) and be subject to increased scrutiny and more frequent checks.</li>
+        <li><strong>Suspicious Transactions:</strong> All transactions will be monitored to prevent money laundering or terrorist financing activities. Suspicious transactions will be reported to the relevant authority without delay.</li>
+        <li><strong>Fraud Detection and Response:</strong> If fraud is suspected, the risk and fraud department may require additional documentation from the player. The account will be suspended pending verification, and relevant authorities will be notified.</li>
       </ul>
 
-      <p><strong>Policy Development:</strong></p>
-      <p>Ensure that this policy is developed and maintained in line with evolving statutory and regulatory obligations and advice from the relevant authorities.</p>
+      <h4>3. Staff Training and Compliance Awareness</h4>
 
-      <p><strong>Complex Transaction Examination:</strong></p>
-      <p>Examine with special attention, and to the extent possible, the background and purpose of any complex or large transactions, especially those likely to be related to money laundering or the funding of terrorism.</p>
-
-      <p><strong>Account Termination:</strong></p>
-      <p>GiroBet.com may terminate Accounts with immediate effect and retain all account funds in the event of credible suspicion of fraudulent activity.</p>
-
-      <p><strong>Suspicious Activity Reporting:</strong></p>
-      <p>Report any suspicion or knowledge of money laundering or terrorist financing to the Financial Intelligence Analysis Unit (FIAU).</p>
-
-      <p><strong>Enhanced Due Diligence Checks (EDD):</strong></p>
-      <p>These checks are subject to players’ profiles and the amount of risk they pose to the company. Enhanced due diligence may include checks on where the customer works, the value of their house, and other relevant factors.</p>
-
-      <p><strong>Confidential Reporting:</strong></p>
-      <p>Suspicious Activity Reports (SARs) should be done confidentially, discreetly, in a handwritten form, and not via email.</p>
-
-      <p><strong>No Disclosure:</strong></p>
-      <p>Employees must not, under any circumstances, disclose or discuss any AML concern with the person(s) subject to an investigation.</p>
-
-      <p><strong>Account Anonymity:</strong></p>
-      <p>No remark should ever be left on an account that would indicate ML is suspected.</p>
-
-      <p><strong>Cooperate with Authorities:</strong></p>
-      <p>Cooperate with all relevant administrative, enforcement, and judicial authorities to prevent and detect criminal activity.</p>
-
-      <h4>Company Guidelines</h4>
-
-      <p><strong>Account Registration:</strong></p>
-      <p>The company shall not accept to open anonymous Accounts or Accounts in fictitious names such that the true beneficial owner is not known.</p>
-
-      <p><strong>No Cash Acceptance:</strong></p>
-      <p>Cash from Players will not be accepted.</p>
-
-      <p><strong>Acceptable Funds:</strong></p>
-      <p>Funds may be received from Players only by approved methods such as credit cards, debit cards, electronic transfer, etc.</p>
-
-      <p><strong>Age Restriction:</strong></p>
-      <p>Not register a Player under eighteen (18) years of age.</p>
-
-      <p><strong>Single Account Policy:</strong></p>
-      <p>Only one account can be registered in the name of a particular person.</p>
-
-      <p><strong>Payment of Winnings:</strong></p>
-      <p>Transfer payments of winnings or refunds back to the same route from where the funds originated, where possible.</p>
-
-      <p><strong>No Wager Acceptance:</strong></p>
-      <p>Not accept a wager unless a User Account has been established in the name of the Player and adequate funds are in the Account.</p>
-
-      <p><strong>Geographical Restriction:</strong></p>
-      <p>Not accept Players residing or playing from non-reputable jurisdictions.</p>
-
-      <p><strong>Verify Identity:</strong></p>
-      <p>Not make payments in excess of EUR 300 until the Player’s identity, age, and place of residence have been verified.</p>
-
-      <p><strong>Close Dormant Accounts:</strong></p>
-      <p>If no transaction is recorded on a User Account for thirty months, close the User Account and remit the balance to the Player or to the regulator if the Player cannot be located.</p>
-
-      <p><strong>Verify Creditworthiness:</strong></p>
-      <p>Where necessary, verify the creditworthiness of the Player with third parties.</p>
-
-      <p><strong>False Information:</strong></p>
-      <p>If a person has provided false information, the company shall immediately cancel that person’s registration as a Player.</p>
-
-      <h4>Customer Declaration</h4>
-
-      <p>The customer declares and expressly guarantees that all the amounts deposited and used to participate in GiroBet.com remote online games come from legitimate sources and are not connected with any fraudulent activity, money laundering, or illicit activities. girobet.com reserves the right to take any steps it considers necessary to comply with these requirements, including supervising any transfer of funds and retaining all a customer’s funds if they derive from or are related to illicit or fraudulent activities.</p>
-
-      <h4>Deposit and Withdrawal Procedures</h4>
-
-      <p><strong>Currency for Transactions:</strong></p>
-      <p>Deposits and withdrawals are only made in Brazilian Reais (R$)</p>
-
-      <p><strong>Minimum Deposit Amount:</strong></p>
-      <p>The minimum deposit amount is BRL 2</p>
-
-      <p><strong>Responsibility for Bank Fees:</strong></p>
-      <p>It is the customer’s responsibility to check if their bank imposes any fees on transfers.</p>
-
-      <p><strong>Verification of Payment Account:</strong></p>
-      <p>The client must be the holder of the payment account provided to GiroBet.com.</p>
-
-      <p><strong>Account Balance Management:</strong></p>
-      <p>The total balance of the player account includes Casino Balance, Real Sportsbook Balance, Casino Bonus Balance, and Sportsbook Bonus Balance. The existence of two wallets does not change the behavior of the account during withdrawal requests.</p>
-
-      <p><strong>Withdrawal Methods:</strong></p>
-      <p>Withdrawals must be made by the same method as the deposit. If the deposit method does not allow withdrawals, these must be made by bank transfer.</p>
-
-      <p><strong>Verification of Identity:</strong></p>
-      <p>For the first withdrawal request, players should send an email to <a href="mailto:support@girobet.com">support@GiroBet.com</a> with:</p>
       <ul>
-        <li>Document of identity with photo and date of birth</li>
-        <li>Proof of address</li>
-        <li>Proof of ownership of the account</li>
+        <li><strong>Comprehensive Training Programs:</strong> GiroBet.com will provide initial and ongoing AML training to all relevant staff. Training topics include:
+          <ul>
+            <li>Personal responsibilities regarding AML.</li>
+            <li>Procedures for identifying and verifying customers.</li>
+            <li>Monitoring customer activity and transaction patterns.</li>
+            <li>Record-keeping and reporting unusual/suspicious transactions.</li>
+            <li>Identifying and managing high-risk accounts, including PEPs.</li>
+            <li>Enhanced due diligence for high-risk clients.</li>
+          </ul>
+        </li>
+        <li><strong>Continuous Updates:</strong> Training programs will be regularly updated to reflect changes in global AML regulations and emerging risks.</li>
       </ul>
 
-      <p><strong>Account Usage:</strong></p>
-      <p>The Player Account shall not be used as a bank account. In cases of deposits or withdrawals without gaming activity, GiroBet.com reserves the right to request explanations before transferring the withdrawal request.</p>
+      <h4>4. Customer Due Diligence (CDD) and Enhanced Due Diligence (EDD)</h4>
 
-      <h4>Politically Exposed Persons (PEP)</h4>
-
-      <p>European guidelines regarding “The Prevention of Laundering the Proceeds from Criminal Activity (Money Laundering) and Terrorism Financing” entered into effect, changing the definition of a politically exposed person. GiroBet.com is obliged by law to identify which clients/beneficiaries should be considered politically exposed persons, their family members, or close associates.</p>
-      <p>A PEP is defined as a person who holds or has held a prominent public position in a country of the European Union or European Economic Area or a third country.</p>
-      <p>Family members of a PEP include:</p>
       <ul>
-        <li>A spouse or equivalent under the respective country's laws</li>
-        <li>A child or their spouse</li>
-        <li>A parent, grandparent, or grandchild</li>
-        <li>A brother or sister</li>
+        <li><strong>Risk-Based CDD Approach:</strong> GiroBet.com will employ a risk-based approach to CDD, adjusting the level of verification based on the customer's risk profile. This includes verifying identity, address, and other relevant information.</li>
+        <li><strong>Enhanced Due Diligence for High-Risk Customers:</strong> For customers identified as high risk, including PEPs, GiroBet.com will conduct EDD, which may involve:
+          <ul>
+            <li>Additional verification of identity and source of funds.</li>
+            <li>Continuous monitoring of transactions.</li>
+            <li>In-depth reviews of the customer's financial history and background.</li>
+          </ul>
+        </li>
       </ul>
-      <p>A close associate of a PEP is an individual publicly known to maintain a business or close relationship with a PEP or to be a shareholder in the same commercial company.</p>
+
+      <h4>5. Transaction Monitoring and Reporting</h4>
+
+      <ul>
+        <li><strong>Real-Time Transaction Monitoring:</strong> GiroBet.com will use real-time transaction monitoring systems configured with predefined risk scenarios to detect suspicious activities. These systems will flag transactions that deviate from typical patterns or exceed certain thresholds.</li>
+        <li><strong>Suspicious Activity Reports (SARs):</strong> All suspicious transactions must be reported to the MLRO, who will file a Suspicious Activity Report (SAR) with the relevant authority. SARs must be filed promptly and handled confidentially.</li>
+      </ul>
+
+      <h4>6. Record-Keeping and Data Protection</h4>
+      <ul>
+        <li><strong>Secure Record Retention:</strong> GiroBet.com will retain all records related to customer identification, transactions, and other AML-related activities for the maximum duration required by applicable laws. All records will be stored securely, with access restricted to authorized personnel.</li>
+        <li><strong>Compliance with Data Protection Laws:</strong> GiroBet.com will ensure that all customer data is handled in compliance with relevant data protection regulations, including GDPR and other applicable laws.</li>
+      </ul>
+
+      <h4>7. Regular Audits and Policy Review</h4>
+      <ul>
+        <li><strong>Internal Audits:</strong> GiroBet.com will conduct regular internal audits of its AML procedures to ensure compliance and identify areas for improvement. These audits will be documented and reviewed by senior management.</li>
+        <li><strong>Policy Updates:</strong> The AML policy will be reviewed and updated regularly to reflect changes in regulatory requirements, technological advancements, and operational practices.</li>
+      </ul>
+
+      <h4>8. Cooperation with Authorities</h4>
+      <ul>
+        <li><strong>Collaboration with Law Enforcement:</strong> GiroBet.com commits to fully cooperating with relevant administrative, enforcement, and judicial authorities in their efforts to prevent and detect criminal activities. The company will provide necessary information and support during investigations.</li>
+      </ul>
+
+      <h4>9. Politically Exposed Persons (PEP)</h4>
+      <ul>
+        <li><strong>Identification and Monitoring of PEPs:</strong> GiroBet.com is required by law to identify and monitor politically exposed persons (PEPs), their family members, and close associates. Enhanced due diligence will be conducted for PEPs to assess and mitigate any risks associated with these individuals.</li>
+        <li><strong>Definition of a PEP:</strong> A PEP is an individual who holds or has held a prominent public position, including senior government officials, members of parliament, judges, military officers, and senior executives of state-owned corporations.</li>
+        <li><strong>Monitoring Family Members and Close Associates:</strong> GiroBet.com will also monitor family members and close associates of PEPs, ensuring that any risks associated with these individuals are properly managed.</li>
+      </ul>
+
+      <h4>10. Customer Declarations</h4>
+      <ul>
+        <li><strong>Legitimacy of Funds:</strong> Customers must declare that all funds deposited and used on GiroBet.com originate from legitimate sources and are not connected to any fraudulent activities, money laundering, or other illicit activities.</li>
+        <li><strong>Right to Investigate and Retain Funds:</strong> GiroBet.com reserves the right to investigate the source of funds and to retain any customer funds suspected of being connected to illicit or fraudulent activities.</li>
+      </ul>
+
+      <h4>11. Deposit and Withdrawal Procedures</h4>
+      <ul>
+        <li><strong>Currency for Transactions:</strong> Deposits and withdrawals will only be processed in approved currencies as defined by GiroBet.com.</li>
+        <li><strong>Minimum Deposit Amount:</strong> The minimum deposit amount is set at the discretion of GiroBet.com and will be clearly communicated to players.</li>
+        <li><strong>Verification of Payment Accounts:</strong> Customers must ensure that the payment accounts used for transactions are in their name. GiroBet.com reserves the right to verify ownership of these accounts.</li>
+        <li><strong>Withdrawal Methods:</strong> Withdrawals must be made using the same method as the deposit whenever possible. If the deposit method does not allow for withdrawals, alternative methods such as bank transfers will be used.</li>
+        <li><strong>Identity Verification for Withdrawals:</strong> For the first withdrawal request, customers must provide:
+          <ul>
+            <li>A government-issued photo ID with date of birth.</li>
+            <li>Proof of address (e.g., a utility bill or bank statement).</li>
+            <li>Proof of ownership of the payment account.</li>
+          </ul>
+        </li>
+        <li><strong>Use of Player Accounts:</strong> Player accounts must not be used as bank accounts. In cases of deposits or withdrawals without gaming activity, GiroBet.com reserves the right to request explanations before processing the withdrawal.</li>
+      </ul>
+
+
     </AppPage>
 
     <AppPage
       :title="$t('page.kyc_policy')"
-      version="1.0"
-      date="August 20, 2024"
+      version="2.0"
+      date="September 1, 2024"
     >
-      <p>The Company adheres to and complies with “Know your customer” (KYC) principles, which aim to prevent financial crime and money laundering through client identification and due diligence.</p>
 
-      <h4>Policy Guidelines</h4>
-      <p><strong>Right to Request KYC Documentation:</strong></p>
-      <p>The Company reserves the right to request any KYC documentation at any time to determine the identity and location of a user on GiroBet.com.</p>
+    <h4>1. Objective</h4>
 
-      <p><strong>Restrict Service or Payment:</strong></p>
-      <p>Service, payment, or withdrawal may be restricted until identity is sufficiently determined or for any other reason based on the legal framework.</p>
+    <p>GiroBet.com is committed to adhering to "Know Your Customer" (KYC) principles to prevent financial crime and money laundering. Our policy ensures thorough client identification, due diligence, and ongoing monitoring in compliance with global standards.</p>
 
-      <p><strong>Risk-Based Approach:</strong></p>
-      <p>Perform strict due diligence checks and ongoing monitoring of all clients, customers, and transactions using three stages of due diligence:</p>
-      <ul>
-        <li><strong>SDD (Simplified Due Diligence):</strong> Used for extremely low-risk transactions</li>
-        <li><strong>CDD (Customer Due Diligence):</strong> Standard due diligence for most verification and identification cases</li>
-        <li><strong>EDD (Enhanced Due Diligence):</strong> Used for high-risk customers, large transactions, or special cases</li>
-      </ul>
+    <h4>2. KYC Documentation and Verification</h4>
 
-      <p><strong>Compulsory KYC Process:</strong></p>
-      <p>When a user makes aggregate lifetime total deposits exceeding EUR 5,000, requests a withdrawal of any amount, or completes a suspicious transaction, they must complete the full KYC process.</p>
+    <p>GiroBet.com reserves the right to request any KYC documentation necessary to verify the identity and location of users at any time. Service restrictions, payment holds, or withdrawal delays may be applied until identity verification is satisfactorily completed.</p>
 
-      <h4>KYC Process Requirements</h4>
+    <h4>3. Risk-Based Approach</h4>
 
-      <p><strong>1. Proof of ID:</strong></p>
-      <ul>
-        <li>Signature</li>
-        <li>Country is not a Restricted Country</li>
-        <li>Full Name matches client’s name</li>
-        <li>Document does not expire in the next 3 months</li>
-        <li>Owner is over 18 years of age</li>
-      </ul>
+    <p>We employ a dynamic, risk-based approach to KYC, performing due diligence checks tailored to the user's risk profile:</p>
+    <ul>
+      <li><strong>Simplified Due Diligence (SDD):</strong> For low-risk transactions below specific thresholds.</li>
+      <li><strong>Customer Due Diligence (CDD):</strong> Standard verification for most users.</li>
+      <li><strong>Enhanced Due Diligence (EDD):</strong> For high-risk customers, large transactions, or suspicious activity.</li>
+    </ul>
 
-      <p><strong>2. Proof of Address:</strong></p>
-      <ul>
-        <li>Bank Statement or Utility Bill</li>
-        <li>Country is not a Restricted Country</li>
-        <li>Full Name matches client’s name and proof of ID</li>
-        <li>Issued within the last 3 months</li>
-      </ul>
+    <h4>4. Full KYC Process</h4>
 
-      <p><strong>3. Selfie with ID:</strong></p>
-      <ul>
-        <li>Holder is the same as in the ID document</li>
-        <li>ID document is the same as provided in "Proof of ID"</li>
-      </ul>
+    <p> When a user’s aggregate lifetime deposits exceed EUR 5,000, requests a withdrawal, or engages in suspicious activity, a full KYC process is mandatory. This includes:</p>
+    <ol>
+      <li><strong>Proof of ID:</strong> A government-issued photo ID, potentially requiring front and back images.</li>
+      <li><strong>Selfie Verification:</strong> A selfie of the user holding the ID document.</li>
+      <li><strong>Proof of Address</strong> A bank statement or utility bill issued within the last three months.</li>
+    </ol>
 
-      <h4>Notes on KYC Process</h4>
+    <h4>5. Document Verification Guidelines</h4>
 
-      <p><strong>Unsuccessful KYC Process:</strong></p>
-      <p>The reason is documented and a support ticket is created in the system. The ticket number along with an explanation is communicated back to the user.</p>
+    <ol>
+      <li><strong>Proof of ID:</strong>
+        <ul>
+          <li>Must include a clear signature.</li>
+          <li>Issued by a non-restricted country.</li>
+          <li>Full name must match the user’s account.</li>
+          <li>Must not expire within the next three months.</li>
+          <li>The user must be over 18 years of age.</li>
+        </ul>
+      </li>
+      <li><strong>Countries Considered Restricted for Proof of ID:</strong>
+        <ul>
+          <li>Austria</li>
+          <li>France and its territories</li>
+          <li>Germany</li>
+          <li>Netherlands and its territories</li>
+          <li>Spain</li>
+          <li>Union of Comoros</li>
+          <li>United Kingdom</li>
+          <li>USA and its territories</li>
+          <li>All FATF Blacklisted countries, and any other jurisdictions deemed prohibited by the Anjouan Offshore Financial Authority.</li>
+        </ul>
+      </li>
+      <li><strong>Proof of Address:</strong>
+        <ul>
+          <li>Must be a bank statement or utility bill.</li>
+          <li>Issued by a non-restricted country.</li>
+          <li>Full name must match the user’s name as in the proof of ID.</li>
+          <li>The document must be issued within the last three months.</li>
+        </ul>
+      </li>
+      <li><strong>Countries Considered Restricted for Proof of Address:</strong>
+        <ul>
+          <li>Austria</li>
+          <li>France and its territories</li>
+          <li>Germany</li>
+          <li>Netherlands and its territories</li>
+          <li>Spain</li>
+          <li>Union of Comoros</li>
+          <li>United Kingdom</li>
+          <li>USA and its territories</li>
+          <li>All FATF Blacklisted countries, and any other jurisdictions deemed prohibited by the Anjouan Offshore Financial Authority.</li>
+        </ul>
+      </li>
+      <li><strong>Selfie with ID:</strong>
+        <ul>
+          <li>The person in the selfie must be the same as in the ID document.</li>
+          <li>The ID document in the selfie must match the one provided for Proof of ID, including the photo and ID number.</li>
+        </ul>
+      </li>
+    </ol>
 
-      <p><strong>Account Approval:</strong></p>
-      <p>Once all proper documents are in possession, the account gets approved.</p>
+    <h4>6. Notes on the KYC Process</h4>
+
+    <ol>
+      <li><strong>Failed Verification:</strong> If the KYC process is unsuccessful, the reason will be documented, and a support ticket will be created in the system. The ticket number, along with an explanation, will be communicated to the user.</li>
+      <li><strong>Account Approval</strong> Once all proper documents are in our possession and verified, the account will be approved.</li>
+    </ol>
     </AppPage>
   </div>
 </template>
