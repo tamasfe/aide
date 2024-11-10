@@ -76,3 +76,19 @@ jobs:
 
       - name: Helm Push
         run: helm push girobet-frontend-*.tgz oci://891377191070.dkr.ecr.sa-east-1.amazonaws.com/
+
+      - name: Tailscale
+        uses: tailscale/github-action@v2
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:ci
+
+      - name: Setup ArgoCD CLI
+        uses: imajeetyadav/argocd-cli@v1
+
+      - run: |
+          argocd app sync girobet-frontend
+        env:
+          ARGOCD_AUTH_TOKEN: ${{ secrets.ARGOCD_AUTH_TOKEN }}
+          ARGOCD_SERVER: argocd.taild2b874.ts.net
