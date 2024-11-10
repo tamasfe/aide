@@ -77,7 +77,8 @@ const mockWSMessages = (emblaApi: EmblaCarouselType) => {
       appendData();
     }
     scrollNext();
-  }, 1000);
+    // Inreased the interval so that it doesn't spam the console
+  }, 1000000000);
 };
 
 onMounted(() => {
