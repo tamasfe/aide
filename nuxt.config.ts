@@ -19,6 +19,9 @@ export default defineNuxtConfig({
   devtools: {
     enabled: true,
   },
+  devServer: {
+    port: 3001,
+  },
   app: {
     head: {
       charset: "utf-8",
