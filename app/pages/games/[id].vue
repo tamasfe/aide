@@ -22,25 +22,26 @@ const { params } = useRoute();
 const { $dependencies } = useNuxtApp();
 const walletStore = useWalletStore();
 
-const ENABLE_SERVER_SIDE_RENDERING = false;
-const DEFER_CLIENT_SIDE_LOADING = true;
-
 const gameId = Number(params.id);
 if (!params.id || Number.isNaN(gameId)) {
   $dependencies.common.logger.warn("Game ID route parameter should be a number", { gameId });
   await navigateTo("/");
 }
 
-const { data: game } = await useAsyncData(`game-${params.id}`, async () => {
+const ENABLE_SERVER_SIDE_RENDERING_FOR_GAME = true;
+const DEFER_CLIENT_SIDE_LOADING_FOR_GAME = true;
+const { data: game, status: statusLoadingGame } = await useAsyncData(`game-${params.id}`, async () => {
   return $dependencies.games.ui.findGameCompatibilityByIdOnGamePage.handle(gameId, currentDevice);
-});
-if (!game.value) {
+}, { lazy: DEFER_CLIENT_SIDE_LOADING_FOR_GAME, server: ENABLE_SERVER_SIDE_RENDERING_FOR_GAME });
+if (!game.value && statusLoadingGame.value === "success") {
   await navigateTo("/");
 }
 
+const ENABLE_SERVER_SIDE_RENDERING_FOR_CATEGORIES = false;
+const DEFER_CLIENT_SIDE_LOADING_FOR_CATEGORIES = true;
 const { data: pageCategories } = await useAsyncData(`game-${params.id}-categories`, async () => {
   return $dependencies.games.ui.searchGameCategoriesByGroup.handle("game_page");
-}, { lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING });
+}, { lazy: DEFER_CLIENT_SIDE_LOADING_FOR_CATEGORIES, server: ENABLE_SERVER_SIDE_RENDERING_FOR_CATEGORIES });
 
 const iFrameUrl = computed(() => {
   if (walletStore.isInit) {
@@ -51,21 +52,31 @@ const iFrameUrl = computed(() => {
 </script>
 
 <template>
-  <div v-if="game">
-    <GameFrameMobile
-      v-if="isMobile && game.isCompatibleWithDevice"
-      :game-title="game.name"
-      :game-id="game.id"
-      :authenticated="walletStore.isInit"
-      :i-frame-url="iFrameUrl"
-    />
-    <GameFloatTextNotSupportedOnDevice
-      v-else-if="isMobile && !game.isCompatibleWithDevice"
-      class="px-6 h-96"
-      :current-device="currentDevice"
-    />
+  <div v-if="currentDevice === 'mobile'">
+    <div v-if="game">
+      <GameFrameMobile
+        v-if="game.isCompatibleWithDevice"
+        :game-title="game.name"
+        :game-id="game.id"
+        :authenticated="walletStore.isInit"
+        :i-frame-url="iFrameUrl"
+      />
+      <GameFloatTextNotSupportedOnDevice
+        v-else-if="!game.isCompatibleWithDevice"
+        class="px-6 h-96"
+        :current-device="currentDevice"
+      />
+    </div>
+    <div v-else class="h-[25vh] w-full">
+      <BaseSkeleton class="w-full h-full" :loading="true" />
+    </div>
+  </div>
 
-    <div class="pt-4 pb-12 giro__container giro__sections">
+  <div
+    v-else-if="currentDevice === 'desktop'"
+    class="pt-4 pb-12 giro__container giro__sections"
+  >
+    <div v-if="game">
       <GameFrameDesktop
         v-if="!isMobile && game.isCompatibleWithDevice"
         :game-title="game.name"
@@ -86,12 +97,15 @@ const iFrameUrl = computed(() => {
         :title="game.name"
         :categories="['card', 'table', 'poker']"
       />
-
-      <GridHorizontalGames
-        v-for="category in pageCategories"
-        :key="category.identifier"
-        :category-identifier="category.identifier"
-      />
     </div>
+    <div v-else class="h-[60vh] w-full">
+      <BaseSkeleton class="w-full h-full" :loading="true" />
+    </div>
+
+    <GridHorizontalGames
+      v-for="category in pageCategories"
+      :key="category.identifier"
+      :category-identifier="category.identifier"
+    />
   </div>
 </template>
