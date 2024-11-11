@@ -1,9 +1,27 @@
 <script setup lang="ts">
-defineProps({
+const { $dependencies } = useNuxtApp();
+
+const props = defineProps({
+  gameId: {
+    type: Number,
+    required: true,
+  },
   iFrameUrl: {
     type: String,
     required: false,
   },
+});
+
+onMounted(() => {
+  $dependencies.common.asyncMessagePublisher.emit("girobet:events:games:game-session-started", {
+    gameId: props.gameId,
+  });
+});
+
+onUnmounted(() => {
+  $dependencies.common.asyncMessagePublisher.emit("girobet:events:games:game-session-finished", {
+    gameId: props.gameId,
+  });
 });
 </script>
 

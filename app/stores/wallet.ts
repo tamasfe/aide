@@ -1,10 +1,14 @@
 import { ErrorUserNotAuthorized } from "~/modules/wallet/domain/ErrorUserNotAuthorized";
 
+type WalletBalanceStatus = "ready" | "loading" | "hidden";
+
 type WalletStoreI = {
   isInit: false;
+  balanceStatus: null;
   wallet: null;
 } | {
   isInit: true;
+  balanceStatus: WalletBalanceStatus;
   wallet: {
     balance: string;
     balanceValue: number;
@@ -14,6 +18,7 @@ type WalletStoreI = {
 
 export const useWalletStore = defineStore("walletStore", {
   state: (): WalletStoreI => ({
+    balanceStatus: null,
     isInit: false,
     wallet: null,
   }),
@@ -21,6 +26,7 @@ export const useWalletStore = defineStore("walletStore", {
   actions: {
     async refresh() {
       const { $dependencies } = useNuxtApp();
+      this.balanceStatus = "loading";
       const result = await $dependencies.wallets.queries.findAuthenticatedUserWallet.handle();
       if (result.isFailure) {
         if (!(result.error instanceof ErrorUserNotAuthorized)) {
@@ -32,13 +38,19 @@ export const useWalletStore = defineStore("walletStore", {
       if (result.isFailure || result.value === null) {
         this.isInit = false;
         this.wallet = null;
+        this.balanceStatus = null;
         return;
       }
 
       // Save wallet
-      this.isInit = true;
       this.wallet = result.value;
+      this.balanceStatus = "ready";
+      this.isInit = true;
       return;
+    },
+
+    async hideBalance() {
+      this.balanceStatus = "hidden";
     },
   },
 });

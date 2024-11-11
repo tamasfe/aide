@@ -63,7 +63,8 @@
     "history": "History",
     "account_settings": "Account Settings",
     "live_support": "Live Support",
-    "logout": "Log out"
+    "logout": "Log out",
+    "balance_hidden_while_playing": "Playing..."
   },
   "modal_login": {
     "error_invalid_credentials": "Your email or password are incorrect",

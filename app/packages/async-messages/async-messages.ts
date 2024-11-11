@@ -16,4 +16,11 @@ export interface AsyncMessagesTypes {
 
   "girobet:events:users:user-logged-in": object;
   "girobet:events:users:user-logged-out": object;
+
+  "girobet:events:games:game-session-started": {
+    gameId: number;
+  };
+  "girobet:events:games:game-session-finished": {
+    gameId: number;
+  };
 }

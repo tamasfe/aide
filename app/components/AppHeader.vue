@@ -5,11 +5,6 @@
 // TRANSLATION STATUS:  ✅
 const { $dependencies } = useNuxtApp();
 const userStore = useUserStore();
-const walletStore = useWalletStore();
-
-const onClickBalance = async () => {
-  await navigateTo("/settings/wallet");
-};
 
 const emit = defineEmits([
   "click:menu",
@@ -70,18 +65,7 @@ const emit = defineEmits([
             </BaseButton>
           </template>
           <template v-else>
-            <BaseButton
-              v-if="walletStore.isInit"
-              variant="secondary"
-              class="h-9 md:h-10 space-x-1"
-              @click="onClickBalance"
-            >
-              <BaseCurrency
-                class="text-white"
-                :currency="walletStore.wallet.currency"
-                :value="walletStore.wallet.balanceValue"
-              />
-            </BaseButton>
+            <NavWalletBalance class="h-9 md:h-10 space-x-1" />
 
             <BaseButton
               variant="emphasis"

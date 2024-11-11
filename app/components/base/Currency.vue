@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { cva, type VariantProps } from "class-variance-authority";
+
 /**
  * As of 2024/10/25: The component I18nN seems to have some weird thing going on. We need to use the named slots in order to give the
  * formatting we want it. But we find the following:
@@ -15,6 +17,23 @@ interface ExtendedNumberFormatOptions extends Intl.NumberFormatOptions {
   key?: string;
 }
 
+const currencyVariants = cva(
+  "mr-2",
+  {
+    variants: {
+      variant: {
+        primary: "bg-button-primary text-transparent bg-clip-text",
+        ghost: "",
+      },
+    },
+    defaultVariants: {
+      variant: "primary",
+    },
+  },
+);
+
+type CurrencyVariants = VariantProps<typeof currencyVariants>;
+
 defineProps({
   /**
    * 3 letter currency code
@@ -26,6 +45,10 @@ defineProps({
   value: {
     type: Number,
     required: true,
+  },
+  variant: {
+    type: String as PropType<CurrencyVariants["variant"]>,
+    default: "primary" as const,
   },
 });
 </script>
@@ -39,7 +62,7 @@ defineProps({
     :format="{ key: 'currency', currency } as ExtendedNumberFormatOptions"
   >
     <template #currency="slotProps">
-      <span class="mr-2 bg-button-primary text-transparent bg-clip-text">{{ slotProps.currency }}</span>
+      <span :class="currencyVariants({ variant })">{{ slotProps.currency }}</span>
     </template>
     <template #integer="slotProps">
       <span>{{ slotProps.integer }}</span>

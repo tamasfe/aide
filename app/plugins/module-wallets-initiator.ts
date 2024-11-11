@@ -20,6 +20,23 @@ export default defineNuxtPlugin({
       () => walletStore.refresh(),
     );
 
+    const currentSessionGameId = useState<null | number>("current-session-game-id", () => null);
+    $dependencies.common.asyncMessagePublisher.subscribe(
+      "girobet:events:games:game-session-started",
+      ({ gameId }) => {
+        walletStore.hideBalance();
+        currentSessionGameId.value = gameId;
+      },
+    );
+    $dependencies.common.asyncMessagePublisher.subscribe(
+      "girobet:events:games:game-session-finished",
+      ({ gameId }) => {
+        if (gameId === currentSessionGameId.value) {
+          walletStore.refresh();
+        }
+      },
+    );
+
     /**
      *
      * Init user pinia store

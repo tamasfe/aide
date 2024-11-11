@@ -57,7 +57,7 @@ const onTogglePlaying = async () => {
             />
           </div>
 
-          <GameFrameIframe :i-frame-url="iFrameUrl" />
+          <GameFrameIframe :game-id="gameId" :i-frame-url="iFrameUrl" />
         </div>
       </template>
 
