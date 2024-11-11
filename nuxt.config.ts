@@ -2,7 +2,6 @@
 // This is the config
 export default defineNuxtConfig({
   modules: [
-    "@sentry/nuxt/module",
     "@nuxt/eslint",
     "@nuxt/icon",
     "@nuxt/image",
@@ -12,6 +11,7 @@ export default defineNuxtConfig({
     "@nuxtjs/seo",
     "@nuxtjs/tailwindcss",
     "@pinia/nuxt",
+    "@sentry/nuxt/module",
     "@vee-validate/nuxt",
     "nuxt-gtag",
   ],
@@ -117,6 +117,7 @@ export default defineNuxtConfig({
     defaultLocale: "en",
     vueI18n: "./i18n.config.ts",
   },
+  // @nuxt/icon
   icon: {
     clientBundle: {
       scan: true,
