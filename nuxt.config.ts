@@ -117,6 +117,11 @@ export default defineNuxtConfig({
     defaultLocale: "en",
     vueI18n: "./i18n.config.ts",
   },
+  icon: {
+    clientBundle: {
+      scan: true,
+    },
+  },
   // @pinia/nuxt
   pinia: {},
   sentry: {
