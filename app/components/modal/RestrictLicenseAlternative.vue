@@ -25,8 +25,8 @@ defineProps({
 <template>
   <BaseModal
     v-model:open="open"
-    :disabled="true"
     :close-on-click-outside="false"
+    :unclosable="true"
     banner="top"
     banner-top="/assets/images/wheel-2.png"
   >
