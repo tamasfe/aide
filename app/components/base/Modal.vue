@@ -11,6 +11,7 @@ const props = withDefaults(
   defineProps<{
     open: boolean;
     disabled?: boolean;
+    unclosable?: boolean;
     logo?: boolean;
     banner?: "none" | "top" | "left";
     bannerLeft?: string;
@@ -20,6 +21,7 @@ const props = withDefaults(
     loading: false,
     banner: "none",
     logo: true,
+    unclosable: false,
   },
 );
 
@@ -39,6 +41,7 @@ const open = computed({
     v-model:open="open"
     v-bind="$attrs"
     :disabled="disabled"
+    :unclosable="unclosable"
     :class="cn(
       'p-0',
       { 'lg:max-w-max': banner === 'left' }, // for lg screensize with left banner, let content size handle the width
