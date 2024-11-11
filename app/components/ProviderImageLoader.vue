@@ -8,7 +8,7 @@ const { providerId } = defineProps({
 
 const { $dependencies } = useNuxtApp();
 
-const { data: imageSrc, status: loadingStatus } = await useAsyncData(String(providerId), async () => {
+const { data: imageSrc } = await useAsyncData(`provider-image-url-${String(providerId)}`, async () => {
   return $dependencies.providers.ui.findProviderImageSrcById.handle(providerId);
 }, {
   server: true, // If false: avoid server-side loading of image to improve first-print time. More info @https://nuxt.com/docs/getting-started/data-fetching#client-only-fetching
@@ -19,15 +19,10 @@ const { data: imageSrc, status: loadingStatus } = await useAsyncData(String(prov
 <template>
   <div class="flex items-center justify-center h-full">
     <NuxtImg
-      v-if="imageSrc && loadingStatus === 'success'"
+      v-if="imageSrc"
       :src="imageSrc"
       :alt="`Provider ${providerId} logo`"
       class="w-full h-full object-contain group-hover:opacity-80"
-    />
-    <BaseSpinner
-      v-else
-      class="text-subtle"
-      :size="34"
     />
   </div>
 </template>

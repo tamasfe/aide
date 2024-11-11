@@ -8,7 +8,7 @@ const { gameId } = defineProps({
 
 const { $dependencies } = useNuxtApp();
 
-const { data: imageSrc, status: loadingStatus } = await useAsyncData(String(gameId), async () => {
+const { data: imageSrc } = await useAsyncData(`game-image-url-${String(gameId)}`, async () => {
   return $dependencies.games.ui.findGameImageSrcByGameId.handle(gameId);
 }, {
   server: true, // If false: avoid server-side loading of image to improve first-print time. More info @https://nuxt.com/docs/getting-started/data-fetching#client-only-fetching
@@ -19,15 +19,10 @@ const { data: imageSrc, status: loadingStatus } = await useAsyncData(String(game
 <template>
   <div class="flex items-center justify-center h-full">
     <NuxtImg
-      v-if="imageSrc && loadingStatus === 'success'"
+      v-if="imageSrc"
       :src="imageSrc"
       alt=""
       class="block w-full h-full object-cover transition-transform transform hover:scale-105 cursor-pointer"
-    />
-    <BaseSpinner
-      v-else
-      class="text-subtle"
-      :size="34"
     />
   </div>
 </template>
