@@ -71,9 +71,9 @@ const links = [
           open && 'text-emphasis',
         )"
       >
-        <Icon
+        <BaseIcon
           name="material-symbols:account-circle"
-          size="28"
+          :size="28"
           class="align-middle"
         />
       </PopoverButton>
@@ -97,9 +97,9 @@ const links = [
                 :to="item.action.toPage"
                 class="border-emphasis px-6 h-10 min-w-[14rem] flex items-center text-emphasis hover:text-white whitespace-nowrap"
               >
-                <Icon
+                <BaseIcon
                   :name="item.icon"
-                  size="22"
+                  :size="22"
                   class="flex-shrink-0 text-subtle"
                 />
                 <span class="block w-full ml-4 text-[0.85rem]">
@@ -114,9 +114,9 @@ const links = [
                 class="border-emphasis px-6 h-10 min-w-[14rem] flex items-center justify-start text-emphasis hover:text-white whitespace-nowrap font-normal w-full"
                 @click="item.action.buttonOnClick"
               >
-                <Icon
+                <BaseIcon
                   :name="item.icon"
-                  size="22"
+                  :size="22"
                   class="flex-shrink-0 text-subtle"
                 />
                 <span class="block ml-4 text-[0.85rem]">

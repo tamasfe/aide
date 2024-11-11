@@ -24,9 +24,9 @@ const props = defineProps<{
       size="ghost"
       class="flex flex-row gap-1 items-center hover:text-subtle-light"
     >
-      <Icon
+      <BaseIcon
         name="lucide:thumbs-down"
-        size="24"
+        :size="24"
       />
     </BaseButton>
     <div class="flex flex-col gap-1 leading-none whitespace-nowrap items-center text-sm text-center justify-center">
@@ -38,9 +38,9 @@ const props = defineProps<{
       size="ghost"
       class="flex flex-row gap-1 items-center hover:text-subtle-light"
     >
-      <Icon
+      <BaseIcon
         name="lucide:thumbs-up"
-        size="24"
+        :size="24"
       />
     </BaseButton>
   </div>

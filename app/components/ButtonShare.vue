@@ -37,9 +37,9 @@ const onShare = () => {
     )"
     @click="onShare"
   >
-    <Icon
+    <BaseIcon
       :name="icon"
-      size="28"
+      :size="28"
     />
     <div>{{ $t("button.share") }}</div>
   </BaseButton>

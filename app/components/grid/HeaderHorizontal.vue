@@ -51,9 +51,9 @@ const canScrollNext = computed(() => {
             :disabled="!canScrollPrev"
             @click="scrollPrev"
           >
-            <Icon
+            <BaseIcon
               name="lucide:chevron-left"
-              size="24"
+              :size="24"
             />
           </BaseButton>
           <BaseButton
@@ -63,9 +63,9 @@ const canScrollNext = computed(() => {
             :disabled="!canScrollNext"
             @click="scrollNext"
           >
-            <Icon
+            <BaseIcon
               name="lucide:chevron-right"
-              size="24"
+              :size="24"
             />
           </BaseButton>
         </div>

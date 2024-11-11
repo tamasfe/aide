@@ -50,9 +50,9 @@ const props = withDefaults(defineProps<{
         class="p-2 absolute right-1"
         @click="open = false"
       >
-        <Icon
+        <BaseIcon
           name="lucide:x"
-          size="20"
+          :size="20"
         />
       </BaseButton>
     </div>

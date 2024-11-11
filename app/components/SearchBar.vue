@@ -42,10 +42,10 @@ const onClickCloseButton = () => {
         <BaseSpinner
           v-if="loading"
         />
-        <Icon
+        <BaseIcon
           v-else
           name="lucide:search"
-          size="24"
+          :size="24"
         />
       </div>
     </template>
@@ -60,9 +60,9 @@ const onClickCloseButton = () => {
           class="p-1"
           @click="onClickCloseButton"
         >
-          <Icon
+          <BaseIcon
             name="lucide:x"
-            size="24"
+            :size="24"
           />
         </BaseButton>
       </div>

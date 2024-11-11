@@ -45,9 +45,9 @@ await useAsyncData(`load-games-for-${props.categoryIdentifier}`, () => onLoadDat
           class="p-1.5"
           @click="navigateBackOrHome"
         >
-          <Icon
+          <BaseIcon
             name="lucide:arrow-left"
-            size="24"
+            :size="24"
           />
         </BaseButton>
 

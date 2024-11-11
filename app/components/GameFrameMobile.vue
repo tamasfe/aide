@@ -90,9 +90,9 @@ const onTogglePlaying = async () => {
               class="w-full gap-2"
               @click="onTogglePlaying"
             >
-              <Icon
+              <BaseIcon
                 name="lucide:play"
-                size="20"
+                :size="20"
               />
               {{ $t("button.play_now") }}
             </BaseButton>

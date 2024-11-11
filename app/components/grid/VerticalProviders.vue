@@ -38,9 +38,9 @@ const onClickHome = async () => {
           class="p-1.5"
           @click="onClickHome"
         >
-          <Icon
+          <BaseIcon
             name="lucide:arrow-left"
-            size="24"
+            :size="24"
           />
         </BaseButton>
 

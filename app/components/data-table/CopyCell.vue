@@ -23,16 +23,16 @@ const onCopy = () => {
     class="flex flex-row items-center gap-1.5 cursor-pointer"
     @click="onCopy"
   >
-    <Icon
+    <BaseIcon
       v-show="!copied"
       name="lucide:copy"
-      size="14"
+      :size="14"
       class="text-subtle"
     />
-    <Icon
+    <BaseIcon
       v-show="copied"
       name="lucide:circle-check-big"
-      size="14"
+      :size="14"
       class="text-subtle"
     />
     <div>{{ value }}</div>

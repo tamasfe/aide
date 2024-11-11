@@ -79,7 +79,7 @@ const dataToRender = computed(() => {
       >
         <div class="flex items-center gap-2">
           <div>Load More</div>
-          <Icon name="lucide:chevron-down" size="24" />
+          <BaseIcon name="lucide:chevron-down" :size="24" />
         </div>
       </BaseButton>
     </div>

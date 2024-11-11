@@ -29,9 +29,9 @@ const emit = defineEmits([
             class="hidden sm:block"
             @click="emit('click:menu')"
           >
-            <Icon
+            <BaseIcon
               name="lucide:menu"
-              size="30"
+              :size="30"
               class="text-subtle"
             />
           </BaseButton>

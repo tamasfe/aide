@@ -65,9 +65,9 @@ const onSubmit = handleSubmit(async () => {
       @click="onSubmit"
     >
       <span>{{ $t("button.create_account") }}</span>
-      <Icon
+      <BaseIcon
         name="lucide:arrow-right"
-        size="20"
+        :size="20"
       />
     </BaseButton>
 

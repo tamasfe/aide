@@ -51,9 +51,9 @@ defineProps({
         class="my-4 w-full gap-1.5"
       >
         <span>{{ $t("button.take_me_to", { domain: capitalizeBrandDomain(allowedDomain) }) }}</span>
-        <Icon
+        <BaseIcon
           name="lucide:arrow-right"
-          size="20"
+          :size="20"
         />
       </BaseButton>
     </div>

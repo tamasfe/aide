@@ -5,12 +5,12 @@ withDefaults(
   defineProps<{
     title?: string;
     icon?: string;
-    size?: string;
+    size?: number;
     textClass?: HTMLAttributes["class"];
   }>(), {
     title: "No Results",
     icon: "lucide:box-select",
-    size: "24",
+    size: 24,
     textClass: "",
   },
 );
@@ -18,7 +18,7 @@ withDefaults(
 
 <template>
   <div class="min-h-[100px] flex flex-row gap-3 justify-center items-center">
-    <Icon
+    <BaseIcon
       :name="icon"
       :size="size"
       class="text-subtle"

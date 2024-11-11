@@ -7,9 +7,9 @@
       size="dashboard"
       class="gap-2"
     >
-      <Icon
+      <BaseIcon
         name="lucide:upload"
-        size="18"
+        :size="18"
       />
       {{ $t('button.upload') }}
     </BaseButton>

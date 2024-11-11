@@ -27,9 +27,9 @@ const open = ref(true);
         class="mt-4 w-full gap-1.5"
       >
         <span>{{ $t("button.continue") }}</span>
-        <Icon
+        <BaseIcon
           name="lucide:arrow-right"
-          size="20"
+          :size="20"
         />
       </BaseButton>
 

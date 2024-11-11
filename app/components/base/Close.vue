@@ -25,9 +25,9 @@ defineEmits<{
     @click="$emit('close')"
   >
     <span class="sr-only">{{ $t('i18n.close') }}</span>
-    <Icon
+    <BaseIcon
       name="lucide:x"
-      size="24"
+      :size="24"
     />
   </BaseButton>
 </template>

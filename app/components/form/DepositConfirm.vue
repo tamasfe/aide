@@ -17,9 +17,9 @@
   <BaseForm class="gap-4 items-center">
     <div class="w-full flex flex-row items-center justify-between">
       <div class="flex flex-row gap-2">
-        <Icon
+        <BaseIcon
           name="lucide:arrow-left"
-          size="20"
+          :size="20"
         />
         <div class="mb-2 leading-snug">
           <h2 class="text-xl font-semibold">{{ $t('modal_payments.finalize_deposit') }}</h2>
@@ -47,9 +47,9 @@
     >
       <template #suffix>
         <div class="ml-5 flex justify-center items-center">
-          <Icon
+          <BaseIcon
             name="lucide:copy"
-            size="24"
+            :size="24"
           />
         </div>
       </template>

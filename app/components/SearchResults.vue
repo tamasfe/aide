@@ -141,7 +141,7 @@ const onClickLink = () => {
     v-if="!loading && noResults"
     :title="$t('search.no_results')"
     icon="lucide:search-x"
-    size="32"
+    :size="32"
     text-class="text-xl"
   />
 

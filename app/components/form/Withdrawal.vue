@@ -32,9 +32,9 @@ const onToggleLimits = () => {
         class="p-1 flex self-start items-center space-x-1.5 cursor-pointer text-primary hover:text-primary-hover"
         @click="onToggleLimits"
       >
-        <Icon
+        <BaseIcon
           name="lucide:info"
-          size="18"
+          :size="18"
         />
         <div>{{ $t('modal_payments.limits') }}</div>
       </div>

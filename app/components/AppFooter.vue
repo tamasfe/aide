@@ -130,9 +130,9 @@ const initialOption: Locale | undefined = ACTIVE_LOCALES.find(
         class="px-3 my-6 w-full md:m-0 md:w-auto md:absolute md:right-6 md:bottom-0"
         @click="scrollToTop"
       >
-        <Icon
+        <BaseIcon
           name="lucide:chevron-up"
-          size="26"
+          :size="26"
         />
       </BaseButton>
     </section>

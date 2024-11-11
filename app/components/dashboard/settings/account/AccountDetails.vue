@@ -55,9 +55,9 @@
             size="dashboard"
             class="gap-2"
           >
-            <Icon
+            <BaseIcon
               name="lucide:copy"
-              size="18"
+              :size="18"
             />
             {{ $t('button.copy') }}
           </BaseButton>

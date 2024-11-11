@@ -120,9 +120,9 @@ const onUpdateModelValue = (event: T) => {
           {{ selectedOption?.title || '' }}
         </span>
         <span class="pointer-events-none flex items-center ml-auto">
-          <Icon
+          <BaseIcon
             :name="open ? 'lucide:chevron-up' : 'lucide:chevron-down'"
-            size="20"
+            :size="20"
             class="text-subtle"
           />
         </span>

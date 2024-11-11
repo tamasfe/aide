@@ -108,9 +108,9 @@ const onToggleFullScreen = () => {
             class="flex flex-row gap-1 items-center hover:text-subtle-light"
             @click="onToggleFullScreen"
           >
-            <Icon
+            <BaseIcon
               name="lucide:maximize"
-              size="24"
+              :size="24"
             />
           </BaseButton>
         </div>

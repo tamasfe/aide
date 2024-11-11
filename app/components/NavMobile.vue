@@ -30,10 +30,10 @@ const items = [
         class="flex flex-col justify-center items-center outline-none"
         @click="item.onClick"
       >
-        <Icon
+        <BaseIcon
           :name="item.icon"
           class="text-subtle"
-          size="24"
+          :size="24"
         />
         <div class="text-[0.8rem] text-subtle-light font-semibold">{{ $t(item.text) }}</div>
       </BaseButton>

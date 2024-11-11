@@ -7,7 +7,7 @@ withDefaults(defineProps<{
 </script>
 
 <template>
-  <Icon
+  <BaseIcon
     :size="size"
     name="tdesign:loading"
     class="animate-spin"

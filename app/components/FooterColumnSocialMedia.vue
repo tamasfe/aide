@@ -56,9 +56,9 @@ const links: Array<{ icon: string; url: ComputedRef }> = [
         rel="noopener noreferrer"
         class="p-1 lg:p-3 rounded-xl hover:text-subtle-light"
       >
-        <Icon
+        <BaseIcon
           :name="link.icon"
-          size="28"
+          :size="28"
         />
       </NuxtLink>
     </div>

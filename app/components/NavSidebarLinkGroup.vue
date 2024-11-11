@@ -34,11 +34,11 @@ const onToggle = () => {
       @click="onToggle"
     >
       <div class="p-2 flex items-center">
-        <Icon
+        <BaseIcon
           v-if="parent.icon"
           :name="parent.icon"
           class="flex-shrink-0 text-subtle"
-          size="22"
+          :size="22"
         />
         <div class="w-full ml-4 text-[0.90rem] font-medium">
           {{ parent.title }}
@@ -52,9 +52,9 @@ const onToggle = () => {
           open ? 'rotate-180' : 'rotate-0',
         )"
       >
-        <Icon
+        <BaseIcon
           name="lucide:chevron-down"
-          size="24"
+          :size="24"
           class="text-subtle"
         />
       </BaseButton>
