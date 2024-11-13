@@ -70,7 +70,7 @@ $dependencies.common.asyncMessagePublisher.subscribe(
       v-if="modal === 'login'"
     />
     <ModalRegister
-      v-if="modal === 'register'"
+      :open="modal === 'register'"
     />
     <ModalForgotPassword
       v-if="modal === 'forgot'"

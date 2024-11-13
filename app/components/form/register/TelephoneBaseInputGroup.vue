@@ -2,17 +2,19 @@
 import { useField } from "vee-validate";
 import type { SupportedCountryFlagCode } from "~/types/constants";
 
+const props = defineProps({
+  initialValue: {
+    type: String,
+    default: "",
+  },
+});
+
 /**
  * Dependency injection
  */
 const { $dependencies } = useNuxtApp();
 
-/**
- * Due to the need of using Zod's "parseAsync" I haven't found a way to concat min and max length validations with the use case
- */
-const { value: telephone, errorMessage: telephoneErrorMessage, validate: validateTelephoneChange } = useField("telephone", value =>
-  $dependencies.signupFlows.ui.validateTelephoneUpsertingSignupFlowOnTelephoneValueChanged.handle(value, selectedPrefix.value.value),
-);
+const initialValue = ref<string>(props.initialValue.startsWith("+") ? props.initialValue.slice(3) : props.initialValue);
 
 type TelephonePrefixOption = {
   value: string;
@@ -25,7 +27,17 @@ const prefixOptions: TelephonePrefixOption[] = [
   { value: "+1", title: "United States", countryCode: "US" as const },
 ];
 
-const selectedPrefix = ref<TelephonePrefixOption>(prefixOptions[0] as TelephonePrefixOption);
+const selectedPrefix = ref<TelephonePrefixOption>(
+  prefixOptions.find(option => props.initialValue.startsWith(option.value)) || prefixOptions[0] as TelephonePrefixOption,
+);
+
+/**
+ * Due to the need of using Zod's "parseAsync" I haven't found a way to concat min and max length validations with the use case
+ */
+const { value: telephone, errorMessage: telephoneErrorMessage, validate: validateTelephoneChange } = useField("telephone", value =>
+  $dependencies.signupFlows.ui.validateTelephoneUpsertingSignupFlowOnTelephoneValueChanged.handle(value, selectedPrefix.value.value),
+{ initialValue: initialValue.value },
+);
 
 const onTelephonePrefixChange = (option: TelephonePrefixOption) => {
   selectedPrefix.value = option;
@@ -64,6 +76,7 @@ const mask = computed(() => {
     :mask="mask"
     :mask-behaviour-eager="true"
     :error-message="telephoneErrorMessage"
+    :model-value="telephone"
     @input="(value) => telephone ? (telephone = value) : null"
     @change="(value) => telephone ? null : telephone = value"
   >

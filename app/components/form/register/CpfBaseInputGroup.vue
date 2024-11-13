@@ -1,6 +1,13 @@
 <script setup lang="ts">
 import { useField } from "vee-validate";
 
+const props = defineProps({
+  initialValue: {
+    type: String,
+    default: "",
+  },
+});
+
 /**
  * Dependency injection
  */
@@ -11,6 +18,7 @@ const { $dependencies } = useNuxtApp();
  */
 const { value: cpf, errorMessage: cpfErrorMessage } = useField("cpf", value =>
   $dependencies.signupFlows.ui.validateCpfUpsertingSignupFlowOnCpfValueChanged.handle(value),
+{ initialValue: props.initialValue },
 );
 </script>
 
@@ -21,6 +29,7 @@ const { value: cpf, errorMessage: cpfErrorMessage } = useField("cpf", value =>
     mask="###.###.###-##"
     inputmode="numeric"
     :error-message="cpfErrorMessage"
+    :model-value="cpf"
     @input="(value) => cpf ? (cpf = value) : null"
     @change="(value) => cpf ? null : cpf = value"
   />

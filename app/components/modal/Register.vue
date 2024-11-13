@@ -1,12 +1,23 @@
 <script setup lang="ts">
-const open = ref(true);
-const loading = ref(false);
-
 // DESIGN STATUS:       ✅
 // ARCHITECTURE STATUS: ✅
 // TRANSLATION STATUS:  ✅
 
+defineProps({
+  open: {
+    type: Boolean,
+    required: true,
+  },
+});
+
 const { $dependencies } = useNuxtApp();
+
+const ENABLE_SERVER_SIDE_RENDERING = false;
+const DEFER_CLIENT_SIDE_LOADING = true;
+const { data: currentStartedSignupFlow } = await useAsyncData(`current-signup-flow`, async () => {
+  return $dependencies.signupFlows.ui.searchCurrentSignupFlowOnModal.handle();
+}, { lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING });
+
 const onClosed = () => {
   $dependencies.users.ui.emitCommandCloseUserActionModal.handle();
 };
@@ -14,14 +25,17 @@ const onClosed = () => {
 
 <template>
   <BaseModal
-    v-model:open="open"
-    :disabled="loading"
+    :open="open"
     :close-on-click-outside="false"
     banner="left"
     banner-left="/assets/images/wheel-2-vertical.png"
     banner-top="/assets/images/wheel-2.png"
     @close="onClosed"
   >
-    <FormRegister />
+    <FormRegister
+      :email="currentStartedSignupFlow?.email || ''"
+      :cpf="currentStartedSignupFlow?.cpf || ''"
+      :telephone="currentStartedSignupFlow?.telephone || ''"
+    />
   </BaseModal>
 </template>

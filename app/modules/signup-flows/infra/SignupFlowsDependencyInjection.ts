@@ -2,6 +2,8 @@ import type { PublicRuntimeConfig } from "nuxt/schema";
 import type { SignupFlowIdClientRepositoryI } from "../domain/SignupFlowIdClientRepositoryI";
 import type { SignupFlowApiRepositoryI } from "../domain/SignupFlowApiRepositoryI";
 import { UpsertSignupFlow } from "../application/UpsertSignupFlow";
+import { SearchCurrentSignupFlow } from "../application/SearchCurrentSignupFlow";
+import { DeleteCurrentSignupFlowId } from "../application/DeleteCurrentSignupFlowId";
 import { SignupFlowIdClientRepositoryDumb } from "./SignupFlowIdClientRepositoryDumb";
 import { SignupFlowApiRepositoryDumb } from "./SignupFlowApiRepositoryDumb";
 import { SubmitSignupFlowOnFormSubmission } from "./ui/SubmitSignupFlowOnFormSubmission";
@@ -13,12 +15,16 @@ import { ValidateEmailUpsertingSignupFlowOnEmailValueChanged } from "./ui/Valida
 import { ValidateCpfUpsertingSignupFlowOnCpfValueChanged } from "./ui/ValidateCpfUpsertingSignupFlowOnCpfValueChanged";
 import { ValidatePasswordUpsertingSignupFlowOnPasswordValueChanged } from "./ui/ValidatePasswordUpsertingSignupFlowOnPasswordValueChanged";
 import { ValidateTelephoneUpsertingSignupFlowOnTelephoneValueChanged } from "./ui/ValidateTelephoneUpsertingSignupFlowOnTelephoneValueChanged";
+import { SearchCurrentSignupFlowOnModal } from "./ui/SearchCurrentSignupFlowOnModal";
+import { DeleteCurrentSignupFlowIdOnSignupFlowSubmitted } from "./ui/DeleteCurrentSignupFlowIdOnSignupFlowSubmitted";
 import type { CommonDependenciesI } from "~/dependency-injection/load-di";
 
 export interface SignupFlowsDependencyInjectionI {
   signupFlowApiRepository: SignupFlowApiRepositoryI;
   clientSignupFlowIdRepository: SignupFlowIdClientRepositoryI;
   ui: {
+    deleteCurrentSignupFlowIdOnSignupFlowSubmitted: DeleteCurrentSignupFlowIdOnSignupFlowSubmitted;
+    searchCurrentSignupFlowOnModal: SearchCurrentSignupFlowOnModal;
     submitSignupFlowOnFormSubmission: SubmitSignupFlowOnFormSubmission;
     validateEmailUpsertingSignupFlowOnEmailValueChanged: ValidateEmailUpsertingSignupFlowOnEmailValueChanged;
     validateCpfUpsertingSignupFlowOnCpfValueChanged: ValidateCpfUpsertingSignupFlowOnCpfValueChanged;
@@ -64,6 +70,17 @@ export const createSignupFlowsDependencyInjection = (publicConfig: PublicRuntime
     clientSignupFlowIdRepository,
 
     ui: {
+      deleteCurrentSignupFlowIdOnSignupFlowSubmitted: new DeleteCurrentSignupFlowIdOnSignupFlowSubmitted(
+        new DeleteCurrentSignupFlowId(clientSignupFlowIdRepository),
+        commonDependencies.logger,
+      ),
+      searchCurrentSignupFlowOnModal: new SearchCurrentSignupFlowOnModal(
+        new SearchCurrentSignupFlow(
+          clientSignupFlowIdRepository,
+          signupFlowApiRepository,
+        ),
+        commonDependencies.logger,
+      ),
       submitSignupFlowOnFormSubmission: new SubmitSignupFlowOnFormSubmission(
         clientSignupFlowIdRepository,
         signupFlowApiRepository,

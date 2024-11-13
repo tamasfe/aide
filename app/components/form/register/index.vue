@@ -8,8 +8,23 @@
 // AUTOCOMPLETES:               ✅
 // INPUTMODES:                  ✅
 // Validation:                  ✅
-// Submitting to backend:       ❌
+// Submitting to backend:       ✅
 // Integration testing:         ❌
+
+defineProps({
+  email: {
+    type: String,
+    default: "",
+  },
+  cpf: {
+    type: String,
+    default: "",
+  },
+  telephone: {
+    type: String,
+    default: "",
+  },
+});
 
 const { handleSubmit, meta } = useForm();
 const { $dependencies } = useNuxtApp();
@@ -22,8 +37,7 @@ const onSubmit = handleSubmit(async () => {
   const errorSubmitting = await $dependencies.signupFlows.ui.submitSignupFlowOnFormSubmission.handle();
   loading.value = false;
   errorMessage.value = errorSubmitting;
-}
-, ({ results }) => {
+}, ({ results }) => {
   console.warn("Validation failed", results);
 });
 </script>
@@ -36,13 +50,13 @@ const onSubmit = handleSubmit(async () => {
       level="error"
     />
 
-    <FormRegisterEmailBaseInputGroup />
+    <FormRegisterEmailBaseInputGroup :initial-value="email" />
 
     <FormRegisterPasswordBaseInputGroup />
 
-    <FormRegisterCpfBaseInputGroup />
+    <FormRegisterCpfBaseInputGroup :initial-value="cpf" />
 
-    <FormRegisterTelephoneBaseInputGroup />
+    <FormRegisterTelephoneBaseInputGroup :initial-value="telephone" />
 
     <div class="my-2 text-sm text-center text-subtle">
       {{ $t("modal_session.accept_terms") }}

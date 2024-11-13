@@ -2,7 +2,8 @@ import { SignupFlowIdNotFound } from "../domain/errors/SignupFlowIdNotFound";
 import type { SignupFlowIdClientRepositoryI } from "../domain/SignupFlowIdClientRepositoryI";
 import { ErrorRetrievingSignupFlowId } from "../domain/errors/ErrorRetrievingSignupFlowId";
 import { ErrorSavingSignupFlowId } from "../domain/errors/ErrorSavingSignupFlowId";
-import { fail, success } from "~/packages/result";
+import { ErrorDeletingSignupFlowId } from "../domain/errors/ErrorDeletingSignupFlowId";
+import { fail, success, type EmptyResult } from "~/packages/result";
 
 export class SignupFlowIdClientRepositoryLocalStorage
 implements SignupFlowIdClientRepositoryI {
@@ -54,6 +55,23 @@ implements SignupFlowIdClientRepositoryI {
     catch (error) {
       return fail(
         ErrorSavingSignupFlowId.newFromUnknownError({ flowId }, error),
+      );
+    }
+  }
+
+  public async deleteCurrent(): Promise<EmptyResult<ErrorDeletingSignupFlowId>> {
+    if (!this.isLocalStorageAvailable()) {
+      return fail(
+        ErrorDeletingSignupFlowId.newFromError({}, new Error("This repo should only be run in the client side. LocalStorage is not available on server side rendering")),
+      );
+    }
+    try {
+      window.localStorage.removeItem(this.STORAGE_ID_KEY);
+      return success();
+    }
+    catch (error) {
+      return fail(
+        ErrorDeletingSignupFlowId.newFromUnknownError({ }, error),
       );
     }
   }

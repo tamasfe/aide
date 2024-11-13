@@ -25,7 +25,9 @@ export class SubmitSignupFlow {
       return result;
     }
 
-    this.asyncMessagePublisher.emit("girobet:events:users:user-logged-in", { });
+    this.asyncMessagePublisher.emit("girobet:events:signup-flows:signup-flow-submitted", {
+      id: flowId,
+    });
 
     return success();
   }

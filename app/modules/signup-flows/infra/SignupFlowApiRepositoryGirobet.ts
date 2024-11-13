@@ -32,10 +32,10 @@ export class SignupFlowApiRepositoryGirobet implements SignupFlowApiRepositoryI 
         id,
         email: (data.fields.email || null) as string | null,
         password: (data.fields.password || null) as string | null,
-        cpf: (data.fields.cpf || null) as string | null,
-        telephone: (data.fields.telephone || null) as string | null,
-        locale: (data.fields.locale || null) as string | null,
-        timeZone: (data.fields.timezone || null) as string | null,
+        cpf: (data.fields.CPF || null) as string | null,
+        telephone: (data.fields.phone || null) as string | null,
+        locale: (data.fields.language || null) as string | null,
+        timeZone: (data.fields.time_zone || null) as string | null,
       },
       )));
     }

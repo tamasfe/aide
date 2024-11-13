@@ -19,6 +19,10 @@ export default defineNuxtPlugin({
       "girobet:events:users:user-logged-out",
       () => walletStore.refresh(),
     );
+    $dependencies.common.asyncMessagePublisher.subscribe(
+      "girobet:events:signup-flows:signup-flow-submitted",
+      () => walletStore.refresh(),
+    );
 
     const currentSessionGameId = useState<null | number>("current-session-game-id", () => null);
     $dependencies.common.asyncMessagePublisher.subscribe(
