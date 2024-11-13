@@ -23,7 +23,7 @@ type TelephonePrefixOption = {
 };
 
 const prefixOptions: TelephonePrefixOption[] = [
-  { value: "+55", title: "Brasil", countryCode: "BR" as const },
+  { value: "+55", title: "Brazil", countryCode: "BR" as const },
   { value: "+1", title: "United States", countryCode: "US" as const },
 ];
 

@@ -9,12 +9,12 @@ export class UserTelephoneMask {
     switch (this.countryCode) {
       case "BR":
       {
-        const BRASIL_MASK_MOBILE = "(##) #####-####";
-        const BRASIL_MASK_FIXED = "(##) ####-####";
+        const BRAZIL_MASK_MOBILE = "(##) #####-####";
+        const BRAZIL_MASK_FIXED = "(##) ####-####";
 
         const thirdDigitOfUnmaskedTelephone = this.telephoneValue.replace(/\D/g, "").slice(2, 3);
-        const isBrasilianMobileTelephone = thirdDigitOfUnmaskedTelephone === "9";
-        return isBrasilianMobileTelephone ? BRASIL_MASK_MOBILE : BRASIL_MASK_FIXED;
+        const isBrazilianMobileTelephone = thirdDigitOfUnmaskedTelephone === "9";
+        return isBrazilianMobileTelephone ? BRAZIL_MASK_MOBILE : BRAZIL_MASK_FIXED;
       }
       case "US":
         return "(###) ###-####";

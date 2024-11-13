@@ -72,7 +72,7 @@
     </DashboardSectionItem>
     <DashboardSectionItem :name="$t('dashboard.settings.account.country')">
       <template #default>
-        <p>Brasil</p>
+        <p>Brazil</p>
       </template>
     </DashboardSectionItem>
     <DashboardSectionItem :name="$t('dashboard.settings.account.document')">
