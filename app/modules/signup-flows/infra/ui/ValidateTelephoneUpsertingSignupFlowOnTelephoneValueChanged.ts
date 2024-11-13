@@ -1,11 +1,20 @@
 import type { UpsertSignupFlow } from "../../application/UpsertSignupFlow";
 import { ErrorInvalidUserTelephone } from "~/modules/users/domain/UserTelephone";
+import { UserTelephoneMask, type UserTelephoneMaskSupportedCountryCode } from "~/modules/users/infra/ui/UserTelephoneMask";
 import type { LoggerI } from "~/packages/logger/Logger";
 import type { TranslateFunctionType } from "~/packages/translation/TranslateFunctionType";
 
 export class ValidateTelephoneUpsertingSignupFlowOnTelephoneValueChanged {
-  public async handle(value: unknown, prefixValue: string): Promise<boolean | string> {
+  public async handle(value: unknown, prefixValue: string, prefixCountryCode: UserTelephoneMaskSupportedCountryCode): Promise<boolean | string> {
     const telephoneValue = String(value || "");
+
+    const mask = UserTelephoneMask.new(prefixCountryCode, telephoneValue).value();
+    if (telephoneValue.length < mask.length) {
+      return this.translateFunction("validation.telephone_invalid_too_short", { num: String(mask.length - telephoneValue.length) });
+    }
+    if (telephoneValue.length > mask.length) {
+      return this.translateFunction("validation.telephone_invalid_too_long", { num: String(telephoneValue.length - mask.length) });
+    }
 
     const resultUpsertingSignupFlow = await this.upsertSignupFlow.handle({
       CPF: null,

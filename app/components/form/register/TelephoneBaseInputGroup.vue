@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useField } from "vee-validate";
-import type { SupportedCountryFlagCode } from "~/types/constants";
+import { UserTelephoneMask } from "~/modules/users/infra/ui/UserTelephoneMask";
 
 const props = defineProps({
   initialValue: {
@@ -19,7 +19,7 @@ const initialValue = ref<string>(props.initialValue.startsWith("+") ? props.init
 type TelephonePrefixOption = {
   value: string;
   title: string;
-  countryCode: SupportedCountryFlagCode;
+  countryCode: "BR" | "US";
 };
 
 const prefixOptions: TelephonePrefixOption[] = [
@@ -35,7 +35,7 @@ const selectedPrefix = ref<TelephonePrefixOption>(
  * Due to the need of using Zod's "parseAsync" I haven't found a way to concat min and max length validations with the use case
  */
 const { value: telephone, errorMessage: telephoneErrorMessage, validate: validateTelephoneChange } = useField("telephone", value =>
-  $dependencies.signupFlows.ui.validateTelephoneUpsertingSignupFlowOnTelephoneValueChanged.handle(value, selectedPrefix.value.value),
+  $dependencies.signupFlows.ui.validateTelephoneUpsertingSignupFlowOnTelephoneValueChanged.handle(value, selectedPrefix.value.value, selectedPrefix.value.countryCode),
 { initialValue: initialValue.value },
 );
 
@@ -48,23 +48,7 @@ const onTelephonePrefixChange = (option: TelephonePrefixOption) => {
  * TODO: once we know all telephone country codes that we support, refactor this to a class or file of its own "TelephoneMaskSelector"
  * that will depend on (countryCode, telephoneValue). Those 2 params should allow us to correctly pick the correct mask for all use cases.
  */
-const mask = computed(() => {
-  switch (selectedPrefix.value.countryCode) {
-    case "BR":
-    {
-      const BRASIL_MASK_MOBILE = "(##) #####-####";
-      const BRASIL_MASK_FIXED = "(##) ####-####";
-
-      const thirdDigitOfUnmaskedTelephone = String(telephone.value).replace(/\D/g, "").slice(2, 3);
-      const isBrasilianMobileTelephone = thirdDigitOfUnmaskedTelephone === "9";
-      return isBrasilianMobileTelephone ? BRASIL_MASK_MOBILE : BRASIL_MASK_FIXED;
-    }
-    case "US":
-      return "(###) ###-####";
-    default:
-      return "";
-  }
-});
+const mask = computed(() => UserTelephoneMask.new(selectedPrefix.value.countryCode, telephone.value).value());
 </script>
 
 <template>

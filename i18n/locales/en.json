@@ -114,7 +114,8 @@
     "password_invalid_too_long": "Password must be shorter than {max}",
     "telephone_invalid": "Invalid phone",
     "telephone_required": "Phone is required",
-    "telephone_invalid_too_short": "Phone must be longer"
+    "telephone_invalid_too_short": "Phone is missing {num} digits",
+    "telephone_invalid_too_long": "Phone is {num} digits too long"
   },
   "withdrawal_limits": {
     "summary": "For an easy, secure and simple withdraw process, make sure to follow these guidelines: The minimum withdrawal amount varies by method and is listed above. Withdrawals are always to be processed to the original deposit method unless otherwise specified or if that method doesn't support withdrawals."
