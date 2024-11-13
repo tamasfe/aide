@@ -1,6 +1,7 @@
 import { UserCPF } from "~/modules/users/domain/UserCPF";
 import { UserEmail } from "~/modules/users/domain/UserEmail";
 import { UserPassword } from "~/modules/users/domain/UserPassword";
+import { UserTelephone } from "~/modules/users/domain/UserTelephone";
 import { success } from "~/packages/result";
 
 export interface SignupFlowPropsI {
@@ -30,8 +31,13 @@ export class SignupFlow {
       return userPasswordResult;
     }
 
+    const userTelephoneResult = props.telephone ? UserTelephone.newFromSingleValue(props.telephone) : success(null);
+    if (userTelephoneResult.isFailure) {
+      return userTelephoneResult;
+    }
+
     return success(
-      new SignupFlow(props.id, userEmailResult.value, userPasswordResult.value, userCPFResult.value, props.telephone, props.locale, props.timeZone),
+      new SignupFlow(props.id, userEmailResult.value, userPasswordResult.value, userCPFResult.value, userTelephoneResult.value, props.locale, props.timeZone),
     );
   }
 
@@ -48,7 +54,7 @@ export class SignupFlow {
     public readonly email: null | UserEmail,
     public readonly password: null | UserPassword,
     public readonly cpf: null | UserCPF,
-    public readonly telephone: null | string,
+    public readonly telephone: null | UserTelephone,
     public readonly locale: null | string,
     public readonly timeZone: null | string,
   ) {}
@@ -59,7 +65,7 @@ export class SignupFlow {
       email: this.email?.value ?? null,
       password: this.password?.value ?? null,
       cpf: this.cpf?.value ?? null,
-      telephone: this.telephone,
+      telephone: this.telephone?.value ?? null,
       locale: this.locale,
       timeZone: this.timeZone,
     };

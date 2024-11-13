@@ -41,6 +41,9 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      country-calling-code:
+        specifier: ^0.0.3
+        version: 0.0.3
       dayjs:
         specifier: ^1.11.13
         version: 1.11.13
@@ -2588,6 +2591,9 @@ packages:
 
   core-util-is@1.0.3:
     resolution: {integrity: sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==}
+
+  country-calling-code@0.0.3:
+    resolution: {integrity: sha512-DNLyidwJPrEZyDkILYFbgPRlg/tFkpP+uk6JWG+du41l7qoH5guePxSA2YlIjl6wUfp7vWdjCUJeMRuAQPKpRg==}
 
   crc-32@1.2.2:
     resolution: {integrity: sha512-ROmzCKrTnOwybPcJApAA6WBWij23HVfGVNKqqrZpuyZOHqK2CwHSvpGuyt/UNNvaIjEd8X5IFGp4Mh+Ie1IHJQ==}
@@ -8990,6 +8996,8 @@ snapshots:
       browserslist: 4.24.2
 
   core-util-is@1.0.3: {}
+
+  country-calling-code@0.0.3: {}
 
   crc-32@1.2.2: {}
 

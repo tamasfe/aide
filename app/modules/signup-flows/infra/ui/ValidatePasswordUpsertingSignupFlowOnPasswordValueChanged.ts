@@ -15,6 +15,7 @@ export class ValidatePasswordUpsertingSignupFlowOnPasswordValueChanged {
       CPF: null,
       email: null,
       telephone: null,
+      telephonePrefix: null,
       password: passwordValue,
     });
 

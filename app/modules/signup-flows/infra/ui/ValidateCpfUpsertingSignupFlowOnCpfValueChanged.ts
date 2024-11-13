@@ -15,6 +15,7 @@ export class ValidateCpfUpsertingSignupFlowOnCpfValueChanged {
       email: null,
       password: null,
       telephone: null,
+      telephonePrefix: null,
     });
 
     if (resultUpsertingSignupFlow.isFailure) {

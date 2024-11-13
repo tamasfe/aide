@@ -15,6 +15,7 @@ export class ValidateEmailUpsertingSignupFlowOnEmailValueChanged {
       email: emailValue,
       password: null,
       telephone: null,
+      telephonePrefix: null,
     });
 
     if (resultUpsertingSignupFlow.isFailure) {

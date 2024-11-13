@@ -77,8 +77,8 @@ const mask = computed(() => {
     :mask-behaviour-eager="true"
     :error-message="telephoneErrorMessage"
     :model-value="telephone"
-    @input="(value) => telephone ? (telephone = value) : null"
-    @change="(value) => telephone ? null : telephone = value"
+    @input="(value) => telephone === initialValue ? null : (telephone = value)"
+    @change="(value) => telephone === initialValue ? (telephone = value) : null"
   >
     <template #suffix>
       <BaseSelect

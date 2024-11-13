@@ -2,6 +2,7 @@ import type { SignupFlowApiRepositoryI } from "../domain/SignupFlowApiRepository
 import type { SignupFlowIdClientRepositoryI } from "../domain/SignupFlowIdClientRepositoryI";
 import type { UserLanguageRetrieverI } from "../domain/UserLanguageRetriever";
 import type { UserTimeZoneRetrieverI } from "../domain/UserTimeZoneRetriever";
+import { UserTelephone } from "~/modules/users/domain/UserTelephone";
 import { UserCPF } from "~/modules/users/domain/UserCPF";
 import { UserEmail } from "~/modules/users/domain/UserEmail";
 import { UserPassword } from "~/modules/users/domain/UserPassword";
@@ -11,22 +12,26 @@ type Payload = {
   email: string;
   password: null;
   telephone: null;
+  telephonePrefix: null;
   CPF: null;
 } | {
   email: null;
   password: null | string;
   telephone: null;
+  telephonePrefix: null;
   CPF: null;
 } |
 {
   email: null;
   password: null;
   telephone: string;
+  telephonePrefix: string;
   CPF: null;
 } | {
   email: null;
   password: null;
   telephone: null;
+  telephonePrefix: null;
   CPF: string;
 };
 export class UpsertSignupFlow {
@@ -57,6 +62,13 @@ export class UpsertSignupFlow {
       : success(null);
     if (userPasswordResult.isFailure) {
       return userPasswordResult;
+    }
+
+    const userTelephoneResult = signupFlowPayload.telephone !== null && signupFlowPayload.telephonePrefix !== null
+      ? UserTelephone.new(signupFlowPayload.telephone, signupFlowPayload.telephonePrefix)
+      : success(null);
+    if (userTelephoneResult.isFailure) {
+      return userTelephoneResult;
     }
 
     const currentSignupFlowIdResult
@@ -92,7 +104,7 @@ export class UpsertSignupFlow {
         email: userEmailResult.value?.value,
         cpf: userCPFResult.value?.value,
         password: userPasswordResult.value?.value,
-        telephone: signupFlowPayload.telephone,
+        telephone: userTelephoneResult.value?.value,
         locale: userLocaleResult.value,
         timeZone: userTimeZoneResult.value,
       },

@@ -97,7 +97,7 @@ export class SignupFlowApiRepositoryGirobet implements SignupFlowApiRepositoryI 
       requestBody.CPF = signupFlow.cpf.value;
     }
     if (signupFlow.telephone !== null) {
-      requestBody.phone = signupFlow.telephone;
+      requestBody.phone = signupFlow.telephone.value;
     }
     if (signupFlow.timeZone !== null) {
       requestBody.time_zone = signupFlow.timeZone;
