@@ -45,7 +45,7 @@ await useAsyncData(`load-providers`, () => onLoadData().then(() => true), { lazy
     }"
     :loading="loading"
     :gap="2"
-    aspect-ratio="16/6"
+    aspect-ratio="8/3"
     @trigger:load="onLoadData"
   >
     <template #title>
@@ -53,11 +53,10 @@ await useAsyncData(`load-providers`, () => onLoadData().then(() => true), { lazy
     </template>
 
     <!-- Commenting pending to decide where to take the user when clicking the "see all providers" -->
-    <!-- <template #options>
+    <template #options>
       <NuxtLink
         :to="{
-          name: 'providers-id',
-          params: { id: '1' },
+          name: 'providers',
         }"
       >
         <BaseButton
@@ -67,7 +66,7 @@ await useAsyncData(`load-providers`, () => onLoadData().then(() => true), { lazy
           {{ t("button.see_all") }}
         </BaseButton>
       </NuxtLink>
-    </template> -->
+    </template>
 
     <template #default="{ item: providerId }">
       <div class="group flex flex-col gap-2 justify-between w-full h-full">

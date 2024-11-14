@@ -1,31 +1,33 @@
 <script setup lang="ts">
-// STATUS:
-// - Title will come from props
-const generateFakeData = (max: number) => {
-  return new Array(max).fill(0).map((d, i) => (i));
+const { $dependencies } = useNuxtApp();
+const { navigateBackOrHome } = useNavigateBackOrHome();
+const { t } = useI18n();
+
+const ENABLE_SERVER_SIDE_RENDERING = false;
+const DEFER_CLIENT_SIDE_LOADING = true;
+
+const loading = useState(`grid-vertical-providers-loading`, () => true);
+const totalProviders = useState(`grid-vertical-providers-total`, () => 0);
+const nextProvidersPageToSearch = useState(`grid-vertical-providers-next-page`, () => 0);
+const providerIds = useState<number[]>(`grid-vertical-providers-ids`, () => []);
+const canLoadMore = useState(`grid-vertical-providers-can-load-more`, () => true);
+
+const onLoadData = async () => {
+  if (!canLoadMore.value) return;
+  loading.value = true;
+
+  const { providers: foundProviders, canLoadMore: updatedCanLoadMore, totalProviders: total } = await $dependencies.providers.ui.searchProvidersOnGrid.handle(null, nextProvidersPageToSearch.value);
+  providerIds.value.push(...foundProviders.map(provider => provider.id));
+  canLoadMore.value = updatedCanLoadMore;
+  nextProvidersPageToSearch.value += 1;
+  totalProviders.value = total;
+
+  loading.value = false;
 };
-// GameCategory related
-const data = ref(generateFakeData(30));
-const max = 60;
-const loading = ref(true);
-const onLoadMore = () => {
-  const newData = generateFakeData(10);
-  data.value = [...data.value, ...newData];
-};
-// temp utils
-const getImageId = (idx: number) => {
-  const index = idx;
-  // 8 max images will not anyways be used in the final version
-  return (index % 8) + 1;
-};
-onMounted(() => {
-  setTimeout(() => {
-    loading.value = false;
-  }, 1000);
-});
-const onClickHome = async () => {
-  await navigateTo("/");
-};
+
+await useAsyncData(`load-vertical-providers`, () => onLoadData().then(() => true),
+  { lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING },
+);
 </script>
 
 <template>
@@ -36,7 +38,7 @@ const onClickHome = async () => {
           variant="subtle"
           size="sm"
           class="p-1.5"
-          @click="onClickHome"
+          @click="navigateBackOrHome"
         >
           <BaseIcon
             name="lucide:arrow-left"
@@ -44,7 +46,7 @@ const onClickHome = async () => {
           />
         </BaseButton>
 
-        <GridHeaderTitle title="🔥 Top Trending" />
+        <GridHeaderTitle :title="t('grid.providers')" />
       </div>
     </template>
 
@@ -55,28 +57,26 @@ const onClickHome = async () => {
       </div> -->
     </template>
     <GridVertical
-      :data="data"
-      :columns="{ sm: 2, md: 3, lg: 4, xl: 5 }"
-      :total-count="max"
-      aspect-ratio="16/9"
+      aspect-ratio="8/3"
+      :columns="{ sm: 2, md: 2, lg: 3, xl: 4 }"
+      :data="providerIds"
+      :gap="2"
       pagination
-      @trigger:load="onLoadMore"
+      :loading="loading"
+      :total-count="totalProviders"
+      @trigger:load="onLoadData"
     >
-      <template #default="{ data: gameId }">
+      <template #default="{ data: providerId }">
         <NuxtLink
           :to="{
-            name: 'games-id',
+            name: 'providers-id',
             params: {
-              id: gameId,
+              id: providerId,
             },
           }"
-          class="block bg-subtle rounded-default w-full h-full overflow-hidden"
+          class="flex-1 rounded-[0.7rem] overflow-hidden"
         >
-          <NuxtImg
-            :src="`/assets/images/games/${getImageId(gameId)}.png`"
-            alt=""
-            class="block w-full h-full object-cover transition-transform transform hover:scale-105 cursor-pointer"
-          />
+          <ProviderImageLoader :provider-id="providerId" />
         </NuxtLink>
       </template>
     </GridVertical>
