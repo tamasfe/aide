@@ -15,6 +15,10 @@ export class UserCPF {
   }
 
   private constructor(public readonly value: string) {
+    if (!value) {
+      throw new InvalidCPF(value, "The CPF was empty");
+    }
+
     if (!this.isValidCPF(value)) {
       throw new InvalidCPF(value, "The CPF format is not valid");
     }

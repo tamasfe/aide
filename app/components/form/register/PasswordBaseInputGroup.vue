@@ -10,8 +10,15 @@ const { $dependencies } = useNuxtApp();
  * Due to the need of using Zod's "parseAsync" I haven't found a way to concat min and max length validations with the use case
  */
 const { value: password, errorMessage: passwordErrorMessage } = useField("password", value =>
-  $dependencies.signupFlows.ui.validatePasswordUpsertingSignupFlowOnPasswordValueChanged.handle(value),
+  $dependencies.signupFlows.ui.validatePasswordOnRegisterFormChanged.handle(value),
+{ initialValue: "" },
 );
+
+watch(password, async (value) => {
+  if (true === await $dependencies.signupFlows.ui.validatePasswordOnRegisterFormChanged.handle(value)) {
+    await $dependencies.signupFlows.ui.upsertSignupFlowOnRegisterFormInputChange.handle({ password: value });
+  }
+});
 </script>
 
 <template>

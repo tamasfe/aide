@@ -30,15 +30,19 @@ const { handleSubmit, meta } = useForm();
 const { $dependencies } = useNuxtApp();
 
 const errorMessage = ref<null | string>(null);
-const loading = ref(false);
+const loadingSubmit = ref(false);
 
 const onSubmit = handleSubmit(async () => {
-  loading.value = true;
+  loadingSubmit.value = true;
   const errorSubmitting = await $dependencies.signupFlows.ui.submitSignupFlowOnFormSubmission.handle();
-  loading.value = false;
+  loadingSubmit.value = false;
   errorMessage.value = errorSubmitting;
 }, ({ results }) => {
   console.warn("Validation failed", results);
+});
+
+const loading = computed<boolean>(() => {
+  return meta.value.valid && (loadingSubmit.value);
 });
 </script>
 

@@ -11,13 +11,18 @@ import { SignupFlowIdClientRepositoryLocalStorage } from "./SignupFlowIdClientRe
 import { SignupFlowApiRepositoryGirobet } from "./SignupFlowApiRepositoryGirobet";
 import { UserTimeZoneRetrieverIntl } from "./UserTimeZoneRetrieverIntl";
 import { UserLanguageRetrieverNavigator } from "./UserLanguageRetrieverNavigator";
-import { ValidateEmailUpsertingSignupFlowOnEmailValueChanged } from "./ui/ValidateEmailUpsertingSignupFlowOnEmailValueChanged";
-import { ValidateCpfUpsertingSignupFlowOnCpfValueChanged } from "./ui/ValidateCpfUpsertingSignupFlowOnCpfValueChanged";
-import { ValidatePasswordUpsertingSignupFlowOnPasswordValueChanged } from "./ui/ValidatePasswordUpsertingSignupFlowOnPasswordValueChanged";
-import { ValidateTelephoneUpsertingSignupFlowOnTelephoneValueChanged } from "./ui/ValidateTelephoneUpsertingSignupFlowOnTelephoneValueChanged";
+import { ValidateEmailOnRegisterFormChanged } from "./ui/ValidateEmailOnRegisterFormChanged";
+import { ValidateCpfOnRegisterFormChanged } from "./ui/ValidateCpfOnRegisterFormChanged";
+import { ValidatePasswordOnRegisterFormChanged } from "./ui/ValidatePasswordOnRegisterFormChanged";
+import { ValidateTelephoneOnRegisterFormChanged } from "./ui/ValidateTelephoneOnRegisterFormChanged";
 import { SearchCurrentSignupFlowOnModal } from "./ui/SearchCurrentSignupFlowOnModal";
 import { DeleteCurrentSignupFlowIdOnSignupFlowSubmitted } from "./ui/DeleteCurrentSignupFlowIdOnSignupFlowSubmitted";
+import { UpsertSignupFlowOnRegisterFormInputChange } from "./ui/UpsertSignupFlowOnRegisterFormInputChange";
 import type { CommonDependenciesI } from "~/dependency-injection/load-di";
+import { ValidateUserCpf } from "~/modules/users/application/ValidateUserCpf";
+import { ValidateUserPassword } from "~/modules/users/application/ValidateUserPassword";
+import { ValidateUserTelephone } from "~/modules/users/application/ValidateUserTelephone";
+import { ValidateUserEmail } from "~/modules/users/application/ValidateUserEmail";
 
 export interface SignupFlowsDependencyInjectionI {
   signupFlowApiRepository: SignupFlowApiRepositoryI;
@@ -26,10 +31,11 @@ export interface SignupFlowsDependencyInjectionI {
     deleteCurrentSignupFlowIdOnSignupFlowSubmitted: DeleteCurrentSignupFlowIdOnSignupFlowSubmitted;
     searchCurrentSignupFlowOnModal: SearchCurrentSignupFlowOnModal;
     submitSignupFlowOnFormSubmission: SubmitSignupFlowOnFormSubmission;
-    validateEmailUpsertingSignupFlowOnEmailValueChanged: ValidateEmailUpsertingSignupFlowOnEmailValueChanged;
-    validateCpfUpsertingSignupFlowOnCpfValueChanged: ValidateCpfUpsertingSignupFlowOnCpfValueChanged;
-    validatePasswordUpsertingSignupFlowOnPasswordValueChanged: ValidatePasswordUpsertingSignupFlowOnPasswordValueChanged;
-    validateTelephoneUpsertingSignupFlowOnTelephoneValueChanged: ValidateTelephoneUpsertingSignupFlowOnTelephoneValueChanged;
+    upsertSignupFlowOnRegisterFormInputChange: UpsertSignupFlowOnRegisterFormInputChange;
+    validateEmailOnRegisterFormChanged: ValidateEmailOnRegisterFormChanged;
+    validateCpfOnRegisterFormChanged: ValidateCpfOnRegisterFormChanged;
+    validatePasswordOnRegisterFormChanged: ValidatePasswordOnRegisterFormChanged;
+    validateTelephoneOnRegisterFormChanged: ValidateTelephoneOnRegisterFormChanged;
   };
 }
 
@@ -88,25 +94,25 @@ export const createSignupFlowsDependencyInjection = (publicConfig: PublicRuntime
         commonDependencies.translateFunction,
         commonDependencies.logger,
       ),
-      validateEmailUpsertingSignupFlowOnEmailValueChanged: new ValidateEmailUpsertingSignupFlowOnEmailValueChanged(
+      upsertSignupFlowOnRegisterFormInputChange: new UpsertSignupFlowOnRegisterFormInputChange(
         upsertSignupFlow,
-        commonDependencies.translateFunction,
         commonDependencies.logger,
       ),
-      validateCpfUpsertingSignupFlowOnCpfValueChanged: new ValidateCpfUpsertingSignupFlowOnCpfValueChanged(
-        upsertSignupFlow,
+      validateEmailOnRegisterFormChanged: new ValidateEmailOnRegisterFormChanged(
+        new ValidateUserEmail(),
         commonDependencies.translateFunction,
-        commonDependencies.logger,
       ),
-      validatePasswordUpsertingSignupFlowOnPasswordValueChanged: new ValidatePasswordUpsertingSignupFlowOnPasswordValueChanged(
-        upsertSignupFlow,
+      validateCpfOnRegisterFormChanged: new ValidateCpfOnRegisterFormChanged(
+        new ValidateUserCpf(),
         commonDependencies.translateFunction,
-        commonDependencies.logger,
       ),
-      validateTelephoneUpsertingSignupFlowOnTelephoneValueChanged: new ValidateTelephoneUpsertingSignupFlowOnTelephoneValueChanged(
-        upsertSignupFlow,
+      validatePasswordOnRegisterFormChanged: new ValidatePasswordOnRegisterFormChanged(
+        new ValidateUserPassword(),
         commonDependencies.translateFunction,
-        commonDependencies.logger,
+      ),
+      validateTelephoneOnRegisterFormChanged: new ValidateTelephoneOnRegisterFormChanged(
+        new ValidateUserTelephone(),
+        commonDependencies.translateFunction,
       ),
     },
   };

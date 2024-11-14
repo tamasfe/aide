@@ -9,30 +9,11 @@ import { UserPassword } from "~/modules/users/domain/UserPassword";
 import { success } from "~/packages/result";
 
 type Payload = {
-  email: string;
-  password: null;
-  telephone: null;
-  telephonePrefix: null;
-  CPF: null;
-} | {
-  email: null;
-  password: null | string;
-  telephone: null;
-  telephonePrefix: null;
-  CPF: null;
-} |
-{
-  email: null;
-  password: null;
-  telephone: string;
-  telephonePrefix: string;
-  CPF: null;
-} | {
-  email: null;
-  password: null;
-  telephone: null;
-  telephonePrefix: null;
-  CPF: string;
+  email: string | null;
+  password: string | null;
+  telephone: string | null;
+  telephonePrefix: string | null;
+  CPF: string | null;
 };
 export class UpsertSignupFlow {
   constructor(

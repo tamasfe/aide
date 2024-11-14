@@ -73,6 +73,9 @@ export default defineNuxtConfig({
     transpile: ["applicationinsights"],
   },
   sourcemap: { client: true },
+  devServer: {
+    port: 3001,
+  },
   future: {
     compatibilityVersion: 4,
   },

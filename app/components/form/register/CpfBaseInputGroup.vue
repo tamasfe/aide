@@ -17,8 +17,15 @@ const { $dependencies } = useNuxtApp();
  * Due to the need of using Zod's "parseAsync" I haven't found a way to concat min and max length validations with the ValidateCpfUpsertingSignupFlowOnCpfValueChanged
  */
 const { value: cpf, errorMessage: cpfErrorMessage } = useField("cpf", value =>
-  $dependencies.signupFlows.ui.validateCpfUpsertingSignupFlowOnCpfValueChanged.handle(value),
+  $dependencies.signupFlows.ui.validateCpfOnRegisterFormChanged.handle(value),
 { initialValue: props.initialValue },
+);
+
+watch(cpf, async (value) => {
+  if (true === await $dependencies.signupFlows.ui.validateCpfOnRegisterFormChanged.handle(value)) {
+    await $dependencies.signupFlows.ui.upsertSignupFlowOnRegisterFormInputChange.handle({ CPF: value });
+  }
+},
 );
 </script>
 

@@ -35,19 +35,22 @@ const selectedPrefix = ref<TelephonePrefixOption>(
  * Due to the need of using Zod's "parseAsync" I haven't found a way to concat min and max length validations with the use case
  */
 const { value: telephone, errorMessage: telephoneErrorMessage, validate: validateTelephoneChange } = useField("telephone", value =>
-  $dependencies.signupFlows.ui.validateTelephoneUpsertingSignupFlowOnTelephoneValueChanged.handle(value, selectedPrefix.value.value, selectedPrefix.value.countryCode),
+  $dependencies.signupFlows.ui.validateTelephoneOnRegisterFormChanged.handle(value, selectedPrefix.value.value, selectedPrefix.value.countryCode),
 { initialValue: initialValue.value },
 );
 
-const onTelephonePrefixChange = (option: TelephonePrefixOption) => {
-  selectedPrefix.value = option;
-  validateTelephoneChange();
-};
+watch (selectedPrefix, async () => validateTelephoneChange());
 
-/**
- * TODO: once we know all telephone country codes that we support, refactor this to a class or file of its own "TelephoneMaskSelector"
- * that will depend on (countryCode, telephoneValue). Those 2 params should allow us to correctly pick the correct mask for all use cases.
- */
+watch([telephone, selectedPrefix], async ([telephone, telephonePrefix]) => {
+  if (true === await $dependencies.signupFlows.ui.validateTelephoneOnRegisterFormChanged.handle(telephone, selectedPrefix.value.value, selectedPrefix.value.countryCode)) {
+    await $dependencies.signupFlows.ui.upsertSignupFlowOnRegisterFormInputChange.handle({
+      telephone,
+      telephonePrefix: telephonePrefix?.value,
+    });
+  }
+},
+);
+
 const mask = computed(() => UserTelephoneMask.new(selectedPrefix.value.countryCode, telephone.value).value());
 </script>
 
@@ -71,7 +74,7 @@ const mask = computed(() => UserTelephoneMask.new(selectedPrefix.value.countryCo
         :initial-selected-option="selectedPrefix"
         container-class="w-auto"
         class="pr-0 bg-subtle"
-        @change="onTelephonePrefixChange"
+        @change="value => selectedPrefix = value"
       >
         <template #selected="{ selected }">
           <div class="flex flex-shrink-0 items-center gap-2">
