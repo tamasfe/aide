@@ -74,7 +74,7 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["LoginRequestBody"];
+                    "application/json": components["schemas"]["LoginRequest"];
                 };
             };
             responses: {
@@ -179,7 +179,7 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["PasswordResetRequestBody"];
+                    "application/json": components["schemas"]["InitializePasswordResetRequest"];
                 };
             };
             responses: {
@@ -230,7 +230,7 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["PasswordResetBody"];
+                    "application/json": components["schemas"]["FinalizePasswordResetRequest"];
                 };
             };
             responses: {
@@ -289,7 +289,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["SignupFlowCreateResponse"];
+                        "application/json": components["schemas"]["CreateSignupFlowResponse"];
                     };
                 };
                 "4XX": {
@@ -418,7 +418,7 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["SignupPatchFlowRequestBody"];
+                    "application/json": components["schemas"]["PatchSignupFlowRequest"];
                 };
             };
             responses: {
@@ -465,7 +465,7 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["PaymentTransactionRequestBody"];
+                    "application/json": components["schemas"]["PaymentTransactionRequest"];
                 };
             };
             responses: {
@@ -517,7 +517,7 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["PaymentTransactionRequestBody"];
+                    "application/json": components["schemas"]["PaymentTransactionRequest"];
                 };
             };
             responses: {
@@ -551,15 +551,20 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get?: never;
-        put?: never;
         /**
          * Get Payment Flows
          * @description List all payment flows for the currently logged in user.
          */
-        post: {
+        get: {
             parameters: {
-                query?: never;
+                query?: {
+                    /** @description The payment type to filter the payment flows by. If not set, all payment types will be included. */
+                    payment_type?: components["schemas"]["PaymentType"] | null;
+                    /** @description The wallet ID to filter the payment flows by. If not set, all wallets of the user will be included. */
+                    wallet_id?: components["schemas"]["WalletId"] | null;
+                    limit?: number;
+                    offset?: number;
+                };
                 header?: never;
                 path?: never;
                 cookie?: never;
@@ -571,7 +576,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["PaymentFlowResponse"][];
+                        "application/json": components["schemas"]["PaginatorResponse_for_PaymentFlowResponse_and_ListPaymentFlowsQuery"];
                     };
                 };
                 "4XX": {
@@ -584,6 +589,8 @@ export interface paths {
                 };
             };
         };
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -818,7 +825,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["PaginatorResponse_for_GameProviderSearchResponse_and_GameProviderSearchQuery"];
+                        "application/json": components["schemas"]["PaginatorResponse_for_SearchGameProviderResponse_and_SearchGameProviderQuery"];
                     };
                 };
                 "4XX": {
@@ -1039,7 +1046,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["PaginatorResponse_for_GameSearchResponse_and_GameSearchQuery"];
+                        "application/json": components["schemas"]["PaginatorResponse_for_SearchGameResponse_and_SearchGameQuery"];
                     };
                 };
                 "4XX": {
@@ -1142,7 +1149,7 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["GameRatingRequestBody"];
+                    "application/json": components["schemas"]["RateGameRequest"];
                 };
             };
             responses: {
@@ -1363,7 +1370,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["PaginatorResponse_for_NotificationResponse_and_NotificationListFilterRequestQuery"];
+                        "application/json": components["schemas"]["PaginatorResponse_for_NotificationResponse_and_ListNotificationsQuery"];
                     };
                 };
                 "4XX": {
@@ -1491,7 +1498,7 @@ export interface paths {
         };
         /**
          * Get User Balance
-         * @description Get the balance of the currently logged in user.
+         * @description Get the balance of the currently logged in user. The wallets are returned in the order of their selection. Frontends mays utilize this order to display the wallets, and to identify the active wallet.
          */
         get: {
             parameters: {
@@ -1507,7 +1514,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["WalletBalanceResponse"][];
+                        "application/json": components["schemas"]["UserBalanceResponse"][];
                     };
                 };
                 "4XX": {
@@ -1585,6 +1592,55 @@ export interface paths {
             requestBody: {
                 content: {
                     "application/json": components["schemas"]["UserSettings"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/user/active-wallet": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update User Active Wallet
+         * @description Update the selected wallet of the user. The user balance endpoint will return the user's wallets in the order of their selection time.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["SelectWalletRequest"];
                 };
             };
             responses: {
@@ -1782,7 +1838,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["AccessTokenResponse"];
+                        "application/json": components["schemas"]["KycAccessTokenResponse"];
                     };
                 };
                 "4XX": {
@@ -1803,20 +1859,46 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/docs/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description This documentation page. */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description HTML content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/html": string;
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
-        AccessTokenResponse: {
-            /** @description KYC provider identifier. This should be used to differentiate which WebSDK/flow to use. */
-            provider_identifier: components["schemas"]["KycProviderIdentifier"];
-            /** @description Access token provided by the KYC integration */
-            token: string;
-            /** @description User ID, this is the current user, and should never deviate from the current user */
-            user_id: components["schemas"]["UserId"];
-            /** @description User metadata that can be used to pre-fill KYC information */
-            user_metadata: components["schemas"]["KycUserMetadata"];
-        };
         AlternativeSite: {
             /** @description The base URL of the alternative site. This url should be used to redirect the user to the alternative site. The URL may include a path too, so this needs to be taken into account. */
             base_url: components["schemas"]["SystemUrl"];
@@ -1833,8 +1915,27 @@ export interface components {
             /** @description The identifier of the game category. This is a unique string that can be used to identify the category in the game search endpoint. */
             identifier: string;
         };
+        CreateGameSessionQuery: {
+            /** @description The device type the game session is started on. Some games may only be available on certain devices. */
+            client_type: components["schemas"]["SystemDevice"];
+            /** @description The currency (wallet) to use for the game session. It can not be changed during the session. */
+            currency: components["schemas"]["SystemCurrency"];
+        };
+        CreateSignupFlowResponse: {
+            /** @description The ID of the created signup flow. */
+            flow_id: string;
+        };
         /** Format: int64 */
         DurationSeconds: number;
+        FinalizePasswordResetRequest: {
+            /** @description The new password for the user. */
+            password: string;
+            /**
+             * Format: uuid
+             * @description The token that was sent to the user and has to be included for the reset to succeed.
+             */
+            token: string;
+        };
         /** Format: int64 */
         GameCategoryId: number;
         GameCategoryListFilter: {
@@ -1842,17 +1943,21 @@ export interface components {
         };
         /** Format: int64 */
         GameId: number;
-        GameImageRequestQuery: {
+        GameImageQuery: {
             /** @description The variant of the image to retrieve. */
             variant?: components["schemas"]["GameImageVariant"];
         };
         /** @enum {string} */
         GameImageVariant: "extra_small" | "small" | "medium" | "large" | "background";
+        GameParams: {
+            /** @description The ID of the game to retrieve. */
+            game_id: components["schemas"]["GameId"];
+        };
         /** Format: int64 */
         GameProviderId: number;
         /** @enum {string} */
         GameProviderImageColor: "white" | "black" | "color";
-        GameProviderImageRequestQuery: {
+        GameProviderImageQuery: {
             /** @description The color of the image to return. */
             color?: components["schemas"]["GameProviderImageColor"];
             /** @description The size of the image to return. */
@@ -1860,7 +1965,7 @@ export interface components {
         };
         /** @enum {string} */
         GameProviderImageSize: "small" | "default";
-        GameProviderRequestPathParams: {
+        GameProviderParams: {
             /** @description The ID of the game provider. */
             provider_id: components["schemas"]["GameProviderId"];
         };
@@ -1875,30 +1980,8 @@ export interface components {
             /** @description The slug of the game provider. This may be used in URLs. */
             slug: string;
         };
-        GameProviderSearchQuery: {
-            /** @description An organic search query to find game providers by. Searched fields include but are not limited to: name, description, slug... */
-            query?: string | null;
-        };
-        /** @description The response to a game provider search request. It only contains a limited set of information about the provider. If more information is needed, the provider ID can be used to fetch the full provider details via the "get provider" endpoint. */
-        GameProviderSearchResponse: {
-            /** @description The ID of the game provider. */
-            id: components["schemas"]["GameProviderId"];
-            /** @description The name of the game provider. Do not use this in URLs, as it may contain special characters. */
-            name: string;
-            /**
-             * Format: double
-             * @description The search score of the game provider.
-             */
-            score?: number | null;
-            /** @description The slug of the game provider. This may be used in URLs. */
-            slug: string;
-        };
         /** @enum {string} */
         GameRating: "like" | "dislike";
-        GameRatingRequestBody: {
-            /** @description The rating to set for the game. If `null` the rating for the current user is removed. */
-            rating?: components["schemas"]["GameRating"] | null;
-        };
         GameRatingsResponse: {
             /**
              * Format: int64
@@ -1910,10 +1993,6 @@ export interface components {
              * @description The number of likes the game has received.
              */
             likes: number;
-        };
-        GameRequestPathParams: {
-            /** @description The ID of the game to retrieve. */
-            game_id: components["schemas"]["GameId"];
         };
         GameResponse: {
             /**
@@ -1948,44 +2027,23 @@ export interface components {
             /** @description The slug of the game. This may be used in URLs. */
             slug: string;
         };
-        GameSearchQuery: {
-            /** @description The category identifier to filter games by. If set, only games in this category are returned. Note: this is not the category ID, but the identifier. */
-            category?: string | null;
-            /**
-             * Format: int64
-             * @description The provider to filter games by. If set, only games by this provider are returned.
-             */
-            provider_id?: number | null;
-            /** @description An organic search query to find games by. Searched fields include but are not limited to: name, description, provider name... */
-            query?: string | null;
-        };
-        /** @description The response to a game search request. It only contains a limited set of information about the game. If more information is needed, the game ID can be used to fetch the full game details via the "get game" endpoint. */
-        GameSearchResponse: {
-            /** @description The ID of the game. */
-            id: components["schemas"]["GameId"];
-            /** @description The name of the game. Do not use this in URLs, as it may contain special characters. */
-            name: string;
-            /** @description The provider of the game. */
-            provider: components["schemas"]["GameProviderSearchResponse"];
-            /**
-             * Format: double
-             * @description The search score of the game.
-             */
-            score?: number | null;
-            /** @description The slug of the game. This may be used in URLs. */
-            slug: string;
-        };
-        GameSessionRequestQuery: {
-            /** @description The device type the game session is started on. Some games may only be available on certain devices. */
-            client_type: components["schemas"]["SystemDevice"];
-            /** @description The currency (wallet) to use for the game session. It can not be changed during the session. */
-            currency: components["schemas"]["SystemCurrency"];
+        InitializePasswordResetRequest: {
+            /** @description The email address of the user to reset the password for. */
+            email: string;
         };
         InternalError: string;
-        /** @enum {string} */
-        KycProviderIdentifier: "sumsub";
+        KycAccessTokenResponse: {
+            /** @description KYC provider identifier. This should be used to differentiate which WebSDK/flow to use. */
+            provider_identifier: components["schemas"]["KycProviderIdentifier"];
+            /** @description Access token provided by the KYC integration */
+            token: string;
+            /** @description User ID, this is the current user, and should never deviate from the current user */
+            user_id: components["schemas"]["UserId"];
+            /** @description User metadata that can be used to pre-fill KYC information */
+            user_metadata: components["schemas"]["KycAccessTokenUserMetadataResponse"];
+        };
         /** @description Metadata that can be used to pre-fill KYC information. */
-        KycUserMetadata: {
+        KycAccessTokenUserMetadataResponse: {
             /** @description User's jurisdiction country code in ISO 3166-1 alpha-2 format */
             country_alpha2: string;
             /** @description The user's email */
@@ -1995,6 +2053,8 @@ export interface components {
             /** @description The user's phone number in E.164 format */
             phone_number: string;
         };
+        /** @enum {string} */
+        KycProviderIdentifier: "sumsub";
         LeaseTokenResponse: {
             /** Format: uuid */
             token: string;
@@ -2022,7 +2082,19 @@ export interface components {
             withdrawal_min?: string | null;
             withdrawal_min_first?: string | null;
         };
-        LoginRequestBody: {
+        ListNotificationsQuery: {
+            /** @description The read status of the notifications to filter by. */
+            read_status?: components["schemas"]["ReadStatus"] | null;
+            /** @description The types of the notifications to filter by. */
+            types?: components["schemas"]["NotificationTypeDiscriminants"][] | null;
+        };
+        ListPaymentFlowsQuery: {
+            /** @description The payment type to filter the payment flows by. If not set, all payment types will be included. */
+            payment_type?: components["schemas"]["PaymentType"] | null;
+            /** @description The wallet ID to filter the payment flows by. If not set, all wallets of the user will be included. */
+            wallet_id?: components["schemas"]["WalletId"] | null;
+        };
+        LoginRequest: {
             /** @description The URL to redirect to after login. If not set a 200 OK response is returned. */
             next?: string | null;
             /** @description The password of the user. */
@@ -2033,13 +2105,7 @@ export interface components {
         MaybeOperator: unknown;
         /** Format: int64 */
         NotificationId: number;
-        NotificationListFilterRequestQuery: {
-            /** @description The read status of the notifications to filter by. */
-            read_status?: components["schemas"]["ReadStatus"] | null;
-            /** @description The types of the notifications to filter by. */
-            types?: components["schemas"]["NotificationTypeDiscriminants"][] | null;
-        };
-        NotificationRequestPathParams: {
+        NotificationParams: {
             /** @description The ID of the notification to retrieve. */
             notification_id: components["schemas"]["NotificationId"];
         };
@@ -2079,16 +2145,20 @@ export interface components {
          * @enum {string}
          */
         NotificationTypeDiscriminants: "payment_status_update" | "kyc_completed" | "test_status";
-        PaginatorMetadata_for_GameProviderSearchQuery: {
-            filters?: components["schemas"]["GameProviderSearchQuery"] | null;
+        PaginatorMetadata_for_ListNotificationsQuery: {
+            filters?: components["schemas"]["ListNotificationsQuery"] | null;
             pagination: components["schemas"]["PaginatorPosition"];
         };
-        PaginatorMetadata_for_GameSearchQuery: {
-            filters?: components["schemas"]["GameSearchQuery"] | null;
+        PaginatorMetadata_for_ListPaymentFlowsQuery: {
+            filters?: components["schemas"]["ListPaymentFlowsQuery"] | null;
             pagination: components["schemas"]["PaginatorPosition"];
         };
-        PaginatorMetadata_for_NotificationListFilterRequestQuery: {
-            filters?: components["schemas"]["NotificationListFilterRequestQuery"] | null;
+        PaginatorMetadata_for_SearchGameProviderQuery: {
+            filters?: components["schemas"]["SearchGameProviderQuery"] | null;
+            pagination: components["schemas"]["PaginatorPosition"];
+        };
+        PaginatorMetadata_for_SearchGameQuery: {
+            filters?: components["schemas"]["SearchGameQuery"] | null;
             pagination: components["schemas"]["PaginatorPosition"];
         };
         PaginatorPosition: {
@@ -2105,17 +2175,21 @@ export interface components {
             /** Format: int64 */
             total_items: number;
         };
-        PaginatorResponse_for_GameProviderSearchResponse_and_GameProviderSearchQuery: {
-            data: components["schemas"]["GameProviderSearchResponse"][];
-            metadata: components["schemas"]["PaginatorMetadata_for_GameProviderSearchQuery"];
-        };
-        PaginatorResponse_for_GameSearchResponse_and_GameSearchQuery: {
-            data: components["schemas"]["GameSearchResponse"][];
-            metadata: components["schemas"]["PaginatorMetadata_for_GameSearchQuery"];
-        };
-        PaginatorResponse_for_NotificationResponse_and_NotificationListFilterRequestQuery: {
+        PaginatorResponse_for_NotificationResponse_and_ListNotificationsQuery: {
             data: components["schemas"]["NotificationResponse"][];
-            metadata: components["schemas"]["PaginatorMetadata_for_NotificationListFilterRequestQuery"];
+            metadata: components["schemas"]["PaginatorMetadata_for_ListNotificationsQuery"];
+        };
+        PaginatorResponse_for_PaymentFlowResponse_and_ListPaymentFlowsQuery: {
+            data: components["schemas"]["PaymentFlowResponse"][];
+            metadata: components["schemas"]["PaginatorMetadata_for_ListPaymentFlowsQuery"];
+        };
+        PaginatorResponse_for_SearchGameProviderResponse_and_SearchGameProviderQuery: {
+            data: components["schemas"]["SearchGameProviderResponse"][];
+            metadata: components["schemas"]["PaginatorMetadata_for_SearchGameProviderQuery"];
+        };
+        PaginatorResponse_for_SearchGameResponse_and_SearchGameQuery: {
+            data: components["schemas"]["SearchGameResponse"][];
+            metadata: components["schemas"]["PaginatorMetadata_for_SearchGameQuery"];
         };
         PaginatorSelection: {
             /**
@@ -2129,18 +2203,8 @@ export interface components {
              */
             offset: number;
         };
-        PasswordResetBody: {
-            /** @description The new password for the user. */
-            password: string;
-            /**
-             * Format: uuid
-             * @description The token that was sent to the user and has to be included for the reset to succeed.
-             */
-            token: string;
-        };
-        PasswordResetRequestBody: {
-            /** @description The email address of the user to reset the password for. */
-            email: string;
+        PatchSignupFlowRequest: {
+            [key: string]: unknown;
         };
         /** Format: int64 */
         PaymentFlowId: number;
@@ -2169,12 +2233,14 @@ export interface components {
             payment_provider_id: components["schemas"]["PaymentProviderId"];
             /** @description The type of the payment flow. */
             payment_type: components["schemas"]["PaymentType"];
+            /** @description The last status of the payment flow. If no status is set, the payment has been initialized but not yet processed by the system in any way. */
+            status?: components["schemas"]["PaymentStatus"] | null;
             /** @description The wallet ID the payment flow is associated with. */
             wallet_id: components["schemas"]["WalletId"];
         };
         /** @enum {string} */
         PaymentLimitBound: "min" | "max";
-        PaymentLimitsRequestQuery: {
+        PaymentLimitsQuery: {
             /** @description The currency to get the payment limits for. */
             currency: components["schemas"]["SystemCurrency"];
             /** @description The payment method to get the payment limits for. */
@@ -2194,7 +2260,7 @@ export interface components {
         PaymentProviderId: number;
         /** @enum {string} */
         PaymentStatus: "pending" | "waiting_for_approval" | "approved" | "processing" | "completed" | "failed" | "cancelled" | "rejected" | "refunded";
-        PaymentTransactionRequestBody: {
+        PaymentTransactionRequest: {
             /** @description The amount of the payment transaction. */
             amount: string;
             /** @description The currency of the payment transaction. */
@@ -2204,8 +2270,61 @@ export interface components {
         };
         /** @enum {string} */
         PaymentType: "deposit" | "withdrawal";
+        RateGameRequest: {
+            /** @description The rating to set for the game. If `null` the rating for the current user is removed. */
+            rating?: components["schemas"]["GameRating"] | null;
+        };
         /** @enum {string} */
         ReadStatus: "read" | "unread";
+        SearchGameProviderQuery: {
+            /** @description An organic search query to find game providers by. Searched fields include but are not limited to: name, description, slug... */
+            query?: string | null;
+        };
+        /** @description The response to a game provider search request. It only contains a limited set of information about the provider. If more information is needed, the provider ID can be used to fetch the full provider details via the "get provider" endpoint. */
+        SearchGameProviderResponse: {
+            /** @description The ID of the game provider. */
+            id: components["schemas"]["GameProviderId"];
+            /** @description The name of the game provider. Do not use this in URLs, as it may contain special characters. */
+            name: string;
+            /**
+             * Format: double
+             * @description The search score of the game provider.
+             */
+            score?: number | null;
+            /** @description The slug of the game provider. This may be used in URLs. */
+            slug: string;
+        };
+        SearchGameQuery: {
+            /** @description The category identifier to filter games by. If set, only games in this category are returned. Note: this is not the category ID, but the identifier. */
+            category?: string | null;
+            /**
+             * Format: int64
+             * @description The provider to filter games by. If set, only games by this provider are returned.
+             */
+            provider_id?: number | null;
+            /** @description An organic search query to find games by. Searched fields include but are not limited to: name, description, provider name... */
+            query?: string | null;
+        };
+        /** @description The response to a game search request. It only contains a limited set of information about the game. If more information is needed, the game ID can be used to fetch the full game details via the "get game" endpoint. */
+        SearchGameResponse: {
+            /** @description The ID of the game. */
+            id: components["schemas"]["GameId"];
+            /** @description The name of the game. Do not use this in URLs, as it may contain special characters. */
+            name: string;
+            /** @description The provider of the game. */
+            provider: components["schemas"]["SearchGameProviderResponse"];
+            /**
+             * Format: double
+             * @description The search score of the game.
+             */
+            score?: number | null;
+            /** @description The slug of the game. This may be used in URLs. */
+            slug: string;
+        };
+        SelectWalletRequest: {
+            /** @description The ID of the wallet to select. */
+            currency: components["schemas"]["SystemCurrency"];
+        };
         /** @description Represents various errors that can occur during server operations.
          *
          *     This enum covers a wide range of error scenarios, from wallet-related issues to payment processing problems, user authentication errors, and more. */
@@ -2309,6 +2428,12 @@ export interface components {
             code: "USER_KYC_REQUIRED";
         } | {
             /** @enum {string} */
+            code: "USER_EXCLUDED";
+        } | {
+            /** @enum {string} */
+            code: "USER_BLOCKED";
+        } | {
+            /** @enum {string} */
             code: "JURISDICTION_NOT_SUPPORTED";
             metadata: {
                 /** @description The violating jurisdiction. */
@@ -2397,14 +2522,13 @@ export interface components {
             code: "UNAUTHORIZED";
         } | {
             /** @enum {string} */
+            code: "FORBIDDEN";
+        } | {
+            /** @enum {string} */
             code: "INTERNAL";
             metadata: components["schemas"]["InternalError"];
         };
-        SignupFlowCreateResponse: {
-            /** @description The ID of the created signup flow. */
-            flow_id: string;
-        };
-        SignupFlowRequestPathParams: {
+        SignupFlowParams: {
             /** @description The ID of the signup flow to retrieve. */
             flow_id: string;
         };
@@ -2422,9 +2546,6 @@ export interface components {
             id: string;
             /** @description The jurisdiction of the signup flow. This field can not be changed once set. The user will be created in this jurisdiction and thus is subject to the laws of this jurisdiction. Changing a user jurisdiction after signup is not easily possible without additional verification, information and setup. */
             jurisdiction: components["schemas"]["SystemCountry"];
-        };
-        SignupPatchFlowRequestBody: {
-            [key: string]: unknown;
         };
         SiteResponse: {
             /** @description The base URL of the site. This may be used for redirects, links, etc. */
@@ -2478,6 +2599,14 @@ export interface components {
             deposit?: string | null;
             withdrawal?: string | null;
         };
+        UserBalanceResponse: {
+            /** @description The balance of the wallet. */
+            balance: string;
+            /** @description The currency of the wallet. */
+            currency: components["schemas"]["SystemCurrency"];
+            /** @description The ID of the wallet that the balance is for. */
+            wallet_id: components["schemas"]["WalletId"];
+        };
         /** Format: int64 */
         UserId: number;
         UserResponse: {
@@ -2509,12 +2638,6 @@ export interface components {
             language?: components["schemas"]["MaybeOperator"];
             pix_payment_key?: components["schemas"]["MaybeOperator"];
             primary_currency?: components["schemas"]["MaybeOperator"];
-        };
-        WalletBalanceResponse: {
-            /** @description The balance of the wallet. */
-            balance: string;
-            /** @description The ID of the wallet. */
-            currency: components["schemas"]["SystemCurrency"];
         };
         /** Format: int64 */
         WalletId: number;
