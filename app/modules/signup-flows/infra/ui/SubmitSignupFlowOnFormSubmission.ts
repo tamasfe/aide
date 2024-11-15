@@ -18,7 +18,16 @@ export class SubmitSignupFlowOnFormSubmission {
     const result = await new SubmitSignupFlow(this.flowIdClientRepository, this.apiRepository, this.asyncMessagePublisher).handle();
 
     if (result.isFailure) {
-      // TODO: Handle common API errors
+      if (result.error.name === "ErrorAlreadyTakenCpf") {
+        return this.translateFunction("modal_session.error_submitting_flow_already_taken_cpf");
+      }
+      if (result.error.name === "ErrorAlreadyTakenEmail") {
+        return this.translateFunction("modal_session.error_submitting_flow_already_taken_email");
+      }
+      if (result.error.name === "ErrorAlreadyTakenTelephone") {
+        return this.translateFunction("modal_session.error_submitting_flow_already_taken_telephone");
+      }
+
       this.logger.error("Error submitting the signup flow. More info in the cause", result.error);
       return this.translateFunction("modal_session.error_submitting_flow");
     }
