@@ -74,8 +74,8 @@ await useAsyncData(`load-games-for-${props.categoryIdentifier}`, () => onLoadDat
       :columns="{ sm: 3, md: 4, lg: 6, xl: 8 }"
       :data="gameIds"
       :loading="loading"
-      pagination
       :total-count="totalGamesOfCategory"
+      pagination
       @trigger:load="onLoadData"
     >
       <template #default="{ data: gameId }">
