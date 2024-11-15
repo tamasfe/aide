@@ -39,6 +39,7 @@ const props = withDefaults(
 
 const inputGroupContainer = ref<HTMLElement | null>(null);
 const floatingLabel = ref<HTMLElement | null>(null);
+const isInputFocused = ref(false);
 
 const fieldPlaceholder = computed(() => {
   if (props.placeholderPlacement === "floating") return undefined;
@@ -56,11 +57,11 @@ defineEmits<{
 }>();
 
 const onFloatFocus = () => {
-  floatingLabel.value?.classList.add("focused");
+  isInputFocused.value = true;
 };
 
 const onFloatBlur = () => {
-  floatingLabel.value?.classList.remove("focused");
+  isInputFocused.value = false;
 };
 
 const setupFloatingLabel = () => {
@@ -111,7 +112,10 @@ const value = defineModel({
         v-if="placeholderPlacement === 'floating' && placeholder"
         ref="floatingLabel"
         class="floating-label pointer-events-none"
-        :class="{ 'giro__input-has-value': !!value }"
+        :class="{ 
+          'giro__input-has-value': !!value,
+          focused: isInputFocused
+        }"
       >
         <span>{{ placeholder }}</span>
         <span

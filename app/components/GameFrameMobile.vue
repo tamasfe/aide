@@ -48,7 +48,7 @@ const onTogglePlaying = async () => {
       <template #authenticated>
         <div
           v-if="playing"
-          class="fixed top-0 left-0 w-full h-full z-[11]"
+          class="fixed top-0 left-0 w-full h-full z-[11] bg-subtle"
         >
           <div class="p-5 bg-subtle">
             <BaseClose

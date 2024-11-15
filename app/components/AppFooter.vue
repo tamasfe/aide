@@ -12,6 +12,17 @@ const { localeProperties } = useI18n();
 
 const year = ref(new Date().getFullYear());
 
+const logos = [
+  {
+    src: "/assets/footer-logos/play-responsibly.svg",
+    alt: "footer.play_responsibly",
+  },
+  {
+    src: "/assets/footer-logos/responsible-gaming.svg",
+    alt: "footer.responsible_gaming",
+  }
+]
+
 const scrollToTop = () => {
   window.scrollTo({ top: 0, behavior: "smooth" });
 };
@@ -104,13 +115,19 @@ const initialOption: Locale | undefined = ACTIVE_LOCALES.find(
     <section class="giro__container">
       <GridHorizontal
         class="w-full"
-        :data="Array(20).fill(0)"
+        :data="logos"
         :gap="1"
         :columns="{ sm: 3.5, md: 5.5, lg: 6.5, xl: 7.5 }"
         aspect-ratio="16/9"
       >
-        <template #default>
-          <div class="w-full h-full bg-emphasis" />
+        <template #default="{ item }">
+          <div class="w-full h-full">
+            <NuxtImg
+              :src="item.src"
+              :alt="$t(item.alt)"
+              class="w-full h-full"
+            />
+          </div>
         </template>
       </GridHorizontal>
     </section>
