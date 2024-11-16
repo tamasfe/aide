@@ -11,7 +11,7 @@ export default defineNuxtPlugin({
   async setup(_nuxtApp) {
     const { $i18n } = useNuxtApp();
     const config = useRuntimeConfig();
-    const commonDependencies = await loadDependencies(config.public, $i18n.t);
+    const commonDependencies = await loadDependencies(config.public, $i18n.t, $i18n.d, $i18n.n);
     const requestHeaders = useRequestHeaders();
 
     return {

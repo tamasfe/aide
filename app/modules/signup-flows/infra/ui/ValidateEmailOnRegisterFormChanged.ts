@@ -1,5 +1,5 @@
 import type { ValidateUserEmail } from "~/modules/users/application/ValidateUserEmail";
-import type { TranslateFunctionType } from "~/packages/translation/TranslateFunctionType";
+import type { TranslateFunctionType } from "~/packages/translation";
 
 export class ValidateEmailOnRegisterFormChanged {
   public async handle(value: unknown): Promise<boolean | string> {

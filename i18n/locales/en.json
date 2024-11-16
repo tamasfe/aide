@@ -148,6 +148,26 @@
     "kyc_policy": "KYC Policy of OG OVERSEAS SERVICES LTD",
     "responsible_gaming": "Responsible Gaming"
   },
+  "wallet": {
+    "payment": {
+      "empty": "No Transactions",
+      "type": {
+        "deposit": "Deposit",
+        "withdrawal": "Withdrawal"
+      },
+      "status": {
+        "pending": "Pending",
+        "waiting_for_approval": "Waiting for Approval",
+        "approved": "Approved",
+        "processing": "Processing",
+        "completed": "Completed",
+        "failed": "Failed",
+        "cancelled": "Cancelled",
+        "rejected": "Rejected",
+        "refunded": "Refunded"
+      }
+    }
+  },
   "legal": {
     "version": "Version",
     "updated": "Updated"
@@ -224,7 +244,16 @@
         "suspend_account": "Suspend Account"
       },
       "wallet": {
-        "recent_transactions": "Recent Transactions"
+        "transactions_title": "Recent Transactions",
+        "transactions_empty": "No Transactions"
+      }
+    },
+    "history": {
+      "deposits": {
+        "table_empty": "No Deposits"
+      },
+      "withdrawals": {
+        "table_empty": "No Withdrawals"
       }
     }
   },

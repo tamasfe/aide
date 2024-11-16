@@ -38,6 +38,7 @@ export class WalletsRepositoryGirobet implements WalletRepositoryI {
           }
 
           wallets.push({
+            id: wallet.wallet_id,
             balance: wallet.balance,
             balanceValue: balance,
             currency: currency as WalletCurrency,

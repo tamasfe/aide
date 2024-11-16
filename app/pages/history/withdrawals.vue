@@ -1,41 +1,30 @@
 <script setup lang="ts">
-import { createColumnHelper, type ColumnDef } from "@tanstack/vue-table";
-import { DataTableCopyCell } from "#components";
+const { $dependencies } = useNuxtApp();
+const walletStore = useWalletStore();
 
-// TODO THIS IS NOT A REAL TYPE!!!!!!! JUST A PLACEHOLDER TO
-// DEMONSTRATE DATA TABLE. DO NOT USE THIS, USE A REAL TYPE
-type Withdrawal = {
-  id: number;
-  date: string;
-  status: "COMPLETE" | "PENDING" | "FAILED";
-  amount: string;
-};
+// TODO: do we want this behaviour? Or should we (for example) keep the user in the page and show them a "log in to see your balance & transactions" message?
+if (!walletStore.isInit) {
+  await navigateTo("/");
+}
 
-const column = createColumnHelper<Withdrawal>();
+const ENABLE_SERVER_SIDE_RENDERING = false;
+const DEFER_CLIENT_SIDE_LOADING = true;
 
-const columns: ColumnDef<Withdrawal>[] = [
-  column.accessor("id", {
-    header: "ID",
-    cell: ({ getValue }) => h(DataTableCopyCell, { value: getValue() }),
-  }),
-  column.accessor("date", {
-    header: "Date",
-    cell: ({ getValue }) => formatDate(getValue()),
-  }),
-  column.accessor("status", {
-    header: "Status",
-  }),
-  column.accessor("amount", {
-    header: "Amount",
-    meta: {
-      align: "right",
-    },
-  }),
-] as ColumnDef<Withdrawal>[];
+const loading = useState(`history-page-withdrawals-loading`, () => true);
 
-const data = shallowRef<Withdrawal[]>([]);
+const { data } = await useAsyncData("history-page-withdrawals-data", async () => {
+  if (!walletStore.isInit) return;
 
-const loading = ref(false);
+  loading.value = true;
+  const data = await $dependencies.wallets.ui.searchPaymentsOnTable.handle(walletStore.wallet.id, "withdrawal", 0);
+
+  loading.value = false;
+  return data.payments;
+}, {
+  watch: [() => walletStore.wallet?.id],
+  lazy: DEFER_CLIENT_SIDE_LOADING,
+  server: ENABLE_SERVER_SIDE_RENDERING,
+});
 </script>
 
 <template>
@@ -43,17 +32,16 @@ const loading = ref(false);
     name="dashboard"
     section="history"
   >
-    <DataTable
-      :data="data"
-      :columns="columns"
+    <DataTableWalletPayments
+      :payments="data || []"
       :loading="loading"
     >
       <template #empty>
         <BaseEmpty
-          title="No Withdrawals"
+          :title="$t('dashboard.history.withdrawals.table_empty')"
           icon="lucide:circle-arrow-up"
         />
       </template>
-    </DataTable>
+    </DataTableWalletPayments>
   </NuxtLayout>
 </template>

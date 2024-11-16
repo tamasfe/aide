@@ -1,6 +1,6 @@
 import type { ValidateUserTelephone } from "~/modules/users/application/ValidateUserTelephone";
 import { UserTelephoneMask, type UserTelephoneMaskSupportedCountryCode } from "~/modules/users/infra/ui/UserTelephoneMask";
-import type { TranslateFunctionType } from "~/packages/translation/TranslateFunctionType";
+import type { TranslateFunctionType } from "~/packages/translation";
 
 export class ValidateTelephoneOnRegisterFormChanged {
   public async handle(value: unknown, prefixValue: string, prefixCountryCode: UserTelephoneMaskSupportedCountryCode): Promise<boolean | string> {

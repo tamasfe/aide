@@ -1,7 +1,7 @@
 import { SubmitSignupFlow } from "../../application/SubmitSignupFlow";
 import type { SignupFlowApiRepositoryI } from "../../domain/SignupFlowApiRepositoryI";
 import type { SignupFlowIdClientRepositoryI } from "../../domain/SignupFlowIdClientRepositoryI";
-import type { TranslateFunctionType } from "~/packages/translation/TranslateFunctionType";
+import type { TranslateFunctionType } from "~/packages/translation";
 import type { AsyncMessagePublisherI } from "~/packages/async-messages/async-message-publisher";
 import type { LoggerI } from "~/packages/logger/Logger";
 

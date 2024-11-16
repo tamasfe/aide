@@ -1,5 +1,5 @@
 import { UserPassword } from "~/modules/users/domain/UserPassword";
-import type { TranslateFunctionType } from "~/packages/translation/TranslateFunctionType";
+import type { TranslateFunctionType } from "~/packages/translation";
 import type { ValidateUserPassword } from "~/modules/users/application/ValidateUserPassword";
 
 export class ValidatePasswordOnRegisterFormChanged {

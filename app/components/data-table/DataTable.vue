@@ -1,16 +1,7 @@
-<script lang="ts">
-import type { RowData, ColumnDef } from "@tanstack/vue-table";
+<script setup lang="ts" generic="TData, TValue">
+import type { ColumnDef } from "@tanstack/vue-table";
 import { FlexRender, getCoreRowModel, useVueTable } from "@tanstack/vue-table";
 
-declare module "@tanstack/vue-table" {
-  /* eslint-disable @typescript-eslint/no-unused-vars */
-  interface ColumnMeta<TData extends RowData, TValue> {
-    align?: "center" | "right";
-  }
-}
-</script>
-
-<script setup lang="ts" generic="TData, TValue">
 // DESIGN STATUS:      ✴️
 //   - still needs mobile responsive version of table
 

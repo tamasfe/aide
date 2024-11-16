@@ -1,5 +1,5 @@
 import type { ValidateUserCpf } from "~/modules/users/application/ValidateUserCpf";
-import type { TranslateFunctionType } from "~/packages/translation/TranslateFunctionType";
+import type { TranslateFunctionType } from "~/packages/translation";
 
 export class ValidateCpfOnRegisterFormChanged {
   public async handle(value: unknown): Promise<boolean | string> {

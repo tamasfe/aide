@@ -1,7 +1,7 @@
 import type { LoginUser } from "../../application/LoginUser";
 import type { AsyncMessagePublisherI } from "~/packages/async-messages/async-message-publisher";
 import type { LoggerI } from "~/packages/logger/Logger";
-import type { TranslateFunctionType } from "~/packages/translation/TranslateFunctionType";
+import type { TranslateFunctionType } from "~/packages/translation";
 
 export class AttemptUserLoginOnFormSubmission {
   constructor(

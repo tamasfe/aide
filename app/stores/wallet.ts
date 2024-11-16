@@ -10,6 +10,7 @@ type WalletStoreI = {
   isInit: true;
   balanceStatus: WalletBalanceStatus;
   wallet: {
+    id: number;
     balance: string;
     balanceValue: number;
     currency: string;

@@ -4,15 +4,17 @@ import { EmitteryAsyncMessagePublisher } from "~/packages/async-messages/emitter
 import type { LoggerI } from "~/packages/logger/Logger";
 import { LoggerConsole } from "~/packages/logger/LoggerConsole";
 import { LoggerMiddlewareSentryErrorCapturer } from "~/packages/logger/LoggerMiddlewareSentryErrorCapturer";
-import type { TranslateFunctionType } from "~/packages/translation/TranslateFunctionType";
+import type { TranslateFunctionType, NumberFormatterFunctionType, DateTimeFormatterFunctionType } from "~/packages/translation";
 
 export interface CommonDependenciesI {
   asyncMessagePublisher: AsyncMessagePublisherI;
   logger: LoggerI;
   translateFunction: TranslateFunctionType;
+  dateTimeFormatter: DateTimeFormatterFunctionType;
+  numberFormatter: NumberFormatterFunctionType;
 }
 
-export async function loadDependencies(config: PublicRuntimeConfig, translateFunction: TranslateFunctionType): Promise<CommonDependenciesI> {
+export async function loadDependencies(config: PublicRuntimeConfig, translateFunction: TranslateFunctionType, dateTimeFormatterFunction: DateTimeFormatterFunctionType, numberFormatterFunction: NumberFormatterFunctionType): Promise<CommonDependenciesI> {
   const isServer = import.meta.server;
   const logFormat = isServer ? "json" : "prettyPrint";
 
@@ -40,5 +42,7 @@ export async function loadDependencies(config: PublicRuntimeConfig, translateFun
     asyncMessagePublisher: new EmitteryAsyncMessagePublisher(logger),
     logger,
     translateFunction,
+    dateTimeFormatter: dateTimeFormatterFunction,
+    numberFormatter: numberFormatterFunction,
   };
 }

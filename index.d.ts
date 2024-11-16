@@ -44,5 +44,15 @@ declare module "@vue/runtime-core" {
   interface ComponentCustomOptions extends _ComponentCustomOptions {}
 }
 
+/**
+ * Used in DataTable vue component
+ */
+declare module "@tanstack/vue-table" {
+  /* eslint-disable @typescript-eslint/no-unused-vars */
+  interface ColumnMeta<TData extends RowData, TValue> {
+    align?: "center" | "right";
+  }
+}
+
 // It is always important to ensure you import/export something when augmenting a type
 export {};
