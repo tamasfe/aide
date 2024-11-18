@@ -17,7 +17,7 @@ const onClickBalance = async () => {
       <BaseCurrency
         class="text-white"
         :currency="walletStore.wallet.currency"
-        :value="walletStore.wallet.balanceValue"
+        :value="walletStore.wallet.balance"
       />
     </BaseButton>
     <BaseButton
@@ -29,7 +29,7 @@ const onClickBalance = async () => {
       <BaseCurrency
         variant="ghost"
         :currency="walletStore.wallet.currency"
-        :value="walletStore.wallet.balanceValue"
+        :value="walletStore.wallet.balance"
       />
     </BaseButton>
     <BaseButton

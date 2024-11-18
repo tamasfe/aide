@@ -11,8 +11,7 @@ type WalletStoreI = {
   balanceStatus: WalletBalanceStatus;
   wallet: {
     id: number;
-    balance: string;
-    balanceValue: number;
+    balance: number;
     currency: string;
   };
 };

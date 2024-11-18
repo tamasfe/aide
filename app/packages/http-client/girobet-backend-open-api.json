@@ -401,7 +401,7 @@
         "tags": [
           "Payment"
         ],
-        "summary": "Get Payment Flows",
+        "summary": "List Payment Flows",
         "description": "List all payment flows for the currently logged in user.",
         "parameters": [
           {
@@ -958,6 +958,96 @@
         }
       }
     },
+    "/game/action/list": {
+      "get": {
+        "tags": [
+          "Game"
+        ],
+        "summary": "List Game Actions",
+        "description": "Get a list of all game actions of the user. ",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "action_type",
+            "description": "The type of the game action to filter by. If not set, all game actions (bet, win, etc.) will be included.",
+            "schema": {
+              "description": "The type of the game action to filter by. If not set, all game actions (bet, win, etc.) will be included.",
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/ListGameActionsTypeQuery"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "style": "form"
+          },
+          {
+            "in": "query",
+            "name": "game_id",
+            "description": "Game ID to filter the game actions by. If not set, all game actions will be included.",
+            "schema": {
+              "description": "Game ID to filter the game actions by. If not set, all game actions will be included.",
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/GameId"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "style": "form"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "default": 20,
+              "type": "integer",
+              "format": "uint",
+              "maximum": 100.0,
+              "minimum": 1.0
+            },
+            "style": "form"
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "schema": {
+              "default": 0,
+              "type": "integer",
+              "format": "uint",
+              "minimum": 0.0
+            },
+            "style": "form"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatorResponse_for_GameActionResponse_and_ListGameActionsQuery"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/game/category/list": {
       "get": {
         "tags": [
@@ -1103,50 +1193,6 @@
         }
       }
     },
-    "/game/{game_id}": {
-      "get": {
-        "tags": [
-          "Game"
-        ],
-        "summary": "Get Game",
-        "description": "Get a game by its ID. This can be used to show a more detailed view of a game,\n    including its name, description,\n    and other metadata, that might be required to display the game on the frontend.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "game_id",
-            "description": "The ID of the game to retrieve.",
-            "required": true,
-            "schema": {
-              "description": "The ID of the game to retrieve.",
-              "$ref": "#/components/schemas/GameId"
-            },
-            "style": "simple"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GameResponse"
-                }
-              }
-            }
-          },
-          "4XX": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ServerError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/game/{game_id}/image": {
       "get": {
         "tags": [
@@ -1182,6 +1228,50 @@
             "description": "byte stream",
             "content": {
               "application/octet-stream": {}
+            }
+          },
+          "4XX": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/game/{game_id}": {
+      "get": {
+        "tags": [
+          "Game"
+        ],
+        "summary": "Get Game",
+        "description": "Get a game by its ID. This can be used to show a more detailed view of a game,\n    including its name, description,\n    and other metadata, that might be required to display the game on the frontend.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "game_id",
+            "description": "The ID of the game to retrieve.",
+            "required": true,
+            "schema": {
+              "description": "The ID of the game to retrieve.",
+              "$ref": "#/components/schemas/GameId"
+            },
+            "style": "simple"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GameResponse"
+                }
+              }
             }
           },
           "4XX": {
@@ -1714,6 +1804,57 @@
           }
         }
       },
+      "GameActionResponse": {
+        "type": "object",
+        "required": [
+          "action",
+          "amount",
+          "created_at",
+          "currency",
+          "game_id",
+          "game_name",
+          "id"
+        ],
+        "properties": {
+          "action": {
+            "description": "The type of the action that was performed. Either Bets or Wins.",
+            "$ref": "#/components/schemas/GameActionType"
+          },
+          "amount": {
+            "description": "The amount of the action. This is the amount that was bet, won, etc.",
+            "$ref": "#/components/schemas/SystemAmount"
+          },
+          "created_at": {
+            "description": "The date and time the action was performed.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "currency": {
+            "description": "The currency the amount was in.",
+            "$ref": "#/components/schemas/SystemCurrency"
+          },
+          "game_id": {
+            "description": "The ID of the game the action was performed on.",
+            "$ref": "#/components/schemas/GameId"
+          },
+          "game_name": {
+            "description": "The name of the game the action was performed on.",
+            "type": "string"
+          },
+          "id": {
+            "description": "The ID of the game action.",
+            "$ref": "#/components/schemas/GameRoundActionId"
+          }
+        }
+      },
+      "GameActionType": {
+        "type": "string",
+        "enum": [
+          "bet",
+          "win",
+          "rollback"
+        ]
+      },
       "GameCategoryId": {
         "type": "integer",
         "format": "int64"
@@ -1940,6 +2081,10 @@
           }
         }
       },
+      "GameRoundActionId": {
+        "type": "integer",
+        "format": "int64"
+      },
       "InitializePasswordResetRequest": {
         "examples": [
           {
@@ -2149,6 +2294,40 @@
           }
         }
       },
+      "ListGameActionsQuery": {
+        "type": "object",
+        "properties": {
+          "action_type": {
+            "description": "The type of the game action to filter by. If not set, all game actions (bet, win, etc.) will be included.",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ListGameActionsTypeQuery"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "game_id": {
+            "description": "Game ID to filter the game actions by. If not set, all game actions will be included.",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/GameId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      },
+      "ListGameActionsTypeQuery": {
+        "type": "string",
+        "enum": [
+          "bet",
+          "win"
+        ]
+      },
       "ListNotificationsQuery": {
         "type": "object",
         "properties": {
@@ -2356,6 +2535,27 @@
           "test_status"
         ]
       },
+      "PaginatorMetadata_for_ListGameActionsQuery": {
+        "type": "object",
+        "required": [
+          "pagination"
+        ],
+        "properties": {
+          "filters": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ListGameActionsQuery"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "pagination": {
+            "$ref": "#/components/schemas/PaginatorPosition"
+          }
+        }
+      },
       "PaginatorMetadata_for_ListNotificationsQuery": {
         "type": "object",
         "required": [
@@ -2462,6 +2662,24 @@
           "total_items": {
             "type": "integer",
             "format": "int64"
+          }
+        }
+      },
+      "PaginatorResponse_for_GameActionResponse_and_ListGameActionsQuery": {
+        "type": "object",
+        "required": [
+          "data",
+          "metadata"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GameActionResponse"
+            }
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/PaginatorMetadata_for_ListGameActionsQuery"
           }
         }
       },
@@ -2572,15 +2790,13 @@
           "id",
           "identifier",
           "payment_method_id",
-          "payment_provider_id",
           "payment_type",
           "wallet_id"
         ],
         "properties": {
           "amount": {
             "description": "The amount of the payment flow.",
-            "type": "string",
-            "pattern": "^-?[0-9]+(\\.[0-9]+)?$"
+            "$ref": "#/components/schemas/SystemAmount"
           },
           "completed_at": {
             "description": "The time the payment flow was completed. If `null` the payment flow has not been completed.",
@@ -2610,10 +2826,6 @@
           "payment_method_id": {
             "description": "The payment method ID the payment flow is associated with.",
             "$ref": "#/components/schemas/PaymentMethodId"
-          },
-          "payment_provider_id": {
-            "description": "The payment provider ID the payment flow is associated with.",
-            "$ref": "#/components/schemas/PaymentProviderId"
           },
           "payment_type": {
             "description": "The type of the payment flow.",
@@ -2698,10 +2910,6 @@
           "pix"
         ]
       },
-      "PaymentProviderId": {
-        "type": "integer",
-        "format": "int64"
-      },
       "PaymentStatus": {
         "type": "string",
         "enum": [
@@ -2726,8 +2934,7 @@
         "properties": {
           "amount": {
             "description": "The amount of the payment transaction.",
-            "type": "string",
-            "pattern": "^-?[0-9]+(\\.[0-9]+)?$"
+            "$ref": "#/components/schemas/SystemAmount"
           },
           "currency": {
             "description": "The currency of the payment transaction.",
@@ -3906,6 +4113,10 @@
           }
         }
       },
+      "SystemAmount": {
+        "type": "number",
+        "format": "float"
+      },
       "SystemCountry": {
         "description": "A country represented by its ISO 3166-1 alpha-2 code.",
         "examples": [
@@ -4516,8 +4727,7 @@
         "properties": {
           "balance": {
             "description": "The balance of the wallet.",
-            "type": "string",
-            "pattern": "^-?[0-9]+(\\.[0-9]+)?$"
+            "$ref": "#/components/schemas/SystemAmount"
           },
           "currency": {
             "description": "The currency of the wallet.",

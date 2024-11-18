@@ -36,7 +36,7 @@ const { data } = await useAsyncData("wallet-page-payments-data", async () => {
     <div>
       <DashboardSettingsWalletBalance
         v-if="walletStore.isInit"
-        :balance="walletStore.wallet.balanceValue"
+        :balance="walletStore.wallet.balance"
         :currency="walletStore.wallet.currency"
       />
 

@@ -552,7 +552,7 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Get Payment Flows
+         * List Payment Flows
          * @description List all payment flows for the currently logged in user.
          */
         get: {
@@ -1067,6 +1067,59 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/game/action/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Game Actions
+         * @description Get a list of all game actions of the user.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description The type of the game action to filter by. If not set, all game actions (bet, win, etc.) will be included. */
+                    action_type?: components["schemas"]["ListGameActionsTypeQuery"] | null;
+                    /** @description Game ID to filter the game actions by. If not set, all game actions will be included. */
+                    game_id?: components["schemas"]["GameId"] | null;
+                    limit?: number;
+                    offset?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PaginatorResponse_for_GameActionResponse_and_ListGameActionsQuery"];
+                    };
+                };
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/game/category/list": {
         parameters: {
             query?: never;
@@ -1232,57 +1285,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/game/{game_id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get Game
-         * @description Get a game by its ID. This can be used to show a more detailed view of a game,
-         *         including its name, description,
-         *         and other metadata, that might be required to display the game on the frontend.
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    /** @description The ID of the game to retrieve. */
-                    game_id: components["schemas"]["GameId"];
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["GameResponse"];
-                    };
-                };
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/game/{game_id}/image": {
         parameters: {
             query?: never;
@@ -1318,6 +1320,57 @@ export interface paths {
                     };
                     content: {
                         "application/octet-stream": unknown;
+                    };
+                };
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/game/{game_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Game
+         * @description Get a game by its ID. This can be used to show a more detailed view of a game,
+         *         including its name, description,
+         *         and other metadata, that might be required to display the game on the frontend.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description The ID of the game to retrieve. */
+                    game_id: components["schemas"]["GameId"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["GameResponse"];
                     };
                 };
                 "4XX": {
@@ -1936,6 +1989,27 @@ export interface components {
              */
             token: string;
         };
+        GameActionResponse: {
+            /** @description The type of the action that was performed. Either Bets or Wins. */
+            action: components["schemas"]["GameActionType"];
+            /** @description The amount of the action. This is the amount that was bet, won, etc. */
+            amount: components["schemas"]["SystemAmount"];
+            /**
+             * Format: date-time
+             * @description The date and time the action was performed.
+             */
+            created_at: string;
+            /** @description The currency the amount was in. */
+            currency: components["schemas"]["SystemCurrency"];
+            /** @description The ID of the game the action was performed on. */
+            game_id: components["schemas"]["GameId"];
+            /** @description The name of the game the action was performed on. */
+            game_name: string;
+            /** @description The ID of the game action. */
+            id: components["schemas"]["GameRoundActionId"];
+        };
+        /** @enum {string} */
+        GameActionType: "bet" | "win" | "rollback";
         /** Format: int64 */
         GameCategoryId: number;
         GameCategoryListFilter: {
@@ -2027,6 +2101,8 @@ export interface components {
             /** @description The slug of the game. This may be used in URLs. */
             slug: string;
         };
+        /** Format: int64 */
+        GameRoundActionId: number;
         InitializePasswordResetRequest: {
             /** @description The email address of the user to reset the password for. */
             email: string;
@@ -2082,6 +2158,14 @@ export interface components {
             withdrawal_min?: string | null;
             withdrawal_min_first?: string | null;
         };
+        ListGameActionsQuery: {
+            /** @description The type of the game action to filter by. If not set, all game actions (bet, win, etc.) will be included. */
+            action_type?: components["schemas"]["ListGameActionsTypeQuery"] | null;
+            /** @description Game ID to filter the game actions by. If not set, all game actions will be included. */
+            game_id?: components["schemas"]["GameId"] | null;
+        };
+        /** @enum {string} */
+        ListGameActionsTypeQuery: "bet" | "win";
         ListNotificationsQuery: {
             /** @description The read status of the notifications to filter by. */
             read_status?: components["schemas"]["ReadStatus"] | null;
@@ -2145,6 +2229,10 @@ export interface components {
          * @enum {string}
          */
         NotificationTypeDiscriminants: "payment_status_update" | "kyc_completed" | "test_status";
+        PaginatorMetadata_for_ListGameActionsQuery: {
+            filters?: components["schemas"]["ListGameActionsQuery"] | null;
+            pagination: components["schemas"]["PaginatorPosition"];
+        };
         PaginatorMetadata_for_ListNotificationsQuery: {
             filters?: components["schemas"]["ListNotificationsQuery"] | null;
             pagination: components["schemas"]["PaginatorPosition"];
@@ -2174,6 +2262,10 @@ export interface components {
             offset: number;
             /** Format: int64 */
             total_items: number;
+        };
+        PaginatorResponse_for_GameActionResponse_and_ListGameActionsQuery: {
+            data: components["schemas"]["GameActionResponse"][];
+            metadata: components["schemas"]["PaginatorMetadata_for_ListGameActionsQuery"];
         };
         PaginatorResponse_for_NotificationResponse_and_ListNotificationsQuery: {
             data: components["schemas"]["NotificationResponse"][];
@@ -2210,7 +2302,7 @@ export interface components {
         PaymentFlowId: number;
         PaymentFlowResponse: {
             /** @description The amount of the payment flow. */
-            amount: string;
+            amount: components["schemas"]["SystemAmount"];
             /**
              * Format: date-time
              * @description The time the payment flow was completed. If `null` the payment flow has not been completed.
@@ -2229,8 +2321,6 @@ export interface components {
             identifier: string;
             /** @description The payment method ID the payment flow is associated with. */
             payment_method_id: components["schemas"]["PaymentMethodId"];
-            /** @description The payment provider ID the payment flow is associated with. */
-            payment_provider_id: components["schemas"]["PaymentProviderId"];
             /** @description The type of the payment flow. */
             payment_type: components["schemas"]["PaymentType"];
             /** @description The last status of the payment flow. If no status is set, the payment has been initialized but not yet processed by the system in any way. */
@@ -2256,13 +2346,11 @@ export interface components {
         PaymentMethodId: number;
         /** @enum {string} */
         PaymentMethodIdentifier: "pix";
-        /** Format: int64 */
-        PaymentProviderId: number;
         /** @enum {string} */
         PaymentStatus: "pending" | "waiting_for_approval" | "approved" | "processing" | "completed" | "failed" | "cancelled" | "rejected" | "refunded";
         PaymentTransactionRequest: {
             /** @description The amount of the payment transaction. */
-            amount: string;
+            amount: components["schemas"]["SystemAmount"];
             /** @description The currency of the payment transaction. */
             currency: components["schemas"]["SystemCurrency"];
             /** @description The payment method ID to use for the payment transaction. */
@@ -2555,6 +2643,8 @@ export interface components {
             /** @description Whether the site is servable by the current instance. If `false` the site is not servable but is accessible by a different casino instance of the owning company. */
             servable: boolean;
         };
+        /** Format: float */
+        SystemAmount: number;
         /**
          * @description A country represented by its ISO 3166-1 alpha-2 code.
          * @enum {unknown}
@@ -2601,7 +2691,7 @@ export interface components {
         };
         UserBalanceResponse: {
             /** @description The balance of the wallet. */
-            balance: string;
+            balance: components["schemas"]["SystemAmount"];
             /** @description The currency of the wallet. */
             currency: components["schemas"]["SystemCurrency"];
             /** @description The ID of the wallet that the balance is for. */

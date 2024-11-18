@@ -3,7 +3,7 @@ import { ErrorNoAuthenticatedWalletsFound } from "../domain/ErrorNoAuthenticated
 import type { WalletI } from "../domain/Wallet";
 import { WalletCurrencies, type WalletCurrency } from "../domain/WalletCurrency";
 import { ErrorCurrencyNotRecognized } from "../domain/ErrorCurrencyNotRecognized";
-import { ErrorInvalidBalance } from "../domain/ErrorInvalidBalance";
+import type { ErrorInvalidBalance } from "../domain/ErrorInvalidBalance";
 import { ErrorUserNotAuthorized } from "../domain/ErrorUserNotAuthorized";
 import { fail, success, type Result } from "~/packages/result";
 import { InfrastructureError } from "~/packages/result/infrastructure-error";
@@ -30,17 +30,9 @@ export class WalletsRepositoryGirobet implements WalletRepositoryI {
             );
           }
 
-          const balance = Number(wallet.balance);
-          if (Number.isNaN(balance)) {
-            return fail(
-              new ErrorInvalidBalance(wallet.balance, { wallet }),
-            );
-          }
-
           wallets.push({
             id: wallet.wallet_id,
             balance: wallet.balance,
-            balanceValue: balance,
             currency: currency as WalletCurrency,
           });
         }

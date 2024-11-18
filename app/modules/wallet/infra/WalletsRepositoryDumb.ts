@@ -9,8 +9,7 @@ export class WalletsRepositoryDumb implements WalletRepositoryI {
   public async findAuthenticated(): Promise<Result<WalletI[], InfrastructureError | ErrorNoAuthenticatedWalletsFound>> {
     return success([{
       id: 1,
-      balance: "123.05",
-      balanceValue: 123.05,
+      balance: 123.05,
       currency: "EUR" as WalletCurrency,
     }]);
   }
