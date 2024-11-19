@@ -168,6 +168,15 @@
       }
     }
   },
+  "game": {
+    "game_action": {
+      "action": {
+        "bet": "Bet",
+        "win": "Win",
+        "rollback": "Rollback"
+      }
+    }
+  },
   "legal": {
     "version": "Version",
     "updated": "Updated"
@@ -249,8 +258,23 @@
       }
     },
     "history": {
+      "casino": {
+        "table_empty": "No Game Rounds",
+        "table_header_id": "ID",
+        "table_header_date": "Date",
+        "table_header_game": "Game",
+        "table_header_action": "Type",
+        "table_header_amount": "Amount"
+      },
       "deposits": {
         "table_empty": "No Deposits"
+      },
+      "shared": {
+        "table_payments_header_id": "ID",
+        "table_payments_header_date": "Date",
+        "table_payments_header_type": "Type",
+        "table_payments_header_status": "Status",
+        "table_payments_header_amount": "Amount"
       },
       "withdrawals": {
         "table_empty": "No Withdrawals"

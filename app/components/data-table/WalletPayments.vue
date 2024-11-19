@@ -2,6 +2,8 @@
 import { createColumnHelper, type ColumnDef } from "@tanstack/vue-table";
 import { DataTableCopyCell } from "#components";
 
+const { t } = useI18n();
+
 type WalletPayment = {
   id: number;
   date: string;
@@ -19,20 +21,20 @@ const column = createColumnHelper<WalletPayment>();
 
 const columns: ColumnDef<WalletPayment>[] = [
   column.accessor("id", {
-    header: "ID",
+    header: t("dashboard.history.shared.table_payments_header_id"),
     cell: ({ getValue }) => h(DataTableCopyCell, { value: getValue() }),
   }),
   column.accessor("date", {
-    header: "Date",
+    header: t("dashboard.history.shared.table_payments_header_date"),
   }),
   column.accessor("type", {
-    header: "Type",
+    header: t("dashboard.history.shared.table_payments_header_type"),
   }),
   column.accessor("status", {
-    header: "Status",
+    header: t("dashboard.history.shared.table_payments_header_status"),
   }),
   column.accessor("amount", {
-    header: "Amount",
+    header: t("dashboard.history.shared.table_payments_header_amount"),
     meta: {
       align: "right",
     },
