@@ -43,19 +43,20 @@ const onToggleFullScreen = () => {
         <div
           :class="cn(
             'w-full h-full',
-            fullScreen && 'fixed top-0 left-0 z-[11]',
+            fullScreen && 'fixed top-0 left-0 z-[11] bg-subtle',
           )"
         >
           <div
             v-if="fullScreen"
             class="p-0 bg-subtle"
           >
-            <BaseClose
-              class="p-1 rounded-full bg-button-subtle"
-              @close="onToggleFullScreen"
-            />
+            <div class="p-5 bg-subtle">
+              <BaseClose
+                class="p-0 pr-2"
+                @close="onToggleFullScreen"
+              />
+            </div>
           </div>
-
           <GameFrameIframe :game-id="gameId" :i-frame-url="iFrameUrl" />
         </div>
       </template>
