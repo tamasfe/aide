@@ -4,6 +4,7 @@ import type { AuthenticatedUserRepositoryI } from "../domain/AuthenticatedUserRe
 import type { AuthenticationRepositoryI } from "../domain/AuthenticationRepository";
 import { LoginUser } from "../application/LoginUser";
 import { LogoutUser } from "../application/LogoutUser";
+import { RecoverPassword } from "../application/RecoverPassword";
 import { AuthenticatedUserRepositoryDumb } from "./AuthenticatedUserRepositoryDumb";
 import { EmitCommandOpenUserActionModalModal } from "./ui/EmitCommandOpenUserActionModal";
 import { AuthenticatedUserSearcherGirobet } from "./AuthenticatedUserRepositoryGirobet";
@@ -12,6 +13,7 @@ import { AuthenticationRepositoryGirobet } from "./AuthenticationRepositoryGirob
 import { AttemptUserLoginOnFormSubmission } from "./ui/AttemptUserLoginOnFormSubmission";
 import { LogoutCurrentUserFromButtonClick } from "./ui/LogoutCurrentUserFromButtonClick";
 import { EmitCommandCloseUserActionModal } from "./ui/EmitCommandCloseUserActionModal";
+import { RecoverPasswordOnForm } from "./ui/RecoverPasswordOnForm";
 import type { CommonDependenciesI } from "~/dependency-injection/load-di";
 
 export interface UsersDependencyInjectionI {
@@ -23,6 +25,7 @@ export interface UsersDependencyInjectionI {
     emitCommandCloseUserActionModal: EmitCommandCloseUserActionModal;
     attemptUserLoginOnFormSubmission: AttemptUserLoginOnFormSubmission;
     logoutCurrentUserFromButtonClick: LogoutCurrentUserFromButtonClick;
+    recoverPassword: RecoverPasswordOnForm;
   };
 }
 export const createUsersDependencyInjection = async (config: PublicRuntimeConfig, commonDependencies: CommonDependenciesI, requestHeaders?: Record<string, string>): Promise<UsersDependencyInjectionI> => {
@@ -59,6 +62,10 @@ export const createUsersDependencyInjection = async (config: PublicRuntimeConfig
       logoutCurrentUserFromButtonClick: new LogoutCurrentUserFromButtonClick(
         new LogoutUser(authenticationRepo, commonDependencies.asyncMessagePublisher),
         commonDependencies.logger,
+      ),
+      recoverPassword: new RecoverPasswordOnForm(
+        new RecoverPassword(authenticationRepo, commonDependencies.asyncMessagePublisher),
+        commonDependencies.translateFunction,
       ),
     },
   };

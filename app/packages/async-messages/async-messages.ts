@@ -12,10 +12,12 @@ export interface AsyncMessagesTypes {
     jurisdiction: string;
   };
   "girobet:commands:modals:open-search": object;
+  "girobet:commands:modals:open-recover-password": { token: string };
   "girobet:commands:modals:close-user-interaction-modal": object;
 
   "girobet:events:users:user-logged-in": object;
   "girobet:events:users:user-logged-out": object;
+  "girobet:events:users:password-recovered": object;
 
   "girobet:events:signup-flows:signup-flow-submitted": {
     id: string;

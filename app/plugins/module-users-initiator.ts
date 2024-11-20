@@ -20,6 +20,10 @@ export default defineNuxtPlugin({
       () => userStore.refreshUser(),
     );
     $dependencies.common.asyncMessagePublisher.subscribe(
+      "girobet:events:users:password-recovered",
+      () => $dependencies.users.ui.emitCommandOpenUserActionModal.handle("login"),
+    );
+    $dependencies.common.asyncMessagePublisher.subscribe(
       "girobet:events:signup-flows:signup-flow-submitted",
       () => userStore.refreshUser(),
     );

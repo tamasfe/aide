@@ -1,27 +1,57 @@
 <script setup lang="ts">
+import type { PropType } from "vue";
+
 const { $dependencies } = useNuxtApp();
 const { t } = useI18n();
-const { hostname } = useRequestURL();
+const { hostname, searchParams } = useRequestURL();
 
-const modal = defineModel("modal", {
-  type: String,
-  default: "",
+type Modal = "login" | "register" | "forgot" | "recover_password" | "cancel_reg" | "deposit" | "deposit_confirm" | "withdrawal" | "restrict_expanding" | "restrict_license_alternative" | "restrict_license_no_alternative" | "search";
+const modal = defineModel<Modal | null>("modal", {
+  type: String as PropType<Modal>,
+  default: null,
 });
 
 const blockedCountry = useState("user-modal-blocked-country", () => "");
 const currentHost = useState("user-modal-current-host", () => "");
 const allowedDomain = useState<string | null>("user-modal-allowed-domain", () => null);
+const recoverPasswordToken = useState("user-modal-recover-password-token", () => searchParams.get("recovery-token") || "");
 
 $dependencies.common.asyncMessagePublisher.subscribe(
   "girobet:commands:modals:open-login",
   () => {
+    if (modalIsJurisdictionModal(modal.value)) {
+      return;
+    }
     modal.value = "login";
   },
 );
 $dependencies.common.asyncMessagePublisher.subscribe(
   "girobet:commands:modals:open-register",
   () => {
+    if (modalIsJurisdictionModal(modal.value)) {
+      return;
+    }
     modal.value = "register";
+  },
+);
+$dependencies.common.asyncMessagePublisher.subscribe(
+  "girobet:commands:modals:open-search",
+  () => {
+    if (modalIsJurisdictionModal(modal.value)) {
+      return;
+    }
+    modal.value = "search";
+  },
+);
+$dependencies.common.asyncMessagePublisher.subscribe(
+  "girobet:commands:modals:open-recover-password",
+  ({ token }) => {
+    // If any of the invalid jurisdiction modals are open: keep them open
+    if (modalIsJurisdictionModal(modal.value)) {
+      return;
+    }
+    modal.value = "recover_password";
+    recoverPasswordToken.value = token;
   },
 );
 $dependencies.common.asyncMessagePublisher.subscribe(
@@ -49,19 +79,21 @@ $dependencies.common.asyncMessagePublisher.subscribe(
     currentHost.value = hostname;
   },
 );
-$dependencies.common.asyncMessagePublisher.subscribe(
-  "girobet:commands:modals:open-search",
-  () => {
-    modal.value = "search";
-  },
-);
 
 $dependencies.common.asyncMessagePublisher.subscribe(
   "girobet:commands:modals:close-user-interaction-modal",
   () => {
-    modal.value = "";
+    modal.value = null;
   },
 );
+
+if (recoverPasswordToken.value) {
+  $dependencies.users.ui.emitCommandOpenUserActionModal.handle("recover_password", recoverPasswordToken.value);
+}
+
+const modalIsJurisdictionModal = (modal: Modal | null): boolean => {
+  return modal === "restrict_license_no_alternative" || modal === "restrict_license_alternative" || modal === "restrict_expanding";
+};
 </script>
 
 <template>
@@ -75,6 +107,10 @@ $dependencies.common.asyncMessagePublisher.subscribe(
     <ModalForgotPassword
       v-if="modal === 'forgot'"
     />
+    <ModalRecoverPassword
+      v-if="modal === 'recover_password'"
+      :token="recoverPasswordToken"
+    />
     <ModalCancelRegistration
       v-if="modal === 'cancel_reg'"
     />
@@ -86,6 +122,9 @@ $dependencies.common.asyncMessagePublisher.subscribe(
     />
     <ModalWithdrawal
       v-if="modal === 'withdrawal'"
+    />
+    <ModalSearch
+      v-if="modal === 'search'"
     />
     <ModalRestrictExpanding
       v-if="modal === 'restrict_expanding'"
@@ -101,9 +140,6 @@ $dependencies.common.asyncMessagePublisher.subscribe(
     <ModalRestrictLicenseNoAlternative
       v-if="modal === 'restrict_license_no_alternative'"
       :blocked-country="blockedCountry"
-    />
-    <ModalSearch
-      v-if="modal === 'search'"
     />
   </div>
 </template>

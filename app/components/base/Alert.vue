@@ -44,6 +44,6 @@ const props = defineProps<{
       props.class,
     )"
   >
-    <div>{{ message }}</div>
+    <div class="whitespace-pre-wrap">{{ message }}</div>
   </div>
 </template>

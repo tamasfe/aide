@@ -8,6 +8,8 @@
   "field": {
     "email": "Email",
     "password": "Password",
+    "password_new": "Enter a new password",
+    "password_confirm": "Confirm new password",
     "telephone": "Telephone",
     "cpf": "CPF"
   },
@@ -44,7 +46,8 @@
     "change": "Change",
     "copy": "Copy",
     "upload": "Upload",
-    "confirm": "Confirm"
+    "confirm": "Confirm",
+    "save_password_and_login": "Save Password and Login"
   },
   "mobile_nav": {
     "menu": "Menu",
@@ -113,6 +116,7 @@
     "email_required": "Email is required",
     "password_invalid": "Invalid password",
     "password_required": "Password is required",
+    "password_does_not_match": "Passwords do not match",
     "password_invalid_too_short": "Password must be longer than {min}",
     "password_invalid_too_long": "Password must be shorter than {max}",
     "telephone_invalid": "Invalid phone",
@@ -183,6 +187,10 @@
   },
   "i18n": {
     "close": "Close"
+  },
+  "recover_password": {
+    "error_invalid_token": "There was a problem with your recovery link. \nPlease restart the password recovery process and try again",
+    "error_unknown": "There was a problem resetting your password. \nPlease restart the password recovery process and try again"
   },
   "search": {
     "number_of_results": "{total} Results",

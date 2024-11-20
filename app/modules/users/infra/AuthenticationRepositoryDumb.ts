@@ -16,4 +16,9 @@ export class AuthenticationRepositoryDumb implements AuthenticationRepositoryI {
     this.logger.debug("logout called", {});
     return success();
   }
+
+  public async resetPassword(newPassword: string, token: string): Promise<EmptyResult<InfrastructureError>> {
+    this.logger.debug("resetPassword called", { newPassword, token });
+    return success();
+  }
 }

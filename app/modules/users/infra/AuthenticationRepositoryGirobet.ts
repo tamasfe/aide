@@ -1,5 +1,6 @@
 import type { AuthenticationRepositoryI } from "../domain/AuthenticationRepository";
 import { ErrorInvalidAuthCredentials } from "../domain/errors/ErrorInvalidAuthCredentials";
+import { ErrorInvalidPasswordRecoveryToken } from "../domain/errors/ErrorInvalidPasswordRecoveryToken";
 import { createBackendOpenApiClient } from "~/packages/http-client/create-backend-open-api-client";
 import { fail, success, type EmptyResult } from "~/packages/result";
 import { InfrastructureError } from "~/packages/result/infrastructure-error";
@@ -54,6 +55,39 @@ export class AuthenticationRepositoryGirobet implements AuthenticationRepository
       }
 
       if (error) {
+        const httpError = HttpBackendApiError.newFromBackendError(error, response);
+        return fail(
+          InfrastructureError.newFromError({}, httpError),
+        );
+      }
+
+      return fail(InfrastructureError.newFromError({ data, error, response }, new Error("Unexpected scenario: library did not return data nor error. This should never happen")));
+    }
+    catch (error) {
+      return fail(InfrastructureError.newFromUnknownError({ }, error));
+    }
+  }
+
+  public async resetPassword(newPassword: string, token: string): Promise<EmptyResult<ErrorInvalidPasswordRecoveryToken | InfrastructureError>> {
+    try {
+      const { data, error, response } = await this.apiClient.POST("/auth/reset-password", {
+        body: {
+          password: newPassword,
+          token,
+        },
+      });
+
+      if (data || response.ok) {
+        return success();
+      }
+
+      if (error) {
+        if (response.status === 422 || error.code === "UNAUTHORIZED") {
+          return fail(
+            ErrorInvalidPasswordRecoveryToken.new(token),
+          );
+        }
+
         const httpError = HttpBackendApiError.newFromBackendError(error, response);
         return fail(
           InfrastructureError.newFromError({}, httpError),
