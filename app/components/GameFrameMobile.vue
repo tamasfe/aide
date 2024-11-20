@@ -72,6 +72,7 @@ const onTogglePlaying = async () => {
             <!-- <h3 class="text-lg text-subtle-light font-medium">Pragmatic Play</h3> -->
             <GameFrameVotes
               class="mt-4 gap-4 text-subtle-light"
+              :game-id="gameId"
             />
           </div>
         </div>

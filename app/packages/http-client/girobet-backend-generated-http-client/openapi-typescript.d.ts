@@ -402,9 +402,18 @@ export interface paths {
          *     	"last_name": "Doe",
          *     	"email": "john@doe.com",
          *     	"password": "test",
-         *     	"CPF": "536.726.824-20"
+         *     	"CPF": "549.448.010-09"
          *     }
-         *     ````
+         *     ```
+         *
+         *     #### Testing CPFs that you can use to create a user
+         *
+         *     - 549.448.010-09
+         *     - 653.358.910-50
+         *     - 715.176.900-80
+         *     - 395.677.760-32
+         *     - 993.093.100-73
+         *
          */
         patch: {
             parameters: {
@@ -627,7 +636,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["LimitOverrides"];
+                        "application/json": components["schemas"]["PaymentLimitsResponse"];
                     };
                 };
                 "4XX": {
@@ -1174,7 +1183,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/game/{game_id}/rate": {
+    "/game/{game_id}/rating": {
         parameters: {
             query?: never;
             header?: never;
@@ -1644,7 +1653,7 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["UserSettings"];
+                    "application/json": components["schemas"]["PatchUserSettings"];
                 };
             };
             responses: {
@@ -2067,6 +2076,8 @@ export interface components {
              * @description The number of likes the game has received.
              */
             likes: number;
+            /** @description The rating the current user has given the game. If the user has not rated the game, this field is `null`. If the user Is not authenticated, this field is also `null`. */
+            own_rating?: components["schemas"]["GameRating"] | null;
         };
         GameResponse: {
             /**
@@ -2144,19 +2155,6 @@ export interface components {
             name: string;
             /** @description The root jurisdiction of the license. While licenses can cover multiple jurisdictions, this is the jurisdiction that the license is rooted in. Examples include Curacao, Anjouan, etc. */
             root_jurisdiction: components["schemas"]["SystemCountry"];
-        };
-        LimitOverrides: {
-            deposit_cooldown?: components["schemas"]["DurationSeconds"] | null;
-            deposit_max?: string | null;
-            deposit_max_first?: string | null;
-            deposit_min?: string | null;
-            deposit_min_first?: string | null;
-            timeframe_limits: components["schemas"]["TimeframeLimit"][];
-            withdrawal_cooldown?: components["schemas"]["DurationSeconds"] | null;
-            withdrawal_max?: string | null;
-            withdrawal_max_first?: string | null;
-            withdrawal_min?: string | null;
-            withdrawal_min_first?: string | null;
         };
         ListGameActionsQuery: {
             /** @description The type of the game action to filter by. If not set, all game actions (bet, win, etc.) will be included. */
@@ -2298,16 +2296,20 @@ export interface components {
         PatchSignupFlowRequest: {
             [key: string]: unknown;
         };
+        PatchUserSettings: {
+            consent_email?: components["schemas"]["MaybeOperator"];
+            consent_post_mail?: components["schemas"]["MaybeOperator"];
+            consent_push_notification?: components["schemas"]["MaybeOperator"];
+            consent_site_notification?: components["schemas"]["MaybeOperator"];
+            consent_sms?: components["schemas"]["MaybeOperator"];
+            consent_telephone?: components["schemas"]["MaybeOperator"];
+            language?: components["schemas"]["MaybeOperator"];
+        };
         /** Format: int64 */
         PaymentFlowId: number;
         PaymentFlowResponse: {
             /** @description The amount of the payment flow. */
             amount: components["schemas"]["SystemAmount"];
-            /**
-             * Format: date-time
-             * @description The time the payment flow was completed. If `null` the payment flow has not been completed.
-             */
-            completed_at?: string | null;
             /**
              * Format: date-time
              * @description The time the payment flow was created.
@@ -2325,6 +2327,11 @@ export interface components {
             payment_type: components["schemas"]["PaymentType"];
             /** @description The last status of the payment flow. If no status is set, the payment has been initialized but not yet processed by the system in any way. */
             status?: components["schemas"]["PaymentStatus"] | null;
+            /**
+             * Format: date-time
+             * @description The time the payment flo
+             */
+            status_updated_at?: string | null;
             /** @description The wallet ID the payment flow is associated with. */
             wallet_id: components["schemas"]["WalletId"];
         };
@@ -2335,6 +2342,41 @@ export interface components {
             currency: components["schemas"]["SystemCurrency"];
             /** @description The payment method to get the payment limits for. */
             payment_method_id: components["schemas"]["PaymentMethodId"];
+        };
+        PaymentLimitsResponse: {
+            /** @description The number of seconds a user has to wait between deposits. */
+            deposit_cooldown?: components["schemas"]["DurationSeconds"] | null;
+            /** @description The maximum deposit amount. This will be enforced for all deposits after FTD. */
+            deposit_max?: components["schemas"]["SystemAmount"] | null;
+            /** @description The maximum deposit amount on FTD. */
+            deposit_max_first?: components["schemas"]["SystemAmount"] | null;
+            /** @description The minimum deposit amount. This will be enforced for all deposits after FTD. */
+            deposit_min?: components["schemas"]["SystemAmount"] | null;
+            /** @description The minimum deposit amount on FTD. */
+            deposit_min_first?: components["schemas"]["SystemAmount"] | null;
+            /** @description Timeframe limits enforce that a user does not exceed payment limits over a certain timeframe. This can be used to enforce daily, weekly, monthly limits, etc. */
+            timeframe_limits: components["schemas"]["PaymentLimitsTimeframeResponse"][];
+            /** @description The number of seconds a user has to wait between withdrawals. */
+            withdrawal_cooldown?: components["schemas"]["DurationSeconds"] | null;
+            /** @description The maximum withdrawal amount. This will be enforced for all withdrawals after FTD. */
+            withdrawal_max?: components["schemas"]["SystemAmount"] | null;
+            /** @description The maximum withdrawal amount on FTD. */
+            withdrawal_max_first?: components["schemas"]["SystemAmount"] | null;
+            /** @description The minimum withdrawal amount. This will be enforced for all withdrawals after FTD. */
+            withdrawal_min?: components["schemas"]["SystemAmount"] | null;
+            /** @description The minimum withdrawal amount on FTD. */
+            withdrawal_min_first?: components["schemas"]["SystemAmount"] | null;
+        };
+        PaymentLimitsTimeframeResponse: {
+            /**
+             * Format: int64
+             * @description The number of days the timeframe limit applies to.
+             */
+            days: number;
+            /** @description The deposit limit for the timeframe. */
+            deposit?: components["schemas"]["SystemAmount"] | null;
+            /** @description The withdrawal limit for the timeframe. */
+            withdrawal?: components["schemas"]["SystemAmount"] | null;
         };
         PaymentMethodDepositResponsePayload: {
             pix: {
@@ -2477,6 +2519,9 @@ export interface components {
         } | {
             /** @enum {string} */
             code: "PAYMENT_FLOW_NOT_FOUND";
+        } | {
+            /** @enum {string} */
+            code: "PAYMENT_FLOW_INVALID_STATE";
         } | {
             /** @enum {string} */
             code: "PAYMENT_FLOW_NOT_AWAITING_APPROVAL";
@@ -2683,12 +2728,6 @@ export interface components {
         SystemValidationErrorsKind: components["schemas"]["SystemValidationErrors"] | {
             [key: string]: components["schemas"]["SystemValidationErrors"];
         } | components["schemas"]["SystemValidationError"][];
-        TimeframeLimit: {
-            /** Format: int64 */
-            days: number;
-            deposit?: string | null;
-            withdrawal?: string | null;
-        };
         UserBalanceResponse: {
             /** @description The balance of the wallet. */
             balance: components["schemas"]["SystemAmount"];
@@ -2725,9 +2764,22 @@ export interface components {
             time_zone: string;
         };
         UserSettings: {
-            language?: components["schemas"]["MaybeOperator"];
-            pix_payment_key?: components["schemas"]["MaybeOperator"];
-            primary_currency?: components["schemas"]["MaybeOperator"];
+            /** @default null */
+            consent_email: boolean | null;
+            /** @default null */
+            consent_post_mail: boolean | null;
+            /** @default null */
+            consent_push_notification: boolean | null;
+            /** @default null */
+            consent_site_notification: boolean | null;
+            /** @default null */
+            consent_sms: boolean | null;
+            /** @default null */
+            consent_telephone: boolean | null;
+            /** @default null */
+            language: string | null;
+        } & {
+            [key: string]: unknown;
         };
         /** Format: int64 */
         WalletId: number;

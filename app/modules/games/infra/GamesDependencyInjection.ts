@@ -4,6 +4,7 @@ import { SearchGameCategoriesByCategoryGroup } from "../application/SearchGameCa
 import { FindGameCompatibilityById } from "../application/FindGameCompatibilityById";
 import type { GamesApiRepositoryI } from "../domain/GamesApiRepository";
 import type { GameActionsRepositoryI } from "../domain/GameActionsRepository";
+import type { GameRatingsRepositoryI } from "../domain/GameRatingsRepository";
 import { GamesApiRepositoryDumb } from "./GamesApiRepositoryDumb";
 import { GamesApiRepositoryGirobet } from "./GamesApiRepositoryGirobet";
 import { FindGameImageSrcByGameId } from "./ui/FindGameImageSrcByGameId";
@@ -17,17 +18,23 @@ import { SearchGamesPaginatingOnGrid } from "./ui/SearchGamesPaginatingOnGrid";
 import { GameActionsRepositoryDumb } from "./GameActionsRepositoryDumb";
 import { GameActionsRepositoryGirobet } from "./GameActionsRepositoryGirobet";
 import { SearchGameActionsPaginatingOnCasinoTable } from "./ui/SearchGameActionsPaginatingOnCasinoTable";
+import { GameRatingsRepositoryDumb } from "./GameRatingsRepositoryDumb";
+import { GameRatingsRepositoryGirobet } from "./GameRatingsRepositoryGirobet";
+import { RateGameFromGameFrameVotes } from "./ui/RateGameFromGameFrameVotes";
+import { SearchGameRatingFromGameFrameVotes } from "./ui/SearchGameRatingFromGameFrameVotes";
 import type { CommonDependenciesI } from "~/dependency-injection/load-di";
 
 export interface GamesDependencyInjectionI {
   ui: {
+    buildGameSessionIFrameUrl: BuildGameSessionIFrameUrl;
+    findGameCompatibilityByIdOnGamePage: FindGameCompatibilityByIdOnGamePage;
+    findGameImageSrcByGameId: FindGameImageSrcByGameId;
+    searchGameRatingFromGameFrameVotes: SearchGameRatingFromGameFrameVotes;
     searchGamesPaginatingOnGrid: SearchGamesPaginatingOnGrid;
     searchGamesByQueryPaginatingOnSearchBar: SearchGamesByQueryPaginatingOnSearchBar;
-    findGameImageSrcByGameId: FindGameImageSrcByGameId;
     searchGameCategoriesByGroup: SearchGameCategoriesByGroup;
-    findGameCompatibilityByIdOnGamePage: FindGameCompatibilityByIdOnGamePage;
-    buildGameSessionIFrameUrl: BuildGameSessionIFrameUrl;
     searchGameActionsPaginatingOnCasinoTable: SearchGameActionsPaginatingOnCasinoTable;
+    rateGameFromGameFrameVotes: RateGameFromGameFrameVotes;
   };
 }
 
@@ -41,6 +48,14 @@ export const createGamesDependencyInjection = async (publicConfig: PublicRuntime
     }
 
     return new GamesApiRepositoryGirobet({ baseUrl: apiBaseUrl, headers: requestHeaders, userJurisdiction: publicConfig.genericFixedUserJurisdiction }, commonDependencies.asyncMessagePublisher);
+  })();
+
+  const gameRatingsRepository: GameRatingsRepositoryI = (() => {
+    if (!apiBaseUrl || apiBaseUrl === "") {
+      return new GameRatingsRepositoryDumb(commonDependencies.logger);
+    }
+
+    return new GameRatingsRepositoryGirobet({ baseUrl: apiBaseUrl, headers: requestHeaders, userJurisdiction: publicConfig.genericFixedUserJurisdiction }, commonDependencies.asyncMessagePublisher);
   })();
 
   const gameCategoriesRepositoryDumb: GameCategoriesRepositoryDumb = (() => {
@@ -63,17 +78,17 @@ export const createGamesDependencyInjection = async (publicConfig: PublicRuntime
 
   return {
     ui: {
+      buildGameSessionIFrameUrl: new BuildGameSessionIFrameUrl(publicConfig.games.apiBaseUrlClient || ""),
+      findGameCompatibilityByIdOnGamePage: new FindGameCompatibilityByIdOnGamePage(new FindGameCompatibilityById(gamesApiRepository), commonDependencies.logger),
+      findGameImageSrcByGameId: new FindGameImageSrcByGameId(publicConfig.games.apiBaseUrlClient || ""),
       searchGamesPaginatingOnGrid: new SearchGamesPaginatingOnGrid(searchGamesPaginatingQuery, commonDependencies.logger),
       searchGamesByQueryPaginatingOnSearchBar: new SearchGamesByQueryPaginatingOnSearchBar(searchGamesPaginatingQuery, commonDependencies.logger),
-      findGameImageSrcByGameId: new FindGameImageSrcByGameId(publicConfig.games.apiBaseUrlClient || ""),
       searchGameCategoriesByGroup: new SearchGameCategoriesByGroup(
         new SearchGameCategoriesByCategoryGroup(
           gameCategoriesRepositoryDumb,
         ),
         commonDependencies.logger,
       ),
-      findGameCompatibilityByIdOnGamePage: new FindGameCompatibilityByIdOnGamePage(new FindGameCompatibilityById(gamesApiRepository), commonDependencies.logger),
-      buildGameSessionIFrameUrl: new BuildGameSessionIFrameUrl(publicConfig.games.apiBaseUrlClient || ""),
       searchGameActionsPaginatingOnCasinoTable: new SearchGameActionsPaginatingOnCasinoTable(
         gameActionsRepository,
         commonDependencies.logger,
@@ -81,6 +96,8 @@ export const createGamesDependencyInjection = async (publicConfig: PublicRuntime
         commonDependencies.numberFormatter,
         commonDependencies.dateTimeFormatter,
       ),
+      searchGameRatingFromGameFrameVotes: new SearchGameRatingFromGameFrameVotes(commonDependencies.logger, gameRatingsRepository),
+      rateGameFromGameFrameVotes: new RateGameFromGameFrameVotes(commonDependencies.logger, gameRatingsRepository),
     },
   };
 };
