@@ -14,6 +14,7 @@ import { AttemptUserLoginOnFormSubmission } from "./ui/AttemptUserLoginOnFormSub
 import { LogoutCurrentUserFromButtonClick } from "./ui/LogoutCurrentUserFromButtonClick";
 import { EmitCommandCloseUserActionModal } from "./ui/EmitCommandCloseUserActionModal";
 import { RecoverPasswordOnForm } from "./ui/RecoverPasswordOnForm";
+import { RequestRecoverPasswordOnForm } from "./ui/RequestRecoverPasswordOnForm";
 import type { CommonDependenciesI } from "~/dependency-injection/load-di";
 
 export interface UsersDependencyInjectionI {
@@ -26,6 +27,7 @@ export interface UsersDependencyInjectionI {
     attemptUserLoginOnFormSubmission: AttemptUserLoginOnFormSubmission;
     logoutCurrentUserFromButtonClick: LogoutCurrentUserFromButtonClick;
     recoverPassword: RecoverPasswordOnForm;
+    requestRecoverPasswordOnForm: RequestRecoverPasswordOnForm;
   };
 }
 export const createUsersDependencyInjection = async (config: PublicRuntimeConfig, commonDependencies: CommonDependenciesI, requestHeaders?: Record<string, string>): Promise<UsersDependencyInjectionI> => {
@@ -65,6 +67,11 @@ export const createUsersDependencyInjection = async (config: PublicRuntimeConfig
       ),
       recoverPassword: new RecoverPasswordOnForm(
         new RecoverPassword(authenticationRepo, commonDependencies.asyncMessagePublisher),
+        commonDependencies.translateFunction,
+      ),
+      requestRecoverPasswordOnForm: new RequestRecoverPasswordOnForm(
+        authenticationRepo,
+        commonDependencies.asyncMessagePublisher,
         commonDependencies.translateFunction,
       ),
     },

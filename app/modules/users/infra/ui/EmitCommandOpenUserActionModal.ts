@@ -4,9 +4,9 @@ import { success, type EmptySuccessResult } from "~/packages/result";
 export class EmitCommandOpenUserActionModalModal {
   constructor(private readonly asyncMessagePublisher: AsyncMessagePublisherI) {}
 
-  public async handle(modalToOpen: "login" | "register" | "search"): Promise<EmptySuccessResult>;
+  public async handle(modalToOpen: "login" | "register" | "search" | "forgot_password"): Promise<EmptySuccessResult>;
   public async handle(modalToOpen: "recover_password", token: string): Promise<EmptySuccessResult>;
-  public async handle(modalToOpen: "login" | "register" | "search" | "recover_password", token?: string): Promise<EmptySuccessResult> {
+  public async handle(modalToOpen: "login" | "register" | "search" | "forgot_password" | "recover_password", token?: string): Promise<EmptySuccessResult> {
     switch (modalToOpen) {
       case "login":
         await this.asyncMessagePublisher.emit("girobet:commands:modals:open-login", {});
@@ -18,6 +18,10 @@ export class EmitCommandOpenUserActionModalModal {
 
       case "search":
         await this.asyncMessagePublisher.emit("girobet:commands:modals:open-search", {});
+        return success();
+
+      case "forgot_password":
+        await this.asyncMessagePublisher.emit("girobet:commands:modals:open-forgot-password", {});
         return success();
 
       case "recover_password":

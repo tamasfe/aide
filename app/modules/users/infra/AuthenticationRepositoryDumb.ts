@@ -1,5 +1,6 @@
 import type { AuthenticationRepositoryI } from "../domain/AuthenticationRepository";
 import type { ErrorInvalidAuthCredentials } from "../domain/errors/ErrorInvalidAuthCredentials";
+import type { UserEmail } from "../domain/UserEmail";
 import type { LoggerI } from "~/packages/logger/Logger";
 import { success, type EmptyResult } from "~/packages/result";
 import type { InfrastructureError } from "~/packages/result/infrastructure-error";
@@ -14,6 +15,11 @@ export class AuthenticationRepositoryDumb implements AuthenticationRepositoryI {
 
   public async logout(): Promise<EmptyResult<InfrastructureError>> {
     this.logger.debug("logout called", {});
+    return success();
+  }
+
+  public async requestResetPassword(email: UserEmail): Promise<EmptyResult<InfrastructureError>> {
+    this.logger.debug("requestResetPassword called", { email });
     return success();
   }
 

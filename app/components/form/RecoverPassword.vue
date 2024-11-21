@@ -23,9 +23,7 @@ const validationSchema = toTypedSchema(
     password: z.string({ required_error: t("validation.password_required") })
       .min(UserPassword.MIN_PASSWORD_LENGTH, t("validation.password_invalid_too_short", { min: String(UserPassword.MIN_PASSWORD_LENGTH) }))
       .max(UserPassword.MAX_PASSWORD_LENGTH, t("validation.password_invalid_too_long", { max: String(UserPassword.MAX_PASSWORD_LENGTH) })),
-    confirm: z.string({ required_error: t("validation.password_required") })
-      .min(UserPassword.MIN_PASSWORD_LENGTH, t("validation.password_invalid_too_short", { min: String(UserPassword.MIN_PASSWORD_LENGTH) }))
-      .max(UserPassword.MAX_PASSWORD_LENGTH, t("validation.password_invalid_too_long", { max: String(UserPassword.MAX_PASSWORD_LENGTH) })),
+    confirm: z.string({ required_error: t("validation.password_required") }),
   }).refine(data => data.password === data.confirm, {
     message: t("validation.password_does_not_match"),
     path: ["confirm"], // path of error
@@ -76,8 +74,7 @@ const onSubmit = handleSubmit(async (formData) => {
       name="confirm"
       :error-message="formErrors.confirm"
       v-bind="confirmAttrs"
-      @input="(value) => confirm ? (confirm = value) : null"
-      @change="(value) => confirm ? null : confirm = value"
+      @input="(value) => confirm = value"
     />
 
     <BaseButton

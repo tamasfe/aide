@@ -76,6 +76,7 @@ const onSubmit = handleSubmit(async (formData) => {
         variant="ghost"
         size="ghost"
         class="text-sm text-subtle hover:text-subtle-light"
+        @click="$dependencies.users.ui.emitCommandOpenUserActionModal.handle('forgot_password')"
       >
         {{ $t("modal_session.forgot_password") }}
       </BaseButton>

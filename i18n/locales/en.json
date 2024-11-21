@@ -30,7 +30,7 @@
     "create_account": "Create Account",
     "continue": "Continue",
     "see_all": "See All",
-    "send_recovery_email": "Send Recovery Email",
+    "send_recovery_email": "Send Recovery Email and Close",
     "deposit": "Deposit",
     "deposit_now": "Deposit Now",
     "copy_code": "Copy Code ({remaining} Remaining)",
@@ -99,6 +99,9 @@
     "headline": "Wait! Are you sure you want to cancel?",
     "body": "Players are cashing out everyday with our super fast withdrawals. Click Continue to complete your registration.",
     "cancel": "No thanks, I want to cancel"
+  },
+  "modal_forgot_password": {
+    "error_unknown": "An error occurred. Please try again"
   },
   "modal_restrict": {
     "expanding_headline": "Sorry, {blockedDomain} is not available within {country}",
