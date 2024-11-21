@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { createColumnHelper, type ColumnDef } from "@tanstack/vue-table";
-import { DataTableCopyCell, NuxtLink } from "#components";
+import { DataTableCopyCell, DataTableLinkCell } from "#components";
 
 const { $dependencies } = useNuxtApp();
 const walletStore = useWalletStore();
@@ -35,8 +35,8 @@ const columns: ColumnDef<GameActionTableRow>[] = [
   column.accessor("game", {
     header: t("dashboard.history.casino.table_header_game"),
     cell: ({ getValue }) => h(
-      NuxtLink,
-      { class: "hover:underline text-emphasis", to: { name: "games-id", params: { id: getValue().id } } },
+      DataTableLinkCell,
+      { href: `/games/${getValue().id}`, class: "hover:underline" },
       () => getValue().name),
   }),
   column.accessor("action", {
