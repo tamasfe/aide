@@ -11,19 +11,34 @@ const ENABLE_SERVER_SIDE_RENDERING = false;
 const DEFER_CLIENT_SIDE_LOADING = true;
 
 const loading = useState(`history-page-deposits-loading`, () => true);
+const pageIndex = useState(`history-page-deposits-page-index`, () => 0);
+const totalItems = useState(`history-page-deposits-total-items`, () => $dependencies.wallets.ui.searchPaymentsOnTable.PAGE_SIZE);
+const pageSize = ref($dependencies.wallets.ui.searchPaymentsOnTable.PAGE_SIZE);
 
 const { data } = await useAsyncData("history-page-deposits-data", async () => {
   if (!walletStore.isInit) return;
 
   loading.value = true;
-  const data = await $dependencies.wallets.ui.searchPaymentsOnTable.handle(walletStore.wallet.id, "deposit", 0);
+  const data = await $dependencies.wallets.ui.searchPaymentsOnTable.handle(walletStore.wallet.id, "deposit", pageIndex.value);
 
+  pageSize.value = data.pageSize;
+  totalItems.value = data.totalItems;
   loading.value = false;
   return data.payments;
 }, {
-  watch: [() => walletStore.wallet?.id],
+  watch: [() => walletStore.wallet?.id, pageIndex],
   lazy: DEFER_CLIENT_SIDE_LOADING,
   server: ENABLE_SERVER_SIDE_RENDERING,
+});
+
+const pagination = computed(() => {
+  if (data === undefined) return undefined;
+  return {
+    pageIndex,
+    pageSize,
+    rowCount: totalItems,
+    updatePageIndex: (index: number) => { pageIndex.value = index; },
+  };
 });
 </script>
 
@@ -35,6 +50,7 @@ const { data } = await useAsyncData("history-page-deposits-data", async () => {
     <DataTableWalletPayments
       :payments="data || []"
       :loading="loading"
+      :pagination="pagination"
     >
       <template #empty>
         <BaseEmpty

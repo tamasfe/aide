@@ -1,16 +1,26 @@
 <script setup lang="ts">
 import { createColumnHelper, type ColumnDef } from "@tanstack/vue-table";
-import { DataTableCopyCell } from "#components";
+import { DataTableCopyCell, NuxtLink } from "#components";
 
 const { $dependencies } = useNuxtApp();
+const walletStore = useWalletStore();
 const { t } = useI18n();
+
 type GameActionTableRow = {
   id: number;
   date: string;
-  game: string;
+  game: {
+    name: string;
+    id: number;
+  };
   action: string;
   amount: string;
 };
+
+// TODO: do we want this behaviour? Or should we (for example) keep the user in the page and show them a "log in to see your balance & transactions" message?
+if (!walletStore.isInit) {
+  await navigateTo("/");
+}
 
 const column = createColumnHelper<GameActionTableRow>();
 
@@ -24,6 +34,10 @@ const columns: ColumnDef<GameActionTableRow>[] = [
   }),
   column.accessor("game", {
     header: t("dashboard.history.casino.table_header_game"),
+    cell: ({ getValue }) => h(
+      NuxtLink,
+      { class: "hover:underline text-emphasis", to: { name: "games-id", params: { id: getValue().id } } },
+      () => getValue().name),
   }),
   column.accessor("action", {
     header: t("dashboard.history.casino.table_header_action"),
@@ -38,16 +52,37 @@ const columns: ColumnDef<GameActionTableRow>[] = [
 
 const ENABLE_SERVER_SIDE_RENDERING = false;
 const DEFER_CLIENT_SIDE_LOADING = true;
-const loading = ref(true);
+const loading = useState(`history-page-casino-loading`, () => true);
+const pageIndex = useState(`history-page-casino-page-index`, () => 0);
+const totalItems = useState(`history-page-casino-total-items`, () => $dependencies.games.ui.searchGameActionsPaginatingOnCasinoTable.PAGINATION_SIZE);
+const pageSize = ref($dependencies.games.ui.searchGameActionsPaginatingOnCasinoTable.PAGINATION_SIZE);
 
-const { data } = await useAsyncData<GameActionTableRow[]>(`dashboard-history-casino-table`, async () => {
+const { data } = await useAsyncData(`dashboard-history-casino-table`, async () => {
+  if (!walletStore.isInit) {
+    return;
+  }
+
   loading.value = true;
-  const result = await $dependencies.games.ui.searchGameActionsPaginatingOnCasinoTable.handle();
+  const result = await $dependencies.games.ui.searchGameActionsPaginatingOnCasinoTable.handle(pageIndex.value);
+
+  pageSize.value = result.pageSize;
+  totalItems.value = result.totalItems;
   loading.value = false;
+
   return result;
 },
-{ lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING },
+{ watch: [pageIndex], lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING },
 );
+
+const pagination = computed(() => {
+  if (data === undefined) return undefined;
+  return {
+    pageIndex: pageIndex,
+    pageSize: pageSize,
+    rowCount: totalItems,
+    updatePageIndex: (index: number) => { pageIndex.value = index; },
+  };
+});
 </script>
 
 <template>
@@ -56,9 +91,10 @@ const { data } = await useAsyncData<GameActionTableRow[]>(`dashboard-history-cas
     section="history"
   >
     <DataTable
-      :data="data ?? []"
+      :data="data?.gameActions ?? []"
       :columns="columns"
       :loading="loading"
+      :pagination="pagination"
     >
       <template #empty>
         <BaseEmpty

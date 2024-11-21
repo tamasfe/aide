@@ -19,16 +19,29 @@ export class SearchPaymentsOnTable {
     private n: NumberFormatterFunctionType,
   ) {}
 
-  static PAGE_SIZE = 25;
+  public PAGE_SIZE = 25;
 
-  public async handle(walletId: number | null, type: "deposit" | "withdrawal" | null, page: number, pageSize: number = SearchPaymentsOnTable.PAGE_SIZE): Promise<{ payments: WalletPaymentTableData[] }> {
-    const result = await this.query.handle(walletId, type, page, pageSize);
+  public async handle(walletId: number | null, type: "deposit" | "withdrawal" | null, pageIndex: number, pageSize: number = this.PAGE_SIZE): Promise<{
+    pageIndex: number;
+    pageSize: number;
+    totalItems: number;
+    payments: WalletPaymentTableData[];
+  }> {
+    const result = await this.query.handle(walletId, type, pageIndex, pageSize);
     if (result.isFailure) {
-      this.logger.error("Unexpected error while trying to search for payments", result.error, { page, pageSize: pageSize });
-      return { payments: [] };
+      this.logger.error("Unexpected error while trying to search for payments", result.error, { pageIndex, pageSize: pageSize });
+      return {
+        pageIndex,
+        pageSize,
+        totalItems: 0,
+        payments: [],
+      };
     }
 
     return {
+      pageIndex,
+      pageSize,
+      totalItems: result.value.pagination.totalItems,
       payments: result.value.payments.map((payment) => {
         /**
          * This switch is here to remember to add the translation key when adding new payment statuses

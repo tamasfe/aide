@@ -1,6 +1,6 @@
 <script setup lang="ts" generic="TData, TValue">
 import type { ColumnDef } from "@tanstack/vue-table";
-import { FlexRender, getCoreRowModel, useVueTable } from "@tanstack/vue-table";
+import { FlexRender, getCoreRowModel, getPaginationRowModel, useVueTable } from "@tanstack/vue-table";
 
 // DESIGN STATUS:      ✴️
 //   - still needs mobile responsive version of table
@@ -16,13 +16,38 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
   columns: ColumnDef<TData, TValue>[];
   loading?: boolean;
+  pagination?: {
+    pageSize: Ref<number>;
+    pageIndex: Ref<number>;
+    rowCount: Ref<number>;
+    updatePageIndex: (index: number) => void;
+  };
 }
 
 const props = withDefaults(defineProps<DataTableProps<TData, TValue>>(), {
   loading: false,
 });
 
-const buildTable = () => {
+const buildTable = (props: DataTableProps<TData, TValue>) => {
+  const pagination = props.pagination;
+  if (pagination !== undefined) {
+    return {
+      state: {
+        get pagination() {
+          return {
+            pageIndex: pagination.pageIndex.value,
+            pageSize: pagination.pageSize.value,
+          };
+        },
+      },
+      manualPagination: true,
+      get rowCount() { return pagination.rowCount.value; },
+      get data() { return props.data; },
+      get columns() { return props.columns; },
+      getCoreRowModel: getCoreRowModel(),
+      getPaginationRowModel: getPaginationRowModel(),
+    };
+  }
   return {
     get data() {
       return props.data;
@@ -34,7 +59,7 @@ const buildTable = () => {
   };
 };
 
-const table = useVueTable(buildTable());
+const table = useVueTable(buildTable(props));
 </script>
 
 <template>
@@ -109,6 +134,15 @@ const table = useVueTable(buildTable());
 
     <DataTableLoadingOverlay :loading="loading" />
   </div>
+
+  <DataTablePagination
+    v-if="pagination && loading !== true"
+    :table="table"
+    @first-page="pagination.updatePageIndex(0)"
+    @last-page="pagination.updatePageIndex(table.getPageCount() - 1)"
+    @previous-page="pagination.updatePageIndex(pagination.pageIndex.value - 1)"
+    @next-page="pagination.updatePageIndex(pagination.pageIndex.value + 1)"
+  />
 </template>
 
 <style scoped>

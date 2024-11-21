@@ -15,6 +15,12 @@ type WalletPayment = {
 defineProps<{
   loading: boolean;
   payments: WalletPayment[];
+  pagination?: {
+    pageSize: Ref<number>;
+    pageIndex: Ref<number>;
+    rowCount: Ref<number>;
+    updatePageIndex: (index: number) => void;
+  };
 }>();
 
 const column = createColumnHelper<WalletPayment>();
@@ -47,6 +53,7 @@ const columns: ColumnDef<WalletPayment>[] = [
     :data="payments"
     :columns="columns"
     :loading="loading"
+    :pagination="pagination"
   >
     <template #empty>
       <slot name="empty">
