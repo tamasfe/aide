@@ -10,58 +10,62 @@ import type { HTMLAttributes } from "vue";
 const props = defineProps<{
   class?: HTMLAttributes["class"];
   gameId: number;
+  authenticated: boolean;
 }>();
 
 const { n } = useI18n();
 const { $dependencies } = useNuxtApp();
-const userStore = useUserStore();
 
 const ENABLE_SERVER_SIDE_RENDERING = false;
 const DEFER_CLIENT_SIDE_LOADING = true;
-const loading = ref(true);
 
-const { data, refresh: refreshData } = await useAsyncData(`game-frame-votes-for-game-${props.gameId}`, async () => {
-  loading.value = true;
+const initialLoading = ref(true);
+const likes = ref<number>(0);
+const dislikes = ref<number>(0);
+const rating = ref<"like" | "dislike" | null>(null);
+
+await useAsyncData(`game-frame-votes-for-game-${props.gameId}`, async () => {
+  initialLoading.value = true;
   const result = await $dependencies.games.ui.searchGameRatingFromGameFrameVotes.handle(props.gameId);
-  loading.value = false;
+  if (!result) return null;
+
+  likes.value = result.likes;
+  dislikes.value = result.dislikes;
+  rating.value = result.rating;
+
+  initialLoading.value = false;
   return result;
 },
 { lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING },
 );
 
-const votes = computed<number>(() => {
-  if (data.value?.likes === undefined || data.value?.dislikes === undefined) return 0;
-  return data.value.likes + data.value.dislikes;
-});
-const likesPercentage = computed<number>(() => {
-  if (data.value?.likes === undefined || data.value?.dislikes === undefined) return 0;
-  const votes = data.value.likes + data.value.dislikes;
-  return votes === 0 ? 0 : (data.value.likes / votes);
-});
-const rating = computed<"like" | "dislike" | null>(() => {
-  if (!data || !data.value) return null;
-  return data.value.rating;
-});
+const votes = computed<number>(() => likes.value + dislikes.value);
+const likesPercentage = computed<number>(() => votes.value === 0 ? 0 : (likes.value / votes.value));
 
 const onClickVote = async (newRating: "like" | "dislike") => {
-  if (!data || !data.value || loading.value) {
+  if (!props.authenticated) {
     return;
   }
 
-  if (!userStore.isAuthenticated) {
-    return;
-  }
-
-  loading.value = true;
   if (newRating === rating.value) {
-    await $dependencies.games.ui.rateGameFromGameFrameVotes.handle(props.gameId, null);
+    rating.value = null;
+    if (newRating === "like") likes.value -= 1;
+    if (newRating === "dislike") dislikes.value -= 1;
+    $dependencies.games.ui.rateGameFromGameFrameVotes.handle(props.gameId, null);
   }
   else {
-    await $dependencies.games.ui.rateGameFromGameFrameVotes.handle(props.gameId, newRating);
-  }
+    if (newRating === "like") {
+      likes.value += 1;
+      if (rating.value === "dislike") dislikes.value -= 1;
+    };
+    if (newRating === "dislike") {
+      dislikes.value += 1;
+      if (rating.value === "like") likes.value -= 1;
+    }
 
-  await refreshData();
-  loading.value = false;
+    rating.value = newRating;
+    $dependencies.games.ui.rateGameFromGameFrameVotes.handle(props.gameId, newRating);
+  }
 };
 </script>
 
@@ -69,7 +73,7 @@ const onClickVote = async (newRating: "like" | "dislike") => {
   <div
     :class="cn(
       'flex flex-row gap-2 items-center text-button-secondary',
-      loading ? 'opacity-60' : 'opacity-100',
+      initialLoading ? 'opacity-60' : 'opacity-100',
       props.class,
     )"
   >
@@ -77,7 +81,7 @@ const onClickVote = async (newRating: "like" | "dislike") => {
       variant="ghost"
       size="ghost"
       class="flex flex-row gap-1 items-center hover:text-subtle-light"
-      :disabled="userStore.isAuthenticated === false"
+      :disabled="authenticated === false"
       @click="onClickVote('dislike')"
     >
       <BaseIcon
@@ -96,7 +100,7 @@ const onClickVote = async (newRating: "like" | "dislike") => {
       variant="ghost"
       size="ghost"
       class="flex flex-row gap-1 items-center hover:text-subtle-light"
-      :disabled="userStore.isAuthenticated === false"
+      :disabled="authenticated === false"
       @click="onClickVote('like')"
     >
       <BaseIcon

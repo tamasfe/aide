@@ -100,7 +100,7 @@ const onToggleFullScreen = () => {
             class="hover:text-subtle-light"
           />
 
-          <GameFrameVotes :game-id="gameId" />
+          <GameFrameVotes :authenticated="authenticated" :game-id="gameId" />
 
           <BaseButton
             v-if="authenticated"
