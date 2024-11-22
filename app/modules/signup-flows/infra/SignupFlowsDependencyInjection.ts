@@ -10,7 +10,7 @@ import { SubmitSignupFlowOnFormSubmission } from "./ui/SubmitSignupFlowOnFormSub
 import { SignupFlowIdClientRepositoryLocalStorage } from "./SignupFlowIdClientRepositoryLocalStorage";
 import { SignupFlowApiRepositoryGirobet } from "./SignupFlowApiRepositoryGirobet";
 import { UserTimeZoneRetrieverIntl } from "./UserTimeZoneRetrieverIntl";
-import { UserLanguageRetrieverNavigator } from "./UserLanguageRetrieverNavigator";
+import { UserLanguageRetrieverQuery } from "./UserLanguageRetrieverQuery";
 import { ValidateEmailOnRegisterFormChanged } from "./ui/ValidateEmailOnRegisterFormChanged";
 import { ValidateCpfOnRegisterFormChanged } from "./ui/ValidateCpfOnRegisterFormChanged";
 import { ValidatePasswordOnRegisterFormChanged } from "./ui/ValidatePasswordOnRegisterFormChanged";
@@ -68,7 +68,7 @@ export const createSignupFlowsDependencyInjection = (publicConfig: PublicRuntime
     clientSignupFlowIdRepository,
     signupFlowApiRepository,
     new UserTimeZoneRetrieverIntl(),
-    new UserLanguageRetrieverNavigator(),
+    new UserLanguageRetrieverQuery(commonDependencies.i18n.queries.findLocaleForUser),
   );
 
   return {

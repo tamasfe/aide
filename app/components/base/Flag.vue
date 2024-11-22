@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from "vue";
 import { type VariantProps, cva } from "class-variance-authority";
-import { filename } from "pathe/utils";
 import type { SupportedCountryFlagCode } from "@/types/constants";
 
 // DESIGN STATUS:       ✅
-// ARCHITECTURE STATUS: ✴️
-//   * refactor glob imports below into composable potentially... or just handle stupid multi images in a better way as this pattern will probably appear a lot
+// ARCHITECTURE STATUS: ✅
 // TRANSLATION STATUS:  ✅
 //   * https://github.com/nuxt/nuxt/issues/14766/#issuecomment-1397365434
 
@@ -32,23 +30,12 @@ const props = defineProps<{
   size?: FlagVariants["size"];
   class?: HTMLAttributes["class"];
 }>();
-
-// @ts-expect-error - type isn't exported by Nuxt
-const glob = import.meta.glob("~/assets/svg/flags/active/*.svg", {
-  eager: true,
-});
-
-const images = Object.fromEntries(
-  // @ts-expect-error - TS doesn't like Object.fromEntries
-  Object.entries(glob).map(([key, value]) => [filename(key), value.default]),
-);
-
-const imageUrl = computed(() => images[props.countryCode]);
 </script>
 
 <template>
-  <img
+  <BaseIcon
     :class="cn(flagVariants({ size }), props.class)"
-    :src="imageUrl"
-  >
+    :name="`girobet-flags:${countryCode.toLowerCase()}`"
+    :size="20"
+  />
 </template>

@@ -1,10 +1,10 @@
 // https://vue-i18n.intlify.dev/guide/essentials/started.html
 
 export default defineI18nConfig(() => ({
-  locale: "en",
+  locale: "en-US",
   legacy: false,
   numberFormats: {
-    en: {
+    "en-US": {
       currency: {
         style: "currency", currency: "USD", notation: "standard",
       },
@@ -14,5 +14,10 @@ export default defineI18nConfig(() => ({
         style: "currency", currency: "BRL", notation: "standard",
       },
     },
+  },
+  fallbackLocale: {
+    pt: ["pt-BR"],
+    en: ["en-US"],
+    "pt-BR": ["en-US"],
   },
 }));

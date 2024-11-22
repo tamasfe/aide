@@ -4,7 +4,11 @@ import { EmitteryAsyncMessagePublisher } from "~/packages/async-messages/emitter
 import type { LoggerI } from "~/packages/logger/Logger";
 import { LoggerConsole } from "~/packages/logger/LoggerConsole";
 import { LoggerMiddlewareSentryErrorCapturer } from "~/packages/logger/LoggerMiddlewareSentryErrorCapturer";
-import type { TranslateFunctionType, NumberFormatterFunctionType, DateTimeFormatterFunctionType } from "~/packages/translation";
+import type { TranslateFunctionType, NumberFormatterFunctionType, DateTimeFormatterFunctionType, SupportedLocale } from "~/packages/translation";
+import { FindLocaleForUser } from "~/packages/translation/application/FindLocaleForUser";
+import { LocaleSelectionRepositoryLocalStorage } from "~/packages/translation/infra/locale-selection-repository-local-storage";
+import { FindLocaleForUserOnInit } from "~/packages/translation/infra/ui/FindLocaleForUserOnInit";
+import { UserSelectsLocale } from "~/packages/translation/infra/ui/UserSelectsLocale";
 
 export interface CommonDependenciesI {
   asyncMessagePublisher: AsyncMessagePublisherI;
@@ -12,9 +16,27 @@ export interface CommonDependenciesI {
   translateFunction: TranslateFunctionType;
   dateTimeFormatter: DateTimeFormatterFunctionType;
   numberFormatter: NumberFormatterFunctionType;
+  i18n: {
+    queries: {
+      findLocaleForUser: FindLocaleForUser;
+    };
+    ui: {
+      userSelectsLocale: UserSelectsLocale;
+      findLocaleForUserOnInit: FindLocaleForUserOnInit;
+    };
+  };
 }
 
-export async function loadDependencies(config: PublicRuntimeConfig, translateFunction: TranslateFunctionType, dateTimeFormatterFunction: DateTimeFormatterFunctionType, numberFormatterFunction: NumberFormatterFunctionType): Promise<CommonDependenciesI> {
+export async function loadDependencies(
+  config: PublicRuntimeConfig,
+  i18n: {
+    t: TranslateFunctionType;
+    d: DateTimeFormatterFunctionType;
+    n: NumberFormatterFunctionType;
+    getBrowserLocale: () => string | undefined;
+    setLocale: (locale: SupportedLocale) => void;
+  },
+): Promise<CommonDependenciesI> {
   const isServer = import.meta.server;
   const logFormat = isServer ? "json" : "prettyPrint";
 
@@ -38,11 +60,27 @@ export async function loadDependencies(config: PublicRuntimeConfig, translateFun
 
   const logger = new LoggerConsole(logFormat, config.log.level as "debug" | "info" | "warn" | "error", { name: config.serviceName, release: config.release }, loggerMiddlewares);
 
+  const localeSelectionRepository = new LocaleSelectionRepositoryLocalStorage();
+  const findLocaleForUser = new FindLocaleForUser(localeSelectionRepository, i18n.getBrowserLocale);
+
   return {
     asyncMessagePublisher: new EmitteryAsyncMessagePublisher(logger),
     logger,
-    translateFunction,
-    dateTimeFormatter: dateTimeFormatterFunction,
-    numberFormatter: numberFormatterFunction,
+    translateFunction: i18n.t,
+    dateTimeFormatter: i18n.d,
+    numberFormatter: i18n.n,
+    i18n: {
+      queries: {
+        findLocaleForUser,
+      },
+      ui: {
+        userSelectsLocale: new UserSelectsLocale(
+          localeSelectionRepository,
+          i18n.setLocale,
+          logger,
+        ),
+        findLocaleForUserOnInit: new FindLocaleForUserOnInit(findLocaleForUser, logger),
+      },
+    },
   };
 }

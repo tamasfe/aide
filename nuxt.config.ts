@@ -110,14 +110,20 @@ export default defineNuxtConfig({
     locales: [
       {
         language: "en-US",
-        code: "en",
+        code: "en-US",
         file: "en.json",
+        isCatchallLocale: true,
+      },
+      {
+        language: "pt-BR",
+        code: "pt-BR",
+        file: "pt-BR.json",
       },
     ],
     detectBrowserLanguage: false,
     strategy: "no_prefix",
     lazy: false,
-    defaultLocale: "en",
+    defaultLocale: "en-US",
     vueI18n: "./i18n.config.ts",
   },
   // @nuxt/icon
@@ -125,6 +131,12 @@ export default defineNuxtConfig({
     clientBundle: {
       scan: true,
     },
+    customCollections: [
+      {
+        prefix: "girobet-flags",
+        dir: "./app/assets/svg/flags",
+      },
+    ],
   },
   // @pinia/nuxt
   pinia: {},

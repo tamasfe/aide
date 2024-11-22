@@ -7,9 +7,9 @@
 export type SupportedCurrencyCode =
   | "BRL";
 
-export type SupportedLanguageCode =
-  "pt-BR" | "en-US" | "es-ES" | "es-MX";
-
+/**
+ * When adding new countries, make sure to add the svg file in the assets' flags folder
+ */
 export type SupportedCountryFlagCode =
   | "BR"
   | "DE"
@@ -17,19 +17,9 @@ export type SupportedCountryFlagCode =
   | "MX"
   | "US";
 
-export type ActiveFlag =
-  | "BR"
-  | "US";
-
 export type Currency = {
   code: SupportedCurrencyCode;
   symbol: string;
-};
-
-export type Locale = {
-  title: string;
-  value: SupportedLanguageCode;
-  countryCode: SupportedCountryFlagCode;
 };
 
 export type Country = {

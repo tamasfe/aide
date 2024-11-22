@@ -6,7 +6,7 @@ import { createI18n } from "vue-i18n";
  * More info @https://github.com/nuxt/test-utils/issues/566
  */
 const i18n = createI18n({
-  locale: "en",
+  locale: "en-US",
   missing: (_, key) => key,
 });
 

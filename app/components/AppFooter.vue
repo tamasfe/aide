@@ -1,14 +1,9 @@
 <script setup lang="ts">
-import { ACTIVE_LOCALES } from "~/constants";
-import type { Locale } from "~/types/constants";
-
 // DESIGN STATUS:       ✴️
 //   * logos for payment providers
 // ARCHITECTURE STATUS: ✴️
 //   * logo should be refactored out like the <AppHeader> component
 // TRANSLATION STATUS:  ✅
-
-const { localeProperties } = useI18n();
 
 const year = ref(new Date().getFullYear());
 
@@ -20,21 +15,12 @@ const logos = [
   {
     src: "/assets/footer-logos/responsible-gaming.svg",
     alt: "footer.responsible_gaming",
-  }
-]
+  },
+];
 
 const scrollToTop = () => {
   window.scrollTo({ top: 0, behavior: "smooth" });
 };
-
-const initialOption: Locale | undefined = ACTIVE_LOCALES.find(
-  (option) => {
-    const exactMatch = option.value === localeProperties.value.language;
-    if (exactMatch) return true;
-    const partialMatch = option.value.split("-")[0] === localeProperties.value.code.split("-")[0];
-    return partialMatch;
-  },
-);
 </script>
 
 <template>
@@ -52,32 +38,8 @@ const initialOption: Locale | undefined = ACTIVE_LOCALES.find(
           />
         </div>
         <p class="text-[0.82rem]">{{ $t("footer.summary") }}</p>
-        <div class="w-full sm:w-[12rem]">
-          <BaseSelect
-            :options="ACTIVE_LOCALES"
-            :initial-selected-option="initialOption"
-            size="sm"
-          >
-            <template #selected="{ selected }">
-              <BaseFlag
-                v-if="selected"
-                :country-code="selected.countryCode"
-                size="lg"
-              />
-              <span class="block whitespace-nowrap truncate font-medium text-left">
-                {{ selected?.title }}
-              </span>
-            </template>
-            <template #option="{ option }">
-              <div class="flex items-center gap-2">
-                <BaseFlag
-                  :country-code="option.countryCode"
-                  size="lg"
-                />
-                <span>{{ option.title }}</span>
-              </div>
-            </template>
-          </BaseSelect>
+        <div class="w-full">
+          <LocaleSelect class="sm:w-[12rem]" />
         </div>
         <FooterColumnSocialMedia class="hidden md:flex lg:hidden" />
       </div>
