@@ -27,7 +27,7 @@ export class AuthenticatedUserSearcherGirobet implements AuthenticatedUserReposi
       if (data) {
         return success(User.newFromProps({
           id: data.id,
-          locale: data.language,
+          locale: data.locale,
           timeZone: data.time_zone,
           jurisdiction: data.jurisdiction,
           email: data.email,

@@ -1622,7 +1622,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["UserSettings"];
+                        "application/json": components["schemas"]["PatchUserSettingsRequest"];
                     };
                 };
                 "4XX": {
@@ -1653,7 +1653,7 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["PatchUserSettings"];
+                    "application/json": components["schemas"]["PatchUserSettingsRequest"];
                 };
             };
             responses: {
@@ -1703,6 +1703,55 @@ export interface paths {
             requestBody: {
                 content: {
                     "application/json": components["schemas"]["SelectWalletRequest"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/user/password": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update User Password
+         * @description Update the password of the currently logged in user. The current password is required to ensure that the user is authorized to change the password.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["PatchUserPasswordRequest"];
                 };
             };
             responses: {
@@ -2184,7 +2233,9 @@ export interface components {
             /** @description The email address of the user. */
             username: string;
         };
-        MaybeOperator: unknown;
+        Maybe_Boolean: boolean | null;
+        Maybe_PixKeyTypeDiscriminants: components["schemas"]["PixKeyTypeDiscriminants"] | null;
+        Maybe_String: string | null;
         /** Format: int64 */
         NotificationId: number;
         NotificationParams: {
@@ -2296,14 +2347,57 @@ export interface components {
         PatchSignupFlowRequest: {
             [key: string]: unknown;
         };
-        PatchUserSettings: {
-            consent_email?: components["schemas"]["MaybeOperator"];
-            consent_post_mail?: components["schemas"]["MaybeOperator"];
-            consent_push_notification?: components["schemas"]["MaybeOperator"];
-            consent_site_notification?: components["schemas"]["MaybeOperator"];
-            consent_sms?: components["schemas"]["MaybeOperator"];
-            consent_telephone?: components["schemas"]["MaybeOperator"];
-            language?: components["schemas"]["MaybeOperator"];
+        PatchUserConsentSettingsRequest: {
+            /** @default null */
+            email: components["schemas"]["Maybe_Boolean"];
+            /** @default null */
+            post_mail: components["schemas"]["Maybe_Boolean"];
+            /** @default null */
+            push_notification: components["schemas"]["Maybe_Boolean"];
+            /** @default null */
+            site_notification: components["schemas"]["Maybe_Boolean"];
+            /** @default null */
+            sms: components["schemas"]["Maybe_Boolean"];
+            /** @default null */
+            telephone: components["schemas"]["Maybe_Boolean"];
+        };
+        PatchUserPasswordRequest: {
+            /** @description The current password of the user. This is required to ensure that the user is the one making the request. */
+            current_password: string;
+            /** @description The new password of the user. */
+            new_password: string;
+        };
+        PatchUserPaymentSettingsRequest: {
+            /** @default null */
+            pix_key_email: components["schemas"]["Maybe_String"];
+            /** @default null */
+            pix_key_evp: components["schemas"]["Maybe_String"];
+            /** @default null */
+            pix_key_phone: components["schemas"]["Maybe_String"];
+            /** @default null */
+            pix_key_type: components["schemas"]["Maybe_PixKeyTypeDiscriminants"];
+        };
+        PatchUserSettingsRequest: {
+            /** @default {
+             *       "email": null,
+             *       "post_mail": null,
+             *       "push_notification": null,
+             *       "site_notification": null,
+             *       "sms": null,
+             *       "telephone": null
+             *     } */
+            consents: components["schemas"]["PatchUserConsentSettingsRequest"];
+            /** @default null */
+            locale: components["schemas"]["Maybe_String"];
+            /** @default {
+             *       "pix_key_email": null,
+             *       "pix_key_evp": null,
+             *       "pix_key_phone": null,
+             *       "pix_key_type": null
+             *     } */
+            payment: components["schemas"]["PatchUserPaymentSettingsRequest"];
+            /** @default null */
+            time_zone: components["schemas"]["Maybe_String"];
         };
         /** Format: int64 */
         PaymentFlowId: number;
@@ -2400,6 +2494,11 @@ export interface components {
         };
         /** @enum {string} */
         PaymentType: "deposit" | "withdrawal";
+        /**
+         * @description Auto-generated discriminant enum variants
+         * @enum {string}
+         */
+        PixKeyTypeDiscriminants: "CPF" | "EMAIL" | "PHONE" | "EVP";
         RateGameRequest: {
             /** @description The rating to set for the game. If `null` the rating for the current user is removed. */
             rating?: components["schemas"]["GameRating"] | null;
@@ -2755,31 +2854,13 @@ export interface components {
             /** @description The jurisdiction of the user. This field can not be easily changed once set. */
             jurisdiction: components["schemas"]["SystemCountry"];
             /** @description The language of the user in ISO 639-1 format. */
-            language: string;
+            locale: string;
             /** @description The name of the user. */
             name: string;
             /** @description The phone number of the user. */
             phone: components["schemas"]["SystemPhoneNumber"];
             /** @description The time zone of the user in IANA time zone format. */
             time_zone: string;
-        };
-        UserSettings: {
-            /** @default null */
-            consent_email: boolean | null;
-            /** @default null */
-            consent_post_mail: boolean | null;
-            /** @default null */
-            consent_push_notification: boolean | null;
-            /** @default null */
-            consent_site_notification: boolean | null;
-            /** @default null */
-            consent_sms: boolean | null;
-            /** @default null */
-            consent_telephone: boolean | null;
-            /** @default null */
-            language: string | null;
-        } & {
-            [key: string]: unknown;
         };
         /** Format: int64 */
         WalletId: number;

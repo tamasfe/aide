@@ -1501,7 +1501,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserSettings"
+                  "$ref": "#/components/schemas/PatchUserSettingsRequest"
                 }
               }
             }
@@ -1528,7 +1528,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PatchUserSettings"
+                "$ref": "#/components/schemas/PatchUserSettingsRequest"
               }
             }
           },
@@ -1563,6 +1563,40 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/SelectWalletRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "no content"
+          },
+          "4XX": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/password": {
+      "patch": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Update User Password",
+        "description": "Update the password of the currently logged in user. The current password is required to ensure that the user is authorized to change the password.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchUserPasswordRequest"
               }
             }
           },
@@ -2333,7 +2367,28 @@
           }
         }
       },
-      "MaybeOperator": {},
+      "Maybe_Boolean": {
+        "type": [
+          "boolean",
+          "null"
+        ]
+      },
+      "Maybe_PixKeyTypeDiscriminants": {
+        "anyOf": [
+          {
+            "$ref": "#/components/schemas/PixKeyTypeDiscriminants"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "Maybe_String": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
       "NotificationId": {
         "type": "integer",
         "format": "int64"
@@ -2698,33 +2753,109 @@
         "type": "object",
         "additionalProperties": true
       },
-      "PatchUserSettings": {
+      "PatchUserConsentSettingsRequest": {
         "type": "object",
         "properties": {
-          "consent_email": {
-            "$ref": "#/components/schemas/MaybeOperator"
+          "email": {
+            "default": null,
+            "$ref": "#/components/schemas/Maybe_Boolean"
           },
-          "consent_post_mail": {
-            "$ref": "#/components/schemas/MaybeOperator"
+          "post_mail": {
+            "default": null,
+            "$ref": "#/components/schemas/Maybe_Boolean"
           },
-          "consent_push_notification": {
-            "$ref": "#/components/schemas/MaybeOperator"
+          "push_notification": {
+            "default": null,
+            "$ref": "#/components/schemas/Maybe_Boolean"
           },
-          "consent_site_notification": {
-            "$ref": "#/components/schemas/MaybeOperator"
+          "site_notification": {
+            "default": null,
+            "$ref": "#/components/schemas/Maybe_Boolean"
           },
-          "consent_sms": {
-            "$ref": "#/components/schemas/MaybeOperator"
+          "sms": {
+            "default": null,
+            "$ref": "#/components/schemas/Maybe_Boolean"
           },
-          "consent_telephone": {
-            "$ref": "#/components/schemas/MaybeOperator"
+          "telephone": {
+            "default": null,
+            "$ref": "#/components/schemas/Maybe_Boolean"
+          }
+        }
+      },
+      "PatchUserPasswordRequest": {
+        "type": "object",
+        "required": [
+          "current_password",
+          "new_password"
+        ],
+        "properties": {
+          "current_password": {
+            "description": "The current password of the user. This is required to ensure that the user is the one making the request.",
+            "type": "string"
           },
-          "language": {
+          "new_password": {
+            "description": "The new password of the user.",
+            "type": "string",
+            "maxLength": 256,
+            "minLength": 6
+          }
+        }
+      },
+      "PatchUserPaymentSettingsRequest": {
+        "type": "object",
+        "properties": {
+          "pix_key_email": {
+            "default": null,
+            "$ref": "#/components/schemas/Maybe_String"
+          },
+          "pix_key_evp": {
+            "default": null,
+            "$ref": "#/components/schemas/Maybe_String"
+          },
+          "pix_key_phone": {
+            "default": null,
+            "$ref": "#/components/schemas/Maybe_String"
+          },
+          "pix_key_type": {
+            "default": null,
+            "$ref": "#/components/schemas/Maybe_PixKeyTypeDiscriminants"
+          }
+        }
+      },
+      "PatchUserSettingsRequest": {
+        "type": "object",
+        "properties": {
+          "consents": {
+            "default": {
+              "email": null,
+              "post_mail": null,
+              "push_notification": null,
+              "site_notification": null,
+              "sms": null,
+              "telephone": null
+            },
+            "$ref": "#/components/schemas/PatchUserConsentSettingsRequest"
+          },
+          "locale": {
+            "default": null,
             "maxLength": 5,
             "minLength": 2,
             "maxItems": 5,
             "minItems": 2,
-            "$ref": "#/components/schemas/MaybeOperator"
+            "$ref": "#/components/schemas/Maybe_String"
+          },
+          "payment": {
+            "default": {
+              "pix_key_email": null,
+              "pix_key_evp": null,
+              "pix_key_phone": null,
+              "pix_key_type": null
+            },
+            "$ref": "#/components/schemas/PatchUserPaymentSettingsRequest"
+          },
+          "time_zone": {
+            "default": null,
+            "$ref": "#/components/schemas/Maybe_String"
           }
         }
       },
@@ -3062,6 +3193,16 @@
         "enum": [
           "deposit",
           "withdrawal"
+        ]
+      },
+      "PixKeyTypeDiscriminants": {
+        "description": "Auto-generated discriminant enum variants",
+        "type": "string",
+        "enum": [
+          "CPF",
+          "EMAIL",
+          "PHONE",
+          "EVP"
         ]
       },
       "RateGameRequest": {
@@ -4851,7 +4992,7 @@
           "email",
           "id",
           "jurisdiction",
-          "language",
+          "locale",
           "name",
           "phone",
           "time_zone"
@@ -4892,7 +5033,7 @@
             "description": "The jurisdiction of the user. This field can not be easily changed once set.",
             "$ref": "#/components/schemas/SystemCountry"
           },
-          "language": {
+          "locale": {
             "description": "The language of the user in ISO 639-1 format.",
             "type": "string"
           },
@@ -4909,61 +5050,6 @@
             "type": "string"
           }
         }
-      },
-      "UserSettings": {
-        "type": "object",
-        "properties": {
-          "consent_email": {
-            "default": null,
-            "type": [
-              "boolean",
-              "null"
-            ]
-          },
-          "consent_post_mail": {
-            "default": null,
-            "type": [
-              "boolean",
-              "null"
-            ]
-          },
-          "consent_push_notification": {
-            "default": null,
-            "type": [
-              "boolean",
-              "null"
-            ]
-          },
-          "consent_site_notification": {
-            "default": null,
-            "type": [
-              "boolean",
-              "null"
-            ]
-          },
-          "consent_sms": {
-            "default": null,
-            "type": [
-              "boolean",
-              "null"
-            ]
-          },
-          "consent_telephone": {
-            "default": null,
-            "type": [
-              "boolean",
-              "null"
-            ]
-          },
-          "language": {
-            "default": null,
-            "type": [
-              "string",
-              "null"
-            ]
-          }
-        },
-        "additionalProperties": true
       },
       "WalletId": {
         "type": "integer",
