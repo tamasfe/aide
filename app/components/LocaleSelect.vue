@@ -29,7 +29,7 @@ const accountLanguage = computed<SupportedLanguageOption | null>(() => {
 
 const loading = ref(false);
 const currentLanguage = computed(() => SUPPORTED_LANGUAGES_OPTIONS_MAP[locale.value]);
-const showChangeAccountLocale = computed<boolean>(() => accountLanguage.value?.value !== locale.value && loading.value === false);
+const showChangeAccountLocale = computed<boolean>(() => accountLanguage.value !== null && accountLanguage.value.value !== locale.value && loading.value === false);
 
 const onLocaleSelect = async (language: SupportedLanguageOption) => $dependencies.common.i18n.ui.userSelectsLocale.handle(language.value);
 const onClickChangeAccountLocale = async (locale: SupportedLocale) => {
