@@ -1,9 +1,10 @@
 import type { AuthenticatedUserRepositoryI } from "../domain/AuthenticatedUserRepository";
+import type { SupportedLocale } from "~/packages/translation";
 import { success } from "~/packages/result";
 
 interface UserResponseI {
   id: number;
-  locale: string;
+  locale: SupportedLocale | null;
   timeZone: string;
 }
 

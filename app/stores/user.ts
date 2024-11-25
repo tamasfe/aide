@@ -1,3 +1,5 @@
+import type { SupportedLocale } from "~/packages/translation";
+
 type UserStoreI = {
   isAuthenticated: false;
   user: null;
@@ -5,7 +7,7 @@ type UserStoreI = {
   isAuthenticated: true;
   user: {
     id: number;
-    locale: string;
+    locale: SupportedLocale | null;
     timeZone: string;
   };
 };

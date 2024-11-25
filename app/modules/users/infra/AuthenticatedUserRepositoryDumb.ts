@@ -1,8 +1,9 @@
 import type { AuthenticatedUserRepositoryI } from "../domain/AuthenticatedUserRepository";
 import type { User } from "../domain/User";
 import type { LoggerI } from "~/packages/logger/Logger";
-import { success, type Result } from "~/packages/result";
+import { success, type EmptyResult, type Result } from "~/packages/result";
 import type { InfrastructureError } from "~/packages/result/infrastructure-error";
+import type { SupportedLocale } from "~/packages/translation";
 
 export class AuthenticatedUserRepositoryDumb implements AuthenticatedUserRepositoryI {
   constructor(private logger: LoggerI) {}
@@ -23,5 +24,10 @@ export class AuthenticatedUserRepositoryDumb implements AuthenticatedUserReposit
     //   }),
     // );
     return success(null);
+  }
+
+  public async updateSettings(settings: { locale?: SupportedLocale }): Promise<EmptyResult<InfrastructureError>> {
+    this.logger.debug("updateSettings called", { settings });
+    return success();
   }
 }

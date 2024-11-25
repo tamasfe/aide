@@ -1,9 +1,11 @@
+import type { SupportedLocale } from "~/packages/translation";
+
 interface UserPropsI {
   id: number;
   telephone: string;
   email: string;
   jurisdiction: string;
-  locale: string;
+  locale: SupportedLocale | null;
   timeZone: string;
 }
 
@@ -27,7 +29,7 @@ export class User {
   public readonly telephone: string;
   public readonly email: string;
   public readonly jurisdiction: string;
-  public readonly locale: string;
+  public readonly locale: SupportedLocale | null;
   public readonly timeZone: string;
 
   private constructor(props: UserPropsI) {

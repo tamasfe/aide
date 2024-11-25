@@ -208,7 +208,10 @@
     "legal_notice": "Prior to engaging in any online gambling activities on our platform, it is imperative to verify that such actions are legally permissible within your jurisdiction. It is your responsibility to ascertain and adhere to the laws and regulations governing online gambling in your country or region.",
     "copyright": "© {year} GiroBet. All Rights Reserved.",
     "play_responsibly": "Play Responsibly",
-    "responsible_gaming": "Responsible Gaming"
+    "responsible_gaming": "Responsible Gaming",
+    "user_account_language": "Your account language is set to {language}.",
+    "user_account_language_unknown": "Your account language is different to the current language.",
+    "change_language": "Change to {language}"
   },
   "console_warning": {
     "title": "WARNING!!!",
@@ -313,8 +316,8 @@
     "weekly-top-picks": "Weekly Top Picks"
   },
   "language": {
-    "en": "English",
-    "pt": "Portuguese"
+    "en-US": "English",
+    "pt-BR": "Portuguese"
   },
   "jurisdiction": {
     "ES": "Spain",

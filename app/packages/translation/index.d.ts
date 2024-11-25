@@ -19,7 +19,6 @@ export type SupportedLocale = SupportedLocale;
 export type SupportedLocaleCountry = "BR" | "US";
 
 export type SupportedLanguage = {
-  title: string;
-  value: SupportedLanguageCode;
+  value: SupportedLocale;
   countryCode: SupportedLocaleCountry;
 };

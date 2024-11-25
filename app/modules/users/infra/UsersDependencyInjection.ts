@@ -5,6 +5,7 @@ import type { AuthenticationRepositoryI } from "../domain/AuthenticationReposito
 import { LoginUser } from "../application/LoginUser";
 import { LogoutUser } from "../application/LogoutUser";
 import { RecoverPassword } from "../application/RecoverPassword";
+import { UpdateUserSettings } from "../application/UpdateUserSettings";
 import { AuthenticatedUserRepositoryDumb } from "./AuthenticatedUserRepositoryDumb";
 import { EmitCommandOpenUserActionModalModal } from "./ui/EmitCommandOpenUserActionModal";
 import { AuthenticatedUserSearcherGirobet } from "./AuthenticatedUserRepositoryGirobet";
@@ -15,6 +16,7 @@ import { LogoutCurrentUserFromButtonClick } from "./ui/LogoutCurrentUserFromButt
 import { EmitCommandCloseUserActionModal } from "./ui/EmitCommandCloseUserActionModal";
 import { RecoverPasswordOnForm } from "./ui/RecoverPasswordOnForm";
 import { RequestRecoverPasswordOnForm } from "./ui/RequestRecoverPasswordOnForm";
+import { UpdateUserLocaleOnLocaleSelect } from "./ui/UpdateUserLocaleOnLocaleSelect";
 import type { CommonDependenciesI } from "~/dependency-injection/load-di";
 
 export interface UsersDependencyInjectionI {
@@ -28,6 +30,7 @@ export interface UsersDependencyInjectionI {
     logoutCurrentUserFromButtonClick: LogoutCurrentUserFromButtonClick;
     recoverPassword: RecoverPasswordOnForm;
     requestRecoverPasswordOnForm: RequestRecoverPasswordOnForm;
+    updateUserLocaleOnLocaleSelect: UpdateUserLocaleOnLocaleSelect;
   };
 }
 export const createUsersDependencyInjection = async (config: PublicRuntimeConfig, commonDependencies: CommonDependenciesI, requestHeaders?: Record<string, string>): Promise<UsersDependencyInjectionI> => {
@@ -73,6 +76,10 @@ export const createUsersDependencyInjection = async (config: PublicRuntimeConfig
         authenticationRepo,
         commonDependencies.asyncMessagePublisher,
         commonDependencies.translateFunction,
+      ),
+      updateUserLocaleOnLocaleSelect: new UpdateUserLocaleOnLocaleSelect(
+        new UpdateUserSettings(authenticatedUserRepo, commonDependencies.asyncMessagePublisher),
+        commonDependencies.logger,
       ),
     },
   };

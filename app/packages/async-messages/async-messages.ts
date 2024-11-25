@@ -1,3 +1,5 @@
+import type { SupportedLocale } from "../translation";
+
 export interface AsyncMessagesTypes {
   "girobet:commands:modals:open-login": object;
   "girobet:commands:modals:open-register": object;
@@ -19,6 +21,11 @@ export interface AsyncMessagesTypes {
   "girobet:events:users:user-logged-in": object;
   "girobet:events:users:user-logged-out": object;
   "girobet:events:users:password-recovered": object;
+  "girobet:events:users:user-settings-updated": {
+    settings: {
+      locale?: SupportedLocale;
+    };
+  };
 
   "girobet:events:signup-flows:signup-flow-submitted": {
     id: string;

@@ -1,6 +1,6 @@
 import type { LocaleSelectionRepositoryI } from "../domain/locale-selection-repository";
 import type { SupportedLanguage } from "..";
-import { isSupportedLocale } from "../utils";
+import { searchSimilarLocale } from "../utils";
 import { success } from "~/packages/result";
 
 export class FindLocaleForUser {
@@ -12,7 +12,6 @@ export class FindLocaleForUser {
 
   public FALLBACK_LANGUAGE: SupportedLanguage = {
     value: "en-US",
-    title: "English",
     countryCode: "US",
   };
 
@@ -26,8 +25,13 @@ export class FindLocaleForUser {
     }
 
     const browserLocale = this.getBrowserLocale();
-    if (browserLocale && isSupportedLocale(browserLocale)) {
-      return success(browserLocale);
+    if (!browserLocale) {
+      return success(this.FALLBACK_LANGUAGE.value);
+    }
+
+    const supportedBrowserLocaleOrNull = searchSimilarLocale(browserLocale);
+    if (supportedBrowserLocaleOrNull) {
+      return success(supportedBrowserLocaleOrNull);
     }
 
     return success(this.FALLBACK_LANGUAGE.value);
