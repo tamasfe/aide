@@ -19,8 +19,8 @@ const onClosed = () => {
     id="base-modal-recover-password"
     v-model:open="open"
     banner="left"
-    banner-left="/assets/images/wheel-2-vertical.png"
-    banner-top="/assets/images/wheel-2.png"
+    banner-left="/assets/images/login_vertical.jpg"
+    banner-top="/assets/images/login_horizontal.jpg"
     @close="onClosed"
   >
     <FormRecoverPassword :token="token" />

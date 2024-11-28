@@ -28,7 +28,7 @@ defineProps({
     :close-on-click-outside="false"
     :unclosable="true"
     banner="top"
-    banner-top="/assets/images/wheel-2.png"
+    banner-top="/assets/images/jurisdiction_horizontal.jpg"
   >
     <div class="flex flex-col items-center gap-4">
       <h1 class="text-2xl font-semibold text-center">

@@ -14,7 +14,7 @@ const loading = ref(false);
     :disabled="loading"
     :logo="false"
     banner="top"
-    banner-top="/assets/images/wheel-2.png"
+    banner-top="/assets/images/deposit_horizontal.jpg"
   >
     <FormDepositConfirm />
   </BaseModal>

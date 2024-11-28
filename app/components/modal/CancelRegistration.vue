@@ -11,7 +11,7 @@ const open = ref(true);
     v-model:open="open"
     :logo="false"
     banner="top"
-    banner-top="/assets/images/wheel-2.png"
+    banner-top="/assets/images/register_horizontal.jpg"
   >
     <div class="flex flex-col items-center gap-2">
       <h1 class="text-2xl font-semibold text-center">

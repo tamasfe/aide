@@ -28,8 +28,8 @@ const onClosed = () => {
     :open="open"
     :close-on-click-outside="false"
     banner="left"
-    banner-left="/assets/images/wheel-2-vertical.png"
-    banner-top="/assets/images/wheel-2.png"
+    banner-left="/assets/images/register_vertical.jpg"
+    banner-top="/assets/images/register_horizontal.jpg"
     @close="onClosed"
   >
     <FormRegister
