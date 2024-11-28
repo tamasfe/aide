@@ -20,6 +20,7 @@ defineProps({
     v-model:open="open"
     :close-on-click-outside="false"
     :unclosable="true"
+    :logo="false"
     banner="top"
     banner-top="/assets/images/jurisdiction_horizontal.jpg"
   >
