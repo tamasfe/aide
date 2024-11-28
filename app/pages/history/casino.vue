@@ -36,7 +36,7 @@ const columns: ColumnDef<GameActionTableRow>[] = [
     header: t("dashboard.history.casino.table_header_game"),
     cell: ({ getValue }) => h(
       DataTableLinkCell,
-      { href: `/games/${getValue().id}`, class: "hover:underline" },
+      { href: `/games/${getValue().id}` },
       () => getValue().name),
   }),
   column.accessor("action", {
