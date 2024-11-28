@@ -65,6 +65,16 @@ $dependencies.common.asyncMessagePublisher.subscribe(
   },
 );
 $dependencies.common.asyncMessagePublisher.subscribe(
+  "girobet:commands:modals:open-deposit",
+  () => {
+    // If any of the invalid jurisdiction modals are open: keep them open
+    if (modalIsJurisdictionModal(modal.value)) {
+      return;
+    }
+    modal.value = "deposit";
+  },
+);
+$dependencies.common.asyncMessagePublisher.subscribe(
   "girobet:commands:modals:open-restrict-expanding",
   (eventData) => {
     modal.value = "restrict_expanding";

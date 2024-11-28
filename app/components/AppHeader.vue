@@ -70,6 +70,7 @@ const emit = defineEmits([
             <BaseButton
               variant="emphasis"
               class="h-9 md:h-10"
+              @click="$dependencies.users.ui.emitCommandOpenUserActionModal.handle('deposit')"
             >
               {{ $t("button.deposit") }}
             </BaseButton>
