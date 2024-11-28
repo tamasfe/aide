@@ -9,7 +9,7 @@ const DEFER_CLIENT_SIDE_LOADING = true;
 const loading = useState(`grid-vertical-providers-loading`, () => true);
 const totalProviders = useState(`grid-vertical-providers-total`, () => 0);
 const nextProvidersPageToSearch = useState(`grid-vertical-providers-next-page`, () => 0);
-const providerIds = useState<number[]>(`grid-vertical-providers-ids`, () => []);
+const providers = useState<{ id: number; image_url: string }[]>(`grid-vertical-providers-ids`, () => []);
 const canLoadMore = useState(`grid-vertical-providers-can-load-more`, () => true);
 
 const onLoadData = async () => {
@@ -17,7 +17,7 @@ const onLoadData = async () => {
   loading.value = true;
 
   const { providers: foundProviders, canLoadMore: updatedCanLoadMore, totalProviders: total } = await $dependencies.providers.ui.searchProvidersOnGrid.handle(null, nextProvidersPageToSearch.value);
-  providerIds.value.push(...foundProviders.map(provider => provider.id));
+  providers.value.push(...foundProviders);
   canLoadMore.value = updatedCanLoadMore;
   nextProvidersPageToSearch.value += 1;
   totalProviders.value = total;
@@ -59,24 +59,24 @@ await useAsyncData(`load-vertical-providers`, () => onLoadData().then(() => true
     <GridVertical
       aspect-ratio="8/3"
       :columns="{ sm: 2, md: 2, lg: 3, xl: 4 }"
-      :data="providerIds"
+      :data="providers"
       :gap="2"
       pagination
       :loading="loading"
       :total-count="totalProviders"
       @trigger:load="onLoadData"
     >
-      <template #default="{ data: providerId }">
+      <template #default="{ data: item }">
         <NuxtLink
           :to="{
             name: 'providers-id',
             params: {
-              id: providerId,
+              id: item.id,
             },
           }"
           class="flex-1 rounded-[0.7rem] overflow-hidden"
         >
-          <ProviderImageLoader :provider-id="providerId" />
+          <ProviderImageLoader :src="item.image_url" :provider-id="item.id" />
         </NuxtLink>
       </template>
     </GridVertical>

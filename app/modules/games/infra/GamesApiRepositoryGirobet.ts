@@ -80,6 +80,7 @@ export class GamesApiRepositoryGirobet implements GamesApiRepositoryI {
       if (data) {
         return success({
           id: data.id,
+          image_url: data.image_url,
           name: data.name,
           slug: data.slug,
           description: data.description || null,

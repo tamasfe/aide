@@ -12,7 +12,7 @@ export class SearchGamesByQueryPaginatingOnSearchBar {
   public static PAGINATION_SIZE = 25;
 
   public async handle(query: string, pageToSearch: number): Promise<{
-    games: { id: number }[];
+    games: { id: number; image_url: string }[];
     canLoadMore: boolean;
     totalGames: number;
   }> {
@@ -31,7 +31,7 @@ export class SearchGamesByQueryPaginatingOnSearchBar {
     const canLoadMore = result.value.games.length === SearchGamesByQueryPaginatingOnSearchBar.PAGINATION_SIZE;
 
     return {
-      games: result.value.games.map(game => ({ id: game.id })),
+      games: result.value.games.map(game => ({ id: game.id, image_url: game.image_url })),
       canLoadMore,
       totalGames: result.value.pagination.totalItems,
     };

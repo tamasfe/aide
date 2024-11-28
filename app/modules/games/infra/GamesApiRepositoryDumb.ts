@@ -31,6 +31,7 @@ export class GamesApiRepositoryDumb implements GamesApiRepositoryI {
   constructor(private logger: LoggerI) {
     this.games = Array.from({ length: 50 }, (_, i) => ({
       id: i,
+      image_url: "https://cdn.girobet.vip/1/evoplay/HotRioNights",
       name: `Game ${i}`,
       slug: `game-${i}`,
       description: `Description of game ${i}`,

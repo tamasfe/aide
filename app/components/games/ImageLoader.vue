@@ -1,26 +1,16 @@
 <script setup lang="ts">
-const { gameId } = defineProps({
-  gameId: {
-    type: Number,
+const { src } = defineProps({
+  src: {
+    type: String,
     required: true,
   },
-});
-
-const { $dependencies } = useNuxtApp();
-
-const { data: imageSrc } = await useAsyncData(`game-image-url-${String(gameId)}`, async () => {
-  return $dependencies.games.ui.findGameImageSrcByGameId.handle(gameId);
-}, {
-  server: true, // If false: avoid server-side loading of image to improve first-print time. More info @https://nuxt.com/docs/getting-started/data-fetching#client-only-fetching
-  lazy: true, // If true: do not await the resolved value from the promise to print the spinner. More info @https://nuxt.com/docs/getting-started/data-fetching#lazy
 });
 </script>
 
 <template>
   <div class="flex items-center justify-center h-full">
     <NuxtImg
-      v-if="imageSrc"
-      :src="imageSrc"
+      :src="src"
       alt=""
       class="block w-full h-full object-cover transition-transform transform hover:scale-105 cursor-pointer"
     />

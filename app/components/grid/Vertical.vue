@@ -1,4 +1,4 @@
-<script setup lang="ts" generic="T extends number[]">
+<script setup lang="ts" generic="T extends {id: number, image_url: string}[]">
 // STATUS:
 // - Missing translations
 import type { CSSProperties } from "vue";
@@ -32,7 +32,7 @@ const totalCount = computed(() => {
 });
 
 const SKELETON_ITEMS_TO_SHOW = 24;
-const dataLoadingSkeleton = Array.from({ length: SKELETON_ITEMS_TO_SHOW }).map((_elem, index) => (index));
+const dataLoadingSkeleton: { id: number; image_url: string }[] = Array.from({ length: SKELETON_ITEMS_TO_SHOW }).map((_elem, index) => ({ id: index, image_url: "" }));
 
 const dataToRender = computed(() => {
   if (props.loading === undefined) {
@@ -50,7 +50,7 @@ const dataToRender = computed(() => {
     >
       <div
         v-for="(datapoint) in dataToRender"
-        :key="datapoint"
+        :key="datapoint.id"
         :style="{ aspectRatio: aspectRatio }"
       >
         <slot v-if="loading === true && data.length === 0" name="loading">

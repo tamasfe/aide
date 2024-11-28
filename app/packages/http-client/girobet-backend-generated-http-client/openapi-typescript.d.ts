@@ -907,62 +907,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/game-provider/{provider_id}/image": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get Game Provider Image
-         * @description Get the image of a game provider by its ID.
-         *         This can be used to show the image of the game provider to the user.
-         */
-        get: {
-            parameters: {
-                query?: {
-                    /** @description The color of the image to return. */
-                    color?: components["schemas"]["GameProviderImageColor"];
-                    /** @description The size of the image to return. */
-                    size?: components["schemas"]["GameProviderImageSize"];
-                };
-                header?: never;
-                path: {
-                    /** @description The ID of the game provider. */
-                    provider_id: components["schemas"]["GameProviderId"];
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description byte stream */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/octet-stream": unknown;
-                    };
-                };
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/game/{game_id}/session": {
         parameters: {
             query?: never;
@@ -1294,61 +1238,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/game/{game_id}/image": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get Game Image
-         * @description Get the image of a game by its ID.
-         *         This can be used to show the image of a game to the user,
-         *         so that they can see what the game looks like.
-         */
-        get: {
-            parameters: {
-                query?: {
-                    /** @description The variant of the image to retrieve. */
-                    variant?: components["schemas"]["GameImageVariant"];
-                };
-                header?: never;
-                path: {
-                    /** @description The ID of the game to retrieve. */
-                    game_id: components["schemas"]["GameId"];
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description byte stream */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/octet-stream": unknown;
-                    };
-                };
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/game/{game_id}": {
         parameters: {
             query?: never;
@@ -1643,6 +1532,49 @@ export interface paths {
         /**
          * Update User Settings
          * @description Update the settings of the currently logged in user.
+         *
+         *     This endpoint allows for partial updates of the user settings, by
+         *     only updating the fields that are provided in the request.
+         *
+         *     If a field is set to `null`, it will be reset to the default value.
+         *
+         *     If a field is not provided, it will not be updated.
+         *
+         *     Partial updates follow the [RFC 7396](https://datatracker.ietf.org/doc/html/rfc7396) JSON Merge Patch standard.
+         *
+         *     ```json
+         *     // Given the following JSON
+         *     {
+         *     	"title": "Goodbye!",
+         *     	"author" : {
+         *     		"givenName" : "John",
+         *     		"familyName" : "Doe"
+         *     	},
+         *     	"tags":[ "example", "sample" ],
+         *     	"content": "This will be unchanged"
+         *     }
+         *
+         *     // Merged with the following patch
+         *     {
+         *     	"title": "Hello!",
+         *     	"phoneNumber": "+01-123-456-7890",
+         *     	"author": {
+         *     		"familyName": null
+         *     	},
+         *     	"tags": [ "example" ]
+         *     }
+         *
+         *     // Will result in the following JSON
+         *     {
+         *     	"title": "Hello!",
+         *     	"author" : {
+         *     		"givenName" : "John"
+         *     	},
+         *     	"tags": [ "example" ],
+         *     	"content": "This will be unchanged",
+         *     	"phoneNumber": "+01-123-456-7890"
+         *     }
+         *     ```
          */
         patch: {
             parameters: {
@@ -2075,28 +2007,12 @@ export interface components {
         };
         /** Format: int64 */
         GameId: number;
-        GameImageQuery: {
-            /** @description The variant of the image to retrieve. */
-            variant?: components["schemas"]["GameImageVariant"];
-        };
-        /** @enum {string} */
-        GameImageVariant: "extra_small" | "small" | "medium" | "large" | "background";
         GameParams: {
             /** @description The ID of the game to retrieve. */
             game_id: components["schemas"]["GameId"];
         };
         /** Format: int64 */
         GameProviderId: number;
-        /** @enum {string} */
-        GameProviderImageColor: "white" | "black" | "color";
-        GameProviderImageQuery: {
-            /** @description The color of the image to return. */
-            color?: components["schemas"]["GameProviderImageColor"];
-            /** @description The size of the image to return. */
-            size?: components["schemas"]["GameProviderImageSize"];
-        };
-        /** @enum {string} */
-        GameProviderImageSize: "small" | "default";
         GameProviderParams: {
             /** @description The ID of the game provider. */
             provider_id: components["schemas"]["GameProviderId"];
@@ -2107,6 +2023,8 @@ export interface components {
             description?: string | null;
             /** @description The ID of the game provider. */
             id: components["schemas"]["GameProviderId"];
+            /** @description The URL to the image of the game provider. */
+            image_url: string;
             /** @description The name of the game provider. Do not use this in URLs, as it may contain special characters. */
             name: string;
             /** @description The slug of the game provider. This may be used in URLs. */
@@ -2140,6 +2058,8 @@ export interface components {
             devices: components["schemas"]["SystemDevice"][];
             /** @description The ID of the game. */
             id: components["schemas"]["GameId"];
+            /** @description The URL to the image of the game. */
+            image_url: string;
             /** @description Whether the game is available in HD. */
             is_hd: boolean;
             /** @description Additional metadata about the game. This is used to store arbitrary unstructured data and can thus not be relied upon to return a specific data. */
@@ -2513,6 +2433,7 @@ export interface components {
         SearchGameProviderResponse: {
             /** @description The ID of the game provider. */
             id: components["schemas"]["GameProviderId"];
+            image_url: string;
             /** @description The name of the game provider. Do not use this in URLs, as it may contain special characters. */
             name: string;
             /**
@@ -2538,6 +2459,8 @@ export interface components {
         SearchGameResponse: {
             /** @description The ID of the game. */
             id: components["schemas"]["GameId"];
+            /** @description The URL to the image of the game. */
+            image_url: string;
             /** @description The name of the game. Do not use this in URLs, as it may contain special characters. */
             name: string;
             /** @description The provider of the game. */

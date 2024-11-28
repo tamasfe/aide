@@ -3,7 +3,7 @@ const { t } = useI18n();
 
 defineProps<{
   itemType: "game" | "provider";
-  itemIds: number[];
+  items: { id: number; image_url: string }[];
   totalResults: number;
   onLoadMore: () => Promise<void>;
   loading?: boolean;
@@ -29,7 +29,7 @@ const itemTypeToColumns = {
     </template>
 
     <GridVertical
-      :data="itemIds"
+      :data="items"
       :columns="itemTypeToColumns[itemType]"
       :aspect-ratio="itemTypeToAspectRatio[itemType]"
       pagination
@@ -37,8 +37,8 @@ const itemTypeToColumns = {
       :loading="loading"
       @trigger:load="onLoadMore"
     >
-      <template #default="{ data: itemId }">
-        <slot :item-id="itemId" />
+      <template #default="{ data: data }">
+        <slot :item="data" />
       </template>
     </GridVertical>
   </GridHeader>

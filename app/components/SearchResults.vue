@@ -19,7 +19,7 @@ const initialLoad = useState(() => true);
  * Game search
  */
 const gamesCurrentPage = useState(() => 0);
-const gamesIds = useState<number[]>(() => []);
+const games = useState<{ id: number; image_url: string }[]>(() => []);
 const gamesTotalItems = useState(() => 0);
 const gamesLoading = useState(() => false);
 const gamesOnLoadMore = async (actionOnItemsArray: "append" | "replace") => {
@@ -28,10 +28,10 @@ const gamesOnLoadMore = async (actionOnItemsArray: "append" | "replace") => {
 
   gamesTotalItems.value = result.totalGames;
   if (actionOnItemsArray === "append") {
-    gamesIds.value.push(...result.games.map(game => game.id));
+    games.value.push(...result.games);
   }
   else if (actionOnItemsArray === "replace") {
-    gamesIds.value = result.games.map(game => game.id);
+    games.value = result.games;
   }
 
   gamesCurrentPage.value++;
@@ -42,7 +42,7 @@ const gamesOnLoadMore = async (actionOnItemsArray: "append" | "replace") => {
  * Provider search
  */
 const providersCurrentPage = useState(() => 0);
-const providersIds = useState<number[]>(() => []);
+const providers = useState<{ id: number; image_url: string }[]>(() => []);
 const providersTotalItems = useState(() => 0);
 const providersLoading = useState(() => false);
 const providersOnLoadMore = async (actionOnItemsArray: "append" | "replace") => {
@@ -51,10 +51,10 @@ const providersOnLoadMore = async (actionOnItemsArray: "append" | "replace") => 
 
   providersTotalItems.value = result.totalProviders;
   if (actionOnItemsArray === "append") {
-    providersIds.value.push(...result.providers.map(provider => provider.id));
+    providers.value.push(...result.providers);
   }
   else if (actionOnItemsArray === "replace") {
-    providersIds.value = result.providers.map(provider => provider.id);
+    providers.value = result.providers;
   }
 
   providersCurrentPage.value++;
@@ -66,10 +66,10 @@ const onQueryChange = async () => {
     initialLoad.value = true;
 
     gamesTotalItems.value = 0;
-    gamesIds.value = [];
+    games.value = [];
 
     providersTotalItems.value = 0;
-    providersIds.value = [];
+    providers.value = [];
     return;
   }
 
@@ -85,7 +85,7 @@ const onQueryChange = async () => {
 };
 
 const loading = computed(() => gamesLoading.value || providersLoading.value);
-const noResults = computed(() => gamesIds.value.length === 0 && providersIds.value.length === 0);
+const noResults = computed(() => games.value.length === 0 && providers.value.length === 0);
 
 // 2 alternate methods if ever needed
 watch(() => query, useThrottleFn(onQueryChange, 150, true, true, true), { immediate: true });
@@ -99,39 +99,39 @@ const onClickLink = () => {
 <template>
   <div class="space-y-8">
     <GridVerticalSearch
-      v-if="gamesIds.length > 0"
+      v-if="games.length > 0"
       item-type="game"
-      :item-ids="gamesIds"
+      :items="games"
       :total-results="gamesTotalItems"
       :on-load-more="() => gamesOnLoadMore('append')"
       :loading="gamesLoading"
     >
-      <template #default="{ itemId: itemId }">
+      <template #default="{ item: item }">
         <NuxtLink
-          :to="`/games/${itemId}`"
+          :to="`/games/${item.id}`"
           class="block bg-subtle rounded-default w-full h-full overflow-hidden"
           @click="onClickLink"
         >
-          <GamesImageLoader :game-id="itemId" />
+          <GamesImageLoader :src="item.image_url" />
         </NuxtLink>
       </template>
     </GridVerticalSearch>
 
     <GridVerticalSearch
-      v-if="providersIds.length > 0"
+      v-if="providers.length > 0"
       item-type="provider"
-      :item-ids="providersIds"
+      :items="providers"
       :total-results="providersTotalItems"
       :on-load-more="() => providersOnLoadMore('append')"
       :loading="providersLoading"
     >
-      <template #default="{ itemId: itemId }">
+      <template #default="{ item: item }">
         <NuxtLink
-          :to="`/providers/${itemId}`"
+          :to="`/providers/${item.id}`"
           class="block bg-subtle rounded-default w-full h-full overflow-hidden"
           @click="onClickLink"
         >
-          <ProviderImageLoader :provider-id="itemId" />
+          <ProviderImageLoader :src="item.image_url" :provider-id="item.id" />
         </NuxtLink>
       </template>
     </GridVerticalSearch>

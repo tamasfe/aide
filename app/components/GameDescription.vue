@@ -21,6 +21,10 @@ defineProps({
     type: Number,
     required: true,
   },
+  imageUrl: {
+    type: String,
+    required: true,
+  },
   categories: {
     type: Array as PropType<string[]>,
     required: true,
@@ -33,7 +37,7 @@ defineProps({
     <div class="hidden sm:block min-w-[8rem]">
       <GamesImageLoader
         v-if="!isMobile"
-        :game-id="id"
+        :src="imageUrl"
         class="rounded-default"
       />
     </div>
@@ -41,7 +45,7 @@ defineProps({
       <div class="flex flex-row gap-4">
         <GamesImageLoader
           v-if="!isMobile"
-          :game-id="id"
+          :src="imageUrl"
           class="sm:hidden w-[3rem] rounded-default"
         />
         <div class="flex flex-col gap-2">

@@ -16,6 +16,10 @@ defineProps({
     type: Number,
     required: true,
   },
+  gameImageUrl: {
+    type: String,
+    required: true,
+  },
   authenticated: {
     type: Boolean,
     required: true,
@@ -34,7 +38,7 @@ const onToggleFullScreen = () => {
 <template>
   <div class="flex flex-col rounded-default">
     <GameFrameBackdrop
-      :game-id="gameId"
+      :src="gameImageUrl"
       :authenticated="authenticated"
       :replace="true"
       class="h-[70vh] rounded-t-default"

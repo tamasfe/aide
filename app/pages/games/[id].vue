@@ -58,6 +58,7 @@ const iFrameUrl = computed(() => {
         v-if="game.isCompatibleWithDevice"
         :game-title="game.name"
         :game-id="game.id"
+        :game-image-url="game.image_url"
         :authenticated="walletStore.isInit"
         :i-frame-url="iFrameUrl"
       />
@@ -81,6 +82,7 @@ const iFrameUrl = computed(() => {
         v-if="!isMobile && game.isCompatibleWithDevice"
         :game-title="game.name"
         :game-id="game.id"
+        :game-image-url="game.image_url"
         :authenticated="walletStore.isInit"
         :i-frame-url="iFrameUrl"
       />
@@ -92,6 +94,7 @@ const iFrameUrl = computed(() => {
 
       <GameDescription
         :id="gameId"
+        :image-url="game.image_url"
         class="bg-subtle"
         :description="game.description"
         :title="game.name"

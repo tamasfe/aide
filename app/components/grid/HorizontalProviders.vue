@@ -4,7 +4,7 @@ const { t } = useI18n();
 
 const loading = useState(`grid-horizontal-providers-loading`, () => true);
 const nextProvidersPageToSearch = useState(`grid-horizontal-providers-next-page`, () => 0);
-const providerIds = useState<number[]>(`grid-horizontal-providers-ids`, () => []);
+const providerIds = useState<{ id: number; image_url: string }[]>(`grid-horizontal-providers-ids`, () => []);
 const canLoadMore = useState(`grid-horizontal-providers-can-load-more`, () => true);
 
 const ENABLE_SERVER_SIDE_RENDERING = false;
@@ -15,7 +15,7 @@ const onLoadData = async () => {
   loading.value = true;
 
   const { providers: foundProviders, canLoadMore: updatedCanLoadMore } = await $dependencies.providers.ui.searchProvidersOnGrid.handle(null, nextProvidersPageToSearch.value);
-  providerIds.value.push(...foundProviders.map(provider => provider.id));
+  providerIds.value.push(...foundProviders);
   canLoadMore.value = updatedCanLoadMore;
   nextProvidersPageToSearch.value += 1;
 
@@ -68,16 +68,16 @@ await useAsyncData(`load-providers`, () => onLoadData().then(() => true), { lazy
       </NuxtLink>
     </template>
 
-    <template #default="{ item: providerId }">
+    <template #default="{ item: item }">
       <div class="group flex flex-col gap-2 justify-between w-full h-full">
         <div class="flex-1 rounded-[0.7rem] overflow-hidden">
           <NuxtLink
             :to="{
               name: 'providers-id',
-              params: { id: providerId },
+              params: { id: item.id },
             }"
           >
-            <ProviderImageLoader :provider-id="providerId" />
+            <ProviderImageLoader :src="item.image_url" :provider-id="item.id" />
           </NuxtLink>
         </div>
 

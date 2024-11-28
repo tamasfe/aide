@@ -13,6 +13,10 @@ const props = defineProps({
     type: Number,
     required: true,
   },
+  gameImageUrl: {
+    type: String,
+    required: true,
+  },
   authenticated: {
     type: Boolean,
     required: true,
@@ -41,7 +45,7 @@ const onTogglePlaying = async () => {
 <template>
   <div class="flex flex-col">
     <GameFrameBackdrop
-      :game-id="gameId"
+      :src="gameImageUrl"
       :authenticated="authenticated"
       :replace="false"
     >
@@ -64,7 +68,7 @@ const onTogglePlaying = async () => {
       <div class="w-full max-w-[35rem] p-6 flex flex-col justify-between gap-6">
         <div class="w-full flex flex-row items-center justify-start gap-6">
           <GamesImageLoader
-            :game-id="gameId"
+            :src="gameImageUrl"
             class="w-[32%] rounded-default"
           />
           <div class="flex flex-col gap-1">

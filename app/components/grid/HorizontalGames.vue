@@ -27,7 +27,7 @@ const DEFER_CLIENT_SIDE_LOADING = true;
 
 const loading = useState(`grid-horizontal-games-loading-for-${props.categoryIdentifier}`, () => true);
 const nextGamesPageToSearch = useState(`grid-horizontal-games-next-page-for-${props.categoryIdentifier}`, () => 0);
-const gameIds = useState<number[]>(`grid-horizontal-games-ids-for-${props.categoryIdentifier}`, () => []);
+const gameIds = useState<{ id: number; image_url: string }[]>(`grid-horizontal-games-ids-for-${props.categoryIdentifier}`, () => []);
 const canLoadMore = useState(`grid-horizontal-games-can-load-more-for-${props.categoryIdentifier}`, () => true);
 
 const onLoadData = async () => {
@@ -35,7 +35,7 @@ const onLoadData = async () => {
   loading.value = true;
 
   const { games: foundGames, canLoadMore: updatedCanLoadMore } = await query.handle(props.categoryIdentifier, null, nextGamesPageToSearch.value);
-  gameIds.value.push(...foundGames.map(game => game.id));
+  gameIds.value.push(...foundGames.map(game => ({ id: game.id, image_url: game.image_url })));
   canLoadMore.value = updatedCanLoadMore;
   nextGamesPageToSearch.value += 1;
 
@@ -75,12 +75,12 @@ await useAsyncData(`load-games-for-${props.categoryIdentifier}`, () => onLoadDat
         </NuxtLink>
       </template>
 
-      <template #default="{ item: gameId }">
+      <template #default="{ item: game }">
         <NuxtLink
-          :to="{ name: 'games-id', params: { id: gameId } }"
+          :to="{ name: 'games-id', params: { id: game.id } }"
           class="block bg-subtle rounded-default w-full h-full overflow-hidden"
         >
-          <GamesImageLoader :game-id="gameId" />
+          <GamesImageLoader :src="game.image_url" />
         </NuxtLink>
       </template>
 

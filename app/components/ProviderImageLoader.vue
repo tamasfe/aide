@@ -1,25 +1,21 @@
 <script setup lang="ts">
-const { providerId } = defineProps({
+const { src } = defineProps({
   providerId: {
     type: Number,
     required: true,
   },
+  src: {
+    type: String,
+    required: true,
+  },
 });
 
-const { $dependencies } = useNuxtApp();
-
-const { data: imageSrc } = await useAsyncData(`provider-image-url-${String(providerId)}`, async () => {
-  return $dependencies.providers.ui.findProviderImageSrcById.handle(providerId);
-}, {
-  server: true, // If false: avoid server-side loading of image to improve first-print time. More info @https://nuxt.com/docs/getting-started/data-fetching#client-only-fetching
-  lazy: true, // If true: do not await the resolved value from the promise to print the spinner. More info @https://nuxt.com/docs/getting-started/data-fetching#lazy
-});
+const imageSrc = computed(() => `${src}?color=white`);
 </script>
 
 <template>
   <div class="flex items-center justify-center h-full">
     <NuxtImg
-      v-if="imageSrc"
       :src="imageSrc"
       :alt="`Provider ${providerId} logo`"
       class="w-full h-full object-contain group-hover:opacity-80"

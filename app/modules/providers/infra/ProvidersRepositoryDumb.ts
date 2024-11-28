@@ -31,6 +31,7 @@ export class ProvidersRepositoryDumb implements ProvidersRepositoryI {
   constructor(private logger: LoggerI) {
     this.providers = Array.from({ length: 50 }, (_, i) => ({
       id: i,
+      image_url: "https://cdn.girobet.vip/1/logos/evoplay",
       name: `Provider ${i}`,
       slug: `provider-${i}`,
       description: `Description of provider ${i}`,

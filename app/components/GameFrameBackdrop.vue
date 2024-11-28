@@ -11,8 +11,12 @@ const props = defineProps<{
   authenticated: boolean;
   replace: boolean;
   class?: HTMLAttributes["class"];
-  gameId: number;
+  src: string;
 }>();
+
+const srcBackground = computed(() => {
+  return props.src + "?variant=background";
+});
 </script>
 
 <template>
@@ -28,7 +32,7 @@ const props = defineProps<{
     />
     <template v-if="!replace || (replace && !authenticated)">
       <GamesImageLoader
-        :game-id="gameId"
+        :src="srcBackground"
         class="absolute top-0 left-0 z-[1] w-full h-full object-cover"
         alt=""
       />

@@ -14,7 +14,7 @@ const DEFER_CLIENT_SIDE_LOADING = true;
 const loading = useState(`grid-vertical-games-loading-for-${props.categoryIdentifier}-${props.providerId}`, () => true);
 const totalGamesOfCategory = useState(`grid-vertical-games-total-for-${props.categoryIdentifier}-${props.providerId}`, () => 0);
 const nextGamesPageToSearch = useState(`grid-vertical-games-next-page-for-${props.categoryIdentifier}-${props.providerId}`, () => 0);
-const gameIds = useState<number[]>(`grid-vertical-games-ids-for-${props.categoryIdentifier}-${props.providerId}`, () => []);
+const gameIds = useState<{ id: number; image_url: string }[]>(`grid-vertical-games-ids-for-${props.categoryIdentifier}-${props.providerId}`, () => []);
 const canLoadMore = useState(`grid-vertical-games-can-load-more-for-${props.categoryIdentifier}-${props.providerId}`, () => true);
 
 const onLoadData = async () => {
@@ -22,7 +22,7 @@ const onLoadData = async () => {
   loading.value = true;
 
   const { games: foundGames, canLoadMore: updatedCanLoadMore, totalGames } = await $dependencies.games.ui.searchGamesPaginatingOnGrid.handle(props.categoryIdentifier, props.providerId, nextGamesPageToSearch.value);
-  gameIds.value.push(...foundGames.map(game => game.id));
+  gameIds.value.push(...foundGames);
   canLoadMore.value = updatedCanLoadMore;
   nextGamesPageToSearch.value += 1;
   totalGamesOfCategory.value = totalGames;
@@ -78,17 +78,17 @@ await useAsyncData(`load-games-for-${props.categoryIdentifier}`, () => onLoadDat
       pagination
       @trigger:load="onLoadData"
     >
-      <template #default="{ data: gameId }">
+      <template #default="{ data: item }">
         <NuxtLink
           :to="{
             name: 'games-id',
             params: {
-              id: gameId,
+              id: item.id,
             },
           }"
           class="block bg-subtle rounded-default w-full h-full overflow-hidden"
         >
-          <GamesImageLoader :game-id="gameId" />
+          <GamesImageLoader :src="item.image_url" />
         </NuxtLink>
       </template>
     </GridVertical>
