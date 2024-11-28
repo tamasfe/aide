@@ -1,18 +1,18 @@
 import type { SupportedLocale } from "../..";
-import type { FindLocaleForUser } from "../../application/FindLocaleForUser";
+import type { SearchUserSelectedLocale } from "../../application/SearchUserSelectedLocale";
 import type { LoggerI } from "~/packages/logger/Logger";
 
-export class FindLocaleForUserOnInit {
+export class SearchUserSelectedLocaleOnClientReady {
   constructor(
-    private readonly query: FindLocaleForUser,
+    private readonly query: SearchUserSelectedLocale,
     private readonly logger: LoggerI,
   ) {}
 
-  public async handle(): Promise<SupportedLocale> {
+  public async handle(): Promise<SupportedLocale | null> {
     const result = await this.query.handle();
     if (result.isFailure) {
       this.logger.error("Error finding the best locale for the user", result.error);
-      return this.query.FALLBACK_LANGUAGE.value;
+      return null;
     }
     return result.value;
   }

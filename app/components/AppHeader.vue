@@ -30,7 +30,7 @@ const emit = defineEmits([
               class="text-subtle"
             />
           </BaseButton>
-          <NuxtLink
+          <BaseLink
             :to="{ name: 'index' }"
             :class="[
               userStore.isAuthenticated
@@ -43,7 +43,7 @@ const emit = defineEmits([
               <IconLogoSmall class="sm:hidden" />
               <IconLogo class="hidden sm:block" />
             </template>
-          </NuxtLink>
+          </BaseLink>
         </div>
 
         <div class="flex items-center gap-2.5 sm:gap-3">

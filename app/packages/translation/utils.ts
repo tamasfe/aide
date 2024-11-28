@@ -1,10 +1,10 @@
 import type { SupportedLanguage, SupportedLocale } from ".";
 
 export const SUPPORTED_LANGUAGES_MAP: Record<SupportedLocale, SupportedLanguage> = {
-  "en-US": { value: "en-US" as const, countryCode: "US" as const },
-  "pt-BR": { value: "pt-BR" as const, countryCode: "BR" as const },
-  // "es-MX": { value: "es-MX" as const, countryCode: "MX" },
-  // "es-ES": { value: "es-ES" as const, countryCode: "ES" },
+  "en-us": { value: "en-us" as const, countryCode: "US" as const },
+  "pt-br": { value: "pt-br" as const, countryCode: "BR" as const },
+  // "es-mx": { value: "es-mx" as const, countryCode: "MX" },
+  // "es-es": { value: "es-es" as const, countryCode: "ES" },
 };
 
 export const SUPPORTED_LANGUAGES: SupportedLanguage[] = Object.values(SUPPORTED_LANGUAGES_MAP);

@@ -13,7 +13,7 @@ defineProps<{
 </script>
 
 <template>
-  <NuxtLink
+  <BaseLink
     class="p-2 flex items-center text-emphasis hover:text-white"
     :to="to"
   >
@@ -24,5 +24,5 @@ defineProps<{
       class="flex-shrink-0 text-subtle"
     />
     <div class="w-full ml-4 text-[0.90rem] font-medium">{{ title }}</div>
-  </NuxtLink>
+  </BaseLink>
 </template>

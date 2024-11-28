@@ -4,14 +4,14 @@
 //   * locale must be properly handled via props/pinia not as a static variable
 // TRANSLATION STATUS:  ✅
 
-const locale = ref("pt-BR");
+const locale = ref("pt-br");
 
 const telegramUrl = computed(() => {
   return "TODO";
 });
 
 const instagramUrl = computed(() => {
-  if (locale.value === "pt-BR") {
+  if (locale.value === "pt-br") {
     return "https://www.instagram.com/girobetofficial/";
   }
   // eventually default to english
@@ -19,7 +19,7 @@ const instagramUrl = computed(() => {
 });
 
 const xUrl = computed(() => {
-  if (locale.value === "pt-BR") {
+  if (locale.value === "pt-br") {
     return "https://x.com/girobet";
   }
   // eventually default to english
@@ -27,7 +27,7 @@ const xUrl = computed(() => {
 });
 
 const tiktokUrl = computed(() => {
-  if (locale.value === "pt-BR") {
+  if (locale.value === "pt-br") {
     return "https://www.tiktok.com/@girobetofficial";
   }
   // eventually default to english
@@ -48,7 +48,7 @@ const links: Array<{ icon: string; url: ComputedRef }> = [
       {{ $t("footer.social_media") }}
     </h3>
     <div class="mt-8 md:mt-0 flex space-x-4 lg:space-x-2 justify-evenly md:justify-start">
-      <NuxtLink
+      <BaseLink
         v-for="(link, index) in links"
         :key="index"
         :to="link.url.value"
@@ -60,7 +60,7 @@ const links: Array<{ icon: string; url: ComputedRef }> = [
           :name="link.icon"
           :size="28"
         />
-      </NuxtLink>
+      </BaseLink>
     </div>
   </div>
 </template>

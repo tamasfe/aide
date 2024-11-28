@@ -3,6 +3,7 @@ kind: ConfigMap
 metadata:
   name: "{{ .Release.Name }}"
 data:
+  NUXT_PUBLIC_BASE_URL: "https://girobet.vip"
   NUXT_PUBLIC_API_BASE_URL: https://api.girobet.vip
 
   NUXT_PUBLIC_ERROR_CAPTURING_ENABLED: "true"

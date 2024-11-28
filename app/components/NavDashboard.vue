@@ -78,7 +78,7 @@ const isActive = (to: RouteLocationNamedRaw) =>
 
 <template>
   <div class="flex items-center gap-3 w-full">
-    <NuxtLink
+    <BaseLink
       v-for="(route, index) in routes"
       :key="index"
       :to="route.to"
@@ -92,6 +92,6 @@ const isActive = (to: RouteLocationNamedRaw) =>
       "
     >
       {{ route.title }}
-    </NuxtLink>
+    </BaseLink>
   </div>
 </template>

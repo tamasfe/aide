@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <NuxtLink
+  <BaseLink
     :to="{
       name: 'todo',
     }"
@@ -11,5 +11,5 @@
       alt=""
       class="object-cover object-center w-full h-full"
     />
-  </NuxtLink>
+  </BaseLink>
 </template>

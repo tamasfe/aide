@@ -61,7 +61,7 @@ const links = [
 <template>
   <div>
     <Popover
-      v-slot="{ open }"
+      v-slot="{ open, close }"
       class="relative"
     >
       <PopoverOverlay class="fixed inset-0 bg-transparent" />
@@ -92,10 +92,11 @@ const links = [
               v-for="item in links"
               :key="item.key"
             >
-              <NuxtLink
+              <BaseLink
                 v-if="item.action.toPage"
                 :to="item.action.toPage"
                 class="border-emphasis px-6 h-10 min-w-[14rem] flex items-center text-emphasis hover:text-white whitespace-nowrap"
+                @click="close"
               >
                 <BaseIcon
                   :name="item.icon"
@@ -105,7 +106,7 @@ const links = [
                 <span class="block w-full ml-4 text-[0.85rem]">
                   {{ item.title }}
                 </span>
-              </NuxtLink>
+              </BaseLink>
 
               <BaseButton
                 v-if="item.action.buttonOnClick"

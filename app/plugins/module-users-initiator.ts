@@ -3,7 +3,7 @@ export default defineNuxtPlugin({
   dependsOn: ["dependency-injection"],
   parallel: true,
   async setup(_nuxtApp) {
-    const { $dependencies, $i18n } = useNuxtApp();
+    const { $dependencies } = useNuxtApp();
     const userStore = useUserStore();
 
     /**
@@ -38,11 +38,6 @@ export default defineNuxtPlugin({
      *
      */
     await useAsyncData("user-authentication", () => userStore.refreshUser().then(() => true));
-
-    const isServer = import.meta.server;
-    if (!isServer) {
-      $i18n.setLocale(await $dependencies.common.i18n.ui.findLocaleForUserOnInit.handle());
-    }
 
     return {};
   },

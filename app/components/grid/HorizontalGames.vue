@@ -63,7 +63,7 @@ await useAsyncData(`load-games-for-${props.categoryIdentifier}`, () => onLoadDat
       </template>
 
       <template #options>
-        <NuxtLink
+        <BaseLink
           :to="{ name: 'categories-id', params: { id: props.categoryIdentifier } }"
         >
           <BaseButton
@@ -72,16 +72,16 @@ await useAsyncData(`load-games-for-${props.categoryIdentifier}`, () => onLoadDat
           >
             {{ $t("button.see_all") }}
           </BaseButton>
-        </NuxtLink>
+        </BaseLink>
       </template>
 
       <template #default="{ item: game }">
-        <NuxtLink
+        <BaseLink
           :to="{ name: 'games-id', params: { id: game.id } }"
           class="block bg-subtle rounded-default w-full h-full overflow-hidden"
         >
           <GamesImageLoader :src="game.imageUrl" />
-        </NuxtLink>
+        </BaseLink>
       </template>
 
       <template

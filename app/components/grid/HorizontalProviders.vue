@@ -54,7 +54,7 @@ await useAsyncData(`load-providers`, () => onLoadData().then(() => true), { lazy
 
     <!-- Commenting pending to decide where to take the user when clicking the "see all providers" -->
     <template #options>
-      <NuxtLink
+      <BaseLink
         :to="{
           name: 'providers',
         }"
@@ -65,20 +65,20 @@ await useAsyncData(`load-providers`, () => onLoadData().then(() => true), { lazy
         >
           {{ t("button.see_all") }}
         </BaseButton>
-      </NuxtLink>
+      </BaseLink>
     </template>
 
     <template #default="{ item: item }">
       <div class="group flex flex-col gap-2 justify-between w-full h-full">
         <div class="flex-1 rounded-[0.7rem] overflow-hidden">
-          <NuxtLink
+          <BaseLink
             :to="{
               name: 'providers-id',
               params: { id: item.id },
             }"
           >
             <ProviderImageLoader :src="item.imageUrl" :provider-id="item.id" />
-          </NuxtLink>
+          </BaseLink>
         </div>
 
         <!-- Commenting until the endpoint returns how many games the provider has  -->

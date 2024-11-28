@@ -19,7 +19,7 @@ defineOptions({
 
 const props = withDefaults(
   defineProps<{
-    fieldType?: "input" | "select";
+    fieldType?: "input";
     required?: boolean;
     placeholder?: string;
     placeholderPlacement?: "floating" | "default";
@@ -112,9 +112,9 @@ const value = defineModel({
         v-if="placeholderPlacement === 'floating' && placeholder"
         ref="floatingLabel"
         class="floating-label pointer-events-none"
-        :class="{ 
+        :class="{
           'giro__input-has-value': !!value,
-          focused: isInputFocused
+          'focused': isInputFocused,
         }"
       >
         <span>{{ placeholder }}</span>
@@ -145,7 +145,7 @@ const value = defineModel({
           @input="(event) => $emit('input', event)"
           @change="(event) => $emit('change', event)"
         />
-        <BaseSelect
+        <!-- <BaseSelect
           v-else-if="fieldType === 'select'"
           v-model="value"
           v-bind="$attrs"
@@ -153,7 +153,7 @@ const value = defineModel({
           :placeholder="fieldPlaceholder"
           :class="fieldClass"
           @change="(event) => { $emit('change', event.value); $emit('input', event.value); }"
-        />
+        /> -->
 
         <div
           v-if="errorPlacement === 'floating' && errorMessage"

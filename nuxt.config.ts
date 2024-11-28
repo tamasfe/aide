@@ -28,7 +28,7 @@ export default defineNuxtConfig({
     rootId: "app",
   },
   site: {
-    url: "https://girobet.vip",
+    url: process.env.NUXT_PUBLIC_BASE_URL,
     name: "GiroBet",
     // description: "Welcome to my awesome site!", // TODO
     // defaultLocale: "en", // TODO not needed if you have @nuxtjs/i18n installed
@@ -107,23 +107,29 @@ export default defineNuxtConfig({
   },
   // @nuxtjs/i18n
   i18n: {
+    baseUrl: process.env.NUXT_PUBLIC_BASE_URL,
     locales: [
       {
         language: "en-US",
-        code: "en-US",
+        code: "en-us",
         file: "en-US.json",
         isCatchallLocale: true,
       },
       {
         language: "pt-BR",
-        code: "pt-BR",
+        code: "pt-br",
         file: "pt-BR.json",
       },
     ],
-    detectBrowserLanguage: false,
-    strategy: "no_prefix",
+    detectBrowserLanguage: {
+      fallbackLocale: "en-us",
+      redirectOn: "no prefix",
+      alwaysRedirect: false,
+      useCookie: true,
+    },
+    strategy: "prefix_and_default",
     lazy: false,
-    defaultLocale: "en-US",
+    defaultLocale: "en-us",
     vueI18n: "./i18n.config.ts",
   },
   // @nuxt/icon

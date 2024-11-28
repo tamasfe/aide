@@ -51,7 +51,7 @@ defineProps({
         <div class="flex flex-col gap-2">
           <h2 class="text-xl font-semibold">{{ title }}</h2>
           <div class="flex items-center space-x-2">
-            <NuxtLink
+            <BaseLink
               v-for="categoryIdentifier in categories"
               :key="categoryIdentifier"
               :to="{
@@ -68,7 +68,7 @@ defineProps({
               >
                 {{ t(`category.${categoryIdentifier}`) }}
               </BaseButton>
-            </NuxtLink>
+            </BaseLink>
           </div>
         </div>
       </div>

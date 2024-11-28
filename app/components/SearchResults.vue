@@ -107,13 +107,13 @@ const onClickLink = () => {
       :loading="gamesLoading"
     >
       <template #default="{ item: item }">
-        <NuxtLink
+        <BaseLink
           :to="`/games/${item.id}`"
           class="block bg-subtle rounded-default w-full h-full overflow-hidden"
           @click="onClickLink"
         >
           <GamesImageLoader :src="item.imageUrl" />
-        </NuxtLink>
+        </BaseLink>
       </template>
     </GridVerticalSearch>
 
@@ -126,13 +126,13 @@ const onClickLink = () => {
       :loading="providersLoading"
     >
       <template #default="{ item: item }">
-        <NuxtLink
+        <BaseLink
           :to="`/providers/${item.id}`"
           class="block bg-subtle rounded-default w-full h-full overflow-hidden"
           @click="onClickLink"
         >
           <ProviderImageLoader :src="item.imageUrl" :provider-id="item.id" />
-        </NuxtLink>
+        </BaseLink>
       </template>
     </GridVerticalSearch>
   </div>

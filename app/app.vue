@@ -12,6 +12,7 @@ setTimeout(() => {
 
 <template>
   <div>
+    <AppHead />
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>

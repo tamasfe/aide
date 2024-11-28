@@ -67,7 +67,7 @@ await useAsyncData(`load-vertical-providers`, () => onLoadData().then(() => true
       @trigger:load="onLoadData"
     >
       <template #default="{ data: item }">
-        <NuxtLink
+        <BaseLink
           :to="{
             name: 'providers-id',
             params: {
@@ -77,7 +77,7 @@ await useAsyncData(`load-vertical-providers`, () => onLoadData().then(() => true
           class="flex-1 rounded-[0.7rem] overflow-hidden"
         >
           <ProviderImageLoader :src="item.imageUrl" :provider-id="item.id" />
-        </NuxtLink>
+        </BaseLink>
       </template>
     </GridVertical>
   </GridHeader>

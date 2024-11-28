@@ -16,7 +16,7 @@ export class AuthenticatedUserRepositoryDumb implements AuthenticatedUserReposit
     // return success(
     //   User.newFromProps({
     //     id: 1,
-    //     locale: "pt-BR",
+    //     locale: "pt-br",
     //     timeZone: "America/Sao_Paulo",
     //     jurisdiction: "BR",
     //     email: "ivan@girobet.com",

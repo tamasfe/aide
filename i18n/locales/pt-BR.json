@@ -1,6 +1,330 @@
 {
+  "promo_bar": {
+    "refer": "Refer a friend and earn REAL balance for each friend you invite"
+  },
+  "winning_now": {
+    "title": "Winning\nNow"
+  },
+  "field": {
+    "email": "Email",
+    "password": "Password",
+    "password_new": "Enter a new password",
+    "password_confirm": "Confirm new password",
+    "telephone": "Telephone",
+    "cpf": "CPF"
+  },
+  "placeholder": {
+    "search": "Search for a casino game...",
+    "deposit_amount": "Deposit amount",
+    "withdrawal_amount": "Withdrawal amount"
+  },
+  "api_client": {
+    "signup_try_again": "An error occurred while trying to create your account. Please try again.",
+    "signup_success": "Your account has been created successfully"
+  },
+  "api_server": {
+  },
+  "button": {
+    "register": "Register",
+    "login": "Login",
+    "create_account": "Create Account",
+    "continue": "Continue",
+    "see_all": "See All",
+    "send_recovery_email": "Send Recovery Email and Close",
+    "deposit": "Deposit",
+    "deposit_now": "Deposit Now",
+    "copy_code": "Copy Code ({remaining} Remaining)",
+    "completed_payment": "I completed the payment",
+    "withdraw": "Withdraw",
+    "go_back": "Go Back",
+    "take_me_to": "Take me to {domain}",
+    "notify_me": "Notify Me When Available",
+    "share": "Share",
+    "play_now": "Play Now",
+    "close_account": "Close Account",
+    "edit": "Edit",
+    "change": "Change",
+    "copy": "Copy",
+    "upload": "Upload",
+    "confirm": "Confirm",
+    "save_password_and_login": "Save Password and Login"
+  },
+  "mobile_nav": {
+    "menu": "Menu",
+    "hot": "Hot",
+    "search": "Search",
+    "support": "Support",
+    "promos": "Promos"
+  },
+  "game_page": {
+    "device_not_supported": "This game is not supported on your current device",
+    "device_not_supported_alternative_desktop": "Please try playing it on a computer or laptop",
+    "device_not_supported_alternative_mobile": "Please try playing it on a mobile device"
+  },
+  "user_nav": {
+    "wallet": "Wallet",
+    "history": "History",
+    "account_settings": "Account Settings",
+    "live_support": "Live Support",
+    "logout": "Log out",
+    "balance_hidden_while_playing": "Playing..."
+  },
+  "modal_login": {
+    "error_invalid_credentials": "Your email or password are incorrect",
+    "error_unknown": "An error occurred while trying to log in. Please try again."
+  },
+  "modal_session": {
+    "dont_have_account": "Don't have an account yet?",
+    "create_free_account": "Create a Free account",
+    "forgot_password": "Forgot your password?",
+    "accept_terms": "By registering, you agree to our",
+    "have_account": "Have an account already?",
+    "error_submitting_flow": "An error occurred while registering your account. Please try again",
+    "error_validating_field": "Error validating field. Please refresh and try again",
+    "error_submitting_flow_already_taken_cpf": "This CPF is already in use",
+    "error_submitting_flow_already_taken_email": "This email is already in use",
+    "error_submitting_flow_already_taken_telephone": "This phone number is already in use"
+  },
+  "modal_payments": {
+    "make_deposit": "Make a Deposit",
+    "make_deposit_subtitle": "Add funds to your account",
+    "finalize_deposit": "Finalize Deposit",
+    "finalize_deposit_subtitle": "Scan QR or copy code",
+    "make_withdrawal": "Make a Withdrawal",
+    "make_withdrawal_subtitle": "Withdraw funds from your account",
+    "available_withdraw": "Available to withdraw",
+    "limits": "limits"
+  },
+  "modal_cancel_registration": {
+    "headline": "Wait! Are you sure you want to cancel?",
+    "body": "Players are cashing out everyday with our super fast withdrawals. Click Continue to complete your registration.",
+    "cancel": "No thanks, I want to cancel"
+  },
+  "modal_forgot_password": {
+    "error_unknown": "An error occurred. Please try again"
+  },
+  "modal_restrict": {
+    "expanding_headline": "Sorry, {blockedDomain} is not available within {country}",
+    "expanding_body": "Unfortunately, at this time we don't have local deposit options for players from {country}. We're growing as fast as possible and looking to serve you as soon as we can. Check back soon to join the luckiest online casino in the world!",
+    "expanding_subject": "Add me to the waitlist in {country} for {blockedDomain}",
+    "license_alternative_headline": "Go to {allowedDomain} for the Best Casino Experience in {country}",
+    "license_alternative_body": "Due to the restrictions of our gaming license, the url {blockedDomain} cannot accept players located in {country}. However, we can provide you a full unrestricted experience on our dedicated {country} website at {allowedDomain}!",
+    "license_no_alternative_headline": "Sorry, {blockedDomain} is not available within {country}",
+    "license_no_alternative_body": "Due to the restrictions of our gaming license, the url {blockedDomain} cannot accept players located in {country}. If you think this is a mistake, please check your connection or with your ISP. We apologize for the inconvenience and hope to serve you in the near future."
+  },
+  "validation": {
+    "cpf_invalid": "Invalid CPF",
+    "cpf_required": "CPF is required",
+    "email_invalid": "Invalid email",
+    "email_required": "Email is required",
+    "password_invalid": "Invalid password",
+    "password_required": "Password is required",
+    "password_does_not_match": "Passwords do not match",
+    "password_invalid_too_short": "Password must be longer than {min}",
+    "password_invalid_too_long": "Password must be shorter than {max}",
+    "telephone_invalid": "Invalid phone",
+    "telephone_required": "Phone is required",
+    "telephone_invalid_too_short": "Phone is missing {num} digits",
+    "telephone_invalid_too_long": "Phone is {num} digits too long"
+  },
+  "withdrawal_limits": {
+    "summary": "For an easy, secure and simple withdraw process, make sure to follow these guidelines: The minimum withdrawal amount varies by method and is listed above. Withdrawals are always to be processed to the original deposit method unless otherwise specified or if that method doesn't support withdrawals."
+  },
+  "play": {
+    "login_to_play": "Please Login to Play",
+    "share_subject": "YOOO",
+    "share_body": "HEYYYYYYYY"
+  },
   "grid": {
     "game_count": "{count} Jogos",
     "providers": "🏆 Estúdios de Jogos"
+  },
+  "page": {
+    "aviator": "Aviator",
+    "slots": "Slots",
+    "live_casino": "Live Casino",
+    "affiliate_program": "Affiliate Program",
+    "faq": "FAQ",
+    "support": "Support",
+    "telegram": "Telegram",
+    "betting_terms": "Betting Terms",
+    "terms": "Terms & Conditions",
+    "privacy": "Privacy Policy",
+    "aml_kyc": "AML/KYC",
+    "aml_policy": "AML Policy",
+    "kyc_policy": "KYC Policy of OG OVERSEAS SERVICES LTD",
+    "responsible_gaming": "Responsible Gaming"
+  },
+  "wallet": {
+    "payment": {
+      "empty": "No Transactions",
+      "type": {
+        "deposit": "Deposit",
+        "withdrawal": "Withdrawal"
+      },
+      "status": {
+        "pending": "Pending",
+        "waiting_for_approval": "Waiting for Approval",
+        "approved": "Approved",
+        "processing": "Processing",
+        "completed": "Completed",
+        "failed": "Failed",
+        "cancelled": "Cancelled",
+        "rejected": "Rejected",
+        "refunded": "Refunded"
+      }
+    }
+  },
+  "game": {
+    "game_action": {
+      "action": {
+        "bet": "Bet",
+        "win": "Win",
+        "rollback": "Rollback"
+      }
+    }
+  },
+  "legal": {
+    "version": "Version",
+    "updated": "Updated"
+  },
+  "i18n": {
+    "close": "Close"
+  },
+  "recover_password": {
+    "error_invalid_token": "There was a problem with your recovery link. \nPlease restart the password recovery process and try again",
+    "error_unknown": "There was a problem resetting your password. \nPlease restart the password recovery process and try again"
+  },
+  "search": {
+    "number_of_results": "{total} Results",
+    "no_results": "No Results"
+  },
+  "footer": {
+    "summary": "Bem-vindo ao GiroBet. Experimente a emoção máxima do jogo online conosco. Jogue slots, pôquer, blackjack e muito mais. Ganhe muito com nossos bônus e promoções.",
+    "popular": "Popular",
+    "girobet": "GiroBet",
+    "legal": "Legal",
+    "social_media": "Social Media",
+    "legal_notice": "Antes de se envolver em qualquer atividade de jogo online em nossa plataforma, é imperativo verificar se tais ações são legalmente permitidas em sua jurisdição. É sua responsabilidade verificar e aderir às leis e regulamentos que regem o jogo online em seu país ou região.",
+    "copyright": "© {year} GiroBet. All Rights Reserved.",
+    "play_responsibly": "Play Responsibly",
+    "responsible_gaming": "Responsible Gaming",
+    "user_account_language": "Your account language is set to {language}.",
+    "user_account_language_unknown": "Your account language is different to the current language.",
+    "change_language": "Mudar para {language}"
+  },
+  "console_warning": {
+    "title": "Atenção!",
+    "description": "Não copie/cole NADA nesta janela. Golpistas estão tentando roubar sua senha."
+  },
+  "dashboard": {
+    "nav": {
+      "wallet": "Wallet",
+      "account": "Account",
+      "preferences": "Preferences",
+      "verification": "Verification",
+      "limits": "Limits",
+      "deposits": "Deposits",
+      "withdrawals": "Withdrawals",
+      "casino": "Casino",
+      "sportsbook": "Sportsbook"
+    },
+    "settings": {
+      "account": {
+        "account_details": "Account Details",
+        "username": "Username",
+        "email": "Email",
+        "password": "Password",
+        "public_id": "Public ID",
+        "personal_details": "Personal Details",
+        "name": "Name",
+        "phone": "Phone",
+        "date_of_birth": "Date of Birth",
+        "address": "Address",
+        "city": "City",
+        "postal_code": "Postal Code",
+        "country": "Country",
+        "document": "Document",
+        "payment_settings": "Payment Settings",
+        "key_type": "Key Type",
+        "key_value": "Key Value",
+        "regional_settings": "Regional Settings",
+        "wallets": "Wallets",
+        "language": "Language",
+        "time_zone": "Time Zone",
+        "close_account": "Close Account",
+        "close_account_warning": "Your account will be deactivated and you will be excluded from any further communications from GiroBet."
+      },
+      "preferences": {
+        "bonuses": "Do You Love Bonuses?",
+        "communication": "Communication"
+      },
+      "verification": {
+        "identity": "Identity",
+        "address": "Address"
+      },
+      "limits": {
+        "suspend_account": "Suspend Account"
+      },
+      "wallet": {
+        "transactions_title": "Recent Transactions",
+        "transactions_empty": "No Transactions"
+      }
+    },
+    "history": {
+      "casino": {
+        "table_empty": "No Game Rounds",
+        "table_header_id": "ID",
+        "table_header_date": "Date",
+        "table_header_game": "Game",
+        "table_header_action": "Type",
+        "table_header_amount": "Amount"
+      },
+      "deposits": {
+        "table_empty": "No Deposits"
+      },
+      "shared": {
+        "table_payments_header_id": "ID",
+        "table_payments_header_date": "Date",
+        "table_payments_header_type": "Type",
+        "table_payments_header_status": "Status",
+        "table_payments_header_amount": "Amount"
+      },
+      "withdrawals": {
+        "table_empty": "No Withdrawals"
+      }
+    }
+  },
+  "category": {
+    "blackjack": "Blackjack",
+    "casual": "Casual",
+    "card": "Card",
+    "craps": "Craps",
+    "crash": "Crash",
+    "fishing": "Fishing",
+    "jackpot": "Jackpot",
+    "live": "Live",
+    "lottery": "Lottery",
+    "mines": "Mines",
+    "poker": "Poker",
+    "scratch": "Scratch",
+    "slots": "Slots",
+    "table": "Table",
+    "roulette": "Roulette",
+    "video_poker": "Video Poker",
+    "virtual_sports": "Virtual Sports",
+    "weekly-top-picks": "Weekly Top Picks"
+  },
+  "language": {
+    "en-us": "English",
+    "pt-br": "Portuguese"
+  },
+  "jurisdiction": {
+    "ES": "Spain",
+    "PT": "Portugal",
+    "BR": "Brazil",
+    "IN": "India",
+    "US": "United States",
+    "DE": "Germany"
   }
 }

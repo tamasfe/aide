@@ -5,7 +5,7 @@ defineProps<{
 </script>
 
 <template>
-  <NuxtLink
+  <BaseLink
     :to="href"
     class="flex flex-row items-center gap-1.5 cursor-pointer"
   >
@@ -17,5 +17,5 @@ defineProps<{
     <div>
       <slot />
     </div>
-  </NuxtLink>
+  </BaseLink>
 </template>

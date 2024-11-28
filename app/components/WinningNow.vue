@@ -112,7 +112,7 @@ onMounted(() => {
       }"
     >
       <template #default="{ item }">
-        <NuxtLink :to="{ name: 'todo' }">
+        <BaseLink :to="{ name: 'todo' }">
           <div class="group flex items-center space-x-3 bg-subtle p-2 rounded-lg outline-none">
             <div class="flex-shrink-0 rounded-[0.7rem] w-[4.8rem]">
               <ImageRatio
@@ -130,7 +130,7 @@ onMounted(() => {
               </div>
             </div>
           </div>
-        </NuxtLink>
+        </BaseLink>
       </template>
     </BaseSlider>
   </div>

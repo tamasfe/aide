@@ -6,8 +6,9 @@ import { LoggerConsole } from "~/packages/logger/LoggerConsole";
 import { LoggerMiddlewareSentryErrorCapturer } from "~/packages/logger/LoggerMiddlewareSentryErrorCapturer";
 import type { TranslateFunctionType, NumberFormatterFunctionType, DateTimeFormatterFunctionType, SupportedLocale } from "~/packages/translation";
 import { FindLocaleForUser } from "~/packages/translation/application/FindLocaleForUser";
+import { SearchUserSelectedLocale } from "~/packages/translation/application/SearchUserSelectedLocale";
 import { LocaleSelectionRepositoryLocalStorage } from "~/packages/translation/infra/locale-selection-repository-local-storage";
-import { FindLocaleForUserOnInit } from "~/packages/translation/infra/ui/FindLocaleForUserOnInit";
+import { SearchUserSelectedLocaleOnClientReady } from "~/packages/translation/infra/ui/SearchUserSelectedLocaleOnClientReady";
 import { UserSelectsLocale } from "~/packages/translation/infra/ui/UserSelectsLocale";
 
 export interface CommonDependenciesI {
@@ -22,7 +23,7 @@ export interface CommonDependenciesI {
     };
     ui: {
       userSelectsLocale: UserSelectsLocale;
-      findLocaleForUserOnInit: FindLocaleForUserOnInit;
+      searchUserSelectedLocaleOnClientReady: SearchUserSelectedLocaleOnClientReady;
     };
   };
 }
@@ -34,7 +35,7 @@ export async function loadDependencies(
     d: DateTimeFormatterFunctionType;
     n: NumberFormatterFunctionType;
     getBrowserLocale: () => string | undefined;
-    setLocale: (locale: SupportedLocale) => void;
+    setLocale: (locale: SupportedLocale) => Promise<void>;
   },
 ): Promise<CommonDependenciesI> {
   const isServer = import.meta.server;
@@ -62,6 +63,7 @@ export async function loadDependencies(
 
   const localeSelectionRepository = new LocaleSelectionRepositoryLocalStorage();
   const findLocaleForUser = new FindLocaleForUser(localeSelectionRepository, i18n.getBrowserLocale);
+  const findUserSelectedLocale = new SearchUserSelectedLocale(localeSelectionRepository);
 
   return {
     asyncMessagePublisher: new EmitteryAsyncMessagePublisher(logger),
@@ -79,7 +81,7 @@ export async function loadDependencies(
           i18n.setLocale,
           logger,
         ),
-        findLocaleForUserOnInit: new FindLocaleForUserOnInit(findLocaleForUser, logger),
+        searchUserSelectedLocaleOnClientReady: new SearchUserSelectedLocaleOnClientReady(findUserSelectedLocale, logger),
       },
     },
   };

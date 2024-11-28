@@ -54,7 +54,7 @@ const emit = defineEmits<{
 const props = withDefaults(
   defineProps<{
     options: T[];
-    initialSelectedOption?: T;
+    // initialSelectedOption?: T;
     variant?: SelectVariants["variant"];
     size?: SelectVariants["size"];
     optionsOffset?: OptionsOffset;
@@ -70,7 +70,7 @@ const props = withDefaults(
   },
 );
 
-const selectedOption = ref<T | undefined>(props.initialSelectedOption);
+const selectedOption = defineModel<T | undefined>();
 
 const optionsOffset = computed(() => {
   if (!props.optionsOffset) return {};

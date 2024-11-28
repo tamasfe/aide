@@ -2,6 +2,7 @@ const DEFAULT_ROUTE = "/";
 
 export const useNavigateBackOrHome = (): { navigateBackOrHome: () => Promise<void> } => {
   const router = useRouter();
+  const localePath = useLocalePath();
 
   return {
     navigateBackOrHome: async () => {
@@ -9,12 +10,12 @@ export const useNavigateBackOrHome = (): { navigateBackOrHome: () => Promise<voi
       const previousRoute = backUrl?.toString();
 
       if (!previousRoute) {
-        await navigateTo(DEFAULT_ROUTE);
+        await navigateTo(localePath(DEFAULT_ROUTE));
         return;
       }
 
       if (!previousRoute.startsWith("/")) {
-        await navigateTo(DEFAULT_ROUTE);
+        await navigateTo(localePath(DEFAULT_ROUTE));
         return;
       }
 

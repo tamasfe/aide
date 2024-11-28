@@ -7,7 +7,7 @@ import type { LoggerI } from "~/packages/logger/Logger";
 export class UserSelectsLocale {
   constructor(
     private readonly localeSelectionRepository: LocaleSelectionRepositoryI,
-    private readonly setLocale: (locale: SupportedLocale) => void,
+    private readonly setLocale: (locale: SupportedLocale) => Promise<void>,
     private readonly logger: LoggerI,
   ) {}
 
@@ -26,7 +26,7 @@ export class UserSelectsLocale {
       return;
     }
 
-    this.setLocale(locale);
+    await this.setLocale(locale);
 
     return;
   }

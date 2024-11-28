@@ -11,7 +11,7 @@ export class FindLocaleForUser {
   ) {}
 
   public FALLBACK_LANGUAGE: SupportedLanguage = {
-    value: "en-US",
+    value: "en-us",
     countryCode: "US",
   };
 

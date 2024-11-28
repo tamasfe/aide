@@ -64,13 +64,13 @@ const loading = computed<boolean>(() => {
 
     <div class="my-2 text-sm text-center text-subtle">
       {{ $t("modal_session.accept_terms") }}
-      <NuxtLink
+      <BaseLink
         :to="{ name: 'terms' }"
         target="_blank"
         class="font-semibold hover:text-subtle-light"
       >
         {{ $t("page.terms") }}
-      </NuxtLink>
+      </BaseLink>
     </div>
 
     <BaseButton

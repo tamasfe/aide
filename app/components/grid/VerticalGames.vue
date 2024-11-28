@@ -79,7 +79,7 @@ await useAsyncData(`load-games-for-${props.categoryIdentifier}`, () => onLoadDat
       @trigger:load="onLoadData"
     >
       <template #default="{ data: item }">
-        <NuxtLink
+        <BaseLink
           :to="{
             name: 'games-id',
             params: {
@@ -89,7 +89,7 @@ await useAsyncData(`load-games-for-${props.categoryIdentifier}`, () => onLoadDat
           class="block bg-subtle rounded-default w-full h-full overflow-hidden"
         >
           <GamesImageLoader :src="item.imageUrl" />
-        </NuxtLink>
+        </BaseLink>
       </template>
     </GridVertical>
   </GridHeader>
