@@ -1,4 +1,4 @@
-<script setup lang="ts" generic="T extends {id: number, image_url: string}[]">
+<script setup lang="ts" generic="T extends {id: number, imageUrl: string}[]">
 // STATUS:
 // - Missing translations
 import type { CSSProperties } from "vue";
@@ -32,7 +32,7 @@ const totalCount = computed(() => {
 });
 
 const SKELETON_ITEMS_TO_SHOW = 24;
-const dataLoadingSkeleton: { id: number; image_url: string }[] = Array.from({ length: SKELETON_ITEMS_TO_SHOW }).map((_elem, index) => ({ id: index, image_url: "" }));
+const dataLoadingSkeleton: { id: number; imageUrl: string }[] = Array.from({ length: SKELETON_ITEMS_TO_SHOW }).map((_elem, index) => ({ id: index, imageUrl: "" }));
 
 const dataToRender = computed(() => {
   if (props.loading === undefined) {

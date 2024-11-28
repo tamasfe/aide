@@ -9,7 +9,7 @@ const DEFER_CLIENT_SIDE_LOADING = true;
 const loading = useState(`grid-vertical-providers-loading`, () => true);
 const totalProviders = useState(`grid-vertical-providers-total`, () => 0);
 const nextProvidersPageToSearch = useState(`grid-vertical-providers-next-page`, () => 0);
-const providers = useState<{ id: number; image_url: string }[]>(`grid-vertical-providers-ids`, () => []);
+const providers = useState<{ id: number; imageUrl: string }[]>(`grid-vertical-providers-ids`, () => []);
 const canLoadMore = useState(`grid-vertical-providers-can-load-more`, () => true);
 
 const onLoadData = async () => {
@@ -76,7 +76,7 @@ await useAsyncData(`load-vertical-providers`, () => onLoadData().then(() => true
           }"
           class="flex-1 rounded-[0.7rem] overflow-hidden"
         >
-          <ProviderImageLoader :src="item.image_url" :provider-id="item.id" />
+          <ProviderImageLoader :src="item.imageUrl" :provider-id="item.id" />
         </NuxtLink>
       </template>
     </GridVertical>

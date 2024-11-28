@@ -7,7 +7,6 @@ import type { GameActionsRepositoryI } from "../domain/GameActionsRepository";
 import type { GameRatingsRepositoryI } from "../domain/GameRatingsRepository";
 import { GamesApiRepositoryDumb } from "./GamesApiRepositoryDumb";
 import { GamesApiRepositoryGirobet } from "./GamesApiRepositoryGirobet";
-import { FindGameImageSrcByGameId } from "./ui/FindGameImageSrcByGameId";
 import { SearchGameCategoriesByGroup } from "./ui/SearchGameCategoriesByGroup";
 import { GameCategoriesRepositoryDumb } from "./GameCategoriesRepositoryDumb";
 import { GameCategoriesRepositoryGirobet } from "./GameCategoriesRepositoryGirobet";
@@ -28,7 +27,7 @@ export interface GamesDependencyInjectionI {
   ui: {
     buildGameSessionIFrameUrl: BuildGameSessionIFrameUrl;
     findGameCompatibilityByIdOnGamePage: FindGameCompatibilityByIdOnGamePage;
-    findGameImageSrcByGameId: FindGameImageSrcByGameId;
+
     searchGameRatingFromGameFrameVotes: SearchGameRatingFromGameFrameVotes;
     searchGamesPaginatingOnGrid: SearchGamesPaginatingOnGrid;
     searchGamesByQueryPaginatingOnSearchBar: SearchGamesByQueryPaginatingOnSearchBar;
@@ -80,7 +79,6 @@ export const createGamesDependencyInjection = async (publicConfig: PublicRuntime
     ui: {
       buildGameSessionIFrameUrl: new BuildGameSessionIFrameUrl(publicConfig.games.apiBaseUrlClient || ""),
       findGameCompatibilityByIdOnGamePage: new FindGameCompatibilityByIdOnGamePage(new FindGameCompatibilityById(gamesApiRepository), commonDependencies.logger),
-      findGameImageSrcByGameId: new FindGameImageSrcByGameId(publicConfig.games.apiBaseUrlClient || ""),
       searchGamesPaginatingOnGrid: new SearchGamesPaginatingOnGrid(searchGamesPaginatingQuery, commonDependencies.logger),
       searchGamesByQueryPaginatingOnSearchBar: new SearchGamesByQueryPaginatingOnSearchBar(searchGamesPaginatingQuery, commonDependencies.logger),
       searchGameCategoriesByGroup: new SearchGameCategoriesByGroup(

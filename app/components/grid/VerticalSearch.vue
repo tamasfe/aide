@@ -3,7 +3,7 @@ const { t } = useI18n();
 
 defineProps<{
   itemType: "game" | "provider";
-  items: { id: number; image_url: string }[];
+  items: { id: number; imageUrl: string }[];
   totalResults: number;
   onLoadMore: () => Promise<void>;
   loading?: boolean;

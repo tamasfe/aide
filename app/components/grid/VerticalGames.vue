@@ -14,7 +14,7 @@ const DEFER_CLIENT_SIDE_LOADING = true;
 const loading = useState(`grid-vertical-games-loading-for-${props.categoryIdentifier}-${props.providerId}`, () => true);
 const totalGamesOfCategory = useState(`grid-vertical-games-total-for-${props.categoryIdentifier}-${props.providerId}`, () => 0);
 const nextGamesPageToSearch = useState(`grid-vertical-games-next-page-for-${props.categoryIdentifier}-${props.providerId}`, () => 0);
-const gameIds = useState<{ id: number; image_url: string }[]>(`grid-vertical-games-ids-for-${props.categoryIdentifier}-${props.providerId}`, () => []);
+const gameIds = useState<{ id: number; imageUrl: string }[]>(`grid-vertical-games-ids-for-${props.categoryIdentifier}-${props.providerId}`, () => []);
 const canLoadMore = useState(`grid-vertical-games-can-load-more-for-${props.categoryIdentifier}-${props.providerId}`, () => true);
 
 const onLoadData = async () => {
@@ -88,7 +88,7 @@ await useAsyncData(`load-games-for-${props.categoryIdentifier}`, () => onLoadDat
           }"
           class="block bg-subtle rounded-default w-full h-full overflow-hidden"
         >
-          <GamesImageLoader :src="item.image_url" />
+          <GamesImageLoader :src="item.imageUrl" />
         </NuxtLink>
       </template>
     </GridVertical>

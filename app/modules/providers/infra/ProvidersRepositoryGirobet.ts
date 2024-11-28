@@ -28,7 +28,7 @@ export class ProvidersRepositoryGirobet implements ProvidersRepositoryI {
         return success({
           providers: data.data.map(provider => ({
             id: provider.id,
-            image_url: provider.image_url,
+            imageUrl: provider.image_url,
             name: provider.name,
             slug: provider.slug,
             description: null,
@@ -77,7 +77,7 @@ export class ProvidersRepositoryGirobet implements ProvidersRepositoryI {
       if (data) {
         return success({
           id: data.id,
-          image_url: data.image_url,
+          imageUrl: data.image_url,
           name: data.name,
           slug: data.slug,
           description: data.description || null,

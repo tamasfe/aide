@@ -19,7 +19,7 @@ const initialLoad = useState(() => true);
  * Game search
  */
 const gamesCurrentPage = useState(() => 0);
-const games = useState<{ id: number; image_url: string }[]>(() => []);
+const games = useState<{ id: number; imageUrl: string }[]>(() => []);
 const gamesTotalItems = useState(() => 0);
 const gamesLoading = useState(() => false);
 const gamesOnLoadMore = async (actionOnItemsArray: "append" | "replace") => {
@@ -42,7 +42,7 @@ const gamesOnLoadMore = async (actionOnItemsArray: "append" | "replace") => {
  * Provider search
  */
 const providersCurrentPage = useState(() => 0);
-const providers = useState<{ id: number; image_url: string }[]>(() => []);
+const providers = useState<{ id: number; imageUrl: string }[]>(() => []);
 const providersTotalItems = useState(() => 0);
 const providersLoading = useState(() => false);
 const providersOnLoadMore = async (actionOnItemsArray: "append" | "replace") => {
@@ -112,7 +112,7 @@ const onClickLink = () => {
           class="block bg-subtle rounded-default w-full h-full overflow-hidden"
           @click="onClickLink"
         >
-          <GamesImageLoader :src="item.image_url" />
+          <GamesImageLoader :src="item.imageUrl" />
         </NuxtLink>
       </template>
     </GridVerticalSearch>
@@ -131,7 +131,7 @@ const onClickLink = () => {
           class="block bg-subtle rounded-default w-full h-full overflow-hidden"
           @click="onClickLink"
         >
-          <ProviderImageLoader :src="item.image_url" :provider-id="item.id" />
+          <ProviderImageLoader :src="item.imageUrl" :provider-id="item.id" />
         </NuxtLink>
       </template>
     </GridVerticalSearch>

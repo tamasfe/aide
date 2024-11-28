@@ -1,5 +1,6 @@
 import type { SearchGamesPaginating } from "../../application/SearchGamesPaginating";
 import { ErrorSearchIndexNotFound } from "../../domain/ErrorSearchIndexNotFound";
+import type { SearchGameResultI } from "./SearchGameResult";
 import type { LoggerI } from "~/packages/logger/Logger";
 
 export class SearchGamesPaginatingOnGrid {
@@ -13,7 +14,7 @@ export class SearchGamesPaginatingOnGrid {
   public static PAGINATION_SIZE = 25;
 
   public async handle(categoryIdentifier: string | null, providerId: number | null, pageToSearch: number): Promise<{
-    games: { id: number; image_url: string }[];
+    games: SearchGameResultI[];
     canLoadMore: boolean;
     totalGames: number;
   }> {
@@ -41,7 +42,7 @@ export class SearchGamesPaginatingOnGrid {
     const canLoadMore = result.value.games.length === SearchGamesPaginatingOnGrid.PAGINATION_SIZE;
 
     return {
-      games: result.value.games.map(game => ({ id: game.id, image_url: game.image_url })),
+      games: result.value.games.map(game => ({ id: game.id, imageUrl: game.imageUrl })),
       canLoadMore,
       totalGames: result.value.pagination.totalItems,
     };

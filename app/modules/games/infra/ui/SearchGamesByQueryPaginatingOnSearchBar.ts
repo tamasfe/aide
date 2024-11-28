@@ -1,4 +1,5 @@
 import type { SearchGamesPaginating } from "../../application/SearchGamesPaginating";
+import type { SearchGameResultI } from "./SearchGameResult";
 import type { LoggerI } from "~/packages/logger/Logger";
 
 export class SearchGamesByQueryPaginatingOnSearchBar {
@@ -12,7 +13,7 @@ export class SearchGamesByQueryPaginatingOnSearchBar {
   public static PAGINATION_SIZE = 25;
 
   public async handle(query: string, pageToSearch: number): Promise<{
-    games: { id: number; image_url: string }[];
+    games: SearchGameResultI[];
     canLoadMore: boolean;
     totalGames: number;
   }> {
@@ -31,7 +32,7 @@ export class SearchGamesByQueryPaginatingOnSearchBar {
     const canLoadMore = result.value.games.length === SearchGamesByQueryPaginatingOnSearchBar.PAGINATION_SIZE;
 
     return {
-      games: result.value.games.map(game => ({ id: game.id, image_url: game.image_url })),
+      games: result.value.games.map(game => ({ id: game.id, imageUrl: game.imageUrl })),
       canLoadMore,
       totalGames: result.value.pagination.totalItems,
     };
