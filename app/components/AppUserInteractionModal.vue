@@ -98,7 +98,7 @@ $dependencies.common.asyncMessagePublisher.subscribe(
   "girobet:commands:modals:open-restrict-expanding",
   (eventData) => {
     modal.value = "restrict_expanding";
-    blockedCountry.value = t("jurisdiction." + eventData.jurisdiction, eventData.jurisdiction);
+    blockedCountry.value = t(`jurisdiction.${eventData.jurisdiction}`, eventData.jurisdiction);
     currentHost.value = hostname;
   },
 );
@@ -106,16 +106,16 @@ $dependencies.common.asyncMessagePublisher.subscribe(
   "girobet:commands:modals:open-restrict-alternative",
   (eventData) => {
     modal.value = "restrict_license_alternative";
-    blockedCountry.value = t("jurisdiction." + eventData.jurisdiction, eventData.jurisdiction);
+    blockedCountry.value = t(`jurisdiction.${eventData.jurisdiction}`, eventData.jurisdiction);
     allowedDomain.value = eventData.allowedDomain;
     currentHost.value = hostname;
   },
 );
 $dependencies.common.asyncMessagePublisher.subscribe(
-  "girobet:commands:modals:open-restrict-network-issues",
+  "girobet:commands:modals:open-restrict-no-alternative",
   (eventData) => {
     modal.value = "restrict_license_no_alternative";
-    blockedCountry.value = t("jurisdiction." + eventData.jurisdiction, eventData.jurisdiction);
+    blockedCountry.value = t(`jurisdiction.${eventData.jurisdiction}`, eventData.jurisdiction);
     currentHost.value = hostname;
   },
 );

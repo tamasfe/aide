@@ -2,9 +2,10 @@ import { success, type CustomError, type EmptyResult } from "~/packages/result";
 import type { AsyncMessagePublisherI } from "~/packages/async-messages/async-message-publisher";
 
 type JurisdictionNotSupportedPayload =
-  | { reason: "alternative_site"; jurisdiction: string; alternativeSite: string }
-  | { reason: "network_configuration"; jurisdiction: string }
-  | { reason: "not_supported"; jurisdiction: string };
+  | { reason: "not_supported_no_alternative_site"; jurisdiction: string }
+  | { reason: "not_supported_alternative_site"; jurisdiction: string; alternativeSite: string }
+  | { reason: "user_account_mismatch"; jurisdiction: string }
+  | { reason: "supported_but_not_enabled"; jurisdiction: string };
 
 export class EmitOpenJurisdictionModalOnJurisdictionNotSupported {
   constructor(
@@ -12,21 +13,27 @@ export class EmitOpenJurisdictionModalOnJurisdictionNotSupported {
 
   public async handle(payload: JurisdictionNotSupportedPayload): Promise<EmptyResult<CustomError>> {
     switch (payload.reason) {
-      case "not_supported":
-        await this.asyncMessagePublisher.emit("girobet:commands:modals:open-restrict-expanding", {
+      case "not_supported_no_alternative_site":
+        await this.asyncMessagePublisher.emit("girobet:commands:modals:open-restrict-no-alternative", {
           jurisdiction: payload.jurisdiction,
         });
         return success();
 
-      case "alternative_site":
+      case "not_supported_alternative_site":
         await this.asyncMessagePublisher.emit("girobet:commands:modals:open-restrict-alternative", {
           jurisdiction: payload.jurisdiction,
           allowedDomain: payload.alternativeSite,
         });
         return success();
 
-      case "network_configuration":
-        await this.asyncMessagePublisher.emit("girobet:commands:modals:open-restrict-network-issues", {
+      case "user_account_mismatch":
+        await this.asyncMessagePublisher.emit("girobet:commands:modals:open-restrict-no-alternative", {
+          jurisdiction: payload.jurisdiction,
+        });
+        return success();
+
+      case "supported_but_not_enabled":
+        await this.asyncMessagePublisher.emit("girobet:commands:modals:open-restrict-expanding", {
           jurisdiction: payload.jurisdiction,
         });
         return success();

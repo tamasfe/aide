@@ -2589,7 +2589,7 @@ export interface components {
             code: "USER_BLOCKED";
         } | {
             /** @enum {string} */
-            code: "JURISDICTION_NOT_SUPPORTED";
+            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
             metadata: {
                 /** @description The violating jurisdiction. */
                 jurisdiction: components["schemas"]["SystemCountry"];
@@ -2605,9 +2605,16 @@ export interface components {
             };
         } | {
             /** @enum {string} */
-            code: "JURISDICTION_NOT_SUPPORTED_NETWORK_CONFIGURATION";
+            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
             metadata: {
                 /** @description The violating jurisdiction. */
+                jurisdiction: components["schemas"]["SystemCountry"];
+            };
+        } | {
+            /** @enum {string} */
+            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+            metadata: {
+                /** @description The jurisdiction that is supported but not enabled. */
                 jurisdiction: components["schemas"]["SystemCountry"];
             };
         } | {

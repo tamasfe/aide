@@ -20,20 +20,24 @@ const createMiddlewareJurisdictionErrorHandler: (asyncMessagePublisher: AsyncMes
       const jsonResponse: unknown = await response.clone().json();
       if (HttpBackendApiError.isBackendServerError(jsonResponse)) {
         switch (jsonResponse.code) {
-          case "JURISDICTION_NOT_SUPPORTED":
-            await emitOpenJurisdictionModalOnJurisdictionNotSupported.handle({ reason: "not_supported", jurisdiction: jsonResponse.metadata.jurisdiction });
+          case "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE":
+            await emitOpenJurisdictionModalOnJurisdictionNotSupported.handle({ reason: "not_supported_no_alternative_site", jurisdiction: jsonResponse.metadata.jurisdiction });
             return;
 
           case "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE":
             await emitOpenJurisdictionModalOnJurisdictionNotSupported.handle({
-              reason: "alternative_site",
+              reason: "not_supported_alternative_site",
               jurisdiction: jsonResponse.metadata.jurisdiction,
               alternativeSite: jsonResponse.metadata.alternative_site.base_url,
             });
             return;
 
-          case "JURISDICTION_NOT_SUPPORTED_NETWORK_CONFIGURATION":
-            await emitOpenJurisdictionModalOnJurisdictionNotSupported.handle({ reason: "network_configuration", jurisdiction: jsonResponse.metadata.jurisdiction });
+          case "USER_ACCOUNT_JURISDICTION_MISMATCH":
+            await emitOpenJurisdictionModalOnJurisdictionNotSupported.handle({ reason: "user_account_mismatch", jurisdiction: jsonResponse.metadata.jurisdiction });
+            return;
+
+          case "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED":
+            await emitOpenJurisdictionModalOnJurisdictionNotSupported.handle({ reason: "supported_but_not_enabled", jurisdiction: jsonResponse.metadata.jurisdiction });
             return;
 
           default:
