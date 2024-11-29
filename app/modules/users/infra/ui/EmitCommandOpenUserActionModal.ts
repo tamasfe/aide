@@ -4,9 +4,9 @@ import { success, type EmptySuccessResult } from "~/packages/result";
 export class EmitCommandOpenUserActionModalModal {
   constructor(private readonly asyncMessagePublisher: AsyncMessagePublisherI) {}
 
-  public async handle(modalToOpen: "login" | "register" | "search" | "forgot_password" | "deposit"): Promise<EmptySuccessResult>;
+  public async handle(modalToOpen: "login" | "register" | "search" | "forgot_password" | "deposit" | "withdrawal"): Promise<EmptySuccessResult>;
   public async handle(modalToOpen: "recover_password", token: string): Promise<EmptySuccessResult>;
-  public async handle(modalToOpen: "login" | "register" | "search" | "forgot_password" | "deposit" | "recover_password", token?: string): Promise<EmptySuccessResult> {
+  public async handle(modalToOpen: "login" | "register" | "search" | "forgot_password" | "deposit" | "withdrawal" | "recover_password", token?: string): Promise<EmptySuccessResult> {
     switch (modalToOpen) {
       case "login":
         await this.asyncMessagePublisher.emit("girobet:commands:modals:open-login", {});
@@ -26,6 +26,10 @@ export class EmitCommandOpenUserActionModalModal {
 
       case "deposit":
         await this.asyncMessagePublisher.emit("girobet:commands:modals:open-deposit", {});
+        return success();
+
+      case "withdrawal":
+        await this.asyncMessagePublisher.emit("girobet:commands:modals:open-withdrawal", {});
         return success();
 
       case "recover_password":

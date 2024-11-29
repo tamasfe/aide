@@ -17,6 +17,7 @@ export interface AsyncMessagesTypes {
   "girobet:commands:modals:open-recover-password": { token: string };
   "girobet:commands:modals:open-forgot-password": object;
   "girobet:commands:modals:open-deposit": object;
+  "girobet:commands:modals:open-withdrawal": object;
   "girobet:commands:modals:close-user-interaction-modal": object;
 
   "girobet:events:users:user-logged-in": object;

@@ -8,9 +8,19 @@ defineProps({
     type: Number,
     required: true,
   },
+  walletId: {
+    type: Number,
+    required: true,
+  },
+  onClickDeposit: {
+    type: Function as PropType<() => Promise<void>>,
+    required: true,
+  },
+  onClickWithdraw: {
+    type: Function as PropType<() => Promise<void>>,
+    required: true,
+  },
 });
-
-const { $dependencies } = useNuxtApp();
 </script>
 
 <template>
@@ -24,7 +34,8 @@ const { $dependencies } = useNuxtApp();
           />
           <div class="text-subtle">{{ currency }}</div>
         </div>
-        <div class="text-subtle text-sm">#89242982</div>
+
+        <div class="text-subtle text-sm">#{{ walletId }}</div>
       </div>
       <div class="flex items-center justify-center text-3xl font-medium">
         <BaseCurrency
@@ -37,6 +48,7 @@ const { $dependencies } = useNuxtApp();
           variant="secondary"
           size="md"
           class="w-full"
+          @click="onClickWithdraw"
         >
           {{ $t('button.withdraw') }}
         </BaseButton>
@@ -45,7 +57,7 @@ const { $dependencies } = useNuxtApp();
           variant="emphasis"
           size="md"
           class="w-full"
-          @click="$dependencies.users.ui.emitCommandOpenUserActionModal.handle('deposit')"
+          @click="onClickDeposit"
         >
           {{ $t('button.deposit') }}
         </BaseButton>

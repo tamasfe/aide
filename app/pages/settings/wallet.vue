@@ -38,6 +38,9 @@ const { data } = await useAsyncData("wallet-page-payments-data", async () => {
         v-if="walletStore.isInit"
         :balance="walletStore.wallet.balance"
         :currency="walletStore.wallet.currency"
+        :wallet-id="walletStore.wallet.id"
+        :on-click-deposit="() => $dependencies.users.ui.emitCommandOpenUserActionModal.handle('deposit').then(() => {})"
+        :on-click-withdraw="() => $dependencies.users.ui.emitCommandOpenUserActionModal.handle('withdrawal').then(() => {})"
       />
 
       <div class="mt-8">
