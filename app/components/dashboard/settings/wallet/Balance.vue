@@ -9,6 +9,8 @@ defineProps({
     required: true,
   },
 });
+
+const { $dependencies } = useNuxtApp();
 </script>
 
 <template>
@@ -43,6 +45,7 @@ defineProps({
           variant="emphasis"
           size="md"
           class="w-full"
+          @click="$dependencies.users.ui.emitCommandOpenUserActionModal.handle('deposit')"
         >
           {{ $t('button.deposit') }}
         </BaseButton>
