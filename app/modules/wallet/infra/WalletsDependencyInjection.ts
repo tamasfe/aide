@@ -3,11 +3,13 @@ import { FindAuthenticatedUserWallet } from "../application/FindAuthenticatedUse
 import type { WalletRepositoryI } from "../domain/WalletRepository";
 import type { PaymentRepositoryI } from "../domain/PaymentRepository";
 import { SearchPaymentsPaginating } from "../application/SearchPaymentsPaginating";
+import { CreateDepositFlow } from "../application/CreateDepositFlow";
 import { WalletsRepositoryGirobet } from "./WalletsRepositoryGirobet";
 import { WalletsRepositoryDumb } from "./WalletsRepositoryDumb";
 import { PaymentRepositoryGirobet } from "./PaymentRepositoryGirobet";
 import { PaymentRepositoryDumb } from "./PaymentRepositoryDumb";
 import { SearchPaymentsOnTable } from "./ui/SearchPaymentsOnTable";
+import { CreatePixDepositFlowOnForm } from "./ui/CreatePixDepositFlowOnForm";
 import type { CommonDependenciesI } from "~/dependency-injection/load-di";
 
 export interface WalletsDependencyInjectionI {
@@ -15,6 +17,7 @@ export interface WalletsDependencyInjectionI {
     findAuthenticatedUserWallet: FindAuthenticatedUserWallet;
   };
   ui: {
+    createPixDepositFlowOnForm: CreatePixDepositFlowOnForm;
     searchPaymentsOnTable: SearchPaymentsOnTable;
   };
 }
@@ -43,6 +46,11 @@ export const createWalletsDependencyInjection = (publicConfig: PublicRuntimeConf
       findAuthenticatedUserWallet: new FindAuthenticatedUserWallet(walletsRepository),
     },
     ui: {
+      createPixDepositFlowOnForm: new CreatePixDepositFlowOnForm(
+        new CreateDepositFlow(paymentsRepository, commonDependencies.asyncMessagePublisher),
+        commonDependencies.logger,
+        commonDependencies.translateFunction,
+      ),
       searchPaymentsOnTable: new SearchPaymentsOnTable(
         new SearchPaymentsPaginating(paymentsRepository),
         commonDependencies.logger,

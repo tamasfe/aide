@@ -31,6 +31,10 @@ export default defineNuxtPlugin({
       "girobet:events:signup-flows:signup-flow-submitted",
       () => userStore.refreshUser(),
     );
+    $dependencies.common.asyncMessagePublisher.subscribe(
+      "girobet:events:payments:deposit-flow-created",
+      () => $dependencies.users.ui.emitCommandOpenUserActionModal.handle("deposit_confirm"),
+    );
 
     /**
      *

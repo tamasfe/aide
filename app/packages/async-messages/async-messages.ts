@@ -17,6 +17,7 @@ export interface AsyncMessagesTypes {
   "girobet:commands:modals:open-recover-password": { token: string };
   "girobet:commands:modals:open-forgot-password": object;
   "girobet:commands:modals:open-deposit": object;
+  "girobet:commands:modals:open-deposit-confirm": object;
   "girobet:commands:modals:open-withdrawal": object;
   "girobet:commands:modals:close-user-interaction-modal": object;
 
@@ -38,5 +39,11 @@ export interface AsyncMessagesTypes {
   };
   "girobet:events:games:game-session-finished": {
     gameId: number;
+  };
+
+  "girobet:events:payments:deposit-flow-created": {
+    paymentMethod: "pix";
+    flowId: string;
+    code: string;
   };
 }

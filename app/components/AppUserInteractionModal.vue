@@ -75,6 +75,16 @@ $dependencies.common.asyncMessagePublisher.subscribe(
   },
 );
 $dependencies.common.asyncMessagePublisher.subscribe(
+  "girobet:commands:modals:open-deposit-confirm",
+  () => {
+    // If any of the invalid jurisdiction modals are open: keep them open
+    if (modalIsJurisdictionModal(modal.value)) {
+      return;
+    }
+    modal.value = "deposit_confirm";
+  },
+);
+$dependencies.common.asyncMessagePublisher.subscribe(
   "girobet:commands:modals:open-withdrawal",
   () => {
     // If any of the invalid jurisdiction modals are open: keep them open

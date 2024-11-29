@@ -51,8 +51,13 @@ const props = withDefaults(defineProps<{
   inputmode: "text",
 });
 
-const value = defineModel({
-  type: String,
+const [value, modifiers] = defineModel<string | number>({
+  set(value) {
+    if (modifiers.number) {
+      return Number(value);
+    }
+    return value;
+  },
 });
 </script>
 

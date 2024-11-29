@@ -90,8 +90,13 @@ onBeforeUnmount(() => {
   destroyFloatingLabel();
 });
 
-const value = defineModel({
-  type: String,
+const [value, modifiers] = defineModel<number | string>({
+  set(value) {
+    if (modifiers.number) {
+      return Number(value);
+    }
+    return value;
+  },
 });
 </script>
 

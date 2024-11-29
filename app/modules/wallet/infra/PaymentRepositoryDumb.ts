@@ -1,5 +1,6 @@
 import { type PaymentType, Payment } from "../domain/Payment";
 import type { PaymentRepositoryI } from "../domain/PaymentRepository";
+import type { WalletCurrency } from "../domain/WalletCurrency";
 import { success, type Result } from "~/packages/result";
 import type { InfrastructureError } from "~/packages/result/infrastructure-error";
 
@@ -22,6 +23,15 @@ export class PaymentRepositoryDumb implements PaymentRepositoryI {
         limit,
         offset,
         totalItems: 0,
+      },
+    });
+  }
+
+  public async createDepositFlow(_amount: number, _currency: WalletCurrency, _paymentMethodId: number): Promise<Result<{ pix: { flowId: string; url: string } }, InfrastructureError>> {
+    return success({
+      pix: {
+        flowId: "some_flow_ud",
+        url: "url_returned",
       },
     });
   }

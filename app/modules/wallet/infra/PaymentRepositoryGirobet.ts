@@ -1,6 +1,7 @@
 import { type PaymentType, Payment } from "../domain/Payment";
 import type { PaymentRepositoryI } from "../domain/PaymentRepository";
 import type { WalletCurrency } from "../domain/WalletCurrency";
+import { ErrorPendingPaymentFlow } from "../domain/ErrorPendingPaymentFlow";
 import type { AsyncMessagePublisherI } from "~/packages/async-messages/async-message-publisher";
 import { createBackendOpenApiClient } from "~/packages/http-client/create-backend-open-api-client";
 import { HttpBackendApiError } from "~/packages/http-client/http-client-error";
@@ -63,6 +64,51 @@ export class PaymentRepositoryGirobet implements PaymentRepositoryI {
       return fail(
         InfrastructureError.newFromUnknownError({
           searchParams, limit, offset,
+        }, error),
+      );
+    }
+  }
+
+  public async createDepositFlow(amount: number, currency: WalletCurrency, paymentMethodId: number): Promise<Result<{ pix: { flowId: string; url: string } }, ErrorPendingPaymentFlow | InfrastructureError>> {
+    try {
+      const { data, error, response } = await this.apiClient.POST("/payment/deposit", {
+        body: {
+          amount,
+          currency,
+          payment_method_id: paymentMethodId,
+        },
+      });
+
+      if (data) {
+        return success({
+          pix: {
+            flowId: data.pix.flow_id,
+            url: data.pix.url,
+          },
+        });
+      }
+
+      if (error) {
+        if (error.code === "WALLET_PENDING_FLOW") {
+          return fail(new ErrorPendingPaymentFlow("deposit"));
+        }
+        return fail(
+          InfrastructureError.newFromError({
+            amount, currency, paymentMethodId,
+          }, HttpBackendApiError.newFromBackendError(error, response)),
+        );
+      }
+
+      return fail(
+        InfrastructureError.newFromUnknownError({
+          amount, currency, paymentMethodId,
+        }, new Error("Unexpected scenario: library did not return data nor error. This should never happen")),
+      );
+    }
+    catch (error: unknown) {
+      return fail(
+        InfrastructureError.newFromUnknownError({
+          amount, currency, paymentMethodId,
         }, error),
       );
     }
