@@ -1,26 +1,35 @@
-import type { ErrorJurisdictionIsNotSupported } from "../../domain/ErrorJurisdictionIsNotSupported";
+import { success, type CustomError, type EmptyResult } from "~/packages/result";
 import type { AsyncMessagePublisherI } from "~/packages/async-messages/async-message-publisher";
 
-export class EmitOpenJurisdictionModalOnJurisdictionNotSupported {
-  constructor(private asyncMessagePublisher: AsyncMessagePublisherI) {}
+type JurisdictionNotSupportedPayload =
+  | { reason: "alternative_site"; jurisdiction: string; alternativeSite: string }
+  | { reason: "network_configuration"; jurisdiction: string }
+  | { reason: "not_supported"; jurisdiction: string };
 
-  public async handle(error: ErrorJurisdictionIsNotSupported): Promise<void> {
-    if (error.recommendedAlternativeSite) {
-      await this.asyncMessagePublisher.emit("girobet:commands:modals:open-restrict-alternative", {
-        jurisdiction: error.jurisdiction,
-        allowedDomain: error.recommendedAlternativeSite,
-      });
-      return;
+export class EmitOpenJurisdictionModalOnJurisdictionNotSupported {
+  constructor(
+    private asyncMessagePublisher: AsyncMessagePublisherI) {}
+
+  public async handle(payload: JurisdictionNotSupportedPayload): Promise<EmptyResult<CustomError>> {
+    switch (payload.reason) {
+      case "not_supported":
+        await this.asyncMessagePublisher.emit("girobet:commands:modals:open-restrict-expanding", {
+          jurisdiction: payload.jurisdiction,
+        });
+        return success();
+
+      case "alternative_site":
+        await this.asyncMessagePublisher.emit("girobet:commands:modals:open-restrict-alternative", {
+          jurisdiction: payload.jurisdiction,
+          allowedDomain: payload.alternativeSite,
+        });
+        return success();
+
+      case "network_configuration":
+        await this.asyncMessagePublisher.emit("girobet:commands:modals:open-restrict-network-issues", {
+          jurisdiction: payload.jurisdiction,
+        });
+        return success();
     }
-    if (error.userJurisdictionDoesNotMatchNetwork) {
-      await this.asyncMessagePublisher.emit("girobet:commands:modals:open-restrict-network-issues", {
-        jurisdiction: error.jurisdiction,
-      });
-      return;
-    }
-    await this.asyncMessagePublisher.emit("girobet:commands:modals:open-restrict-expanding", {
-      jurisdiction: error.jurisdiction,
-    });
-    return;
   }
 }

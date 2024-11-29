@@ -1,9 +1,14 @@
 import { CustomError } from "../result";
+import type { components } from "./girobet-backend-generated-http-client/openapi-typescript";
 
 export class HttpBackendApiError extends CustomError {
   public static newFromBackendError(backendError: { code: string; metadata?: Record<string, unknown> | string | undefined }, response: Response) {
     return new HttpBackendApiError(backendError.code, backendError.metadata, response);
   }
+
+  public static isBackendServerError(payload: unknown): payload is components["schemas"]["ServerError"] {
+    return typeof payload === "object" && payload !== null && "code" in payload && typeof payload["code"] === "string";
+  };
 
   public status: number;
 
