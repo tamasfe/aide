@@ -8,8 +8,7 @@ type JurisdictionNotSupportedPayload =
   | { reason: "supported_but_not_enabled"; jurisdiction: string };
 
 export class EmitOpenJurisdictionModalOnJurisdictionNotSupported {
-  constructor(
-    private asyncMessagePublisher: AsyncMessagePublisherI) {}
+  constructor(private asyncMessagePublisher: AsyncMessagePublisherI) {}
 
   public async handle(payload: JurisdictionNotSupportedPayload): Promise<EmptyResult<CustomError>> {
     switch (payload.reason) {

@@ -1,5 +1,6 @@
 import type { captureException } from "@sentry/nuxt";
 import type { CustomError } from "../result";
+import { HttpBackendApiError } from "../http-client/http-client-error";
 import type { LoggerMiddleware, LogLevel } from "./Logger";
 
 export class LoggerMiddlewareSentryErrorCapturer implements LoggerMiddleware {
@@ -8,7 +9,7 @@ export class LoggerMiddlewareSentryErrorCapturer implements LoggerMiddleware {
   public callback(_level: LogLevel, _message: string, _error: CustomError | undefined, _data: Record<string, unknown>): ((level: LogLevel, message: string, error: CustomError | undefined, data: Record<string, unknown>) => void) {
     return (level: LogLevel, message: string, error: CustomError | undefined, data: Record<string, unknown>) => {
       if (level === "error" && error) {
-        if (error.name === "ErrorJurisdictionIsNotSupported") {
+        if (error instanceof HttpBackendApiError && error.isJurisdictionNotSupportedError) {
           return;
         }
         this.sentryCaptureException(error, (scope) => {
