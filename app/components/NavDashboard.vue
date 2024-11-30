@@ -87,7 +87,7 @@ const isActive = (to: RouteLocationNamedRaw) =>
           'h-10 px-5 flex items-center justify-center rounded-default text-[0.8rem] font-medium text-emphasis',
           isActive(route.to)
             ? 'text-emphasis-light bg-[#272646]'
-            : 'text-subtle bg-[#181732]',
+            : 'text-subtle bg-[#181732] hover:bg-[#272646]',
         )
       "
     >
