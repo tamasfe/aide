@@ -7,7 +7,7 @@ import { LoggerMiddlewareSentryErrorCapturer } from "~/packages/logger/LoggerMid
 import type { TranslateFunctionType, NumberFormatterFunctionType, DateTimeFormatterFunctionType, SupportedLocale } from "~/packages/translation";
 import { FindLocaleForUser } from "~/packages/translation/application/FindLocaleForUser";
 import { SearchUserSelectedLocale } from "~/packages/translation/application/SearchUserSelectedLocale";
-import { LocaleSelectionRepositoryLocalStorage } from "~/packages/translation/infra/locale-selection-repository-local-storage";
+import { LocaleSelectionRepositoryCookie } from "~/packages/translation/infra/locale-selection-repository-cookie";
 import { SearchUserSelectedLocaleOnClientReady } from "~/packages/translation/infra/ui/SearchUserSelectedLocaleOnClientReady";
 import { UserSelectsLocale } from "~/packages/translation/infra/ui/UserSelectsLocale";
 
@@ -61,7 +61,7 @@ export async function loadDependencies(
 
   const logger = new LoggerConsole(logFormat, config.log.level as "debug" | "info" | "warn" | "error", { name: config.serviceName, release: config.release }, loggerMiddlewares);
 
-  const localeSelectionRepository = new LocaleSelectionRepositoryLocalStorage();
+  const localeSelectionRepository = new LocaleSelectionRepositoryCookie();
   const findLocaleForUser = new FindLocaleForUser(localeSelectionRepository, i18n.getBrowserLocale);
   const findUserSelectedLocale = new SearchUserSelectedLocale(localeSelectionRepository);
 
