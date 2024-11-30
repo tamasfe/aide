@@ -110,6 +110,7 @@ const onClose = (force: boolean) => {
     <Dialog
       v-model:open="open"
       as="div"
+      class="relative z-[10]"
       @close="onClose(false)"
     >
       <TransitionChild
