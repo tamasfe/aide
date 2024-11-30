@@ -71,9 +71,10 @@ const historyRoutes: Route[] = [
 const routes = props.section === "settings" ? settingsRoutes : historyRoutes;
 
 const { currentRoute } = useRouter();
+const getRouteBaseName = useRouteBaseName();
 
 const isActive = (to: RouteLocationNamedRaw) =>
-  currentRoute.value.name === to.name;
+  getRouteBaseName(currentRoute.value) === to.name;
 </script>
 
 <template>
