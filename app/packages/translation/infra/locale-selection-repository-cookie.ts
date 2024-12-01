@@ -1,26 +1,22 @@
 import type { SupportedLocale } from "..";
 import type { LocaleSelectionRepositoryI } from "../domain/locale-selection-repository";
 import { isSupportedLocale } from "../utils";
+import type { CookieRef } from "#app";
 import { type Result, type EmptyResult, fail, success } from "~/packages/result";
 import { InfrastructureError } from "~/packages/result/infrastructure-error";
 
 export class LocaleSelectionRepositoryCookie implements LocaleSelectionRepositoryI {
-  private STORAGE_ID_KEY = "i18n_user_preferred" as const;
+  private COOKIE_NAME = "i18n_user_preferred" as const;
 
   public async searchSelectedLocale(): Promise<Result<SupportedLocale | null, InfrastructureError>> {
-    if (!this.isDocumentAvailable()) {
-      return fail(
-        InfrastructureError.newFromError({}, new Error("This repo should only be run in the client side. Cookies are not available on server side rendering")),
-      );
-    }
-
     try {
-      const cookieLocale = this.getCookie(this.STORAGE_ID_KEY);
-      if (!cookieLocale || !isSupportedLocale(cookieLocale)) {
+      const cookieLocale = this.useCookie();
+
+      if (!cookieLocale.value || !isSupportedLocale(cookieLocale.value)) {
         return success(null);
       }
 
-      return success(cookieLocale);
+      return success(cookieLocale.value);
     }
     catch (error) {
       return fail(
@@ -30,14 +26,9 @@ export class LocaleSelectionRepositoryCookie implements LocaleSelectionRepositor
   }
 
   public async saveSelectedLocale(locale: SupportedLocale): Promise<EmptyResult<InfrastructureError>> {
-    if (!this.isDocumentAvailable()) {
-      return fail(
-        InfrastructureError.newFromError({}, new Error("This repo should only be run in the client side. Cookies are not available on server side rendering")),
-      );
-    }
-
     try {
-      this.setCookie(this.STORAGE_ID_KEY, locale);
+      const cookieLocale = this.useCookie();
+      cookieLocale.value = locale;
       return success();
     }
     catch (error) {
@@ -47,28 +38,8 @@ export class LocaleSelectionRepositoryCookie implements LocaleSelectionRepositor
     }
   }
 
-  private isDocumentAvailable() {
-    return typeof document !== "undefined" && document.cookie;
-  }
-
-  private setCookie(name: string, value: string, days = 365) {
-    let expires = "";
-    if (days) {
-      const date = new Date();
-      date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-      expires = "; expires=" + date.toUTCString();
-    }
-    document.cookie = name + "=" + (value || "") + expires + "; path=/";
-  }
-
-  private getCookie(name: string) {
-    const nameEQ = name + "=";
-    const ca = document.cookie.split(";");
-    for (let i = 0; i < ca.length; i++) {
-      let c = ca[i] as string;
-      while (c.charAt(0) == " ") c = c.substring(1, c.length);
-      if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
-    }
-    return null;
+  private useCookie(): CookieRef<SupportedLocale | null> {
+    const inOneYear = new Date(Date.now() + 365 * 24 * 3600 * 1000);
+    return useCookie<SupportedLocale | null>(this.COOKIE_NAME, { default: () => null, expires: inOneYear });
   }
 }
