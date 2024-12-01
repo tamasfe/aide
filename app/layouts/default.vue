@@ -1,26 +1,26 @@
 <script setup lang="ts">
 const sidebarIsOpen = ref(false);
 
-const modal = useState("user-modal", () => null);
+const userActionModalIsOpen = useState("user-modal", () => false);
 
 const closeModalOnSidebarOpen = (value: boolean) => {
   if (value === true) {
-    modal.value = null;
+    userActionModalIsOpen.value = false;
   }
 };
 watch(sidebarIsOpen, closeModalOnSidebarOpen);
 
-const closeSidebarOnModalOpen = (value: string | null) => {
-  if (value !== null) {
+const closeSidebarOnModalOpen = (value: boolean) => {
+  if (value === true) {
     sidebarIsOpen.value = false;
   }
 };
-watch(modal, closeSidebarOnModalOpen);
+watch(userActionModalIsOpen, closeSidebarOnModalOpen);
 </script>
 
 <template>
   <div>
-    <AppUserInteractionModal v-model:modal="modal" />
+    <AppUserInteractionModal v-model:open="userActionModalIsOpen" />
 
     <NavSidebar v-model:open="sidebarIsOpen" />
 

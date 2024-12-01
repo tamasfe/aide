@@ -6,12 +6,12 @@ const open = ref(true);
 //   * we need to load the appropriate domain
 // TRANSLATION STATUS:  ✅
 
-defineProps({
+const props = defineProps({
   blockedDomain: {
     type: String,
     required: true,
   },
-  allowedDomain: {
+  allowedUrl: {
     type: String,
     required: true,
   },
@@ -20,6 +20,8 @@ defineProps({
     required: true,
   },
 });
+
+const allowedDomain = ref(new URL(props.allowedUrl).hostname);
 </script>
 
 <template>
@@ -47,16 +49,18 @@ defineProps({
         }) }}
       </div>
 
-      <BaseButton
-        size="xl"
-        class="my-4 w-full gap-1.5"
-      >
-        <span>{{ $t("button.take_me_to", { domain: capitalizeBrandDomain(allowedDomain) }) }}</span>
-        <BaseIcon
-          name="lucide:arrow-right"
-          :size="20"
-        />
-      </BaseButton>
+      <BaseLink :to="allowedUrl" :external="true">
+        <BaseButton
+          size="xl"
+          class="my-4 w-full gap-1.5"
+        >
+          <span>{{ $t("button.take_me_to", { domain: capitalizeBrandDomain(allowedDomain) }) }}</span>
+          <BaseIcon
+            name="lucide:arrow-right"
+            :size="20"
+          />
+        </BaseButton>
+      </BaseLink>
     </div>
   </BaseModal>
 </template>
