@@ -2,7 +2,7 @@
 import type { PropType } from "vue";
 
 const { $dependencies } = useNuxtApp();
-const { t } = useI18n();
+const { locale } = useI18n();
 const { hostname, searchParams } = useRequestURL();
 
 type Modal = "login" | "register" | "forgot" | "recover_password" | "cancel_reg" | "deposit" | "deposit_confirm" | "withdrawal" | "restrict_expanding" | "restrict_license_alternative" | "restrict_license_no_alternative" | "search";
@@ -98,7 +98,7 @@ $dependencies.common.asyncMessagePublisher.subscribe(
   "girobet:commands:modals:open-restrict-expanding",
   (eventData) => {
     modal.value = "restrict_expanding";
-    blockedCountry.value = t(`jurisdiction.${eventData.jurisdiction}`, eventData.jurisdiction);
+    blockedCountry.value = useCountryName(eventData.jurisdiction, locale.value) || eventData.jurisdiction;
     currentHost.value = hostname;
   },
 );
@@ -106,7 +106,7 @@ $dependencies.common.asyncMessagePublisher.subscribe(
   "girobet:commands:modals:open-restrict-alternative",
   (eventData) => {
     modal.value = "restrict_license_alternative";
-    blockedCountry.value = t(`jurisdiction.${eventData.jurisdiction}`, eventData.jurisdiction);
+    blockedCountry.value = useCountryName(eventData.jurisdiction, locale.value) || eventData.jurisdiction;
     allowedDomain.value = eventData.allowedDomain;
     currentHost.value = hostname;
   },
@@ -115,7 +115,7 @@ $dependencies.common.asyncMessagePublisher.subscribe(
   "girobet:commands:modals:open-restrict-no-alternative",
   (eventData) => {
     modal.value = "restrict_license_no_alternative";
-    blockedCountry.value = t(`jurisdiction.${eventData.jurisdiction}`, eventData.jurisdiction);
+    blockedCountry.value = useCountryName(eventData.jurisdiction, locale.value) || eventData.jurisdiction;
     currentHost.value = hostname;
   },
 );

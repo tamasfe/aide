@@ -324,13 +324,5 @@
   "language": {
     "en-us": "English",
     "pt-br": "Portuguese"
-  },
-  "jurisdiction": {
-    "ES": "Spain",
-    "PT": "Portugal",
-    "BR": "Brazil",
-    "IN": "India",
-    "US": "United States",
-    "DE": "Germany"
   }
 }
