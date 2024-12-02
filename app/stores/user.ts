@@ -9,6 +9,7 @@ type UserStoreI = {
     id: number;
     locale: SupportedLocale | null;
     timeZone: string;
+    email: string;
   };
 };
 
@@ -39,6 +40,7 @@ export const useUserStore = defineStore("userStore", {
         id: result.value.id,
         locale: result.value.locale,
         timeZone: result.value.timeZone,
+        email: result.value.email,
       };
       return;
     },

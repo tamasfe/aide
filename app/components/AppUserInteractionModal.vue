@@ -6,6 +6,9 @@ const { hostname, searchParams } = useRequestURL();
 type ModalState =
   | { modal: null | "login" | "register" | "forgot" | "cancel_reg" | "deposit" | "deposit_confirm" | "withdrawal" | "search" }
   | {
+    modal: "settings";
+    setting: "password";
+  } | {
     modal: "recover_password";
     token: string;
   } |
@@ -98,6 +101,20 @@ $dependencies.common.asyncMessagePublisher.subscribe(
     };
   },
 );
+
+$dependencies.common.asyncMessagePublisher.subscribe(
+  "girobet:commands:modals:open-update-settings",
+  (data) => {
+    // If any of the invalid jurisdiction modals are open: keep them open
+    if (modalIsJurisdictionModal(state.value.modal)) {
+      return;
+    }
+    state.value = {
+      modal: "settings",
+      setting: data.setting,
+    };
+  },
+);
 $dependencies.common.asyncMessagePublisher.subscribe(
   "girobet:commands:modals:open-deposit",
   () => {
@@ -175,7 +192,7 @@ $dependencies.common.asyncMessagePublisher.subscribe(
 
 const recoverPasswordToken = useState("user-modal-recover-password-token", () => searchParams.get("recovery-token") || "");
 if (recoverPasswordToken.value) {
-  $dependencies.users.ui.emitCommandOpenUserActionModal.handle("recover_password", recoverPasswordToken.value);
+  $dependencies.users.ui.emitCommandOpenUserActionModal.handle("recover_password", { token: recoverPasswordToken.value });
 }
 
 const modalIsJurisdictionModal = (modal: ModalState["modal"]): boolean => {
@@ -212,6 +229,10 @@ const modalIsJurisdictionModal = (modal: ModalState["modal"]): boolean => {
     />
     <ModalSearch
       v-if="state.modal === 'search'"
+    />
+    <ModalUpdateSettings
+      v-if="state.modal === 'settings'"
+      :setting="state.setting"
     />
     <ModalRestrictExpanding
       v-if="state.modal === 'restrict_expanding'"

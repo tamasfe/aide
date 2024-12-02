@@ -11,15 +11,30 @@ export class UpdateUserSettings {
 
   public async handle(settings: {
     locale?: SupportedLocale;
+    password?: {
+      current: string;
+      new: string;
+    };
   }) {
-    const result = await this.authenticatedUserRepository.updateSettings(settings);
+    if (settings.locale) {
+      const localeResult = await this.authenticatedUserRepository.updateSettings(settings);
+      if (localeResult.isFailure) {
+        return localeResult;
+      }
+    }
 
-    if (result.isFailure) {
-      return result;
+    if (settings.password) {
+      const passwordResult = await this.authenticatedUserRepository.updatePassword(settings.password.current, settings.password.new);
+      if (passwordResult.isFailure) {
+        return passwordResult;
+      }
     }
 
     await this.asyncMessagePublisher.emit("girobet:events:users:user-settings-updated", {
-      settings,
+      settings: {
+        locale: settings.locale,
+        password: settings.password ? true : false,
+      },
     });
 
     return success();

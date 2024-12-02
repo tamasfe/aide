@@ -30,4 +30,9 @@ export class AuthenticatedUserRepositoryDumb implements AuthenticatedUserReposit
     this.logger.debug("updateSettings called", { settings });
     return success();
   }
+
+  public async updatePassword(currentPassword: string, newPassword: string): Promise<EmptyResult<InfrastructureError>> {
+    this.logger.debug("updatePassword called", { currentPassword, newPassword });
+    return success();
+  }
 }

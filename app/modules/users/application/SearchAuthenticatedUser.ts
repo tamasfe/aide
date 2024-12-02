@@ -6,6 +6,7 @@ interface UserResponseI {
   id: number;
   locale: SupportedLocale | null;
   timeZone: string;
+  email: string;
 }
 
 export class SearchAuthenticatedUser {
@@ -25,6 +26,7 @@ export class SearchAuthenticatedUser {
       id: authenticatedUserResult.value.id,
       locale: authenticatedUserResult.value.locale,
       timeZone: authenticatedUserResult.value.timeZone,
+      email: authenticatedUserResult.value.email,
     };
 
     return success(userResponse);

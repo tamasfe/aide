@@ -15,6 +15,7 @@ export interface AsyncMessagesTypes {
   "girobet:commands:modals:open-deposit": object;
   "girobet:commands:modals:open-deposit-confirm": object;
   "girobet:commands:modals:open-withdrawal": object;
+  "girobet:commands:modals:open-update-settings": { setting: "password" };
   "girobet:commands:modals:close-user-interaction-modal": object;
 
   "girobet:events:users:user-logged-in": object;
@@ -23,6 +24,7 @@ export interface AsyncMessagesTypes {
   "girobet:events:users:user-settings-updated": {
     settings: {
       locale?: SupportedLocale;
+      password: boolean;
     };
   };
 

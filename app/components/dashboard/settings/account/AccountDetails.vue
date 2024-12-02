@@ -1,3 +1,8 @@
+<script lang="ts" setup>
+const { $dependencies } = useNuxtApp();
+const userStore = useUserStore();
+</script>
+
 <template>
   <DashboardSection :title="$t('dashboard.settings.account.account_details')">
     <DashboardSectionItem :name="$t('dashboard.settings.account.username')">
@@ -20,7 +25,7 @@
     </DashboardSectionItem>
     <DashboardSectionItem :name="$t('dashboard.settings.account.email')">
       <template #default>
-        <p>email.example@email.com</p>
+        <p>{{ userStore.user?.email }}</p>
       </template>
     </DashboardSectionItem>
     <DashboardSectionItem :name="$t('dashboard.settings.account.password')">
@@ -32,6 +37,7 @@
           <BaseButton
             variant="secondary"
             size="dashboard"
+            @click="$dependencies.users.ui.emitCommandOpenUserActionModal.handle('settings', { setting: 'password' })"
           >
             {{ $t('button.change') }}
           </BaseButton>
@@ -40,12 +46,11 @@
     </DashboardSectionItem>
     <DashboardSectionItem :name="$t('dashboard.settings.account.public_id')">
       <template #default>
-        <p>b46d28cc-b26e-49f3-bb01-3621384912c8</p>
+        <p>{{ userStore.user?.id }}</p>
       </template>
       <template #description>
         <p>
-          Use this ID when you need to share with 3rd parties (including
-          GiroBet Support) so your account is always secure.
+          {{ $t("dashboard.settings.account.id_description") }}
         </p>
       </template>
       <template #actions>
@@ -55,11 +60,7 @@
             size="dashboard"
             class="gap-2"
           >
-            <BaseIcon
-              name="lucide:copy"
-              :size="18"
-            />
-            {{ $t('button.copy') }}
+            <BaseCopy :value="userStore.user?.id || ''" />
           </BaseButton>
         </div>
       </template>

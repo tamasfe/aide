@@ -4,6 +4,15 @@ import type { NavDashboardSectionItem } from "@/components/NavDashboard.vue";
 defineProps<{
   section: NavDashboardSectionItem;
 }>();
+
+const userStore = useUserStore();
+const localePath = useLocalePath();
+
+watch([() => userStore.isAuthenticated], async () => {
+  if (!userStore.isAuthenticated) {
+    await navigateTo(localePath("/"));
+  }
+}, { immediate: true });
 </script>
 
 <template>

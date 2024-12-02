@@ -5,8 +5,9 @@ export class EmitCommandOpenUserActionModalModal {
   constructor(private readonly asyncMessagePublisher: AsyncMessagePublisherI) {}
 
   public async handle(modalToOpen: "login" | "register" | "search" | "forgot_password" | "deposit" | "deposit_confirm" | "withdrawal"): Promise<EmptySuccessResult>;
-  public async handle(modalToOpen: "recover_password", token: string): Promise<EmptySuccessResult>;
-  public async handle(modalToOpen: "login" | "register" | "search" | "forgot_password" | "deposit" | "deposit_confirm" | "withdrawal" | "recover_password", token?: string): Promise<EmptySuccessResult> {
+  public async handle(modalToOpen: "recover_password", data: { token: string }): Promise<EmptySuccessResult>;
+  public async handle(modalToOpen: "settings", data: { setting: "password" }): Promise<EmptySuccessResult>;
+  public async handle(modalToOpen: "login" | "register" | "search" | "forgot_password" | "deposit" | "deposit_confirm" | "withdrawal" | "recover_password" | "settings", data?: { setting?: "password"; token?: string }): Promise<EmptySuccessResult> {
     switch (modalToOpen) {
       case "login":
         await this.asyncMessagePublisher.emit("girobet:commands:modals:open-login", {});
@@ -36,11 +37,18 @@ export class EmitCommandOpenUserActionModalModal {
         await this.asyncMessagePublisher.emit("girobet:commands:modals:open-withdrawal", {});
         return success();
 
+      case "settings":
+        if (!data?.setting) {
+          throw new Error("Setting is required to open the recover update settings modal. This should never happen.");
+        }
+        await this.asyncMessagePublisher.emit("girobet:commands:modals:open-update-settings", { setting: data?.setting });
+        return success();
+
       case "recover_password":
-        if (token === undefined) {
+        if (!data?.token) {
           throw new Error("Token is required to open the recover password modal. This should never happen.");
         }
-        await this.asyncMessagePublisher.emit("girobet:commands:modals:open-recover-password", { token });
+        await this.asyncMessagePublisher.emit("girobet:commands:modals:open-recover-password", { token: data?.token });
         return success();
     }
   }

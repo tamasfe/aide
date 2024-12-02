@@ -37,7 +37,7 @@ watch(locale, () => {
 const onLocaleSelect = async (language: SupportedLanguageOption) => $dependencies.common.i18n.ui.userSelectsLocale.handle(language.value);
 const onClickChangeAccountLocale = async (locale: SupportedLocale) => {
   loading.value = true;
-  await $dependencies.users.ui.updateUserLocaleOnLocaleSelect.handle(locale);
+  await $dependencies.users.ui.userSettings.updateLocaleOnLocaleSelect.handle(locale);
   loading.value = false;
 };
 </script>

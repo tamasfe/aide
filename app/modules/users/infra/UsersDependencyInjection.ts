@@ -17,6 +17,7 @@ import { EmitCommandCloseUserActionModal } from "./ui/EmitCommandCloseUserAction
 import { RecoverPasswordOnForm } from "./ui/RecoverPasswordOnForm";
 import { RequestRecoverPasswordOnForm } from "./ui/RequestRecoverPasswordOnForm";
 import { UpdateUserLocaleOnLocaleSelect } from "./ui/UpdateUserLocaleOnLocaleSelect";
+import { UserSettingsUpdatePasswordOnForm } from "./ui/UserSettingsUpdatePasswordOnForm";
 import type { CommonDependenciesI } from "~/dependency-injection/load-di";
 
 export interface UsersDependencyInjectionI {
@@ -24,13 +25,16 @@ export interface UsersDependencyInjectionI {
     searchAuthenticatedUser: SearchAuthenticatedUser;
   };
   ui: {
+    userSettings: {
+      updatePasswordOnForm: UserSettingsUpdatePasswordOnForm;
+      updateLocaleOnLocaleSelect: UpdateUserLocaleOnLocaleSelect;
+    };
     emitCommandOpenUserActionModal: EmitCommandOpenUserActionModalModal;
     emitCommandCloseUserActionModal: EmitCommandCloseUserActionModal;
     attemptUserLoginOnFormSubmission: AttemptUserLoginOnFormSubmission;
     logoutCurrentUserFromButtonClick: LogoutCurrentUserFromButtonClick;
     recoverPassword: RecoverPasswordOnForm;
     requestRecoverPasswordOnForm: RequestRecoverPasswordOnForm;
-    updateUserLocaleOnLocaleSelect: UpdateUserLocaleOnLocaleSelect;
   };
 }
 export const createUsersDependencyInjection = async (config: PublicRuntimeConfig, commonDependencies: CommonDependenciesI, requestHeaders?: Record<string, string>): Promise<UsersDependencyInjectionI> => {
@@ -51,11 +55,20 @@ export const createUsersDependencyInjection = async (config: PublicRuntimeConfig
     return new AuthenticationRepositoryDumb(commonDependencies.logger);
   })();
 
+  const updateUserSettingsCommand = new UpdateUserSettings(authenticatedUserRepo, commonDependencies.asyncMessagePublisher);
+
   return {
     queries: {
       searchAuthenticatedUser: new SearchAuthenticatedUser(authenticatedUserRepo),
     },
     ui: {
+      userSettings: {
+        updatePasswordOnForm: new UserSettingsUpdatePasswordOnForm(updateUserSettingsCommand, commonDependencies.logger, commonDependencies.translateFunction, commonDependencies.asyncMessagePublisher),
+        updateLocaleOnLocaleSelect: new UpdateUserLocaleOnLocaleSelect(
+          updateUserSettingsCommand,
+          commonDependencies.logger,
+        ),
+      },
       emitCommandOpenUserActionModal: new EmitCommandOpenUserActionModalModal(commonDependencies.asyncMessagePublisher),
       emitCommandCloseUserActionModal: new EmitCommandCloseUserActionModal(commonDependencies.asyncMessagePublisher),
       attemptUserLoginOnFormSubmission: new AttemptUserLoginOnFormSubmission(
@@ -76,10 +89,6 @@ export const createUsersDependencyInjection = async (config: PublicRuntimeConfig
         authenticationRepo,
         commonDependencies.asyncMessagePublisher,
         commonDependencies.translateFunction,
-      ),
-      updateUserLocaleOnLocaleSelect: new UpdateUserLocaleOnLocaleSelect(
-        new UpdateUserSettings(authenticatedUserRepo, commonDependencies.asyncMessagePublisher),
-        commonDependencies.logger,
       ),
     },
   };

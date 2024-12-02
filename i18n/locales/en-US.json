@@ -8,8 +8,9 @@
   "field": {
     "email": "Email",
     "password": "Password",
-    "password_new": "Enter a new password",
-    "password_confirm": "Confirm new password",
+    "password_current": "Current password",
+    "password_new": "New password",
+    "password_confirm": "Re-type new password",
     "telephone": "Telephone",
     "cpf": "CPF"
   },
@@ -47,6 +48,8 @@
     "copy": "Copy",
     "upload": "Upload",
     "confirm": "Confirm",
+    "cancel": "Cancel",
+    "save": "Save",
     "save_password_and_login": "Save Password and Login"
   },
   "mobile_nav": {
@@ -97,6 +100,14 @@
     "error_creating_flow_pending_deposit": "You have an existing deposit in progress. Please wait for it to complete or cancel before trying again",
     "error_creating_flow_pending_withdrawal": "You have an existing withdrawal in progress. Please wait for it to complete or cancel before trying again",
     "error_creating_deposit_flow_unknown": "An error occurred while handling your deposit. Please try again"
+  },
+  "modal_user_settings": {
+    "password": {
+      "title": "Change your password",
+      "instructions_intro": "Your new password should contain at least:",
+      "error_invalid_current_password": "Your current password is incorrect",
+      "error_unknown": "An error occurred while changing your password. Please try again"
+    }
   },
   "modal_cancel_registration": {
     "headline": "Wait! Are you sure you want to cancel?",
@@ -237,6 +248,7 @@
     },
     "settings": {
       "account": {
+        "id_description": "Use this ID when you need to share with 3rd parties (including GiroBet Support) so your account is always secure.",
         "account_details": "Account Details",
         "username": "Username",
         "email": "Email",
