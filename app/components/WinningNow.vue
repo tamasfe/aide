@@ -33,7 +33,7 @@ const generateFakeData = (length: number) => {
 };
 
 const BUFFER_SIZE = 20;
-const buffer = ref(generateFakeData(1));
+const buffer = useState("winning-now-data", () => generateFakeData(1));
 
 const scrollNext = () => {
   if (slider.value) {
