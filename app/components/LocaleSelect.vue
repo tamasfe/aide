@@ -30,7 +30,7 @@ const selectedLanguage = ref<SupportedLanguageOption>(SUPPORTED_LANGUAGES_OPTION
 const loading = ref(false);
 const showChangeAccountLocale = computed<boolean>(() => accountLanguage.value !== null && accountLanguage.value.value !== selectedLanguage.value.value && loading.value === false);
 
-watch(locale, () => {
+watch([() => SUPPORTED_LANGUAGES_OPTIONS_MAP.value], () => {
   selectedLanguage.value = SUPPORTED_LANGUAGES_OPTIONS_MAP.value[locale.value];
 });
 
