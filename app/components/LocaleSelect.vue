@@ -13,26 +13,25 @@ const userStore = useUserStore();
 interface SupportedLanguageOption extends SupportedLanguage {
   title: string;
 }
-const SUPPORTED_LANGUAGES_OPTIONS_MAP = Object.fromEntries(SUPPORTED_LANGUAGES.map(language => [language.value, ({
+const SUPPORTED_LANGUAGES_OPTIONS_MAP = computed(() => Object.fromEntries(SUPPORTED_LANGUAGES.map(language => [language.value, ({
   ...language,
-  title: useLanguageName(locale.value, language.value),
-})])) as Record<SupportedLocale, SupportedLanguageOption>;
-const SUPPORTED_LANGUAGES_OPTIONS = Object.values(SUPPORTED_LANGUAGES_OPTIONS_MAP);
+  title: capitalize(useLanguageName(locale.value, language.value) ?? ""),
+})])) as Record<SupportedLocale, SupportedLanguageOption>);
+const SUPPORTED_LANGUAGES_OPTIONS = computed(() => Object.values(SUPPORTED_LANGUAGES_OPTIONS_MAP.value));
 
-const selectedLanguage = ref<SupportedLanguageOption>(SUPPORTED_LANGUAGES_OPTIONS_MAP[locale.value]);
 const accountLanguage = computed<SupportedLanguageOption | null>(() => {
   if (userStore.isAuthenticated && userStore.user.locale) {
-    return SUPPORTED_LANGUAGES_OPTIONS_MAP[userStore.user.locale];
+    return SUPPORTED_LANGUAGES_OPTIONS_MAP.value[userStore.user.locale];
   }
   return null;
 });
 
+const selectedLanguage = ref<SupportedLanguageOption>(SUPPORTED_LANGUAGES_OPTIONS_MAP.value[locale.value]);
 const loading = ref(false);
-const currentLanguage = computed(() => SUPPORTED_LANGUAGES_OPTIONS_MAP[locale.value]);
 const showChangeAccountLocale = computed<boolean>(() => accountLanguage.value !== null && accountLanguage.value.value !== selectedLanguage.value.value && loading.value === false);
 
 watch(locale, () => {
-  selectedLanguage.value = SUPPORTED_LANGUAGES_OPTIONS_MAP[locale.value];
+  selectedLanguage.value = SUPPORTED_LANGUAGES_OPTIONS_MAP.value[locale.value];
 });
 
 const onLocaleSelect = async (language: SupportedLanguageOption) => $dependencies.common.i18n.ui.userSelectsLocale.handle(language.value);
@@ -81,7 +80,7 @@ const onClickChangeAccountLocale = async (locale: SupportedLocale) => {
         variant="secondary"
         @click="onClickChangeAccountLocale(locale)"
       >
-        {{ t("footer.change_language", { language: currentLanguage.title }) }}
+        {{ t("footer.change_language", { language: selectedLanguage.title }) }}
       </BaseButton>
     </div>
   </div>
