@@ -16,6 +16,10 @@ export function capitalizeBrandDomain(domain: string) {
   return domain;
 }
 
+export function capitalize(string: string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 export function consoleWarning(message: string, style: "danger" | "default" = "default") {
   let css = "font-family:helvetica; font-weight:bold; font-size:24px;";
   if (style === "danger") {
