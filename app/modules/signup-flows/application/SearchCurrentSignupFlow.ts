@@ -22,6 +22,7 @@ export class SearchCurrentSignupFlow {
     const flowResult = await this.repository.getById(flowIdResult.value);
     if (flowResult.isFailure) {
       if (flowResult.error instanceof SignupFlowNotFound) {
+        await this.flowIdClientRepository.deleteCurrent();
         return success(null);
       }
       return flowResult;

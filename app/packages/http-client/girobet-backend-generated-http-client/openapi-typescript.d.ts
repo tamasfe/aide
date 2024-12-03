@@ -657,6 +657,55 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/payment/methods": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Payment Methods
+         * @description Get all payment methods that can be used by the the user for the given currency.
+         */
+        get: {
+            parameters: {
+                query: {
+                    /** @description The currency to get the payment methods for. */
+                    currency: components["schemas"]["SystemCurrency"];
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PaymentMethodResponse"][];
+                    };
+                };
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/system/licenses": {
         parameters: {
             query?: never;
@@ -1706,81 +1755,6 @@ export interface paths {
         };
         trace?: never;
     };
-    "/ws/": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Establish WebSocket Connection
-         * @description This route is the entry point for WebSocket connections in our system.
-         *
-         *     ## Authentication
-         *
-         *     - Authentication is required for all WebSocket connections.
-         *     - Use a lease token obtained from the lease handler endpoint.
-         *
-         *     ## Connection Process
-         *
-         *     1. Obtain a lease token from the lease handler endpoint.
-         *     2. Connect to this endpoint using the WebSocket protocol.
-         *     3. Set the `sec-websocket-protocol` header as follows:
-         *
-         *        ```text
-         *        Authorization,<lease-token>
-         *        ```
-         *
-         *     ## Example (JavaScript)
-         *
-         *     ```javascript
-         *     const leaseToken = "your-lease-token";
-         *     const socket = new WebSocket("wss://your-domain.com/ws", ["Authorization", leaseToken]);
-         *     ```
-         *
-         *     ## Important Notes
-         *
-         *     - Lease tokens are valid for 60 seconds.
-         *     - Ensure your client can handle reconnection if the lease expires.
-         *     - The server may close the connection if authentication fails.
-         *
-         *     For detailed information on lease generation and management, refer to the main WebSocket authentication documentation found [here](#tag/websocket/GET/ws/lease).
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/ws/lease": {
         parameters: {
             query?: never;
@@ -1788,6 +1762,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        get?: never;
+        put?: never;
         /**
          * Issue WebSocket Lease
          * @description This endpoint is used to generate authentication tokens (leases) for WebSocket connections in our system.
@@ -1806,7 +1782,7 @@ export interface paths {
          *     ## Usage
          *
          *     - Use the generated lease token when establishing a WebSocket connection.
-         *     - For detailed information on how to use the lease token in a WebSocket connection, refer to the documentation found [here](#tag/websocket/GET/ws/).
+         *     - For detailed information on how to use the lease token in a WebSocket connection, refer to the documentation found [here](#tag/websocket/GET/ws/connect).
          *
          *     ## Important Notes
          *
@@ -1815,17 +1791,18 @@ export interface paths {
          *
          *     For any issues or questions, please contact our support team.
          */
-        get: {
+        post: {
             parameters: {
-                query: {
-                    /** @description The channel to subscribe to. */
-                    channel: components["schemas"]["WebSocketChannel"];
-                };
+                query?: never;
                 header?: never;
                 path?: never;
                 cookie?: never;
             };
-            requestBody?: never;
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["WebsocketLeaseRequest"];
+                };
+            };
             responses: {
                 200: {
                     headers: {
@@ -1845,8 +1822,6 @@ export interface paths {
                 };
             };
         };
-        put?: never;
-        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -1926,6 +1901,81 @@ export interface paths {
                     };
                     content: {
                         "text/html": string;
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/ws/connect": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Establish WebSocket Connection
+         * @description This route is the entry point for WebSocket connections in our system.
+         *
+         *     ## Authentication
+         *
+         *     - Authentication is required for all WebSocket connections.
+         *     - Use a lease token obtained from the lease handler endpoint.
+         *
+         *     ## Connection Process
+         *
+         *     1. Obtain a lease token from the lease handler endpoint.
+         *     2. Connect to this endpoint using the WebSocket protocol.
+         *     3. Set the `sec-websocket-protocol` header as follows:
+         *
+         *        ```text
+         *        Authorization,<lease-token>
+         *        ```
+         *
+         *     ## Example (JavaScript)
+         *
+         *     ```javascript
+         *     const leaseToken = "your-lease-token";
+         *     const socket = new WebSocket("wss://your-domain.com/ws/connect", ["Authorization", leaseToken]);
+         *     ```
+         *
+         *     ## Important Notes
+         *
+         *     - Lease tokens are valid for 60 seconds.
+         *     - Ensure your client can handle reconnection if the lease expires.
+         *     - The server may close the connection if authentication fails.
+         *
+         *     For detailed information on lease generation and management, refer to the main WebSocket authentication documentation found [here](#tag/websocket/POST/ws/lease).
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
                     };
                 };
             };
@@ -2083,6 +2133,10 @@ export interface components {
         };
         /** Format: int64 */
         GameRoundActionId: number;
+        GetPaymentMethodsQuery: {
+            /** @description The currency to get the payment methods for. */
+            currency: components["schemas"]["SystemCurrency"];
+        };
         InitializePasswordResetRequest: {
             /** @description The email address of the user to reset the password for. */
             email: string;
@@ -2362,24 +2416,16 @@ export interface components {
             deposit_cooldown?: components["schemas"]["DurationSeconds"] | null;
             /** @description The maximum deposit amount. This will be enforced for all deposits after FTD. */
             deposit_max?: components["schemas"]["SystemAmount"] | null;
-            /** @description The maximum deposit amount on FTD. */
-            deposit_max_first?: components["schemas"]["SystemAmount"] | null;
             /** @description The minimum deposit amount. This will be enforced for all deposits after FTD. */
             deposit_min?: components["schemas"]["SystemAmount"] | null;
-            /** @description The minimum deposit amount on FTD. */
-            deposit_min_first?: components["schemas"]["SystemAmount"] | null;
             /** @description Timeframe limits enforce that a user does not exceed payment limits over a certain timeframe. This can be used to enforce daily, weekly, monthly limits, etc. */
             timeframe_limits: components["schemas"]["PaymentLimitsTimeframeResponse"][];
             /** @description The number of seconds a user has to wait between withdrawals. */
             withdrawal_cooldown?: components["schemas"]["DurationSeconds"] | null;
             /** @description The maximum withdrawal amount. This will be enforced for all withdrawals after FTD. */
             withdrawal_max?: components["schemas"]["SystemAmount"] | null;
-            /** @description The maximum withdrawal amount on FTD. */
-            withdrawal_max_first?: components["schemas"]["SystemAmount"] | null;
             /** @description The minimum withdrawal amount. This will be enforced for all withdrawals after FTD. */
             withdrawal_min?: components["schemas"]["SystemAmount"] | null;
-            /** @description The minimum withdrawal amount on FTD. */
-            withdrawal_min_first?: components["schemas"]["SystemAmount"] | null;
         };
         PaymentLimitsTimeframeResponse: {
             /**
@@ -2402,6 +2448,19 @@ export interface components {
         PaymentMethodId: number;
         /** @enum {string} */
         PaymentMethodIdentifier: "pix";
+        PaymentMethodResponse: {
+            /** @description A non-internationalized description of the payment method. This should not be used for display purposes, as it may not be localized. Handle i18n via custom translation through the identifier attribute. */
+            description?: string | null;
+            /** @description The ID of the payment method. */
+            id: components["schemas"]["PaymentMethodId"];
+            /** @description The identifier of the payment method. This is a unique identifier that can be used to reference the payment method. */
+            identifier: components["schemas"]["PaymentMethodIdentifier"];
+            /** @description The name of the payment method. Do not use this for identification purposes, as names may not be unique as there may be multiple payment methods with the same name but different countries or currencies. */
+            name: string;
+            /** @description The type of the payment method, which can be used to determine how the payment method can be used and how it may be displayed to the user. */
+            payment_method_type: components["schemas"]["PaymentMethodType"];
+        };
+        PaymentMethodType: "card" | "bank_transfer" | "direct_debit" | "bank_redirect" | "e_wallet" | "mobile_payment" | "buy_now_pay_later" | "cash_payment" | "cryptocurrency" | "carrier_billing" | "cheque" | "invoice" | "loyalty_points" | "voucher" | "qr_code_payment" | "nfc_payment" | "money_order" | "regional";
         /** @enum {string} */
         PaymentStatus: "pending" | "waiting_for_approval" | "approved" | "processing" | "completed" | "failed" | "cancelled" | "rejected" | "refunded";
         PaymentTransactionRequest: {
@@ -2796,7 +2855,7 @@ export interface components {
         WalletId: number;
         /** @enum {string} */
         WebSocketChannel: "user" | "newest_wins";
-        WebsocketLeaseQuery: {
+        WebsocketLeaseRequest: {
             /** @description The channel to subscribe to. */
             channel: components["schemas"]["WebSocketChannel"];
         };

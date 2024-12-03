@@ -44,4 +44,8 @@ export interface AsyncMessagesTypes {
     flowId: string;
     code: string;
   };
+
+  "girobet:events:websockets:connection-errored": {
+    channel: "user" | "newest_wins";
+  };
 }

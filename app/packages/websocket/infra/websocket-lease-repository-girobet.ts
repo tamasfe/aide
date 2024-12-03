@@ -1,0 +1,52 @@
+import type { WebsocketLeaseRepositoryI } from "../domain/websocket-lease-repository";
+import type { WebsocketChannel } from "../domain/websocket-channel";
+import { WebsocketLease } from "../domain/websocket-lease";
+import { ErrorUnauthorizedForWebsocketConnection } from "../domain/error-unauthorized-for-websocket-connection";
+import { fail, success, type Result } from "~/packages/result";
+import { InfrastructureError } from "~/packages/result/infrastructure-error";
+import { createBackendOpenApiClient } from "~/packages/http-client/create-backend-open-api-client";
+import { HttpBackendApiError } from "~/packages/http-client/http-client-error";
+import type { AsyncMessagePublisherI } from "~/packages/async-messages/async-message-publisher";
+
+export class WebsocketLeaseRepositoryGirobet implements WebsocketLeaseRepositoryI {
+  constructor(clientOptions: { baseUrl: string; headers?: Record<string, string>; userJurisdiction?: string }, asyncMessagePublisher: AsyncMessagePublisherI) {
+    this.apiClient = createBackendOpenApiClient(clientOptions, asyncMessagePublisher);
+  }
+
+  public async find(channel: WebsocketChannel): Promise<Result<WebsocketLease, ErrorUnauthorizedForWebsocketConnection | InfrastructureError>> {
+    try {
+      const { data, error, response } = await this.apiClient.POST("/ws/lease", {
+        body: { channel },
+      });
+
+      if (data) {
+        return success(WebsocketLease.new({
+          channel: channel,
+          token: data.token,
+        }));
+      }
+
+      if (error) {
+        if (error.code === "UNAUTHORIZED") {
+          return fail(
+            new ErrorUnauthorizedForWebsocketConnection(),
+          );
+        }
+        return fail(
+          InfrastructureError.newFromError({ channel }, HttpBackendApiError.newFromBackendError(error, response)),
+        );
+      }
+
+      return fail(
+        InfrastructureError.newFromUnknownError({ channel }, new Error("Unexpected scenario: library did not return data nor error. This should never happen")),
+      );
+    }
+    catch (error: unknown) {
+      return fail(
+        InfrastructureError.newFromUnknownError({ channel }, error),
+      );
+    }
+  }
+
+  private readonly apiClient: ReturnType<typeof createBackendOpenApiClient>;
+}

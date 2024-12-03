@@ -541,6 +541,53 @@
         }
       }
     },
+    "/payment/methods": {
+      "get": {
+        "tags": [
+          "Payment"
+        ],
+        "summary": "Get Payment Methods",
+        "description": "Get all payment methods that can be used by the the user for the given currency.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "currency",
+            "description": "The currency to get the payment methods for.",
+            "required": true,
+            "schema": {
+              "description": "The currency to get the payment methods for.",
+              "$ref": "#/components/schemas/SystemCurrency"
+            },
+            "style": "form"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PaymentMethodResponse"
+                  }
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/system/licenses": {
       "get": {
         "tags": [
@@ -1509,50 +1556,23 @@
         }
       }
     },
-    "/ws/": {
-      "get": {
-        "tags": [
-          "WebSocket"
-        ],
-        "summary": "Establish WebSocket Connection",
-        "description": "This route is the entry point for WebSocket connections in our system.\n\n## Authentication\n\n- Authentication is required for all WebSocket connections.\n- Use a lease token obtained from the lease handler endpoint.\n\n## Connection Process\n\n1. Obtain a lease token from the lease handler endpoint.\n2. Connect to this endpoint using the WebSocket protocol.\n3. Set the `sec-websocket-protocol` header as follows:\n\n   ```text\n   Authorization,<lease-token>\n   ```\n\n## Example (JavaScript)\n\n```javascript\nconst leaseToken = \"your-lease-token\";\nconst socket = new WebSocket(\"wss://your-domain.com/ws\", [\"Authorization\", leaseToken]);\n```\n\n## Important Notes\n\n- Lease tokens are valid for 60 seconds.\n- Ensure your client can handle reconnection if the lease expires.\n- The server may close the connection if authentication fails.\n\nFor detailed information on lease generation and management, refer to the main WebSocket authentication documentation found [here](#tag/websocket/GET/ws/lease).",
-        "responses": {
-          "200": {
-            "description": "no content"
-          },
-          "4XX": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ServerError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/ws/lease": {
-      "get": {
+      "post": {
         "tags": [
           "WebSocket"
         ],
         "summary": "Issue WebSocket Lease",
-        "description": "This endpoint is used to generate authentication tokens (leases) for WebSocket connections in our system.\n\n## Lease Generation\n\n1. Send a request to the lease issuer endpoint.\n2. Specify the channel for which you want a lease.\n3. The endpoint will return a lease token.\n\n## Lease Properties\n\n- Leases are short-lived tokens, valid for 60 seconds from the time of generation.\n- Each lease is tied to a specific channel.\n\n## Usage\n\n- Use the generated lease token when establishing a WebSocket connection.\n- For detailed information on how to use the lease token in a WebSocket connection, refer to the documentation found [here](#tag/websocket/GET/ws/).\n\n## Important Notes\n\n- Always generate a new lease before attempting to establish a WebSocket connection.\n- Ensure your client handles lease expiration and reconnection scenarios.\n\nFor any issues or questions, please contact our support team.",
-        "parameters": [
-          {
-            "in": "query",
-            "name": "channel",
-            "description": "The channel to subscribe to.",
-            "required": true,
-            "schema": {
-              "description": "The channel to subscribe to.",
-              "$ref": "#/components/schemas/WebSocketChannel"
-            },
-            "style": "form"
-          }
-        ],
+        "description": "This endpoint is used to generate authentication tokens (leases) for WebSocket connections in our system.\n\n## Lease Generation\n\n1. Send a request to the lease issuer endpoint.\n2. Specify the channel for which you want a lease.\n3. The endpoint will return a lease token.\n\n## Lease Properties\n\n- Leases are short-lived tokens, valid for 60 seconds from the time of generation.\n- Each lease is tied to a specific channel.\n\n## Usage\n\n- Use the generated lease token when establishing a WebSocket connection.\n- For detailed information on how to use the lease token in a WebSocket connection, refer to the documentation found [here](#tag/websocket/GET/ws/connect).\n\n## Important Notes\n\n- Always generate a new lease before attempting to establish a WebSocket connection.\n- Ensure your client handles lease expiration and reconnection scenarios.\n\nFor any issues or questions, please contact our support team.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WebsocketLeaseRequest"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "",
@@ -1618,6 +1638,30 @@
               "text/html": {
                 "schema": {
                   "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ws/connect": {
+      "get": {
+        "tags": [
+          "WebSocket"
+        ],
+        "summary": "Establish WebSocket Connection",
+        "description": "This route is the entry point for WebSocket connections in our system.\n\n## Authentication\n\n- Authentication is required for all WebSocket connections.\n- Use a lease token obtained from the lease handler endpoint.\n\n## Connection Process\n\n1. Obtain a lease token from the lease handler endpoint.\n2. Connect to this endpoint using the WebSocket protocol.\n3. Set the `sec-websocket-protocol` header as follows:\n\n   ```text\n   Authorization,<lease-token>\n   ```\n\n## Example (JavaScript)\n\n```javascript\nconst leaseToken = \"your-lease-token\";\nconst socket = new WebSocket(\"wss://your-domain.com/ws/connect\", [\"Authorization\", leaseToken]);\n```\n\n## Important Notes\n\n- Lease tokens are valid for 60 seconds.\n- Ensure your client can handle reconnection if the lease expires.\n- The server may close the connection if authentication fails.\n\nFor detailed information on lease generation and management, refer to the main WebSocket authentication documentation found [here](#tag/websocket/POST/ws/lease).",
+        "responses": {
+          "200": {
+            "description": "no content"
+          },
+          "4XX": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerError"
                 }
               }
             }
@@ -1982,6 +2026,18 @@
       "GameRoundActionId": {
         "type": "integer",
         "format": "int64"
+      },
+      "GetPaymentMethodsQuery": {
+        "type": "object",
+        "required": [
+          "currency"
+        ],
+        "properties": {
+          "currency": {
+            "description": "The currency to get the payment methods for.",
+            "$ref": "#/components/schemas/SystemCurrency"
+          }
+        }
       },
       "InitializePasswordResetRequest": {
         "examples": [
@@ -2835,30 +2891,8 @@
               }
             ]
           },
-          "deposit_max_first": {
-            "description": "The maximum deposit amount on FTD.",
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/SystemAmount"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
           "deposit_min": {
             "description": "The minimum deposit amount. This will be enforced for all deposits after FTD.",
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/SystemAmount"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "deposit_min_first": {
-            "description": "The minimum deposit amount on FTD.",
             "anyOf": [
               {
                 "$ref": "#/components/schemas/SystemAmount"
@@ -2897,30 +2931,8 @@
               }
             ]
           },
-          "withdrawal_max_first": {
-            "description": "The maximum withdrawal amount on FTD.",
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/SystemAmount"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
           "withdrawal_min": {
             "description": "The minimum withdrawal amount. This will be enforced for all withdrawals after FTD.",
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/SystemAmount"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "withdrawal_min_first": {
-            "description": "The minimum withdrawal amount on FTD.",
             "anyOf": [
               {
                 "$ref": "#/components/schemas/SystemAmount"
@@ -3003,6 +3015,170 @@
         "type": "string",
         "enum": [
           "pix"
+        ]
+      },
+      "PaymentMethodResponse": {
+        "type": "object",
+        "required": [
+          "id",
+          "identifier",
+          "name",
+          "payment_method_type"
+        ],
+        "properties": {
+          "description": {
+            "description": "A non-internationalized description of the payment method. This should not be used for display purposes, as it may not be localized. Handle i18n via custom translation through the identifier attribute.",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "id": {
+            "description": "The ID of the payment method.",
+            "$ref": "#/components/schemas/PaymentMethodId"
+          },
+          "identifier": {
+            "description": "The identifier of the payment method. This is a unique identifier that can be used to reference the payment method.",
+            "$ref": "#/components/schemas/PaymentMethodIdentifier"
+          },
+          "name": {
+            "description": "The name of the payment method. Do not use this for identification purposes, as names may not be unique as there may be multiple payment methods with the same name but different countries or currencies.",
+            "type": "string"
+          },
+          "payment_method_type": {
+            "description": "The type of the payment method, which can be used to determine how the payment method can be used and how it may be displayed to the user.",
+            "$ref": "#/components/schemas/PaymentMethodType"
+          }
+        }
+      },
+      "PaymentMethodType": {
+        "oneOf": [
+          {
+            "description": "Includes credit cards, debit cards, and prepaid cards.",
+            "type": "string",
+            "enum": [
+              "card"
+            ]
+          },
+          {
+            "description": "Bank transfers like ACH (USA), SEPA (Europe), SWIFT, etc.",
+            "type": "string",
+            "enum": [
+              "bank_transfer"
+            ]
+          },
+          {
+            "description": "Automatic withdrawals from a customer's bank account.",
+            "type": "string",
+            "enum": [
+              "direct_debit"
+            ]
+          },
+          {
+            "description": "Payments through bank redirects (e.g., iDEAL, Giropay).",
+            "type": "string",
+            "enum": [
+              "bank_redirect"
+            ]
+          },
+          {
+            "description": "Digital wallets like PayPal, Apple Pay, Google Pay.",
+            "type": "string",
+            "enum": [
+              "e_wallet"
+            ]
+          },
+          {
+            "description": "Mobile payments like Alipay, WeChat Pay, M-Pesa.",
+            "type": "string",
+            "enum": [
+              "mobile_payment"
+            ]
+          },
+          {
+            "description": "Installment payment services (e.g., Klarna, Afterpay).",
+            "type": "string",
+            "enum": [
+              "buy_now_pay_later"
+            ]
+          },
+          {
+            "description": "Cash on delivery and cash-based voucher systems.",
+            "type": "string",
+            "enum": [
+              "cash_payment"
+            ]
+          },
+          {
+            "description": "Payments made with cryptocurrencies (e.g., Bitcoin).",
+            "type": "string",
+            "enum": [
+              "cryptocurrency"
+            ]
+          },
+          {
+            "description": "Charges added to a user's mobile phone bill.",
+            "type": "string",
+            "enum": [
+              "carrier_billing"
+            ]
+          },
+          {
+            "description": "Traditional check payments.",
+            "type": "string",
+            "enum": [
+              "cheque"
+            ]
+          },
+          {
+            "description": "B2B payments where an invoice is issued and paid later.",
+            "type": "string",
+            "enum": [
+              "invoice"
+            ]
+          },
+          {
+            "description": "Payments using loyalty points or reward programs.",
+            "type": "string",
+            "enum": [
+              "loyalty_points"
+            ]
+          },
+          {
+            "description": "Gift cards, prepaid vouchers, and similar methods.",
+            "type": "string",
+            "enum": [
+              "voucher"
+            ]
+          },
+          {
+            "description": "Payments made by scanning a QR code.",
+            "type": "string",
+            "enum": [
+              "qr_code_payment"
+            ]
+          },
+          {
+            "description": "Contactless payments using NFC technology.",
+            "type": "string",
+            "enum": [
+              "nfc_payment"
+            ]
+          },
+          {
+            "description": "Payments via money orders.",
+            "type": "string",
+            "enum": [
+              "money_order"
+            ]
+          },
+          {
+            "description": "Regional payment methods such as Pix or Boleto",
+            "type": "string",
+            "enum": [
+              "regional"
+            ]
+          }
         ]
       },
       "PaymentStatus": {
@@ -4953,7 +5129,7 @@
           "newest_wins"
         ]
       },
-      "WebsocketLeaseQuery": {
+      "WebsocketLeaseRequest": {
         "type": "object",
         "required": [
           "channel"

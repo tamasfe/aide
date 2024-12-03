@@ -5,6 +5,7 @@ metadata:
 data:
   NUXT_PUBLIC_BASE_URL: "https://girobet.vip"
   NUXT_PUBLIC_API_BASE_URL: https://api.girobet.vip
+  NUXT_PUBLIC_WEBSOCKET_API_BASE_URL: https://api.girobet.vip
 
   NUXT_PUBLIC_ERROR_CAPTURING_ENABLED: "true"
   LOG_LEVEL: "debug" # Some libraries use it to set their log level. Should match the below "NUXT_PUBLIC_LOG_LEVEL"

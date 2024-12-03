@@ -10,10 +10,16 @@ import { SearchUserSelectedLocale } from "~/packages/translation/application/Sea
 import { LocaleSelectionRepositoryCookie } from "~/packages/translation/infra/locale-selection-repository-cookie";
 import { SearchUserSelectedLocaleOnClientReady } from "~/packages/translation/infra/ui/SearchUserSelectedLocaleOnClientReady";
 import { UserSelectsLocale } from "~/packages/translation/infra/ui/UserSelectsLocale";
+import type { WebsocketLeaseRepositoryI } from "~/packages/websocket/domain/websocket-lease-repository";
+import { AttemptOpeningWebsocket } from "~/packages/websocket/infra/ui/attempt-opening-websocket";
+import { WebsocketLeaseRepositoryGirobet } from "~/packages/websocket/infra/websocket-lease-repository-girobet";
 
 export interface CommonDependenciesI {
   asyncMessagePublisher: AsyncMessagePublisherI;
   logger: LoggerI;
+  websocket: {
+    attemptOpeningWebsocket: AttemptOpeningWebsocket;
+  };
   translateFunction: TranslateFunctionType;
   dateTimeFormatter: DateTimeFormatterFunctionType;
   numberFormatter: NumberFormatterFunctionType;
@@ -37,6 +43,7 @@ export async function loadDependencies(
     getBrowserLocale: () => string | undefined;
     setLocale: (locale: SupportedLocale) => Promise<void>;
   },
+  requestHeaders?: Record<string, string>,
 ): Promise<CommonDependenciesI> {
   const isServer = import.meta.server;
   const logFormat = isServer ? "json" : "prettyPrint";
@@ -61,13 +68,20 @@ export async function loadDependencies(
 
   const logger = new LoggerConsole(logFormat, config.log.level as "debug" | "info" | "warn" | "error", { name: config.serviceName, release: config.release }, loggerMiddlewares);
 
+  const asyncMessagePublisher = new EmitteryAsyncMessagePublisher(logger);
+
   const localeSelectionRepository = new LocaleSelectionRepositoryCookie();
   const findLocaleForUser = new FindLocaleForUser(localeSelectionRepository, i18n.getBrowserLocale);
   const findUserSelectedLocale = new SearchUserSelectedLocale(localeSelectionRepository);
 
+  const websocketLeaseRepository: WebsocketLeaseRepositoryI = new WebsocketLeaseRepositoryGirobet({ baseUrl: config.apiBaseUrl, headers: requestHeaders, userJurisdiction: config.genericFixedUserJurisdiction }, asyncMessagePublisher);
+
   return {
-    asyncMessagePublisher: new EmitteryAsyncMessagePublisher(logger),
+    asyncMessagePublisher,
     logger,
+    websocket: {
+      attemptOpeningWebsocket: new AttemptOpeningWebsocket(config.websocketApiBaseUrl, websocketLeaseRepository, logger, asyncMessagePublisher),
+    },
     translateFunction: i18n.t,
     dateTimeFormatter: i18n.d,
     numberFormatter: i18n.n,

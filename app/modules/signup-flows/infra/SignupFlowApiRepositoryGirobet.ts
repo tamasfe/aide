@@ -23,10 +23,10 @@ export class SignupFlowApiRepositoryGirobet implements SignupFlowApiRepositoryI 
     });
 
     if (error) {
-      const httpError = HttpBackendApiError.newFromBackendError(error, response);
-      if (httpError.status === 404) {
+      if (error.code === "SIGNUP_FLOW_NOT_FOUND") {
         return fail(SignupFlowNotFound.newFromId(id));
       }
+      const httpError = HttpBackendApiError.newFromBackendError(error, response);
       return fail(InfrastructureError.newFromError({ signupFlowId: id }, httpError));
     }
 
