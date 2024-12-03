@@ -40,7 +40,7 @@ export interface AsyncMessagesTypes {
   };
 
   "girobet:events:payments:deposit-flow-created": {
-    paymentMethod: "pix";
+    paymentMethodId: number;
     flowId: string;
     code: string;
   };

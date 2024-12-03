@@ -35,4 +35,17 @@ export class PaymentRepositoryDumb implements PaymentRepositoryI {
       },
     });
   }
+
+  public async findPaymentLimits(_currency: WalletCurrency, _paymentMethodId: number): Promise<Result<{ deposit: { min: number; max: number }; withdrawal: { min: number; max: number } }, InfrastructureError>> {
+    return success({
+      deposit: {
+        min: 5,
+        max: 500,
+      },
+      withdrawal: {
+        min: 5,
+        max: 500,
+      },
+    });
+  }
 }

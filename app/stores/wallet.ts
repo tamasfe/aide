@@ -1,4 +1,5 @@
 import { ErrorUserNotAuthorized } from "~/modules/wallet/domain/ErrorUserNotAuthorized";
+import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
 
 type WalletBalanceStatus = "ready" | "loading" | "hidden";
 
@@ -12,7 +13,7 @@ type WalletStoreI = {
   wallet: {
     id: number;
     balance: number;
-    currency: string;
+    currency: WalletCurrency;
   };
 };
 

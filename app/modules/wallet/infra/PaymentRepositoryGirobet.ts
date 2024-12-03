@@ -114,5 +114,46 @@ export class PaymentRepositoryGirobet implements PaymentRepositoryI {
     }
   }
 
+  public async findPaymentLimits(currency: WalletCurrency, paymentMethodId: number): Promise<Result<{ deposit: { min: number | null; max: number | null }; withdrawal: { min: number | null; max: number | null } }, InfrastructureError>> {
+    try {
+      const { data, error, response } = await this.apiClient.GET("/payment/limits", {
+        params: {
+          query: {
+            currency,
+            payment_method_id: paymentMethodId,
+          },
+        },
+      });
+
+      if (data) {
+        return success({
+          deposit: {
+            min: data.deposit_min ?? null,
+            max: data.deposit_max ?? null,
+          },
+          withdrawal: {
+            min: data.withdrawal_min ?? null,
+            max: data.withdrawal_max ?? null,
+          },
+        });
+      }
+
+      if (error) {
+        return fail(
+          InfrastructureError.newFromError({ currency, paymentMethodId }, HttpBackendApiError.newFromBackendError(error, response)),
+        );
+      }
+
+      return fail(
+        InfrastructureError.newFromError({ currency, paymentMethodId }, new Error("Unexpected scenario: library did not return data nor error. This should never happen")),
+      );
+    }
+    catch (error: unknown) {
+      return fail(
+        InfrastructureError.newFromUnknownError({ currency, paymentMethodId }, error),
+      );
+    }
+  }
+
   private readonly apiClient: ReturnType<typeof createBackendOpenApiClient>;
 }

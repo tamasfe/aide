@@ -4,12 +4,16 @@ import type { WalletRepositoryI } from "../domain/WalletRepository";
 import type { PaymentRepositoryI } from "../domain/PaymentRepository";
 import { SearchPaymentsPaginating } from "../application/SearchPaymentsPaginating";
 import { CreateDepositFlow } from "../application/CreateDepositFlow";
+import type { PaymentMethodRepositoryI } from "../domain/PaymentMethodRepository";
 import { WalletsRepositoryGirobet } from "./WalletsRepositoryGirobet";
 import { WalletsRepositoryDumb } from "./WalletsRepositoryDumb";
 import { PaymentRepositoryGirobet } from "./PaymentRepositoryGirobet";
 import { PaymentRepositoryDumb } from "./PaymentRepositoryDumb";
 import { SearchPaymentsOnTable } from "./ui/SearchPaymentsOnTable";
-import { CreatePixDepositFlowOnForm } from "./ui/CreatePixDepositFlowOnForm";
+import { CreateDepositFlowOnForm } from "./ui/CreateDepositFlowOnForm";
+import { FindPreferredPaymentMethodOnPaymentModal } from "./ui/FindPreferredPaymentMethodOnPaymentModal";
+import { PaymentMethodRepositoryGirobet } from "./PaymentMethodRepositoryGirobet";
+import { PaymentMethodRepositoryDumb } from "./PaymentMethodRepositoryDumb";
 import type { CommonDependenciesI } from "~/dependency-injection/load-di";
 
 export interface WalletsDependencyInjectionI {
@@ -17,7 +21,8 @@ export interface WalletsDependencyInjectionI {
     findAuthenticatedUserWallet: FindAuthenticatedUserWallet;
   };
   ui: {
-    createPixDepositFlowOnForm: CreatePixDepositFlowOnForm;
+    findPreferredPaymentMethodOnPaymentModal: FindPreferredPaymentMethodOnPaymentModal;
+    createDepositFlowOnForm: CreateDepositFlowOnForm;
     searchPaymentsOnTable: SearchPaymentsOnTable;
   };
 }
@@ -41,12 +46,20 @@ export const createWalletsDependencyInjection = (publicConfig: PublicRuntimeConf
     return new PaymentRepositoryDumb();
   })();
 
+  const paymentMethodsRepository: PaymentMethodRepositoryI = (() => {
+    if (paymentApiBaseUrl) {
+      return new PaymentMethodRepositoryGirobet({ baseUrl: paymentApiBaseUrl, headers: requestHeaders, userJurisdiction: publicConfig.genericFixedUserJurisdiction }, commonDependencies.asyncMessagePublisher);
+    }
+    return new PaymentMethodRepositoryDumb();
+  })();
+
   return {
     queries: {
       findAuthenticatedUserWallet: new FindAuthenticatedUserWallet(walletsRepository),
     },
     ui: {
-      createPixDepositFlowOnForm: new CreatePixDepositFlowOnForm(
+      findPreferredPaymentMethodOnPaymentModal: new FindPreferredPaymentMethodOnPaymentModal(paymentMethodsRepository, commonDependencies.logger),
+      createDepositFlowOnForm: new CreateDepositFlowOnForm(
         new CreateDepositFlow(paymentsRepository, commonDependencies.asyncMessagePublisher),
         commonDependencies.logger,
         commonDependencies.translateFunction,

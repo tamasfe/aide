@@ -219,7 +219,7 @@ const modalIsJurisdictionModal = (modal: ModalState["modal"]): boolean => {
       v-if="state.modal === 'cancel_reg'"
     />
     <ModalDeposit
-      v-if="state.modal === 'deposit'"
+      :open="state.modal === 'deposit'"
     />
     <ModalDepositConfirm
       v-if="state.modal === 'deposit_confirm'"

@@ -1,37 +1,56 @@
 <script setup lang="ts">
 import { toTypedSchema } from "@vee-validate/zod";
 import { z } from "zod";
+import type { PropType } from "vue";
 import type { SupportedCountryFlagCode } from "@/types/constants";
 import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
 
 // DESIGN STATUS:       ✅
 // ARCHITECTURE STATUS: ✴️
-//   * dynamic server validations for limits with zod (talk to Daniel)
+//   * ✅ dynamic server validations for limits with zod (talk to Daniel)
 // TRANSLATION STATUS:  ✅
 // AUTOCOMPLETES:       ✅
 // INPUTMODES:          ✅
 // ZOD SCHEMA:          ✴️
 
-const presetAmounts = ref([10, 50, 100]);
-const currency = ref<{
-  code: WalletCurrency;
-  countryCode: SupportedCountryFlagCode;
-}>({
-  code: "BRL",
-  countryCode: "BR",
+const props = defineProps({
+  paymentMethodId: {
+    type: Number,
+    required: true,
+  },
+  amounts: {
+    type: Object as PropType<{ min: number | null; max: number | null }>,
+    required: true,
+  },
+  currency: {
+    type: Object as PropType<{
+      code: WalletCurrency;
+      countryCode: SupportedCountryFlagCode;
+    }>,
+    required: true,
+  },
 });
-const DEPOSIT_AMOUNT_MINIMUM = 5; // Set by us
-const DEPOSIT_AMOUNT_MAXIMUM = 1000; // Max PIX transaction amount between different individuals at night (source: https://www.idinheiro.com.br/bancos/quais-sao-os-limites-de-ted-e-doc/)
+
+const presetAmounts = ref([10, 50, 100]);
 
 const { $dependencies } = useNuxtApp();
 const { t } = useI18n();
 
+/**
+ *
+ * Form initialisation
+ *
+ */
+let schemaForAmount = z.number({ required_error: t("validation.amount_deposit_required") });
+if (props.amounts.min !== null) {
+  schemaForAmount = schemaForAmount.min(props.amounts.min, t("validation.amount_deposit_min", { min: `${props.amounts.min} ${props.currency.code}` }));
+}
+if (props.amounts.max !== null) {
+  schemaForAmount = schemaForAmount.max(props.amounts.max, t("validation.amount_deposit_max", { max: `${props.amounts.max} ${props.currency.code}` }));
+}
 const validationSchema = toTypedSchema(
   z.object({
-    amount: z.number({ required_error: t("validation.amount_deposit_required") })
-      .min(DEPOSIT_AMOUNT_MINIMUM, t("validation.amount_deposit_min", { min: `${DEPOSIT_AMOUNT_MINIMUM} ${currency.value.code}` }))
-      .max(DEPOSIT_AMOUNT_MAXIMUM, t("validation.amount_deposit_max", { max: `${DEPOSIT_AMOUNT_MAXIMUM} ${currency.value.code}` }))
-      .transform(value => Number(value)),
+    amount: schemaForAmount.transform(value => Number(value)),
   }),
 );
 
@@ -44,11 +63,12 @@ const onSubmit = handleSubmit(async (formData) => {
   loading.value = true;
   formErrorMessage.value = "";
 
-  const errorSubmitting = await $dependencies.wallets.ui.createPixDepositFlowOnForm.handle(
+  formErrorMessage.value = await $dependencies.wallets.ui.createDepositFlowOnForm.handle(
     formData.amount,
+    props.currency.code,
+    props.paymentMethodId,
   );
 
-  formErrorMessage.value = errorSubmitting;
   loading.value = false;
 }, ({ results }) => {
   $dependencies.common.logger.warn("Validation failed", { validationResults: results });
