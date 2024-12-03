@@ -6,7 +6,7 @@ import type { AsyncMessagePublisherI } from "~/packages/async-messages/async-mes
 
 export class AttemptOpeningWebsocket {
   constructor(
-    private readonly connectionUrl: string,
+    private readonly websocketConnectUrl: string,
     private readonly websocketLeaseRepo: WebsocketLeaseRepositoryI,
     private readonly logger: LoggerI,
     private readonly asyncMessagePublisher: AsyncMessagePublisherI,
@@ -24,7 +24,7 @@ export class AttemptOpeningWebsocket {
     }
 
     /** More info at https://github.com/jjxxs/websocket-ts */
-    return new WebsocketBuilder(this.connectionUrl)
+    return new WebsocketBuilder(this.websocketConnectUrl)
       .withProtocols([`Authorization`, websocketLeaseResult.value.token])
       .onOpen((websocket, event) => this.logger.debug("WS connection opened", { websocket, event }))
       .onClose((websocket, event) => this.logger.debug("WS connection closed", { websocket, event }))
