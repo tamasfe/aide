@@ -1,9 +1,9 @@
-import type { UpdateUserSettings } from "../../application/UpdateUserSettings";
+import type { UpdateUserSettings } from "../../../application/UpdateUserSettings";
 import type { TranslateFunctionType } from "~/packages/translation";
 import type { LoggerI } from "~/packages/logger/Logger";
 import type { AsyncMessagePublisherI } from "~/packages/async-messages/async-message-publisher";
 
-export class UserSettingsUpdatePasswordOnForm {
+export class UpdatePasswordOnForm {
   constructor(
     private readonly command: UpdateUserSettings,
     private readonly logger: LoggerI,

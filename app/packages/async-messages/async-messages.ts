@@ -25,6 +25,14 @@ export interface AsyncMessagesTypes {
     settings: {
       locale?: SupportedLocale;
       password: boolean;
+      consents?: {
+        email?: boolean | null;
+        postMail?: boolean | null;
+        pushNotification?: boolean | null;
+        siteNotification?: boolean | null;
+        sms?: boolean | null;
+        telephone?: boolean | null;
+      };
     };
   };
 

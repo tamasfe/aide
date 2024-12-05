@@ -15,11 +15,19 @@ export class UpdateUserSettings {
       current: string;
       new: string;
     };
+    consents?: {
+      email?: boolean | null;
+      postMail?: boolean | null;
+      pushNotification?: boolean | null;
+      siteNotification?: boolean | null;
+      sms?: boolean | null;
+      telephone?: boolean | null;
+    };
   }) {
-    if (settings.locale) {
-      const localeResult = await this.authenticatedUserRepository.updateSettings(settings);
-      if (localeResult.isFailure) {
-        return localeResult;
+    if (settings.locale || settings.consents) {
+      const settingsResult = await this.authenticatedUserRepository.updateSettings(settings);
+      if (settingsResult.isFailure) {
+        return settingsResult;
       }
     }
 
@@ -34,6 +42,7 @@ export class UpdateUserSettings {
       settings: {
         locale: settings.locale,
         password: settings.password ? true : false,
+        consents: settings.consents,
       },
     });
 

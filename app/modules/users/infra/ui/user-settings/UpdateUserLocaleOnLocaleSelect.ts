@@ -1,4 +1,4 @@
-import type { UpdateUserSettings } from "../../application/UpdateUserSettings";
+import type { UpdateUserSettings } from "../../../application/UpdateUserSettings";
 import type { SupportedLocale } from "~/packages/translation";
 import type { LoggerI } from "~/packages/logger/Logger";
 

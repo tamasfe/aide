@@ -1654,7 +1654,14 @@
         "description": "This route is the entry point for WebSocket connections in our system.\n\n## Authentication\n\n- Authentication is required for all WebSocket connections.\n- Use a lease token obtained from the lease handler endpoint.\n\n## Connection Process\n\n1. Obtain a lease token from the lease handler endpoint.\n2. Connect to this endpoint using the WebSocket protocol.\n3. Set the `sec-websocket-protocol` header as follows:\n\n   ```text\n   Authorization,<lease-token>\n   ```\n\n## Example (JavaScript)\n\n```javascript\nconst leaseToken = \"your-lease-token\";\nconst socket = new WebSocket(\"wss://your-domain.com/ws/connect\", [\"Authorization\", leaseToken]);\n```\n\n## Important Notes\n\n- Lease tokens are valid for 60 seconds.\n- Ensure your client can handle reconnection if the lease expires.\n- The server may close the connection if authentication fails.\n\nFor detailed information on lease generation and management, refer to the main WebSocket authentication documentation found [here](#tag/websocket/POST/ws/lease).",
         "responses": {
           "200": {
-            "description": "no content"
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RtcEventPayload"
+                }
+              }
+            }
           },
           "4XX": {
             "description": "",
@@ -2404,7 +2411,7 @@
               "type": {
                 "type": "string",
                 "enum": [
-                  "test_status"
+                  "custom"
                 ]
               }
             }
@@ -2417,7 +2424,7 @@
         "enum": [
           "payment_status_update",
           "kyc_completed",
-          "test_status"
+          "custom"
         ]
       },
       "PaginatorMetadata_for_ListGameActionsQuery": {
@@ -2666,27 +2673,21 @@
         "type": "object",
         "properties": {
           "email": {
-            "default": null,
             "$ref": "#/components/schemas/Maybe_Boolean"
           },
           "post_mail": {
-            "default": null,
             "$ref": "#/components/schemas/Maybe_Boolean"
           },
           "push_notification": {
-            "default": null,
             "$ref": "#/components/schemas/Maybe_Boolean"
           },
           "site_notification": {
-            "default": null,
             "$ref": "#/components/schemas/Maybe_Boolean"
           },
           "sms": {
-            "default": null,
             "$ref": "#/components/schemas/Maybe_Boolean"
           },
           "telephone": {
-            "default": null,
             "$ref": "#/components/schemas/Maybe_Boolean"
           }
         }
@@ -2714,19 +2715,15 @@
         "type": "object",
         "properties": {
           "pix_key_email": {
-            "default": null,
             "$ref": "#/components/schemas/Maybe_String"
           },
           "pix_key_evp": {
-            "default": null,
             "$ref": "#/components/schemas/Maybe_String"
           },
           "pix_key_phone": {
-            "default": null,
             "$ref": "#/components/schemas/Maybe_String"
           },
           "pix_key_type": {
-            "default": null,
             "$ref": "#/components/schemas/Maybe_PixKeyTypeDiscriminants"
           }
         }
@@ -2746,7 +2743,6 @@
             "$ref": "#/components/schemas/PatchUserConsentSettingsRequest"
           },
           "locale": {
-            "default": null,
             "maxLength": 5,
             "minLength": 2,
             "maxItems": 5,
@@ -2763,7 +2759,6 @@
             "$ref": "#/components/schemas/PatchUserPaymentSettingsRequest"
           },
           "time_zone": {
-            "default": null,
             "$ref": "#/components/schemas/Maybe_String"
           }
         }
@@ -2881,7 +2876,7 @@
             ]
           },
           "deposit_max": {
-            "description": "The maximum deposit amount. This will be enforced for all deposits after FTD.",
+            "description": "The maximum deposit amount. This already accounts for first time deposit limits.",
             "anyOf": [
               {
                 "$ref": "#/components/schemas/SystemAmount"
@@ -2892,7 +2887,7 @@
             ]
           },
           "deposit_min": {
-            "description": "The minimum deposit amount. This will be enforced for all deposits after FTD.",
+            "description": "The minimum deposit amount. This already accounts for first time deposit limits.",
             "anyOf": [
               {
                 "$ref": "#/components/schemas/SystemAmount"
@@ -2921,7 +2916,7 @@
             ]
           },
           "withdrawal_max": {
-            "description": "The maximum withdrawal amount. This will be enforced for all withdrawals after FTD.",
+            "description": "The maximum withdrawal amount. This already accounts for first time withdrawal limits.",
             "anyOf": [
               {
                 "$ref": "#/components/schemas/SystemAmount"
@@ -2932,7 +2927,7 @@
             ]
           },
           "withdrawal_min": {
-            "description": "The minimum withdrawal amount. This will be enforced for all withdrawals after FTD.",
+            "description": "The minimum withdrawal amount. This already accounts for first time withdrawal limits.",
             "anyOf": [
               {
                 "$ref": "#/components/schemas/SystemAmount"
@@ -3255,6 +3250,28 @@
         "enum": [
           "read",
           "unread"
+        ]
+      },
+      "RtcEventPayload": {
+        "oneOf": [
+          {
+            "type": "object",
+            "required": [
+              "event",
+              "payload"
+            ],
+            "properties": {
+              "event": {
+                "type": "string",
+                "enum": [
+                  "notification"
+                ]
+              },
+              "payload": {
+                "$ref": "#/components/schemas/NotificationType"
+              }
+            }
+          }
         ]
       },
       "SearchGameProviderQuery": {
@@ -4895,6 +4912,7 @@
           "ZAR",
           "ZMW",
           "ZWL",
+          "ZWG",
           "BTC",
           "ETH",
           "USDC",

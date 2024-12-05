@@ -1963,12 +1963,13 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                /** @description no content */
                 200: {
                     headers: {
                         [name: string]: unknown;
                     };
-                    content?: never;
+                    content: {
+                        "application/json": components["schemas"]["RtcEventPayload"];
+                    };
                 };
                 "4XX": {
                     headers: {
@@ -2245,13 +2246,13 @@ export interface components {
         } | {
             data: string;
             /** @enum {string} */
-            type: "test_status";
+            type: "custom";
         };
         /**
          * @description Auto-generated discriminant enum variants
          * @enum {string}
          */
-        NotificationTypeDiscriminants: "payment_status_update" | "kyc_completed" | "test_status";
+        NotificationTypeDiscriminants: "payment_status_update" | "kyc_completed" | "custom";
         PaginatorMetadata_for_ListGameActionsQuery: {
             filters?: components["schemas"]["ListGameActionsQuery"] | null;
             pagination: components["schemas"]["PaginatorPosition"];
@@ -2322,18 +2323,12 @@ export interface components {
             [key: string]: unknown;
         };
         PatchUserConsentSettingsRequest: {
-            /** @default null */
-            email: components["schemas"]["Maybe_Boolean"];
-            /** @default null */
-            post_mail: components["schemas"]["Maybe_Boolean"];
-            /** @default null */
-            push_notification: components["schemas"]["Maybe_Boolean"];
-            /** @default null */
-            site_notification: components["schemas"]["Maybe_Boolean"];
-            /** @default null */
-            sms: components["schemas"]["Maybe_Boolean"];
-            /** @default null */
-            telephone: components["schemas"]["Maybe_Boolean"];
+            email?: components["schemas"]["Maybe_Boolean"];
+            post_mail?: components["schemas"]["Maybe_Boolean"];
+            push_notification?: components["schemas"]["Maybe_Boolean"];
+            site_notification?: components["schemas"]["Maybe_Boolean"];
+            sms?: components["schemas"]["Maybe_Boolean"];
+            telephone?: components["schemas"]["Maybe_Boolean"];
         };
         PatchUserPasswordRequest: {
             /** @description The current password of the user. This is required to ensure that the user is the one making the request. */
@@ -2342,14 +2337,10 @@ export interface components {
             new_password: string;
         };
         PatchUserPaymentSettingsRequest: {
-            /** @default null */
-            pix_key_email: components["schemas"]["Maybe_String"];
-            /** @default null */
-            pix_key_evp: components["schemas"]["Maybe_String"];
-            /** @default null */
-            pix_key_phone: components["schemas"]["Maybe_String"];
-            /** @default null */
-            pix_key_type: components["schemas"]["Maybe_PixKeyTypeDiscriminants"];
+            pix_key_email?: components["schemas"]["Maybe_String"];
+            pix_key_evp?: components["schemas"]["Maybe_String"];
+            pix_key_phone?: components["schemas"]["Maybe_String"];
+            pix_key_type?: components["schemas"]["Maybe_PixKeyTypeDiscriminants"];
         };
         PatchUserSettingsRequest: {
             /** @default {
@@ -2361,8 +2352,7 @@ export interface components {
              *       "telephone": null
              *     } */
             consents: components["schemas"]["PatchUserConsentSettingsRequest"];
-            /** @default null */
-            locale: components["schemas"]["Maybe_String"];
+            locale?: components["schemas"]["Maybe_String"];
             /** @default {
              *       "pix_key_email": null,
              *       "pix_key_evp": null,
@@ -2370,8 +2360,7 @@ export interface components {
              *       "pix_key_type": null
              *     } */
             payment: components["schemas"]["PatchUserPaymentSettingsRequest"];
-            /** @default null */
-            time_zone: components["schemas"]["Maybe_String"];
+            time_zone?: components["schemas"]["Maybe_String"];
         };
         /** Format: int64 */
         PaymentFlowId: number;
@@ -2414,17 +2403,17 @@ export interface components {
         PaymentLimitsResponse: {
             /** @description The number of seconds a user has to wait between deposits. */
             deposit_cooldown?: components["schemas"]["DurationSeconds"] | null;
-            /** @description The maximum deposit amount. This will be enforced for all deposits after FTD. */
+            /** @description The maximum deposit amount. This already accounts for first time deposit limits. */
             deposit_max?: components["schemas"]["SystemAmount"] | null;
-            /** @description The minimum deposit amount. This will be enforced for all deposits after FTD. */
+            /** @description The minimum deposit amount. This already accounts for first time deposit limits. */
             deposit_min?: components["schemas"]["SystemAmount"] | null;
             /** @description Timeframe limits enforce that a user does not exceed payment limits over a certain timeframe. This can be used to enforce daily, weekly, monthly limits, etc. */
             timeframe_limits: components["schemas"]["PaymentLimitsTimeframeResponse"][];
             /** @description The number of seconds a user has to wait between withdrawals. */
             withdrawal_cooldown?: components["schemas"]["DurationSeconds"] | null;
-            /** @description The maximum withdrawal amount. This will be enforced for all withdrawals after FTD. */
+            /** @description The maximum withdrawal amount. This already accounts for first time withdrawal limits. */
             withdrawal_max?: components["schemas"]["SystemAmount"] | null;
-            /** @description The minimum withdrawal amount. This will be enforced for all withdrawals after FTD. */
+            /** @description The minimum withdrawal amount. This already accounts for first time withdrawal limits. */
             withdrawal_min?: components["schemas"]["SystemAmount"] | null;
         };
         PaymentLimitsTimeframeResponse: {
@@ -2484,6 +2473,11 @@ export interface components {
         };
         /** @enum {string} */
         ReadStatus: "read" | "unread";
+        RtcEventPayload: {
+            /** @enum {string} */
+            event: "notification";
+            payload: components["schemas"]["NotificationType"];
+        };
         SearchGameProviderQuery: {
             /** @description An organic search query to find game providers by. Searched fields include but are not limited to: name, description, slug... */
             query?: string | null;

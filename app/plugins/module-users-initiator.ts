@@ -5,6 +5,7 @@ export default defineNuxtPlugin({
   async setup(_nuxtApp) {
     const { $dependencies } = useNuxtApp();
     const userStore = useUserStore();
+    const userSettingsStore = useUserSettingsStore();
 
     /**
      *
@@ -16,21 +17,46 @@ export default defineNuxtPlugin({
       () => userStore.refreshUser(),
     );
     $dependencies.common.asyncMessagePublisher.subscribe(
+      "girobet:events:users:user-logged-in",
+      () => userSettingsStore.refresh(),
+    );
+
+    $dependencies.common.asyncMessagePublisher.subscribe(
       "girobet:events:users:user-logged-out",
       () => userStore.refreshUser(),
     );
+    $dependencies.common.asyncMessagePublisher.subscribe(
+      "girobet:events:users:user-logged-out",
+      () => userSettingsStore.refresh(),
+    );
+
     $dependencies.common.asyncMessagePublisher.subscribe(
       "girobet:events:users:user-settings-updated",
       () => userStore.refreshUser(),
     );
     $dependencies.common.asyncMessagePublisher.subscribe(
+      "girobet:events:users:user-settings-updated",
+      async (data) => {
+        if (data.settings.consents !== undefined) {
+          await userSettingsStore.refresh();
+        }
+      },
+    );
+
+    $dependencies.common.asyncMessagePublisher.subscribe(
       "girobet:events:users:password-recovered",
       () => $dependencies.users.ui.emitCommandOpenUserActionModal.handle("login"),
     );
+
     $dependencies.common.asyncMessagePublisher.subscribe(
       "girobet:events:signup-flows:signup-flow-submitted",
       () => userStore.refreshUser(),
     );
+    $dependencies.common.asyncMessagePublisher.subscribe(
+      "girobet:events:signup-flows:signup-flow-submitted",
+      () => userSettingsStore.refresh(),
+    );
+
     $dependencies.common.asyncMessagePublisher.subscribe(
       "girobet:events:payments:deposit-flow-created",
       () => $dependencies.users.ui.emitCommandOpenUserActionModal.handle("deposit_confirm"),

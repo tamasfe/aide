@@ -1,5 +1,6 @@
 import type { AuthenticatedUserRepositoryI } from "../domain/AuthenticatedUserRepository";
 import type { User } from "../domain/User";
+import type { UserSettingsI } from "../domain/UserSettings";
 import type { LoggerI } from "~/packages/logger/Logger";
 import { success, type EmptyResult, type Result } from "~/packages/result";
 import type { InfrastructureError } from "~/packages/result/infrastructure-error";
@@ -24,6 +25,27 @@ export class AuthenticatedUserRepositoryDumb implements AuthenticatedUserReposit
     //   }),
     // );
     return success(null);
+  }
+
+  public async searchSettings(): Promise<Result<null | UserSettingsI, InfrastructureError>> {
+    this.logger.debug("searchSettings called");
+    return success({
+      timeZone: null,
+      consents: {
+        email: false,
+        postMail: false,
+        pushNotification: false,
+        siteNotification: false,
+        sms: false,
+        telephone: false,
+      },
+      payment: {
+        pixKeyEmail: null,
+        pixKeyEvp: null,
+        pixKeyPhone: null,
+        pixKeyType: null,
+      },
+    });
   }
 
   public async updateSettings(settings: { locale?: SupportedLocale }): Promise<EmptyResult<InfrastructureError>> {

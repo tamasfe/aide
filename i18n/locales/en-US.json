@@ -275,7 +275,13 @@
       },
       "preferences": {
         "bonuses": "Do You Love Bonuses?",
-        "communication": "Communication"
+        "bonuses_description": "Receive offers and promotions",
+        "bonuses_by_email": "By Email",
+        "bonuses_by_phone": "By Phone",
+        "bonuses_by_browser": "By Browser",
+        "communication": "Communication",
+        "communications_allow_deposit": "Receive deposit notifications",
+        "error_loading_settings": "An error occurred while loading your settings. Please refresh the page and try again."
       },
       "verification": {
         "identity": "Identity",

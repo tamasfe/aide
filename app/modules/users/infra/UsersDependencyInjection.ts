@@ -6,6 +6,8 @@ import { LoginUser } from "../application/LoginUser";
 import { LogoutUser } from "../application/LogoutUser";
 import { RecoverPassword } from "../application/RecoverPassword";
 import { UpdateUserSettings } from "../application/UpdateUserSettings";
+import { SearchUserSettingsSimplified } from "../application/SearchUserSettingsSimplified";
+import { UpdateUserSettingsChangedConsents } from "../application/UpdateUserSettingsChangedConsents";
 import { AuthenticatedUserRepositoryDumb } from "./AuthenticatedUserRepositoryDumb";
 import { EmitCommandOpenUserActionModalModal } from "./ui/EmitCommandOpenUserActionModal";
 import { AuthenticatedUserSearcherGirobet } from "./AuthenticatedUserRepositoryGirobet";
@@ -16,18 +18,21 @@ import { LogoutCurrentUserFromButtonClick } from "./ui/LogoutCurrentUserFromButt
 import { EmitCommandCloseUserActionModal } from "./ui/EmitCommandCloseUserActionModal";
 import { RecoverPasswordOnForm } from "./ui/RecoverPasswordOnForm";
 import { RequestRecoverPasswordOnForm } from "./ui/RequestRecoverPasswordOnForm";
-import { UpdateUserLocaleOnLocaleSelect } from "./ui/UpdateUserLocaleOnLocaleSelect";
-import { UserSettingsUpdatePasswordOnForm } from "./ui/UserSettingsUpdatePasswordOnForm";
+import { UpdateUserLocaleOnLocaleSelect } from "./ui/user-settings/UpdateUserLocaleOnLocaleSelect";
+import { UpdatePasswordOnForm } from "./ui/user-settings/UpdatePasswordOnForm";
+import { UpdateConsentsOnPreferencesPage } from "./ui/user-settings/UpdateConsentsOnPreferencesPage";
 import type { CommonDependenciesI } from "~/dependency-injection/load-di";
 
 export interface UsersDependencyInjectionI {
   queries: {
     searchAuthenticatedUser: SearchAuthenticatedUser;
+    searchUserSettingsSimplified: SearchUserSettingsSimplified;
   };
   ui: {
     userSettings: {
-      updatePasswordOnForm: UserSettingsUpdatePasswordOnForm;
+      updatePasswordOnForm: UpdatePasswordOnForm;
       updateLocaleOnLocaleSelect: UpdateUserLocaleOnLocaleSelect;
+      updateConsentsOnPreferencesPage: UpdateConsentsOnPreferencesPage;
     };
     emitCommandOpenUserActionModal: EmitCommandOpenUserActionModalModal;
     emitCommandCloseUserActionModal: EmitCommandCloseUserActionModal;
@@ -60,12 +65,17 @@ export const createUsersDependencyInjection = async (config: PublicRuntimeConfig
   return {
     queries: {
       searchAuthenticatedUser: new SearchAuthenticatedUser(authenticatedUserRepo),
+      searchUserSettingsSimplified: new SearchUserSettingsSimplified(authenticatedUserRepo),
     },
     ui: {
       userSettings: {
-        updatePasswordOnForm: new UserSettingsUpdatePasswordOnForm(updateUserSettingsCommand, commonDependencies.logger, commonDependencies.translateFunction, commonDependencies.asyncMessagePublisher),
+        updatePasswordOnForm: new UpdatePasswordOnForm(updateUserSettingsCommand, commonDependencies.logger, commonDependencies.translateFunction, commonDependencies.asyncMessagePublisher),
         updateLocaleOnLocaleSelect: new UpdateUserLocaleOnLocaleSelect(
           updateUserSettingsCommand,
+          commonDependencies.logger,
+        ),
+        updateConsentsOnPreferencesPage: new UpdateConsentsOnPreferencesPage(
+          new UpdateUserSettingsChangedConsents(authenticatedUserRepo, commonDependencies.asyncMessagePublisher),
           commonDependencies.logger,
         ),
       },
