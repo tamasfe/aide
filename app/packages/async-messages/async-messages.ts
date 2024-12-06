@@ -1,4 +1,5 @@
 import type { SupportedLocale } from "../translation";
+import type { PaymentStatus } from "~/modules/wallet/domain/Payment";
 
 export interface AsyncMessagesTypes {
   "girobet:commands:modals:open-login": object;
@@ -55,5 +56,13 @@ export interface AsyncMessagesTypes {
 
   "girobet:events:websockets:connection-errored": {
     channel: "user" | "newest_wins";
+  };
+
+  /**
+   * Events coming from the Backend
+   */
+  "girobet-backend:events:payments:payment-status-updated": {
+    flowId: number;
+    status: PaymentStatus;
   };
 }

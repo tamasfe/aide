@@ -41,6 +41,11 @@ export default defineNuxtPlugin({
       },
     );
 
+    $dependencies.common.asyncMessagePublisher.subscribe(
+      "girobet-backend:events:payments:payment-status-updated",
+      () => walletStore.refresh(),
+    );
+
     /**
      *
      * Init user pinia store

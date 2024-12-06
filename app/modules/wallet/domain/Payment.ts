@@ -1,6 +1,6 @@
 import type { WalletCurrency } from "./WalletCurrency";
 
-type PaymentStatus = "pending" | "waiting_for_approval" | "approved" | "processing" | "completed" | "failed" | "cancelled" | "rejected" | "refunded";
+export type PaymentStatus = "pending" | "waiting_for_approval" | "approved" | "processing" | "completed" | "failed" | "cancelled" | "rejected" | "refunded";
 export type PaymentType = "deposit" | "withdrawal";
 
 interface PaymentPropsI {
