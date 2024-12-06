@@ -192,7 +192,7 @@ $dependencies.common.asyncMessagePublisher.subscribe(
 
 const recoverPasswordToken = useState("user-modal-recover-password-token", () => searchParams.get("recovery-token") || "");
 if (recoverPasswordToken.value) {
-  $dependencies.users.ui.emitCommandOpenUserActionModal.handle("recover_password", { token: recoverPasswordToken.value });
+  $dependencies.users.ui.emitCommandOpenUserActionModal.handle({ modal: "recover_password", data: { token: recoverPasswordToken.value } });
 }
 
 const modalIsJurisdictionModal = (modal: ModalState["modal"]): boolean => {

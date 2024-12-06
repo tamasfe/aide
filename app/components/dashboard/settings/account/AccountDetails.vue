@@ -37,7 +37,7 @@ const userStore = useUserStore();
           <BaseButton
             variant="secondary"
             size="dashboard"
-            @click="$dependencies.users.ui.emitCommandOpenUserActionModal.handle('settings', { setting: 'password' })"
+            @click="$dependencies.users.ui.emitCommandOpenUserActionModal.handle({ modal: 'settings', data: { setting: 'password' } })"
           >
             {{ $t('button.change') }}
           </BaseButton>

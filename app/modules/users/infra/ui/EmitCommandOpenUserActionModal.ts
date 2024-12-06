@@ -1,14 +1,24 @@
 import type { AsyncMessagePublisherI } from "~/packages/async-messages/async-message-publisher";
 import { success, type EmptySuccessResult } from "~/packages/result";
 
+type NoDataRequiredModal = "login" | "register" | "search" | "forgot_password" | "deposit" | "deposit_confirm" | "withdrawal";
+
+type ModalData = {
+  modal: NoDataRequiredModal;
+} | {
+  modal: "recover_password";
+  data: { token: string };
+} | {
+  modal: "settings";
+  data: { setting: "password" };
+};
+
 export class EmitCommandOpenUserActionModalModal {
   constructor(private readonly asyncMessagePublisher: AsyncMessagePublisherI) {}
 
-  public async handle(modalToOpen: "login" | "register" | "search" | "forgot_password" | "deposit" | "deposit_confirm" | "withdrawal"): Promise<EmptySuccessResult>;
-  public async handle(modalToOpen: "recover_password", data: { token: string }): Promise<EmptySuccessResult>;
-  public async handle(modalToOpen: "settings", data: { setting: "password" }): Promise<EmptySuccessResult>;
-  public async handle(modalToOpen: "login" | "register" | "search" | "forgot_password" | "deposit" | "deposit_confirm" | "withdrawal" | "recover_password" | "settings", data?: { setting?: "password"; token?: string }): Promise<EmptySuccessResult> {
-    switch (modalToOpen) {
+  public async handle(modalOrData: ModalData | NoDataRequiredModal): Promise<EmptySuccessResult> {
+    const modalData = typeof modalOrData === "string" ? { modal: modalOrData } : modalOrData;
+    switch (modalData.modal) {
       case "login":
         await this.asyncMessagePublisher.emit("girobet:commands:modals:open-login", {});
         return success();
@@ -38,17 +48,11 @@ export class EmitCommandOpenUserActionModalModal {
         return success();
 
       case "settings":
-        if (!data?.setting) {
-          throw new Error("Setting is required to open the recover update settings modal. This should never happen.");
-        }
-        await this.asyncMessagePublisher.emit("girobet:commands:modals:open-update-settings", { setting: data?.setting });
+        await this.asyncMessagePublisher.emit("girobet:commands:modals:open-update-settings", modalData.data);
         return success();
 
       case "recover_password":
-        if (!data?.token) {
-          throw new Error("Token is required to open the recover password modal. This should never happen.");
-        }
-        await this.asyncMessagePublisher.emit("girobet:commands:modals:open-recover-password", { token: data?.token });
+        await this.asyncMessagePublisher.emit("girobet:commands:modals:open-recover-password", modalData.data);
         return success();
     }
   }
