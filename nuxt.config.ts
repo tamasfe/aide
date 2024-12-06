@@ -73,7 +73,7 @@ export default defineNuxtConfig({
   build: {
     transpile: ["applicationinsights"],
   },
-  sourcemap: { client: true },
+  sourcemap: { client: "hidden" },
   devServer: {
     port: 3001,
   },
