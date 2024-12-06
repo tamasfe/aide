@@ -5,7 +5,6 @@ const { $dependencies } = useNuxtApp();
 const userSettingsStore = useUserSettingsStore();
 const { t } = useI18n();
 
-const dumbDepositNotificationsRefUntilBackendImplementsIt = ref(false);
 const promotionsPreferences = ref<null | {
   email: boolean;
   phone: boolean;
@@ -82,12 +81,12 @@ watchDeep(() => promotionsPreferences.value,
     </DashboardSection>
 
     <DashboardSection :title="$t('dashboard.settings.preferences.communication')" class="text-subtle">
-      <BaseToggle
-        v-model="dumbDepositNotificationsRefUntilBackendImplementsIt"
+      <!-- <BaseToggle
+        v-model=""
         class="w-full lg:max-w-72"
       >
         <p>{{ $t("dashboard.settings.preferences.communications_allow_deposit") }}</p>
-      </BaseToggle>
+      </BaseToggle> -->
     </DashboardSection>
   </NuxtLayout>
 </template>
