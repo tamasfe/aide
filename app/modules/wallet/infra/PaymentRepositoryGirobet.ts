@@ -69,7 +69,7 @@ export class PaymentRepositoryGirobet implements PaymentRepositoryI {
     }
   }
 
-  public async createDepositFlow(amount: number, currency: WalletCurrency, paymentMethodId: number): Promise<Result<{ pix: { flowId: string; url: string } }, ErrorPendingPaymentFlow | InfrastructureError>> {
+  public async createDepositFlow(amount: number, currency: WalletCurrency, paymentMethodId: number): Promise<Result<{ flowId: number; pix: { code: string } }, ErrorPendingPaymentFlow | InfrastructureError>> {
     try {
       const { data, error, response } = await this.apiClient.POST("/payment/deposit", {
         body: {
@@ -81,9 +81,9 @@ export class PaymentRepositoryGirobet implements PaymentRepositoryI {
 
       if (data) {
         return success({
+          flowId: data.flow_id,
           pix: {
-            flowId: data.pix.flow_id,
-            url: data.pix.url,
+            code: data.pix.code,
           },
         });
       }

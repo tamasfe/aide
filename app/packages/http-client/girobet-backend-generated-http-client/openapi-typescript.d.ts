@@ -483,7 +483,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["PaymentMethodDepositResponsePayload"];
+                        "application/json": components["schemas"]["CreateDepositFlowResponse"];
                     };
                 };
                 "4XX": {
@@ -530,12 +530,13 @@ export interface paths {
                 };
             };
             responses: {
-                /** @description no content */
                 200: {
                     headers: {
                         [name: string]: unknown;
                     };
-                    content?: never;
+                    content: {
+                        "application/json": components["schemas"]["CreateWithdrawalFlowResponse"];
+                    };
                 };
                 "4XX": {
                     headers: {
@@ -2009,6 +2010,15 @@ export interface components {
             /** @description The identifier of the game category. This is a unique string that can be used to identify the category in the game search endpoint. */
             identifier: string;
         };
+        CreateDepositFlowResponse: {
+            /** @description Withdrawal payment flow ID */
+            flow_id: components["schemas"]["PaymentFlowId"];
+        } & {
+            pix: {
+                /** @description The PIX code used by the user for depositing the amount */
+                code: string;
+            };
+        };
         CreateGameSessionQuery: {
             /** @description The device type the game session is started on. Some games may only be available on certain devices. */
             client_type: components["schemas"]["SystemDevice"];
@@ -2018,6 +2028,10 @@ export interface components {
         CreateSignupFlowResponse: {
             /** @description The ID of the created signup flow. */
             flow_id: string;
+        };
+        CreateWithdrawalFlowResponse: {
+            /** @description Withdrawal payment flow ID */
+            flow_id: components["schemas"]["PaymentFlowId"];
         };
         /** Format: int64 */
         DurationSeconds: number;
@@ -2427,12 +2441,6 @@ export interface components {
             /** @description The withdrawal limit for the timeframe. */
             withdrawal?: components["schemas"]["SystemAmount"] | null;
         };
-        PaymentMethodDepositResponsePayload: {
-            pix: {
-                flow_id: string;
-                url: string;
-            };
-        };
         /** Format: int64 */
         PaymentMethodId: number;
         /** @enum {string} */
@@ -2477,6 +2485,10 @@ export interface components {
             /** @enum {string} */
             event: "notification";
             payload: components["schemas"]["NotificationType"];
+        } | {
+            /** @enum {string} */
+            event: "ticker";
+            payload: components["schemas"]["TickerType"];
         };
         SearchGameProviderQuery: {
             /** @description An organic search query to find game providers by. Searched fields include but are not limited to: name, description, slug... */
@@ -2567,9 +2579,9 @@ export interface components {
             code: "PAYMENT_METHOD_NOT_ALLOWED";
         } | {
             /** @enum {string} */
-            code: "PAYMENT_AMOUNT_EXCEEDS_LIMITS";
+            code: "PAYMENT_AMOUNT_OUTSIDE_LIMITS";
             metadata: {
-                /** @description If the payment exceeds the minimum or maximum limit bound */
+                /** @description The bound that is violated */
                 bound: components["schemas"]["PaymentLimitBound"];
                 /** @description The maximum allowed payment amount */
                 max?: string | null;
@@ -2603,6 +2615,9 @@ export interface components {
         } | {
             /** @enum {string} */
             code: "PAYMENT_PROVIDER_NOT_FOUND";
+        } | {
+            /** @enum {string} */
+            code: "NO_PAYMENT_PROVIDER_AVAILABLE";
         } | {
             /** @enum {string} */
             code: "PAYMENT_METHOD_NOT_FOUND";
@@ -2810,6 +2825,26 @@ export interface components {
         SystemValidationErrorsKind: components["schemas"]["SystemValidationErrors"] | {
             [key: string]: components["schemas"]["SystemValidationErrors"];
         } | components["schemas"]["SystemValidationError"][];
+        TickerGame: {
+            /** @description The ID of the game. */
+            id: components["schemas"]["GameId"];
+            /** @description The URL to the image of the game. */
+            image_url: string;
+            /** @description The name of the game. Do not use this in URLs, as it may contain special characters. */
+            name: string;
+            /** @description The slug of the game. This may be used in URLs. */
+            slug: string;
+        };
+        TickerType: {
+            data: {
+                amount: components["schemas"]["SystemAmount"];
+                currency: components["schemas"]["SystemCurrency"];
+                game: components["schemas"]["TickerGame"];
+                user_nickname: string;
+            };
+            /** @enum {string} */
+            type: "winning_now";
+        };
         UserBalanceResponse: {
             /** @description The balance of the wallet. */
             balance: components["schemas"]["SystemAmount"];

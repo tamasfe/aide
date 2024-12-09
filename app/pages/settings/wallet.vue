@@ -22,7 +22,7 @@ const { data } = await useAsyncData("wallet-page-payments-data", async () => {
   loading.value = false;
   return data.payments;
 }, {
-  watch: [() => walletStore.wallet?.id],
+  watch: [() => walletStore.wallet?.id, () => walletStore.wallet?.balance],
   lazy: DEFER_CLIENT_SIDE_LOADING,
   server: ENABLE_SERVER_SIDE_RENDERING,
 });

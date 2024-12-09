@@ -1,7 +1,8 @@
+import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
 import type { AsyncMessagePublisherI } from "~/packages/async-messages/async-message-publisher";
 import { success, type EmptySuccessResult } from "~/packages/result";
 
-type NoDataRequiredModal = "login" | "register" | "search" | "forgot_password" | "deposit" | "deposit_confirm" | "withdrawal";
+type NoDataRequiredModal = "login" | "register" | "search" | "forgot_password" | "deposit" | "withdrawal";
 
 type ModalData = {
   modal: NoDataRequiredModal;
@@ -11,14 +12,17 @@ type ModalData = {
 } | {
   modal: "settings";
   data: { setting: "password" };
+} | {
+  modal: "deposit_confirm";
+  data: { flowId: number; paymentCode: string; amount: number; currency: WalletCurrency };
 };
 
 export class EmitCommandOpenUserActionModalModal {
   constructor(private readonly asyncMessagePublisher: AsyncMessagePublisherI) {}
 
   public async handle(modalOrData: ModalData | NoDataRequiredModal): Promise<EmptySuccessResult> {
-    const modalData = typeof modalOrData === "string" ? { modal: modalOrData } : modalOrData;
-    switch (modalData.modal) {
+    const modalState = typeof modalOrData === "string" ? { modal: modalOrData } : modalOrData;
+    switch (modalState.modal) {
       case "login":
         await this.asyncMessagePublisher.emit("girobet:commands:modals:open-login", {});
         return success();
@@ -40,7 +44,7 @@ export class EmitCommandOpenUserActionModalModal {
         return success();
 
       case "deposit_confirm":
-        await this.asyncMessagePublisher.emit("girobet:commands:modals:open-deposit-confirm", {});
+        await this.asyncMessagePublisher.emit("girobet:commands:modals:open-deposit-confirm", modalState.data);
         return success();
 
       case "withdrawal":
@@ -48,11 +52,11 @@ export class EmitCommandOpenUserActionModalModal {
         return success();
 
       case "settings":
-        await this.asyncMessagePublisher.emit("girobet:commands:modals:open-update-settings", modalData.data);
+        await this.asyncMessagePublisher.emit("girobet:commands:modals:open-update-settings", modalState.data);
         return success();
 
       case "recover_password":
-        await this.asyncMessagePublisher.emit("girobet:commands:modals:open-recover-password", modalData.data);
+        await this.asyncMessagePublisher.emit("girobet:commands:modals:open-recover-password", modalState.data);
         return success();
     }
   }

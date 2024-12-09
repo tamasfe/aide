@@ -14,5 +14,5 @@ export interface PaymentRepositoryI {
     };
   }, InfrastructureError>>;
 
-  createDepositFlow(amount: number, currency: WalletCurrency, paymentMethodId: number): Promise<Result<{ pix: { flowId: string; url: string } }, ErrorPendingPaymentFlow | InfrastructureError>>;
+  createDepositFlow(amount: number, currency: WalletCurrency, paymentMethodId: number): Promise<Result<{ flowId: number; pix: { code: string } }, ErrorPendingPaymentFlow | InfrastructureError>>;
 }

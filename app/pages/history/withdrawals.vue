@@ -27,7 +27,7 @@ const { data } = await useAsyncData("history-page-withdrawals-data", async () =>
 
   return data.payments;
 }, {
-  watch: [() => walletStore.wallet?.id, pageIndex],
+  watch: [() => walletStore.wallet?.id, () => walletStore.wallet?.balance, pageIndex],
   lazy: DEFER_CLIENT_SIDE_LOADING,
   server: ENABLE_SERVER_SIDE_RENDERING,
 });

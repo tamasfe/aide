@@ -19,6 +19,7 @@
     "test:unit": "vitest --dir ./test/unit"
   },
   "dependencies": {
+    "@chenfengyuan/vue-countdown": "2",
     "@floating-ui/vue": "^1.1.5",
     "@headlessui/vue": "^1.7.23",
     "@pinia/nuxt": "^0.9.0",
@@ -41,6 +42,7 @@
     "openapi-fetch": "^0.13.3",
     "pathe": "^1.1.2",
     "pinia": "^2.3.0",
+    "qrcode.vue": "^3.6.0",
     "tailwind-merge": "^2.5.5",
     "validar-cpf": "^3.1.1",
     "vee-validate": "^4.14.7",

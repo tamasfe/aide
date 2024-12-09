@@ -1,16 +1,25 @@
 <script setup lang="ts">
+import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
+
 const { $dependencies } = useNuxtApp();
 const { locale } = useI18n();
 const { hostname, searchParams } = useRequestURL();
 
 type ModalState =
-  | { modal: null | "login" | "register" | "forgot" | "cancel_reg" | "deposit" | "deposit_confirm" | "withdrawal" | "search" }
+  | { modal: null | "login" | "register" | "forgot" | "cancel_reg" | "deposit" | "withdrawal" | "search" }
   | {
     modal: "settings";
     setting: "password";
   } | {
     modal: "recover_password";
     token: string;
+  } |
+  {
+    modal: "deposit_confirm";
+    paymentCode: string;
+    amount: number;
+    currency: WalletCurrency;
+    flowId: number;
   } |
   {
     modal: "restrict_license_alternative";
@@ -28,6 +37,7 @@ type ModalState =
     blockedCountry: string;
     currentHost: string;
   };
+
 const state = useState<ModalState>("user-modal-state", () => ({ modal: null }));
 
 const isOpen = defineModel<boolean>("open", { type: Boolean, required: true });
@@ -129,14 +139,12 @@ $dependencies.common.asyncMessagePublisher.subscribe(
 );
 $dependencies.common.asyncMessagePublisher.subscribe(
   "girobet:commands:modals:open-deposit-confirm",
-  () => {
+  ({ paymentCode, amount, currency, flowId }) => {
     // If any of the invalid jurisdiction modals are open: keep them open
     if (modalIsJurisdictionModal(state.value.modal)) {
       return;
     }
-    state.value = {
-      modal: "deposit_confirm",
-    };
+    state.value = { modal: "deposit_confirm", paymentCode, amount, currency, flowId };
   },
 );
 $dependencies.common.asyncMessagePublisher.subscribe(
@@ -149,6 +157,23 @@ $dependencies.common.asyncMessagePublisher.subscribe(
     state.value = {
       modal: "withdrawal",
     };
+  },
+);
+$dependencies.common.asyncMessagePublisher.subscribe(
+  "girobet-backend:events:payments:payment-status-updated",
+  ({ flowId }) => {
+    // If any of the invalid jurisdiction modals are open: keep them open
+    if (modalIsJurisdictionModal(state.value.modal)) {
+      return;
+    }
+    if (state.value.modal !== "deposit_confirm") {
+      return;
+    }
+    if (flowId === state.value.flowId) {
+      state.value = {
+        modal: null,
+      };
+    }
   },
 );
 $dependencies.common.asyncMessagePublisher.subscribe(
@@ -223,6 +248,9 @@ const modalIsJurisdictionModal = (modal: ModalState["modal"]): boolean => {
     />
     <ModalDepositConfirm
       v-if="state.modal === 'deposit_confirm'"
+      :code="state.paymentCode"
+      :amount="state.amount"
+      :currency="state.currency"
     />
     <ModalWithdrawal
       v-if="state.modal === 'withdrawal'"

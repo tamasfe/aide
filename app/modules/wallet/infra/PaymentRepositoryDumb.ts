@@ -27,11 +27,11 @@ export class PaymentRepositoryDumb implements PaymentRepositoryI {
     });
   }
 
-  public async createDepositFlow(_amount: number, _currency: WalletCurrency, _paymentMethodId: number): Promise<Result<{ pix: { flowId: string; url: string } }, InfrastructureError>> {
+  public async createDepositFlow(_amount: number, _currency: WalletCurrency, _paymentMethodId: number) {
     return success({
+      flowId: 123,
       pix: {
-        flowId: "some_flow_ud",
-        url: "url_returned",
+        code: "code_returned",
       },
     });
   }

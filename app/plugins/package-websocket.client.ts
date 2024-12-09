@@ -38,13 +38,14 @@ const reconnectAndSubscribe = async (channel: "user" | "newest_wins", commonDepe
 
   switch (channel) {
     case "user":
-      websocket.addEventListener(WebsocketEvent.message, (_i, event: MessageEvent<WebsocketMessagesI[keyof WebsocketMessagesI]>) => {
+      websocket.addEventListener(WebsocketEvent.message, (_i, event: MessageEvent<string>) => {
         try {
-          switch (event.data.payload.type) {
+          const data = JSON.parse(event.data) as WebsocketMessagesI[keyof WebsocketMessagesI];
+          switch (data.payload.type) {
             case "payment_status_update":
               commonDependencies.asyncMessagePublisher.emit("girobet-backend:events:payments:payment-status-updated", {
-                flowId: event.data.payload.data.flow_id,
-                status: event.data.payload.data.status,
+                flowId: data.payload.data.flow_id,
+                status: data.payload.data.status,
               });
               break;
           }

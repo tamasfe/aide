@@ -9,8 +9,7 @@ const props = defineProps<{
 const copied = ref(false);
 
 const onCopy = () => {
-  const value = String(props.value);
-  navigator.clipboard.writeText(value);
+  copyToClipboard(String(props.value));
   copied.value = true;
   setTimeout(() => {
     copied.value = false;

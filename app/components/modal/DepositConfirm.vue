@@ -1,6 +1,14 @@
 <script setup lang="ts">
+import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
+
 const open = ref(true);
 const loading = ref(false);
+
+defineProps<{
+  code: string;
+  amount: number;
+  currency: WalletCurrency;
+}>();
 
 // DESIGN STATUS:       ✅
 // ARCHITECTURE STATUS: ✴️
@@ -16,6 +24,10 @@ const loading = ref(false);
     banner="top"
     banner-top="/assets/images/deposit_horizontal.jpg"
   >
-    <FormDepositConfirm />
+    <FormDepositConfirm
+      :code="code"
+      :amount="amount"
+      :currency="currency"
+    />
   </BaseModal>
 </template>

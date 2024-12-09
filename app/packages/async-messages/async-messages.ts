@@ -1,5 +1,6 @@
 import type { SupportedLocale } from "../translation";
 import type { PaymentStatus } from "~/modules/wallet/domain/Payment";
+import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
 
 export interface AsyncMessagesTypes {
   "girobet:commands:modals:open-login": object;
@@ -14,7 +15,12 @@ export interface AsyncMessagesTypes {
   "girobet:commands:modals:open-recover-password": { token: string };
   "girobet:commands:modals:open-forgot-password": object;
   "girobet:commands:modals:open-deposit": object;
-  "girobet:commands:modals:open-deposit-confirm": object;
+  "girobet:commands:modals:open-deposit-confirm": {
+    flowId: number;
+    paymentCode: string;
+    amount: number;
+    currency: WalletCurrency;
+  };
   "girobet:commands:modals:open-withdrawal": object;
   "girobet:commands:modals:open-update-settings": { setting: "password" };
   "girobet:commands:modals:close-user-interaction-modal": object;
@@ -50,8 +56,10 @@ export interface AsyncMessagesTypes {
 
   "girobet:events:payments:deposit-flow-created": {
     paymentMethodId: number;
-    flowId: string;
+    flowId: number;
     code: string;
+    amount: number;
+    currency: WalletCurrency;
   };
 
   "girobet:events:websockets:connection-errored": {

@@ -58,9 +58,9 @@ const userStore = useUserStore();
           <BaseButton
             variant="secondary"
             size="dashboard"
-            class="gap-2"
+            class="px-0"
           >
-            <BaseCopy :value="userStore.user?.id || ''" />
+            <BaseCopy class="px-3" :value="String(userStore.user?.id || '')" />
           </BaseButton>
         </div>
       </template>

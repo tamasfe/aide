@@ -36,3 +36,8 @@ export function formatDate(date: string, format: string = "LL") {
   // wrapper that explains it
   return dayjs(date).format(format);
 }
+
+export function copyToClipboard(text: string) {
+  const value = String(text);
+  navigator.clipboard.writeText(value);
+}
