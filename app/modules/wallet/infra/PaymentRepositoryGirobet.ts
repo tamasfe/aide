@@ -2,6 +2,9 @@ import { type PaymentType, Payment } from "../domain/Payment";
 import type { PaymentRepositoryI } from "../domain/PaymentRepository";
 import type { WalletCurrency } from "../domain/WalletCurrency";
 import { ErrorPendingPaymentFlow } from "../domain/ErrorPendingPaymentFlow";
+import { ErrorInsufficientWagers } from "../domain/ErrorInsufficientWagers";
+import { ErrorInsufficientFunds } from "../domain/ErrorInsufficientFunds";
+import { ErrorPaymentCooldownNotFinished } from "../domain/ErrorPaymentCooldownNotFinished";
 import type { AsyncMessagePublisherI } from "~/packages/async-messages/async-message-publisher";
 import { createBackendOpenApiClient } from "~/packages/http-client/create-backend-open-api-client";
 import { HttpBackendApiError } from "~/packages/http-client/http-client-error";
@@ -91,6 +94,57 @@ export class PaymentRepositoryGirobet implements PaymentRepositoryI {
       if (error) {
         if (error.code === "WALLET_PENDING_FLOW") {
           return fail(new ErrorPendingPaymentFlow("deposit"));
+        }
+        return fail(
+          InfrastructureError.newFromError({
+            amount, currency, paymentMethodId,
+          }, HttpBackendApiError.newFromBackendError(error, response)),
+        );
+      }
+
+      return fail(
+        InfrastructureError.newFromUnknownError({
+          amount, currency, paymentMethodId,
+        }, new Error("Unexpected scenario: library did not return data nor error. This should never happen")),
+      );
+    }
+    catch (error: unknown) {
+      return fail(
+        InfrastructureError.newFromUnknownError({
+          amount, currency, paymentMethodId,
+        }, error),
+      );
+    }
+  }
+
+  public async createWithdrawalFlow(amount: number, currency: WalletCurrency, paymentMethodId: number) {
+    try {
+      const { data, error, response } = await this.apiClient.POST("/payment/withdraw", {
+        body: {
+          amount,
+          currency,
+          payment_method_id: paymentMethodId,
+        },
+      });
+
+      if (data) {
+        return success({
+          flowId: data.flow_id,
+        });
+      }
+
+      if (error) {
+        if (error.code === "WALLET_PENDING_FLOW") {
+          return fail(new ErrorPendingPaymentFlow("deposit"));
+        }
+        if (error.code === "WALLET_INSUFFICIENT_WAGERS") {
+          return fail(ErrorInsufficientWagers.new({ amount, currency, paymentMethodId }));
+        }
+        if (error.code === "WALLET_INSUFFICIENT_FUNDS") {
+          return fail(ErrorInsufficientFunds.new({ amount, currency, paymentMethodId }));
+        }
+        if (error.code === "WALLET_PAYMENT_COOLDOWN") {
+          return fail(ErrorPaymentCooldownNotFinished.newFromWithdrawal(error.metadata.minutes_left, { amount, currency, paymentMethodId }));
         }
         return fail(
           InfrastructureError.newFromError({

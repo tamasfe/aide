@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { toTypedSchema } from "@vee-validate/zod";
+import { z } from "zod";
 import type { SupportedCountryFlagCode } from "@/types/constants";
 import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
 
@@ -8,9 +10,9 @@ import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
 // TRANSLATION STATUS:  ✅
 // AUTOCOMPLETES:       ✅
 // INPUTMODES:          ✅
-// ZOD SCHEMA:          ✴️
+// ZOD SCHEMA:          ✅
 
-defineProps<{
+const props = defineProps<{
   limits: { min: number | null; max: number | null; cooldownSeconds: number | null };
   currency: {
     code: WalletCurrency;
@@ -19,17 +21,55 @@ defineProps<{
   paymentMethodId: number;
 }>();
 
-const loading = ref(false);
-
 const showLimits = ref(false);
-
 const onToggleLimits = () => {
   showLimits.value = !showLimits.value;
 };
+
+/**
+ *
+ * Form initialisation
+ *
+ */
+const { $dependencies } = useNuxtApp();
+const { t } = useI18n();
+let schemaForAmount = z.number({ required_error: t("validation.amount_required") });
+if (props.limits.min !== null) {
+  schemaForAmount = schemaForAmount.min(props.limits.min, t("validation.amount_withdrawal_min", { min: `${props.limits.min} ${props.currency.code}` }));
+}
+if (props.limits.max !== null) {
+  schemaForAmount = schemaForAmount.max(props.limits.max, t("validation.amount_withdrawal_max", { max: `${props.limits.max} ${props.currency.code}` }));
+}
+const validationSchema = toTypedSchema(
+  z.object({ amount: schemaForAmount }),
+);
+
+const { handleSubmit, errors: formErrors, defineField, meta } = useForm({ validationSchema });
+const formErrorMessage = ref("");
+const loading = ref(false);
+const [amount, amountAttrs] = defineField("amount");
+
+const onSubmit = handleSubmit(async (formData) => {
+  loading.value = true;
+  formErrorMessage.value = "";
+
+  formErrorMessage.value = await $dependencies.wallets.ui.createWithdrawalFlowOnForm.handle(
+    formData.amount,
+    props.currency.code,
+    props.paymentMethodId,
+  );
+
+  loading.value = false;
+  if (!formErrorMessage.value) {
+    $dependencies.users.ui.emitCommandCloseUserActionModal.handle();
+  }
+}, ({ results }) => {
+  $dependencies.common.logger.warn("Validation failed", { validationResults: results });
+});
 </script>
 
 <template>
-  <BaseForm>
+  <BaseForm @submit="onSubmit">
     <div class="flex justify-between">
       <div class="mb-2 leading-snug">
         <h2 class="text-xl font-semibold">{{ $t('modal_payments.make_withdrawal') }}</h2>
@@ -49,12 +89,22 @@ const onToggleLimits = () => {
     </div>
 
     <template v-if="!showLimits">
+      <BaseAlert
+        v-if="formErrorMessage"
+        class="mb-0.5"
+        level="error"
+        :message="formErrorMessage"
+      />
+
       <BaseInputGroup
+        v-bind="amountAttrs"
+        v-model.number="amount"
         :placeholder="$t('placeholder.deposit_amount')"
         autocomplete="text"
         inputmode="numeric"
         placeholder-placement="default"
         error-placement="below"
+        :error-message="formErrors.amount"
       >
         <template #prefix>
           <div class="self-center mr-2 font-semibold text-lg bg-button-emphasis text-transparent bg-clip-text">R$</div>
@@ -75,10 +125,12 @@ const onToggleLimits = () => {
       </div>
 
       <BaseButton
-        :loading="loading"
-        variant="primary"
-        size="xl"
         class="mt-4 mb-2 w-full"
+        :disabled="!meta.valid"
+        :loading="loading"
+        size="xl"
+        type="submit"
+        variant="primary"
       >
         {{ $t("button.withdraw") }}
       </BaseButton>

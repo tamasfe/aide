@@ -5,7 +5,11 @@ import type { SupportedCountryFlagCode } from "~/types/constants";
 // DESIGN STATUS:       ✅
 // ARCHITECTURE STATUS: ✅
 // TRANSLATION STATUS:  ✅
+const { $dependencies } = useNuxtApp();
 
+const onClosed = () => {
+  $dependencies.users.ui.emitCommandCloseUserActionModal.handle();
+};
 defineProps<{
   limits: null | { min: number | null; max: number | null; cooldownSeconds: number | null };
   paymentMethodId: null | number;
@@ -26,6 +30,7 @@ const currency = ref<{
     :logo="false"
     banner="top"
     banner-top="/assets/images/withdrawal_horizontal.jpg"
+    @close="onClosed"
   >
     <FormWithdrawal
       v-if="limits && paymentMethodId"

@@ -36,6 +36,12 @@ export class PaymentRepositoryDumb implements PaymentRepositoryI {
     });
   }
 
+  public async createWithdrawalFlow(_amount: number, _currency: WalletCurrency, _paymentMethodId: number) {
+    return success({
+      flowId: 123,
+    });
+  }
+
   public async findPaymentLimits(_currency: WalletCurrency, _paymentMethodId: number): Promise<Result<{ deposit: { min: number; max: number }; withdrawal: { min: number; max: number } }, InfrastructureError>> {
     return success({
       deposit: {

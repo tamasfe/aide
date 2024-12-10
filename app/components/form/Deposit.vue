@@ -41,7 +41,7 @@ const { t } = useI18n();
  * Form initialisation
  *
  */
-let schemaForAmount = z.number({ required_error: t("validation.amount_deposit_required") });
+let schemaForAmount = z.number({ required_error: t("validation.amount_required") });
 if (props.amounts.min !== null) {
   schemaForAmount = schemaForAmount.min(props.amounts.min, t("validation.amount_deposit_min", { min: `${props.amounts.min} ${props.currency.code}` }));
 }

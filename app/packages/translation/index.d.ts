@@ -6,7 +6,7 @@ export type TranslateFunctionType = (
 ) => string;
 
 export type DateTimeFormatterFunctionType = (
-  key: string,
+  value: string | number | Date,
   params?: DateTimeOptions,
 ) => string;
 

@@ -5,6 +5,7 @@ import type { PaymentRepositoryI } from "../domain/PaymentRepository";
 import { SearchPaymentsPaginating } from "../application/SearchPaymentsPaginating";
 import { CreateDepositFlow } from "../application/CreateDepositFlow";
 import type { PaymentMethodRepositoryI } from "../domain/PaymentMethodRepository";
+import { CreateWithdrawalFlow } from "../application/CreateWithdrawalFlow";
 import { WalletsRepositoryGirobet } from "./WalletsRepositoryGirobet";
 import { WalletsRepositoryDumb } from "./WalletsRepositoryDumb";
 import { PaymentRepositoryGirobet } from "./PaymentRepositoryGirobet";
@@ -14,6 +15,7 @@ import { CreateDepositFlowOnForm } from "./ui/CreateDepositFlowOnForm";
 import { FindPreferredPaymentMethodOnPaymentModal } from "./ui/FindPreferredPaymentMethodOnPaymentModal";
 import { PaymentMethodRepositoryGirobet } from "./PaymentMethodRepositoryGirobet";
 import { PaymentMethodRepositoryDumb } from "./PaymentMethodRepositoryDumb";
+import { CreateWithdrawalFlowOnForm } from "./ui/CreateWithdrawalFlowOnForm";
 import type { CommonDependenciesI } from "~/dependency-injection/load-di";
 
 export interface WalletsDependencyInjectionI {
@@ -23,6 +25,7 @@ export interface WalletsDependencyInjectionI {
   ui: {
     findPreferredPaymentMethodOnPaymentModal: FindPreferredPaymentMethodOnPaymentModal;
     createDepositFlowOnForm: CreateDepositFlowOnForm;
+    createWithdrawalFlowOnForm: CreateWithdrawalFlowOnForm;
     searchPaymentsOnTable: SearchPaymentsOnTable;
   };
 }
@@ -63,6 +66,12 @@ export const createWalletsDependencyInjection = (publicConfig: PublicRuntimeConf
         new CreateDepositFlow(paymentsRepository, commonDependencies.asyncMessagePublisher),
         commonDependencies.logger,
         commonDependencies.translateFunction,
+      ),
+      createWithdrawalFlowOnForm: new CreateWithdrawalFlowOnForm(
+        new CreateWithdrawalFlow(paymentsRepository, commonDependencies.asyncMessagePublisher),
+        commonDependencies.logger,
+        commonDependencies.translateFunction,
+        commonDependencies.dateTimeFormatter,
       ),
       searchPaymentsOnTable: new SearchPaymentsOnTable(
         new SearchPaymentsPaginating(paymentsRepository),

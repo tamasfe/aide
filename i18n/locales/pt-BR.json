@@ -88,12 +88,21 @@
   "modal_payments": {
     "make_deposit": "Make a Deposit",
     "make_deposit_subtitle": "Add funds to your account",
+    "generate_new_code": "Generate a new code",
     "finalize_deposit": "Finalize Deposit",
     "finalize_deposit_subtitle": "Scan QR or copy code",
+    "finalize_deposit_code_has_expired": "The payment code has expired",
     "make_withdrawal": "Make a Withdrawal",
     "make_withdrawal_subtitle": "Withdraw funds from your account",
     "available_withdraw": "Available to withdraw",
-    "limits": "limits"
+    "limits": "limits",
+    "error_creating_flow_pending_deposit": "You have an existing deposit in progress. Please wait for it to complete or cancel before trying again",
+    "error_creating_flow_pending_withdrawal": "You have an existing withdrawal in progress. Please wait for it to complete or cancel before trying again",
+    "error_creating_deposit_flow_unknown": "An error occurred while handling your deposit. Please try again",
+    "error_creating_withdrawal_insufficient_wagers": "Insufficient wagers placed to enable withdrawal. Please place more bets and try again",
+    "error_creating_withdrawal_insufficient_funds": "Insufficient funds in your wallet to withdraw. Please deposit more funds or reduce the amount to withdraw and try again",
+    "error_creating_withdrawal_cooldown_not_finished": "O seu tempo de espera entre retiradas termina no {dateTime}. Por favor, aguarde mais um pouco e tente novamente",
+    "error_creating_withdrawal_flow_unknown": "An error occurred while handling your withdrawal. Please try again"
   },
   "modal_cancel_registration": {
     "headline": "Wait! Are you sure you want to cancel?",
@@ -125,7 +134,12 @@
     "telephone_invalid": "Invalid phone",
     "telephone_required": "Phone is required",
     "telephone_invalid_too_short": "Phone is missing {num} digits",
-    "telephone_invalid_too_long": "Phone is {num} digits too long"
+    "telephone_invalid_too_long": "Phone is {num} digits too long",
+    "amount_required": "Amount is required",
+    "amount_deposit_min": "Minimum deposit amount is {min}",
+    "amount_deposit_max": "Maximum deposit amount is {max}",
+    "amount_withdrawal_min": "Minimum withdrawal amount is {min}",
+    "amount_withdrawal_max": "Maximum withdrawal amount is {max}"
   },
   "withdrawal_limits": {
     "summary": "For an easy, secure and simple withdraw process, make sure to follow these guidelines: The minimum withdrawal amount varies by method and is listed above. Withdrawals are always to be processed to the original deposit method unless otherwise specified or if that method doesn't support withdrawals."

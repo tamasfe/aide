@@ -1,3 +1,6 @@
+import type { ErrorInsufficientFunds } from "./ErrorInsufficientFunds";
+import type { ErrorInsufficientWagers } from "./ErrorInsufficientWagers";
+import type { ErrorPaymentCooldownNotFinished } from "./ErrorPaymentCooldownNotFinished";
 import type { ErrorPendingPaymentFlow } from "./ErrorPendingPaymentFlow";
 import type { Payment, PaymentType } from "./Payment";
 import type { WalletCurrency } from "./WalletCurrency";
@@ -15,4 +18,5 @@ export interface PaymentRepositoryI {
   }, InfrastructureError>>;
 
   createDepositFlow(amount: number, currency: WalletCurrency, paymentMethodId: number): Promise<Result<{ flowId: number; pix: { code: string } }, ErrorPendingPaymentFlow | InfrastructureError>>;
+  createWithdrawalFlow(amount: number, currency: WalletCurrency, paymentMethodId: number): Promise<Result<{ flowId: number }, ErrorPendingPaymentFlow | ErrorInsufficientWagers | ErrorInsufficientFunds | ErrorPaymentCooldownNotFinished | InfrastructureError>>;
 }
