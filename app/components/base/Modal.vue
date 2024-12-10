@@ -34,6 +34,21 @@ const open = computed({
   get: () => props.open,
   set: (value: boolean) => emit("update:open", value),
 });
+
+const prefetchBannerLinks = (() => {
+  const links = [];
+  if (props.bannerLeft) {
+    links.push({ rel: "prefetch", href: props.bannerLeft, as: "image" as const });
+  }
+  if (props.bannerTop) {
+    links.push({ rel: "prefetch", href: props.bannerTop, as: "image" as const });
+  }
+  return links;
+})();
+
+if (prefetchBannerLinks.length > 0) {
+  useHead(() => ({ link: prefetchBannerLinks }));
+}
 </script>
 
 <template>

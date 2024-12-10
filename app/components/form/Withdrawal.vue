@@ -107,7 +107,9 @@ const onSubmit = handleSubmit(async (formData) => {
         :error-message="formErrors.amount"
       >
         <template #prefix>
-          <div class="self-center mr-2 font-semibold text-lg bg-button-emphasis text-transparent bg-clip-text">R$</div>
+          <div class="self-center mr-2 font-semibold text-lg bg-button-emphasis text-transparent bg-clip-text">
+            R$
+          </div>
         </template>
         <template #suffix>
           <div class="ml-5 flex flex-row justify-center items-center gap-1.5">
