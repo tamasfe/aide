@@ -35,19 +35,19 @@ const open = computed({
   set: (value: boolean) => emit("update:open", value),
 });
 
-const prefetchBannerLinks = (() => {
+const preloadBannerLinks = (() => {
   const links = [];
   if (props.bannerLeft) {
-    links.push({ rel: "prefetch", href: props.bannerLeft, as: "image" as const });
+    links.push({ rel: "preload", href: props.bannerLeft, as: "image" as const });
   }
   if (props.bannerTop) {
-    links.push({ rel: "prefetch", href: props.bannerTop, as: "image" as const });
+    links.push({ rel: "preload", href: props.bannerTop, as: "image" as const });
   }
   return links;
 })();
 
-if (prefetchBannerLinks.length > 0) {
-  useHead(() => ({ link: prefetchBannerLinks }));
+if (preloadBannerLinks.length > 0) {
+  useHead(() => ({ link: preloadBannerLinks }));
 }
 </script>
 
