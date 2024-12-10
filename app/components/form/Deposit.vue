@@ -11,7 +11,7 @@ import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
 // TRANSLATION STATUS:  ✅
 // AUTOCOMPLETES:       ✅
 // INPUTMODES:          ✅
-// ZOD SCHEMA:          ✴️
+// ZOD SCHEMA:          ✅
 
 const props = defineProps({
   paymentMethodId: {
@@ -34,7 +34,7 @@ const props = defineProps({
 const presetAmounts = ref([10, 50, 100]);
 
 const { $dependencies } = useNuxtApp();
-const { t } = useI18n();
+const { t, locale } = useI18n();
 
 /**
  *
@@ -91,13 +91,20 @@ const onSubmit = handleSubmit(async (formData) => {
 
     <BaseInputGroup
       v-bind="amountAttrs"
-      v-model.number="amount"
       :placeholder="$t('placeholder.deposit_amount')"
       autocomplete="text"
-      inputmode="numeric"
+      inputmode="decimal"
       placeholder-placement="default"
       error-placement="below"
       :error-message="formErrors.amount"
+      :mask="{
+        number: {
+          locale,
+          fraction: 2,
+          unsigned: true,
+        },
+      }"
+      @input="(value) => amount = Number(value.replace(/[^\d.]/g, ''))"
     >
       <template #prefix>
         <!-- TODO in the future: make this part multi-currency friendly -->

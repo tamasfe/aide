@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from "vue";
+import type { MaskInputOptions } from "maska";
 
 // DESIGN TODO:
 // ✴️  this component doesnt handle other variants, but the hard thing about that is CVA() doesnt let you do multiple classes for a SINGLE variant i think. so we might need to use computed properties to build other things like (input size, icon size etc). we can also do them as props like inputClass, iconClass, etc... but i usually find that very nasty
@@ -25,7 +26,7 @@ const props = withDefaults(
     placeholderPlacement?: "floating" | "default";
     errorPlacement?: "floating" | "below";
     errorMessage?: string;
-    mask?: string;
+    mask?: string | MaskInputOptions;
     maskBehaviourEager?: boolean;
     class?: HTMLAttributes["class"];
   }>(),
@@ -136,7 +137,7 @@ const [value, modifiers] = defineModel<number | string>({
         <BaseInput
           v-if="fieldType === 'input'"
           v-model="value"
-          :mask-pattern="mask"
+          :mask="mask"
           :mask-behaviour-eager="maskBehaviourEager"
           v-bind="$attrs"
           :required="required"

@@ -32,7 +32,7 @@ const onToggleLimits = () => {
  *
  */
 const { $dependencies } = useNuxtApp();
-const { t } = useI18n();
+const { t, locale } = useI18n();
 let schemaForAmount = z.number({ required_error: t("validation.amount_required") });
 if (props.limits.min !== null) {
   schemaForAmount = schemaForAmount.min(props.limits.min, t("validation.amount_withdrawal_min", { min: `${props.limits.min} ${props.currency.code}` }));
@@ -98,15 +98,23 @@ const onSubmit = handleSubmit(async (formData) => {
 
       <BaseInputGroup
         v-bind="amountAttrs"
-        v-model.number="amount"
         :placeholder="$t('placeholder.deposit_amount')"
         autocomplete="text"
-        inputmode="numeric"
+        inputmode="decimal"
         placeholder-placement="default"
         error-placement="below"
         :error-message="formErrors.amount"
+        :mask="{
+          number: {
+            locale,
+            fraction: 2,
+            unsigned: true,
+          },
+        }"
+        @input="(value) => amount = Number(value.replace(/[^\d.]/g, ''))"
       >
         <template #prefix>
+          <!-- TODO in the future: make this part multi-currency friendly -->
           <div class="self-center mr-2 font-semibold text-lg bg-button-emphasis text-transparent bg-clip-text">
             R$
           </div>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { InputHTMLAttributes, HTMLAttributes } from "vue";
 import { type VariantProps, cva } from "class-variance-authority";
+import type { MaskInputOptions } from "maska";
 
 const inputVariants = cva(
   "focus-visible:outline-none disabled:opacity-70",
@@ -36,7 +37,7 @@ const props = withDefaults(defineProps<{
   required?: boolean;
   disabled?: boolean;
   placeholder?: string;
-  maskPattern?: string;
+  mask?: string | MaskInputOptions;
   maskBehaviourEager?: boolean;
   autocomplete?: InputHTMLAttributes["autocomplete"];
   autocorrect?: "off";
@@ -64,7 +65,7 @@ const [value, modifiers] = defineModel<string | number>({
 <template>
   <input
     v-model="value"
-    v-maska="maskPattern"
+    v-maska="mask"
     :data-maska-eager="maskBehaviourEager ?? false"
     :type="type"
     :required="required"
