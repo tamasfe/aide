@@ -8,10 +8,12 @@ interface PaymentMethodResponseI {
   depositAmounts: {
     min: number | null;
     max: number | null;
+    cooldownSeconds: number | null;
   };
   withdrawalAmounts: {
     min: number | null;
     max: number | null;
+    cooldownSeconds: number | null;
   };
 }
 export class FindPreferredPaymentMethodOnPaymentModal {
@@ -24,6 +26,7 @@ export class FindPreferredPaymentMethodOnPaymentModal {
 
   public FALLBACK_FOR_MINIMUM_AMOUNT = 0;
   public FALLBACK_FOR_MAX_AMOUNT = null;
+  public FALLBACK_FOR_COOLDOWN_SECONDS = null;
 
   public async handle(currency: WalletCurrency): Promise<PaymentMethodResponseI | null> {
     const paymentMethodResult = await this.paymentMethodRepo.findOne(currency, this.PREFERRED_METHOD);
@@ -41,10 +44,12 @@ export class FindPreferredPaymentMethodOnPaymentModal {
         depositAmounts: {
           min: this.FALLBACK_FOR_MINIMUM_AMOUNT,
           max: this.FALLBACK_FOR_MAX_AMOUNT,
+          cooldownSeconds: this.FALLBACK_FOR_COOLDOWN_SECONDS,
         },
         withdrawalAmounts: {
           min: this.FALLBACK_FOR_MINIMUM_AMOUNT,
           max: this.FALLBACK_FOR_MAX_AMOUNT,
+          cooldownSeconds: this.FALLBACK_FOR_COOLDOWN_SECONDS,
         },
       };
     }
@@ -55,10 +60,12 @@ export class FindPreferredPaymentMethodOnPaymentModal {
       depositAmounts: {
         min: limitsResult.value.deposit.min ?? this.FALLBACK_FOR_MINIMUM_AMOUNT,
         max: limitsResult.value.deposit.max ?? this.FALLBACK_FOR_MAX_AMOUNT,
+        cooldownSeconds: limitsResult.value.deposit.cooldownSeconds ?? this.FALLBACK_FOR_COOLDOWN_SECONDS,
       },
       withdrawalAmounts: {
         min: limitsResult.value.withdrawal.min ?? this.FALLBACK_FOR_MINIMUM_AMOUNT,
         max: limitsResult.value.withdrawal.max ?? this.FALLBACK_FOR_MAX_AMOUNT,
+        cooldownSeconds: limitsResult.value.withdrawal.cooldownSeconds ?? this.FALLBACK_FOR_COOLDOWN_SECONDS,
       },
     };
   }

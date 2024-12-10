@@ -18,13 +18,15 @@ export class PaymentMethodRepositoryDumb implements PaymentMethodRepositoryI {
     );
   }
 
-  public async findLimits(_currency: WalletCurrency, _paymentMethodId: number): Promise<Result<{ deposit: { min: number; max: number }; withdrawal: { min: number; max: number } }, InfrastructureError>> {
+  public async findLimits(_currency: WalletCurrency, _paymentMethodId: number) {
     return success({
       deposit: {
+        cooldownSeconds: 10,
         min: 5,
         max: 500,
       },
       withdrawal: {
+        cooldownSeconds: 10,
         min: 5,
         max: 500,
       },

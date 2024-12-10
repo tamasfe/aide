@@ -1,20 +1,37 @@
 <script setup lang="ts">
-const open = ref(true);
-const loading = ref(false);
+import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
+import type { SupportedCountryFlagCode } from "~/types/constants";
 
 // DESIGN STATUS:       ✅
 // ARCHITECTURE STATUS: ✅
 // TRANSLATION STATUS:  ✅
+
+defineProps<{
+  limits: null | { min: number | null; max: number | null; cooldownSeconds: number | null };
+  paymentMethodId: null | number;
+  open: boolean;
+}>();
+const currency = ref<{
+  code: WalletCurrency;
+  countryCode: SupportedCountryFlagCode;
+}>({
+  code: "BRL",
+  countryCode: "BR",
+});
 </script>
 
 <template>
   <BaseModal
-    v-model:open="open"
-    :disabled="loading"
+    :open="open"
     :logo="false"
     banner="top"
     banner-top="/assets/images/withdrawal_horizontal.jpg"
   >
-    <FormWithdrawal />
+    <FormWithdrawal
+      v-if="limits && paymentMethodId"
+      :limits="limits"
+      :payment-method-id="paymentMethodId"
+      :currency="currency"
+    />
   </BaseModal>
 </template>

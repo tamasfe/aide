@@ -58,7 +58,7 @@ export class PaymentMethodRepositoryGirobet implements PaymentMethodRepositoryI 
     return success(paymentMethod);
   }
 
-  public async findLimits(currency: WalletCurrency, paymentMethodId: number): Promise<Result<{ deposit: { min: number | null; max: number | null }; withdrawal: { min: number | null; max: number | null } }, InfrastructureError>> {
+  public async findLimits(currency: WalletCurrency, paymentMethodId: number) {
     try {
       const { data, error, response } = await this.apiClient.GET("/payment/limits", {
         params: {
@@ -72,10 +72,12 @@ export class PaymentMethodRepositoryGirobet implements PaymentMethodRepositoryI 
       if (data) {
         return success({
           deposit: {
+            cooldownSeconds: data.deposit_cooldown ?? null,
             min: data.deposit_min ?? null,
             max: data.deposit_max ?? null,
           },
           withdrawal: {
+            cooldownSeconds: data.withdrawal_cooldown ?? null,
             min: data.withdrawal_min ?? null,
             max: data.withdrawal_max ?? null,
           },

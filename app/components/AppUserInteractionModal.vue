@@ -4,6 +4,7 @@ import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
 const { $dependencies } = useNuxtApp();
 const { locale } = useI18n();
 const { hostname, searchParams } = useRequestURL();
+const walletStore = useWalletStore();
 
 type ModalState =
   | { modal: null | "login" | "register" | "forgot" | "cancel_reg" | "deposit" | "withdrawal" | "search" }
@@ -220,6 +221,19 @@ if (recoverPasswordToken.value) {
   $dependencies.users.ui.emitCommandOpenUserActionModal.handle({ modal: "recover_password", data: { token: recoverPasswordToken.value } });
 }
 
+const ENABLE_SERVER_SIDE_RENDERING = false;
+const DEFER_CLIENT_SIDE_LOADING = true;
+const { data: paymentMethodData } = await useAsyncData("user-modals-payment-method", async () => {
+  if (!walletStore.wallet) {
+    return null;
+  }
+  return await $dependencies.wallets.ui.findPreferredPaymentMethodOnPaymentModal.handle(walletStore.wallet.currency);
+}, {
+  watch: [() => walletStore.wallet?.balance],
+  lazy: DEFER_CLIENT_SIDE_LOADING,
+  server: ENABLE_SERVER_SIDE_RENDERING,
+});
+
 const modalIsJurisdictionModal = (modal: ModalState["modal"]): boolean => {
   return modal === "restrict_license_no_alternative" || modal === "restrict_license_alternative" || modal === "restrict_expanding";
 };
@@ -245,6 +259,8 @@ const modalIsJurisdictionModal = (modal: ModalState["modal"]): boolean => {
     />
     <ModalDeposit
       :open="state.modal === 'deposit'"
+      :limits="paymentMethodData?.depositAmounts ?? null"
+      :payment-method-id="paymentMethodData?.id ?? null"
     />
     <ModalDepositConfirm
       v-if="state.modal === 'deposit_confirm'"
@@ -253,7 +269,9 @@ const modalIsJurisdictionModal = (modal: ModalState["modal"]): boolean => {
       :currency="state.currency"
     />
     <ModalWithdrawal
-      v-if="state.modal === 'withdrawal'"
+      :open="state.modal === 'withdrawal'"
+      :limits="paymentMethodData?.withdrawalAmounts ?? null"
+      :payment-method-id="paymentMethodData?.id ?? null"
     />
     <ModalSearch
       v-if="state.modal === 'search'"

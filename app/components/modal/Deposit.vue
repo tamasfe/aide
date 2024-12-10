@@ -6,10 +6,7 @@ import type { SupportedCountryFlagCode } from "~/types/constants";
 // ARCHITECTURE STATUS: ✅
 // TRANSLATION STATUS:  ✅
 
-defineProps<{ open: boolean }>();
-
 const { $dependencies } = useNuxtApp();
-const walletStore = useWalletStore();
 
 const onClosed = () => {
   $dependencies.users.ui.emitCommandCloseUserActionModal.handle();
@@ -23,15 +20,11 @@ const currency = ref<{
   countryCode: "BR",
 });
 
-const ENABLE_SERVER_SIDE_RENDERING = false;
-const DEFER_CLIENT_SIDE_LOADING = true;
-const { data: paymentMethod } = await useAsyncData("deposit-modal-payment-method", async () => {
-  if (!walletStore.wallet) {
-    return null;
-  }
-  return await $dependencies.wallets.ui.findPreferredPaymentMethodOnPaymentModal.handle(walletStore.wallet.currency);
-}, { watch: [() => walletStore.isInit], lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING },
-);
+defineProps<{
+  limits: null | { min: number | null; max: number | null };
+  paymentMethodId: null | number;
+  open: boolean;
+}>();
 </script>
 
 <template>
@@ -44,10 +37,10 @@ const { data: paymentMethod } = await useAsyncData("deposit-modal-payment-method
     @close="onClosed"
   >
     <FormDeposit
-      v-if="paymentMethod"
-      :amounts="{ min: paymentMethod.depositAmounts.min, max: paymentMethod.depositAmounts.max }"
+      v-if="limits && paymentMethodId"
+      :amounts="{ min: limits.min, max: limits.max }"
       :currency="currency"
-      :payment-method-id="paymentMethod.id"
+      :payment-method-id="paymentMethodId"
     />
   </BaseModal>
 </template>
