@@ -14,17 +14,25 @@ import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
 // INPUTMODES:          ✅
 // ZOD SCHEMA:          ? (From Ivan: is this needed? There is no form to submit here, just waiting for WS message to be received)
 
-defineProps<{
+const props = defineProps<{
   code: string;
   amount: number;
   currency: WalletCurrency;
+  createNewDeposit: () => Promise<string>;
 }>();
 
 const COUNTDOWN_MS = 5 * 60 * 1000;
 const countdownHasEnded = ref(false);
+const loadingGenerateNewCode = ref(false);
 
 const formatDuration = (minutes: number, seconds: number) => {
   return `${minutes < 10 ? "0" + minutes : minutes}:${seconds < 10 ? "0" + seconds : seconds}`;
+};
+
+const onClickGenerateNewCode = async () => {
+  loadingGenerateNewCode.value = true;
+  await props.createNewDeposit();
+  loadingGenerateNewCode.value = false;
 };
 </script>
 
@@ -112,9 +120,10 @@ const formatDuration = (minutes: number, seconds: number) => {
         <BaseButton
           size="xl"
           class="mt-4 w-full px-0"
-          @click="$dependencies.users.ui.emitCommandOpenUserActionModal.handle('deposit')"
+          :loading="loadingGenerateNewCode"
+          @click="onClickGenerateNewCode"
         >
-          {{ $t("modal_payments.make_new_deposit") }}
+          {{ $t("modal_payments.generate_new_code") }}
         </BaseButton>
 
         <BaseButton

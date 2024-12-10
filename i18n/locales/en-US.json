@@ -93,7 +93,7 @@
   "modal_payments": {
     "make_deposit": "Make a Deposit",
     "make_deposit_subtitle": "Add funds to your account",
-    "make_new_deposit": "Make a new Deposit",
+    "generate_new_code": "Generate a new code",
     "finalize_deposit": "Finalize Deposit",
     "finalize_deposit_subtitle": "Scan QR or copy code",
     "finalize_deposit_code_has_expired": "The payment code has expired",

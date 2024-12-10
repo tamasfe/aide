@@ -21,6 +21,7 @@ type ModalState =
     amount: number;
     currency: WalletCurrency;
     flowId: number;
+    paymentMethodId: number;
   } |
   {
     modal: "restrict_license_alternative";
@@ -145,7 +146,9 @@ $dependencies.common.asyncMessagePublisher.subscribe(
     if (modalIsJurisdictionModal(state.value.modal)) {
       return;
     }
-    state.value = { modal: "deposit_confirm", paymentCode, amount, currency, flowId };
+    if (paymentMethodData.value) {
+      state.value = { modal: "deposit_confirm", paymentCode, amount, currency, flowId, paymentMethodId: paymentMethodData.value.id };
+    }
   },
 );
 $dependencies.common.asyncMessagePublisher.subscribe(
@@ -267,6 +270,8 @@ const modalIsJurisdictionModal = (modal: ModalState["modal"]): boolean => {
       :code="state.paymentCode"
       :amount="state.amount"
       :currency="state.currency"
+      :payment-method-id="state.paymentMethodId"
+      :payment-flow-id="state.flowId"
     />
     <ModalWithdrawal
       :open="state.modal === 'withdrawal'"
