@@ -38,10 +38,10 @@ const open = computed({
 const preloadBannerLinks = (() => {
   const links = [];
   if (props.bannerLeft) {
-    links.push({ rel: "preload", href: props.bannerLeft, as: "image" as const });
+    links.push({ rel: "preload", fetchPriority: "low", href: props.bannerLeft, src: props.bannerLeft, as: "image" as const, crossOrigin: "anonymous" });
   }
   if (props.bannerTop) {
-    links.push({ rel: "preload", href: props.bannerTop, as: "image" as const });
+    links.push({ rel: "preload", fetchPriority: "low", href: props.bannerTop, src: props.bannerTop, as: "image" as const, crossOrigin: "anonymous" });
   }
   return links;
 })();

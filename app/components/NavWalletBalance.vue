@@ -1,50 +1,48 @@
 <script setup lang="ts">
 const walletStore = useWalletStore();
 const { t } = useI18n();
+const localePath = useLocalePath();
 
 const onClickBalance = async () => {
-  await navigateTo("/settings/wallet");
+  await navigateTo(localePath("/settings/wallet"));
 };
+
+const ENABLE_SERVER_SIDE_RENDERING = false;
+const DEFER_CLIENT_SIDE_LOADING = true;
+
+const { data } = await useAsyncData("nav-wallet-balance-wallet", async () => {
+  return { balanceStatus: walletStore.balanceStatus, wallet: walletStore.wallet };
+}, {
+  watch: [() => walletStore.balanceStatus],
+  lazy: DEFER_CLIENT_SIDE_LOADING,
+  server: ENABLE_SERVER_SIDE_RENDERING,
+});
 </script>
 
 <template>
   <div>
     <BaseButton
-      v-if="walletStore.isInit && walletStore.balanceStatus === 'ready'"
       variant="secondary"
+      :disabled="data?.balanceStatus !== 'ready'"
+      class="min-w-20"
       @click="onClickBalance"
     >
       <BaseCurrency
+        v-if="data?.wallet && data?.balanceStatus === 'ready'"
         class="text-white"
-        :currency="walletStore.wallet.currency"
-        :value="walletStore.wallet.balance"
+        :currency="data.wallet.currency"
+        :value="data.wallet.balance"
       />
-    </BaseButton>
-    <BaseButton
-      v-if="walletStore.isInit && walletStore.balanceStatus === 'loading'"
-      :disabled="true"
-      class="flex items-center justify-center gap-2"
-      variant="secondary"
-    >
       <BaseCurrency
+        v-if="data?.wallet && data?.balanceStatus === 'loading'"
         variant="ghost"
-        :currency="walletStore.wallet.currency"
-        :value="walletStore.wallet.balance"
+        :currency="data.wallet.currency"
+        :value="data.wallet.balance"
       />
-    </BaseButton>
-    <BaseButton
-      v-if="walletStore.isInit && walletStore.balanceStatus === 'hidden'"
-      :disabled="true"
-      variant="secondary"
-    >
-      {{ t("user_nav.balance_hidden_while_playing") }}
-    </BaseButton>
-    <BaseButton
-      v-if="!walletStore.isInit"
-      variant="secondary"
-      :disabled="true"
-    >
-      <BaseSkeleton class="w-16" :loading="true" />
+      <span v-if="data?.balanceStatus === 'hidden'">
+        {{ t("user_nav.balance_hidden_while_playing") }}
+      </span>
+      <BaseSkeleton v-if="!data?.balanceStatus" :loading="true" />
     </BaseButton>
   </div>
 </template>
