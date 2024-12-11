@@ -4,7 +4,7 @@ import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
 type WalletBalanceStatus = "ready" | "loading" | "hidden";
 
 type WalletStoreI = {
-  isInit: false;
+  isInit: false | null; // null is used to indicate that the store is not initialized yet. false is used to indicate that the store is initialized but the user is not authenticated.
   balanceStatus: null;
   wallet: null;
 } | {
@@ -20,7 +20,7 @@ type WalletStoreI = {
 export const useWalletStore = defineStore("walletStore", {
   state: (): WalletStoreI => ({
     balanceStatus: null,
-    isInit: false,
+    isInit: null,
     wallet: null,
   }),
 

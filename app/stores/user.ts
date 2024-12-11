@@ -1,7 +1,7 @@
 import type { SupportedLocale } from "~/packages/translation";
 
 type UserStoreI = {
-  isAuthenticated: false;
+  isAuthenticated: false | null; // null means the store has not been initialized yet, false means the user is not authenticated
   user: null;
 } | {
   isAuthenticated: true;
@@ -15,7 +15,7 @@ type UserStoreI = {
 
 export const useUserStore = defineStore("userStore", {
   state: (): UserStoreI => ({
-    isAuthenticated: false,
+    isAuthenticated: null,
     user: null,
   }),
 

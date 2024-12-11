@@ -59,7 +59,7 @@ const iFrameUrl = computed(() => {
         :game-title="game.name"
         :game-id="game.id"
         :game-image-url="game.imageUrl"
-        :authenticated="walletStore.isInit"
+        :authenticated="walletStore.isInit === true"
         :i-frame-url="iFrameUrl"
       />
       <GameFloatTextNotSupportedOnDevice
@@ -83,7 +83,7 @@ const iFrameUrl = computed(() => {
         :game-title="game.name"
         :game-id="game.id"
         :game-image-url="game.imageUrl"
-        :authenticated="walletStore.isInit"
+        :authenticated="walletStore.isInit === true"
         :i-frame-url="iFrameUrl"
       />
       <GameFloatTextNotSupportedOnDevice

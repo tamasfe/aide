@@ -2,11 +2,6 @@
 const { $dependencies } = useNuxtApp();
 const walletStore = useWalletStore();
 
-// TODO: do we want this behaviour? Or should we (for example) keep the user in the page and show them a "log in to see your balance & transactions" message?
-if (!walletStore.isInit) {
-  await navigateTo("/");
-}
-
 const ENABLE_SERVER_SIDE_RENDERING = false;
 const DEFER_CLIENT_SIDE_LOADING = true;
 const NUMBER_OF_PAYMENTS_TO_SHOW = 10;
