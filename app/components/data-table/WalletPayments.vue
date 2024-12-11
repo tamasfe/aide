@@ -58,7 +58,7 @@ const columns: ColumnDef<WalletPayment>[] = [
     <template #empty>
       <slot name="empty">
         <BaseEmpty
-          :title="$t('wallet.payments.empty')"
+          :title="$t('wallet.payment.empty')"
           icon="lucide:wallet-cards"
         />
       </slot>

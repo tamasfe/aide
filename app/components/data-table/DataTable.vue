@@ -63,86 +63,88 @@ const table = useVueTable(buildTable(props));
 </script>
 
 <template>
-  <div class="relative whitespace-nowrap">
-    <table v-if="table.getRowModel().rows?.length">
-      <thead class="hidden sm:table-header-group">
-        <tr
-          v-for="headerGroup in table.getHeaderGroups()"
-          :key="headerGroup.id"
-          class="tr"
-        >
-          <th
-            v-for="header in headerGroup.headers"
-            :key="header.id"
-            :class="cn(
-              'th',
-              header.column.columnDef.meta?.align === 'center' && 'text-center',
-              header.column.columnDef.meta?.align === 'right' && 'text-right',
-            )"
+  <div class="flex flex-col gap-y-6">
+    <div class="relative whitespace-nowrap">
+      <table v-if="table.getRowModel().rows?.length">
+        <thead class="hidden sm:table-header-group">
+          <tr
+            v-for="headerGroup in table.getHeaderGroups()"
+            :key="headerGroup.id"
+            class="tr"
           >
-            <FlexRender
-              v-if="!header.isPlaceholder"
-              :render="header.column.columnDef.header"
-              :props="header.getContext()"
-            />
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          v-for="row in table.getRowModel().rows"
-          :key="row.id"
-          class="tr flex flex-col sm:table-row"
-        >
-          <td
-            v-for="cell in row.getVisibleCells()"
-            :key="cell.id"
-            :class="cn(
-              'td',
-              cell.column.columnDef.meta?.align === 'center' && 'text-center',
-              cell.column.columnDef.meta?.align === 'right' && 'text-right',
-              'w-full sm:w-auto flex justify-between items-center sm:table-cell',
-            )"
+            <th
+              v-for="header in headerGroup.headers"
+              :key="header.id"
+              :class="cn(
+                'th',
+                header.column.columnDef.meta?.align === 'center' && 'text-center',
+                header.column.columnDef.meta?.align === 'right' && 'text-right',
+              )"
+            >
+              <FlexRender
+                v-if="!header.isPlaceholder"
+                :render="header.column.columnDef.header"
+                :props="header.getContext()"
+              />
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            v-for="row in table.getRowModel().rows"
+            :key="row.id"
+            class="tr flex flex-col sm:table-row"
           >
-            <div class="block sm:hidden">
-              <FlexRender
-                :render="cell.column.columnDef.header"
-                :props="cell.getContext()"
-              />
-            </div>
-            <div>
-              <FlexRender
-                :render="cell.column.columnDef.cell"
-                :props="cell.getContext()"
-              />
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+            <td
+              v-for="cell in row.getVisibleCells()"
+              :key="cell.id"
+              :class="cn(
+                'td',
+                cell.column.columnDef.meta?.align === 'center' && 'text-center',
+                cell.column.columnDef.meta?.align === 'right' && 'text-right',
+                'w-full sm:w-auto flex justify-between items-center sm:table-cell',
+              )"
+            >
+              <div class="block sm:hidden">
+                <FlexRender
+                  :render="cell.column.columnDef.header"
+                  :props="cell.getContext()"
+                />
+              </div>
+              <div>
+                <FlexRender
+                  :render="cell.column.columnDef.cell"
+                  :props="cell.getContext()"
+                />
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
-    <div
-      v-else-if="!loading"
-      class="bg-subtle rounded-default"
-    >
-      <slot
-        v-if="$slots.empty"
-        name="empty"
-      />
-      <BaseEmpty v-else />
+      <div
+        v-else-if="!loading"
+        class="bg-subtle rounded-default"
+      >
+        <slot
+          v-if="$slots.empty"
+          name="empty"
+        />
+        <BaseEmpty v-else />
+      </div>
+
+      <DataTableLoadingOverlay :loading="loading" />
     </div>
 
-    <DataTableLoadingOverlay :loading="loading" />
+    <DataTablePagination
+      v-if="pagination && loading !== true"
+      :table="table"
+      @first-page="pagination.updatePageIndex(0)"
+      @last-page="pagination.updatePageIndex(table.getPageCount() - 1)"
+      @previous-page="pagination.updatePageIndex(pagination.pageIndex.value - 1)"
+      @next-page="pagination.updatePageIndex(pagination.pageIndex.value + 1)"
+    />
   </div>
-
-  <DataTablePagination
-    v-if="pagination && loading !== true"
-    :table="table"
-    @first-page="pagination.updatePageIndex(0)"
-    @last-page="pagination.updatePageIndex(table.getPageCount() - 1)"
-    @previous-page="pagination.updatePageIndex(pagination.pageIndex.value - 1)"
-    @next-page="pagination.updatePageIndex(pagination.pageIndex.value + 1)"
-  />
 </template>
 
 <style scoped>
