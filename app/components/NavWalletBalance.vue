@@ -8,9 +8,9 @@ const onClickBalance = async () => {
 </script>
 
 <template>
-  <div v-if="walletStore.isInit">
+  <div>
     <BaseButton
-      v-if="walletStore.balanceStatus === 'ready'"
+      v-if="walletStore.isInit && walletStore.balanceStatus === 'ready'"
       variant="secondary"
       @click="onClickBalance"
     >
@@ -21,7 +21,7 @@ const onClickBalance = async () => {
       />
     </BaseButton>
     <BaseButton
-      v-if="walletStore.balanceStatus === 'loading'"
+      v-if="walletStore.isInit && walletStore.balanceStatus === 'loading'"
       :disabled="true"
       class="flex items-center justify-center gap-2"
       variant="secondary"
@@ -33,11 +33,18 @@ const onClickBalance = async () => {
       />
     </BaseButton>
     <BaseButton
-      v-if="walletStore.balanceStatus === 'hidden'"
+      v-if="walletStore.isInit && walletStore.balanceStatus === 'hidden'"
       :disabled="true"
       variant="secondary"
     >
       {{ t("user_nav.balance_hidden_while_playing") }}
+    </BaseButton>
+    <BaseButton
+      v-if="!walletStore.isInit"
+      variant="secondary"
+      :disabled="true"
+    >
+      <BaseSkeleton class="w-16" :loading="true" />
     </BaseButton>
   </div>
 </template>

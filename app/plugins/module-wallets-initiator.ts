@@ -51,7 +51,11 @@ export default defineNuxtPlugin({
      * Init user pinia store
      *
      */
-    await useAsyncData("wallet-store-initiation", () => walletStore.refresh().then(() => true));
+    const ENABLE_SERVER_SIDE_RENDERING = false;
+    const DEFER_CLIENT_SIDE_LOADING = true;
+    await useAsyncData("wallet-store-initiation", () => walletStore.refresh().then(() => true),
+      { lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING },
+    );
 
     return {};
   },
