@@ -19,11 +19,11 @@
     "test:unit": "vitest --dir ./test/unit"
   },
   "dependencies": {
-    "@chenfengyuan/vue-countdown": "2",
+    "@chenfengyuan/vue-countdown": "^2.1.2",
     "@floating-ui/vue": "^1.1.5",
     "@headlessui/vue": "^1.7.23",
     "@pinia/nuxt": "^0.9.0",
-    "@sentry/nuxt": "^8.42.0",
+    "@sentry/nuxt": "^8.44.0",
     "@tanstack/vue-table": "8.19.3",
     "@vee-validate/nuxt": "^4.14.7",
     "@vee-validate/zod": "^4.14.7",
@@ -49,13 +49,13 @@
     "vue": "^3.5.13",
     "vue-router": "^4.5.0",
     "websocket-ts": "^2.1.5",
-    "zod": "^3.23.8"
+    "zod": "^3.24.1"
   },
   "devDependencies": {
     "@iconify-json/emojione-v1": "^1.2.0",
     "@iconify-json/lucide": "^1.2.18",
-    "@nuxt/eslint": "^0.7.2",
-    "@nuxt/icon": "^1.9.1",
+    "@nuxt/eslint": "^0.7.3",
+    "@nuxt/icon": "^1.10.1",
     "@nuxt/image": "^1.8.1",
     "@nuxt/test-utils": "^3.15.1",
     "@nuxtjs/device": "^3.2.4",
@@ -63,7 +63,7 @@
     "@nuxtjs/seo": "2.0.2",
     "@nuxtjs/tailwindcss": "^6.12.2",
     "@testing-library/vue": "^8.1.0",
-    "@types/node": "^22.10.1",
+    "@types/node": "^22.10.2",
     "@vue/test-utils": "^2.4.6",
     "@vue/typescript-plugin": "^2.1.10",
     "embla-carousel": "^8.5.1",
@@ -72,7 +72,7 @@
     "nuxt-gtag": "^3.0.2",
     "openapi-typescript": "^7.4.4",
     "openapi-typescript-helpers": "^0.0.15",
-    "playwright-core": "^1.49.0",
+    "playwright-core": "^1.49.1",
     "tailwindcss": "^3.4.16",
     "typescript": "~5.6.3",
     "vitest": "^2.1.8",
