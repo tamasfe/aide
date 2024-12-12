@@ -22,7 +22,7 @@ export interface AsyncMessagesTypes {
     currency: WalletCurrency;
   };
   "girobet:commands:modals:open-withdrawal": object;
-  "girobet:commands:modals:open-update-settings": { setting: "password" };
+  "girobet:commands:modals:open-update-settings": { setting: "password" | "language" | "time_zone" };
   "girobet:commands:modals:close-user-interaction-modal": object;
 
   "girobet:events:users:user-logged-in": object;

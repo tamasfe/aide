@@ -19,8 +19,8 @@ import { EmitCommandCloseUserActionModal } from "./ui/EmitCommandCloseUserAction
 import { RecoverPasswordOnForm } from "./ui/RecoverPasswordOnForm";
 import { RequestRecoverPasswordOnForm } from "./ui/RequestRecoverPasswordOnForm";
 import { UpdateUserLocaleOnLocaleSelect } from "./ui/user-settings/UpdateUserLocaleOnLocaleSelect";
-import { UpdatePasswordOnForm } from "./ui/user-settings/UpdatePasswordOnForm";
 import { UpdateConsentsOnPreferencesPage } from "./ui/user-settings/UpdateConsentsOnPreferencesPage";
+import { UpdateSettingsOnForm } from "./ui/user-settings/UpdateSettingsOnForm";
 import type { CommonDependenciesI } from "~/dependency-injection/load-di";
 
 export interface UsersDependencyInjectionI {
@@ -30,9 +30,9 @@ export interface UsersDependencyInjectionI {
   };
   ui: {
     userSettings: {
-      updatePasswordOnForm: UpdatePasswordOnForm;
       updateLocaleOnLocaleSelect: UpdateUserLocaleOnLocaleSelect;
       updateConsentsOnPreferencesPage: UpdateConsentsOnPreferencesPage;
+      updateSettingsOnForm: UpdateSettingsOnForm;
     };
     emitCommandOpenUserActionModal: EmitCommandOpenUserActionModalModal;
     emitCommandCloseUserActionModal: EmitCommandCloseUserActionModal;
@@ -69,7 +69,6 @@ export const createUsersDependencyInjection = async (config: PublicRuntimeConfig
     },
     ui: {
       userSettings: {
-        updatePasswordOnForm: new UpdatePasswordOnForm(updateUserSettingsCommand, commonDependencies.logger, commonDependencies.translateFunction, commonDependencies.asyncMessagePublisher),
         updateLocaleOnLocaleSelect: new UpdateUserLocaleOnLocaleSelect(
           updateUserSettingsCommand,
           commonDependencies.logger,
@@ -78,6 +77,7 @@ export const createUsersDependencyInjection = async (config: PublicRuntimeConfig
           new UpdateUserSettingsChangedConsents(authenticatedUserRepo, commonDependencies.asyncMessagePublisher),
           commonDependencies.logger,
         ),
+        updateSettingsOnForm: new UpdateSettingsOnForm(updateUserSettingsCommand, commonDependencies.logger, commonDependencies.translateFunction, commonDependencies.asyncMessagePublisher),
       },
       emitCommandOpenUserActionModal: new EmitCommandOpenUserActionModalModal(commonDependencies.asyncMessagePublisher),
       emitCommandCloseUserActionModal: new EmitCommandCloseUserActionModal(commonDependencies.asyncMessagePublisher),

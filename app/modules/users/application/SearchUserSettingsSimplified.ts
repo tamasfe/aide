@@ -13,6 +13,7 @@ export interface UserSettingSimplifiedI {
   timeZone: UserSettingsI["timeZone"];
   payment: UserSettingsI["payment"];
   consents: SimplifiedConsentsI;
+  locale: UserSettingsI["locale"];
 }
 
 export class SearchUserSettingsSimplified {

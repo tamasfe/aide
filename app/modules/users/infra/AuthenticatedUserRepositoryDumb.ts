@@ -30,6 +30,7 @@ export class AuthenticatedUserRepositoryDumb implements AuthenticatedUserReposit
   public async searchSettings(): Promise<Result<null | UserSettingsI, InfrastructureError>> {
     this.logger.debug("searchSettings called");
     return success({
+      locale: "en-us",
       timeZone: null,
       consents: {
         email: false,

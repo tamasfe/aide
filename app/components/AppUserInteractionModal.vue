@@ -10,7 +10,7 @@ type ModalState =
   | { modal: null | "login" | "register" | "forgot" | "cancel_reg" | "deposit" | "withdrawal" | "search" }
   | {
     modal: "settings";
-    setting: "password";
+    setting: "password" | "time_zone" | "language";
   } | {
     modal: "recover_password";
     token: string;

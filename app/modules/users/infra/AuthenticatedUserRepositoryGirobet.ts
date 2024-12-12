@@ -62,6 +62,7 @@ export class AuthenticatedUserSearcherGirobet implements AuthenticatedUserReposi
       if (data) {
         return success({
           timeZone: data.time_zone ?? null,
+          locale: data.locale ? searchSimilarLocale(data.locale) : null,
           consents: {
             email: data.consents.email ?? null,
             postMail: data.consents.post_mail ?? null,
@@ -88,6 +89,7 @@ export class AuthenticatedUserSearcherGirobet implements AuthenticatedUserReposi
 
   public async updateSettings(settings: {
     locale?: SupportedLocale;
+    timeZone?: string;
     consents?: {
       email?: boolean;
       postMail?: boolean;
@@ -111,7 +113,7 @@ export class AuthenticatedUserSearcherGirobet implements AuthenticatedUserReposi
                 telephone: settings.consents.telephone,
               }
             : {},
-          time_zone: undefined,
+          time_zone: settings.timeZone,
           payment: {},
         },
       });
@@ -122,13 +124,13 @@ export class AuthenticatedUserSearcherGirobet implements AuthenticatedUserReposi
 
       if (error) {
         const httpError = HttpBackendApiError.newFromBackendError(error, response);
-        return fail(InfrastructureError.newFromError({}, httpError));
+        return fail(InfrastructureError.newFromError({ settings }, httpError));
       }
 
-      return fail(InfrastructureError.newFromError({ data, error, response }, new Error("Unexpected scenario: library did not return data nor error. This should never happen")));
+      return fail(InfrastructureError.newFromError({ data, error, response, settings }, new Error("Unexpected scenario: library did not return data nor error. This should never happen")));
     }
     catch (error) {
-      return fail(InfrastructureError.newFromUnknownError({}, error));
+      return fail(InfrastructureError.newFromUnknownError({ settings }, error));
     }
   }
 

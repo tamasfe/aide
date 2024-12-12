@@ -11,6 +11,7 @@ export class UpdateUserSettings {
 
   public async handle(settings: {
     locale?: SupportedLocale;
+    timeZone?: string;
     password?: {
       current: string;
       new: string;
@@ -24,7 +25,7 @@ export class UpdateUserSettings {
       telephone?: boolean | null;
     };
   }) {
-    if (settings.locale || settings.consents) {
+    if (settings.locale !== undefined || settings.consents !== undefined || settings.timeZone !== undefined) {
       const settingsResult = await this.authenticatedUserRepository.updateSettings(settings);
       if (settingsResult.isFailure) {
         return settingsResult;

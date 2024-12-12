@@ -36,11 +36,7 @@ export default defineNuxtPlugin({
     );
     $dependencies.common.asyncMessagePublisher.subscribe(
       "girobet:events:users:user-settings-updated",
-      async (data) => {
-        if (data.settings.consents !== undefined) {
-          await userSettingsStore.refresh();
-        }
-      },
+      () => userSettingsStore.refresh(),
     );
 
     $dependencies.common.asyncMessagePublisher.subscribe(

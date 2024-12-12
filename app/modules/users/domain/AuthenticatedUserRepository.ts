@@ -10,7 +10,8 @@ export interface AuthenticatedUserRepositoryI {
 
   searchSettings(): Promise<Result<null | UserSettingsI, InfrastructureError>>;
   updateSettings(settings: {
-    locale?: SupportedLocale;
+    locale?: SupportedLocale | null;
+    timeZone?: string | null;
     consents?: {
       email?: boolean | null;
       postMail?: boolean | null;

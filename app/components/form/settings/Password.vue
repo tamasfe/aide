@@ -28,27 +28,24 @@ const validationSchema = toTypedSchema(
 const { handleSubmit, errors: formErrors, defineField, meta } = useForm({ validationSchema });
 
 const formErrorMessage = ref("");
-const loading = ref(false);
 const [currentPassword, currentPasswordAttrs] = defineField("currentPassword");
 const [newPassword, newPasswordAttrs] = defineField("newPassword");
 const [confirmNewPassword, confirmNewPasswordAttrs] = defineField("confirmNewPassword");
 
 const onSubmit = handleSubmit(async (formData) => {
-  loading.value = true;
-
-  formErrorMessage.value = await $dependencies.users.ui.userSettings.updatePasswordOnForm.handle(
-    formData.currentPassword,
-    formData.newPassword,
-  );
-
-  loading.value = false;
+  formErrorMessage.value = await $dependencies.users.ui.userSettings.updateSettingsOnForm.handle({
+    password: {
+      current: formData.currentPassword,
+      new: formData.newPassword,
+    },
+  });
 }, ({ results }) => {
   $dependencies.common.logger.warn("Validation failed", { validationResults: results });
 });
 </script>
 
 <template>
-  <BaseForm class="space-y-2" @submit="onSubmit">
+  <BaseForm v-slot="{ loading }" class="space-y-2" @submit="onSubmit">
     <div class="leading-snug">
       <h2 class="text-xl font-semibold">{{ $t('modal_user_settings.password.title') }}</h2>
     </div>

@@ -11,7 +11,7 @@ type ModalData = {
   data: { token: string };
 } | {
   modal: "settings";
-  data: { setting: "password" };
+  data: { setting: "password" | "language" | "time_zone" };
 } | {
   modal: "deposit_confirm";
   data: { flowId: number; paymentCode: string; amount: number; currency: WalletCurrency };

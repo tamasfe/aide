@@ -5,7 +5,7 @@ const open = ref(true);
 
 defineProps({
   setting: {
-    type: String as PropType<"password">,
+    type: String as PropType<"password" | "language" | "time_zone">,
     required: true,
   },
 });
@@ -24,5 +24,7 @@ const onClosed = () => {
     @close="onClosed"
   >
     <FormSettingsPassword v-if="setting === 'password'" />
+    <FormSettingsLocale v-if="setting === 'language'" />
+    <FormSettingsTimeZone v-if="setting === 'time_zone'" />
   </BaseModal>
 </template>

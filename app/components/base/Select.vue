@@ -26,6 +26,8 @@ const selectVariants = cva(
     variants: {
       variant: {
         primary: "bg-emphasis text-subtle-light",
+        secondary: "bg-button-secondary hover:bg-button-secondary-hover text-button-secondary",
+        subtle: "bg-button-subtle hover:bg-button-subtle-hover text-subtle-light",
       },
       size: {
         sm: "h-9 px-3 text-sm rounded-default",

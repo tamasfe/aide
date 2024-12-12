@@ -110,6 +110,13 @@
     "error_creating_withdrawal_flow_unknown": "An error occurred while handling your withdrawal. Please try again"
   },
   "modal_user_settings": {
+    "error_unknown": "An error occurred while saving your settings. Please try again in some minutes",
+    "language": {
+      "title": "Change your account language"
+    },
+    "time_zone": {
+      "title": "Change your account time zone"
+    },
     "password": {
       "title": "Change your password",
       "instructions_intro": "Your new password should contain at least:",

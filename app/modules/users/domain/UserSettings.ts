@@ -1,5 +1,8 @@
+import type { SupportedLocale } from "~/packages/translation";
+
 export interface UserSettingsI {
   timeZone: string | null;
+  locale: SupportedLocale | null;
   consents: {
     email: boolean | null;
     postMail: boolean | null;
