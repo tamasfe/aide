@@ -112,7 +112,7 @@ type ComboboxVariants = VariantProps<typeof comboboxVariants>;
               class="bg-transparent absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none"
               :class="cn(comboboxVariants({ variant, size: null }))"
             >
-              <BaseIcon aria-hidden="true" name="lucide:circle-check-big" :size="18" />
+              <BaseIcon aria-hidden="true" name="lucide:check" :size="18" />
             </span>
           </li>
         </ComboboxOption>
