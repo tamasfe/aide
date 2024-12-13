@@ -21,6 +21,19 @@ const onSubmit = async () => {
   $dependencies.users.ui.userSettings.updateSettingsOnForm.handle({ timeZone: selectedTimezone.value.value });
   $dependencies.users.ui.emitCommandCloseUserActionModal.handle();
 };
+
+/**
+ *
+ * Combobox
+ *
+ */
+const query = ref("");
+const filteredOptions = computed(() => {
+  if (query.value === "") {
+    return supportedTimeZoneOptions;
+  }
+  return supportedTimeZoneOptions.filter(option => option.value.toLowerCase().includes(query.value.toLowerCase()));
+});
 </script>
 
 <template>
@@ -30,22 +43,11 @@ const onSubmit = async () => {
         <h2 class="text-xl font-semibold">{{ $t('modal_user_settings.time_zone.title') }}</h2>
       </div>
 
-      <BaseSelect
-        v-model="selectedTimezone"
-        :options="supportedTimeZoneOptions"
-        size="md"
-        variant="subtle"
-        @change="value => selectedTimezone = value"
-      >
-        <template #selected="{ selected }">
-          <span v-if="selected" class="block whitespace-nowrap truncate font-medium text-left">
-            {{ selected.title }}
-          </span>
-        </template>
-        <template #option="{ option }">
-          <span>{{ option.title }}</span>
-        </template>
-      </BaseSelect>
+      <BaseCombobox
+        v-model:selected="selectedTimezone"
+        v-model:query="query"
+        :options="filteredOptions"
+      />
 
       <div
         class="flex items-center justify-between space-x-4"

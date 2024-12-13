@@ -39,7 +39,6 @@ const selectVariants = cva(
       size: "md",
     },
   },
-
 );
 type SelectVariants = VariantProps<typeof selectVariants>;
 type OptionsOffset = {
