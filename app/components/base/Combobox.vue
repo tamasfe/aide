@@ -34,11 +34,11 @@ const selectedOption = defineModel("selected", { type: Object as PropType<O>, re
    * Design
    */
 const comboboxVariants = cva(
-  "cursor-pointer focus-visible:outline-none",
+  "cursor-pointer focus-visible:outline-none focus:outline-none",
   {
     variants: {
       variant: {
-        subtle: "bg-button-subtle hover:bg-button-subtle-hover text-subtle-light font-medium",
+        subtle: "text-subtle-light font-medium bg-button-subtle hover:bg-button-subtle-hover focus:bg-button-subtle",
         ghost: "",
       },
       size: {
@@ -73,7 +73,7 @@ type ComboboxVariants = VariantProps<typeof comboboxVariants>;
           @blur="query = ''"
         />
         <ComboboxButton
-          :class="cn('right-0 flex h-full items-center rounded-r-md rounded-l-none px-py-4 focus:outline-none focus:bg-button-subtle-hover', comboboxVariants({ variant, size }))"
+          :class="cn('right-0 flex h-full items-center rounded-r-md rounded-l-none px-py-4', comboboxVariants({ variant, size }))"
           @click="open ? undefined : query = '' "
         >
           <BaseIcon
@@ -93,7 +93,7 @@ type ComboboxVariants = VariantProps<typeof comboboxVariants>;
 
       <ComboboxOptions
         v-if="options.length > 0"
-        :class="cn('mt-1 max-h-60 w-full overflow-auto py-1 shadow-lg ring-1 ring-black/5 focus:outline-none', comboboxVariants({ variant, size }), 'px-0 h-max')"
+        :class="cn('mt-1 max-h-60 w-full overflow-auto py-1 shadow-lg ring-1 ring-black/5', comboboxVariants({ variant, size }), 'px-0 h-max')"
       >
         <ComboboxOption
           v-for="option in options"
@@ -103,7 +103,7 @@ type ComboboxVariants = VariantProps<typeof comboboxVariants>;
           as="template"
         >
           <li :class="cn(comboboxVariants({ variant, size }), 'py-3 h-fit relative rounded-none cursor-default select-none', active ? 'bg-button-subtle-hover' : '')">
-            <span :class="['block truncate', selected && 'font-semibold']">
+            <span :class="['block truncate', selected && 'font-bold']">
               {{ option.title }}
             </span>
 
