@@ -13,7 +13,7 @@ export class UserTelephone {
   }
 
   public readonly telephone: string;
-  public readonly prefix: UserTelephonePrefixOption;
+  public readonly prefix: UserTelephonePrefix;
 
   /**
    *
@@ -77,13 +77,12 @@ export class UserTelephone {
 
     const prefixWithoutPlus = prefix.replace("+", "");
 
-    let recognizedPrefix: null | UserTelephonePrefixOption = null;
+    let recognizedPrefix: null | UserTelephonePrefix = null;
     for (const countryCodeOption of countryCodeOptions) {
       if (countryCodeOption.countryCodes.includes(prefixWithoutPlus)) {
         recognizedPrefix = {
           value: prefix,
           countryCode: countryCodeOption.isoCode2,
-          country: countryCodeOption.country,
         };
         continue;
       }
@@ -135,7 +134,7 @@ export class ErrorInvalidUserTelephone extends CustomError {
   }
 }
 
-type UserTelephonePrefixOption = {
+export type UserTelephonePrefix = {
   /**
    * With the + sign at the beginning
    */
@@ -146,8 +145,4 @@ type UserTelephonePrefixOption = {
    */
   countryCode: string;
 
-  /**
-   * Name of the country in english
-   */
-  country: string;
 };

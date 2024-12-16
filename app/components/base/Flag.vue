@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from "vue";
 import { type VariantProps, cva } from "class-variance-authority";
-import type { SupportedCountryFlagCode } from "@/types/constants";
 
 // DESIGN STATUS:       ✅
 // ARCHITECTURE STATUS: ✅
@@ -26,7 +25,7 @@ const flagVariants = cva(
 type FlagVariants = VariantProps<typeof flagVariants>;
 
 const props = defineProps<{
-  countryCode: SupportedCountryFlagCode;
+  countryCode: string;
   size?: FlagVariants["size"];
   class?: HTMLAttributes["class"];
 }>();

@@ -66,8 +66,8 @@ const loading = computed<boolean>(() => {
       {{ $t("modal_session.accept_terms") }}
       <BaseLink
         :to="{ name: 'terms' }"
-        target="_blank"
         class="font-semibold hover:text-subtle-light"
+        @click="() => $dependencies.users.ui.emitCommandCloseUserActionModal.handle()"
       >
         {{ $t("page.terms") }}
       </BaseLink>

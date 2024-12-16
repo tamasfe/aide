@@ -1,10 +1,14 @@
 import type { ValidateUserTelephone } from "~/modules/users/application/ValidateUserTelephone";
-import { UserTelephoneMask, type UserTelephoneMaskSupportedCountryCode } from "~/modules/users/infra/ui/UserTelephoneMask";
+import { UserTelephoneMask } from "~/modules/users/infra/ui/UserTelephoneMask";
 import type { TranslateFunctionType } from "~/packages/translation";
 
 export class ValidateTelephoneOnRegisterFormChanged {
-  public async handle(value: unknown, prefixValue: string, prefixCountryCode: UserTelephoneMaskSupportedCountryCode): Promise<boolean | string> {
+  public async handle(value: unknown, prefixValue: string | undefined, prefixCountryCode: string | undefined): Promise<boolean | string> {
     const telephoneValue = String(value || "");
+
+    if (!prefixValue || !prefixCountryCode) {
+      return this.translateFunction("validation.telephone_prefix_required");
+    }
 
     const mask = UserTelephoneMask.new(prefixCountryCode, telephoneValue).value();
     if (telephoneValue.length < mask.length) {
