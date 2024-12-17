@@ -1,4 +1,5 @@
 import type { AuthenticatedUserRepositoryI } from "../domain/AuthenticatedUserRepository";
+import { UserSettingsPaymentPix, type UserSettingsPaymentPixPropsI } from "../domain/UserSettingsPaymentPix";
 import type { SupportedLocale } from "~/packages/translation";
 import type { AsyncMessagePublisherI } from "~/packages/async-messages/async-message-publisher";
 import { success } from "~/packages/result";
@@ -24,9 +25,27 @@ export class UpdateUserSettings {
       sms?: boolean | null;
       telephone?: boolean | null;
     };
+    payment?: UserSettingsPaymentPixPropsI;
   }) {
     if (settings.locale !== undefined || settings.consents !== undefined || settings.timeZone !== undefined) {
-      const settingsResult = await this.authenticatedUserRepository.updateSettings(settings);
+      const settingsResult = await this.authenticatedUserRepository.updateSettings({
+        locale: settings.locale,
+        timeZone: settings.timeZone,
+        consents: settings.consents,
+      });
+      if (settingsResult.isFailure) {
+        return settingsResult;
+      }
+    }
+
+    if (settings.payment) {
+      const pixPaymentSettings = UserSettingsPaymentPix.new(settings.payment);
+      const settingsResult = await this.authenticatedUserRepository.updateSettings({ payment: {
+        pixKeyType: pixPaymentSettings.toJSON().keyType,
+        pixKeyEmail: pixPaymentSettings.toJSON().keyEmail,
+        pixKeyEvp: pixPaymentSettings.toJSON().keyEvp,
+        pixKeyPhone: pixPaymentSettings.toJSON().keyPhone,
+      } });
       if (settingsResult.isFailure) {
         return settingsResult;
       }
@@ -44,6 +63,7 @@ export class UpdateUserSettings {
         locale: settings.locale,
         password: settings.password ? true : false,
         consents: settings.consents,
+        payment: settings.payment,
       },
     });
 

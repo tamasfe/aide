@@ -2,6 +2,7 @@ import type { UpdateUserSettings } from "../../../application/UpdateUserSettings
 import type { SupportedLocale, TranslateFunctionType } from "~/packages/translation";
 import type { LoggerI } from "~/packages/logger/Logger";
 import type { AsyncMessagePublisherI } from "~/packages/async-messages/async-message-publisher";
+import type { UserSettingsPaymentPixPropsI } from "~/modules/users/domain/UserSettingsPaymentPix";
 
 export class UpdateSettingsOnForm {
   constructor(
@@ -11,7 +12,11 @@ export class UpdateSettingsOnForm {
     private readonly asyncMessagePublisher: AsyncMessagePublisherI,
   ) {}
 
-  public async handle(settings: { locale?: SupportedLocale; timeZone?: string; password?: { current: string; new: string } }) {
+  public async handle(settings: {
+    locale?: SupportedLocale; timeZone?: string;
+    password?: { current: string; new: string };
+    payment?: UserSettingsPaymentPixPropsI;
+  }) {
     const result = await this.command.handle(settings);
     if (result.isFailure) {
       if (result.error.name === "ErrorInvalidCurrentPassword") {

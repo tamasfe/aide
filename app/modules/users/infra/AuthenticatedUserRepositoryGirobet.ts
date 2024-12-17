@@ -1,7 +1,7 @@
 import type { AuthenticatedUserRepositoryI } from "../domain/AuthenticatedUserRepository";
 import { User } from "../domain/User";
 import { ErrorInvalidCurrentPassword } from "../domain/errors/ErrorInvalidCurrentPassword";
-import type { UserSettingsI } from "../domain/UserSettings";
+import { UserSettings, type UserSettingsPropsI } from "../domain/UserSettings";
 import { createBackendOpenApiClient } from "~/packages/http-client/create-backend-open-api-client";
 import { fail, success, type EmptyResult, type Result } from "~/packages/result";
 import { InfrastructureError } from "~/packages/result/infrastructure-error";
@@ -46,7 +46,7 @@ export class AuthenticatedUserSearcherGirobet implements AuthenticatedUserReposi
     }
   }
 
-  public async searchSettings(): Promise<Result<null | UserSettingsI, InfrastructureError>> {
+  public async searchSettings() {
     try {
       const { data, error, response } = await this.apiClient.GET("/user/settings");
 
@@ -60,7 +60,7 @@ export class AuthenticatedUserSearcherGirobet implements AuthenticatedUserReposi
       }
 
       if (data) {
-        return success({
+        return success(UserSettings.new({
           timeZone: data.time_zone ?? null,
           locale: data.locale ? searchSimilarLocale(data.locale) : null,
           consents: {
@@ -72,12 +72,12 @@ export class AuthenticatedUserSearcherGirobet implements AuthenticatedUserReposi
             telephone: data.consents.telephone ?? null,
           },
           payment: {
-            pixKeyEmail: data.payment.pix_key_email ?? null,
-            pixKeyEvp: data.payment.pix_key_evp ?? null,
-            pixKeyPhone: data.payment.pix_key_phone ?? null,
-            pixKeyType: data.payment.pix_key_type ?? null,
+            keyEmail: data.payment.pix_key_email ?? null,
+            keyEvp: data.payment.pix_key_evp ?? null,
+            keyPhone: data.payment.pix_key_phone ?? null,
+            keyType: data.payment.pix_key_type ?? null,
           },
-        });
+        }));
       }
 
       return fail(InfrastructureError.newFromError({ data, error, response }, new Error("Unexpected scenario: library did not return data nor error. This should never happen")));
@@ -98,6 +98,12 @@ export class AuthenticatedUserSearcherGirobet implements AuthenticatedUserReposi
       sms?: boolean;
       telephone?: boolean;
     };
+    payment?: {
+      pixKeyEmail: null | string;
+      pixKeyEvp: null | string;
+      pixKeyPhone: null | string;
+      pixKeyType: null | "CPF" | "EMAIL" | "PHONE" | "EVP";
+    };
   }): Promise<EmptyResult<InfrastructureError>> {
     try {
       const { data, error, response } = await this.apiClient.PATCH("/user/settings", {
@@ -114,7 +120,12 @@ export class AuthenticatedUserSearcherGirobet implements AuthenticatedUserReposi
               }
             : {},
           time_zone: settings.timeZone,
-          payment: {},
+          payment: {
+            pix_key_email: settings.payment?.pixKeyEmail,
+            pix_key_evp: settings.payment?.pixKeyEvp,
+            pix_key_phone: settings.payment?.pixKeyPhone,
+            pix_key_type: settings.payment?.pixKeyType,
+          },
         },
       });
 

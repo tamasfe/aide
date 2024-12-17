@@ -12,7 +12,8 @@
     "password_new": "New password",
     "password_confirm": "Re-type new password",
     "telephone": "Telephone",
-    "cpf": "CPF"
+    "cpf": "CPF",
+    "evp": "EVP"
   },
   "placeholder": {
     "search": "Search for a casino game...",
@@ -114,14 +115,18 @@
     "language": {
       "title": "Change your account language"
     },
-    "time_zone": {
-      "title": "Change your account time zone"
-    },
     "password": {
       "title": "Change your password",
       "instructions_intro": "Your new password should contain at least:",
       "error_invalid_current_password": "Your current password is incorrect",
       "error_unknown": "An error occurred while changing your password. Please try again"
+    },
+    "payment_pix": {
+      "title": "Change your PIX settings",
+      "key_type_cpf_selected_explanation": "The CPF linked to your account will be the one linked to your PIX"
+    },
+    "time_zone": {
+      "title": "Change your account time zone"
     }
   },
   "modal_cancel_registration": {
@@ -146,6 +151,8 @@
     "cpf_required": "CPF is required",
     "email_invalid": "Invalid email",
     "email_required": "Email is required",
+    "evp_invalid": "Invalid EVP",
+    "evp_required": "EVP is required",
     "password_invalid": "Invalid password",
     "password_required": "Password is required",
     "password_does_not_match": "Passwords do not match",
@@ -153,13 +160,17 @@
     "password_invalid_too_long": "Password must be shorter than {max}",
     "telephone_invalid": "Invalid phone",
     "telephone_required": "Phone is required",
+    "telephone_prefix_invalid": "Invalid phone prefix",
+    "telephone_prefix_required": "Phone prefix is required",
     "telephone_invalid_too_short": "Phone is missing {num} digits",
     "telephone_invalid_too_long": "Phone is {num} digits too long",
     "amount_required": "Amount is required",
     "amount_deposit_min": "Minimum deposit amount is {min}",
     "amount_deposit_max": "Maximum deposit amount is {max}",
     "amount_withdrawal_min": "Minimum withdrawal amount is {min}",
-    "amount_withdrawal_max": "Maximum withdrawal amount is {max}"
+    "amount_withdrawal_max": "Maximum withdrawal amount is {max}",
+    "pix_key_type_invalid": "Invalid PIX Key Type",
+    "pix_key_type_required": "PIX Key is required"
   },
   "withdrawal_limits": {
     "summary": "For an easy, secure and simple withdraw process, make sure to follow these guidelines: The minimum withdrawal amount varies by method and is listed above. Withdrawals are always to be processed to the original deposit method unless otherwise specified or if that method doesn't support withdrawals.",
@@ -285,6 +296,7 @@
         "country": "Country",
         "document": "Document",
         "payment_settings": "Payment Settings",
+        "payment_settings_key_type_not_set": "Not set",
         "key_type": "Key Type",
         "key_value": "Key Value",
         "regional_settings": "Regional Settings",
@@ -359,5 +371,16 @@
     "video_poker": "Video Poker",
     "virtual_sports": "Virtual Sports",
     "weekly-top-picks": "Weekly Top Picks"
+  },
+  "user_settings": {
+    "payment": {
+      "pix_key_type": {
+        "CPF": "CPF",
+        "EMAIL": "Email",
+        "PHONE": "Phone",
+        "EVP": "EVP",
+        "not_set": "Not set"
+      }
+    }
   }
 }

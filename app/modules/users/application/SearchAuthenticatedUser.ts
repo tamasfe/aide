@@ -1,4 +1,5 @@
 import type { AuthenticatedUserRepositoryI } from "../domain/AuthenticatedUserRepository";
+import { UserTelephone } from "../domain/UserTelephone";
 import type { SupportedLocale } from "~/packages/translation";
 import { success } from "~/packages/result";
 
@@ -7,6 +8,13 @@ interface UserResponseI {
   locale: SupportedLocale | null;
   timeZone: string;
   email: string;
+  phone: {
+    value: string;
+    prefix: {
+      value: string;
+      countryCode: string;
+    };
+  };
 }
 
 export class SearchAuthenticatedUser {
@@ -22,11 +30,20 @@ export class SearchAuthenticatedUser {
       return success(null);
     }
 
+    const userTelephoneResult = UserTelephone.newFromSingleValue(authenticatedUserResult.value.telephone);
+    if (userTelephoneResult.isFailure) {
+      return userTelephoneResult;
+    }
+
     const userResponse: UserResponseI = {
       id: authenticatedUserResult.value.id,
       locale: authenticatedUserResult.value.locale,
       timeZone: authenticatedUserResult.value.timeZone,
       email: authenticatedUserResult.value.email,
+      phone: {
+        value: userTelephoneResult.value.telephone,
+        prefix: userTelephoneResult.value.prefix,
+      },
     };
 
     return success(userResponse);

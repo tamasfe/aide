@@ -22,9 +22,9 @@ const { data: errorLoading } = await useAsyncData(`settings-preferences-user-set
 
     if (userSettingsStore.settings) {
       promotionsPreferences.value = {
-        email: userSettingsStore.settings.consents.email ?? false,
-        phone: userSettingsStore.settings.consents.phone ?? false,
-        browser: userSettingsStore.settings.consents.browser ?? false,
+        email: userSettingsStore.settings.simplifiedConsents.email ?? false,
+        phone: userSettingsStore.settings.simplifiedConsents.phone ?? false,
+        browser: userSettingsStore.settings.simplifiedConsents.browser ?? false,
       };
       return "";
     }
@@ -39,7 +39,7 @@ watchDeep(() => promotionsPreferences.value,
   useThrottleFn(
     async () => {
       if (!promotionsPreferences.value || !userSettingsStore.settings) return;
-      await $dependencies.users.ui.userSettings.updateConsentsOnPreferencesPage.handle(userSettingsStore.settings.consents, promotionsPreferences.value);
+      await $dependencies.users.ui.userSettings.updateConsentsOnPreferencesPage.handle(userSettingsStore.settings.simplifiedConsents, promotionsPreferences.value);
     },
     150, true, true, true), { immediate: false },
 );

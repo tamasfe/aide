@@ -2,7 +2,11 @@
 const walletStore = useWalletStore();
 const userSettings = useUserSettingsStore();
 const { locale } = useI18n();
-const { $dependencies } = useNuxtApp();
+
+defineProps<{
+  onClickChangeLanguage: () => void;
+  onClickChangeTimeZone: () => void;
+}>();
 
 // TODO for multi-currency: Make this dependent on the user's currency
 const currency = ref({
@@ -33,7 +37,7 @@ const currency = ref({
           <BaseButton
             variant="secondary"
             size="dashboard"
-            @click="$dependencies.users.ui.emitCommandOpenUserActionModal.handle({ modal: 'settings', data: { setting: 'language' } })"
+            @click="onClickChangeLanguage"
           >
             {{ $t('button.change') }}
           </BaseButton>
@@ -49,7 +53,7 @@ const currency = ref({
           <BaseButton
             variant="secondary"
             size="dashboard"
-            @click="$dependencies.users.ui.emitCommandOpenUserActionModal.handle({ modal: 'settings', data: { setting: 'time_zone' } })"
+            @click="onClickChangeTimeZone"
           >
             {{ $t('button.change') }}
           </BaseButton>

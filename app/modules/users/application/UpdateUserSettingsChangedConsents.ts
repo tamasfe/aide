@@ -1,6 +1,6 @@
 import type { AuthenticatedUserRepositoryI } from "../domain/AuthenticatedUserRepository";
-import type { UserSettingsI } from "../domain/UserSettings";
-import { SearchUserSettingsSimplified, type UserSettingSimplifiedI } from "./SearchUserSettingsSimplified";
+import { UserSettings, type UserSettingsPropsI } from "../domain/UserSettings";
+import type { SearchUserSettingsResponseI } from "./SearchUserSettingsSimplified";
 import type { AsyncMessagePublisherI } from "~/packages/async-messages/async-message-publisher";
 import { success } from "~/packages/result";
 
@@ -11,12 +11,12 @@ export class UpdateUserSettingsChangedConsents {
   ) {}
 
   public async handle(
-    initialConsents: Partial<UserSettingSimplifiedI["consents"]>,
-    newConsents: Partial<UserSettingSimplifiedI["consents"]>,
+    initialConsents: Partial<SearchUserSettingsResponseI["simplifiedConsents"]>,
+    newConsents: Partial<SearchUserSettingsResponseI["simplifiedConsents"]>,
   ) {
     const consentsToUpdate = this.compareAndReturnOnlyUpdated(
-      SearchUserSettingsSimplified.simplifiedToUserConsents(initialConsents),
-      SearchUserSettingsSimplified.simplifiedToUserConsents(newConsents),
+      UserSettings.simplifiedToConsentsProps(initialConsents),
+      UserSettings.simplifiedToConsentsProps(newConsents),
     );
 
     if (Object.keys(consentsToUpdate).length === 0) {
@@ -39,8 +39,8 @@ export class UpdateUserSettingsChangedConsents {
     return success();
   }
 
-  private compareAndReturnOnlyUpdated(initialConsents: Partial<UserSettingsI["consents"]>, newConsents: Partial<UserSettingsI["consents"]>): Partial<UserSettingsI["consents"]> {
-    const updatedConsents: Partial<UserSettingsI["consents"]> = {};
+  private compareAndReturnOnlyUpdated(initialConsents: Partial<UserSettingsPropsI["consents"]>, newConsents: Partial<UserSettingsPropsI["consents"]>): Partial<UserSettingsPropsI["consents"]> {
+    const updatedConsents: Partial<UserSettingsPropsI["consents"]> = {};
 
     for (const key of Object.keys(newConsents) as Array<keyof typeof newConsents>) {
       if (initialConsents[key] === newConsents[key]) {

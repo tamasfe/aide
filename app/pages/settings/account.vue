@@ -1,11 +1,20 @@
 <script setup lang="ts">
 const userSettingsStore = useUserSettingsStore();
+const { $dependencies } = useNuxtApp();
 
 const ENABLE_SERVER_SIDE_RENDERING = false;
 const DEFER_CLIENT_SIDE_LOADING = true;
 
-await useAsyncData("account-page-user-settings-store", async () => userSettingsStore.refresh(),
-  { lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING },
+const { data } = await useAsyncData("account-page-user-settings-store", async () => {
+  if (userSettingsStore.status === "ready") {
+    return userSettingsStore.settings;
+  }
+  if (userSettingsStore.status === "unititialized") {
+    await userSettingsStore.refresh();
+  }
+  return userSettingsStore.settings;
+},
+{ watch: [() => userSettingsStore.status], lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING },
 );
 </script>
 
@@ -16,8 +25,14 @@ await useAsyncData("account-page-user-settings-store", async () => userSettingsS
   >
     <DashboardSettingsAccountDetails />
     <DashboardSettingsAccountPersonalDetails />
-    <DashboardSettingsAccountPaymentSettings />
-    <DashboardSettingsAccountRegionalSettings />
+    <DashboardSettingsAccountPaymentSettings
+      :payment-config="data?.payment || null"
+      :on-click-change="() => $dependencies.users.ui.emitCommandOpenUserActionModal.handle({ modal: 'settings', data: { setting: 'payment_pix' } })"
+    />
+    <DashboardSettingsAccountRegionalSettings
+      :on-click-change-language="() => $dependencies.users.ui.emitCommandOpenUserActionModal.handle({ modal: 'settings', data: { setting: 'language' } })"
+      :on-click-change-time-zone="() => $dependencies.users.ui.emitCommandOpenUserActionModal.handle({ modal: 'settings', data: { setting: 'time_zone' } })"
+    />
     <DashboardSettingsAccountCloseAccount />
   </NuxtLayout>
 </template>

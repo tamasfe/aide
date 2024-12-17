@@ -1,21 +1,23 @@
-import type { UserSettingSimplifiedI } from "~/modules/users/application/SearchUserSettingsSimplified";
+import type { SearchUserSettingsResponseI } from "~/modules/users/application/SearchUserSettingsSimplified";
 
+type Status = "ready" | "loading" | "unititialized";
 type UserSettingsStoreI = {
-  isInit: false;
+  status: "unititialized" | "loading";
   settings: null;
 } | {
-  isInit: true;
-  settings: UserSettingSimplifiedI;
+  status: Status;
+  settings: SearchUserSettingsResponseI;
 };
 
 export const useUserSettingsStore = defineStore("userSettingsStore", {
   state: (): UserSettingsStoreI => ({
-    isInit: false,
+    status: "unititialized",
     settings: null,
   }),
 
   actions: {
     async refresh() {
+      this.status = "loading";
       const { $dependencies } = useNuxtApp();
       const result = await $dependencies.users.queries.searchUserSettingsSimplified.handle();
       if (result.isFailure) {
@@ -24,13 +26,13 @@ export const useUserSettingsStore = defineStore("userSettingsStore", {
 
       // Remove previous state
       if (result.isFailure || result.value === null) {
-        this.isInit = false;
+        this.status = "unititialized";
         this.settings = null;
         return;
       }
 
       // Save state
-      this.isInit = true;
+      this.status = "ready";
       this.settings = result.value;
       return;
     },

@@ -1,5 +1,6 @@
 import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
 import type { AsyncMessagePublisherI } from "~/packages/async-messages/async-message-publisher";
+import type { ModalUpdateSettingsMode } from "~/packages/async-messages/async-messages";
 import { success, type EmptySuccessResult } from "~/packages/result";
 
 type NoDataRequiredModal = "login" | "register" | "search" | "forgot_password" | "deposit" | "withdrawal";
@@ -11,7 +12,7 @@ type ModalData = {
   data: { token: string };
 } | {
   modal: "settings";
-  data: { setting: "password" | "language" | "time_zone" };
+  data: { setting: ModalUpdateSettingsMode };
 } | {
   modal: "deposit_confirm";
   data: { flowId: number; paymentCode: string; amount: number; currency: WalletCurrency };

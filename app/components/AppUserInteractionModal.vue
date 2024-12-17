@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
+import type { ModalUpdateSettingsMode } from "~/packages/async-messages/async-messages";
 
 const { $dependencies } = useNuxtApp();
 const { locale } = useI18n();
@@ -10,7 +11,7 @@ type ModalState =
   | { modal: null | "login" | "register" | "forgot" | "cancel_reg" | "deposit" | "withdrawal" | "search" }
   | {
     modal: "settings";
-    setting: "password" | "time_zone" | "language";
+    setting: ModalUpdateSettingsMode;
   } | {
     modal: "recover_password";
     token: string;

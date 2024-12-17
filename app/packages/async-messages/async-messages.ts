@@ -2,6 +2,8 @@ import type { SupportedLocale } from "../translation";
 import type { PaymentStatus } from "~/modules/wallet/domain/Payment";
 import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
 
+export type ModalUpdateSettingsMode = "password" | "language" | "time_zone" | "payment_pix";
+
 export interface AsyncMessagesTypes {
   "girobet:commands:modals:open-login": object;
   "girobet:commands:modals:open-register": object;
@@ -22,7 +24,7 @@ export interface AsyncMessagesTypes {
     currency: WalletCurrency;
   };
   "girobet:commands:modals:open-withdrawal": object;
-  "girobet:commands:modals:open-update-settings": { setting: "password" | "language" | "time_zone" };
+  "girobet:commands:modals:open-update-settings": { setting: ModalUpdateSettingsMode };
   "girobet:commands:modals:close-user-interaction-modal": object;
 
   "girobet:events:users:user-logged-in": object;
@@ -39,6 +41,12 @@ export interface AsyncMessagesTypes {
         siteNotification?: boolean | null;
         sms?: boolean | null;
         telephone?: boolean | null;
+      };
+      payment?: {
+        keyType: "CPF" | "EMAIL" | "PHONE" | "EVP" | null;
+        keyEmail: string | null;
+        keyEvp: string | null;
+        keyPhone: string | null;
       };
     };
   };

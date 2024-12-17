@@ -10,6 +10,13 @@ type UserStoreI = {
     locale: SupportedLocale | null;
     timeZone: string;
     email: string;
+    phone: {
+      value: string;
+      prefix: {
+        value: string;
+        countryCode: string;
+      };
+    };
   };
 };
 
@@ -41,6 +48,7 @@ export const useUserStore = defineStore("userStore", {
         locale: result.value.locale,
         timeZone: result.value.timeZone,
         email: result.value.email,
+        phone: result.value.phone,
       };
       return;
     },
