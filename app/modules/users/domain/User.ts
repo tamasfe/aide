@@ -1,4 +1,6 @@
+import { UserCPF } from "./UserCPF";
 import type { SupportedLocale } from "~/packages/translation";
+import { success } from "~/packages/result";
 
 interface UserPropsI {
   id: number;
@@ -7,11 +9,25 @@ interface UserPropsI {
   jurisdiction: string;
   locale: SupportedLocale | null;
   timeZone: string;
+  cpf: string | null;
 }
 
 export class User {
-  public static newFromProps(props: UserPropsI): User {
-    return new User(props);
+  public static new(props: UserPropsI) {
+    const cpfResult = props.cpf ? UserCPF.new(props.cpf) : success(null);
+    if (cpfResult.isFailure) {
+      return cpfResult;
+    }
+
+    return success(new User(
+      props.id,
+      props.telephone,
+      props.email,
+      props.jurisdiction,
+      props.locale,
+      props.timeZone,
+      cpfResult.value,
+    ));
   }
 
   public toJSON(): UserPropsI {
@@ -22,22 +38,19 @@ export class User {
       jurisdiction: this.jurisdiction,
       locale: this.locale,
       timeZone: this.timeZone,
+      cpf: this.cpf?.value ?? null,
     };
   }
 
-  public readonly id: number;
-  public readonly telephone: string;
-  public readonly email: string;
-  public readonly jurisdiction: string;
-  public readonly locale: SupportedLocale | null;
-  public readonly timeZone: string;
+  private constructor(
+    public readonly id: number,
+    public readonly telephone: string,
+    public readonly email: string,
+    public readonly jurisdiction: string,
+    public readonly locale: SupportedLocale | null,
+    public readonly timeZone: string,
+    public readonly cpf: UserCPF | null,
+  ) {
 
-  private constructor(props: UserPropsI) {
-    this.id = props.id;
-    this.telephone = props.telephone;
-    this.email = props.email;
-    this.jurisdiction = props.jurisdiction;
-    this.locale = props.locale;
-    this.timeZone = props.timeZone;
   }
 }

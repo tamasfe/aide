@@ -5,7 +5,6 @@ export type PaymentType = "deposit" | "withdrawal";
 
 interface PaymentPropsI {
   id: number;
-  identifier: string;
   amount: number;
   createdAt: Date;
   currency: WalletCurrency;
@@ -18,7 +17,6 @@ export class Payment {
   public static new(props: PaymentPropsI): Payment {
     return new Payment(
       props.id,
-      props.identifier,
       props.amount,
       props.createdAt,
       props.currency,
@@ -30,7 +28,6 @@ export class Payment {
 
   private constructor(
     public readonly id: number,
-    public readonly identifier: string,
     public readonly amount: number,
     public readonly createdAt: Date,
     public readonly currency: WalletCurrency,
@@ -42,7 +39,6 @@ export class Payment {
   public toJSON(): PaymentPropsI {
     return {
       id: this.id,
-      identifier: this.identifier,
       amount: this.amount,
       createdAt: this.createdAt,
       currency: this.currency,

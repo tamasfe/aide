@@ -15,7 +15,6 @@ export class PaymentRepositoryDumb implements PaymentRepositoryI {
           id: 1,
           type: "deposit",
           walletId: 1,
-          identifier: "identifier",
           status: "approved",
         }),
       ],

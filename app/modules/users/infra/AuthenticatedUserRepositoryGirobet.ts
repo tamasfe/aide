@@ -1,9 +1,9 @@
 import type { AuthenticatedUserRepositoryI } from "../domain/AuthenticatedUserRepository";
 import { User } from "../domain/User";
 import { ErrorInvalidCurrentPassword } from "../domain/errors/ErrorInvalidCurrentPassword";
-import { UserSettings, type UserSettingsPropsI } from "../domain/UserSettings";
+import { UserSettings } from "../domain/UserSettings";
 import { createBackendOpenApiClient } from "~/packages/http-client/create-backend-open-api-client";
-import { fail, success, type EmptyResult, type Result } from "~/packages/result";
+import { fail, success, type EmptyResult } from "~/packages/result";
 import { InfrastructureError } from "~/packages/result/infrastructure-error";
 import type { AsyncMessagePublisherI } from "~/packages/async-messages/async-message-publisher";
 import { HttpBackendApiError } from "~/packages/http-client/http-client-error";
@@ -15,7 +15,7 @@ export class AuthenticatedUserSearcherGirobet implements AuthenticatedUserReposi
     this.apiClient = createBackendOpenApiClient(clientOptions, asyncMessagePublisher);
   }
 
-  public async searchProfile(): Promise<Result<User | null, InfrastructureError>> {
+  public async searchProfile() {
     try {
       const { data, error, response } = await this.apiClient.GET("/user/profile");
 
@@ -29,14 +29,15 @@ export class AuthenticatedUserSearcherGirobet implements AuthenticatedUserReposi
       }
 
       if (data) {
-        return success(User.newFromProps({
+        return User.new({
           id: data.id,
           locale: searchSimilarLocale(data.locale),
           timeZone: data.time_zone,
           jurisdiction: data.jurisdiction,
           email: data.email,
           telephone: `+${data.phone.code.value}${data.phone.national.value}`,
-        }));
+          cpf: (data.documents["CPF"] as string | undefined) || null,
+        });
       }
 
       return fail(InfrastructureError.newFromError({ data, error, response }, new Error("Unexpected scenario: library did not return data nor error. This should never happen")));

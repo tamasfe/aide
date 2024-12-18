@@ -5,6 +5,8 @@ const { $dependencies } = useNuxtApp();
 const ENABLE_SERVER_SIDE_RENDERING = false;
 const DEFER_CLIENT_SIDE_LOADING = true;
 
+const userStore = useUserStore();
+
 const { data } = await useAsyncData("account-page-user-settings-store", async () => {
   if (userSettingsStore.status === "ready") {
     return userSettingsStore.settings;
@@ -27,6 +29,7 @@ const { data } = await useAsyncData("account-page-user-settings-store", async ()
     <DashboardSettingsAccountPersonalDetails />
     <DashboardSettingsAccountPaymentSettings
       :payment-config="data?.payment || null"
+      :cpf="userStore.user?.cpf || null"
       :on-click-change="() => $dependencies.users.ui.emitCommandOpenUserActionModal.handle({ modal: 'settings', data: { setting: 'payment_pix' } })"
     />
     <DashboardSettingsAccountRegionalSettings

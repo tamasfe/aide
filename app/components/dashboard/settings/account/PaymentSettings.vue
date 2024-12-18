@@ -3,6 +3,7 @@ import { UserSettingsPaymentPix, type UserSettingsPaymentPixPropsI } from "~/mod
 
 const props = defineProps<{
   paymentConfig: null | UserSettingsPaymentPixPropsI;
+  cpf: null | string;
   onClickChange: () => void;
 }>();
 
@@ -33,7 +34,7 @@ const paymentSettings = computed(() => props.paymentConfig ? UserSettingsPayment
       <template #default>
         <div v-if="paymentSettings">
           <p v-if="paymentSettings.activeSettings.keyType === 'CPF'">
-            078.843.426-85
+            {{ cpf || '' }}
           </p>
           <p v-if="paymentSettings.activeSettings.keyType === 'EMAIL' || paymentSettings.activeSettings.keyType === 'PHONE' || paymentSettings.activeSettings.keyType === 'EVP'">
             {{ paymentSettings.activeSettings.keyValue || $t('dashboard.settings.account.payment_settings_key_type_not_set') }}

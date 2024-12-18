@@ -1,12 +1,13 @@
 import type { User } from "./User";
 import type { ErrorInvalidCurrentPassword } from "./errors/ErrorInvalidCurrentPassword";
 import type { UserSettings } from "./UserSettings";
+import type { InvalidCPF } from "./UserCPF";
 import type { EmptyResult, Result } from "~/packages/result";
 import type { InfrastructureError } from "~/packages/result/infrastructure-error";
 import type { SupportedLocale } from "~/packages/translation";
 
 export interface AuthenticatedUserRepositoryI {
-  searchProfile(): Promise<Result<User | null, InfrastructureError>>;
+  searchProfile(): Promise<Result<User | null, InvalidCPF | InfrastructureError>>;
 
   searchSettings(): Promise<Result<null | UserSettings, InfrastructureError>>;
   updateSettings(settings: {

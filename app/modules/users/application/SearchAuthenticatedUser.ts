@@ -8,6 +8,7 @@ interface UserResponseI {
   locale: SupportedLocale | null;
   timeZone: string;
   email: string;
+  cpf: string | null;
   phone: {
     value: string;
     prefix: {
@@ -40,6 +41,7 @@ export class SearchAuthenticatedUser {
       locale: authenticatedUserResult.value.locale,
       timeZone: authenticatedUserResult.value.timeZone,
       email: authenticatedUserResult.value.email,
+      cpf: authenticatedUserResult.value.cpf?.value ?? null,
       phone: {
         value: userTelephoneResult.value.telephone,
         prefix: userTelephoneResult.value.prefix,

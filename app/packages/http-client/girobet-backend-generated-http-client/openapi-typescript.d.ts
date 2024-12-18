@@ -4,6 +4,284 @@
  */
 
 export interface paths {
+    "/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * API Root
+         * @description The root of the API
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description plain text */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/plain; charset=utf-8": unknown;
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Health Check
+         * @description Check the health of the system
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/liveness": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Liveness Check
+         * @description Check the liveness of the system
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/ws/lease": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Issue WebSocket Lease
+         * @description This endpoint is used to generate authentication tokens (leases) for WebSocket connections in our system.
+         *
+         *     ## Lease Generation
+         *
+         *     1. Send a request to the lease issuer endpoint.
+         *     2. Specify the channel for which you want a lease.
+         *     3. The endpoint will return a lease token.
+         *
+         *     ## Lease Properties
+         *
+         *     - Leases are short-lived tokens, valid for 60 seconds from the time of generation.
+         *     - Each lease is tied to a specific channel.
+         *
+         *     ## Usage
+         *
+         *     - Use the generated lease token when establishing a WebSocket connection.
+         *     - For detailed information on how to use the lease token in a WebSocket connection, refer to the documentation found [here](#tag/websocket/GET/ws/connect).
+         *
+         *     ## Important Notes
+         *
+         *     - Always generate a new lease before attempting to establish a WebSocket connection.
+         *     - Ensure your client handles lease expiration and reconnection scenarios.
+         *
+         *     For any issues or questions, please contact our support team.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["WebsocketLeaseRequest"];
+                };
+            };
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["LeaseTokenResponse"];
+                    };
+                };
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/ws/connect": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Establish WebSocket Connection
+         * @description This route is the entry point for WebSocket connections in our system.
+         *
+         *     ## Authentication
+         *
+         *     - Authentication is required for all WebSocket connections.
+         *     - Use a lease token obtained from the lease handler endpoint.
+         *
+         *     ## Connection Process
+         *
+         *     1. Obtain a lease token from the lease handler endpoint.
+         *     2. Connect to this endpoint using the WebSocket protocol.
+         *     3. Set the `sec-websocket-protocol` header as follows:
+         *
+         *        ```text
+         *        Authorization,<lease-token>
+         *        ```
+         *
+         *     ## Example (JavaScript)
+         *
+         *     ```javascript
+         *     const leaseToken = "your-lease-token";
+         *     const socket = new WebSocket("wss://your-domain.com/ws/connect", ["Authorization", leaseToken]);
+         *     ```
+         *
+         *     ## Important Notes
+         *
+         *     - Lease tokens are valid for 60 seconds.
+         *     - Ensure your client can handle reconnection if the lease expires.
+         *     - The server may close the connection if authentication fails.
+         *
+         *     For detailed information on lease generation and management, refer to the main WebSocket authentication documentation found [here](#tag/websocket/POST/ws/lease).
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["RtcEventPayload"];
+                    };
+                };
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/auth/whoami": {
         parameters: {
             query?: never;
@@ -687,6 +965,55 @@ export interface paths {
                     };
                     content: {
                         "application/json": components["schemas"]["PaymentMethodResponse"][];
+                    };
+                };
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/payment/{flow_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Payment Flow
+         * @description Get a payment flow by its ID.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description The ID of the payment flow. */
+                    flow_id: components["schemas"]["PaymentFlowId"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PaymentFlowResponse"];
                     };
                 };
                 "4XX": {
@@ -1756,79 +2083,6 @@ export interface paths {
         };
         trace?: never;
     };
-    "/ws/lease": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Issue WebSocket Lease
-         * @description This endpoint is used to generate authentication tokens (leases) for WebSocket connections in our system.
-         *
-         *     ## Lease Generation
-         *
-         *     1. Send a request to the lease issuer endpoint.
-         *     2. Specify the channel for which you want a lease.
-         *     3. The endpoint will return a lease token.
-         *
-         *     ## Lease Properties
-         *
-         *     - Leases are short-lived tokens, valid for 60 seconds from the time of generation.
-         *     - Each lease is tied to a specific channel.
-         *
-         *     ## Usage
-         *
-         *     - Use the generated lease token when establishing a WebSocket connection.
-         *     - For detailed information on how to use the lease token in a WebSocket connection, refer to the documentation found [here](#tag/websocket/GET/ws/connect).
-         *
-         *     ## Important Notes
-         *
-         *     - Always generate a new lease before attempting to establish a WebSocket connection.
-         *     - Ensure your client handles lease expiration and reconnection scenarios.
-         *
-         *     For any issues or questions, please contact our support team.
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["WebsocketLeaseRequest"];
-                };
-            };
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["LeaseTokenResponse"];
-                    };
-                };
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/kyc/token": {
         parameters: {
             query?: never;
@@ -1858,118 +2112,6 @@ export interface paths {
                     };
                     content: {
                         "application/json": components["schemas"]["KycAccessTokenResponse"];
-                    };
-                };
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/docs/": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** @description This documentation page. */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description HTML content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "text/html": string;
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/ws/connect": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Establish WebSocket Connection
-         * @description This route is the entry point for WebSocket connections in our system.
-         *
-         *     ## Authentication
-         *
-         *     - Authentication is required for all WebSocket connections.
-         *     - Use a lease token obtained from the lease handler endpoint.
-         *
-         *     ## Connection Process
-         *
-         *     1. Obtain a lease token from the lease handler endpoint.
-         *     2. Connect to this endpoint using the WebSocket protocol.
-         *     3. Set the `sec-websocket-protocol` header as follows:
-         *
-         *        ```text
-         *        Authorization,<lease-token>
-         *        ```
-         *
-         *     ## Example (JavaScript)
-         *
-         *     ```javascript
-         *     const leaseToken = "your-lease-token";
-         *     const socket = new WebSocket("wss://your-domain.com/ws/connect", ["Authorization", leaseToken]);
-         *     ```
-         *
-         *     ## Important Notes
-         *
-         *     - Lease tokens are valid for 60 seconds.
-         *     - Ensure your client can handle reconnection if the lease expires.
-         *     - The server may close the connection if authentication fails.
-         *
-         *     For detailed information on lease generation and management, refer to the main WebSocket authentication documentation found [here](#tag/websocket/POST/ws/lease).
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["RtcEventPayload"];
                     };
                 };
                 "4XX": {
@@ -2153,7 +2295,10 @@ export interface components {
             currency: components["schemas"]["SystemCurrency"];
         };
         InitializePasswordResetRequest: {
-            /** @description The email address of the user to reset the password for. */
+            /**
+             * Format: email
+             * @description The email address of the user to reset the password for.
+             */
             email: string;
         };
         InternalError: string;
@@ -2215,11 +2360,17 @@ export interface components {
             wallet_id?: components["schemas"]["WalletId"] | null;
         };
         LoginRequest: {
-            /** @description The URL to redirect to after login. If not set a 200 OK response is returned. */
+            /**
+             * Format: uri
+             * @description The URL to redirect to after login. If not set a 200 OK response is returned.
+             */
             next?: string | null;
             /** @description The password of the user. */
             password: string;
-            /** @description The email address of the user. */
+            /**
+             * Format: email
+             * @description The email address of the user.
+             */
             username: string;
         };
         Maybe_Boolean: boolean | null;
@@ -2351,6 +2502,7 @@ export interface components {
             new_password: string;
         };
         PatchUserPaymentSettingsRequest: {
+            /** Format: email */
             pix_key_email?: components["schemas"]["Maybe_String"];
             pix_key_evp?: components["schemas"]["Maybe_String"];
             pix_key_phone?: components["schemas"]["Maybe_String"];
@@ -2378,6 +2530,10 @@ export interface components {
         };
         /** Format: int64 */
         PaymentFlowId: number;
+        PaymentFlowParams: {
+            /** @description The ID of the payment flow. */
+            flow_id: components["schemas"]["PaymentFlowId"];
+        };
         PaymentFlowResponse: {
             /** @description The amount of the payment flow. */
             amount: components["schemas"]["SystemAmount"];
@@ -2390,8 +2546,6 @@ export interface components {
             currency: components["schemas"]["SystemCurrency"];
             /** @description The ID of the payment flow. */
             id: components["schemas"]["PaymentFlowId"];
-            /** @description The identifier of the payment flow. This is a unique identifier that can be used to reference the payment flow. */
-            identifier: string;
             /** @description The payment method ID the payment flow is associated with. */
             payment_method_id: components["schemas"]["PaymentMethodId"];
             /** @description The type of the payment flow. */
@@ -2749,6 +2903,13 @@ export interface components {
             metadata: components["schemas"]["SystemValidationErrors"];
         } | {
             /** @enum {string} */
+            code: "INVALID_CONTENT_TYPE";
+            metadata: {
+                /** @description The content type that was expected */
+                expected: string;
+            };
+        } | {
+            /** @enum {string} */
             code: "UNAUTHORIZED";
         } | {
             /** @enum {string} */
@@ -2813,11 +2974,17 @@ export interface components {
         /** Format: uri */
         SystemUrl: string;
         SystemValidationError: {
-            code: string;
+            /** @description The error code for the validation error. This may be a well-known code like `required` or a custom code that has to be handled individually. */
+            code: components["schemas"]["SystemValidationErrorCode"];
+            /** @description A human-readable message describing the validation error. This should not be used for i18n purposes, as the message is intended for developers and is only available in english. */
             message?: string | null;
+            /** @description Additional parameters that are relevant to the specific validation error. */
             params: {
                 [key: string]: unknown;
             };
+        };
+        SystemValidationErrorCode: "data_error" | "syntax_error" | "io_error" | "malformed" | "credit_card" | "contains" | "does_not_contain" | "email" | "ip" | "length" | "must_match" | "non_control_character" | "range" | "regex" | "required" | "url" | {
+            custom: string;
         };
         SystemValidationErrors: {
             [key: string]: components["schemas"]["SystemValidationErrorsKind"];
@@ -2861,6 +3028,10 @@ export interface components {
              * @description The birthdate of the user.
              */
             birthdate: string;
+            /** @description User associated documents */
+            documents: {
+                [key: string]: unknown;
+            };
             /** @description The email of the user. */
             email: string;
             /** @description The family name of the user. We have methods of deriving the family name should we only get a name from e.g. a KYC provider, but they may not be 100% reliable and thus the existence of this field can not be guaranteed. */

@@ -10,6 +10,7 @@ type UserStoreI = {
     locale: SupportedLocale | null;
     timeZone: string;
     email: string;
+    cpf: string | null;
     phone: {
       value: string;
       prefix: {
@@ -43,13 +44,7 @@ export const useUserStore = defineStore("userStore", {
 
       // Save logged in user
       this.isAuthenticated = true;
-      this.user = {
-        id: result.value.id,
-        locale: result.value.locale,
-        timeZone: result.value.timeZone,
-        email: result.value.email,
-        phone: result.value.phone,
-      };
+      this.user = result.value;
       return;
     },
   },

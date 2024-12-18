@@ -38,7 +38,6 @@ export class PaymentRepositoryGirobet implements PaymentRepositoryI {
             id: paymentData.id,
             type: paymentData.payment_type,
             walletId: paymentData.wallet_id,
-            identifier: paymentData.identifier,
             status: paymentData.status || null,
           })),
           pagination: {
