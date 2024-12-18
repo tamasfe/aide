@@ -3,6 +3,7 @@ import { toTypedSchema } from "@vee-validate/zod";
 import { z } from "zod";
 import type { SearchUserSettingsResponseI } from "~/modules/users/application/SearchUserSettingsSimplified";
 import { PAYMENT_PIX_KEY_TYPES } from "~/modules/users/domain/UserSettingsPaymentPix";
+import { DEFAULT_PREFIX, UserTelephone } from "~/modules/users/domain/UserTelephone";
 
 const { $dependencies } = useNuxtApp();
 const { t } = useI18n();
@@ -11,6 +12,13 @@ const props = defineProps<{
   paymentSettings: SearchUserSettingsResponseI["payment"];
   initialData?: {
     email: string;
+    phone: {
+      value: string;
+      prefix: {
+        value: string;
+        countryCode: string;
+      };
+    };
   };
 }>();
 
@@ -21,21 +29,38 @@ const validationSchema = toTypedSchema(
     keyType: z.enum(PAYMENT_PIX_KEY_TYPES),
 
     email: z.string().email(t("validation.email_invalid")).optional(),
-    phone: z.string().optional(),
     evp: z.string()
       .max(EVP_MAX_CHARS, t("validation.evp_invalid"))
       .optional(),
+
+    phone: z.string().optional(),
+    phonePrefix: z.object({
+      value: z.string(),
+      countryCode: z.string(),
+    }).optional(),
+
   }).refine(data => data.keyType === "EMAIL" ? typeof data.email === "string" && data.email.length > 0 : true, {
     message: t("validation.email_required"),
     path: ["email"],
   })
-    .refine(data => data.keyType === "PHONE" ? typeof data.phone === "string" && data.phone.length > 0 : true, {
-      message: t("validation.telephone_required"),
-      path: ["phone"],
-    })
     .refine(data => data.keyType === "EVP" ? typeof data.evp === "string" && data.evp.length > 0 : true, {
       message: t("validation.evp_invalid"),
       path: ["evp"],
+    })
+    .superRefine(async (data, ctx) => {
+      if (data.keyType !== "PHONE") {
+        return true;
+      }
+      const errorMessage = await $dependencies.signupFlows.ui.validateTelephoneOnRegisterFormChanged.handle(data.phone, data.phonePrefix?.value, data.phonePrefix?.countryCode);
+      if (errorMessage === true) {
+        return true;
+      }
+
+      ctx.addIssue({
+        code: "custom",
+        message: errorMessage,
+        path: ["phone"],
+      });
     }),
 );
 const { handleSubmit, errors: formErrors, defineField, meta } = useForm({ validationSchema });
@@ -49,22 +74,37 @@ const paymentKeyTypeOptions = PAYMENT_PIX_KEY_TYPES.map(keyType => ({
 }));
 const selectedKeyType = computed(() => paymentKeyTypeOptions.find(option => option.value === keyType.value));
 
-// const [phone, phoneAttrs] = defineField("phone");
-// phone.value = props.paymentSettings.keyPhone ?? "";
-
 const [email, emailAttrs] = defineField("email");
 email.value = props.paymentSettings.keyEmail ?? props.initialData?.email ?? "";
 
 const [evp, evpAttrs] = defineField("evp");
 evp.value = props.paymentSettings.keyEvp ?? "";
 
+/**
+ * Telephone
+ */
+
+const initialUserTelephoneResult = UserTelephone.newFromSingleValue(
+  props.paymentSettings.keyPhone ?? props.initialData?.phone.value ?? "",
+);
+const [phone, phoneAttrs] = defineField("phone");
+phone.value = initialUserTelephoneResult.isFailure ? "" : initialUserTelephoneResult.value.telephone;
+const [phonePrefix] = defineField("phonePrefix");
+phonePrefix.value = initialUserTelephoneResult.isFailure ? DEFAULT_PREFIX : initialUserTelephoneResult.value.prefix;
+// For some reason the infered type from zod does includes the contents of the object as optional, which fails with the v-model. This fixes it.
+const phonePrefixWithFixedType = phonePrefix as globalThis.Ref<{
+  value: string;
+  countryCode: string;
+} | undefined>;
+
 const onSubmit = handleSubmit(async (data) => {
+  const userTelephone = UserTelephone.new(data.phone || "", data.phonePrefix?.value || "");
   formErrorMessage.value = await $dependencies.users.ui.userSettings.updateSettingsOnForm.handle({
     payment: {
       keyType: data.keyType,
       keyEmail: data.email || null,
       keyEvp: data.evp || null,
-      keyPhone: data.phone || null,
+      keyPhone: userTelephone.isFailure ? null : userTelephone.value.value,
     },
   });
 });
@@ -88,7 +128,12 @@ const onSubmit = handleSubmit(async (data) => {
 
       <div v-if="selectedKeyType && selectedKeyType.value">
         <div v-if="selectedKeyType.value === 'PHONE'">
-          To implement!
+          <BaseInputGroupTelephone
+            v-bind="phoneAttrs"
+            v-model:telephone="phone"
+            v-model:prefix="phonePrefixWithFixedType"
+            :error-message="formErrors.phone"
+          />
         </div>
 
         <div v-if="selectedKeyType.value === 'EMAIL'">

@@ -15,7 +15,11 @@ const paymentSettings = computed(() => props.paymentConfig ? UserSettingsPayment
     <DashboardSectionItem :name="$t('dashboard.settings.account.key_type')">
       <template #default>
         <div v-if="paymentSettings">
-          <p>{{ paymentSettings.activeSettings.keyType || $t('dashboard.settings.account.payment_settings_key_type_not_set') }}</p>
+          <p>
+            {{ $t(`user_settings.payment.pix_key_type.${paymentSettings.activeSettings.keyType}`, paymentSettings.activeSettings.keyType || '')
+              || $t('dashboard.settings.account.payment_settings_key_type_not_set')
+            }}
+          </p>
         </div>
       </template>
       <template #actions>

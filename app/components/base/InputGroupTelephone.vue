@@ -1,6 +1,10 @@
 <script setup lang="ts">
-import type { UserTelephonePrefix } from "~/modules/users/domain/UserTelephone";
+import { DEFAULT_PREFIX, type UserTelephonePrefix } from "~/modules/users/domain/UserTelephone";
 import { UserTelephoneMask } from "~/modules/users/infra/ui/UserTelephoneMask";
+
+defineProps<{
+  errorMessage: string | undefined;
+}>();
 
 const { locale } = useI18n();
 
@@ -15,17 +19,21 @@ const addCountryTitleToPrefix = (prefix: UserTelephonePrefix): UserTelephonePref
   };
 };
 
-const telephone = defineModel("telephone", { type: String, required: true });
+const telephone = defineModel("telephone", { type: String, required: false });
 
 const prefixOptions: UserTelephonePrefixOption[] = [
   addCountryTitleToPrefix({ value: "+55", countryCode: "BR" }),
   addCountryTitleToPrefix({ value: "+1", countryCode: "US" }),
 ];
-const prefix = defineModel("prefix", { type: Object as PropType<{ value: string; countryCode: string }>, required: true });
+
+const prefix = defineModel("prefix", {
+  type: Object as PropType<{ value: string; countryCode: string }>,
+  required: false,
+});
 
 const selectedPrefix = computed({
   get() {
-    return addCountryTitleToPrefix(prefix.value);
+    return addCountryTitleToPrefix(prefix.value ?? DEFAULT_PREFIX);
   },
   set(value) {
     prefix.value = {
@@ -35,11 +43,7 @@ const selectedPrefix = computed({
   },
 });
 
-defineProps<{
-  errorMessage: string | undefined;
-}>();
-
-const mask = computed(() => UserTelephoneMask.new(prefix.value.countryCode, telephone.value || "").value());
+const mask = computed(() => UserTelephoneMask.new(prefix.value?.countryCode ?? DEFAULT_PREFIX.countryCode, telephone.value || "").value());
 </script>
 
 <template>

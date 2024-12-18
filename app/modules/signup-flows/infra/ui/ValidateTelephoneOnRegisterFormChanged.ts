@@ -3,7 +3,7 @@ import { UserTelephoneMask } from "~/modules/users/infra/ui/UserTelephoneMask";
 import type { TranslateFunctionType } from "~/packages/translation";
 
 export class ValidateTelephoneOnRegisterFormChanged {
-  public async handle(value: unknown, prefixValue: string | undefined, prefixCountryCode: string | undefined): Promise<boolean | string> {
+  public async handle(value: unknown, prefixValue: string | undefined, prefixCountryCode: string | undefined): Promise<true | string> {
     const telephoneValue = String(value || "");
 
     if (!prefixValue || !prefixCountryCode) {

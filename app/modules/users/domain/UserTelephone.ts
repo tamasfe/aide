@@ -1,6 +1,8 @@
 import countryCodeOptions from "country-calling-code";
 import { CustomError, fail, success } from "~/packages/result";
 
+export const DEFAULT_PREFIX = { value: "+55", countryCode: "BR" };
+
 /**
  * Source: https://worldpopulationreview.com/country-rankings/phone-number-length-by-country
  */
@@ -55,7 +57,7 @@ export class UserTelephone {
     telephone: string,
     prefix: string,
   ) {
-    const cleanTelephoneValue = telephone.replace(/[^\d-]/g, "");
+    const cleanTelephoneValue = telephone.replace(/\D/g, "");
     if (!cleanTelephoneValue) {
       throw ErrorInvalidUserTelephone.newFromMissingTelephone(telephone);
     }
