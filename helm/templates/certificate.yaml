@@ -3,9 +3,9 @@ kind: Certificate
 metadata:
   name: "{{ .Release.Name }}"
 spec:
-  commonName: girobet.vip
+  commonName: dev.staging.girobet.vip
   dnsNames:
-    - "girobet.vip"
+    - "dev.stating.girobet.vip"
   duration: 2160h0m0s
   issuerRef:
     kind: ClusterIssuer
