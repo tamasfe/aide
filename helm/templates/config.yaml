@@ -3,9 +3,9 @@ kind: ConfigMap
 metadata:
   name: "{{ .Release.Name }}"
 data:
-  NUXT_PUBLIC_BASE_URL: "https://girobet.vip"
-  NUXT_PUBLIC_API_BASE_URL: https://api.girobet.vip
-  NUXT_PUBLIC_WEBSOCKET_API_BASE_URL: https://api.girobet.vip/ws/connect
+  NUXT_PUBLIC_BASE_URL: "https://dev.staging.girobet.vip"
+  NUXT_PUBLIC_API_BASE_URL: https://api.staging.girobet.vip
+  NUXT_PUBLIC_WEBSOCKET_API_BASE_URL: https://api.staging.girobet.vip/ws/connect
 
   NUXT_PUBLIC_ERROR_CAPTURING_ENABLED: "true"
   LOG_LEVEL: "debug" # Some libraries use it to set their log level. Should match the below "NUXT_PUBLIC_LOG_LEVEL"
@@ -13,22 +13,22 @@ data:
   NUXT_PUBLIC_SERVICE_NAME: "girobet-frontend"
 
   # Games module
-  NUXT_PUBLIC_GAMES_API_BASE_URL_CLIENT: "https://api.girobet.vip"
+  NUXT_PUBLIC_GAMES_API_BASE_URL_CLIENT: "https://api.staging.girobet.vip"
   NUXT_PUBLIC_GAMES_API_BASE_URL_SERVER: "http://girobet-api.default.svc.cluster.local"
 
   # Signup flow module
   NUXT_PUBLIC_SIGNUP_FLOWS_IDS_CLIENT_REPO: "local_storage"
-  NUXT_PUBLIC_SIGNUP_FLOWS_API_BASE_URL_CLIENT: "https://api.girobet.vip"
+  NUXT_PUBLIC_SIGNUP_FLOWS_API_BASE_URL_CLIENT: "https://api.staging.girobet.vip"
   NUXT_PUBLIC_SIGNUP_FLOWS_API_BASE_URL_SERVER: "http://girobet-api.default.svc.cluster.local"
 
   # Users module
-  NUXT_PUBLIC_USERS_AUTHENTICATED_REPOSITORY_BASE_URL_CLIENT: "https://api.girobet.vip"
+  NUXT_PUBLIC_USERS_AUTHENTICATED_REPOSITORY_BASE_URL_CLIENT: "https://api.staging.girobet.vip"
   NUXT_PUBLIC_USERS_AUTHENTICATED_REPOSITORY_BASE_URL_SERVER: "http://girobet-api.default.svc.cluster.local"
 
   # Wallet module
-  NUXT_PUBLIC_WALLETS_API_BASE_URL_CLIENT: "https://api.girobet.vip"
+  NUXT_PUBLIC_WALLETS_API_BASE_URL_CLIENT: "https://api.staging.girobet.vip"
   NUXT_PUBLIC_WALLETS_API_BASE_URL_SERVER: "http://girobet-api.default.svc.cluster.local"
 
   # Providers domain
-  NUXT_PUBLIC_PROVIDERS_API_BASE_URL_CLIENT: "https://api.girobet.vip"
+  NUXT_PUBLIC_PROVIDERS_API_BASE_URL_CLIENT: "https://api.staging.girobet.vip"
   NUXT_PUBLIC_PROVIDERS_API_BASE_URL_SERVER: "http://girobet-api.default.svc.cluster.local"
