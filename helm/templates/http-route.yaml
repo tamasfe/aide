@@ -7,7 +7,7 @@ spec:
     - name: public
       namespace: envoy-gateway-system
   hostnames:
-    - "dev.staging.girobet.vip"
+    - "staging.girobet.vip"
   rules:
     - backendRefs:
         - name: "{{ .Release.Name }}"
