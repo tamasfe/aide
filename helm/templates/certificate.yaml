@@ -5,7 +5,7 @@ metadata:
 spec:
   commonName: dev.staging.girobet.vip
   dnsNames:
-    - "dev.stating.girobet.vip"
+    - "dev.staging.girobet.vip"
   duration: 2160h0m0s
   issuerRef:
     kind: ClusterIssuer
