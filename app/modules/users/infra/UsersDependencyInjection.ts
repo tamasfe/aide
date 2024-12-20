@@ -64,7 +64,7 @@ export const createUsersDependencyInjection = async (config: PublicRuntimeConfig
 
   return {
     queries: {
-      searchAuthenticatedUser: new SearchAuthenticatedUser(authenticatedUserRepo),
+      searchAuthenticatedUser: new SearchAuthenticatedUser(authenticatedUserRepo, commonDependencies.logger),
       searchUserSettingsSimplified: new SearchUserSettingsSimplified(authenticatedUserRepo),
     },
     ui: {

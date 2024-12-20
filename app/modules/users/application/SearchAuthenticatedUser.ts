@@ -2,6 +2,7 @@ import type { AuthenticatedUserRepositoryI } from "../domain/AuthenticatedUserRe
 import { UserTelephone } from "../domain/UserTelephone";
 import type { SupportedLocale } from "~/packages/translation";
 import { success } from "~/packages/result";
+import type { LoggerI } from "~/packages/logger/Logger";
 
 interface UserResponseI {
   id: number;
@@ -19,10 +20,14 @@ interface UserResponseI {
 }
 
 export class SearchAuthenticatedUser {
-  constructor(private readonly authenticatedUserRepo: AuthenticatedUserRepositoryI) {}
+  constructor(
+    private readonly authenticatedUserRepo: AuthenticatedUserRepositoryI,
+    private readonly logger: LoggerI,
+  ) {}
 
   public async handle() {
     const authenticatedUserResult = await this.authenticatedUserRepo.searchProfile();
+    this.logger.info("SearchAuthenticatedUser after search profile", { authenticatedUserResult });
     if (authenticatedUserResult.isFailure) {
       return authenticatedUserResult;
     }
@@ -32,6 +37,7 @@ export class SearchAuthenticatedUser {
     }
 
     const userTelephoneResult = UserTelephone.newFromSingleValue(authenticatedUserResult.value.telephone);
+    this.logger.info("SearchAuthenticatedUser after telephone", { userTelephoneResult });
     if (userTelephoneResult.isFailure) {
       return userTelephoneResult;
     }
@@ -48,6 +54,7 @@ export class SearchAuthenticatedUser {
       },
     };
 
+    this.logger.info("SearchAuthenticatedUser before return", { userResponse });
     return success(userResponse);
   }
 }
