@@ -31,6 +31,7 @@ export const useUserStore = defineStore("userStore", {
     async refreshUser() {
       const { $dependencies } = useNuxtApp();
       const result = await $dependencies.users.queries.searchAuthenticatedUser.handle();
+      $dependencies.common.logger.info("Refreshing user store", { result });
       if (result.isFailure) {
         $dependencies.common.logger.error("Error searching authenticated user inside user store", result.error);
       }
