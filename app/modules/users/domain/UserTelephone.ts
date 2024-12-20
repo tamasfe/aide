@@ -1,4 +1,4 @@
-import countryCodeOptions from "country-calling-code";
+import { codes as countryCodeOptions } from "country-calling-code";
 import { CustomError, fail, success } from "~/packages/result";
 
 export const DEFAULT_PREFIX = { value: "+55", countryCode: "BR" };

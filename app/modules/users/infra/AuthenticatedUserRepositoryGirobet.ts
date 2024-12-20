@@ -9,7 +9,6 @@ import type { AsyncMessagePublisherI } from "~/packages/async-messages/async-mes
 import { HttpBackendApiError } from "~/packages/http-client/http-client-error";
 import type { SupportedLocale } from "~/packages/translation";
 import { searchSimilarLocale } from "~/packages/translation/utils";
-import type { LoggerI } from "~/packages/logger/Logger";
 
 export class AuthenticatedUserSearcherGirobet implements AuthenticatedUserRepositoryI {
   constructor(
