@@ -16,7 +16,7 @@ Sentry.init({
   // We recommend adjusting this value in production, or using tracesSampler for finer control
   tracesSampleRate: 1.0,
   // Set 'tracePropagationTargets' to control for which URLs distributed tracing should be enabled
-  tracePropagationTargets: ["localhost", /^https:\/\/girobet\.vip/],
+  tracePropagationTargets: ["localhost", /^https:\/\/.*\.?girobet\.vip/],
 
   // Session Replay
   integrations: [
