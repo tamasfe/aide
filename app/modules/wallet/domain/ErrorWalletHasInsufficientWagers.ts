@@ -1,10 +1,10 @@
 import { CustomError } from "~/packages/result";
 
-export class ErrorInsufficientWagers extends CustomError {
-  public override name = "ErrorInsufficientWagers" as const;
+export class ErrorWalletHasInsufficientWagers extends CustomError {
+  public override name = "ErrorWalletHasInsufficientWagers" as const;
 
   public static new(metadata: Record<string, unknown>) {
-    return new ErrorInsufficientWagers(metadata);
+    return new ErrorWalletHasInsufficientWagers(metadata);
   }
 
   private constructor(metadata: Record<string, unknown>) {

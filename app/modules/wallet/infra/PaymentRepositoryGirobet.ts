@@ -2,9 +2,12 @@ import { type PaymentType, Payment } from "../domain/Payment";
 import type { PaymentRepositoryI } from "../domain/PaymentRepository";
 import type { WalletCurrency } from "../domain/WalletCurrency";
 import { ErrorPendingPaymentFlow } from "../domain/ErrorPendingPaymentFlow";
-import { ErrorInsufficientWagers } from "../domain/ErrorInsufficientWagers";
 import { ErrorInsufficientFunds } from "../domain/ErrorInsufficientFunds";
-import { ErrorPaymentCooldownNotFinished } from "../domain/ErrorPaymentCooldownNotFinished";
+import { ErrorWalletHasInsufficientWagers } from "../domain/ErrorWalletHasInsufficientWagers";
+import { ErrorWalletPaymentCooldownNotFinished } from "../domain/ErrorWalletPaymentCooldownNotFinished";
+import { ErrorPaymentAmountExceedsTimeframeLimits } from "../domain/ErrorPaymentAmountExceedsTimeframeLimits";
+import { ErrorPaymentAmountOutsideLimits } from "../domain/ErrorPaymentAmountOutsideLimits";
+import { ErrorPaymentMethodNotAllowed } from "../domain/ErrorPaymentMethodNotAllowed";
 import type { AsyncMessagePublisherI } from "~/packages/async-messages/async-message-publisher";
 import { createBackendOpenApiClient } from "~/packages/http-client/create-backend-open-api-client";
 import { HttpBackendApiError } from "~/packages/http-client/http-client-error";
@@ -71,7 +74,7 @@ export class PaymentRepositoryGirobet implements PaymentRepositoryI {
     }
   }
 
-  public async createDepositFlow(amount: number, currency: WalletCurrency, paymentMethodId: number): Promise<Result<{ flowId: number; pix: { code: string } }, ErrorPendingPaymentFlow | InfrastructureError>> {
+  public async createDepositFlow(amount: number, currency: WalletCurrency, paymentMethodId: number) {
     try {
       const { data, error, response } = await this.apiClient.POST("/payment/deposit", {
         body: {
@@ -93,6 +96,19 @@ export class PaymentRepositoryGirobet implements PaymentRepositoryI {
       if (error) {
         if (error.code === "WALLET_PENDING_FLOW") {
           return fail(new ErrorPendingPaymentFlow("deposit"));
+        }
+        if (error.code === "PAYMENT_AMOUNT_EXCEEDS_TIMEFRAME_LIMITS") {
+          return fail(ErrorPaymentAmountExceedsTimeframeLimits.new(error.metadata.days, Number(error.metadata.limit), { ...error.metadata, amount, currency, paymentMethodId }));
+        }
+        if (error.code === "PAYMENT_METHOD_NOT_ALLOWED") {
+          return fail(ErrorPaymentMethodNotAllowed.new(paymentMethodId, { amount, currency }));
+        }
+        if (error.code === "PAYMENT_AMOUNT_OUTSIDE_LIMITS") {
+          return fail(ErrorPaymentAmountOutsideLimits.new(
+            error.metadata.bound,
+            typeof error.metadata.max === "string" ? Number(error.metadata.max) : Number(error.metadata.min),
+            { ...error.metadata, amount, currency, paymentMethodId },
+          ));
         }
         return fail(
           InfrastructureError.newFromError({
@@ -137,13 +153,25 @@ export class PaymentRepositoryGirobet implements PaymentRepositoryI {
           return fail(new ErrorPendingPaymentFlow("deposit"));
         }
         if (error.code === "WALLET_INSUFFICIENT_WAGERS") {
-          return fail(ErrorInsufficientWagers.new({ amount, currency, paymentMethodId }));
+          return fail(ErrorWalletHasInsufficientWagers.new({ amount, currency, paymentMethodId }));
         }
         if (error.code === "WALLET_INSUFFICIENT_FUNDS") {
           return fail(ErrorInsufficientFunds.new({ amount, currency, paymentMethodId }));
         }
+        if (error.code === "PAYMENT_AMOUNT_EXCEEDS_TIMEFRAME_LIMITS") {
+          return fail(ErrorPaymentAmountExceedsTimeframeLimits.new(error.metadata.days, Number(error.metadata.limit), { ...error.metadata, amount, currency, paymentMethodId }));
+        }
         if (error.code === "WALLET_PAYMENT_COOLDOWN") {
-          return fail(ErrorPaymentCooldownNotFinished.newFromWithdrawal(error.metadata.minutes_left, { amount, currency, paymentMethodId }));
+          return fail(ErrorWalletPaymentCooldownNotFinished.new(error.metadata.minutes_left, { amount, currency, paymentMethodId }));
+        }
+        if (error.code === "PAYMENT_METHOD_NOT_ALLOWED") {
+          return fail(ErrorPaymentMethodNotAllowed.new(paymentMethodId, { amount, currency }));
+        }
+        if (error.code === "PAYMENT_AMOUNT_OUTSIDE_LIMITS") {
+          return fail(ErrorPaymentAmountOutsideLimits.new(error.metadata.bound,
+            typeof error.metadata.max === "string" ? Number(error.metadata.max) : Number(error.metadata.min),
+            { ...error.metadata, amount, currency, paymentMethodId },
+          ));
         }
         return fail(
           InfrastructureError.newFromError({

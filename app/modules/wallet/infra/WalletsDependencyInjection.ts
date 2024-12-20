@@ -66,12 +66,14 @@ export const createWalletsDependencyInjection = (publicConfig: PublicRuntimeConf
         new CreateDepositFlow(paymentsRepository, commonDependencies.asyncMessagePublisher),
         commonDependencies.logger,
         commonDependencies.translateFunction,
+        commonDependencies.numberFormatter,
       ),
       createWithdrawalFlowOnForm: new CreateWithdrawalFlowOnForm(
         new CreateWithdrawalFlow(paymentsRepository, commonDependencies.asyncMessagePublisher),
         commonDependencies.logger,
         commonDependencies.translateFunction,
         commonDependencies.dateTimeFormatter,
+        commonDependencies.numberFormatter,
       ),
       searchPaymentsOnTable: new SearchPaymentsOnTable(
         new SearchPaymentsPaginating(paymentsRepository),
