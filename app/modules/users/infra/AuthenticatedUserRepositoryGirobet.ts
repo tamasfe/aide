@@ -9,9 +9,14 @@ import type { AsyncMessagePublisherI } from "~/packages/async-messages/async-mes
 import { HttpBackendApiError } from "~/packages/http-client/http-client-error";
 import type { SupportedLocale } from "~/packages/translation";
 import { searchSimilarLocale } from "~/packages/translation/utils";
+import type { LoggerI } from "~/packages/logger/Logger";
 
 export class AuthenticatedUserSearcherGirobet implements AuthenticatedUserRepositoryI {
-  constructor(clientOptions: { baseUrl: string; userJurisdiction: string | undefined; headers?: Record<string, string> }, asyncMessagePublisher: AsyncMessagePublisherI) {
+  constructor(
+    clientOptions: { baseUrl: string; userJurisdiction: string | undefined; headers?: Record<string, string> },
+    asyncMessagePublisher: AsyncMessagePublisherI,
+    private logger: LoggerI,
+  ) {
     this.apiClient = createBackendOpenApiClient(clientOptions, asyncMessagePublisher);
   }
 
@@ -20,6 +25,7 @@ export class AuthenticatedUserSearcherGirobet implements AuthenticatedUserReposi
       const { data, error, response } = await this.apiClient.GET("/user/profile");
 
       if (error) {
+        this.logger.info("User profile error received from backend", { error });
         if (error.code === "UNAUTHORIZED") {
           return success(null);
         }
@@ -29,6 +35,7 @@ export class AuthenticatedUserSearcherGirobet implements AuthenticatedUserReposi
       }
 
       if (data) {
+        this.logger.info("User profile data received from backend", { data });
         return User.new({
           id: data.id,
           locale: searchSimilarLocale(data.locale),
