@@ -44,7 +44,7 @@ export const useUserStore = defineStore("userStore", {
 
       // Save logged in user
       this.isAuthenticated = true;
-      this.user = result.value;
+      this.user = { ...result.value };
       return;
     },
   },
