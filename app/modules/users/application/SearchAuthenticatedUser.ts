@@ -2,7 +2,6 @@ import type { AuthenticatedUserRepositoryI } from "../domain/AuthenticatedUserRe
 import { UserTelephone } from "../domain/UserTelephone";
 import type { SupportedLocale } from "~/packages/translation";
 import { success } from "~/packages/result";
-import type { LoggerI } from "~/packages/logger/Logger";
 
 interface UserResponseI {
   id: number;
@@ -20,30 +19,23 @@ interface UserResponseI {
 }
 
 export class SearchAuthenticatedUser {
-  constructor(
-    private readonly authenticatedUserRepo: AuthenticatedUserRepositoryI,
-    private readonly logger: LoggerI,
-  ) {}
+  constructor(private readonly authenticatedUserRepo: AuthenticatedUserRepositoryI) {}
 
   public async handle() {
     const authenticatedUserResult = await this.authenticatedUserRepo.searchProfile();
-    this.logger.info("SearchAuthenticatedUser after search profile", { authenticatedUserResult });
     if (authenticatedUserResult.isFailure) {
       return authenticatedUserResult;
     }
-    this.logger.info("SearchAuthenticatedUser after failure return", { authenticatedUserResult });
 
     if (authenticatedUserResult.value === null) {
       return success(null);
     }
-    this.logger.info("SearchAuthenticatedUser after null return", { authenticatedUserResult });
 
     const userTelephoneResult = UserTelephone.newFromSingleValue(authenticatedUserResult.value.telephone);
-    this.logger.info("SearchAuthenticatedUser after telephone", { userTelephoneResult });
+
     if (userTelephoneResult.isFailure) {
       return userTelephoneResult;
     }
-    this.logger.info("SearchAuthenticatedUser after user telephone failure return", { userTelephoneResult });
 
     const userResponse: UserResponseI = {
       id: authenticatedUserResult.value.id,
@@ -57,7 +49,6 @@ export class SearchAuthenticatedUser {
       },
     };
 
-    this.logger.info("SearchAuthenticatedUser before return", { userResponse });
     return success(userResponse);
   }
 }

@@ -48,7 +48,7 @@ export const createUsersDependencyInjection = async (config: PublicRuntimeConfig
 
   const authenticatedUserRepo: AuthenticatedUserRepositoryI = (() => {
     if (authenticatedRepositoryBaseUrl) {
-      return new AuthenticatedUserSearcherGirobet({ baseUrl: authenticatedRepositoryBaseUrl, userJurisdiction: config.genericFixedUserJurisdiction, headers: requestHeaders }, commonDependencies.asyncMessagePublisher, commonDependencies.logger);
+      return new AuthenticatedUserSearcherGirobet({ baseUrl: authenticatedRepositoryBaseUrl, userJurisdiction: config.genericFixedUserJurisdiction, headers: requestHeaders }, commonDependencies.asyncMessagePublisher);
     }
     return new AuthenticatedUserRepositoryDumb(commonDependencies.logger);
   })();
@@ -64,7 +64,7 @@ export const createUsersDependencyInjection = async (config: PublicRuntimeConfig
 
   return {
     queries: {
-      searchAuthenticatedUser: new SearchAuthenticatedUser(authenticatedUserRepo, commonDependencies.logger),
+      searchAuthenticatedUser: new SearchAuthenticatedUser(authenticatedUserRepo),
       searchUserSettingsSimplified: new SearchUserSettingsSimplified(authenticatedUserRepo),
     },
     ui: {

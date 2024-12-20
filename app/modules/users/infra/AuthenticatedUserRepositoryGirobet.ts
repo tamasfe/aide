@@ -15,7 +15,6 @@ export class AuthenticatedUserSearcherGirobet implements AuthenticatedUserReposi
   constructor(
     clientOptions: { baseUrl: string; userJurisdiction: string | undefined; headers?: Record<string, string> },
     asyncMessagePublisher: AsyncMessagePublisherI,
-    private logger: LoggerI,
   ) {
     this.apiClient = createBackendOpenApiClient(clientOptions, asyncMessagePublisher);
   }
@@ -25,7 +24,6 @@ export class AuthenticatedUserSearcherGirobet implements AuthenticatedUserReposi
       const { data, error, response } = await this.apiClient.GET("/user/profile");
 
       if (error) {
-        this.logger.info("User profile error received from backend", { error });
         if (error.code === "UNAUTHORIZED") {
           return success(null);
         }
@@ -35,7 +33,6 @@ export class AuthenticatedUserSearcherGirobet implements AuthenticatedUserReposi
       }
 
       if (data) {
-        this.logger.info("User profile data received from backend", { data });
         return User.new({
           id: data.id,
           locale: searchSimilarLocale(data.locale),
