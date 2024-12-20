@@ -52,10 +52,10 @@
 //!
 //! - [axum](https://docs.rs/axum/latest/axum/): [`aide::axum`](axum).
 //! - [actix-web](https://docs.rs/actix-web/latest/actix_web/) is **not
-//! supported** since `0.5.0` only due to lack of developer capacity,
-//! but it's likely to be supported again in the future. If you use
-//! `actix-web` you can still use the macro-based `0.4.*` version of the library
-//! for the time being.
+//!   supported** since `0.5.0` only due to lack of developer capacity,
+//!   but it's likely to be supported again in the future. If you use
+//!   `actix-web` you can still use the macro-based `0.4.*` version of the
+//!   library for the time being.
 //!
 //! ## Errors
 //!
@@ -140,7 +140,7 @@ pub mod redoc;
 #[cfg(feature = "scalar")]
 pub mod scalar;
 
-pub use helpers::{no_api::NoApi, with_api::ApiOverride, with_api::WithApi, use_api::UseApi};
+pub use helpers::{no_api::NoApi, use_api::UseApi, with_api::ApiOverride, with_api::WithApi};
 
 pub use error::Error;
 pub use operation::{OperationInput, OperationOutput};

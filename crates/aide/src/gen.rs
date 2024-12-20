@@ -50,7 +50,7 @@ pub fn on_error(handler: impl Fn(Error) + 'static) {
 /// [`OpenApi`]: crate::openapi::OpenApi
 pub fn extract_schemas(extract: bool) {
     in_context(|ctx| {
-        ctx.set_extract_schemas(extract)
+        ctx.set_extract_schemas(extract);
     });
 }
 

@@ -250,7 +250,7 @@ impl OperationOutput for String {
     }
 }
 
-impl<'a> OperationOutput for &'a str {
+impl OperationOutput for &str {
     type Inner = Self;
 
     fn operation_response(
@@ -268,7 +268,7 @@ impl<'a> OperationOutput for &'a str {
     }
 }
 
-impl<'a> OperationOutput for Cow<'a, str> {
+impl OperationOutput for Cow<'_, str> {
     type Inner = Self;
 
     fn operation_response(
@@ -361,7 +361,7 @@ impl OperationOutput for Vec<u8> {
     }
 }
 
-impl<'a> OperationInput for &'a [u8] {
+impl OperationInput for &[u8] {
     fn operation_input(
         ctx: &mut crate::gen::GenContext,
         operation: &mut crate::openapi::Operation,
@@ -370,7 +370,7 @@ impl<'a> OperationInput for &'a [u8] {
     }
 }
 
-impl<'a> OperationOutput for &'a [u8] {
+impl OperationOutput for &[u8] {
     type Inner = Self;
 
     fn operation_response(
@@ -388,7 +388,7 @@ impl<'a> OperationOutput for &'a [u8] {
     }
 }
 
-impl<'a> OperationInput for Cow<'a, [u8]> {
+impl OperationInput for Cow<'_, [u8]> {
     fn operation_input(
         ctx: &mut crate::gen::GenContext,
         operation: &mut crate::openapi::Operation,
@@ -397,7 +397,7 @@ impl<'a> OperationInput for Cow<'a, [u8]> {
     }
 }
 
-impl<'a> OperationOutput for Cow<'a, [u8]> {
+impl OperationOutput for Cow<'_, [u8]> {
     type Inner = Self;
 
     fn operation_response(
