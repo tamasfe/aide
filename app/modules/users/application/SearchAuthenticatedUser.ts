@@ -31,16 +31,19 @@ export class SearchAuthenticatedUser {
     if (authenticatedUserResult.isFailure) {
       return authenticatedUserResult;
     }
+    this.logger.info("SearchAuthenticatedUser after failure return", { authenticatedUserResult });
 
     if (authenticatedUserResult.value === null) {
       return success(null);
     }
+    this.logger.info("SearchAuthenticatedUser after null return", { authenticatedUserResult });
 
     const userTelephoneResult = UserTelephone.newFromSingleValue(authenticatedUserResult.value.telephone);
     this.logger.info("SearchAuthenticatedUser after telephone", { userTelephoneResult });
     if (userTelephoneResult.isFailure) {
       return userTelephoneResult;
     }
+    this.logger.info("SearchAuthenticatedUser after user telephone failure return", { userTelephoneResult });
 
     const userResponse: UserResponseI = {
       id: authenticatedUserResult.value.id,

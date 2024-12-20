@@ -18,7 +18,7 @@ describe("UserTelephone unit tests", async () => {
     }
 
     expect(telephoneResult.error).toBeInstanceOf(ErrorInvalidUserTelephone);
-    expect(telephoneResult.error.reason).toBe("missing_plus_in_prefix");
+    expect(telephoneResult.error.reason).toBe("prefix_missing_plus_sign");
   });
 
   describe("'newFromSingleValue' method", () => {
@@ -34,5 +34,15 @@ describe("UserTelephone unit tests", async () => {
         expect(telephoneResult.value.value).toBe(phoneWithPrefix);
       });
     }
+
+    it(`correctly returns the telephone for "+4917611111111"`, () => {
+      const telephoneResult = UserTelephone.newFromSingleValue("+4917611111111");
+      if (telephoneResult.isFailure) {
+        throw telephoneResult.error;
+      }
+
+      expect(telephoneResult.value.value).toBe("+4917611111111");
+      expect(telephoneResult.value.telephone).toBe("17611111111");
+    });
   });
 });
