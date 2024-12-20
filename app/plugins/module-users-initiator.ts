@@ -63,7 +63,7 @@ export default defineNuxtPlugin({
      * Init user pinia store
      *
      */
-    await useAsyncData("user-authentication", () => userStore.refreshUser().then(() => true));
+    await useAsyncData("user-authentication", () => userStore.refreshUser().then(() => true).catch(error => $dependencies.common.logger.error("Error refreshing user store", { error })));
 
     return {};
   },
