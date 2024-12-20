@@ -1,3 +1,5 @@
+import { InfrastructureError } from "~/packages/result/infrastructure-error";
+
 export default defineNuxtPlugin({
   name: "module-users-initiator",
   dependsOn: ["dependency-injection"],
@@ -63,7 +65,11 @@ export default defineNuxtPlugin({
      * Init user pinia store
      *
      */
-    await useAsyncData("user-authentication", () => userStore.refreshUser().then(() => true).catch(error => $dependencies.common.logger.error("Error refreshing user store", { error })));
+    await useAsyncData("user-authentication", () =>
+      userStore.refreshUser()
+        .then(() => true)
+        .catch(error => $dependencies.common.logger.error("Error refreshing user store", InfrastructureError.newFromUnknownError({}, error))),
+    );
 
     return {};
   },
