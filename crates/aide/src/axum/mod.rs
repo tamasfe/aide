@@ -177,6 +177,8 @@ use crate::{
     util::merge_paths,
     OperationInput, OperationOutput,
 };
+#[cfg(not(feature = "axum-wasm"))]
+use axum::extract::connect_info::IntoMakeServiceWithConnectInfo;
 use axum::{
     body::{Body, HttpBody, Bytes},
     handler::Handler,
@@ -185,8 +187,6 @@ use axum::{
     routing::{IntoMakeService, Route, RouterAsService, RouterIntoService},
     Router,
 };
-#[cfg(not(feature = "axum-wasm"))]
-use axum::extract::connect_info::IntoMakeServiceWithConnectInfo;
 use indexmap::map::Entry;
 use indexmap::IndexMap;
 use tower_layer::Layer;
@@ -363,8 +363,9 @@ where
     }
 
     fn merge_api(&mut self, api: &mut OpenApi) {
-        self.merge_api_with(api, |x| x)
+        self.merge_api_with(api, |x| x);
     }
+
     fn merge_api_with<F>(&mut self, api: &mut OpenApi, transform: F)
     where
         F: FnOnce(TransformOpenApi) -> TransformOpenApi,

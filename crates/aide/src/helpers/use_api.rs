@@ -11,7 +11,7 @@ use crate::{OperationInput, OperationOutput};
 
 /// helper trait to allow simplified use of [`UseApi`] in responses
 pub trait IntoApi {
-    /// into UseApi
+    /// into [`UseApi`]
     fn into_api<A>(self) -> UseApi<Self, A>
     where
         Self: Sized;

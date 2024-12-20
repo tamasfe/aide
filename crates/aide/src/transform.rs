@@ -646,7 +646,10 @@ impl<'t> TransformOperation<'t> {
     {
         in_context(|ctx| {
             if let Some(mut res) = R::operation_response(ctx, self.operation) {
-                let responses = self.operation.responses.get_or_insert_with(Default::default);
+                let responses = self
+                    .operation
+                    .responses
+                    .get_or_insert_with(Default::default);
                 if responses.default.is_none() {
                     let t = transform(TransformResponse::new(&mut res));
 
