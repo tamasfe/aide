@@ -36,7 +36,7 @@ export class AuthenticatedUserSearcherGirobet implements AuthenticatedUserReposi
           jurisdiction: data.jurisdiction,
           email: data.email,
           telephone: `+${data.phone.code.value}${data.phone.national.value}`,
-          cpf: (data.documents["CPF"] as string | undefined) || null,
+          cpf: (data.documents ? data.documents["CPF"] as string | undefined : null) || null,
         });
       }
 
