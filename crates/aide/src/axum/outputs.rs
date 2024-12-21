@@ -196,7 +196,7 @@ impl OperationOutput for FormRejection {
     }
 }
 
-#[cfg(feature = "jwt_authorizer")]
+#[cfg(feature = "jwt-authorizer")]
 impl OperationOutput for jwt_authorizer::AuthError {
     type Inner = jwt_authorizer::AuthError;
 
