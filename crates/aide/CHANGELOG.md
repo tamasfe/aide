@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.13.5
+
+- **added:** Implement `OperationHandler` for `axum::handler::Layered` ([#133])
+- **added:** Implement `OperationInput` for `axum_extra::extract::JsonDeserializer` ([#151])
+- **changed:** Make `impl tower::Service for ApiRouter` generic over the HTTP request body type ([#143])
+
+[#133]: https://github.com/tamasfe/aide/pull/133
+[#143]: https://github.com/tamasfe/aide/pull/143
+[#151]: https://github.com/tamasfe/aide/pull/151
+
 ## 0.13.4 - 2024-04-14
 
 [f473a8c](f473a8c98e1b41c8d67a4d25141ac12d57c5182a)...[bd273ad](bd273ad63df2245384a7b7e5951003aa60c53d72)
