@@ -646,7 +646,10 @@ impl<'t> TransformOperation<'t> {
     {
         in_context(|ctx| {
             if let Some(mut res) = R::operation_response(ctx, self.operation) {
-                let responses = self.operation.responses.get_or_insert_with(Default::default);
+                let responses = self
+                    .operation
+                    .responses
+                    .get_or_insert_with(Default::default);
                 if responses.default.is_none() {
                     let t = transform(TransformResponse::new(&mut res));
 
@@ -838,7 +841,7 @@ impl<'t> TransformOperation<'t> {
         let t = callback_transform(TransformCallback::new(p));
 
         if t.hidden {
-            callbacks.remove(callback_url);
+            callbacks.swap_remove(callback_url);
             if self
                 .operation
                 .callbacks
@@ -848,7 +851,7 @@ impl<'t> TransformOperation<'t> {
                 .unwrap()
                 .is_empty()
             {
-                self.operation.callbacks.remove(callback_name);
+                self.operation.callbacks.swap_remove(callback_name);
             }
         }
 

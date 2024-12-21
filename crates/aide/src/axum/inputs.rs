@@ -2,7 +2,7 @@
 use crate::{
     openapi::{
         self, Header, MediaType, Operation, Parameter, ParameterData, ReferenceOr, RequestBody,
-        Response, SchemaObject, StatusCode,
+        Response, SchemaObject, SecurityScheme, StatusCode,
     },
     operation::{add_parameters, set_body},
 };
@@ -419,6 +419,8 @@ mod extra {
 
 #[cfg(feature = "jwt-authorizer")]
 mod jwt_authorizer {
+    use std::any::type_name;
+
     use super::*;
     use crate::OperationInput;
     use ::jwt_authorizer::JwtClaims;
@@ -428,31 +430,27 @@ mod jwt_authorizer {
             ctx: &mut crate::gen::GenContext,
             operation: &mut crate::openapi::Operation,
         ) {
-            let s = ctx.schema.subschema_for::<String>();
-            add_parameters(
-                ctx,
-                operation,
-                [Parameter::Header {
-                    parameter_data: ParameterData {
-                        name: "Authorization".to_string(),
-                        description: Some("Jwt Bearer token".to_string()),
-                        required: true,
-                        format: crate::openapi::ParameterSchemaOrContent::Schema(
-                            openapi::SchemaObject {
-                                json_schema: s,
-                                example: None,
-                                external_docs: None,
-                            },
-                        ),
-                        extensions: Default::default(),
-                        deprecated: None,
-                        example: None,
-                        examples: IndexMap::default(),
-                        explode: None,
-                    },
-                    style: openapi::HeaderStyle::Simple,
-                }],
+            let t = "JWT Authorizer".to_string();
+            ctx.security_schemes.insert(
+                t.clone(),
+                ReferenceOr::Item(SecurityScheme::Http {
+                    scheme: "bearer".to_string(),
+                    bearer_format: Some("JWT".to_string()),
+                    description: Some("A bearer token.".to_string()),
+                    extensions: Default::default(),
+                }),
             );
+
+            operation.security.push([(t, Vec::new())].into())
         }
     }
+}
+
+#[cfg(feature = "telegram-authorizer")]
+mod telegram_authorizer {
+
+    use crate::OperationInput;
+    use ::telegram_authorizer::TelegramUser;
+
+    impl OperationInput for TelegramUser {}
 }
