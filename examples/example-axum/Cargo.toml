@@ -12,12 +12,8 @@ aide = { path = "../../crates/aide", features = [
     "axum-extra",
     "macros",
 ] }
-async-trait = "0.1.57"
 axum = { version = "0.7.1", features = ["macros"] }
-axum-extra = "0.9.0"
-axum-jsonschema = { path = "../../crates/axum-jsonschema", features = [
-    "aide",
-] }
+axum-jsonschema = { path = "../../crates/axum-jsonschema", features = ["aide"] }
 axum-macros = "0.4.0"
 schemars = { version = "0.8.10", features = ["uuid1"] }
 serde = { version = "1.0.144", features = ["derive", "rc"] }
