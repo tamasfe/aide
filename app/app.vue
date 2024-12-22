@@ -14,7 +14,7 @@ setTimeout(() => {
   <div>
     <AppHead />
     <NuxtLayout>
-      <NuxtPage />
+      <NuxtPage class="min-h-[70vh]" />
     </NuxtLayout>
   </div>
 </template>
