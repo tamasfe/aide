@@ -62,12 +62,12 @@ const links = [
   <div>
     <Popover
       v-slot="{ open, close }"
-      class="relative"
+      class="relative flex items-center"
     >
       <PopoverOverlay class="fixed inset-0 bg-transparent" />
       <PopoverButton
         :class="cn(
-          'px-2 h-9 md:h-10 text-subtle hover:text-emphasis focus-visible:outline-none',
+          'px-2 text-subtle hover:text-emphasis focus-visible:outline-none',
           open && 'text-emphasis',
         )"
       >
