@@ -60,7 +60,7 @@ pub trait OperationInput {
     /// a default response.
     ///
     /// It's important for the implementation to be idempotent.
-    /// 
+    ///
     /// See [`OperationOutput::inferred_responses`] for more details.
     fn inferred_early_responses(
         ctx: &mut GenContext,

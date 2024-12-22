@@ -180,7 +180,7 @@ use crate::{
 #[cfg(not(feature = "axum-wasm"))]
 use axum::extract::connect_info::IntoMakeServiceWithConnectInfo;
 use axum::{
-    body::{Body, HttpBody, Bytes},
+    body::{Body, Bytes, HttpBody},
     handler::Handler,
     http::Request,
     response::IntoResponse,
@@ -223,8 +223,10 @@ impl<S> Clone for ApiRouter<S> {
 }
 
 impl<B> Service<Request<B>> for ApiRouter<()>
-    where B: HttpBody<Data = Bytes> + Send + 'static,
-    B::Error: Into<axum::BoxError>, {
+where
+    B: HttpBody<Data = Bytes> + Send + 'static,
+    B::Error: Into<axum::BoxError>,
+{
     type Response = axum::response::Response;
     type Error = Infallible;
     type Future = axum::routing::future::RouteFuture<Infallible>;

@@ -242,10 +242,13 @@ mod extra {
     use super::*;
     use crate::operation::OperationOutput;
 
-
     #[cfg(feature = "axum-extra-cookie")]
-    impl OperationOutput for extract::CookieJar { type Inner = (); }
+    impl OperationOutput for extract::CookieJar {
+        type Inner = ();
+    }
 
     #[cfg(feature = "axum-extra-cookie-private")]
-    impl OperationOutput for extract::PrivateCookieJar { type Inner = (); }
+    impl OperationOutput for extract::PrivateCookieJar {
+        type Inner = ();
+    }
 }
