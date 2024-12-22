@@ -1,6 +1,10 @@
 use schemars::JsonSchema;
 
-use crate::{OperationInput, openapi::Operation, operation::{ParamLocation, parameters_from_schema, add_parameters}};
+use crate::{
+    openapi::Operation,
+    operation::{add_parameters, parameters_from_schema, ParamLocation},
+    OperationInput,
+};
 
 #[cfg(feature = "axum")]
 impl<T> OperationInput for serde_qs::axum::QsQuery<T>

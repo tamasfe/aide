@@ -12,8 +12,8 @@ use crate::{
 /// Transform colon path params to the notation
 /// used in `OpenApi`.
 ///
-/// Axum wildcard routes are not supported by OpenAPI 3 but will be indicated as a param with a trailing `+` 
-/// 
+/// Axum wildcard routes are not supported by OpenAPI 3 but will be indicated as a param with a trailing `+`
+///
 /// # Examples
 ///
 /// The path `/users/:id` is turned into `/users/{id}`.
@@ -31,7 +31,7 @@ pub fn path_colon_params(s: &str) -> Cow<str> {
     enum State {
         None,
         WasParam,
-        WasWildcard
+        WasWildcard,
     }
     let mut state = State::None;
     for c in s.chars() {
@@ -48,7 +48,7 @@ pub fn path_colon_params(s: &str) -> Cow<str> {
             (_, '*') => {
                 rewritten.push('{');
                 state = State::WasWildcard;
-            },
+            }
             (_, _) => {
                 rewritten.push(c);
             }
@@ -56,13 +56,9 @@ pub fn path_colon_params(s: &str) -> Cow<str> {
     }
 
     match state {
-        State::WasParam => {
-            rewritten += "}"
-        },
-        State::WasWildcard => {
-            rewritten += "+}"
-        }
-        _=> {}
+        State::WasParam => rewritten += "}",
+        State::WasWildcard => rewritten += "+}",
+        _ => {}
     }
 
     rewritten.into()
@@ -260,7 +256,13 @@ mod tests {
     #[test]
     fn test_path_colon_params() {
         assert_eq!(path_colon_params("/users/:id"), "/users/{id}");
-        assert_eq!(path_colon_params("/users/:id/addresses/:address-id"), "/users/{id}/addresses/{address-id}");        
-        assert_eq!(path_colon_params("/:id/:repo/*tree"), "/{id}/{repo}/{tree+}");
+        assert_eq!(
+            path_colon_params("/users/:id/addresses/:address-id"),
+            "/users/{id}/addresses/{address-id}"
+        );
+        assert_eq!(
+            path_colon_params("/:id/:repo/*tree"),
+            "/{id}/{repo}/{tree+}"
+        );
     }
 }
