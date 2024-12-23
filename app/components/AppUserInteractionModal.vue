@@ -87,7 +87,7 @@ const { data: paymentMethodData } = await useAsyncData("user-modals-payment-meth
 <template>
   <div>
     <ModalLogin
-      v-if="state.modal === 'login'"
+      :open="state.modal === 'login'"
     />
     <ModalRegister
       :open="state.modal === 'register'"

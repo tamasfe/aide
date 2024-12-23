@@ -7,6 +7,8 @@
 //   * I want banner/bannerLeft/bannerTop to be properly validated by typescript
 // TRANSLATION STATUS:  ✅
 
+const getImageSrc = useImage(); // More info @https://image.nuxt.com/usage/use-image
+
 const props = withDefaults(
   defineProps<{
     open: boolean;
@@ -38,10 +40,10 @@ const open = computed({
 const preloadBannerLinks = (() => {
   const links = [];
   if (props.bannerLeft) {
-    links.push({ rel: "preload", fetchPriority: "low", href: props.bannerLeft, src: props.bannerLeft, as: "image" as const, crossOrigin: "anonymous" });
+    links.push({ rel: "preload", fetchPriority: "low", href: getImageSrc(props.bannerLeft), src: getImageSrc(props.bannerLeft), as: "image" as const, crossOrigin: "anonymous" });
   }
   if (props.bannerTop) {
-    links.push({ rel: "preload", fetchPriority: "low", href: props.bannerTop, src: props.bannerTop, as: "image" as const, crossOrigin: "anonymous" });
+    links.push({ rel: "preload", fetchPriority: "low", href: getImageSrc(props.bannerTop), src: getImageSrc(props.bannerTop), as: "image" as const, crossOrigin: "anonymous" });
   }
   return links;
 })();
