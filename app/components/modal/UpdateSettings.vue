@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { PropType } from "vue";
-import type { ModalUpdateSettingsMode } from "~/packages/async-messages/async-messages";
+
+type ModalUpdateSettingsMode = "password" | "language" | "time_zone" | "payment_pix";
 
 const open = ref(true);
 

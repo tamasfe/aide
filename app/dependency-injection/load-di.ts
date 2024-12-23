@@ -1,4 +1,5 @@
 import type { PublicRuntimeConfig } from "nuxt/schema";
+import type { RequestContextI } from "./request-context";
 import type { AsyncMessagePublisherI } from "~/packages/async-messages/async-message-publisher";
 import { EmitteryAsyncMessagePublisher } from "~/packages/async-messages/emittery-async-message-publisher";
 import type { LoggerI } from "~/packages/logger/Logger";
@@ -10,19 +11,14 @@ import { SearchUserSelectedLocale } from "~/packages/translation/application/Sea
 import { LocaleSelectionRepositoryCookie } from "~/packages/translation/infra/locale-selection-repository-cookie";
 import { SearchUserSelectedLocaleOnClientReady } from "~/packages/translation/infra/ui/SearchUserSelectedLocaleOnClientReady";
 import { UserSelectsLocale } from "~/packages/translation/infra/ui/UserSelectsLocale";
-import type { WebsocketLeaseRepositoryI } from "~/packages/websocket/domain/websocket-lease-repository";
-import { AttemptOpeningWebsocket } from "~/packages/websocket/infra/ui/attempt-opening-websocket";
-import { WebsocketLeaseRepositoryGirobet } from "~/packages/websocket/infra/websocket-lease-repository-girobet";
 
 export interface CommonDependenciesI {
   asyncMessagePublisher: AsyncMessagePublisherI;
   logger: LoggerI;
-  websocket: {
-    attemptOpeningWebsocket: AttemptOpeningWebsocket;
-  };
   translateFunction: TranslateFunctionType;
   dateTimeFormatter: DateTimeFormatterFunctionType;
   numberFormatter: NumberFormatterFunctionType;
+  requestContext: RequestContextI;
   i18n: {
     queries: {
       findLocaleForUser: FindLocaleForUser;
@@ -43,7 +39,7 @@ export async function loadDependencies(
     getBrowserLocale: () => string | undefined;
     setLocale: (locale: SupportedLocale) => Promise<void>;
   },
-  requestHeaders?: Record<string, string>,
+  requestContext: RequestContextI,
 ): Promise<CommonDependenciesI> {
   const isServer = import.meta.server;
   const logFormat = isServer ? "json" : "prettyPrint";
@@ -74,17 +70,13 @@ export async function loadDependencies(
   const findLocaleForUser = new FindLocaleForUser(localeSelectionRepository, i18n.getBrowserLocale);
   const findUserSelectedLocale = new SearchUserSelectedLocale(localeSelectionRepository);
 
-  const websocketLeaseRepository: WebsocketLeaseRepositoryI = new WebsocketLeaseRepositoryGirobet({ baseUrl: config.apiBaseUrl, headers: requestHeaders, userJurisdiction: config.genericFixedUserJurisdiction }, asyncMessagePublisher);
-
   return {
     asyncMessagePublisher,
     logger,
-    websocket: {
-      attemptOpeningWebsocket: new AttemptOpeningWebsocket(config.websocketApiBaseUrl, websocketLeaseRepository, logger, asyncMessagePublisher),
-    },
     translateFunction: i18n.t,
     dateTimeFormatter: i18n.d,
     numberFormatter: i18n.n,
+    requestContext,
     i18n: {
       queries: {
         findLocaleForUser,

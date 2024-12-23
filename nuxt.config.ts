@@ -68,6 +68,10 @@ export default defineNuxtConfig({
         apiBaseUrlClient: process.env.NUXT_PUBLIC_PROVIDERS_API_BASE_URL_CLIENT,
         apiBaseUrlServer: process.env.NUXT_PUBLIC_PROVIDERS_API_BASE_URL_SERVER,
       },
+      kyc: {
+        apiBaseUrlClient: process.env.NUXT_PUBLIC_KYC_API_BASE_URL_CLIENT,
+        apiBaseUrlServer: process.env.NUXT_PUBLIC_KYC_API_BASE_URL_SERVER,
+      },
     },
   },
   build: {

@@ -2,29 +2,47 @@ import type { SupportedLocale } from "../translation";
 import type { PaymentStatus } from "~/modules/wallet/domain/Payment";
 import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
 
-export type ModalUpdateSettingsMode = "password" | "language" | "time_zone" | "payment_pix";
+type NoDataRequiredModal = "login" | "register" | "search" | "forgot_password" | "deposit" | "withdrawal" | "cancel_registration";
+
+export type UserInteractionModalState =
+  | { modal: NoDataRequiredModal }
+  | {
+    modal: "recover_password";
+    data: { token: string };
+  } | {
+    modal: "settings";
+    data: { setting: "password" | "language" | "time_zone" | "payment_pix" };
+  } | {
+    modal: "deposit_confirm";
+    data: { flowId: number; paymentCode: string; amount: number; currency: WalletCurrency; paymentMethodId: number };
+  } |
+  {
+    modal: "kyc";
+    data: {
+      provider: "sumsub";
+      accessToken: string;
+      applicantData: {
+        email: string;
+        phone: string;
+        language: string;
+      };
+    };
+  } |
+  {
+    modal: "restrict_license_alternative";
+    data: { jurisdiction: string; currentHost: string; blockedCountry: string; allowedUrl: string };
+  } |
+  {
+    modal: "restrict_license_no_alternative";
+    data: { jurisdiction: string; currentHost: string; blockedCountry: string };
+  } |
+  {
+    modal: "restrict_expanding";
+    data: { jurisdiction: string; currentHost: string; blockedCountry: string };
+  };
 
 export interface AsyncMessagesTypes {
-  "girobet:commands:modals:open-login": object;
-  "girobet:commands:modals:open-register": object;
-  "girobet:commands:modals:open-restrict-expanding": { jurisdiction: string };
-  "girobet:commands:modals:open-restrict-alternative": {
-    jurisdiction: string;
-    allowedDomain: string;
-  };
-  "girobet:commands:modals:open-restrict-no-alternative": { jurisdiction: string };
-  "girobet:commands:modals:open-search": object;
-  "girobet:commands:modals:open-recover-password": { token: string };
-  "girobet:commands:modals:open-forgot-password": object;
-  "girobet:commands:modals:open-deposit": object;
-  "girobet:commands:modals:open-deposit-confirm": {
-    flowId: number;
-    paymentCode: string;
-    amount: number;
-    currency: WalletCurrency;
-  };
-  "girobet:commands:modals:open-withdrawal": object;
-  "girobet:commands:modals:open-update-settings": { setting: ModalUpdateSettingsMode };
+  "girobet:commands:modals:open-user-interaction-modal": UserInteractionModalState;
   "girobet:commands:modals:close-user-interaction-modal": object;
 
   "girobet:events:users:user-logged-in": object;

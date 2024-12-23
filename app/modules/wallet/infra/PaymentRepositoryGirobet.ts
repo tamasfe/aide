@@ -8,15 +8,15 @@ import { ErrorWalletPaymentCooldownNotFinished } from "../domain/ErrorWalletPaym
 import { ErrorPaymentAmountExceedsTimeframeLimits } from "../domain/ErrorPaymentAmountExceedsTimeframeLimits";
 import { ErrorPaymentAmountOutsideLimits } from "../domain/ErrorPaymentAmountOutsideLimits";
 import { ErrorPaymentMethodNotAllowed } from "../domain/ErrorPaymentMethodNotAllowed";
-import type { AsyncMessagePublisherI } from "~/packages/async-messages/async-message-publisher";
 import { createBackendOpenApiClient } from "~/packages/http-client/create-backend-open-api-client";
 import { HttpBackendApiError } from "~/packages/http-client/http-client-error";
 import { fail, success, type Result } from "~/packages/result";
 import { InfrastructureError } from "~/packages/result/infrastructure-error";
+import type { CommonDependenciesI } from "~/dependency-injection/load-di";
 
 export class PaymentRepositoryGirobet implements PaymentRepositoryI {
-  constructor(clientOptions: { baseUrl: string; headers?: Record<string, string>; userJurisdiction?: string }, asyncMessagePublisher: AsyncMessagePublisherI) {
-    this.apiClient = createBackendOpenApiClient(clientOptions, asyncMessagePublisher);
+  constructor(clientOptions: { baseUrl: string }, commonDependencies: CommonDependenciesI) {
+    this.apiClient = createBackendOpenApiClient(clientOptions, commonDependencies);
   }
 
   public async searchPaginating(searchParams: { type: PaymentType | null; walletId: number | null }, limit: number, offset: number): Promise<Result<{ payments: Payment[]; pagination: { limit: number; offset: number; totalItems: number } }, InfrastructureError>> {

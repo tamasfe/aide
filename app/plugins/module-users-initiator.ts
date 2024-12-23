@@ -57,7 +57,7 @@ export default defineNuxtPlugin({
 
     $dependencies.common.asyncMessagePublisher.subscribe(
       "girobet:events:payments:deposit-flow-created",
-      ({ flowId, code, amount, currency }) => $dependencies.users.ui.emitCommandOpenUserActionModal.handle({ modal: "deposit_confirm", data: { flowId, paymentCode: code, amount, currency } }),
+      ({ flowId, code, amount, currency, paymentMethodId }) => $dependencies.users.ui.emitCommandOpenUserActionModal.handle({ modal: "deposit_confirm", data: { flowId, paymentCode: code, amount, currency, paymentMethodId } }),
     );
 
     /**

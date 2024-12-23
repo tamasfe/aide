@@ -326,7 +326,9 @@
       },
       "verification": {
         "identity": "Identity",
-        "address": "Address"
+        "address": "Address",
+        "kyc_missing": "You need to upload your identity document",
+        "kyc_active": "You already successfully uploaded your identity document"
       },
       "limits": {
         "suspend_account": "Suspend Account"

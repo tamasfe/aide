@@ -37,6 +37,10 @@ declare module "nuxt/schema" {
       apiBaseUrlClient: string;
       apiBaseUrlServer: string;
     };
+    kyc: {
+      apiBaseUrlClient: string;
+      apiBaseUrlServer: string;
+    };
   }
 }
 

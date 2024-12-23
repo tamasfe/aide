@@ -62,6 +62,7 @@
     "@nuxtjs/i18n": "^9.1.1",
     "@nuxtjs/seo": "2.0.2",
     "@nuxtjs/tailwindcss": "^6.12.2",
+    "@sumsub/websdk": "^2.3.11",
     "@testing-library/vue": "^8.1.0",
     "@types/node": "^22.10.2",
     "@vue/test-utils": "^2.4.6",

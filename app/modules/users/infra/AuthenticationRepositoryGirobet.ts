@@ -5,13 +5,15 @@ import type { UserEmail } from "../domain/UserEmail";
 import { createBackendOpenApiClient } from "~/packages/http-client/create-backend-open-api-client";
 import { fail, success, type EmptyResult } from "~/packages/result";
 import { InfrastructureError } from "~/packages/result/infrastructure-error";
-import type { AsyncMessagePublisherI } from "~/packages/async-messages/async-message-publisher";
 import { HttpBackendApiError } from "~/packages/http-client/http-client-error";
+import type { CommonDependenciesI } from "~/dependency-injection/load-di";
 import type { LoggerI } from "~/packages/logger/Logger";
 
 export class AuthenticationRepositoryGirobet implements AuthenticationRepositoryI {
-  constructor(clientOptions: { baseUrl: string; userJurisdiction?: string; headers?: Record<string, string> }, asyncMessagePublisher: AsyncMessagePublisherI, private logger: LoggerI) {
-    this.apiClient = createBackendOpenApiClient(clientOptions, asyncMessagePublisher);
+  private logger: LoggerI;
+  constructor(clientOptions: { baseUrl: string }, commonDependencies: CommonDependenciesI) {
+    this.apiClient = createBackendOpenApiClient(clientOptions, commonDependencies);
+    this.logger = commonDependencies.logger;
   }
 
   public async login(username: string, password: string): Promise<EmptyResult<ErrorInvalidAuthCredentials | InfrastructureError>> {

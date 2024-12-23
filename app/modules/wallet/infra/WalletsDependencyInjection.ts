@@ -36,7 +36,7 @@ export const createWalletsDependencyInjection = (publicConfig: PublicRuntimeConf
   const walletApiBaseUrl = isServer ? publicConfig.wallets.apiBaseUrlServer : publicConfig.wallets.apiBaseUrlClient;
   const walletsRepository: WalletRepositoryI = (() => {
     if (walletApiBaseUrl) {
-      return new WalletsRepositoryGirobet({ baseUrl: walletApiBaseUrl, headers: requestHeaders, userJurisdiction: publicConfig.genericFixedUserJurisdiction }, commonDependencies.asyncMessagePublisher);
+      return new WalletsRepositoryGirobet({ baseUrl: walletApiBaseUrl }, commonDependencies);
     }
     return new WalletsRepositoryDumb();
   })();
@@ -44,14 +44,14 @@ export const createWalletsDependencyInjection = (publicConfig: PublicRuntimeConf
   const paymentApiBaseUrl = isServer ? publicConfig.wallets.apiBaseUrlServer : publicConfig.wallets.apiBaseUrlClient;
   const paymentsRepository: PaymentRepositoryI = (() => {
     if (paymentApiBaseUrl) {
-      return new PaymentRepositoryGirobet({ baseUrl: paymentApiBaseUrl, headers: requestHeaders, userJurisdiction: publicConfig.genericFixedUserJurisdiction }, commonDependencies.asyncMessagePublisher);
+      return new PaymentRepositoryGirobet({ baseUrl: paymentApiBaseUrl }, commonDependencies);
     }
     return new PaymentRepositoryDumb();
   })();
 
   const paymentMethodsRepository: PaymentMethodRepositoryI = (() => {
     if (paymentApiBaseUrl) {
-      return new PaymentMethodRepositoryGirobet({ baseUrl: paymentApiBaseUrl, headers: requestHeaders, userJurisdiction: publicConfig.genericFixedUserJurisdiction }, commonDependencies.asyncMessagePublisher);
+      return new PaymentMethodRepositoryGirobet({ baseUrl: paymentApiBaseUrl }, commonDependencies);
     }
     return new PaymentMethodRepositoryDumb();
   })();

@@ -17,7 +17,7 @@ export interface ProvidersDependencyInjectionI {
   };
 }
 
-export const createProvidersDependencyInjection = async (publicConfig: PublicRuntimeConfig, commonDependencies: CommonDependenciesI, requestHeaders?: Record<string, string>): Promise<ProvidersDependencyInjectionI> => {
+export const createProvidersDependencyInjection = async (publicConfig: PublicRuntimeConfig, commonDependencies: CommonDependenciesI): Promise<ProvidersDependencyInjectionI> => {
   const isServer = import.meta.server;
   const apiBaseUrl = isServer ? publicConfig.providers.apiBaseUrlServer : publicConfig.providers.apiBaseUrlClient;
 
@@ -25,7 +25,7 @@ export const createProvidersDependencyInjection = async (publicConfig: PublicRun
     if (!apiBaseUrl || apiBaseUrl === "") {
       return new ProvidersRepositoryDumb(commonDependencies.logger);
     }
-    return new ProvidersRepositoryGirobet({ baseUrl: apiBaseUrl, headers: requestHeaders, userJurisdiction: publicConfig.genericFixedUserJurisdiction }, commonDependencies.asyncMessagePublisher);
+    return new ProvidersRepositoryGirobet({ baseUrl: apiBaseUrl }, commonDependencies);
   })();
 
   return {

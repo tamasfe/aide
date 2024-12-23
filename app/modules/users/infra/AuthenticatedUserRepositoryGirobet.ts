@@ -5,17 +5,14 @@ import { UserSettings } from "../domain/UserSettings";
 import { createBackendOpenApiClient } from "~/packages/http-client/create-backend-open-api-client";
 import { fail, success, type EmptyResult } from "~/packages/result";
 import { InfrastructureError } from "~/packages/result/infrastructure-error";
-import type { AsyncMessagePublisherI } from "~/packages/async-messages/async-message-publisher";
 import { HttpBackendApiError } from "~/packages/http-client/http-client-error";
 import type { SupportedLocale } from "~/packages/translation";
 import { searchSimilarLocale } from "~/packages/translation/utils";
+import type { CommonDependenciesI } from "~/dependency-injection/load-di";
 
 export class AuthenticatedUserSearcherGirobet implements AuthenticatedUserRepositoryI {
-  constructor(
-    clientOptions: { baseUrl: string; userJurisdiction: string | undefined; headers?: Record<string, string> },
-    asyncMessagePublisher: AsyncMessagePublisherI,
-  ) {
-    this.apiClient = createBackendOpenApiClient(clientOptions, asyncMessagePublisher);
+  constructor(clientOptions: { baseUrl: string }, commonDependencies: CommonDependenciesI) {
+    this.apiClient = createBackendOpenApiClient(clientOptions, commonDependencies);
   }
 
   public async searchProfile() {

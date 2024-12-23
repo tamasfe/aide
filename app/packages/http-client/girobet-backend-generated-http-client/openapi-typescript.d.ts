@@ -133,155 +133,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/ws/lease": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Issue WebSocket Lease
-         * @description This endpoint is used to generate authentication tokens (leases) for WebSocket connections in our system.
-         *
-         *     ## Lease Generation
-         *
-         *     1. Send a request to the lease issuer endpoint.
-         *     2. Specify the channel for which you want a lease.
-         *     3. The endpoint will return a lease token.
-         *
-         *     ## Lease Properties
-         *
-         *     - Leases are short-lived tokens, valid for 60 seconds from the time of generation.
-         *     - Each lease is tied to a specific channel.
-         *
-         *     ## Usage
-         *
-         *     - Use the generated lease token when establishing a WebSocket connection.
-         *     - For detailed information on how to use the lease token in a WebSocket connection, refer to the documentation found [here](#tag/websocket/GET/ws/connect).
-         *
-         *     ## Important Notes
-         *
-         *     - Always generate a new lease before attempting to establish a WebSocket connection.
-         *     - Ensure your client handles lease expiration and reconnection scenarios.
-         *
-         *     For any issues or questions, please contact our support team.
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["WebsocketLeaseRequest"];
-                };
-            };
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["LeaseTokenResponse"];
-                    };
-                };
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/ws/connect": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Establish WebSocket Connection
-         * @description This route is the entry point for WebSocket connections in our system.
-         *
-         *     ## Authentication
-         *
-         *     - Authentication is required for all WebSocket connections.
-         *     - Use a lease token obtained from the lease handler endpoint.
-         *
-         *     ## Connection Process
-         *
-         *     1. Obtain a lease token from the lease handler endpoint.
-         *     2. Connect to this endpoint using the WebSocket protocol.
-         *     3. Set the `sec-websocket-protocol` header as follows:
-         *
-         *        ```text
-         *        Authorization,<lease-token>
-         *        ```
-         *
-         *     ## Example (JavaScript)
-         *
-         *     ```javascript
-         *     const leaseToken = "your-lease-token";
-         *     const socket = new WebSocket("wss://your-domain.com/ws/connect", ["Authorization", leaseToken]);
-         *     ```
-         *
-         *     ## Important Notes
-         *
-         *     - Lease tokens are valid for 60 seconds.
-         *     - Ensure your client can handle reconnection if the lease expires.
-         *     - The server may close the connection if authentication fails.
-         *
-         *     For detailed information on lease generation and management, refer to the main WebSocket authentication documentation found [here](#tag/websocket/POST/ws/lease).
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["RtcEventPayload"];
-                    };
-                };
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/auth/whoami": {
         parameters: {
             query?: never;
@@ -900,7 +751,7 @@ export interface paths {
             parameters: {
                 query: {
                     /** @description The currency to get the payment limits for. */
-                    currency: components["schemas"]["SystemCurrency"];
+                    currency: components["schemas"]["Currency"];
                     /** @description The payment method to get the payment limits for. */
                     payment_method_id: components["schemas"]["PaymentMethodId"];
                 };
@@ -951,7 +802,7 @@ export interface paths {
             parameters: {
                 query: {
                     /** @description The currency to get the payment methods for. */
-                    currency: components["schemas"]["SystemCurrency"];
+                    currency: components["schemas"]["Currency"];
                 };
                 header?: never;
                 path?: never;
@@ -1304,9 +1155,9 @@ export interface paths {
             parameters: {
                 query: {
                     /** @description The device type the game session is started on. Some games may only be available on certain devices. */
-                    client_type: components["schemas"]["SystemDevice"];
+                    client_type: components["schemas"]["Device"];
                     /** @description The currency (wallet) to use for the game session. It can not be changed during the session. */
-                    currency: components["schemas"]["SystemCurrency"];
+                    currency: components["schemas"]["Currency"];
                 };
                 header?: never;
                 path: {
@@ -1985,6 +1836,55 @@ export interface paths {
         };
         trace?: never;
     };
+    "/user/address": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update User Address
+         * @description Update the address of the currently logged in user. The address is used for shipping and other purposes.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["PatchUserAddressRequest"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
     "/user/active-wallet": {
         parameters: {
             query?: never;
@@ -2083,6 +1983,55 @@ export interface paths {
         };
         trace?: never;
     };
+    "/user/delete": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Delete User Account
+         * @description Delete the account of the currently logged in user. The user must provide the current password to ensure that they are authorized to delete the account.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["DeleteUserAccountRequest"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/kyc/token": {
         parameters: {
             query?: never;
@@ -2094,8 +2043,6 @@ export interface paths {
          * Get KYC Access Token
          * @description This endpoint returns a temporary short-lived token that is bound to the user.
          *     It can be used in conjunction with a KYC provider's SDK to perform KYC validation in the frontend.
-         *
-         *
          */
         get: {
             parameters: {
@@ -2132,13 +2079,210 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/kyc/status": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get KYC Status
+         * @description Returns the current KYC status of the user.
+         *     This endpoint may be used to prevent the user from going through the KYC process again if they have already completed it.
+         *
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["KycStatusResponse"];
+                    };
+                };
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/ws/lease": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Issue WebSocket Lease
+         * @description This endpoint is used to generate authentication tokens (leases) for WebSocket connections in our system.
+         *
+         *     ## Lease Generation
+         *
+         *     1. Send a request to the lease issuer endpoint.
+         *     2. Specify the channel for which you want a lease.
+         *     3. The endpoint will return a lease token.
+         *
+         *     ## Lease Properties
+         *
+         *     - Leases are short-lived tokens, valid for 60 seconds from the time of generation.
+         *     - Each lease is tied to a specific channel.
+         *
+         *     ## Usage
+         *
+         *     - Use the generated lease token when establishing a WebSocket connection.
+         *     - For detailed information on how to use the lease token in a WebSocket connection, refer to the documentation found [here](#tag/websocket/GET/ws/connect).
+         *
+         *     ## Important Notes
+         *
+         *     - Always generate a new lease before attempting to establish a WebSocket connection.
+         *     - Ensure your client handles lease expiration and reconnection scenarios.
+         *
+         *     For any issues or questions, please contact our support team.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["WebsocketLeaseRequest"];
+                };
+            };
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["LeaseTokenResponse"];
+                    };
+                };
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/ws/connect": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Establish WebSocket Connection
+         * @description This route is the entry point for WebSocket connections in our system.
+         *
+         *     ## Authentication
+         *
+         *     - Authentication is required for all WebSocket connections.
+         *     - Use a lease token obtained from the lease handler endpoint.
+         *
+         *     ## Connection Process
+         *
+         *     1. Obtain a lease token from the lease handler endpoint.
+         *     2. Connect to this endpoint using the WebSocket protocol.
+         *     3. Set the `sec-websocket-protocol` header as follows:
+         *
+         *        ```text
+         *        Authorization,<lease-token>
+         *        ```
+         *
+         *     ## Example (JavaScript)
+         *
+         *     ```javascript
+         *     const leaseToken = "your-lease-token";
+         *     const socket = new WebSocket("wss://your-domain.com/ws/connect", ["Authorization", leaseToken]);
+         *     ```
+         *
+         *     ## Important Notes
+         *
+         *     - Lease tokens are valid for 60 seconds.
+         *     - Ensure your client can handle reconnection if the lease expires.
+         *     - The server may close the connection if authentication fails.
+         *
+         *     For detailed information on lease generation and management, refer to the main WebSocket authentication documentation found [here](#tag/websocket/POST/ws/lease).
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["RtcEventPayload"];
+                    };
+                };
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
         AlternativeSite: {
             /** @description The base URL of the alternative site. This url should be used to redirect the user to the alternative site. The URL may include a path too, so this needs to be taken into account. */
-            base_url: components["schemas"]["SystemUrl"];
+            base_url: components["schemas"]["Url"];
             /** @description The name of the alternative site. */
             name: string;
             /** @description The field "servable" indicates if this site is able to be served by the current casino instance. If there's an alternative, which can not be served by the current casino instance, but can be served by another casino instance, this is false. Example scenario: Cross-regional deployments of this system, with independent databases require the ability to point to each other as alternatives, as they can't serve the requested site themselves. */
@@ -2152,6 +2296,11 @@ export interface components {
             /** @description The identifier of the game category. This is a unique string that can be used to identify the category in the game search endpoint. */
             identifier: string;
         };
+        /**
+         * @description A country represented by its ISO 3166-1 alpha-2 code.
+         * @enum {unknown}
+         */
+        Country: "AF" | "AX" | "AL" | "DZ" | "AS" | "AD" | "AO" | "AI" | "AQ" | "AG" | "AR" | "AM" | "AW" | "AU" | "AT" | "AZ" | "BS" | "BH" | "BD" | "BB" | "BY" | "BE" | "BZ" | "BJ" | "BM" | "BT" | "BO" | "BQ" | "BA" | "BW" | "BV" | "BR" | "IO" | "BN" | "BG" | "BF" | "BI" | "CV" | "KH" | "CM" | "CA" | "KY" | "CF" | "TD" | "CL" | "CN" | "CX" | "CC" | "CO" | "KM" | "CG" | "CD" | "CK" | "CR" | "CI" | "HR" | "CU" | "CW" | "CY" | "CZ" | "DK" | "DJ" | "DM" | "DO" | "EC" | "EG" | "SV" | "GQ" | "ER" | "EE" | "SZ" | "ET" | "FK" | "FO" | "FJ" | "FI" | "FR" | "GF" | "PF" | "TF" | "GA" | "GM" | "GE" | "DE" | "GH" | "GI" | "GR" | "GL" | "GD" | "GP" | "GU" | "GT" | "GG" | "GN" | "GW" | "GY" | "HT" | "HM" | "VA" | "HN" | "HK" | "HU" | "IS" | "IN" | "ID" | "IR" | "IQ" | "IE" | "IM" | "IL" | "IT" | "JM" | "JP" | "JE" | "JO" | "KZ" | "KE" | "KI" | "KP" | "KR" | "KW" | "KG" | "LA" | "LV" | "LB" | "LS" | "LR" | "LY" | "LI" | "LT" | "LU" | "MO" | "MG" | "MW" | "MY" | "MV" | "ML" | "MT" | "MH" | "MQ" | "MR" | "MU" | "YT" | "MX" | "FM" | "MD" | "MC" | "MN" | "ME" | "MS" | "MA" | "MZ" | "MM" | "NA" | "NR" | "NP" | "NL" | "NC" | "NZ" | "NI" | "NE" | "NG" | "NU" | "NF" | "MK" | "MP" | "NO" | "OM" | "PK" | "PW" | "PS" | "PA" | "PG" | "PY" | "PE" | "PH" | "PN" | "PL" | "PT" | "PR" | "QA" | "RE" | "RO" | "RU" | "RW" | "BL" | "SH" | "KN" | "LC" | "MF" | "PM" | "VC" | "WS" | "SM" | "ST" | "SA" | "SN" | "RS" | "SC" | "SL" | "SG" | "SX" | "SK" | "SI" | "SB" | "SO" | "ZA" | "GS" | "SS" | "ES" | "LK" | "SD" | "SR" | "SJ" | "SE" | "CH" | "SY" | "TW" | "TJ" | "TZ" | "TH" | "TL" | "TG" | "TK" | "TO" | "TT" | "TN" | "TR" | "TM" | "TC" | "TV" | "UG" | "UA" | "AE" | "GB" | "US" | "UM" | "UY" | "UZ" | "VU" | "VE" | "VN" | "VG" | "VI" | "WF" | "EH" | "YE" | "ZM" | "ZW";
         CreateDepositFlowResponse: {
             /** @description Withdrawal payment flow ID */
             flow_id: components["schemas"]["PaymentFlowId"];
@@ -2163,9 +2312,9 @@ export interface components {
         };
         CreateGameSessionQuery: {
             /** @description The device type the game session is started on. Some games may only be available on certain devices. */
-            client_type: components["schemas"]["SystemDevice"];
+            client_type: components["schemas"]["Device"];
             /** @description The currency (wallet) to use for the game session. It can not be changed during the session. */
-            currency: components["schemas"]["SystemCurrency"];
+            currency: components["schemas"]["Currency"];
         };
         CreateSignupFlowResponse: {
             /** @description The ID of the created signup flow. */
@@ -2175,6 +2324,16 @@ export interface components {
             /** @description Withdrawal payment flow ID */
             flow_id: components["schemas"]["PaymentFlowId"];
         };
+        /** @description ISO 4217 3-letter currency code or 3/4-letter crypto currency code */
+        Currency: unknown;
+        DeleteUserAccountRequest: {
+            /** @description The current password of the user. This is required to ensure that the user is the one making the request. */
+            current_password: string;
+            /** @description The reason provided by the user, for deleting their account. */
+            reason?: string | null;
+        };
+        /** @enum {string} */
+        Device: "mobile" | "desktop";
         /** Format: int64 */
         DurationSeconds: number;
         FinalizePasswordResetRequest: {
@@ -2197,7 +2356,7 @@ export interface components {
              */
             created_at: string;
             /** @description The currency the amount was in. */
-            currency: components["schemas"]["SystemCurrency"];
+            currency: components["schemas"]["Currency"];
             /** @description The ID of the game the action was performed on. */
             game_id: components["schemas"]["GameId"];
             /** @description The name of the game the action was performed on. */
@@ -2262,7 +2421,7 @@ export interface components {
             /** @description The description of the game. This text does not follow HTML or Markdown, so newlines may need to be handled explicitly. */
             description?: string | null;
             /** @description The devices the game is available on. */
-            devices: components["schemas"]["SystemDevice"][];
+            devices: components["schemas"]["Device"][];
             /** @description The ID of the game. */
             id: components["schemas"]["GameId"];
             /** @description The URL to the image of the game. */
@@ -2290,9 +2449,11 @@ export interface components {
         };
         /** Format: int64 */
         GameRoundActionId: number;
+        /** @enum {string} */
+        Gender: "male" | "female" | "other";
         GetPaymentMethodsQuery: {
             /** @description The currency to get the payment methods for. */
-            currency: components["schemas"]["SystemCurrency"];
+            currency: components["schemas"]["Currency"];
         };
         InitializePasswordResetRequest: {
             /**
@@ -2318,13 +2479,17 @@ export interface components {
             country_alpha2: string;
             /** @description The user's email */
             email: string;
-            /** @description User's jurisdiction country code in ISO 3166-1 alpha-3 format User's language in ISO 639-1 format */
+            /** @description User's language in ISO 639-1 format */
             language: string;
             /** @description The user's phone number in E.164 format */
             phone_number: string;
         };
         /** @enum {string} */
         KycProviderIdentifier: "sumsub";
+        KycStatusResponse: {
+            /** @description Whether the user has an active KYC and thus does not need to go through the KYC process again. */
+            has_active_kyc: boolean;
+        };
         LeaseTokenResponse: {
             /** Format: uuid */
             token: string;
@@ -2337,7 +2502,7 @@ export interface components {
             /** @description The name of the license. */
             name: string;
             /** @description The root jurisdiction of the license. While licenses can cover multiple jurisdictions, this is the jurisdiction that the license is rooted in. Examples include Curacao, Anjouan, etc. */
-            root_jurisdiction: components["schemas"]["SystemCountry"];
+            root_jurisdiction: components["schemas"]["Country"];
         };
         ListGameActionsQuery: {
             /** @description The type of the game action to filter by. If not set, all game actions (bet, win, etc.) will be included. */
@@ -2487,6 +2652,20 @@ export interface components {
         PatchSignupFlowRequest: {
             [key: string]: unknown;
         };
+        PatchUserAddressRequest: {
+            /** @description The address of the user. */
+            address_lines: string[];
+            /** @description The administrative area of the user, such as the state or province. */
+            administrative_area?: string | null;
+            /** @description The country of the user. */
+            country: components["schemas"]["Country"];
+            /** @description The formatted address of the user. Only use this if the address can not be represented by the other fields. */
+            formatted_address?: string | null;
+            /** @description The city or town of the user. */
+            locality?: string | null;
+            /** @description The postal code of the user. */
+            postal_code?: string | null;
+        };
         PatchUserConsentSettingsRequest: {
             email?: components["schemas"]["Maybe_Boolean"];
             post_mail?: components["schemas"]["Maybe_Boolean"];
@@ -2543,7 +2722,7 @@ export interface components {
              */
             created_at: string;
             /** @description The currency of the payment flow. */
-            currency: components["schemas"]["SystemCurrency"];
+            currency: components["schemas"]["Currency"];
             /** @description The ID of the payment flow. */
             id: components["schemas"]["PaymentFlowId"];
             /** @description The payment method ID the payment flow is associated with. */
@@ -2564,7 +2743,7 @@ export interface components {
         PaymentLimitBound: "min" | "max";
         PaymentLimitsQuery: {
             /** @description The currency to get the payment limits for. */
-            currency: components["schemas"]["SystemCurrency"];
+            currency: components["schemas"]["Currency"];
             /** @description The payment method to get the payment limits for. */
             payment_method_id: components["schemas"]["PaymentMethodId"];
         };
@@ -2618,12 +2797,24 @@ export interface components {
             /** @description The amount of the payment transaction. */
             amount: components["schemas"]["SystemAmount"];
             /** @description The currency of the payment transaction. */
-            currency: components["schemas"]["SystemCurrency"];
+            currency: components["schemas"]["Currency"];
             /** @description The payment method ID to use for the payment transaction. */
             payment_method_id: components["schemas"]["PaymentMethodId"];
         };
         /** @enum {string} */
         PaymentType: "deposit" | "withdrawal";
+        PhoneNumber: {
+            carrier?: string;
+            code: {
+                /** @enum {string} */
+                source: "plus" | "idd" | "number" | "default";
+                value: number;
+            };
+            extension?: string;
+            national: {
+                value: number;
+            };
+        };
         /**
          * @description Auto-generated discriminant enum variants
          * @enum {string}
@@ -2694,7 +2885,7 @@ export interface components {
         };
         SelectWalletRequest: {
             /** @description The ID of the wallet to select. */
-            currency: components["schemas"]["SystemCurrency"];
+            currency: components["schemas"]["Currency"];
         };
         /** @description Represents various errors that can occur during server operations.
          *
@@ -2814,7 +3005,7 @@ export interface components {
             code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
             metadata: {
                 /** @description The violating jurisdiction. */
-                jurisdiction: components["schemas"]["SystemCountry"];
+                jurisdiction: components["schemas"]["Country"];
             };
         } | {
             /** @enum {string} */
@@ -2823,21 +3014,21 @@ export interface components {
                 /** @description Alternative site that the user may be redirected to */
                 alternative_site: components["schemas"]["AlternativeSite"];
                 /** @description The violating jurisdiction. */
-                jurisdiction: components["schemas"]["SystemCountry"];
+                jurisdiction: components["schemas"]["Country"];
             };
         } | {
             /** @enum {string} */
             code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
             metadata: {
                 /** @description The violating jurisdiction. */
-                jurisdiction: components["schemas"]["SystemCountry"];
+                jurisdiction: components["schemas"]["Country"];
             };
         } | {
             /** @enum {string} */
             code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
             metadata: {
                 /** @description The jurisdiction that is supported but not enabled. */
-                jurisdiction: components["schemas"]["SystemCountry"];
+                jurisdiction: components["schemas"]["Country"];
             };
         } | {
             /** @enum {string} */
@@ -2876,12 +3067,18 @@ export interface components {
             /** @enum {string} */
             code: "EXCHANGE_RATE_NOT_FOUND";
             metadata: {
-                from: components["schemas"]["SystemCurrency"];
-                to: components["schemas"]["SystemCurrency"];
+                from: components["schemas"]["Currency"];
+                to: components["schemas"]["Currency"];
             };
         } | {
             /** @enum {string} */
             code: "INVALID_SIGNATURE";
+        } | {
+            /** @enum {string} */
+            code: "MISSING_HEADER";
+            metadata: {
+                header: string;
+            };
         } | {
             /** @enum {string} */
             code: "INVALID_ENCODING";
@@ -2936,11 +3133,11 @@ export interface components {
             /** @description The ID of the signup flow. */
             id: string;
             /** @description The jurisdiction of the signup flow. This field can not be changed once set. The user will be created in this jurisdiction and thus is subject to the laws of this jurisdiction. Changing a user jurisdiction after signup is not easily possible without additional verification, information and setup. */
-            jurisdiction: components["schemas"]["SystemCountry"];
+            jurisdiction: components["schemas"]["Country"];
         };
         SiteResponse: {
             /** @description The base URL of the site. This may be used for redirects, links, etc. */
-            base_url: components["schemas"]["SystemUrl"];
+            base_url: components["schemas"]["Url"];
             /** @description The name of the site. */
             name: string;
             /** @description Whether the site is servable by the current instance. If `false` the site is not servable but is accessible by a different casino instance of the owning company. */
@@ -2948,31 +3145,6 @@ export interface components {
         };
         /** Format: float */
         SystemAmount: number;
-        /**
-         * @description A country represented by its ISO 3166-1 alpha-2 code.
-         * @enum {unknown}
-         */
-        SystemCountry: "AF" | "AX" | "AL" | "DZ" | "AS" | "AD" | "AO" | "AI" | "AQ" | "AG" | "AR" | "AM" | "AW" | "AU" | "AT" | "AZ" | "BS" | "BH" | "BD" | "BB" | "BY" | "BE" | "BZ" | "BJ" | "BM" | "BT" | "BO" | "BQ" | "BA" | "BW" | "BV" | "BR" | "IO" | "BN" | "BG" | "BF" | "BI" | "CV" | "KH" | "CM" | "CA" | "KY" | "CF" | "TD" | "CL" | "CN" | "CX" | "CC" | "CO" | "KM" | "CG" | "CD" | "CK" | "CR" | "CI" | "HR" | "CU" | "CW" | "CY" | "CZ" | "DK" | "DJ" | "DM" | "DO" | "EC" | "EG" | "SV" | "GQ" | "ER" | "EE" | "SZ" | "ET" | "FK" | "FO" | "FJ" | "FI" | "FR" | "GF" | "PF" | "TF" | "GA" | "GM" | "GE" | "DE" | "GH" | "GI" | "GR" | "GL" | "GD" | "GP" | "GU" | "GT" | "GG" | "GN" | "GW" | "GY" | "HT" | "HM" | "VA" | "HN" | "HK" | "HU" | "IS" | "IN" | "ID" | "IR" | "IQ" | "IE" | "IM" | "IL" | "IT" | "JM" | "JP" | "JE" | "JO" | "KZ" | "KE" | "KI" | "KP" | "KR" | "KW" | "KG" | "LA" | "LV" | "LB" | "LS" | "LR" | "LY" | "LI" | "LT" | "LU" | "MO" | "MG" | "MW" | "MY" | "MV" | "ML" | "MT" | "MH" | "MQ" | "MR" | "MU" | "YT" | "MX" | "FM" | "MD" | "MC" | "MN" | "ME" | "MS" | "MA" | "MZ" | "MM" | "NA" | "NR" | "NP" | "NL" | "NC" | "NZ" | "NI" | "NE" | "NG" | "NU" | "NF" | "MK" | "MP" | "NO" | "OM" | "PK" | "PW" | "PS" | "PA" | "PG" | "PY" | "PE" | "PH" | "PN" | "PL" | "PT" | "PR" | "QA" | "RE" | "RO" | "RU" | "RW" | "BL" | "SH" | "KN" | "LC" | "MF" | "PM" | "VC" | "WS" | "SM" | "ST" | "SA" | "SN" | "RS" | "SC" | "SL" | "SG" | "SX" | "SK" | "SI" | "SB" | "SO" | "ZA" | "GS" | "SS" | "ES" | "LK" | "SD" | "SR" | "SJ" | "SE" | "CH" | "SY" | "TW" | "TJ" | "TZ" | "TH" | "TL" | "TG" | "TK" | "TO" | "TT" | "TN" | "TR" | "TM" | "TC" | "TV" | "UG" | "UA" | "AE" | "GB" | "US" | "UM" | "UY" | "UZ" | "VU" | "VE" | "VN" | "VG" | "VI" | "WF" | "EH" | "YE" | "ZM" | "ZW";
-        /** @description ISO 4217 3-letter currency code or 3/4-letter crypto currency code */
-        SystemCurrency: unknown;
-        /** @enum {string} */
-        SystemDevice: "mobile" | "desktop";
-        /** @enum {string} */
-        SystemGender: "male" | "female" | "other";
-        SystemPhoneNumber: {
-            carrier?: string;
-            code: {
-                /** @enum {string} */
-                source: "plus" | "idd" | "number" | "default";
-                value: number;
-            };
-            extension?: string;
-            national: {
-                value: number;
-            };
-        };
-        /** Format: uri */
-        SystemUrl: string;
         SystemValidationError: {
             /** @description The error code for the validation error. This may be a well-known code like `required` or a custom code that has to be handled individually. */
             code: components["schemas"]["SystemValidationErrorCode"];
@@ -3005,24 +3177,42 @@ export interface components {
         TickerType: {
             data: {
                 amount: components["schemas"]["SystemAmount"];
-                currency: components["schemas"]["SystemCurrency"];
+                currency: components["schemas"]["Currency"];
                 game: components["schemas"]["TickerGame"];
                 user_nickname: string;
             };
             /** @enum {string} */
             type: "winning_now";
         };
+        /** Format: uri */
+        Url: string;
         UserBalanceResponse: {
             /** @description The balance of the wallet. */
             balance: components["schemas"]["SystemAmount"];
             /** @description The currency of the wallet. */
-            currency: components["schemas"]["SystemCurrency"];
+            currency: components["schemas"]["Currency"];
             /** @description The ID of the wallet that the balance is for. */
             wallet_id: components["schemas"]["WalletId"];
         };
         /** Format: int64 */
         UserId: number;
+        UserPhysicalAddressResponse: {
+            /** @description The address lines, usually containing the street address. */
+            address_lines: string[];
+            /** @description The administrative area of the user, e.g. state or province. */
+            administrative_area?: string | null;
+            /** @description The country of the user. */
+            country: components["schemas"]["Country"];
+            /** @description The formatted address of the user. This will only be set if the address can not be represented by the other fields. */
+            formatted_address?: string | null;
+            /** @description The locality of the user, e.g. city or town. */
+            locality?: string | null;
+            /** @description The postal code of the user. */
+            postal_code?: string | null;
+        };
         UserResponse: {
+            /** @description The physical address of the user. */
+            address?: components["schemas"]["UserPhysicalAddressResponse"] | null;
             /**
              * Format: date
              * @description The birthdate of the user.
@@ -3037,17 +3227,17 @@ export interface components {
             /** @description The family name of the user. We have methods of deriving the family name should we only get a name from e.g. a KYC provider, but they may not be 100% reliable and thus the existence of this field can not be guaranteed. */
             family_name?: string | null;
             /** @description The gender of the user. */
-            gender?: components["schemas"]["SystemGender"] | null;
+            gender?: components["schemas"]["Gender"] | null;
             /** @description The ID of the user. */
             id: components["schemas"]["UserId"];
             /** @description The jurisdiction of the user. This field can not be easily changed once set. */
-            jurisdiction: components["schemas"]["SystemCountry"];
+            jurisdiction: components["schemas"]["Country"];
             /** @description The language of the user in ISO 639-1 format. */
             locale: string;
             /** @description The name of the user. */
             name: string;
             /** @description The phone number of the user. */
-            phone: components["schemas"]["SystemPhoneNumber"];
+            phone: components["schemas"]["PhoneNumber"];
             /** @description The time zone of the user in IANA time zone format. */
             time_zone: string;
         };

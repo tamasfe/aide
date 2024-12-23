@@ -39,7 +39,7 @@ export interface SignupFlowsDependencyInjectionI {
   };
 }
 
-export const createSignupFlowsDependencyInjection = (publicConfig: PublicRuntimeConfig, commonDependencies: CommonDependenciesI, requestHeaders?: Record<string, string>): SignupFlowsDependencyInjectionI => {
+export const createSignupFlowsDependencyInjection = (publicConfig: PublicRuntimeConfig, commonDependencies: CommonDependenciesI): SignupFlowsDependencyInjectionI => {
   const isServer = import.meta.server;
   const apiBaseUrl = isServer ? publicConfig.signupFlows.apiBaseUrlServer : publicConfig.signupFlows.apiBaseUrlClient;
 
@@ -48,7 +48,7 @@ export const createSignupFlowsDependencyInjection = (publicConfig: PublicRuntime
       return new SignupFlowApiRepositoryDumb();
     }
 
-    return new SignupFlowApiRepositoryGirobet({ baseUrl: apiBaseUrl, headers: requestHeaders, userJurisdiction: publicConfig.genericFixedUserJurisdiction }, commonDependencies.asyncMessagePublisher);
+    return new SignupFlowApiRepositoryGirobet({ baseUrl: apiBaseUrl }, commonDependencies);
   })();
 
   const clientSignupFlowIdRepository: SignupFlowIdClientRepositoryI = (() => {

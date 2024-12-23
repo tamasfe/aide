@@ -32,3 +32,7 @@ data:
   # Providers domain
   NUXT_PUBLIC_PROVIDERS_API_BASE_URL_CLIENT: "https://api-staging.girobet.vip"
   NUXT_PUBLIC_PROVIDERS_API_BASE_URL_SERVER: "http://girobet-api.default.svc.cluster.local"
+
+  # KYC domain
+  NUXT_PUBLIC_KYC_API_BASE_URL_CLIENT: "https://api-staging.girobet.vip"
+  NUXT_PUBLIC_KYC_API_BASE_URL_SERVER: "http://girobet-api.default.svc.cluster.local"

@@ -42,20 +42,20 @@ export interface UsersDependencyInjectionI {
     requestRecoverPasswordOnForm: RequestRecoverPasswordOnForm;
   };
 }
-export const createUsersDependencyInjection = async (config: PublicRuntimeConfig, commonDependencies: CommonDependenciesI, requestHeaders?: Record<string, string>): Promise<UsersDependencyInjectionI> => {
+export const createUsersDependencyInjection = async (config: PublicRuntimeConfig, commonDependencies: CommonDependenciesI): Promise<UsersDependencyInjectionI> => {
   const isServer = import.meta.server;
   const authenticatedRepositoryBaseUrl = isServer ? config.users.authenticatedRepositoryBaseUrlServer : config.users.authenticatedRepositoryBaseUrlClient;
 
   const authenticatedUserRepo: AuthenticatedUserRepositoryI = (() => {
     if (authenticatedRepositoryBaseUrl) {
-      return new AuthenticatedUserSearcherGirobet({ baseUrl: authenticatedRepositoryBaseUrl, userJurisdiction: config.genericFixedUserJurisdiction, headers: requestHeaders }, commonDependencies.asyncMessagePublisher);
+      return new AuthenticatedUserSearcherGirobet({ baseUrl: authenticatedRepositoryBaseUrl }, commonDependencies);
     }
     return new AuthenticatedUserRepositoryDumb(commonDependencies.logger);
   })();
 
   const authenticationRepo: AuthenticationRepositoryI = (() => {
     if (authenticatedRepositoryBaseUrl) {
-      return new AuthenticationRepositoryGirobet({ baseUrl: authenticatedRepositoryBaseUrl, userJurisdiction: config.genericFixedUserJurisdiction, headers: requestHeaders }, commonDependencies.asyncMessagePublisher, commonDependencies.logger);
+      return new AuthenticationRepositoryGirobet({ baseUrl: authenticatedRepositoryBaseUrl }, commonDependencies);
     }
     return new AuthenticationRepositoryDumb(commonDependencies.logger);
   })();

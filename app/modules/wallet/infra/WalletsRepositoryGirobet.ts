@@ -9,11 +9,11 @@ import { fail, success, type Result } from "~/packages/result";
 import { InfrastructureError } from "~/packages/result/infrastructure-error";
 import { createBackendOpenApiClient } from "~/packages/http-client/create-backend-open-api-client";
 import { HttpBackendApiError } from "~/packages/http-client/http-client-error";
-import type { AsyncMessagePublisherI } from "~/packages/async-messages/async-message-publisher";
+import type { CommonDependenciesI } from "~/dependency-injection/load-di";
 
 export class WalletsRepositoryGirobet implements WalletRepositoryI {
-  constructor(clientOptions: { baseUrl: string; headers?: Record<string, string>; userJurisdiction?: string }, asyncMessagePublisher: AsyncMessagePublisherI) {
-    this.apiClient = createBackendOpenApiClient(clientOptions, asyncMessagePublisher);
+  constructor(clientOptions: { baseUrl: string }, commonDependencies: CommonDependenciesI) {
+    this.apiClient = createBackendOpenApiClient(clientOptions, commonDependencies);
   }
 
   public async findAuthenticated(): Promise<Result<WalletI[], InfrastructureError | ErrorCurrencyNotRecognized | ErrorNoAuthenticatedWalletsFound | ErrorInvalidBalance | ErrorUserNotAuthorized>> {

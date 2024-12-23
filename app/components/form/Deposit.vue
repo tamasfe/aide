@@ -96,6 +96,7 @@ const onSubmit = handleSubmit(async (formData) => {
       inputmode="decimal"
       placeholder-placement="default"
       error-placement="below"
+      :model-value="String(amount)"
       :error-message="formErrors.amount"
       :mask="{
         number: {

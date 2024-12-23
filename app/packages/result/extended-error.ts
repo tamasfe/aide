@@ -117,6 +117,10 @@ export abstract class AbstractExtendedError extends CustomError {
       return unknownError as Error;
     }
 
+    if (typeof unknownError === "string") {
+      return new Error(unknownError);
+    }
+
     const error = new Error(
       "Unknown cause error, check rawError metadata for more details",
     );

@@ -37,7 +37,7 @@ export interface GamesDependencyInjectionI {
   };
 }
 
-export const createGamesDependencyInjection = async (publicConfig: PublicRuntimeConfig, commonDependencies: CommonDependenciesI, requestHeaders?: Record<string, string>): Promise<GamesDependencyInjectionI> => {
+export const createGamesDependencyInjection = async (publicConfig: PublicRuntimeConfig, commonDependencies: CommonDependenciesI): Promise<GamesDependencyInjectionI> => {
   const isServer = import.meta.server;
   const apiBaseUrl = isServer ? publicConfig.games.apiBaseUrlServer : publicConfig.games.apiBaseUrlClient;
 
@@ -46,7 +46,7 @@ export const createGamesDependencyInjection = async (publicConfig: PublicRuntime
       return new GamesApiRepositoryDumb(commonDependencies.logger);
     }
 
-    return new GamesApiRepositoryGirobet({ baseUrl: apiBaseUrl, headers: requestHeaders, userJurisdiction: publicConfig.genericFixedUserJurisdiction }, commonDependencies.asyncMessagePublisher);
+    return new GamesApiRepositoryGirobet({ baseUrl: apiBaseUrl }, commonDependencies);
   })();
 
   const gameRatingsRepository: GameRatingsRepositoryI = (() => {
@@ -54,7 +54,7 @@ export const createGamesDependencyInjection = async (publicConfig: PublicRuntime
       return new GameRatingsRepositoryDumb(commonDependencies.logger);
     }
 
-    return new GameRatingsRepositoryGirobet({ baseUrl: apiBaseUrl, headers: requestHeaders, userJurisdiction: publicConfig.genericFixedUserJurisdiction }, commonDependencies.asyncMessagePublisher);
+    return new GameRatingsRepositoryGirobet({ baseUrl: apiBaseUrl }, commonDependencies);
   })();
 
   const gameCategoriesRepositoryDumb: GameCategoriesRepositoryDumb = (() => {
@@ -62,7 +62,7 @@ export const createGamesDependencyInjection = async (publicConfig: PublicRuntime
       return new GameCategoriesRepositoryDumb();
     }
 
-    return new GameCategoriesRepositoryGirobet({ baseUrl: apiBaseUrl, headers: requestHeaders, userJurisdiction: publicConfig.genericFixedUserJurisdiction }, commonDependencies.asyncMessagePublisher);
+    return new GameCategoriesRepositoryGirobet({ baseUrl: apiBaseUrl }, commonDependencies);
   })();
 
   const gameActionsRepository: GameActionsRepositoryI = (() => {
@@ -70,7 +70,7 @@ export const createGamesDependencyInjection = async (publicConfig: PublicRuntime
       return new GameActionsRepositoryDumb(commonDependencies.logger);
     }
 
-    return new GameActionsRepositoryGirobet({ baseUrl: apiBaseUrl, headers: requestHeaders, userJurisdiction: publicConfig.genericFixedUserJurisdiction }, commonDependencies.asyncMessagePublisher);
+    return new GameActionsRepositoryGirobet({ baseUrl: apiBaseUrl }, commonDependencies);
   })();
 
   const searchGamesPaginatingQuery = new SearchGamesPaginating(gamesApiRepository);

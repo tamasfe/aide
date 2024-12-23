@@ -2,15 +2,15 @@ import type { WalletCurrency } from "../domain/WalletCurrency";
 import type { PaymentMethodRepositoryI } from "../domain/PaymentMethodRepository";
 import type { PaymentMethodI, PaymentMethodIdentifier } from "../domain/PaymentMethod";
 import { ErrorPaymentMethodNotFound } from "../domain/ErrorPaymentMethodNotFound";
-import type { AsyncMessagePublisherI } from "~/packages/async-messages/async-message-publisher";
 import { createBackendOpenApiClient } from "~/packages/http-client/create-backend-open-api-client";
 import { HttpBackendApiError } from "~/packages/http-client/http-client-error";
 import { fail, success, type Result } from "~/packages/result";
 import { InfrastructureError } from "~/packages/result/infrastructure-error";
+import type { CommonDependenciesI } from "~/dependency-injection/load-di";
 
 export class PaymentMethodRepositoryGirobet implements PaymentMethodRepositoryI {
-  constructor(clientOptions: { baseUrl: string; headers?: Record<string, string>; userJurisdiction?: string }, asyncMessagePublisher: AsyncMessagePublisherI) {
-    this.apiClient = createBackendOpenApiClient(clientOptions, asyncMessagePublisher);
+  constructor(clientOptions: { baseUrl: string }, commonDependencies: CommonDependenciesI) {
+    this.apiClient = createBackendOpenApiClient(clientOptions, commonDependencies);
   }
 
   public async search(currency: WalletCurrency): Promise<Result<PaymentMethodI[], InfrastructureError>> {
