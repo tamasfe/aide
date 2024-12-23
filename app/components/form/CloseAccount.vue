@@ -78,7 +78,7 @@ const onSubmit = handleSubmit(async (formData) => {
       :disabled="!meta.valid"
       size="xl"
       type="submit"
-      variant="subtle"
+      variant="danger"
     >
       {{ $t("button.close_account") }}
     </BaseButton>
@@ -86,11 +86,11 @@ const onSubmit = handleSubmit(async (formData) => {
     <BaseButton
       class="w-full"
       size="xl"
-      variant="primary"
       type="button"
+      variant="subtle"
       @click="() => $dependencies.users.ui.emitCommandCloseUserActionModal.handle()"
     >
-      {{ $t("button.nevermind") }}
+      {{ $t("button.cancel") }}
     </BaseButton>
   </BaseForm>
 </template>
