@@ -1,6 +1,7 @@
 import type { AuthenticatedUserRepositoryI } from "../domain/AuthenticatedUserRepository";
 import type { User } from "../domain/User";
-import { UserSettings, type UserSettingsPropsI } from "../domain/UserSettings";
+import { UserSettings } from "../domain/UserSettings";
+import type { ErrorInvalidCurrentPassword } from "../domain/errors/ErrorInvalidCurrentPassword";
 import type { LoggerI } from "~/packages/logger/Logger";
 import { success, type EmptyResult, type Result } from "~/packages/result";
 import type { InfrastructureError } from "~/packages/result/infrastructure-error";
@@ -47,6 +48,11 @@ export class AuthenticatedUserRepositoryDumb implements AuthenticatedUserReposit
         keyType: null,
       },
     }));
+  }
+
+  public async closeAccount(reason: string | null, currentPassword: string): Promise<EmptyResult<ErrorInvalidCurrentPassword | InfrastructureError>> {
+    this.logger.debug("closeAccount called", { reason, currentPassword });
+    return success();
   }
 
   public async updateSettings(settings: { locale?: SupportedLocale }): Promise<EmptyResult<InfrastructureError>> {

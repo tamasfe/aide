@@ -33,6 +33,15 @@ export default defineNuxtPlugin({
     );
 
     $dependencies.common.asyncMessagePublisher.subscribe(
+      "girobet:events:users:user-closed-account",
+      () => userStore.refreshUser(),
+    );
+    $dependencies.common.asyncMessagePublisher.subscribe(
+      "girobet:events:users:user-closed-account",
+      () => userSettingsStore.refresh(),
+    );
+
+    $dependencies.common.asyncMessagePublisher.subscribe(
       "girobet:events:users:user-settings-updated",
       () => userStore.refreshUser(),
     );

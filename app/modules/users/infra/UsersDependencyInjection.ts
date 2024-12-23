@@ -8,6 +8,7 @@ import { RecoverPassword } from "../application/RecoverPassword";
 import { UpdateUserSettings } from "../application/UpdateUserSettings";
 import { SearchUserSettingsSimplified } from "../application/SearchUserSettingsSimplified";
 import { UpdateUserSettingsChangedConsents } from "../application/UpdateUserSettingsChangedConsents";
+import { CloseAccount } from "../application/CloseAccount";
 import { AuthenticatedUserRepositoryDumb } from "./AuthenticatedUserRepositoryDumb";
 import { EmitCommandOpenUserActionModalModal } from "./ui/EmitCommandOpenUserActionModal";
 import { AuthenticatedUserSearcherGirobet } from "./AuthenticatedUserRepositoryGirobet";
@@ -21,6 +22,7 @@ import { RequestRecoverPasswordOnForm } from "./ui/RequestRecoverPasswordOnForm"
 import { UpdateUserLocaleOnLocaleSelect } from "./ui/user-settings/UpdateUserLocaleOnLocaleSelect";
 import { UpdateConsentsOnPreferencesPage } from "./ui/user-settings/UpdateConsentsOnPreferencesPage";
 import { UpdateSettingsOnForm } from "./ui/user-settings/UpdateSettingsOnForm";
+import { CloseAccountOnForm } from "./ui/CloseAccountOnForm";
 import type { CommonDependenciesI } from "~/dependency-injection/load-di";
 
 export interface UsersDependencyInjectionI {
@@ -34,9 +36,10 @@ export interface UsersDependencyInjectionI {
       updateConsentsOnPreferencesPage: UpdateConsentsOnPreferencesPage;
       updateSettingsOnForm: UpdateSettingsOnForm;
     };
+    attemptUserLoginOnFormSubmission: AttemptUserLoginOnFormSubmission;
+    closeAccountOnForm: CloseAccountOnForm;
     emitCommandOpenUserActionModal: EmitCommandOpenUserActionModalModal;
     emitCommandCloseUserActionModal: EmitCommandCloseUserActionModal;
-    attemptUserLoginOnFormSubmission: AttemptUserLoginOnFormSubmission;
     logoutCurrentUserFromButtonClick: LogoutCurrentUserFromButtonClick;
     recoverPassword: RecoverPasswordOnForm;
     requestRecoverPasswordOnForm: RequestRecoverPasswordOnForm;
@@ -79,14 +82,20 @@ export const createUsersDependencyInjection = async (config: PublicRuntimeConfig
         ),
         updateSettingsOnForm: new UpdateSettingsOnForm(updateUserSettingsCommand, commonDependencies.logger, commonDependencies.translateFunction, commonDependencies.asyncMessagePublisher),
       },
-      emitCommandOpenUserActionModal: new EmitCommandOpenUserActionModalModal(commonDependencies.asyncMessagePublisher),
-      emitCommandCloseUserActionModal: new EmitCommandCloseUserActionModal(commonDependencies.asyncMessagePublisher),
       attemptUserLoginOnFormSubmission: new AttemptUserLoginOnFormSubmission(
         new LoginUser(authenticationRepo, commonDependencies.asyncMessagePublisher),
         commonDependencies.translateFunction,
         commonDependencies.logger,
         commonDependencies.asyncMessagePublisher,
       ),
+      closeAccountOnForm: new CloseAccountOnForm(
+        new CloseAccount(authenticatedUserRepo, commonDependencies.asyncMessagePublisher),
+        commonDependencies.logger,
+        commonDependencies.asyncMessagePublisher,
+        commonDependencies.translateFunction,
+      ),
+      emitCommandOpenUserActionModal: new EmitCommandOpenUserActionModalModal(commonDependencies.asyncMessagePublisher),
+      emitCommandCloseUserActionModal: new EmitCommandCloseUserActionModal(commonDependencies.asyncMessagePublisher),
       logoutCurrentUserFromButtonClick: new LogoutCurrentUserFromButtonClick(
         new LogoutUser(authenticationRepo, commonDependencies.asyncMessagePublisher),
         commonDependencies.logger,

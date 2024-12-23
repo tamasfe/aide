@@ -8,15 +8,12 @@ const DEFER_CLIENT_SIDE_LOADING = true;
 const userStore = useUserStore();
 
 const { data } = await useAsyncData("account-page-user-settings-store", async () => {
-  if (userSettingsStore.status === "ready") {
-    return userSettingsStore.settings;
-  }
   if (userSettingsStore.status === "unititialized") {
     await userSettingsStore.refresh();
   }
   return userSettingsStore.settings;
 },
-{ watch: [() => userSettingsStore.status], lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING },
+{ watch: [() => userSettingsStore.settings], lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING },
 );
 </script>
 

@@ -10,6 +10,9 @@ export interface AuthenticatedUserRepositoryI {
   searchProfile(): Promise<Result<User | null, InvalidCPF | InfrastructureError>>;
 
   searchSettings(): Promise<Result<null | UserSettings, InfrastructureError>>;
+
+  closeAccount: (reason: string | null, currentPassword: string) => Promise<EmptyResult<ErrorInvalidCurrentPassword | InfrastructureError>>;
+
   updateSettings(settings: {
     locale?: SupportedLocale | null;
     timeZone?: string | null;

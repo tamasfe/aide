@@ -88,6 +88,35 @@ export class AuthenticatedUserSearcherGirobet implements AuthenticatedUserReposi
     }
   }
 
+  public async closeAccount(reason: string | null, currentPassword: string) {
+    try {
+      const { data, error, response } = await this.apiClient.POST("/user/delete", {
+        body: {
+          reason,
+          current_password: currentPassword,
+        },
+      });
+
+      if (error) {
+        if (error.code === "UNAUTHORIZED") {
+          return fail(new ErrorInvalidCurrentPassword());
+        }
+
+        const httpError = HttpBackendApiError.newFromBackendError(error, response);
+        return fail(InfrastructureError.newFromError({}, httpError));
+      }
+
+      if (data || response.ok) {
+        return success();
+      }
+
+      return fail(InfrastructureError.newFromError({ data, error, response }, new Error("Unexpected scenario: library did not return data nor error. This should never happen")));
+    }
+    catch (error) {
+      return fail(InfrastructureError.newFromUnknownError({}, error));
+    }
+  }
+
   public async updateSettings(settings: {
     locale?: SupportedLocale;
     timeZone?: string;

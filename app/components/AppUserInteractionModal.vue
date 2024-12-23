@@ -132,6 +132,9 @@ const { data: paymentMethodData } = await useAsyncData("user-modals-payment-meth
       :applicant-data="state.data.applicantData"
       :initial-access-token="state.data.accessToken"
     />
+    <ModalCloseAccount
+      v-if="state.modal === 'close_account'"
+    />
     <ModalRestrictExpanding
       v-if="state.modal === 'restrict_expanding'"
       :blocked-country="state.data.blockedCountry"

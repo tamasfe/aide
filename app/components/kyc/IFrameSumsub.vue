@@ -19,6 +19,8 @@ const emits = defineEmits<{
 const CONTAINER_ID = "sumsub-websdk-container";
 
 /**
+ * This was highly inspired by the official documentation: https://docs.sumsub.com/docs/get-started-with-web-sdk
+ *
  * @param accessToken - access token that you generated on the backend
  * @param applicantEmail - applicant email (not required)
  * @param applicantPhone - applicant phone (not required)

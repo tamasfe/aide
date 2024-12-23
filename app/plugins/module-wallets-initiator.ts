@@ -20,6 +20,10 @@ export default defineNuxtPlugin({
       () => walletStore.refresh(),
     );
     $dependencies.common.asyncMessagePublisher.subscribe(
+      "girobet:events:users:user-closed-account",
+      () => walletStore.refresh(),
+    );
+    $dependencies.common.asyncMessagePublisher.subscribe(
       "girobet:events:signup-flows:signup-flow-submitted",
       () => walletStore.refresh(),
     );

@@ -13,7 +13,8 @@
     "password_confirm": "Re-type new password",
     "telephone": "Telephone",
     "cpf": "CPF",
-    "evp": "EVP"
+    "evp": "EVP",
+    "reason": "Your reason"
   },
   "placeholder": {
     "search": "Search for a casino game...",
@@ -53,7 +54,8 @@
     "confirm": "Confirm",
     "cancel": "Cancel",
     "save": "Save",
-    "save_password_and_login": "Save Password and Login"
+    "save_password_and_login": "Save Password and Login",
+    "nevermind": "Nevermind"
   },
   "mobile_nav": {
     "menu": "Menu",
@@ -78,6 +80,12 @@
   "modal_login": {
     "error_invalid_credentials": "Your email or password are incorrect",
     "error_unknown": "An error occurred while trying to log in. Please try again."
+  },
+  "modal_close_account": {
+    "title": "We're sorry to see you go",
+    "alternative_cool_off": "Are you sure you wouldn't rather set a Cooling Off period? Check our Responsible Gaming tools for all the ways you can stay on top of your gambling habits.",
+    "help_us_improve": "Help us improve by telling us why leaving",
+    "error_unknown": "An error occurred closing your account. Please try again in some minuts"
   },
   "modal_session": {
     "dont_have_account": "Don't have an account yet?",
@@ -178,7 +186,9 @@
     "amount_withdrawal_min": "Minimum withdrawal amount is {min}",
     "amount_withdrawal_max": "Maximum withdrawal amount is {max}",
     "pix_key_type_invalid": "Invalid PIX Key Type",
-    "pix_key_type_required": "PIX Key is required"
+    "pix_key_type_required": "PIX Key is required",
+    "reason_required": "A reason for closing your account is required",
+    "reason_too_long": "Reason has to be shorter"
   },
   "withdrawal_limits": {
     "summary": "For an easy, secure and simple withdraw process, make sure to follow these guidelines: The minimum withdrawal amount varies by method and is listed above. Withdrawals are always to be processed to the original deposit method unless otherwise specified or if that method doesn't support withdrawals.",

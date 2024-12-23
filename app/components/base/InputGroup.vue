@@ -20,7 +20,7 @@ defineOptions({
 
 const props = withDefaults(
   defineProps<{
-    fieldType?: "input";
+    fieldType?: "input" | "textarea" ;
     required?: boolean;
     placeholder?: string;
     placeholderPlacement?: "floating" | "default";
@@ -44,7 +44,7 @@ const isInputFocused = ref(false);
 
 const fieldPlaceholder = computed(() => {
   if (props.placeholderPlacement === "floating") return undefined;
-  return props.placeholder;
+  return props.placeholder + (props.required ? " *" : "");
 });
 
 const fieldClass = computed(() => {
@@ -136,6 +136,23 @@ const [value, modifiers] = defineModel<number | string>({
       >
         <BaseInput
           v-if="fieldType === 'input'"
+          v-model="value"
+          :mask="mask"
+          :mask-behaviour-eager="maskBehaviourEager"
+          v-bind="$attrs"
+          :required="required"
+          :placeholder="fieldPlaceholder"
+          variant="ghost"
+          size="ghost"
+          :class="cn(
+            fieldClass,
+            'text-emphasis',
+          )"
+          @input="(event) => $emit('input', event)"
+          @change="(event) => $emit('change', event)"
+        />
+        <BaseTextarea
+          v-else-if="fieldType === 'textarea'"
           v-model="value"
           :mask="mask"
           :mask-behaviour-eager="maskBehaviourEager"

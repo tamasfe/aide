@@ -2,7 +2,7 @@ import type { AsyncMessagePublisherI } from "~/packages/async-messages/async-mes
 import type { UserInteractionModalState } from "~/packages/async-messages/async-messages";
 import { success, type EmptySuccessResult } from "~/packages/result";
 
-type NoDataRequiredModal = "login" | "register" | "search" | "forgot_password" | "deposit" | "withdrawal";
+type NoDataRequiredModal = "login" | "register" | "search" | "forgot_password" | "deposit" | "withdrawal" | "close_account";
 
 export class EmitCommandOpenUserActionModalModal {
   constructor(private readonly asyncMessagePublisher: AsyncMessagePublisherI) {}

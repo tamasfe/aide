@@ -2,7 +2,7 @@ import type { SupportedLocale } from "../translation";
 import type { PaymentStatus } from "~/modules/wallet/domain/Payment";
 import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
 
-type NoDataRequiredModal = "login" | "register" | "search" | "forgot_password" | "deposit" | "withdrawal" | "cancel_registration";
+type NoDataRequiredModal = "login" | "register" | "search" | "forgot_password" | "deposit" | "withdrawal" | "cancel_registration" | "close_account";
 
 export type UserInteractionModalState =
   | { modal: NoDataRequiredModal }
@@ -47,6 +47,7 @@ export interface AsyncMessagesTypes {
 
   "girobet:events:users:user-logged-in": object;
   "girobet:events:users:user-logged-out": object;
+  "girobet:events:users:user-closed-account": object;
   "girobet:events:users:password-recovered": object;
   "girobet:events:users:user-settings-updated": {
     settings: {
