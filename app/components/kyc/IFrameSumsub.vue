@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import snsWebSdk from "@sumsub/websdk";
 
+const loading = ref(false);
+
 const props = defineProps<{
   initialAccessToken: string;
   applicant: {
@@ -43,6 +45,7 @@ function launchWebSdk(accessToken: string, applicantEmail: string, applicantPhon
   // see below what kind of messages WebSDK generates
     .on("idCheck.onApplicantSubmitted", () => emits("submitted"))
     .on("idCheck.onApplicantResubmitted", () => emits("submitted"))
+    .on("idCheck.onReady", () => loading.value = false)
     .on("idCheck.onError", (error) => {
       emits("error", error);
     })
@@ -62,5 +65,12 @@ if (!isServer) {
 </script>
 
 <template>
-  <div :id="CONTAINER_ID" />
+  <div>
+    <BaseSpinner
+      v-if="loading"
+      :size="30"
+      class="w-full"
+    />
+    <div :id="CONTAINER_ID" />
+  </div>
 </template>
