@@ -23,8 +23,10 @@ const onSubmitted = () => {
   // TODO: decide whether we want to close the modal ourselves or let the user.
   // This will depend if the final success modal text has some instructions the user has to read or not. Closing it abrubtly may would not be good UX.
 
+  // A good option would be to reload the page after X time has passed, so the user sees the updated KYC state. If we want to avoid a page reload: we will probably need a KYC pinia store that tracks the state of the KYC verification.
+
   // const DELAY_TO_ALLOW_USER_TO_READ = 3000;
-  // setTimeout(() => $dependencies.users.ui.emitCommandCloseUserActionModal.handle(), DELAY_TO_ALLOW_USER_TO_READ);
+  // setTimeout(() => router.go(0), DELAY_TO_ALLOW_USER_TO_READ);
 };
 </script>
 
