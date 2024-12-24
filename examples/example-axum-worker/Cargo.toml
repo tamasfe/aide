@@ -17,14 +17,10 @@ aide = { path = "../../crates/aide", features = [
     "axum-wasm"
 ] }
 tower-service = "0.3.2"
-async-trait = "0.1.57"
 worker = { version = "0.5.0", features = ["http", "axum"] }
 console_error_panic_hook = "0.1.7"
 axum = { version = "0.7.1", default-features = false, features = ["macros", "form", "matched-path", "query", "original-uri"] }
-axum-extra = "0.9.0"
-axum-jsonschema = { path = "../../crates/axum-jsonschema", features = [
-    "aide",
-] }
+axum-jsonschema = { path = "../../crates/axum-jsonschema", features = ["aide"] }
 axum-macros = "0.4.0"
 schemars = { version = "0.8.10", features = ["uuid1"] }
 serde = { version = "1.0.144", features = ["derive", "rc"] }
