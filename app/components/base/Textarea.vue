@@ -41,7 +41,7 @@ const props = withDefaults(defineProps<{
   autocorrect?: "off";
   inputmode?: "text" | "decimal" | "numeric" | "tel" | "search" | "email";
   class?: HTMLAttributes["class"];
-
+  allowResize?: boolean;
 }>(), {
   rows: 5,
   type: "text",
@@ -50,6 +50,7 @@ const props = withDefaults(defineProps<{
   autocomplete: "on",
   autocorrect: "off",
   inputmode: "text",
+  allowResize: false,
 });
 
 const [value, modifiers] = defineModel<string | number>({
@@ -76,6 +77,7 @@ const [value, modifiers] = defineModel<string | number>({
     :class="cn(
       inputVariants({ variant, size }),
       props.class,
+      { 'resize-none': allowResize !== true },
     )"
 
     @input="event => $emit('input', (event.target as HTMLTextAreaElement)?.value ?? '')"
