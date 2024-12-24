@@ -4,7 +4,7 @@ const { t } = useI18n();
 
 const loading = useState(`grid-horizontal-providers-loading`, () => true);
 const nextProvidersPageToSearch = useState(`grid-horizontal-providers-next-page`, () => 0);
-const providers = useState<{ id: number; imageUrl: string }[]>(`grid-horizontal-providers-ids`, () => []);
+const providers = useState<{ id: number; imageUrl: string; key: string }[]>(`grid-horizontal-providers-ids`, () => []);
 const canLoadMore = useState(`grid-horizontal-providers-can-load-more`, () => true);
 
 const ENABLE_SERVER_SIDE_RENDERING = false;
@@ -15,7 +15,7 @@ const onLoadData = async () => {
   loading.value = true;
 
   const { providers: foundProviders, canLoadMore: updatedCanLoadMore } = await $dependencies.providers.ui.searchProvidersOnGrid.handle(null, nextProvidersPageToSearch.value);
-  providers.value.push(...foundProviders);
+  providers.value.push(...foundProviders.map(provider => useAddKeyFromId(provider)));
   canLoadMore.value = updatedCanLoadMore;
   nextProvidersPageToSearch.value += 1;
 

@@ -1,4 +1,4 @@
-<script setup lang="ts" generic="T extends unknown[]">
+<script setup lang="ts" generic="T extends {key:string}[]">
 import emblaCarouselVue from "embla-carousel-vue";
 import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
 import type { EmblaCarouselType, EmblaOptionsType } from "embla-carousel";
@@ -167,7 +167,7 @@ defineExpose({
 });
 
 const SKELETON_ITEMS_TO_SHOW = 8;
-const dataLoadingSkeleton = Array.from({ length: SKELETON_ITEMS_TO_SHOW }).map((_elem, index) => (index)) as T;
+const dataLoadingSkeleton = Array.from({ length: SKELETON_ITEMS_TO_SHOW }).map((_elem, index) => ({ key: String(index) })) as T;
 
 const dataToRender = computed(() => {
   if (props.loading === undefined) {
@@ -188,7 +188,7 @@ const dataToRender = computed(() => {
     >
       <div
         v-for="(item, idx) in dataToRender"
-        :key="idx"
+        :key="item.key"
         class="giro__slider-slide"
       >
         <BaseSkeleton v-if="loading === true && data.length === 0" :loading="loading" class="h-full w-full rounded-default" />

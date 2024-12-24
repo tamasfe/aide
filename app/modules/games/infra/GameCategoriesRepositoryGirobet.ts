@@ -11,11 +11,12 @@ export class GameCategoriesRepositoryGirobet implements GameCategoriesRepository
     this.apiClient = createBackendOpenApiClient(clientOptions, commonDependencies);
   }
 
-  public async searchByGroup(categoryGroup: string): Promise<Result<GameCategory[], InfrastructureError>> {
+  public async searchByGroup(categoryGroup: string, includeGames: boolean): Promise<Result<GameCategory[], InfrastructureError>> {
     const { data, error, response } = await this.apiClient.GET("/game/category/list", {
       params: {
         query: {
           group: categoryGroup as "home" | "game_page" | "inventory" | null | undefined,
+          include_games: includeGames,
         },
       },
     });
@@ -24,6 +25,14 @@ export class GameCategoriesRepositoryGirobet implements GameCategoriesRepository
       return success(data.map(category => GameCategory.new({
         id: category.id,
         identifier: category.identifier,
+        games: category.games
+          ? category.games.map(game => ({
+              id: game.id,
+              slug: game.slug,
+              name: game.name,
+              imageUrl: game.image_url,
+            }))
+          : null,
       })));
     }
 

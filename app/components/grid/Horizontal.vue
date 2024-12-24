@@ -1,4 +1,4 @@
-<script setup lang="ts" generic="T extends unknown[]">
+<script setup lang="ts" generic="T extends {key:string}[]">
 import type { EmblaOptionsType } from "embla-carousel";
 import type { CSSProperties } from "vue";
 import type { BreakpointValues } from "~/types/utils";

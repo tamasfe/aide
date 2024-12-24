@@ -29,6 +29,7 @@ const generateFakeData = (length: number) => {
     value: (Math.round(Math.random() * 100) % 8) + 1,
     name: `${Math.random().toString(36).substring(10)}***`,
     created: new Date(),
+    key: String(Math.round(Math.random() * 1000)),
   }));
 };
 

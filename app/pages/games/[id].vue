@@ -40,7 +40,7 @@ if (!game.value && statusLoadingGame.value === "success") {
 const ENABLE_SERVER_SIDE_RENDERING_FOR_CATEGORIES = false;
 const DEFER_CLIENT_SIDE_LOADING_FOR_CATEGORIES = true;
 const { data: pageCategories } = await useAsyncData(`game-${params.id}-categories`, async () => {
-  return $dependencies.games.ui.searchGameCategoriesByGroup.handle("game_page");
+  return $dependencies.games.ui.searchGameCategoriesByGroup.handle("game_page", false);
 }, { lazy: DEFER_CLIENT_SIDE_LOADING_FOR_CATEGORIES, server: ENABLE_SERVER_SIDE_RENDERING_FOR_CATEGORIES });
 
 const iFrameUrl = computed(() => {

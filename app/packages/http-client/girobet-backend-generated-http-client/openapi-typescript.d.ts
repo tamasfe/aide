@@ -1321,7 +1321,10 @@ export interface paths {
         get: {
             parameters: {
                 query?: {
-                    group?: components["schemas"]["CategoryGroup"] | null;
+                    /** @description The group of game categories to filter by. If set, only categories in this group are returned. */
+                    group?: components["schemas"]["GameCategoryGroupType"] | null;
+                    /** @description Whether to include the games in the category in the response. If set to `true`, the games in the category are included in the response. */
+                    include_games?: boolean;
                 };
                 header?: never;
                 path?: never;
@@ -1334,7 +1337,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["CategoryResponse"][];
+                        "application/json": components["schemas"]["GameCategoryListResponse"][];
                     };
                 };
                 "4XX": {
@@ -2288,14 +2291,6 @@ export interface components {
             /** @description The field "servable" indicates if this site is able to be served by the current casino instance. If there's an alternative, which can not be served by the current casino instance, but can be served by another casino instance, this is false. Example scenario: Cross-regional deployments of this system, with independent databases require the ability to point to each other as alternatives, as they can't serve the requested site themselves. */
             servable: boolean;
         };
-        /** @enum {string} */
-        CategoryGroup: "home" | "game_page" | "inventory";
-        CategoryResponse: {
-            /** @description The ID of the game category. */
-            id: components["schemas"]["GameCategoryId"];
-            /** @description The identifier of the game category. This is a unique string that can be used to identify the category in the game search endpoint. */
-            identifier: string;
-        };
         /**
          * @description A country represented by its ISO 3166-1 alpha-2 code.
          * @enum {unknown}
@@ -2366,10 +2361,26 @@ export interface components {
         };
         /** @enum {string} */
         GameActionType: "bet" | "win" | "rollback";
+        /** @enum {string} */
+        GameCategoryGroupType: "home" | "game_page" | "inventory";
         /** Format: int64 */
         GameCategoryId: number;
-        GameCategoryListFilter: {
-            group?: components["schemas"]["CategoryGroup"] | null;
+        GameCategoryListQuery: {
+            /** @description The group of game categories to filter by. If set, only categories in this group are returned. */
+            group?: components["schemas"]["GameCategoryGroupType"] | null;
+            /**
+             * @description Whether to include the games in the category in the response. If set to `true`, the games in the category are included in the response.
+             * @default false
+             */
+            include_games: boolean;
+        };
+        GameCategoryListResponse: {
+            /** @description The games in the category. This field is only populated when the category is requested with the `include` parameter set to `games`. */
+            games?: components["schemas"]["SearchGameResponse"][] | null;
+            /** @description The ID of the game category. */
+            id: components["schemas"]["GameCategoryId"];
+            /** @description The identifier of the game category. This is a unique string that can be used to identify the category in the game search endpoint. */
+            identifier: string;
         };
         /** Format: int64 */
         GameId: number;

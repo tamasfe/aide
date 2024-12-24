@@ -11,10 +11,12 @@ const logos = [
   {
     src: "/assets/footer-logos/play-responsibly.svg",
     alt: "footer.play_responsibly",
+    key: "play-responsibly",
   },
   {
     src: "/assets/footer-logos/responsible-gaming.svg",
     alt: "footer.responsible_gaming",
+    key: "responsible-gaming",
   },
 ];
 

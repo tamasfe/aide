@@ -1162,15 +1162,28 @@
           {
             "in": "query",
             "name": "group",
+            "description": "The group of game categories to filter by. If set, only categories in this group are returned.",
             "schema": {
+              "description": "The group of game categories to filter by. If set, only categories in this group are returned.",
               "anyOf": [
                 {
-                  "$ref": "#/components/schemas/CategoryGroup"
+                  "$ref": "#/components/schemas/GameCategoryGroupType"
                 },
                 {
                   "type": "null"
                 }
               ]
+            },
+            "style": "form"
+          },
+          {
+            "in": "query",
+            "name": "include_games",
+            "description": "Whether to include the games in the category in the response. If set to `true`, the games in the category are included in the response.",
+            "schema": {
+              "description": "Whether to include the games in the category in the response. If set to `true`, the games in the category are included in the response.",
+              "default": false,
+              "type": "boolean"
             },
             "style": "form"
           }
@@ -1183,7 +1196,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/CategoryResponse"
+                    "$ref": "#/components/schemas/GameCategoryListResponse"
                   }
                 }
               }
@@ -1899,31 +1912,6 @@
           }
         }
       },
-      "CategoryGroup": {
-        "type": "string",
-        "enum": [
-          "home",
-          "game_page",
-          "inventory"
-        ]
-      },
-      "CategoryResponse": {
-        "type": "object",
-        "required": [
-          "id",
-          "identifier"
-        ],
-        "properties": {
-          "id": {
-            "description": "The ID of the game category.",
-            "$ref": "#/components/schemas/GameCategoryId"
-          },
-          "identifier": {
-            "description": "The identifier of the game category. This is a unique string that can be used to identify the category in the game search endpoint.",
-            "type": "string"
-          }
-        }
-      },
       "Country": {
         "description": "A country represented by its ISO 3166-1 alpha-2 code.",
         "examples": [
@@ -2562,26 +2550,73 @@
           "rollback"
         ]
       },
+      "GameCategoryGroupType": {
+        "type": "string",
+        "enum": [
+          "home",
+          "game_page",
+          "inventory"
+        ]
+      },
       "GameCategoryId": {
+        "examples": [
+          0
+        ],
         "type": "integer",
         "format": "int64"
       },
-      "GameCategoryListFilter": {
+      "GameCategoryListQuery": {
         "type": "object",
         "properties": {
           "group": {
+            "description": "The group of game categories to filter by. If set, only categories in this group are returned.",
             "anyOf": [
               {
-                "$ref": "#/components/schemas/CategoryGroup"
+                "$ref": "#/components/schemas/GameCategoryGroupType"
               },
               {
                 "type": "null"
               }
             ]
+          },
+          "include_games": {
+            "description": "Whether to include the games in the category in the response. If set to `true`, the games in the category are included in the response.",
+            "default": false,
+            "type": "boolean"
+          }
+        }
+      },
+      "GameCategoryListResponse": {
+        "type": "object",
+        "required": [
+          "id",
+          "identifier"
+        ],
+        "properties": {
+          "games": {
+            "description": "The games in the category. This field is only populated when the category is requested with the `include` parameter set to `games`.",
+            "type": [
+              "array",
+              "null"
+            ],
+            "items": {
+              "$ref": "#/components/schemas/SearchGameResponse"
+            }
+          },
+          "id": {
+            "description": "The ID of the game category.",
+            "$ref": "#/components/schemas/GameCategoryId"
+          },
+          "identifier": {
+            "description": "The identifier of the game category. This is a unique string that can be used to identify the category in the game search endpoint.",
+            "type": "string"
           }
         }
       },
       "GameId": {
+        "examples": [
+          0
+        ],
         "type": "integer",
         "format": "int64"
       },
@@ -2893,6 +2928,9 @@
         }
       },
       "LicenseId": {
+        "examples": [
+          0
+        ],
         "type": "integer",
         "format": "int64"
       },
@@ -3062,6 +3100,9 @@
         ]
       },
       "NotificationId": {
+        "examples": [
+          0
+        ],
         "type": "integer",
         "format": "int64"
       },
@@ -3577,6 +3618,9 @@
         }
       },
       "PaymentFlowId": {
+        "examples": [
+          0
+        ],
         "type": "integer",
         "format": "int64"
       },
@@ -3795,6 +3839,9 @@
         }
       },
       "PaymentMethodId": {
+        "examples": [
+          0
+        ],
         "type": "integer",
         "format": "int64"
       },
@@ -5678,6 +5725,9 @@
         }
       },
       "UserId": {
+        "examples": [
+          0
+        ],
         "type": "integer",
         "format": "int64"
       },
@@ -5813,6 +5863,9 @@
         }
       },
       "WalletId": {
+        "examples": [
+          0
+        ],
         "type": "integer",
         "format": "int64"
       },

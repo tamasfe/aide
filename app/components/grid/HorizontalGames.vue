@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const props = defineProps<{
   categoryIdentifier: string;
+  initialGames?: { id: number; imageUrl: string }[];
 }>();
 
 const { $dependencies } = useNuxtApp();
@@ -22,12 +23,12 @@ const columns = ref({
 
 const query = $dependencies.games.ui.searchGamesPaginatingOnGrid;
 
-const ENABLE_SERVER_SIDE_RENDERING = false;
-const DEFER_CLIENT_SIDE_LOADING = true;
+const initialGames = ref(props.initialGames ? props.initialGames.map(game => useAddKeyFromId(game)) : []);
+const queriedGames = useState<{ id: number; imageUrl: string; key: string }[]>(`grid-horizontal-games-ids-for-${props.categoryIdentifier}`, () => []);
+const games = computed(() => queriedGames.value.length > 0 ? queriedGames.value : initialGames.value);
 
 const loading = useState(`grid-horizontal-games-loading-for-${props.categoryIdentifier}`, () => true);
 const nextGamesPageToSearch = useState(`grid-horizontal-games-next-page-for-${props.categoryIdentifier}`, () => 0);
-const games = useState<{ id: number; imageUrl: string }[]>(`grid-horizontal-games-ids-for-${props.categoryIdentifier}`, () => []);
 const canLoadMore = useState(`grid-horizontal-games-can-load-more-for-${props.categoryIdentifier}`, () => true);
 
 const onLoadData = async () => {
@@ -35,14 +36,19 @@ const onLoadData = async () => {
   loading.value = true;
 
   const { games: foundGames, canLoadMore: updatedCanLoadMore } = await query.handle(props.categoryIdentifier, null, nextGamesPageToSearch.value);
-  games.value.push(...foundGames.map(game => ({ id: game.id, imageUrl: game.imageUrl })));
+  queriedGames.value.push(...foundGames.map(game => useAddKeyFromId(game)));
   canLoadMore.value = updatedCanLoadMore;
   nextGamesPageToSearch.value += 1;
 
   loading.value = false;
 };
 
-await useAsyncData(`load-games-for-${props.categoryIdentifier}`, () => onLoadData().then(() => true), { lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING });
+const ENABLE_SERVER_SIDE_RENDERING = false;
+const DEFER_CLIENT_SIDE_LOADING = true;
+await useAsyncData(`load-games-for-${props.categoryIdentifier}`,
+  () => onLoadData().then(() => true),
+  { lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING },
+);
 </script>
 
 <template>

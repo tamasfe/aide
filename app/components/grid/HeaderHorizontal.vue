@@ -1,4 +1,4 @@
-<script setup lang="ts" generic="T extends unknown[]">
+<script setup lang="ts" generic="T extends {key:string}[]">
 import type { GridHorizontalProps } from "./Horizontal.vue";
 
 const props = withDefaults(defineProps<GridHorizontalProps<T>>(), {

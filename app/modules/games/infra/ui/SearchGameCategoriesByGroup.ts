@@ -7,8 +7,8 @@ export class SearchGameCategoriesByGroup {
     private readonly logger: LoggerI,
   ) {}
 
-  public async handle(group: string) {
-    const result = await this.query.handle(group);
+  public async handle(group: string, includeGames: boolean) {
+    const result = await this.query.handle(group, includeGames);
     if (result.isFailure) {
       this.logger.error("Error while searching game categories by group", result.error);
       return [];
