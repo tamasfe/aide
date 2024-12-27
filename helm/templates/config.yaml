@@ -36,3 +36,11 @@ data:
   # KYC domain
   NUXT_PUBLIC_KYC_API_BASE_URL_CLIENT: "https://api-staging.girobet.vip"
   NUXT_PUBLIC_KYC_API_BASE_URL_SERVER: "http://girobet-api.default.svc.cluster.local"
+
+  # OTEL configuration
+  OTEL_EXPORTER_OTLP_ENDPOINT: "http://k8s-monitoring-alloy.monitoring.svc.cluster.local:4317"
+  OTEL_BSP_SCHEDULE_DELAY: "2000"
+  OTEL_BSP_MAX_EXPORT_BATCH_SIZE: "1024"
+  OTEL_BSP_MAX_QUEUE_SIZE: "4096"
+  OTEL_BSP_EXPORT_TIMEOUT: "15000"
+  OTEL_BSP_MAX_CONCURRENT_EXPORTS: "2"
