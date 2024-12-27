@@ -298,7 +298,7 @@ where
     /// As opposed to [`route`](crate::axum::ApiRouter::route), this method only accepts an [`ApiMethodRouter`].
     ///
     /// See [`axum::Router::route`] for details.
-    #[tracing::instrument(skip_all, fields(% path))]
+    #[tracing::instrument(skip_all, fields(path))]
     pub fn api_route(mut self, path: &str, mut method_router: ApiMethodRouter<S>) -> Self {
         in_context(|ctx| {
             let new_path_item = method_router.take_path_item();
@@ -321,7 +321,7 @@ where
     /// As opposed to [`route_with_tsr`](crate::axum::ApiRouter::route_with_tsr), this method only accepts an [`ApiMethodRouter`].
     ///
     /// See [`axum_extra::routing::RouterExt::route_with_tsr`] for details.
-    #[tracing::instrument(skip_all, fields(% path))]
+    #[tracing::instrument(skip_all, fields(path))]
     pub fn api_route_with_tsr(mut self, path: &str, mut method_router: ApiMethodRouter<S>) -> Self {
         in_context(|ctx| {
             let new_path_item = method_router.take_path_item();
@@ -344,7 +344,7 @@ where
     /// the generated API documentation with.
     ///
     /// See [`axum::Router::route`] or [`api_route`](crate::axum::ApiRouter::api_route) for details.
-    #[tracing::instrument(skip_all, fields(%path))]
+    #[tracing::instrument(skip_all, fields(path))]
     pub fn api_route_with(
         mut self,
         path: &str,
@@ -376,7 +376,7 @@ where
     /// the generated API documentation with.
     ///
     /// See [`axum_extra::routing::RouterExt::route_with_tsr`] for details.
-    #[tracing::instrument(skip_all, fields(%path))]
+    #[tracing::instrument(skip_all, fields(path))]
     pub fn api_route_with_tsr_and(
         mut self,
         path: &str,
