@@ -493,21 +493,21 @@ impl<'t> TransformOperation<'t> {
     }
 
     /// Specify the operation ID.
-    #[tracing::instrument(skip_all, fields(operation_id = ?self.operation.operation_id))]
+    #[tracing::instrument(skip_all, fields(operation_id = self.operation.operation_id))]
     pub fn id(self, name: &str) -> Self {
         self.operation.operation_id = Some(name.into());
         self
     }
 
     /// Provide a summary for the operation.
-    #[tracing::instrument(skip_all, fields(operation_id = ?self.operation.operation_id))]
+    #[tracing::instrument(skip_all, fields(operation_id = self.operation.operation_id))]
     pub fn summary(self, desc: &str) -> Self {
         self.operation.summary = Some(desc.into());
         self
     }
 
     /// Provide a description for the operation.
-    #[tracing::instrument(skip_all, fields(operation_id = ?self.operation.operation_id))]
+    #[tracing::instrument(skip_all, fields(operation_id = self.operation.operation_id))]
     pub fn description(self, desc: &str) -> Self {
         self.operation.description = Some(desc.into());
         self
@@ -530,7 +530,7 @@ impl<'t> TransformOperation<'t> {
     ///
     /// Hiding an item causes it to be ignored
     /// completely, there is no way to restore or "unhide" it afterwards.
-    #[tracing::instrument(skip_all, fields(operation_id = ?self.operation.operation_id))]
+    #[tracing::instrument(skip_all, fields(operation_id = self.operation.operation_id))]
     pub fn hidden(mut self, hidden: bool) -> Self {
         self.hidden = hidden;
         self
@@ -543,7 +543,7 @@ impl<'t> TransformOperation<'t> {
     ///
     /// This function is automatically called for
     /// request handlers of supported web frameworks.
-    #[tracing::instrument(skip_all, fields(operation_id = ?self.operation.operation_id))]
+    #[tracing::instrument(skip_all, fields(operation_id = self.operation.operation_id))]
     pub fn input<T: OperationInput>(self) -> Self {
         in_context(|ctx| {
             T::operation_input(ctx, self.operation);
@@ -552,7 +552,7 @@ impl<'t> TransformOperation<'t> {
     }
 
     /// Modify a parameter of the operation.
-    #[tracing::instrument(skip_all, fields(operation_id = ?self.operation.operation_id))]
+    #[tracing::instrument(skip_all, fields(operation_id = self.operation.operation_id))]
     pub fn parameter<T, F>(self, name: &str, transform: F) -> Self
     where
         T: Serialize,
@@ -596,7 +596,7 @@ impl<'t> TransformOperation<'t> {
     /// Modify a parameter of the operation without knowing a type.
     ///
     /// The type `()` will be used instead.
-    #[tracing::instrument(skip_all, fields(operation_id = ?self.operation.operation_id))]
+    #[tracing::instrument(skip_all, fields(operation_id = self.operation.operation_id))]
     pub fn parameter_untyped<F>(self, name: &str, transform: F) -> Self
     where
         F: FnOnce(TransformParameter<()>) -> TransformParameter<()>,
@@ -606,7 +606,7 @@ impl<'t> TransformOperation<'t> {
 
     /// Set a default response for the operation if
     /// it does not already have one.
-    #[tracing::instrument(skip_all, fields(operation_id = ?self.operation.operation_id))]
+    #[tracing::instrument(skip_all, fields(operation_id = self.operation.operation_id))]
     #[allow(clippy::missing_panics_doc)]
     pub fn default_response<R>(self) -> Self
     where
@@ -637,7 +637,7 @@ impl<'t> TransformOperation<'t> {
     ///
     /// This method additionally accepts a transform function
     /// to modify the generated documentation.
-    #[tracing::instrument(skip_all, fields(operation_id = ?self.operation.operation_id))]
+    #[tracing::instrument(skip_all, fields(operation_id = self.operation.operation_id))]
     #[allow(clippy::missing_panics_doc)]
     pub fn default_response_with<R, F>(self, transform: F) -> Self
     where
@@ -668,7 +668,7 @@ impl<'t> TransformOperation<'t> {
     }
 
     /// Add a response to the operation with the given status code.
-    #[tracing::instrument(skip_all, fields(operation_id = ?self.operation.operation_id))]
+    #[tracing::instrument(skip_all, fields(operation_id = self.operation.operation_id))]
     #[allow(clippy::missing_panics_doc)]
     pub fn response<const N: u16, R>(self) -> Self
     where
@@ -700,7 +700,7 @@ impl<'t> TransformOperation<'t> {
     ///
     /// This method additionally accepts a transform function
     /// to modify the generated documentation.
-    #[tracing::instrument(skip_all, fields(operation_id = ?self.operation.operation_id))]
+    #[tracing::instrument(skip_all, fields(operation_id = self.operation.operation_id))]
     #[allow(clippy::missing_panics_doc)]
     pub fn response_with<const N: u16, R, F>(self, transform: F) -> Self
     where
@@ -736,7 +736,7 @@ impl<'t> TransformOperation<'t> {
     /// Add a response to the operation with the given status code range (e.g. 2xx).
     ///
     /// Note that the range is `100`-based, so for the range `2xx`, `2` must be provided.
-    #[tracing::instrument(skip_all, fields(operation_id = ?self.operation.operation_id))]
+    #[tracing::instrument(skip_all, fields(operation_id = self.operation.operation_id))]
     #[allow(clippy::missing_panics_doc)]
     pub fn response_range<const N: u16, R>(self) -> Self
     where
@@ -770,7 +770,7 @@ impl<'t> TransformOperation<'t> {
     ///
     /// This method additionally accepts a transform function
     /// to modify the generated documentation.
-    #[tracing::instrument(skip_all, fields(operation_id = ?self.operation.operation_id))]
+    #[tracing::instrument(skip_all, fields(operation_id = self.operation.operation_id))]
     #[allow(clippy::missing_panics_doc)]
     pub fn response_range_with<const N: u16, R, F>(self, transform: F) -> Self
     where
@@ -804,7 +804,7 @@ impl<'t> TransformOperation<'t> {
     }
 
     /// Add a callback to the operation.
-    #[tracing::instrument(skip_all, fields(operation_id = ?self.operation.operation_id))]
+    #[tracing::instrument(skip_all, fields(operation_id = self.operation.operation_id))]
     #[allow(clippy::missing_panics_doc)]
     pub fn callback(
         self,
@@ -859,13 +859,13 @@ impl<'t> TransformOperation<'t> {
     }
 
     /// Add a security requirement to the operation.
-    #[tracing::instrument(skip_all, fields(operation_id = ?self.operation.operation_id))]
+    #[tracing::instrument(skip_all, fields(operation_id = self.operation.operation_id))]
     pub fn security_requirement(self, security_scheme: &str) -> Self {
         self.security_requirement_multi([security_scheme])
     }
 
     /// Add multi security requirement to the operation.
-    #[tracing::instrument(skip_all, fields(operation_id = ?self.operation.operation_id))]
+    #[tracing::instrument(skip_all, fields(operation_id = self.operation.operation_id))]
     pub fn security_requirement_multi<'a, I>(self, security_schemes: I) -> Self
     where
         I: IntoIterator<Item = &'a str> + Clone,
@@ -894,7 +894,7 @@ impl<'t> TransformOperation<'t> {
     ///
     /// If the scheme requirement does not exist,
     /// it will be added.
-    #[tracing::instrument(skip_all, fields(operation_id = ?self.operation.operation_id))]
+    #[tracing::instrument(skip_all, fields(operation_id = self.operation.operation_id))]
     #[allow(clippy::missing_panics_doc)]
     pub fn security_requirement_scopes<I, S>(self, security_scheme: &str, scopes: I) -> Self
     where
@@ -907,7 +907,7 @@ impl<'t> TransformOperation<'t> {
     ///
     /// If the scheme requirement does not exist,
     /// it will be added.
-    #[tracing::instrument(skip_all, fields(operation_id = ?self.operation.operation_id))]
+    #[tracing::instrument(skip_all, fields(operation_id = self.operation.operation_id))]
     #[allow(clippy::missing_panics_doc)]
     pub fn security_requirement_multi_scopes<'a, I, IS, S>(
         self,
