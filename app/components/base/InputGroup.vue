@@ -44,7 +44,7 @@ const isInputFocused = ref(false);
 
 const fieldPlaceholder = computed(() => {
   if (props.placeholderPlacement === "floating") return undefined;
-  return props.placeholder + (props.required ? " *" : "");
+  return props.placeholder;
 });
 
 const fieldClass = computed(() => {
