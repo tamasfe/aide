@@ -547,7 +547,11 @@ where
             router
                 .paths
                 .into_iter()
-                .map(|(route, path_item)| (path.to_string() + &route, path_item)),
+                .map(|(route, path_item)| (path.to_string() + &route, path_item))
+                .map(|(route, path_item)| (match route.as_str() {
+                    "/" => route,
+                    _ => route.trim_end_matches('/').to_owned()
+                }, path_item)),
         );
 
         self
@@ -570,7 +574,11 @@ where
             router
                 .paths
                 .into_iter()
-                .map(|(route, path_item)| (path.to_string() + &route, path_item)),
+                .map(|(route, path_item)| (path.to_string() + &route, path_item))
+                .map(|(route, path_item)| (match route.as_str() {
+                    "/" => route,
+                    _ => route.trim_end_matches('/').to_owned()
+                }, path_item)),
         );
         self.router = self.router.nest_service(path, router.router);
         self
@@ -855,6 +863,12 @@ mod tests {
 
     async fn test_handler3() {}
 
+    fn nested_route() -> ApiRouter {
+        ApiRouter::new()
+            .api_route_with("/", routing::post(test_handler3), |t| t)
+            .api_route_with("/test1", routing::post(test_handler3), |t| t)
+    }
+
     #[derive(Clone, Copy)]
     struct TestState {
         field1: u8,
@@ -902,6 +916,20 @@ mod tests {
 
         assert!(item.get.is_some());
         assert!(item.post.is_some());
+    }
+
+    #[test]
+    fn test_nested_routing() {
+        let app: ApiRouter = ApiRouter::new()
+            .nest("/", nested_route())
+            .nest("/app", nested_route());
+
+        assert!(app.paths.contains_key("/"));
+        assert!(app.paths.contains_key("/app"));
+        assert!(!app.paths.contains_key("/app/"));
+        assert!(app.paths.contains_key("/test1"));
+        assert!(!app.paths.contains_key("/test1/"));
+        assert!(app.paths.contains_key("/app/test1"));
     }
 
     #[test]
