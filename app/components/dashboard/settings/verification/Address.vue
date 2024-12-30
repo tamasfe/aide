@@ -5,7 +5,7 @@
     <BaseButton
       variant="secondary"
       size="dashboard"
-      class="gap-2"
+      class="h-9 md:h-10 w-fit gap-2"
     >
       <BaseIcon
         name="lucide:upload"
