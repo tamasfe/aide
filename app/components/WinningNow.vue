@@ -7,6 +7,8 @@ import type { EmblaCarouselType } from "embla-carousel";
 // TRANSLATION STATUS:  ✴️
 //   * not done
 
+const { $dependencies, $wsConnection } = useNuxtApp();
+
 // NOTE: this component is using any for ref template of grid because generic types are not properly supported current version of Vue, so we have to use any type. when https://github.com/vuejs/language-tools/issues/3206 is fixed we SHOULD change this to respective type
 // eslint-disable-next-line
 const slider = ref<any>(null);
@@ -24,85 +26,59 @@ const slidesToScroll = {
   xl: 1,
 };
 
-const generateFakeData = (length: number) => {
-  return Array.from({ length }, () => ({
-    value: (Math.round(Math.random() * 100) % 8) + 1,
-    name: `${Math.random().toString(36).substring(10)}***`,
-    created: new Date(),
-    key: String(Math.round(Math.random() * 1000)),
-  }));
-};
-
-const BUFFER_SIZE = 20;
-const buffer = useState("winning-now-data", () => generateFakeData(1));
-
-const scrollNext = () => {
-  if (slider.value) {
-    const emblaApi = slider.value.emblaApi;
-    emblaApi?.scrollNext();
+type Win = {
+  key: string;
+  amount: number;
+  currency: string;
+  userNickname: string;
+  game: {
+    id: number;
+    imageUrl: string;
+    name: string;
   }
-};
-
-const getOldestDatapointIndex = (indexes: number[]) => {
-  let oldestIndex = 0;
-  for (const index of indexes) {
-    if (!buffer.value[index]) continue;
-    if (!buffer.value[oldestIndex]) continue;
-    if (buffer.value[index].created.getTime() < buffer.value[oldestIndex]!.created.getTime()) {
-      oldestIndex = index;
-    }
-  }
-  return oldestIndex;
-};
-
-const updateData = (emblaApi: EmblaCarouselType) => {
-  const [mockData] = generateFakeData(1);
-  const indexes = emblaApi.slidesNotInView();
-  if (indexes) {
-    const oldestIndex = getOldestDatapointIndex(indexes);
-    buffer.value[oldestIndex] = mockData!;
-  }
-};
-
-const appendData = () => {
-  const [mockData] = generateFakeData(1);
-  buffer.value.push(mockData!);
-};
-
-const mockWSMessages = (emblaApi: EmblaCarouselType) => {
-  setInterval(() => {
-    if (buffer.value.length > BUFFER_SIZE) {
-      updateData(emblaApi);
-    }
-    else {
-      appendData();
-    }
-    scrollNext();
-    // Inreased the interval so that it doesn't spam the console
-  }, 1000000000);
-};
+}
+const buffer = ref<Win[]>([])
+const loading = ref(true)
 
 onMounted(() => {
-  const emblaApi: EmblaCarouselType | undefined = slider.value?.emblaApi;
-  if (emblaApi) {
-    mockWSMessages(emblaApi);
+  if ($wsConnection) {
+    $dependencies.websockets.ui.wsChannelManagers.newestWins.subscribe($wsConnection, (message) => {
+      buffer.value.unshift(({
+        key: `${message.data.data.amount}-${message.data.data.currency}-${message.data.data.user_nickname}-${message.data.data.game.id}`,
+        amount: message.data.data.amount,
+        currency: message.data.data.currency,
+        userNickname: message.data.data.user_nickname,
+        game: {
+          id: message.data.data.game.id,
+          imageUrl: message.data.data.game.image_url,
+          name: message.data.data.game.name,
+        }
+      }))
+
+      loading.value = false
+    })
   }
 });
+
+onUnmounted(() => {
+  if ($wsConnection) {
+    $dependencies.websockets.ui.wsChannelManagers.newestWins.unsubscribe($wsConnection)
+  }
+})
 </script>
 
 <template>
   <div class="flex items-center justify-center">
     <h3 class="min-w-[6rem] sm:min-w-[8rem] text-center flex flex-col items-center justify-center">
       <div class="mb-2 leading-none text-5xl">🏆</div>
-      <div
-        class="whitespace-pre-wrap text-sm sm:text-base leading-tight bg-button-primary text-transparent bg-clip-text font-semibold"
-      >
+      <div class="whitespace-pre-wrap text-sm sm:text-base leading-tight bg-button-primary text-transparent bg-clip-text font-semibold">
         {{ $t('winning_now.title') }}
       </div>
     </h3>
     <BaseSlider
       ref="slider"
       class="w-full"
+      :loading="loading"
       :data="buffer"
       :slides="slides"
       :slides-to-scroll="slidesToScroll"
@@ -113,21 +89,16 @@ onMounted(() => {
       }"
     >
       <template #default="{ item }">
-        <BaseLink :to="{ name: 'todo' }">
+        <BaseLink :to="{ name: 'games-id', params: { id: item.game.id } }">
           <div class="group flex items-center space-x-3 bg-subtle p-2 rounded-lg outline-none">
             <div class="flex-shrink-0 rounded-[0.7rem] w-[4.8rem]">
-              <ImageRatio
-                :src="`/assets/images/games/${item.value}.png`"
-                alt=""
-                ratio="300/350"
-                class="group-hover:opacity-90 rounded-default"
-              />
+              <GamesImageLoader :src="item.game.imageUrl" class="rounded-default" />
             </div>
             <div class="font-medium leading-tight space-y-1">
-              <div>{{ item.name }}</div>
-              <div class="text-subtle text-sm">Golden rush inferno</div>
+              <div>{{ item.userNickname }}</div>
+              <div class="text-subtle text-sm">{{item.game.name}}</div>
               <div class="sm:text-lg font-semibold bg-button-primary text-transparent bg-clip-text">
-                R$ 32.14
+                <BaseCurrency :currency="item.currency" :value="item.amount" variant="ghost" />
               </div>
             </div>
           </div>

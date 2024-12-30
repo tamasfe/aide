@@ -55,14 +55,14 @@ export class WebsocketConnectionWebsocketTs implements WebsocketConnectionI {
   ) {
     const listenerWrapper = (_i: Websocket, event: MessageEvent<string>) => {
       try {
-        const data = JSON.parse(event.data) as WebsocketMessagesI[keyof WebsocketMessagesI];
+        const data = JSON.parse(event.data) as WebsocketMessagesI[T];
         if (data.data?.type === type) {
           listener(data);
         }
         return;
       } catch (error) {
         this.logger.error(
-          "Failed to handle websocket message",
+          "Failed to handle websocket message. This probably means the received message does not have the expected format and structure.",
           InfrastructureError.newFromUnknownError({ wsEvent: event }, error)
         );
       }
