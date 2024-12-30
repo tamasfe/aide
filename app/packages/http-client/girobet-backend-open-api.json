@@ -71,6 +71,78 @@
         }
       }
     },
+    "/ws/access-token": {
+      "post": {
+        "tags": [
+          "WebSocket"
+        ],
+        "summary": "Issue WebSocket Access Token",
+        "description": "This endpoint is used to generate authentication tokens (access tokens) for WebSocket connections in our system.\n\n## Access Token Generation\n\n1. Send a POST request to the access token issuer endpoint.\n2. The endpoint will return an access token.\n\n## Access Token Properties\n\n- Access tokens are short-lived tokens, valid for 60 seconds from the time of generation.\n- Each access token, once used, is tied to a specific websocket connection and is immediately invalidated.\n\n## Usage\n\n- Use the generated access token when establishing a WebSocket connection.\n- For detailed information on how to use the access token in a WebSocket connection, refer to the documentation found [here](#tag/websocket/GET/ws/connect).\n\n## Important Notes\n\n- Always generate a new access token before attempting to log in to the user event stream.\n- Ensure your client handles access token expiration and reconnection scenarios.",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccessTokenTokenResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ws/connect": {
+      "get": {
+        "tags": [
+          "WebSocket"
+        ],
+        "summary": "Establish WebSocket Connection",
+        "description": "This route is the entry point for WebSocket connections in our system.\n\n## Connection Process\n\n1. Connect to this endpoint using the WebSocket protocol.\n2. Once connected, send a login message with your access token:\n\n   ```json\n   {\n     \"type\": \"user_login\",\n     \"data\": \"<access-token>\"\n   }\n   ```\n\n## Example (JavaScript)\n\n```javascript\nconst socket = new WebSocket(\"wss://your-domain.com/ws/connect\");\n\n// After connection is established, send login message\nsocket.onopen = () => {\n  const loginMessage = {\n    type: \"user_login\",\n    data: \"your-access-token\"\n  };\n  socket.send(JSON.stringify(loginMessage));\n};\n```\n\n## Message Format\n\nAll WebSocket messages follow a JSON format. The message structure for client events matches the request body specifications in this OpenAPI documentation, while server events follow the HTTP response specifications.\n\n### Client Events (Sending)\nMessages sent from the client should follow this format:\n```json\n{\n  \"type\": \"event_name\",\n  \"data\": {}  // Data structure as specified in OpenAPI request bodies\n}\n```\n\n### Server Events (Receiving)\nMessages received from the server will follow this format:\n```json\n{\n  \"type\": \"event_name\",\n  \"data\": {}  // Data structure as specified in OpenAPI responses\n}\n```\n\n## Important Notes\n\n- Access tokens are valid for 60 seconds.\n- Ensure your client can handle reconnection if the access token expires.\n- The server will emit an error event if authentication fails.\n- After a successful login, you'll be subscribed to your respective channel.\n\nFor detailed information on access token generation and management, refer to the main WebSocket authentication documentation found [here](#tag/websocket/POST/ws/access-token).",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WebsocketClientEvent"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WebsocketServerEvent"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/auth/whoami": {
       "get": {
         "tags": [
@@ -1814,82 +1886,22 @@
           }
         }
       }
-    },
-    "/ws/lease": {
-      "post": {
-        "tags": [
-          "WebSocket"
-        ],
-        "summary": "Issue WebSocket Lease",
-        "description": "This endpoint is used to generate authentication tokens (leases) for WebSocket connections in our system.\n\n## Lease Generation\n\n1. Send a request to the lease issuer endpoint.\n2. Specify the channel for which you want a lease.\n3. The endpoint will return a lease token.\n\n## Lease Properties\n\n- Leases are short-lived tokens, valid for 60 seconds from the time of generation.\n- Each lease is tied to a specific channel.\n\n## Usage\n\n- Use the generated lease token when establishing a WebSocket connection.\n- For detailed information on how to use the lease token in a WebSocket connection, refer to the documentation found [here](#tag/websocket/GET/ws/connect).\n\n## Important Notes\n\n- Always generate a new lease before attempting to establish a WebSocket connection.\n- Ensure your client handles lease expiration and reconnection scenarios.\n\nFor any issues or questions, please contact our support team.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/WebsocketLeaseRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/LeaseTokenResponse"
-                }
-              }
-            }
-          },
-          "4XX": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ServerError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/ws/connect": {
-      "get": {
-        "tags": [
-          "WebSocket"
-        ],
-        "summary": "Establish WebSocket Connection",
-        "description": "This route is the entry point for WebSocket connections in our system.\n\n## Authentication\n\n- Authentication is required for all WebSocket connections.\n- Use a lease token obtained from the lease handler endpoint.\n\n## Connection Process\n\n1. Obtain a lease token from the lease handler endpoint.\n2. Connect to this endpoint using the WebSocket protocol.\n3. Set the `sec-websocket-protocol` header as follows:\n\n   ```text\n   Authorization,<lease-token>\n   ```\n\n## Example (JavaScript)\n\n```javascript\nconst leaseToken = \"your-lease-token\";\nconst socket = new WebSocket(\"wss://your-domain.com/ws/connect\", [\"Authorization\", leaseToken]);\n```\n\n## Important Notes\n\n- Lease tokens are valid for 60 seconds.\n- Ensure your client can handle reconnection if the lease expires.\n- The server may close the connection if authentication fails.\n\nFor detailed information on lease generation and management, refer to the main WebSocket authentication documentation found [here](#tag/websocket/POST/ws/lease).",
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RtcEventPayload"
-                }
-              }
-            }
-          },
-          "4XX": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ServerError"
-                }
-              }
-            }
-          }
-        }
-      }
     }
   },
   "components": {
     "schemas": {
+      "AccessTokenTokenResponse": {
+        "type": "object",
+        "required": [
+          "token"
+        ],
+        "properties": {
+          "token": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
       "AlternativeSite": {
         "type": "object",
         "required": [
@@ -2915,18 +2927,6 @@
           }
         }
       },
-      "LeaseTokenResponse": {
-        "type": "object",
-        "required": [
-          "token"
-        ],
-        "properties": {
-          "token": {
-            "type": "string",
-            "format": "uuid"
-          }
-        }
-      },
       "LicenseId": {
         "examples": [
           0
@@ -3152,6 +3152,7 @@
       "NotificationType": {
         "oneOf": [
           {
+            "description": "A new payment has been created or updated.",
             "type": "object",
             "required": [
               "data",
@@ -3182,6 +3183,7 @@
             }
           },
           {
+            "description": "The user has completed KYC.",
             "type": "object",
             "required": [
               "type"
@@ -3196,6 +3198,7 @@
             }
           },
           {
+            "description": "A custom event that should normally not be used by the system.",
             "type": "object",
             "required": [
               "data",
@@ -3212,16 +3215,75 @@
                 ]
               }
             }
+          },
+          {
+            "description": "A new payment has been created or updated.",
+            "type": "object",
+            "required": [
+              "data",
+              "type"
+            ],
+            "properties": {
+              "data": {
+                "type": "object",
+                "required": [
+                  "link",
+                  "message",
+                  "title"
+                ],
+                "properties": {
+                  "link": {
+                    "$ref": "#/components/schemas/Url"
+                  },
+                  "message": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  }
+                }
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "banner"
+                ]
+              }
+            }
           }
         ]
       },
       "NotificationTypeDiscriminants": {
         "description": "Auto-generated discriminant enum variants",
-        "type": "string",
-        "enum": [
-          "payment_status_update",
-          "kyc_completed",
-          "custom"
+        "oneOf": [
+          {
+            "description": "A new payment has been created or updated.",
+            "type": "string",
+            "enum": [
+              "payment_status_update"
+            ]
+          },
+          {
+            "description": "The user has completed KYC.",
+            "type": "string",
+            "enum": [
+              "kyc_completed"
+            ]
+          },
+          {
+            "description": "A custom event that should normally not be used by the system.",
+            "type": "string",
+            "enum": [
+              "custom"
+            ]
+          },
+          {
+            "description": "A new payment has been created or updated.",
+            "type": "string",
+            "enum": [
+              "banner"
+            ]
+          }
         ]
       },
       "PaginatorMetadata_for_ListGameActionsQuery": {
@@ -4116,6 +4178,58 @@
           "EVP"
         ]
       },
+      "ProtocolType": {
+        "oneOf": [
+          {
+            "description": "There was an error in the websocket connection, either due to an invalid request or an internal server error.",
+            "type": "object",
+            "required": [
+              "error"
+            ],
+            "properties": {
+              "error": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          },
+          {
+            "description": "The login was successful and the user is now receiving events.",
+            "type": "string",
+            "enum": [
+              "login_complete"
+            ]
+          },
+          {
+            "description": "The login failed due to an invalid token.",
+            "type": "string",
+            "enum": [
+              "login_failed"
+            ]
+          },
+          {
+            "description": "The logout was successful and the user is no longer receiving events.",
+            "type": "string",
+            "enum": [
+              "logout_complete"
+            ]
+          },
+          {
+            "description": "The user entered a channel and is now receiving events from it.",
+            "type": "string",
+            "enum": [
+              "channel_entered"
+            ]
+          },
+          {
+            "description": "The user left a channel and is no longer receiving events from it.",
+            "type": "string",
+            "enum": [
+              "channel_left"
+            ]
+          }
+        ]
+      },
       "RateGameRequest": {
         "type": "object",
         "properties": {
@@ -4137,46 +4251,6 @@
         "enum": [
           "read",
           "unread"
-        ]
-      },
-      "RtcEventPayload": {
-        "oneOf": [
-          {
-            "type": "object",
-            "required": [
-              "event",
-              "payload"
-            ],
-            "properties": {
-              "event": {
-                "type": "string",
-                "enum": [
-                  "notification"
-                ]
-              },
-              "payload": {
-                "$ref": "#/components/schemas/NotificationType"
-              }
-            }
-          },
-          {
-            "type": "object",
-            "required": [
-              "event",
-              "payload"
-            ],
-            "properties": {
-              "event": {
-                "type": "string",
-                "enum": [
-                  "ticker"
-                ]
-              },
-              "payload": {
-                "$ref": "#/components/schemas/TickerType"
-              }
-            }
-          }
         ]
       },
       "SearchGameProviderQuery": {
@@ -5869,24 +5943,256 @@
         "type": "integer",
         "format": "int64"
       },
-      "WebSocketChannel": {
-        "type": "string",
-        "enum": [
-          "user",
-          "newest_wins"
+      "WebsocketClientEvent": {
+        "oneOf": [
+          {
+            "description": "Login into the user's event stream. This session is bound to the websocket connection. The payload is the access token that needs to be acquired separately.",
+            "type": "object",
+            "required": [
+              "data",
+              "type"
+            ],
+            "properties": {
+              "data": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "user_login"
+                ]
+              }
+            }
+          },
+          {
+            "description": "Logout from the user's event stream. This will remove the session from the websocket connection.",
+            "type": "object",
+            "required": [
+              "type"
+            ],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "user_logout"
+                ]
+              }
+            }
+          },
+          {
+            "description": "Enter a channel to receive events from.",
+            "type": "object",
+            "required": [
+              "data",
+              "type"
+            ],
+            "properties": {
+              "data": {
+                "$ref": "#/components/schemas/WebsocketStreamChannel"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "channel_enter"
+                ]
+              }
+            }
+          },
+          {
+            "description": "Leave a channel to stop receiving events from.",
+            "type": "object",
+            "required": [
+              "data",
+              "type"
+            ],
+            "properties": {
+              "data": {
+                "$ref": "#/components/schemas/WebsocketStreamChannel"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "channel_leave"
+                ]
+              }
+            }
+          }
         ]
       },
-      "WebsocketLeaseRequest": {
-        "type": "object",
-        "required": [
-          "channel"
-        ],
-        "properties": {
-          "channel": {
-            "description": "The channel to subscribe to.",
-            "$ref": "#/components/schemas/WebSocketChannel"
+      "WebsocketServerEvent": {
+        "oneOf": [
+          {
+            "type": "object",
+            "required": [
+              "data",
+              "type"
+            ],
+            "properties": {
+              "data": {
+                "type": "object",
+                "oneOf": [
+                  {
+                    "description": "A new payment has been created or updated.",
+                    "type": "object",
+                    "required": [
+                      "data",
+                      "type"
+                    ],
+                    "properties": {
+                      "data": {
+                        "type": "object",
+                        "required": [
+                          "flow_id",
+                          "status"
+                        ],
+                        "properties": {
+                          "flow_id": {
+                            "$ref": "#/components/schemas/PaymentFlowId"
+                          },
+                          "status": {
+                            "$ref": "#/components/schemas/PaymentStatus"
+                          }
+                        }
+                      },
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "payment_status_update"
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "description": "The user has completed KYC.",
+                    "type": "object",
+                    "required": [
+                      "type"
+                    ],
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "kyc_completed"
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "description": "A custom event that should normally not be used by the system.",
+                    "type": "object",
+                    "required": [
+                      "data",
+                      "type"
+                    ],
+                    "properties": {
+                      "data": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "custom"
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "description": "A new payment has been created or updated.",
+                    "type": "object",
+                    "required": [
+                      "data",
+                      "type"
+                    ],
+                    "properties": {
+                      "data": {
+                        "type": "object",
+                        "required": [
+                          "link",
+                          "message",
+                          "title"
+                        ],
+                        "properties": {
+                          "link": {
+                            "$ref": "#/components/schemas/Url"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "title": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "banner"
+                        ]
+                      }
+                    }
+                  }
+                ],
+                "required": [
+                  "id"
+                ],
+                "properties": {
+                  "id": {
+                    "$ref": "#/components/schemas/NotificationId"
+                  }
+                }
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "notification"
+                ]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "required": [
+              "data",
+              "type"
+            ],
+            "properties": {
+              "data": {
+                "$ref": "#/components/schemas/TickerType"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "ticker"
+                ]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "required": [
+              "data",
+              "type"
+            ],
+            "properties": {
+              "data": {
+                "$ref": "#/components/schemas/ProtocolType"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "protocol"
+                ]
+              }
+            }
           }
-        }
+        ]
+      },
+      "WebsocketStreamChannel": {
+        "type": "string",
+        "enum": [
+          "newest_wins"
+        ]
       },
       "WhoamiResponse": {
         "type": "object",

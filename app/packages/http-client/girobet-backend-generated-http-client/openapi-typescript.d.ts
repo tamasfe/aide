@@ -133,6 +133,180 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/ws/access-token": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Issue WebSocket Access Token
+         * @description This endpoint is used to generate authentication tokens (access tokens) for WebSocket connections in our system.
+         *
+         *     ## Access Token Generation
+         *
+         *     1. Send a POST request to the access token issuer endpoint.
+         *     2. The endpoint will return an access token.
+         *
+         *     ## Access Token Properties
+         *
+         *     - Access tokens are short-lived tokens, valid for 60 seconds from the time of generation.
+         *     - Each access token, once used, is tied to a specific websocket connection and is immediately invalidated.
+         *
+         *     ## Usage
+         *
+         *     - Use the generated access token when establishing a WebSocket connection.
+         *     - For detailed information on how to use the access token in a WebSocket connection, refer to the documentation found [here](#tag/websocket/GET/ws/connect).
+         *
+         *     ## Important Notes
+         *
+         *     - Always generate a new access token before attempting to log in to the user event stream.
+         *     - Ensure your client handles access token expiration and reconnection scenarios.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AccessTokenTokenResponse"];
+                    };
+                };
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/ws/connect": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Establish WebSocket Connection
+         * @description This route is the entry point for WebSocket connections in our system.
+         *
+         *     ## Connection Process
+         *
+         *     1. Connect to this endpoint using the WebSocket protocol.
+         *     2. Once connected, send a login message with your access token:
+         *
+         *        ```json
+         *        {
+         *          "type": "user_login",
+         *          "data": "<access-token>"
+         *        }
+         *        ```
+         *
+         *     ## Example (JavaScript)
+         *
+         *     ```javascript
+         *     const socket = new WebSocket("wss://your-domain.com/ws/connect");
+         *
+         *     // After connection is established, send login message
+         *     socket.onopen = () => {
+         *       const loginMessage = {
+         *         type: "user_login",
+         *         data: "your-access-token"
+         *       };
+         *       socket.send(JSON.stringify(loginMessage));
+         *     };
+         *     ```
+         *
+         *     ## Message Format
+         *
+         *     All WebSocket messages follow a JSON format. The message structure for client events matches the request body specifications in this OpenAPI documentation, while server events follow the HTTP response specifications.
+         *
+         *     ### Client Events (Sending)
+         *     Messages sent from the client should follow this format:
+         *     ```json
+         *     {
+         *       "type": "event_name",
+         *       "data": {}  // Data structure as specified in OpenAPI request bodies
+         *     }
+         *     ```
+         *
+         *     ### Server Events (Receiving)
+         *     Messages received from the server will follow this format:
+         *     ```json
+         *     {
+         *       "type": "event_name",
+         *       "data": {}  // Data structure as specified in OpenAPI responses
+         *     }
+         *     ```
+         *
+         *     ## Important Notes
+         *
+         *     - Access tokens are valid for 60 seconds.
+         *     - Ensure your client can handle reconnection if the access token expires.
+         *     - The server will emit an error event if authentication fails.
+         *     - After a successful login, you'll be subscribed to your respective channel.
+         *
+         *     For detailed information on access token generation and management, refer to the main WebSocket authentication documentation found [here](#tag/websocket/POST/ws/access-token).
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["WebsocketClientEvent"];
+                };
+            };
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["WebsocketServerEvent"];
+                    };
+                };
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/auth/whoami": {
         parameters: {
             query?: never;
@@ -2130,159 +2304,14 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/ws/lease": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Issue WebSocket Lease
-         * @description This endpoint is used to generate authentication tokens (leases) for WebSocket connections in our system.
-         *
-         *     ## Lease Generation
-         *
-         *     1. Send a request to the lease issuer endpoint.
-         *     2. Specify the channel for which you want a lease.
-         *     3. The endpoint will return a lease token.
-         *
-         *     ## Lease Properties
-         *
-         *     - Leases are short-lived tokens, valid for 60 seconds from the time of generation.
-         *     - Each lease is tied to a specific channel.
-         *
-         *     ## Usage
-         *
-         *     - Use the generated lease token when establishing a WebSocket connection.
-         *     - For detailed information on how to use the lease token in a WebSocket connection, refer to the documentation found [here](#tag/websocket/GET/ws/connect).
-         *
-         *     ## Important Notes
-         *
-         *     - Always generate a new lease before attempting to establish a WebSocket connection.
-         *     - Ensure your client handles lease expiration and reconnection scenarios.
-         *
-         *     For any issues or questions, please contact our support team.
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["WebsocketLeaseRequest"];
-                };
-            };
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["LeaseTokenResponse"];
-                    };
-                };
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/ws/connect": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Establish WebSocket Connection
-         * @description This route is the entry point for WebSocket connections in our system.
-         *
-         *     ## Authentication
-         *
-         *     - Authentication is required for all WebSocket connections.
-         *     - Use a lease token obtained from the lease handler endpoint.
-         *
-         *     ## Connection Process
-         *
-         *     1. Obtain a lease token from the lease handler endpoint.
-         *     2. Connect to this endpoint using the WebSocket protocol.
-         *     3. Set the `sec-websocket-protocol` header as follows:
-         *
-         *        ```text
-         *        Authorization,<lease-token>
-         *        ```
-         *
-         *     ## Example (JavaScript)
-         *
-         *     ```javascript
-         *     const leaseToken = "your-lease-token";
-         *     const socket = new WebSocket("wss://your-domain.com/ws/connect", ["Authorization", leaseToken]);
-         *     ```
-         *
-         *     ## Important Notes
-         *
-         *     - Lease tokens are valid for 60 seconds.
-         *     - Ensure your client can handle reconnection if the lease expires.
-         *     - The server may close the connection if authentication fails.
-         *
-         *     For detailed information on lease generation and management, refer to the main WebSocket authentication documentation found [here](#tag/websocket/POST/ws/lease).
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["RtcEventPayload"];
-                    };
-                };
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        AccessTokenTokenResponse: {
+            /** Format: uuid */
+            token: string;
+        };
         AlternativeSite: {
             /** @description The base URL of the alternative site. This url should be used to redirect the user to the alternative site. The URL may include a path too, so this needs to be taken into account. */
             base_url: components["schemas"]["Url"];
@@ -2501,10 +2530,6 @@ export interface components {
             /** @description Whether the user has an active KYC and thus does not need to go through the KYC process again. */
             has_active_kyc: boolean;
         };
-        LeaseTokenResponse: {
-            /** Format: uuid */
-            token: string;
-        };
         /** Format: int64 */
         LicenseId: number;
         LicenseResponse: {
@@ -2588,12 +2613,17 @@ export interface components {
             data: string;
             /** @enum {string} */
             type: "custom";
+        } | {
+            data: {
+                link: components["schemas"]["Url"];
+                message: string;
+                title: string;
+            };
+            /** @enum {string} */
+            type: "banner";
         };
-        /**
-         * @description Auto-generated discriminant enum variants
-         * @enum {string}
-         */
-        NotificationTypeDiscriminants: "payment_status_update" | "kyc_completed" | "custom";
+        /** @description Auto-generated discriminant enum variants */
+        NotificationTypeDiscriminants: "payment_status_update" | "kyc_completed" | "custom" | "banner";
         PaginatorMetadata_for_ListGameActionsQuery: {
             filters?: components["schemas"]["ListGameActionsQuery"] | null;
             pagination: components["schemas"]["PaginatorPosition"];
@@ -2831,21 +2861,15 @@ export interface components {
          * @enum {string}
          */
         PixKeyTypeDiscriminants: "CPF" | "EMAIL" | "PHONE" | "EVP";
+        ProtocolType: {
+            error: string;
+        } | "login_complete" | "login_failed" | "logout_complete" | "channel_entered" | "channel_left";
         RateGameRequest: {
             /** @description The rating to set for the game. If `null` the rating for the current user is removed. */
             rating?: components["schemas"]["GameRating"] | null;
         };
         /** @enum {string} */
         ReadStatus: "read" | "unread";
-        RtcEventPayload: {
-            /** @enum {string} */
-            event: "notification";
-            payload: components["schemas"]["NotificationType"];
-        } | {
-            /** @enum {string} */
-            event: "ticker";
-            payload: components["schemas"]["TickerType"];
-        };
         SearchGameProviderQuery: {
             /** @description An organic search query to find game providers by. Searched fields include but are not limited to: name, description, slug... */
             query?: string | null;
@@ -3254,12 +3278,62 @@ export interface components {
         };
         /** Format: int64 */
         WalletId: number;
-        /** @enum {string} */
-        WebSocketChannel: "user" | "newest_wins";
-        WebsocketLeaseRequest: {
-            /** @description The channel to subscribe to. */
-            channel: components["schemas"]["WebSocketChannel"];
+        WebsocketClientEvent: {
+            /** Format: uuid */
+            data: string;
+            /** @enum {string} */
+            type: "user_login";
+        } | {
+            /** @enum {string} */
+            type: "user_logout";
+        } | {
+            data: components["schemas"]["WebsocketStreamChannel"];
+            /** @enum {string} */
+            type: "channel_enter";
+        } | {
+            data: components["schemas"]["WebsocketStreamChannel"];
+            /** @enum {string} */
+            type: "channel_leave";
         };
+        WebsocketServerEvent: {
+            data: {
+                id: components["schemas"]["NotificationId"];
+            } & ({
+                data: {
+                    flow_id: components["schemas"]["PaymentFlowId"];
+                    status: components["schemas"]["PaymentStatus"];
+                };
+                /** @enum {string} */
+                type: "payment_status_update";
+            } | {
+                /** @enum {string} */
+                type: "kyc_completed";
+            } | {
+                data: string;
+                /** @enum {string} */
+                type: "custom";
+            } | {
+                data: {
+                    link: components["schemas"]["Url"];
+                    message: string;
+                    title: string;
+                };
+                /** @enum {string} */
+                type: "banner";
+            });
+            /** @enum {string} */
+            type: "notification";
+        } | {
+            data: components["schemas"]["TickerType"];
+            /** @enum {string} */
+            type: "ticker";
+        } | {
+            data: components["schemas"]["ProtocolType"];
+            /** @enum {string} */
+            type: "protocol";
+        };
+        /** @enum {string} */
+        WebsocketStreamChannel: "newest_wins";
         WhoamiResponse: {
             /** @description The email address of the currently authenticated user. */
             email: string;

@@ -92,9 +92,6 @@ export interface AsyncMessagesTypes {
     flowId: number;
   };
 
-  "girobet:events:websockets:connection-errored": {
-    channel: "user" | "newest_wins";
-  };
 
   /**
    * Events coming from the Backend

@@ -2,8 +2,8 @@ import type { PaymentStatus } from "~/modules/wallet/domain/Payment";
 
 export interface WebsocketMessagesI {
   payment_status_update: {
-    event: "notification";
-    payload: {
+    type: "notification";
+    data: {
       data: {
         flow_id: number;
         status: PaymentStatus;

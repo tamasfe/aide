@@ -1,58 +1,63 @@
-import { WebsocketEvent } from "websocket-ts";
-import { InfrastructureError } from "~/packages/result/infrastructure-error";
-import type { WebsocketMessagesI } from "~/packages/websocket/domain/websocket-messages";
+import type { WebsocketConnectionI } from "~/packages/websocket/domain/websocket-connection";
+
+type WebsocketDepenencies = {
+  wsConnection: null | WebsocketConnectionI
+}
 
 export default defineNuxtPlugin({
   name: "package-websocket",
-  dependsOn: ["dependency-injection"],
+  dependsOn: ["module-users-initiator"],
   parallel: true,
   async setup() {
     const { $dependencies } = useNuxtApp();
+    const userStore = useUserStore();
 
-    const reconnectAndSubscribe = async (channel: "user" | "newest_wins") => {
-      const websocket = await $dependencies.websockets.ui.attemptOpeningWebsocket.handle(channel);
-      if (websocket === null) {
-        return;
-      }
-
-      switch (channel) {
-        case "user":
-          websocket.addEventListener(WebsocketEvent.message, (_i, event: MessageEvent<string>) => {
-            try {
-              const data = JSON.parse(event.data) as WebsocketMessagesI[keyof WebsocketMessagesI];
-              switch (data.payload.type) {
-                case "payment_status_update":
-                  $dependencies.common.asyncMessagePublisher.emit("girobet-backend:events:payments:payment-status-updated", {
-                    flowId: data.payload.data.flow_id,
-                    status: data.payload.data.status,
-                  });
-                  break;
-              }
-            }
-            catch (error) {
-              $dependencies.common.logger.error("Failed to handle websocket message", InfrastructureError.newFromUnknownError({ wsEvent: event }, error));
-            }
-          });
-          break;
+    const isServer = import.meta.server;
+    if (isServer) {
+      const dependencies: WebsocketDepenencies = { wsConnection: null }
+      return {
+        provide: dependencies
       }
     };
 
-    await reconnectAndSubscribe("user");
+    const wsConnectionResult = await $dependencies.websockets.ui.createWebsocketConnection.handle();
+    if (wsConnectionResult.isFailure) {
+      $dependencies.common.logger.error("Failed to create websocket connection", wsConnectionResult.error);
+      const dependencies: WebsocketDepenencies = { wsConnection: null }
+      return {
+        provide: dependencies
+      }
+    }
 
-    $dependencies.common.asyncMessagePublisher.subscribe(
-      "girobet:events:websockets:connection-errored",
-      async ({ channel }) => {
-        // A delay is set to avoid spamming reconnections
-        const THROTTLE_PERIOD_MS = 1500;
-        setTimeout(() => reconnectAndSubscribe(channel), THROTTLE_PERIOD_MS);
-      },
-    );
+    if (userStore.user) {
+      await $dependencies.websockets.ui.wsChannelManagers.user.subscribe(wsConnectionResult.value);
+    }
 
     $dependencies.common.asyncMessagePublisher.subscribe(
       "girobet:events:users:user-logged-in",
-      () => reconnectAndSubscribe("user"),
+      () => $dependencies.websockets.ui.wsChannelManagers.user.subscribe(wsConnectionResult.value)
+    );
+    $dependencies.common.asyncMessagePublisher.subscribe(
+      "girobet:events:signup-flows:signup-flow-submitted",
+      () => $dependencies.websockets.ui.wsChannelManagers.user.subscribe(wsConnectionResult.value)
     );
 
-    return {};
+    $dependencies.common.asyncMessagePublisher.subscribe(
+      "girobet:events:users:user-logged-out",
+      () => $dependencies.websockets.ui.wsChannelManagers.user.unsubscribe(wsConnectionResult.value)
+    );
+    $dependencies.common.asyncMessagePublisher.subscribe(
+      "girobet:events:users:user-closed-account",
+      () => $dependencies.websockets.ui.wsChannelManagers.user.unsubscribe(wsConnectionResult.value)
+    );
+
+    const dependencies: WebsocketDepenencies = {
+      wsConnection: wsConnectionResult.value,
+    }
+
+    return {
+      provide: dependencies
+    }
+
   },
 });
