@@ -92,6 +92,9 @@ export interface AsyncMessagesTypes {
     flowId: number;
   };
 
+  "girobet:events:websockets:connection-state-changed": {
+    state: "connected" | "disconnected";
+  };
 
   /**
    * Events coming from the Backend

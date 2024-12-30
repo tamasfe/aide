@@ -5,7 +5,7 @@ type WebsocketDepenencies = {
 }
 
 export default defineNuxtPlugin({
-  name: "package-websocket",
+  name: "package-websocket-init",
   dependsOn: ["module-users-initiator"],
   parallel: true,
   async setup() {
@@ -29,9 +29,13 @@ export default defineNuxtPlugin({
       }
     }
 
-    if (userStore.user) {
-      await $dependencies.websockets.ui.wsChannelManagers.user.subscribe(wsConnectionResult.value);
-    }
+    $dependencies.common.asyncMessagePublisher.subscribe("girobet:events:websockets:connection-state-changed", async ({state}) => {
+      if (state !== "connected") return
+
+      if (userStore.user) {
+        await $dependencies.websockets.ui.wsChannelManagers.user.subscribe(wsConnectionResult.value);
+      }
+    })
 
     $dependencies.common.asyncMessagePublisher.subscribe(
       "girobet:events:users:user-logged-in",
@@ -52,7 +56,7 @@ export default defineNuxtPlugin({
     );
 
     const dependencies: WebsocketDepenencies = {
-      wsConnection: wsConnectionResult.value,
+      wsConnection: wsConnectionResult.value
     }
 
     return {

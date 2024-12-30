@@ -3,16 +3,18 @@ import { InfrastructureError } from "~/packages/result/infrastructure-error";
 import type { WebsocketChannel } from "../domain/websocket-channel";
 import type { WebsocketConnectionI } from "../domain/websocket-connection";
 import type { WebsocketMessagesI } from "../domain/websocket-messages";
-import { WebsocketBuilder, WebsocketEvent } from "websocket-ts";
+import { ExponentialBackoff, WebsocketBuilder, WebsocketEvent } from "websocket-ts";
 import type { LoggerI } from "~/packages/logger/Logger";
 import type { Websocket } from "websocket-ts";
+import type { AsyncMessagePublisherI } from "~/packages/async-messages/async-message-publisher";
 
 export class WebsocketConnectionWebsocketTs implements WebsocketConnectionI {
   public static create(
+    websocketConnectUrl: string,
     logger: LoggerI,
-    websocketConnectUrl: string
+    asyncMessagePublisher: AsyncMessagePublisherI
   ): WebsocketConnectionWebsocketTs {
-    return new WebsocketConnectionWebsocketTs(logger, websocketConnectUrl);
+    return new WebsocketConnectionWebsocketTs(websocketConnectUrl, logger, asyncMessagePublisher);
   }
 
   public async enterChannel(
@@ -92,23 +94,30 @@ export class WebsocketConnectionWebsocketTs implements WebsocketConnectionI {
     return success();
   }
 
-  private constructor(private logger: LoggerI, websocketConnectUrl: string) {
+  private constructor(websocketConnectUrl: string, private logger: LoggerI, private asyncMessagePublisher: AsyncMessagePublisherI) {
     this.ws = new WebsocketBuilder(websocketConnectUrl)
-      .onOpen((websocket, event) =>
+      .onOpen((websocket, event) => {
+        if (this.connectionState !== 'connected') {
+          this.asyncMessagePublisher.emit("girobet:events:websockets:connection-state-changed", { state: "connected" });
+        }
         this.logger.debug("WS connection opened", { websocket, event })
-      )
-      .onClose((websocket, event) =>
+      })
+      .onClose((websocket, event) => {
+        if (this.connectionState !== 'disconnected') {
+          this.asyncMessagePublisher.emit("girobet:events:websockets:connection-state-changed", { state: "disconnected" });
+        }
         this.logger.debug("WS connection closed", { websocket, event })
-      )
+      })
+      .onReconnect((websocket, message) => {
+        this.logger.debug("WS connection reconnected", { websocket, message })
+      })
       .onError((websocket, event) =>
-        this.logger.warn("WS connection closed because of error", {
-          websocket,
-          event,
-        })
+        this.logger.warn("WS connection closed because of error", { websocket, event })
       )
       .onMessage((websocket, message) =>
         this.logger.debug("WS message received", { websocket, message })
       )
+      .withBackoff(new ExponentialBackoff(500, 8)) // 0.5s, 1s, 2s, 4s, 8s, 16s, 32s, 64s, 128s
       .build();
   }
   private ws: Websocket;
@@ -116,4 +125,5 @@ export class WebsocketConnectionWebsocketTs implements WebsocketConnectionI {
     number,
     (_i: Websocket, event: MessageEvent<string>) => void
   > = new Map();
+  private connectionState: 'connected' | "disconnected" = "disconnected";
 }
