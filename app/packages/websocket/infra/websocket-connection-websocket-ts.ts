@@ -44,7 +44,7 @@ export class WebsocketConnectionWebsocketTs implements WebsocketConnectionI {
 
       case "newest_wins":
         this.ws.send(JSON.stringify({data: "newest_wins", type: "channel_leave"}));
-        this.logger.debug("Entered WS channel", { channel });
+        this.logger.debug("Left WS channel", { channel });
         return success();
     }
   }

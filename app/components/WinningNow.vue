@@ -1,13 +1,11 @@
 <script setup lang="ts">
-import type { EmblaCarouselType } from "embla-carousel";
-
 // DESIGN STATUS:       ✅
 // ARCHITECTURE STATUS: ✴️
 //   * not done
 // TRANSLATION STATUS:  ✴️
 //   * not done
 
-const { $dependencies, $wsConnection } = useNuxtApp();
+const { $dependencies} = useNuxtApp();
 
 // NOTE: this component is using any for ref template of grid because generic types are not properly supported current version of Vue, so we have to use any type. when https://github.com/vuejs/language-tools/issues/3206 is fixed we SHOULD change this to respective type
 // eslint-disable-next-line
@@ -40,31 +38,25 @@ type Win = {
 const buffer = ref<Win[]>([])
 const loading = ref(true)
 
-onMounted(() => {
-  if ($wsConnection) {
-    $dependencies.websockets.ui.wsChannelManagers.newestWins.subscribe($wsConnection, (message) => {
-      buffer.value.unshift(({
-        key: `${message.data.data.amount}-${message.data.data.currency}-${message.data.data.user_nickname}-${message.data.data.game.id}`,
-        amount: message.data.data.amount,
-        currency: message.data.data.currency,
-        userNickname: message.data.data.user_nickname,
-        game: {
-          id: message.data.data.game.id,
-          imageUrl: message.data.data.game.image_url,
-          name: message.data.data.game.name,
-        }
-      }))
+useCreateSubscriptionToWebsocket(
+ (wsConnection) => $dependencies.websockets.ui.wsChannelManagers.newestWins.subscribe(wsConnection, (message) => {
+    buffer.value.unshift(({
+      key: `${message.data.data.amount}-${message.data.data.currency}-${message.data.data.user_nickname}-${message.data.data.game.id}`,
+      amount: message.data.data.amount,
+      currency: message.data.data.currency,
+      userNickname: message.data.data.user_nickname,
+      game: {
+        id: message.data.data.game.id,
+        imageUrl: message.data.data.game.image_url,
+        name: message.data.data.game.name,
+      }
+    }))
 
-      loading.value = false
-    })
-  }
-});
+    loading.value = false
+  }),
+  (wsConnection) => $dependencies.websockets.ui.wsChannelManagers.newestWins.unsubscribe(wsConnection)
+)
 
-onUnmounted(() => {
-  if ($wsConnection) {
-    $dependencies.websockets.ui.wsChannelManagers.newestWins.unsubscribe($wsConnection)
-  }
-})
 </script>
 
 <template>
