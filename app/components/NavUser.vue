@@ -73,11 +73,10 @@ const links = [
       >
         <BaseIcon
           name="material-symbols:account-circle"
-          :size="28"
+          :size="26"
           class="align-middle"
         />
       </PopoverButton>
-
       <transition
         enter-active-class="transition duration-200 ease-out"
         enter-from-class="translate-y-1 opacity-0"
@@ -87,7 +86,9 @@ const links = [
         leave-to-class="translate-y-1 opacity-0"
       >
         <PopoverPanel class="absolute right-0 z-10 mt-4">
-          <div class="flex flex-col py-2 bg-emphasis/85 backdrop-blur-xl rounded-default">
+          <div
+            class="flex flex-col py-2 bg-emphasis/85 backdrop-blur-2xl rounded-default"
+          >
             <div
               v-for="item in links"
               :key="item.key"
@@ -95,7 +96,7 @@ const links = [
               <BaseLink
                 v-if="item.action.toPage"
                 :to="item.action.toPage"
-                class="border-emphasis px-6 h-10 min-w-[14rem] flex items-center text-emphasis hover:text-white whitespace-nowrap"
+                class="border-emphasis px-5 h-10 min-w-[14rem] flex items-center text-emphasis hover:text-white whitespace-nowrap"
                 @click="close"
               >
                 <BaseIcon
@@ -103,11 +104,9 @@ const links = [
                   :size="22"
                   class="flex-shrink-0 text-subtle"
                 />
-                <span class="block w-full ml-4 text-[0.85rem]">
-                  {{ item.title }}
+                <span class="block w-full ml-4 text-[0.85rem]"> {{ item.title }}
                 </span>
               </BaseLink>
-
               <BaseButton
                 v-if="item.action.buttonOnClick"
                 variant="ghost"
@@ -120,9 +119,7 @@ const links = [
                   :size="22"
                   class="flex-shrink-0 text-subtle"
                 />
-                <span class="block ml-4 text-[0.85rem]">
-                  {{ item.title }}
-                </span>
+                <span class="block ml-4 text-[0.85rem]"> {{ item.title }} </span>
               </BaseButton>
             </div>
           </div>

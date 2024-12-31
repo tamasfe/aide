@@ -25,7 +25,9 @@ defineProps({
 
 <template>
   <div class="flex flex-col items-center">
-    <div class="flex flex-col gap-4 w-full max-w-[30rem] bg-subtle rounded-default p-4">
+    <div
+      class="flex flex-col gap-4 w-full max-w-[30rem] bg-subtle rounded-default p-4"
+    >
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-2">
           <BaseFlag
@@ -34,7 +36,6 @@ defineProps({
           />
           <div class="text-subtle">{{ currency }}</div>
         </div>
-
         <div class="text-subtle text-sm">#{{ walletId }}</div>
       </div>
       <div class="flex items-center justify-center text-3xl font-medium">
@@ -43,7 +44,7 @@ defineProps({
           :value="balance"
         />
       </div>
-      <div class="flex flex-row gap-3">
+      <div class="flex flex-row gap-4">
         <BaseButton
           variant="secondary"
           size="md"
@@ -52,7 +53,6 @@ defineProps({
         >
           {{ $t('button.withdraw') }}
         </BaseButton>
-
         <BaseButton
           variant="emphasis"
           size="md"

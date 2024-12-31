@@ -36,7 +36,7 @@ const srcBackground = computed(() => {
         class="absolute top-0 left-0 z-[1] w-full h-full object-cover"
         alt=""
       />
-      <div class="absolute z-[2] top-0 left-0 w-full h-full bg-default/80 backdrop-blur" />
+      <div class="absolute z-[2] top-0 left-0 w-full h-full bg-default/85 backdrop-blur-2xl" />
       <div class="h-full relative z-[3] flex items-center justify-center">
         <slot />
       </div>

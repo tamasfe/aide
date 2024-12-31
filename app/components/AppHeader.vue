@@ -26,7 +26,7 @@ const emit = defineEmits([
           >
             <BaseIcon
               name="lucide:menu"
-              :size="30"
+              :size="26"
               class="text-subtle"
             />
           </BaseButton>
@@ -51,31 +51,31 @@ const emit = defineEmits([
             <BaseButton
               id="app-header-login-button"
               variant="secondary"
-              class="h-9 md:h-10"
+              class="self-stretch"
               @click="$dependencies.users.ui.emitCommandOpenUserActionModal.handle('login')"
             >
               {{ $t("button.login") }}
             </BaseButton>
             <BaseButton
               variant="primary"
-              class="h-9 md:h-10"
+              class="self-stretch"
               @click="$dependencies.users.ui.emitCommandOpenUserActionModal.handle('register')"
             >
               {{ $t("button.register") }}
             </BaseButton>
           </template>
           <template v-else>
-            <NavWalletBalance class="h-9 md:h-10 space-x-1" />
+            <NavWalletBalance class="space-x-1 self-stretch" />
 
             <BaseButton
               variant="emphasis"
-              class="h-9 md:h-10"
+              class="self-stretch"
               @click="$dependencies.users.ui.emitCommandOpenUserActionModal.handle('deposit')"
             >
               {{ $t("button.deposit") }}
             </BaseButton>
 
-            <NavUser />
+            <NavUser class="-mr-3" />
           </template>
         </div>
       </div>

@@ -16,8 +16,7 @@ export class KycApiRepositoryGirobet implements KycApiRepositoryI {
       const { data, error, response } = await this.apiClient.GET("/kyc/status", {});
 
       if (data) {
-        return success("INACTIVE");
-        // return success(data.has_active_kyc ? "ACTIVE" : "INACTIVE");
+        return success(data.has_active_kyc ? "ACTIVE" : "INACTIVE");
       }
 
       if (error) {

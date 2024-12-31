@@ -223,7 +223,7 @@
     "copyright": "© {year} GiroBet. All Rights Reserved.",
     "play_responsibly": "Play Responsibly",
     "responsible_gaming": "Responsible Gaming",
-    "user_account_language": "Your account language is set to {language}.",
+    "user_account_language": "Seu idioma está definido como {language}.",
     "user_account_language_unknown": "Your account language is different to the current language.",
     "change_language": "Mudar para {language}"
   },

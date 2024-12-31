@@ -19,7 +19,7 @@ import { type VariantProps, cva } from "class-variance-authority";
 
 const dialogVariants = cva(
   [
-    "fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[10] overflow-y-scroll no-scrollbar",
+    "fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[10] overflow-y-scroll no-scrollbar outline outline-emphasis/50",
   ],
   {
     variants: {

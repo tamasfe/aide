@@ -20,9 +20,7 @@ const onClose = () => {
 </script>
 
 <template>
-  <Popover
-    class="relative"
-  >
+  <Popover class="relative">
     <SearchBar
       v-model="query"
       :open="open"
@@ -31,7 +29,6 @@ const onClose = () => {
       @focus="onOpen"
       @close="onClose"
     />
-
     <BaseOverlay
       v-if="open"
       class="z-[7]"
@@ -51,7 +48,7 @@ const onClose = () => {
         static
       >
         <div
-          class="rounded-default bg-emphasis/85 backdrop-blur text-default px-5 py-4 outline-none"
+          class="rounded-default bg-emphasis/85 backdrop-blur-2xl text-default px-5 py-4 outline-none"
           role="dialog"
           aria-modal="true"
         >

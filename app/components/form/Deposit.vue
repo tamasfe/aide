@@ -121,7 +121,7 @@ const onSubmit = handleSubmit(async (formData) => {
       </template>
     </BaseInputGroup>
 
-    <div class="flex flex-row gap-2">
+    <div class="flex flex-row gap-2 mb-4">
       <BaseButton
         v-for="(presetAmount, index) in presetAmounts"
         :key="index"
@@ -135,7 +135,7 @@ const onSubmit = handleSubmit(async (formData) => {
     </div>
 
     <BaseButton
-      class="mt-4 mb-2 w-full"
+      class="w-full"
       :disabled="!meta.valid"
       :loading="loading"
       size="xl"

@@ -19,7 +19,7 @@ defineEmits<{
     size="ghost"
     :disabled="disabled"
     :class="cn(
-      'absolute top-2 right-2 p-3 text-subtle hover:text-emphasis z-[10]',
+      'absolute top-0 right-0 p-6 -m-2 text-subtle hover:text-emphasis z-[10] rounded-full',
       props.class,
     )"
     @click="$emit('close')"
@@ -27,7 +27,7 @@ defineEmits<{
     <span class="sr-only">{{ $t('i18n.close') }}</span>
     <BaseIcon
       name="lucide:x"
-      :size="24"
+      :size="22"
     />
   </BaseButton>
 </template>

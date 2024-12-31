@@ -4,6 +4,5 @@
     section="settings"
   >
     <DashboardSettingsVerificationIdentity />
-    <DashboardSettingsVerificationAddress />
   </NuxtLayout>
 </template>
