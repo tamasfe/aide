@@ -6,7 +6,22 @@ import { type VariantProps, cva } from "class-variance-authority";
 // ARCHITECTURE STATUS: ✅
 // TRANSLATION STATUS:  ✅
 
-const open = ref(true);
+const { $dependencies } = useNuxtApp();
+
+const ENABLE_SERVER_SIDE_RENDERING = false;
+const DEFER_CLIENT_SIDE_LOADING = true;
+const { data: notificationBanners } = await useAsyncData("promo-bar",
+  () => $dependencies.notifications.ui.searchNotificationBannersFromPromoBar.handle(),
+  { lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING },
+);
+
+const onClickCloseNotification = (notificationId: number) => {
+  if (!notificationBanners.value) return;
+
+  // We do not await to increase snapiness. We suppose the request will be successful. Worst case scenario, the notification will reappear on the next page load and the error will be notified to us.
+  $dependencies.notifications.ui.markNotificationBannerAsReadFromPromoBar.handle(notificationId);
+  notificationBanners.value = notificationBanners.value.filter(banner => banner.id !== notificationId);
+};
 
 const promoBarVariants = cva(
   "min-h-10 lg:min-h-12 relative w-full flex flex-row items-center justify-center",
@@ -34,27 +49,32 @@ const props = withDefaults(defineProps<{
 
 <template>
   <Transition name="slide">
-    <div
-      v-if="open"
-      :class="cn(
-        promoBarVariants({ variant }),
-        props.class,
-      )"
-    >
-      <div class="px-3 py-2 mr-10 text-[0.8rem] md:text-[0.9rem] font-medium leading-tight text-left">
-        {{ $t("promo_bar.refer") }}
-      </div>
-      <BaseButton
-        variant="ghost"
-        size="ghost"
-        class="p-2 absolute right-1"
-        @click="open = false"
+    <div v-if="notificationBanners?.length">
+      <BaseLink
+        v-for="(banner, index) in notificationBanners"
+        v-show="index === 0"
+        :key="banner.id"
+        :to="banner.data.link || ''"
+        :class="cn(
+          promoBarVariants({ variant }),
+          props.class,
+        )"
       >
-        <BaseIcon
-          name="lucide:x"
-          :size="20"
-        />
-      </BaseButton>
+        <div class="px-3 py-2 mr-10 text-[0.8rem] md:text-[0.9rem] font-medium leading-tight text-left">
+          {{ banner.data.message }}
+        </div>
+        <BaseButton
+          variant="ghost"
+          size="ghost"
+          class="p-2 absolute right-1"
+          @click="onClickCloseNotification(banner.id)"
+        >
+          <BaseIcon
+            name="lucide:x"
+            :size="20"
+          />
+        </BaseButton>
+      </BaseLink>
     </div>
   </Transition>
 </template>
