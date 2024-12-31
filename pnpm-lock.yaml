@@ -29,9 +29,6 @@ importers:
       '@opentelemetry/sdk-trace-node':
         specifier: ^1.30.0
         version: 1.30.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/semantic-conventions':
-        specifier: ^1.28.0
-        version: 1.28.0
       '@pinia/nuxt':
         specifier: ^0.9.0
         version: 0.9.0(magicast@0.3.5)(pinia@2.3.0(typescript@5.6.3)(vue@3.5.13(typescript@5.6.3)))(rollup@4.29.1)

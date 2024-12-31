@@ -59,8 +59,9 @@ type ComboboxVariants = VariantProps<typeof comboboxVariants>;
   <Combobox
     v-slot="{ open }"
     v-model="selectedOption"
+    v-model:query="query"
     as="div"
-    @update:model-value="query = ''"
+    :options="options"
   >
     <div class="relative mt-2">
       <div class="flex items-center justify-between">

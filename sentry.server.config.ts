@@ -1,4 +1,3 @@
-import { ATTR_SERVICE_NAME } from "@opentelemetry/semantic-conventions";
 import { NodeTracerProvider } from "@opentelemetry/sdk-trace-node";
 import { SimpleSpanProcessor, ConsoleSpanExporter, BatchSpanProcessor, type SpanProcessor } from "@opentelemetry/sdk-trace-base";
 import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-grpc";
@@ -62,7 +61,7 @@ const provider = new NodeTracerProvider({
   sampler: sentryClient ? new SentrySampler(sentryClient) : undefined,
   spanProcessors,
   resource: new Resource({
-    [ATTR_SERVICE_NAME]: "girobet-frontend",
+    "service.name": "girobet-frontend",
   }),
 });
 
