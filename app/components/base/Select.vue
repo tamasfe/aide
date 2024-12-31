@@ -130,7 +130,8 @@ const onUpdateModelValue = (event: T) => {
       </ListboxButton>
 
       <Transition
-        leave-active-class="transition duration-100 ease-in"
+        :duration="50"
+        leave-active-class="transition ease-in"
         leave-from-class="opacity-100"
         leave-to-class="opacity-0"
       >

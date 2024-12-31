@@ -17,7 +17,7 @@ const emit = defineEmits([
 
     <div class="w-full bg-subtle">
       <div class="giro__container flex items-center justify-between py-[0.525rem] sm:py-2">
-        <div class="flex items-center gap-x-8">
+        <div class="flex items-center gap-x-4">
           <BaseButton
             variant="ghost"
             size="ghost"

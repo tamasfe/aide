@@ -19,12 +19,12 @@ const onClickUpload = (responseData: Exclude<FindUserKycStatusResponseI["data"],
       <div v-if="!kycResponse" class="py-6 w-full flex items-center justify-center">
         <BaseSpinner />
       </div>
-      <div class="space-y-8" v-if="kycResponse?.status === 'ACTIVE'">
+      <div v-if="kycResponse?.status === 'ACTIVE'" class="space-y-8">
         <p>
           {{ $t('dashboard.settings.verification.kyc_active') }}
         </p>
       </div>
-      <div class="space-y-8" v-if="kycResponse?.status === 'INACTIVE'">
+      <div v-if="kycResponse?.status === 'INACTIVE'" class="space-y-8">
         <p>
           {{ $t('dashboard.settings.verification.kyc_missing') }}
         </p>

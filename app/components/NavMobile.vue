@@ -32,10 +32,10 @@ const items = [
       >
         <BaseIcon
           :name="item.icon"
-          class="text-subtle"
-          :size="24"
+          class="text-subtle mb-1"
+          :size="22"
         />
-        <div class="text-[0.8rem] text-subtle-light font-semibold">{{ $t(item.text) }}</div>
+        <div class="text-subtle text-xs">{{ $t(item.text) }}</div>
       </BaseButton>
     </div>
   </div>

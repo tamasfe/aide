@@ -78,10 +78,11 @@ const links = [
         />
       </PopoverButton>
       <transition
-        enter-active-class="transition duration-200 ease-out"
+        :duration="50"
+        enter-active-class="transition ease-out"
         enter-from-class="translate-y-1 opacity-0"
         enter-to-class="translate-y-0 opacity-100"
-        leave-active-class="transition duration-150 ease-in"
+        leave-active-class="transition ease-in"
         leave-from-class="translate-y-0 opacity-100"
         leave-to-class="translate-y-1 opacity-0"
       >
