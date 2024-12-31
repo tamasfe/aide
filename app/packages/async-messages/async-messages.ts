@@ -103,5 +103,5 @@ export interface AsyncMessagesTypes {
     flowId: number;
     status: PaymentStatus;
   };
-  "girobet-backend:events:kyc:kyc-process-completed": object
+  "girobet-backend:events:kyc:kyc-process-completed": object;
 }

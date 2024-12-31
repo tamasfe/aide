@@ -30,7 +30,7 @@ export interface WalletsDependencyInjectionI {
   };
 }
 
-export const createWalletsDependencyInjection = (publicConfig: PublicRuntimeConfig, commonDependencies: CommonDependenciesI, requestHeaders?: Record<string, string>): WalletsDependencyInjectionI => {
+export const createWalletsDependencyInjection = (publicConfig: PublicRuntimeConfig, commonDependencies: CommonDependenciesI): WalletsDependencyInjectionI => {
   const isServer = import.meta.server;
 
   const walletApiBaseUrl = isServer ? publicConfig.wallets.apiBaseUrlServer : publicConfig.wallets.apiBaseUrlClient;

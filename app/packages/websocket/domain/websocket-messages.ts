@@ -18,7 +18,7 @@ export interface WebsocketMessagesI {
     data: {
       type: "kyc_completed";
     };
-  }
+  };
 
   winning_now: {
     type: "ticker";
@@ -33,9 +33,9 @@ export interface WebsocketMessagesI {
           image_url: string;
           name: string;
           slug: string;
-        }
-      }
-    }
-  }
+        };
+      };
+    };
+  };
 
 }

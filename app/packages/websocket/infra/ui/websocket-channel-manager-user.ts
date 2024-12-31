@@ -18,12 +18,12 @@ export class WebsocketChannelManagerUser {
     }
 
     const errorEnteringChannel = await wsConnection.enterChannel({
-      channel: 'user',
-      accessToken: wsAccessTokenResult.value.token
+      channel: "user",
+      accessToken: wsAccessTokenResult.value.token,
     });
-    if(errorEnteringChannel.isFailure) {
-      this.logger.error("Error logging in to the user WS channel when subscribing user channel", errorEnteringChannel.error, {connection: wsConnection});
-      return
+    if (errorEnteringChannel.isFailure) {
+      this.logger.error("Error logging in to the user WS channel when subscribing user channel", errorEnteringChannel.error, { connection: wsConnection });
+      return;
     }
 
     const resultSubscribingPayment = wsConnection.subscribeToMessage("payment_status_update", (message) => {
@@ -34,8 +34,9 @@ export class WebsocketChannelManagerUser {
     });
     if (resultSubscribingPayment.isFailure) {
       this.paymentStatusUpdateListenerId = null;
-      this.logger.error("Error subscribing to the WS message when subscribing to user channel", resultSubscribingPayment.error, {message: 'payment_status_update', connection: wsConnection});
-    } else {
+      this.logger.error("Error subscribing to the WS message when subscribing to user channel", resultSubscribingPayment.error, { message: "payment_status_update", connection: wsConnection });
+    }
+    else {
       this.paymentStatusUpdateListenerId = resultSubscribingPayment.value;
     }
 
@@ -43,7 +44,7 @@ export class WebsocketChannelManagerUser {
       this.asyncMessagePublisher.emit("girobet-backend:events:kyc:kyc-process-completed", {});
     });
     if (resultSubscribingKyc.isFailure) {
-      this.logger.error("Error subscribing to the WS message when subscribing to user channel", resultSubscribingKyc.error, {connection: wsConnection, message: 'kyc_completed'});
+      this.logger.error("Error subscribing to the WS message when subscribing to user channel", resultSubscribingKyc.error, { connection: wsConnection, message: "kyc_completed" });
     }
 
     return;

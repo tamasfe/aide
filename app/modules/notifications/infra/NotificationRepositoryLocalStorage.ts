@@ -44,8 +44,8 @@ implements NotificationRepositoryI {
       readStatus: "read" | "unread" | null;
       types: NotificationType[] | null;
     },
-    limit: number,
-    offset: number,
+    _limit: number,
+    _offset: number,
   ): Promise<
       Result<
         {
