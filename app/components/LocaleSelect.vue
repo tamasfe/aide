@@ -15,7 +15,7 @@ interface SupportedLanguageOption extends SupportedLanguage {
 }
 const SUPPORTED_LANGUAGES_OPTIONS_MAP = computed(() => Object.fromEntries(SUPPORTED_LANGUAGES.map(language => [language.value, ({
   ...language,
-  title: capitalize(useLanguageName(locale.value, language.value) ?? ""),
+  title: capitalize(useLanguageName(language.value, language.value) ?? ""),
 })])) as Record<SupportedLocale, SupportedLanguageOption>);
 const SUPPORTED_LANGUAGES_OPTIONS = computed(() => Object.values(SUPPORTED_LANGUAGES_OPTIONS_MAP.value));
 
