@@ -17,27 +17,34 @@ export class WebsocketChannelManagerUser {
       return;
     }
 
-    const errorSubscribing = await wsConnection.enterChannel({
-      channel: "user",
-      accessToken: wsAccessTokenResult.value.token,
+    const errorEnteringChannel = await wsConnection.enterChannel({
+      channel: 'user',
+      accessToken: wsAccessTokenResult.value.token
     });
-    if (errorSubscribing.isFailure) {
-      this.logger.error("Error logging in to the user WS channel when subscribing user channel", errorSubscribing.error, { connection: wsConnection });
-      return;
+    if(errorEnteringChannel.isFailure) {
+      this.logger.error("Error logging in to the user WS channel when subscribing user channel", errorEnteringChannel.error, {connection: wsConnection});
+      return
     }
 
-    const resultSubscribing = wsConnection.subscribeToMessage("payment_status_update", (message) => {
+    const resultSubscribingPayment = wsConnection.subscribeToMessage("payment_status_update", (message) => {
       this.asyncMessagePublisher.emit("girobet-backend:events:payments:payment-status-updated", {
         flowId: message.data.data.flow_id,
         status: message.data.data.status,
       });
     });
-    if (resultSubscribing.isFailure) {
-      this.logger.error("Error subscribing to the 'payment_status_update' message when subscribing to user channel", resultSubscribing.error, { connection: wsConnection });
-      return;
+    if (resultSubscribingPayment.isFailure) {
+      this.paymentStatusUpdateListenerId = null;
+      this.logger.error("Error subscribing to the WS message when subscribing to user channel", resultSubscribingPayment.error, {message: 'payment_status_update', connection: wsConnection});
+    } else {
+      this.paymentStatusUpdateListenerId = resultSubscribingPayment.value;
     }
 
-    this.paymentStatusUpdateListenerId = resultSubscribing.value;
+    const resultSubscribingKyc = wsConnection.subscribeToMessage("kyc_completed", () => {
+      this.asyncMessagePublisher.emit("girobet-backend:events:kyc:kyc-process-completed", {});
+    });
+    if (resultSubscribingKyc.isFailure) {
+      this.logger.error("Error subscribing to the WS message when subscribing to user channel", resultSubscribingKyc.error, {connection: wsConnection, message: 'kyc_completed'});
+    }
 
     return;
   }

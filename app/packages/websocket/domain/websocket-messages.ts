@@ -13,6 +13,13 @@ export interface WebsocketMessagesI {
     };
   };
 
+  kyc_completed: {
+    type: "notification";
+    data: {
+      type: "kyc_completed";
+    };
+  }
+
   winning_now: {
     type: "ticker";
     data: {
@@ -26,8 +33,9 @@ export interface WebsocketMessagesI {
           image_url: string;
           name: string;
           slug: string;
-        };
-      };
-    };
-  };
+        }
+      }
+    }
+  }
+
 }
