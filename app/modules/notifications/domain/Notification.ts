@@ -1,27 +1,27 @@
-export type NotificationType = 'banner'
+export type NotificationType = "banner";
 
 export interface NotificationPropsI {
-  id: number
-  createdAt: string
-  readAt: string | null
+  id: number;
+  createdAt: string;
+  readAt: string | null;
 
-  type: NotificationType
+  type: NotificationType;
   data: {
-    link: string | null
-    message: string
-    title: string
-  }
+    link: string | null;
+    message: string;
+    title: string;
+  };
 }
 
 export interface NotificationI {
-  id: number
-  createdAt: Date
-  readAt: Date | null
+  id: number;
+  createdAt: Date;
+  readAt: Date | null;
 
-  type: NotificationType
+  type: NotificationType;
   data: {
-    link: string | null
-    message: string
-    title: string
-  }
+    link: string | null;
+    message: string;
+    title: string;
+  };
 }

@@ -1,7 +1,7 @@
-import { fail, success, type Result } from "~/packages/result";
 import type { WebsocketConnectionI } from "../../domain/websocket-connection";
-import { InfrastructureError } from "~/packages/result/infrastructure-error";
 import { WebsocketConnectionWebsocketTs } from "../websocket-connection-websocket-ts";
+import { fail, success, type Result } from "~/packages/result";
+import { InfrastructureError } from "~/packages/result/infrastructure-error";
 import type { LoggerI } from "~/packages/logger/Logger";
 import type { AsyncMessagePublisherI } from "~/packages/async-messages/async-message-publisher";
 
@@ -15,9 +15,10 @@ export class CreateWebsocketConnection {
           this.websocketConnectUrl,
           this.logger,
           this.asyncMessagePublisher,
-        )
+        ),
       );
-    } catch (error) {
+    }
+    catch (error) {
       return fail(InfrastructureError.newFromUnknownError({}, error));
     }
   }

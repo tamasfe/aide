@@ -14,9 +14,9 @@ export interface WebsocketMessagesI {
   };
 
   winning_now: {
-    type: 'ticker';
+    type: "ticker";
     data: {
-      type: "winning_now"
+      type: "winning_now";
       data: {
         amount: number;
         currency: WalletCurrency;
@@ -26,8 +26,8 @@ export interface WebsocketMessagesI {
           image_url: string;
           name: string;
           slug: string;
-        }
-      }
-    }
-  }
+        };
+      };
+    };
+  };
 }

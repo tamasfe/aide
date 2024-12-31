@@ -1,18 +1,18 @@
-import { success, type EmptyResult } from "~/packages/result";
-import { InfrastructureError } from "~/packages/result/infrastructure-error";
+import { ExponentialBackoff, WebsocketBuilder, WebsocketEvent } from "websocket-ts";
+import type { Websocket } from "websocket-ts";
 import type { WebsocketChannel } from "../domain/websocket-channel";
 import type { WebsocketConnectionI } from "../domain/websocket-connection";
 import type { WebsocketMessagesI } from "../domain/websocket-messages";
-import { ExponentialBackoff, WebsocketBuilder, WebsocketEvent } from "websocket-ts";
+import { success, type EmptyResult } from "~/packages/result";
+import { InfrastructureError } from "~/packages/result/infrastructure-error";
 import type { LoggerI } from "~/packages/logger/Logger";
-import type { Websocket } from "websocket-ts";
 import type { AsyncMessagePublisherI } from "~/packages/async-messages/async-message-publisher";
 
 export class WebsocketConnectionWebsocketTs implements WebsocketConnectionI {
   public static create(
     websocketConnectUrl: string,
     logger: LoggerI,
-    asyncMessagePublisher: AsyncMessagePublisherI
+    asyncMessagePublisher: AsyncMessagePublisherI,
   ): WebsocketConnectionWebsocketTs {
     return new WebsocketConnectionWebsocketTs(websocketConnectUrl, logger, asyncMessagePublisher);
   }
@@ -20,32 +20,32 @@ export class WebsocketConnectionWebsocketTs implements WebsocketConnectionI {
   public async enterChannel(
     payload:
       | { channel: "user"; accessToken: string }
-      | { channel: Exclude<WebsocketChannel, "user"> }
+      | { channel: Exclude<WebsocketChannel, "user"> },
   ): Promise<EmptyResult<InfrastructureError>> {
     switch (payload.channel) {
       case "user":
-        this.ws.send(JSON.stringify({ data: payload.accessToken, type: "user_login"}));
+        this.ws.send(JSON.stringify({ data: payload.accessToken, type: "user_login" }));
         this.logger.debug("Entered WS channel", { channel: payload.channel });
         return success();
 
       case "newest_wins":
-        this.ws.send(JSON.stringify({ data: "newest_wins", type: "channel_enter"}));
+        this.ws.send(JSON.stringify({ data: "newest_wins", type: "channel_enter" }));
         this.logger.debug("Entered WS channel", { channel: payload.channel });
         return success();
     }
   }
 
   public async leaveChannel(
-    channel: WebsocketChannel
+    channel: WebsocketChannel,
   ): Promise<EmptyResult<InfrastructureError>> {
     switch (channel) {
       case "user":
-        this.ws.send(JSON.stringify({type: "user_logout"}));
+        this.ws.send(JSON.stringify({ type: "user_logout" }));
         this.logger.debug("Left WS channel", { channel });
         return success();
 
       case "newest_wins":
-        this.ws.send(JSON.stringify({data: "newest_wins", type: "channel_leave"}));
+        this.ws.send(JSON.stringify({ data: "newest_wins", type: "channel_leave" }));
         this.logger.debug("Left WS channel", { channel });
         return success();
     }
@@ -53,7 +53,7 @@ export class WebsocketConnectionWebsocketTs implements WebsocketConnectionI {
 
   public subscribeToMessage<T extends keyof WebsocketMessagesI>(
     type: T,
-    listener: (data: WebsocketMessagesI[T]) => void
+    listener: (data: WebsocketMessagesI[T]) => void,
   ) {
     const listenerWrapper = (_i: Websocket, event: MessageEvent<string>) => {
       try {
@@ -62,10 +62,11 @@ export class WebsocketConnectionWebsocketTs implements WebsocketConnectionI {
           listener(data);
         }
         return;
-      } catch (error) {
+      }
+      catch (error) {
         this.logger.error(
           "Failed to handle websocket message. This probably means the received message does not have the expected format and structure.",
-          InfrastructureError.newFromUnknownError({ wsEvent: event }, error)
+          InfrastructureError.newFromUnknownError({ wsEvent: event }, error),
         );
       }
     };
@@ -97,33 +98,35 @@ export class WebsocketConnectionWebsocketTs implements WebsocketConnectionI {
   private constructor(websocketConnectUrl: string, private logger: LoggerI, private asyncMessagePublisher: AsyncMessagePublisherI) {
     this.ws = new WebsocketBuilder(websocketConnectUrl)
       .onOpen((websocket, event) => {
-        if (this.connectionState !== 'connected') {
+        if (this.connectionState !== "connected") {
           this.asyncMessagePublisher.emit("girobet:events:websockets:connection-state-changed", { state: "connected" });
         }
-        this.logger.debug("WS connection opened", { websocket, event })
+        this.logger.debug("WS connection opened", { websocket, event });
       })
       .onClose((websocket, event) => {
-        if (this.connectionState !== 'disconnected') {
+        if (this.connectionState !== "disconnected") {
           this.asyncMessagePublisher.emit("girobet:events:websockets:connection-state-changed", { state: "disconnected" });
         }
-        this.logger.debug("WS connection closed", { websocket, event })
+        this.logger.debug("WS connection closed", { websocket, event });
       })
       .onReconnect((websocket, message) => {
-        this.logger.debug("WS connection reconnected", { websocket, message })
+        this.logger.debug("WS connection reconnected", { websocket, message });
       })
       .onError((websocket, event) =>
-        this.logger.warn("WS connection closed because of error", { websocket, event })
+        this.logger.warn("WS connection closed because of error", { websocket, event }),
       )
       .onMessage((websocket, message) =>
-        this.logger.debug("WS message received", { websocket, message })
+        this.logger.debug("WS message received", { websocket, message }),
       )
       .withBackoff(new ExponentialBackoff(500, 8)) // 0.5s, 1s, 2s, 4s, 8s, 16s, 32s, 64s, 128s
       .build();
   }
+
   private ws: Websocket;
   private messageListeners: Map<
     number,
     (_i: Websocket, event: MessageEvent<string>) => void
   > = new Map();
-  private connectionState: 'connected' | "disconnected" = "disconnected";
+
+  private connectionState: "connected" | "disconnected" = "disconnected";
 }

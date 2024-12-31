@@ -13,4 +13,4 @@ export const useCreateSubscriptionToWebsocket = (
     onMounted(() => subscribe($wsConnection));
     onUnmounted(() => unsubscribe($wsConnection));
   }
-}
+};

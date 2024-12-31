@@ -2,12 +2,12 @@ import type { WebsocketChannel } from "./websocket-channel";
 
 type WebsocketAccessTokenProps = {
   token: string;
-  channel: WebsocketChannel
+  channel: WebsocketChannel;
 };
 
 export class WebsocketAccessToken {
   public static newUserToken(token: string): WebsocketAccessToken {
-    return new WebsocketAccessToken(token, 'user');
+    return new WebsocketAccessToken(token, "user");
   }
 
   public toJSON(): WebsocketAccessTokenProps {
@@ -19,6 +19,6 @@ export class WebsocketAccessToken {
 
   private constructor(
     public readonly token: string,
-    public readonly channel: WebsocketChannel
+    public readonly channel: WebsocketChannel,
   ) {}
 }

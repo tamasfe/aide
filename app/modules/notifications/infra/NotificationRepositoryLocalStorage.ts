@@ -1,19 +1,19 @@
-import {
-  fail,
-  success,
-  type EmptyResult,
-  type Result,
-} from "~/packages/result";
 import type {
   NotificationType,
   NotificationI,
   NotificationPropsI,
 } from "../domain/Notification";
 import type { NotificationRepositoryI } from "../domain/NotificationRepository";
-import type { TranslateFunctionType } from "~/packages/translation";
 import { ErrorRetrievingNotifications } from "../domain/ErrorRetrievingNotifications";
 import { ErrorSavingNotification } from "../domain/ErrorSavingNotification";
 import { ErrorNotificationNotFound } from "../domain/ErrorNotificationNotFound";
+import type { TranslateFunctionType } from "~/packages/translation";
+import {
+  fail,
+  success,
+  type EmptyResult,
+  type Result,
+} from "~/packages/result";
 
 const DISGREGARD_SAVED_BEFORE = new Date("2024-12-31T13:35:23.690Z");
 const generateBanners = (t: TranslateFunctionType): NotificationI[] => {
@@ -29,8 +29,8 @@ const generateBanners = (t: TranslateFunctionType): NotificationI[] => {
         title: t("promo_bar.refer.title"),
       },
     },
-  ]
-}
+  ];
+};
 
 type NotificationsRecordLocalStorage = {
   savedAt: string;
@@ -38,32 +38,31 @@ type NotificationsRecordLocalStorage = {
 };
 
 export class NotificationRepositoryLocalStorage
-  implements NotificationRepositoryI
-{
+implements NotificationRepositoryI {
   public async searchPaginating(
     searchParams: {
       readStatus: "read" | "unread" | null;
       types: NotificationType[] | null;
     },
     limit: number,
-    offset: number
+    offset: number,
   ): Promise<
-    Result<
-      {
-        notifications: NotificationI[];
-        pagination: { limit: number; offset: number; totalItems: number };
-      },
-      ErrorRetrievingNotifications
-    >
-  > {
+      Result<
+        {
+          notifications: NotificationI[];
+          pagination: { limit: number; offset: number; totalItems: number };
+        },
+        ErrorRetrievingNotifications
+      >
+    > {
     if (!this.isLocalStorageAvailable()) {
       return fail(
         ErrorRetrievingNotifications.newFromError(
           {},
           new Error(
-            "This repo should only be run in the client side. LocalStorage is not available on server side rendering"
-          )
-        )
+            "This repo should only be run in the client side. LocalStorage is not available on server side rendering",
+          ),
+        ),
       );
     }
 
@@ -73,20 +72,20 @@ export class NotificationRepositoryLocalStorage
       const filteredNotifications = notifications.filter((notification) => {
         if (searchParams.readStatus) {
           if (
-            searchParams.readStatus === "read" &&
-            notification.readAt === null
+            searchParams.readStatus === "read"
+            && notification.readAt === null
           )
             return false;
           if (
-            searchParams.readStatus === "unread" &&
-            notification.readAt !== null
+            searchParams.readStatus === "unread"
+            && notification.readAt !== null
           )
             return false;
         }
 
         if (
-          searchParams.types &&
-          !searchParams.types.includes(notification.type)
+          searchParams.types
+          && !searchParams.types.includes(notification.type)
         ) {
           return false;
         }
@@ -102,23 +101,24 @@ export class NotificationRepositoryLocalStorage
           totalItems: filteredNotifications.length,
         },
       });
-    } catch (error) {
+    }
+    catch (error) {
       return fail(ErrorRetrievingNotifications.newFromUnknownError({}, error));
     }
   }
 
   public async updateReadStatus(
     notificationId: number,
-    status: "read" | "unread"
+    status: "read" | "unread",
   ): Promise<EmptyResult<ErrorNotificationNotFound | ErrorSavingNotification>> {
     if (!this.isLocalStorageAvailable()) {
       return fail(
         ErrorSavingNotification.newFromError(
           {},
           new Error(
-            "This repo should only be run in the client side. LocalStorage is not available on server side rendering"
-          )
-        )
+            "This repo should only be run in the client side. LocalStorage is not available on server side rendering",
+          ),
+        ),
       );
     }
 
@@ -126,7 +126,7 @@ export class NotificationRepositoryLocalStorage
       const notifications = this.retrieveNotifications();
 
       const notification = notifications.find(
-        (notification) => notification.id === notificationId
+        notification => notification.id === notificationId,
       );
       if (!notification) {
         return fail(ErrorNotificationNotFound.new({ notificationId }));
@@ -138,15 +138,16 @@ export class NotificationRepositoryLocalStorage
       };
 
       this.saveNotifications(
-        notifications.map((notification) =>
+        notifications.map(notification =>
           notification.id === notificationId
             ? updatedNotification
-            : notification
-        )
+            : notification,
+        ),
       );
 
       return success();
-    } catch (error) {
+    }
+    catch (error) {
       return fail(ErrorSavingNotification.newFromUnknownError({}, error));
     }
   }
@@ -155,21 +156,21 @@ export class NotificationRepositoryLocalStorage
 
   private retrieveNotifications(): NotificationI[] {
     const notificationsRecordStringified = window.localStorage.getItem(
-      this.STORAGE_ID_KEY
+      this.STORAGE_ID_KEY,
     );
-    const notificationsRecord: NotificationsRecordLocalStorage | null =
-      notificationsRecordStringified
+    const notificationsRecord: NotificationsRecordLocalStorage | null
+      = notificationsRecordStringified
         ? (JSON.parse(
-            notificationsRecordStringified
+            notificationsRecordStringified,
           ) as NotificationsRecordLocalStorage)
         : null;
 
     return (() => {
       if (
-        notificationsRecord &&
-        new Date(notificationsRecord.savedAt) > DISGREGARD_SAVED_BEFORE
+        notificationsRecord
+        && new Date(notificationsRecord.savedAt) > DISGREGARD_SAVED_BEFORE
       ) {
-        return notificationsRecord.notifications.map((notification) => ({
+        return notificationsRecord.notifications.map(notification => ({
           ...notification,
           createdAt: new Date(notification.createdAt),
           readAt: notification.readAt ? new Date(notification.readAt) : null,
@@ -183,7 +184,7 @@ export class NotificationRepositoryLocalStorage
   private saveNotifications(notifications: NotificationI[]) {
     const newNotificationRecord: NotificationsRecordLocalStorage = {
       savedAt: new Date().toISOString(),
-      notifications: notifications.map((notification) => ({
+      notifications: notifications.map(notification => ({
         ...notification,
         createdAt: notification.createdAt.toISOString(),
         readAt: notification.readAt ? notification.readAt.toISOString() : null,
@@ -192,7 +193,7 @@ export class NotificationRepositoryLocalStorage
 
     window.localStorage.setItem(
       this.STORAGE_ID_KEY,
-      JSON.stringify(newNotificationRecord)
+      JSON.stringify(newNotificationRecord),
     );
   }
 

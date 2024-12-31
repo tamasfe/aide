@@ -12,7 +12,7 @@ export class WebsocketLeaseRepositoryGirobet implements WebsocketAccessTokenRepo
     this.apiClient = createBackendOpenApiClient(clientOptions, commonDependencies);
   }
 
-  public async create(channel: 'user'): Promise<Result<WebsocketAccessToken, ErrorUnauthorizedForWebsocketConnection | InfrastructureError>> {
+  public async create(channel: "user"): Promise<Result<WebsocketAccessToken, ErrorUnauthorizedForWebsocketConnection | InfrastructureError>> {
     try {
       if (channel !== "user") {
         throw new Error("Unsupported channel to get access token");
