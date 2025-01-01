@@ -35,6 +35,7 @@ jwt-authorizer = { version = "0.14", default-features = false, optional = true }
 [features]
 macros = ["dep:aide-macros"]
 redoc = []
+swagger = []
 scalar = []
 skip_serializing_defaults = []
 

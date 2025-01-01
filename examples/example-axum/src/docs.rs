@@ -1,5 +1,7 @@
 use std::sync::Arc;
 
+use crate::{extractors::Json, state::AppState};
+use aide::swagger::Swagger;
 use aide::{
     axum::{
         routing::{get, get_with},
@@ -10,8 +12,6 @@ use aide::{
     scalar::Scalar,
 };
 use axum::{response::IntoResponse, Extension};
-
-use crate::{extractors::Json, state::AppState};
 
 pub fn docs_routes(state: AppState) -> ApiRouter {
     // We infer the return types for these routes
@@ -37,6 +37,16 @@ pub fn docs_routes(state: AppState) -> ApiRouter {
             "/redoc",
             get_with(
                 Redoc::new("/docs/private/api.json")
+                    .with_title("Aide Axum")
+                    .axum_handler(),
+                |op| op.description("This documentation page."),
+            ),
+            |p| p.security_requirement("ApiKey"),
+        )
+        .api_route_with(
+            "/swagger",
+            get_with(
+                Swagger::new("/docs/private/api.json")
                     .with_title("Aide Axum")
                     .axum_handler(),
                 |op| op.description("This documentation page."),

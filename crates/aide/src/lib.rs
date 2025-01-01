@@ -138,6 +138,9 @@ mod helpers;
 #[cfg(feature = "redoc")]
 pub mod redoc;
 
+#[cfg(feature = "swagger")]
+pub mod swagger;
+
 #[cfg(feature = "scalar")]
 pub mod scalar;
 
