@@ -11,7 +11,11 @@ const paymentSettings = computed(() => props.paymentConfig ? UserSettingsPayment
 </script>
 
 <template>
-  <DashboardSection :title="$t('dashboard.settings.account.payment_settings')">
+  <DashboardSection>
+    <template #title>
+      {{ $t('dashboard.settings.account.payment_settings') }}
+    </template>
+
     <DashboardSectionItem :name="$t('dashboard.settings.account.key_type')">
       <template #default>
         <div v-if="paymentSettings">

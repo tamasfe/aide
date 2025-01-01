@@ -74,7 +74,7 @@ await useAsyncData(`load-vertical-providers`, () => onLoadData().then(() => true
               id: item.id,
             },
           }"
-          class="flex-1 rounded-[0.7rem] overflow-hidden"
+          class="flex-1 rounded-lg overflow-hidden"
         >
           <ProviderImageLoader :src="item.imageUrl" :provider-id="item.id" />
         </BaseLink>

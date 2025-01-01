@@ -84,7 +84,7 @@ await useAsyncData(`load-games-for-${props.categoryIdentifier}`,
       <template #default="{ item: game }">
         <BaseLink
           :to="{ name: 'games-id', params: { id: game.id } }"
-          class="block bg-subtle rounded-default w-full h-full overflow-hidden"
+          class="block bg-subtle rounded w-full h-full overflow-hidden border border-emphasis/50"
         >
           <GamesImageLoader :src="game.imageUrl" />
         </BaseLink>
@@ -94,7 +94,7 @@ await useAsyncData(`load-games-for-${props.categoryIdentifier}`,
         v-if="canLoadMore"
         #loading
       >
-        <div class="flex items-center justify-center w-full h-full bg-subtle rounded-default">
+        <div class="flex items-center justify-center w-full h-full bg-subtle rounded">
           <BaseSpinner
             class="text-subtle"
             :size="34"

@@ -55,7 +55,7 @@ const onClickChangeAccountLocale = async (locale: SupportedLocale) => {
           v-if="selected"
           :key="selected.countryCode"
           :country-code="selected.countryCode"
-          size="lg"
+          size="sm"
         />
         <span v-if="selected" class="block whitespace-nowrap truncate font-medium text-left">
           {{ selected.title }}
@@ -65,7 +65,7 @@ const onClickChangeAccountLocale = async (locale: SupportedLocale) => {
         <div class="flex items-center gap-2">
           <BaseFlag
             :country-code="option.countryCode"
-            size="lg"
+            size="sm"
           />
           <span>{{ option.title }}</span>
         </div>

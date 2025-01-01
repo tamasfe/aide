@@ -57,7 +57,6 @@ const onSubmit = async () => {
             v-if="selected"
             :key="selected.countryCode"
             :country-code="selected.countryCode"
-            size="lg"
           />
           <span v-if="selected" class="block whitespace-nowrap truncate font-medium text-left">
             {{ selected.title }}
@@ -67,7 +66,6 @@ const onSubmit = async () => {
           <div class="flex items-center gap-2">
             <BaseFlag
               :country-code="option.countryCode"
-              size="lg"
             />
             <span>{{ option.title }}</span>
           </div>

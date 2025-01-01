@@ -42,7 +42,7 @@ const comboboxVariants = cva(
         ghost: "",
       },
       size: {
-        md: "h-[var(--giro-field-height)] px-4 text-sm sm:text-base rounded-default",
+        md: "h-[var(--giro-field-height)] px-4 text-sm sm:text-base rounded",
         ghost: "",
       },
     },
@@ -74,7 +74,7 @@ type ComboboxVariants = VariantProps<typeof comboboxVariants>;
           @blur="query = ''"
         />
         <ComboboxButton
-          :class="cn('right-0 flex h-full items-center rounded-r-md rounded-l-none px-py-4', comboboxVariants({ variant, size }))"
+          :class="cn('right-0 flex h-full items-center rounded-r rounded-l-none px-py-4', comboboxVariants({ variant, size }))"
           @click="open ? undefined : query = '' "
         >
           <BaseIcon

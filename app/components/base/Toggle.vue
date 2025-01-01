@@ -29,7 +29,7 @@ const enabled = defineModel({
     </SwitchLabel>
     <Switch
       v-model="enabled"
-      :class="[enabled ? 'bg-button-emphasis' : 'bg-gray-200/20', disabled ? 'cursor-not-allowed' : 'cursor-pointer']"
+      :class="[enabled ? 'bg-button-emphasis' : 'bg-white/20', disabled ? 'cursor-not-allowed' : 'cursor-pointer']"
       class="relative inline-flex h-6 w-11 shrink-0 rounded-full p-[2px] transition-colors duration-200 ease-in-out focus:outline-none focus:ring focus:ring-primary focus:ring-offset"
       :disabled="disabled"
       @changed="emits('changed', enabled)"

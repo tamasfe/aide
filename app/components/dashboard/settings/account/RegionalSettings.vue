@@ -16,13 +16,16 @@ const currency = ref({
 </script>
 
 <template>
-  <DashboardSection :title="$t('dashboard.settings.account.regional_settings')">
+  <DashboardSection>
+    <template #title>
+      {{ $t('dashboard.settings.account.regional_settings') }}
+    </template>
+
     <DashboardSectionItem v-if="walletStore.wallet" :name="$t('dashboard.settings.account.wallets')">
       <template #default>
         <div class="flex items-center gap-2">
           <BaseFlag
             :country-code="currency.countryCode"
-            size="xl"
           />
           <p>{{ walletStore.wallet.currency }} (ID: #{{ walletStore.wallet.id }})</p>
         </div>

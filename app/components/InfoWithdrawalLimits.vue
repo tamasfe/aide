@@ -36,7 +36,7 @@ const secondsToDayFrequency = (seconds: number) => {
     <div class="value">1.7x</div>
   </div>
   <div class="flex flex-col">
-    <div class="leading-relaxed text-[0.78rem] text-subtle-light">{{ $t('withdrawal_limits.summary') }}</div>
+    <div class="leading-relaxed text-sm text-subtle-light">{{ $t('withdrawal_limits.summary') }}</div>
   </div>
 </template>
 

@@ -5,17 +5,17 @@ defineProps<{
 </script>
 
 <template>
-  <div class="flex flex-col sm:flex-row justify-between gap-x-28 gap-y-1">
-    <div class="sm:w-[4rem] text-subtle font-medium whitespace-nowrap">
-      <h4 class="font-semibold text-[0.80rem] sm:min-h-[32px]">{{ name }}</h4>
-    </div>
+  <div class="min-h-8 flex flex-col sm:flex-row justify-between items-baseline gap-x-28 gap-y-1">
+    <h4 class="sm:w-[4rem] text-subtle whitespace-nowrap">
+      {{ name }}
+    </h4>
     <div class="sm:flex-1 space-y-1">
-      <div class="text-white font-medium">
+      <div class="text-white">
         <slot />
       </div>
       <div
         v-if="$slots.description"
-        class="text-subtle"
+        class="text-subtle text-sm"
       >
         <slot name="description" />
       </div>

@@ -40,7 +40,7 @@ const onClose = () => {
     >
       <div
         v-show="open && query !== ''"
-        class="px-0 rounded-default text-default p-4 outline-none"
+        class="px-0 rounded text-default p-4 outline-none"
         role="dialog"
         aria-modal="true"
       >

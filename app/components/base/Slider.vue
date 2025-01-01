@@ -191,7 +191,7 @@ const dataToRender = computed(() => {
         :key="item.key"
         class="giro__slider-slide"
       >
-        <BaseSkeleton v-if="loading === true && data.length === 0" :loading="loading" class="h-full w-full rounded-default" />
+        <BaseSkeleton v-if="loading === true && data.length === 0" :loading="loading" class="h-full w-full rounded" />
         <slot
           v-else
           :item="item"

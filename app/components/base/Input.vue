@@ -12,7 +12,7 @@ const inputVariants = cva(
         ghost: "",
       },
       size: {
-        md: "h-[var(--giro-field-height)] px-4 text-base font-medium rounded-default",
+        md: "h-[var(--giro-field-height)] px-4 text-base font-medium rounded",
         ghost: "",
       },
     },

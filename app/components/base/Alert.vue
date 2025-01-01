@@ -7,7 +7,7 @@ import { type VariantProps, cva } from "class-variance-authority";
 // TRANSLATION STATUS:  ✅
 
 const alertVariants = cva(
-  "flex items-center justify-center text-center rounded-md",
+  "flex items-center justify-center text-center rounded",
   {
     variants: {
       level: {

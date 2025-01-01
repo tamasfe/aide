@@ -124,7 +124,7 @@ const table = useVueTable(buildTable(props));
 
       <div
         v-else-if="!loading"
-        class="bg-subtle rounded-default"
+        class="bg-subtle rounded"
       >
         <slot
           v-if="$slots.empty"

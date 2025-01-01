@@ -4,7 +4,11 @@ const userStore = useUserStore();
 </script>
 
 <template>
-  <DashboardSection :title="$t('dashboard.settings.account.account_details')">
+  <DashboardSection>
+    <template #title>
+      {{ $t('dashboard.settings.account.account_details') }}
+    </template>
+
     <DashboardSectionItem :name="$t('dashboard.settings.account.username')">
       <template #default>
         <p>banger69.camaro</p>

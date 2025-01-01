@@ -70,7 +70,6 @@ const mask = computed(() => UserTelephoneMask.new(prefix.value?.countryCode ?? D
             <BaseFlag
               v-if="selected"
               :country-code="selected.countryCode"
-              size="md"
             />
             <span class="text-default">{{ selected?.value }}</span>
           </div>
@@ -79,7 +78,6 @@ const mask = computed(() => UserTelephoneMask.new(prefix.value?.countryCode ?? D
           <div class="flex flex-shrink-0 items-center gap-2">
             <BaseFlag
               :country-code="option.countryCode"
-              size="md"
             />
             <span>{{ option.title }} ({{ option.value }})</span>
           </div>

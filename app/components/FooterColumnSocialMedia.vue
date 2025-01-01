@@ -54,11 +54,11 @@ const links: Array<{ icon: string; url: ComputedRef }> = [
         :to="link.url.value"
         target="_blank"
         rel="noopener noreferrer"
-        class="p-1 lg:p-3 rounded-xl hover:text-subtle-light"
+        class="p-1 lg:p-3 rounded hover:text-subtle-light"
       >
         <BaseIcon
           :name="link.icon"
-          :size="28"
+          :size="24"
         />
       </BaseLink>
     </div>

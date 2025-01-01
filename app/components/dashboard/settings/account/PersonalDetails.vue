@@ -1,5 +1,9 @@
 <template>
-  <DashboardSection :title="$t('dashboard.settings.account.personal_details')">
+  <DashboardSection>
+    <template #title>
+      {{ $t('dashboard.settings.account.personal_details') }}
+    </template>
+
     <DashboardSectionItem :name="$t('dashboard.settings.account.name')">
       <template #default>
         <p>Pedro</p>

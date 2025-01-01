@@ -1,5 +1,7 @@
 <script setup lang="ts">
-defineProps({
+import { useClipboard } from "@vueuse/core";
+
+const props = defineProps({
   currency: {
     type: String,
     required: true,
@@ -21,22 +23,35 @@ defineProps({
     required: true,
   },
 });
+
+const clipboard = useClipboard({
+  source: props.walletId.toString(),
+});
 </script>
 
 <template>
   <div class="flex flex-col items-center">
     <div
-      class="flex flex-col gap-4 w-full max-w-[30rem] bg-subtle rounded-default p-4"
+      class="flex flex-col gap-4 w-full max-w-[30rem] bg-subtle rounded-lg p-4 border border-muted/10"
     >
-      <div class="flex items-center justify-between">
-        <div class="flex items-center gap-2">
-          <BaseFlag
-            country-code="BR"
-            size="md"
-          />
-          <div class="text-subtle">{{ currency }}</div>
+      <div class="flex items-center justify-between gap-2 text-subtle text-sm">
+        <BaseFlag
+          country-code="BR"
+        />
+        <div class="flex-1">{{ currency }}</div>
+        <BaseIcon
+          v-if="clipboard.copied.value"
+          name="lucide:circle-check-big"
+          :size="14"
+        />
+        <BaseIcon
+          v-else
+          name="lucide:copy"
+          :size="14"
+        />
+        <div class="cursor-pointer p-4 -m-4" @click="clipboard.copy()">
+          #{{ walletId }}
         </div>
-        <div class="text-subtle text-sm">#{{ walletId }}</div>
       </div>
       <div class="flex items-center justify-center text-3xl font-medium">
         <BaseCurrency

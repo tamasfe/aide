@@ -36,12 +36,12 @@ const onToggleFullScreen = () => {
 </script>
 
 <template>
-  <div class="flex flex-col rounded-default">
+  <div class="flex flex-col rounded">
     <GameFrameBackdrop
       :src="gameImageUrl"
       :authenticated="authenticated"
       :replace="true"
-      class="h-[70vh] rounded-t-default"
+      class="h-[70vh] rounded-t"
     >
       <template #authenticated>
         <div
@@ -91,7 +91,7 @@ const onToggleFullScreen = () => {
       </div>
     </GameFrameBackdrop>
 
-    <div class="rounded-b-default bg-subtle p-3 md:p-4 lg:px-6">
+    <div class="rounded-b bg-subtle p-3 md:p-4 lg:px-6">
       <div class="flex flex-col md:flex-row items-center justify-between gap-4 md:gap-0">
         <div class="w-full flex justify-between md:justify-start flex-row md:flex-col items-center md:items-start font-semibold">
           <h2 class="text-lg md:text-xl font-semibold">{{ gameTitle }}</h2>

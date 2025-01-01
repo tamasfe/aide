@@ -39,7 +39,7 @@ defineProps<{
   @apply text-emphasis hover:underline;
 }
 :deep(h4) {
-  @apply my-6 text-[1.2rem] font-semibold text-emphasis;
+  @apply my-6 text-lg font-semibold text-emphasis;
 }
 :deep(ul) {
   @apply my-6 list-disc;

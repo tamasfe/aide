@@ -86,7 +86,7 @@ await useAsyncData(`load-games-for-${props.categoryIdentifier}`, () => onLoadDat
               id: item.id,
             },
           }"
-          class="block bg-subtle rounded-default w-full h-full overflow-hidden"
+          class="block bg-subtle rounded w-full h-full overflow-hidden"
         >
           <GamesImageLoader :src="item.imageUrl" />
         </BaseLink>

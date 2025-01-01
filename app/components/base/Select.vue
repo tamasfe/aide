@@ -30,8 +30,8 @@ const selectVariants = cva(
         subtle: "bg-button-subtle hover:bg-button-subtle-hover text-subtle-light",
       },
       size: {
-        sm: "h-9 px-3 text-sm rounded-default",
-        md: "h-[var(--giro-field-height)] px-4 text-base rounded-default",
+        sm: "h-9 px-3 text-sm rounded",
+        md: "h-[var(--giro-field-height)] px-4 text-base rounded",
       },
     },
     defaultVariants: {
@@ -136,7 +136,7 @@ const onUpdateModelValue = (event: T) => {
         leave-to-class="opacity-0"
       >
         <ListboxOptions
-          class="absolute z-[1] mt-1 min-w-full w-max text-sm text-subtle overflow-auto bg-emphasis rounded-default focus-visible:outline-none"
+          class="absolute z-[1] mt-1 min-w-full w-max text-sm text-subtle overflow-auto bg-emphasis rounded focus-visible:outline-none"
           :style="optionsOffset"
         >
           <ListboxOption

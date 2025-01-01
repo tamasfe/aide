@@ -82,8 +82,8 @@ useCreateSubscriptionToWebsocket(
       <template #default="{ item }">
         <BaseLink :to="{ name: 'games-id', params: { id: item.game.id } }">
           <div class="group flex items-center space-x-3 bg-subtle p-2 rounded-lg outline-none">
-            <div class="flex-shrink-0 rounded-[0.7rem] w-[4.8rem]">
-              <GamesImageLoader :src="item.game.imageUrl" class="rounded-default" />
+            <div class="flex-shrink-0 rounded-lg w-[4.8rem]">
+              <GamesImageLoader :src="item.game.imageUrl" class="rounded" />
             </div>
             <div class="font-medium leading-tight space-y-1">
               <div>{{ item.userNickname }}</div>

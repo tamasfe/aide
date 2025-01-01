@@ -3,11 +3,15 @@ const { $dependencies } = useNuxtApp();
 </script>
 
 <template>
-  <DashboardSection :title="$t('dashboard.settings.account.close_account')">
-    <div class="flex flex-col sm:flex-row sm:justify-between gap-x-24 gap-y-4">
-      <div class="text-subtle-light font-medium">
-        {{ $t('dashboard.settings.account.close_account_warning') }}
-      </div>
+  <DashboardSection>
+    <template #title>
+      {{ $t('dashboard.settings.account.close_account') }}
+    </template>
+    <template #description>
+      {{ $t('dashboard.settings.account.close_account_warning') }}
+    </template>
+
+    <div class="flex">
       <div>
         <BaseButton
           variant="danger"

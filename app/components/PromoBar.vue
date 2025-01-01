@@ -60,7 +60,7 @@ const props = withDefaults(defineProps<{
           props.class,
         )"
       >
-        <div class="px-3 py-2 mr-10 text-[0.8rem] md:text-[0.9rem] font-medium leading-tight text-left">
+        <div class="px-3 py-2 mr-10 text-sm md:text-base leading-tight text-left">
           {{ banner.data.message }}
         </div>
         <BaseButton

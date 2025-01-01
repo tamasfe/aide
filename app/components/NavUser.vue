@@ -88,39 +88,40 @@ const links = [
       >
         <PopoverPanel class="absolute right-0 z-10 mt-4">
           <div
-            class="flex flex-col py-2 bg-emphasis/85 backdrop-blur-2xl rounded-default"
+            class="flex flex-col py-2 bg-emphasis/85 backdrop-blur-2xl rounded"
           >
             <div
               v-for="item in links"
               :key="item.key"
+              class="text-subtle-light hover:text-white"
             >
               <BaseLink
                 v-if="item.action.toPage"
                 :to="item.action.toPage"
-                class="border-emphasis px-5 h-10 min-w-[14rem] flex items-center text-emphasis hover:text-white whitespace-nowrap"
+                class="border-emphasis px-5 h-10 flex items-center whitespace-nowrap"
                 @click="close"
               >
                 <BaseIcon
                   :name="item.icon"
-                  :size="22"
-                  class="flex-shrink-0 text-subtle"
+                  :size="18"
+                  class="flex-shrink-0"
                 />
-                <span class="block w-full ml-4 text-[0.85rem]"> {{ item.title }}
+                <span class="block w-full ml-4"> {{ item.title }}
                 </span>
               </BaseLink>
               <BaseButton
                 v-if="item.action.buttonOnClick"
                 variant="ghost"
                 type="button"
-                class="border-emphasis px-6 h-10 min-w-[14rem] flex items-center justify-start text-emphasis hover:text-white whitespace-nowrap font-normal w-full"
+                class="border-emphasis px-5 h-10 flex items-center justify-start whitespace-nowrap font-normal w-full"
                 @click="item.action.buttonOnClick"
               >
                 <BaseIcon
                   :name="item.icon"
-                  :size="22"
-                  class="flex-shrink-0 text-subtle"
+                  :size="18"
+                  class="flex-shrink-0"
                 />
-                <span class="block ml-4 text-[0.85rem]"> {{ item.title }} </span>
+                <span class="block ml-4"> {{ item.title }} </span>
               </BaseButton>
             </div>
           </div>

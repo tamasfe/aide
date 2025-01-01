@@ -45,7 +45,7 @@ const onClickCloseButton = () => {
         <BaseIcon
           v-else
           name="lucide:search"
-          :size="24"
+          :size="22"
         />
       </div>
     </template>
@@ -62,7 +62,7 @@ const onClickCloseButton = () => {
         >
           <BaseIcon
             name="lucide:x"
-            :size="24"
+            :size="20"
           />
         </BaseButton>
       </div>

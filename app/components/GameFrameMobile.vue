@@ -69,11 +69,10 @@ const onTogglePlaying = async () => {
         <div class="w-full flex flex-row items-center justify-start gap-6">
           <GamesImageLoader
             :src="gameImageUrl"
-            class="w-[32%] rounded-default"
+            class="w-[32%] rounded"
           />
           <div class="flex flex-col gap-1">
             <h2 class="text-2xl font-semibold">{{ gameTitle }}</h2>
-            <!-- <h3 class="text-lg text-subtle-light font-medium">Pragmatic Play</h3> -->
             <GameFrameVotes
               :authenticated="authenticated"
               class="mt-4 gap-4 text-subtle-light"

@@ -39,7 +39,7 @@ const scrollToTop = () => {
             class="w-full object-cover"
           />
         </div>
-        <p class="text-[0.82rem]">{{ $t("footer.summary") }}</p>
+        <p>{{ $t("footer.summary") }}</p>
         <div class="w-full">
           <LocaleSelect class="sm:w-[12rem]" />
         </div>
@@ -98,10 +98,10 @@ const scrollToTop = () => {
 
     <section class="giro__container relative flex flex-col text-subtle">
       <div class="flex flex-col items-center space-y-5 md:space-y-8">
-        <div class="max-w-[42rem] lg:max-w-[52rem] text-[0.7rem] sm:text-center">
+        <div class="max-w-[42rem] lg:max-w-[52rem] text-sm sm:text-center">
           {{ $t("footer.legal_notice") }}
         </div>
-        <div class="text-center text-[0.82rem]">
+        <div class="text-center text-sm">
           {{ $t("footer.copyright", { year }) }}
         </div>
       </div>

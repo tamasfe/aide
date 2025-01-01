@@ -50,7 +50,13 @@ watchDeep(() => promotionsPreferences.value,
     name="dashboard"
     section="settings"
   >
-    <DashboardSection :title="$t('dashboard.settings.preferences.bonuses')" class="text-subtle">
+    <DashboardSection class="text-subtle">
+      <template #title>
+        {{ $t("dashboard.settings.preferences.bonuses") }}
+      </template>
+      <template #description>
+        {{ $t("dashboard.settings.preferences.bonuses_description") }}
+      </template>
       <BaseAlert
         v-if="errorLoading"
         :message="errorLoading"
@@ -61,32 +67,20 @@ watchDeep(() => promotionsPreferences.value,
         <div v-if="!promotionsPreferences" class="w-full flex items-center justify-center">
           <BaseSpinner :size="24" />
         </div>
-        <div v-if="promotionsPreferences">
-          <p>{{ $t("dashboard.settings.preferences.bonuses_description") }}</p>
-          <div class="mt-8 space-y-8">
-            <BaseToggle v-model="promotionsPreferences.email">
-              <p>{{ $t("dashboard.settings.preferences.bonuses_by_email") }}</p>
-            </BaseToggle>
+        <div v-if="promotionsPreferences" class="space-y-8">
+          <BaseToggle v-model="promotionsPreferences.email">
+            <p>{{ $t("dashboard.settings.preferences.bonuses_by_email") }}</p>
+          </BaseToggle>
 
-            <BaseToggle v-model="promotionsPreferences.phone">
-              <p>{{ $t("dashboard.settings.preferences.bonuses_by_phone") }}</p>
-            </BaseToggle>
+          <BaseToggle v-model="promotionsPreferences.phone">
+            <p>{{ $t("dashboard.settings.preferences.bonuses_by_phone") }}</p>
+          </BaseToggle>
 
-            <BaseToggle v-model="promotionsPreferences.browser">
-              <p>{{ $t("dashboard.settings.preferences.bonuses_by_browser") }}</p>
-            </BaseToggle>
-          </div>
+          <BaseToggle v-model="promotionsPreferences.browser">
+            <p>{{ $t("dashboard.settings.preferences.bonuses_by_browser") }}</p>
+          </BaseToggle>
         </div>
       </div>
-    </DashboardSection>
-
-    <DashboardSection :title="$t('dashboard.settings.preferences.communication')" class="text-subtle">
-      <!-- <BaseToggle
-        v-model=""
-        class="w-full lg:max-w-72"
-      >
-        <p>{{ $t("dashboard.settings.preferences.communications_allow_deposit") }}</p>
-      </BaseToggle> -->
     </DashboardSection>
   </NuxtLayout>
 </template>

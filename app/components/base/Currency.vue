@@ -56,7 +56,7 @@ defineProps({
 
 <template>
   <I18nN
-    class="flex items-center"
+    class="flex items-center tabular-nums"
     scope="global"
     tag="span"
     :value="value"

@@ -49,7 +49,7 @@ const onClose = () => {
         static
       >
         <div
-          class="rounded-default bg-emphasis/85 backdrop-blur-2xl text-default px-5 py-4 outline-none"
+          class="rounded bg-emphasis/85 backdrop-blur-2xl text-default px-5 py-4 outline-none"
           role="dialog"
           aria-modal="true"
         >

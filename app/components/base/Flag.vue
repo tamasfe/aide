@@ -8,13 +8,16 @@ import { type VariantProps, cva } from "class-variance-authority";
 //   * https://github.com/nuxt/nuxt/issues/14766/#issuecomment-1397365434
 
 const flagVariants = cva(
-  "flex-shrink-0",
+  "flex-shrink-0 rounded-sm",
   {
     variants: {
       size: {
-        md: "w-[1.2rem] rounded-[3px]",
-        lg: "w-[1.4rem] rounded-[3px]",
-        xl: "w-[1.8rem] rounded-[3px]",
+        sm: {
+        },
+        md: {
+        },
+        lg: {
+        },
       },
     },
     defaultVariants: {
@@ -24,17 +27,33 @@ const flagVariants = cva(
 
 type FlagVariants = VariantProps<typeof flagVariants>;
 
-const props = defineProps<{
-  countryCode: string;
-  size?: FlagVariants["size"];
-  class?: HTMLAttributes["class"];
-}>();
+const flagSizes = {
+  sm: 14,
+  md: 16,
+  lg: 24,
+};
+
+const props = defineProps({
+  countryCode: {
+    type: String,
+    required: true,
+  },
+  size: {
+    type: String as PropType<FlagVariants["size"]>,
+    default: "md",
+  },
+  class: {
+    type: String as PropType<HTMLAttributes["class"]>,
+    required: false,
+  },
+});
 </script>
 
 <template>
   <BaseIcon
+    class=""
     :class="cn(flagVariants({ size }), props.class)"
     :name="`girobet-flags:${countryCode.toLowerCase()}`"
-    :size="20"
+    :size="size ? flagSizes[size] : 20"
   />
 </template>

@@ -26,7 +26,7 @@ const onToggle = () => {
 
 <template>
   <div
-    class="select-none flex flex-col text-emphasis rounded-default"
+    class="select-none flex flex-col text-emphasis rounded"
     :class="{ 'bg-subtle': open }"
   >
     <div
@@ -40,7 +40,7 @@ const onToggle = () => {
           class="flex-shrink-0 text-subtle"
           :size="22"
         />
-        <div class="w-full ml-4 text-[0.90rem] font-medium">
+        <div class="w-full ml-4 font-medium">
           {{ parent.title }}
         </div>
       </div>

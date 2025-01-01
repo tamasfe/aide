@@ -105,7 +105,7 @@ const [value, modifiers] = defineModel<number | string>({
   <div class="w-full flex flex-col gap-0.5">
     <div
       :class="cn(
-        'flex flex-row px-5 relative h-[var(--giro-field-height)] rounded-default bg-subtle text-subtle',
+        'flex flex-row px-5 relative h-[var(--giro-field-height)] rounded bg-subtle text-subtle',
         props.class,
       )"
     >

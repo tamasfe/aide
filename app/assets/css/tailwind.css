@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -87,7 +85,17 @@
   }
 
   html {
-    font-family: 'Montserrat', sans-serif;
+    font-optical-sizing: auto;
+    font-family:
+        "Montserrat",
+        -apple-system,
+        ui-sans-serif,
+        system-ui,
+        sans-serif,
+        "Apple Color Emoji",
+        "Segoe UI Emoji",
+        "Segoe UI Symbol",
+        "Noto Color Emoji";
   }
 
   body {

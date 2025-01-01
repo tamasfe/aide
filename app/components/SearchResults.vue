@@ -109,7 +109,7 @@ const onClickLink = () => {
       <template #default="{ item: item }">
         <BaseLink
           :to="`/games/${item.id}`"
-          class="block bg-subtle rounded-default w-full h-full overflow-hidden"
+          class="block bg-subtle rounded w-full h-full overflow-hidden"
           @click="onClickLink"
         >
           <GamesImageLoader :src="item.imageUrl" />
@@ -128,7 +128,7 @@ const onClickLink = () => {
       <template #default="{ item: item }">
         <BaseLink
           :to="`/providers/${item.id}`"
-          class="block bg-subtle rounded-default w-full h-full overflow-hidden"
+          class="block bg-subtle rounded w-full h-full overflow-hidden"
           @click="onClickLink"
         >
           <ProviderImageLoader :src="item.imageUrl" :provider-id="item.id" />
