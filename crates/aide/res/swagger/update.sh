@@ -1,0 +1,2 @@
+curl https://raw.githubusercontent.com/swagger-api/swagger-ui/refs/heads/master/dist/swagger-ui.css -o swagger-ui.css
+curl https://raw.githubusercontent.com/swagger-api/swagger-ui/refs/heads/master/dist/swagger-ui-bundle.js -o swagger-ui-bundle.js
