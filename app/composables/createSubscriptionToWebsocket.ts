@@ -5,12 +5,10 @@ import type { WebsocketConnectionI } from "~/packages/websocket/domain/websocket
  * as it uses the Vue onMounted and onUnmounted lifecycle hooks.
  */
 export const useCreateSubscriptionToWebsocket = (
+  wsConnection: WebsocketConnectionI,
   subscribe: (wsConnection: WebsocketConnectionI) => void,
   unsubscribe: (wsConnection: WebsocketConnectionI) => void,
 ) => {
-  const { $wsConnection } = useNuxtApp();
-  if ($wsConnection) {
-    onMounted(() => subscribe($wsConnection));
-    onUnmounted(() => unsubscribe($wsConnection));
-  }
+  onMounted(() => subscribe(wsConnection));
+  onUnmounted(() => unsubscribe(wsConnection));
 };
