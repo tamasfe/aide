@@ -1,41 +1,34 @@
-import type { PaymentStatus } from "~/modules/wallet/domain/Payment";
-import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
+import type { components } from "~/packages/http-client/girobet-backend-generated-http-client/openapi-typescript";
 
-export interface WebsocketMessagesI {
-  payment_status_update: {
-    type: "notification";
+export type WebsocketMessagesToServer = components["schemas"]["WebsocketClientEvent"];
+export type WebsocketMessagesFromServer = components["schemas"]["WebsocketServerEvent"];
+
+export type WebsocketMessagesByType = {
+  winning_now: WebsocketMessagesFromServer & {
+    type: "ticker";
     data: {
-      type: "payment_status_update";
-      data: {
-        flow_id: number;
-        status: PaymentStatus;
-      };
+      type: "winning_now";
     };
   };
 
-  kyc_completed: {
+  payment_status_update: WebsocketMessagesFromServer & {
+    type: "notification";
+    data: {
+      type: "payment_status_update";
+    };
+  };
+
+  kyc_completed: WebsocketMessagesFromServer & {
     type: "notification";
     data: {
       type: "kyc_completed";
     };
   };
 
-  winning_now: {
-    type: "ticker";
+  channel_entered: WebsocketMessagesFromServer & {
+    type: "protocol";
     data: {
-      type: "winning_now";
-      data: {
-        amount: number;
-        currency: WalletCurrency;
-        user_nickname: string;
-        game: {
-          id: number;
-          image_url: string;
-          name: string;
-          slug: string;
-        };
-      };
+      channel_entered: "newest_wins";
     };
   };
-
-}
+};

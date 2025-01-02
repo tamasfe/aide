@@ -71,78 +71,6 @@
         }
       }
     },
-    "/ws/access-token": {
-      "post": {
-        "tags": [
-          "WebSocket"
-        ],
-        "summary": "Issue WebSocket Access Token",
-        "description": "This endpoint is used to generate authentication tokens (access tokens) for WebSocket connections in our system.\n\n## Access Token Generation\n\n1. Send a POST request to the access token issuer endpoint.\n2. The endpoint will return an access token.\n\n## Access Token Properties\n\n- Access tokens are short-lived tokens, valid for 60 seconds from the time of generation.\n- Each access token, once used, is tied to a specific websocket connection and is immediately invalidated.\n\n## Usage\n\n- Use the generated access token when establishing a WebSocket connection.\n- For detailed information on how to use the access token in a WebSocket connection, refer to the documentation found [here](#tag/websocket/GET/ws/connect).\n\n## Important Notes\n\n- Always generate a new access token before attempting to log in to the user event stream.\n- Ensure your client handles access token expiration and reconnection scenarios.",
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AccessTokenTokenResponse"
-                }
-              }
-            }
-          },
-          "4XX": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ServerError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/ws/connect": {
-      "get": {
-        "tags": [
-          "WebSocket"
-        ],
-        "summary": "Establish WebSocket Connection",
-        "description": "This route is the entry point for WebSocket connections in our system.\n\n## Connection Process\n\n1. Connect to this endpoint using the WebSocket protocol.\n2. Once connected, send a login message with your access token:\n\n   ```json\n   {\n     \"type\": \"user_login\",\n     \"data\": \"<access-token>\"\n   }\n   ```\n\n## Example (JavaScript)\n\n```javascript\nconst socket = new WebSocket(\"wss://your-domain.com/ws/connect\");\n\n// After connection is established, send login message\nsocket.onopen = () => {\n  const loginMessage = {\n    type: \"user_login\",\n    data: \"your-access-token\"\n  };\n  socket.send(JSON.stringify(loginMessage));\n};\n```\n\n## Message Format\n\nAll WebSocket messages follow a JSON format. The message structure for client events matches the request body specifications in this OpenAPI documentation, while server events follow the HTTP response specifications.\n\n### Client Events (Sending)\nMessages sent from the client should follow this format:\n```json\n{\n  \"type\": \"event_name\",\n  \"data\": {}  // Data structure as specified in OpenAPI request bodies\n}\n```\n\n### Server Events (Receiving)\nMessages received from the server will follow this format:\n```json\n{\n  \"type\": \"event_name\",\n  \"data\": {}  // Data structure as specified in OpenAPI responses\n}\n```\n\n## Important Notes\n\n- Access tokens are valid for 60 seconds.\n- Ensure your client can handle reconnection if the access token expires.\n- The server will emit an error event if authentication fails.\n- After a successful login, you'll be subscribed to your respective channel.\n\nFor detailed information on access token generation and management, refer to the main WebSocket authentication documentation found [here](#tag/websocket/POST/ws/access-token).",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/WebsocketClientEvent"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/WebsocketServerEvent"
-                }
-              }
-            }
-          },
-          "4XX": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ServerError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/auth/whoami": {
       "get": {
         "tags": [
@@ -588,7 +516,7 @@
             "schema": {
               "default": 20,
               "type": "integer",
-              "format": "uint",
+              "format": "int32",
               "maximum": 100.0,
               "minimum": 1.0
             },
@@ -600,8 +528,7 @@
             "schema": {
               "default": 0,
               "type": "integer",
-              "format": "uint",
-              "minimum": 0.0
+              "format": "int32"
             },
             "style": "form"
           }
@@ -892,7 +819,7 @@
             "schema": {
               "default": 20,
               "type": "integer",
-              "format": "uint",
+              "format": "int32",
               "maximum": 100.0,
               "minimum": 1.0
             },
@@ -904,8 +831,7 @@
             "schema": {
               "default": 0,
               "type": "integer",
-              "format": "uint",
-              "minimum": 0.0
+              "format": "int32"
             },
             "style": "form"
           }
@@ -1091,7 +1017,7 @@
             "schema": {
               "default": 20,
               "type": "integer",
-              "format": "uint",
+              "format": "int32",
               "maximum": 100.0,
               "minimum": 1.0
             },
@@ -1103,8 +1029,7 @@
             "schema": {
               "default": 0,
               "type": "integer",
-              "format": "uint",
-              "minimum": 0.0
+              "format": "int32"
             },
             "style": "form"
           }
@@ -1181,7 +1106,7 @@
             "schema": {
               "default": 20,
               "type": "integer",
-              "format": "uint",
+              "format": "int32",
               "maximum": 100.0,
               "minimum": 1.0
             },
@@ -1193,8 +1118,7 @@
             "schema": {
               "default": 0,
               "type": "integer",
-              "format": "uint",
-              "minimum": 0.0
+              "format": "int32"
             },
             "style": "form"
           }
@@ -1472,7 +1396,7 @@
             "schema": {
               "default": 20,
               "type": "integer",
-              "format": "uint",
+              "format": "int32",
               "maximum": 100.0,
               "minimum": 1.0
             },
@@ -1484,8 +1408,7 @@
             "schema": {
               "default": 0,
               "type": "integer",
-              "format": "uint",
-              "minimum": 0.0
+              "format": "int32"
             },
             "style": "form"
           }
@@ -1870,6 +1793,78 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/KycStatusResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ws/access-token": {
+      "post": {
+        "tags": [
+          "WebSocket"
+        ],
+        "summary": "Issue WebSocket Access Token",
+        "description": "This endpoint is used to generate authentication tokens (access tokens) for WebSocket connections in our system.\n\n## Access Token Generation\n\n1. Send a POST request to the access token issuer endpoint.\n2. The endpoint will return an access token.\n\n## Access Token Properties\n\n- Access tokens are short-lived tokens, valid for 60 seconds from the time of generation.\n- Each access token, once used, is tied to a specific websocket connection and is immediately invalidated.\n\n## Usage\n\n- Use the generated access token when establishing a WebSocket connection.\n- For detailed information on how to use the access token in a WebSocket connection, refer to the documentation found [here](#tag/websocket/GET/ws/connect).\n\n## Important Notes\n\n- Always generate a new access token before attempting to log in to the user event stream.\n- Ensure your client handles access token expiration and reconnection scenarios.",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccessTokenTokenResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ws/connect": {
+      "get": {
+        "tags": [
+          "WebSocket"
+        ],
+        "summary": "Establish WebSocket Connection",
+        "description": "This route is the entry point for WebSocket connections in our system.\n\n## Connection Process\n\n1. Connect to this endpoint using the WebSocket protocol.\n2. Once connected, send a login message with your access token:\n\n   ```json\n   {\n     \"type\": \"user_login\",\n     \"data\": \"<access-token>\"\n   }\n   ```\n\n## Example (JavaScript)\n\n```javascript\nconst socket = new WebSocket(\"wss://your-domain.com/ws/connect\");\n\n// After connection is established, send login message\nsocket.onopen = () => {\n  const loginMessage = {\n    type: \"user_login\",\n    data: \"your-access-token\"\n  };\n  socket.send(JSON.stringify(loginMessage));\n};\n```\n\n## Message Format\n\nAll WebSocket messages follow a JSON format. The message structure for client events matches the request body specifications in this OpenAPI documentation, while server events follow the HTTP response specifications.\n\n### Client Events (Sending)\nMessages sent from the client should follow this format:\n```json\n{\n  \"type\": \"event_name\",\n  \"data\": {}  // Data structure as specified in OpenAPI request bodies\n}\n```\n\n### Server Events (Receiving)\nMessages received from the server will follow this format:\n```json\n{\n  \"type\": \"event_name\",\n  \"data\": {}  // Data structure as specified in OpenAPI responses\n}\n```\n\n## Important Notes\n\n- Access tokens are valid for 60 seconds.\n- Ensure your client can handle reconnection if the access token expires.\n- The server will emit an error event if authentication fails.\n- After a successful login, you'll be subscribed to your respective channel.\n\nFor detailed information on access token generation and management, refer to the main WebSocket authentication documentation found [here](#tag/websocket/POST/ws/access-token).",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WebsocketClientEvent"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WebsocketServerEvent"
                 }
               }
             }
@@ -2572,7 +2567,7 @@
       },
       "GameCategoryId": {
         "examples": [
-          0
+          1
         ],
         "type": "integer",
         "format": "int64"
@@ -2627,7 +2622,7 @@
       },
       "GameId": {
         "examples": [
-          0
+          1
         ],
         "type": "integer",
         "format": "int64"
@@ -2645,6 +2640,9 @@
         }
       },
       "GameProviderId": {
+        "examples": [
+          1
+        ],
         "type": "integer",
         "format": "int64"
       },
@@ -2810,6 +2808,9 @@
         }
       },
       "GameRoundActionId": {
+        "examples": [
+          1
+        ],
         "type": "integer",
         "format": "int64"
       },
@@ -2929,7 +2930,7 @@
       },
       "LicenseId": {
         "examples": [
-          0
+          1
         ],
         "type": "integer",
         "format": "int64"
@@ -3101,7 +3102,7 @@
       },
       "NotificationId": {
         "examples": [
-          0
+          1
         ],
         "type": "integer",
         "format": "int64"
@@ -3120,36 +3121,6 @@
       },
       "NotificationResponse": {
         "type": "object",
-        "required": [
-          "created_at",
-          "data",
-          "id"
-        ],
-        "properties": {
-          "created_at": {
-            "description": "The time the notification was created.",
-            "type": "string",
-            "format": "date-time"
-          },
-          "data": {
-            "description": "The data of the notification.",
-            "$ref": "#/components/schemas/NotificationType"
-          },
-          "id": {
-            "description": "The ID of the notification.",
-            "$ref": "#/components/schemas/NotificationId"
-          },
-          "read_at": {
-            "description": "The time the notification was read. If `null` the notification has not been read.",
-            "type": [
-              "string",
-              "null"
-            ],
-            "format": "date-time"
-          }
-        }
-      },
-      "NotificationType": {
         "oneOf": [
           {
             "description": "A new payment has been created or updated.",
@@ -3217,7 +3188,7 @@
             }
           },
           {
-            "description": "A new payment has been created or updated.",
+            "description": "A banner notification.",
             "type": "object",
             "required": [
               "data",
@@ -3227,16 +3198,24 @@
               "data": {
                 "type": "object",
                 "required": [
-                  "link",
-                  "message",
                   "title"
                 ],
                 "properties": {
                   "link": {
-                    "$ref": "#/components/schemas/Url"
+                    "anyOf": [
+                      {
+                        "$ref": "#/components/schemas/Url"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
                   },
                   "message": {
-                    "type": "string"
+                    "type": [
+                      "string",
+                      "null"
+                    ]
                   },
                   "title": {
                     "type": "string"
@@ -3250,8 +3229,72 @@
                 ]
               }
             }
+          },
+          {
+            "description": "Popup modal notification.",
+            "type": "object",
+            "required": [
+              "data",
+              "type"
+            ],
+            "properties": {
+              "data": {
+                "type": "object",
+                "required": [
+                  "message",
+                  "title"
+                ],
+                "properties": {
+                  "link": {
+                    "anyOf": [
+                      {
+                        "$ref": "#/components/schemas/Url"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "message": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  }
+                }
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "popup_modal"
+                ]
+              }
+            }
           }
-        ]
+        ],
+        "required": [
+          "created_at",
+          "id"
+        ],
+        "properties": {
+          "created_at": {
+            "description": "The time the notification was created.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "id": {
+            "description": "The ID of the notification.",
+            "$ref": "#/components/schemas/NotificationId"
+          },
+          "read_at": {
+            "description": "The time the notification was read. If `null` the notification has not been read.",
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          }
+        }
       },
       "NotificationTypeDiscriminants": {
         "description": "Auto-generated discriminant enum variants",
@@ -3278,10 +3321,17 @@
             ]
           },
           {
-            "description": "A new payment has been created or updated.",
+            "description": "A banner notification.",
             "type": "string",
             "enum": [
               "banner"
+            ]
+          },
+          {
+            "description": "Popup modal notification.",
+            "type": "string",
+            "enum": [
+              "popup_modal"
             ]
           }
         ]
@@ -3400,15 +3450,14 @@
           "limit": {
             "default": 20,
             "type": "integer",
-            "format": "uint",
+            "format": "int32",
             "maximum": 100.0,
             "minimum": 1.0
           },
           "offset": {
             "default": 0,
             "type": "integer",
-            "format": "uint",
-            "minimum": 0.0
+            "format": "int32"
           },
           "total_items": {
             "type": "integer",
@@ -3512,15 +3561,14 @@
           "limit": {
             "default": 20,
             "type": "integer",
-            "format": "uint",
+            "format": "int32",
             "maximum": 100.0,
             "minimum": 1.0
           },
           "offset": {
             "default": 0,
             "type": "integer",
-            "format": "uint",
-            "minimum": 0.0
+            "format": "int32"
           }
         }
       },
@@ -3681,7 +3729,7 @@
       },
       "PaymentFlowId": {
         "examples": [
-          0
+          1
         ],
         "type": "integer",
         "format": "int64"
@@ -3902,7 +3950,7 @@
       },
       "PaymentMethodId": {
         "examples": [
-          0
+          1
         ],
         "type": "integer",
         "format": "int64"
@@ -4181,6 +4229,13 @@
       "ProtocolType": {
         "oneOf": [
           {
+            "description": "The websocket connection was successfully established.",
+            "type": "string",
+            "enum": [
+              "welcome"
+            ]
+          },
+          {
             "description": "There was an error in the websocket connection, either due to an invalid request or an internal server error.",
             "type": "object",
             "required": [
@@ -4216,17 +4271,29 @@
           },
           {
             "description": "The user entered a channel and is now receiving events from it.",
-            "type": "string",
-            "enum": [
+            "type": "object",
+            "required": [
               "channel_entered"
-            ]
+            ],
+            "properties": {
+              "channel_entered": {
+                "$ref": "#/components/schemas/WebsocketStreamChannel"
+              }
+            },
+            "additionalProperties": false
           },
           {
             "description": "The user left a channel and is no longer receiving events from it.",
-            "type": "string",
-            "enum": [
+            "type": "object",
+            "required": [
               "channel_left"
-            ]
+            ],
+            "properties": {
+              "channel_left": {
+                "$ref": "#/components/schemas/WebsocketStreamChannel"
+              }
+            },
+            "additionalProperties": false
           }
         ]
       },
@@ -5800,7 +5867,7 @@
       },
       "UserId": {
         "examples": [
-          0
+          1
         ],
         "type": "integer",
         "format": "int64"
@@ -5938,7 +6005,7 @@
       },
       "WalletId": {
         "examples": [
-          0
+          1
         ],
         "type": "integer",
         "format": "int64"
@@ -6098,7 +6165,7 @@
                     }
                   },
                   {
-                    "description": "A new payment has been created or updated.",
+                    "description": "A banner notification.",
                     "type": "object",
                     "required": [
                       "data",
@@ -6108,13 +6175,62 @@
                       "data": {
                         "type": "object",
                         "required": [
-                          "link",
+                          "title"
+                        ],
+                        "properties": {
+                          "link": {
+                            "anyOf": [
+                              {
+                                "$ref": "#/components/schemas/Url"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "message": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "title": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "banner"
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "description": "Popup modal notification.",
+                    "type": "object",
+                    "required": [
+                      "data",
+                      "type"
+                    ],
+                    "properties": {
+                      "data": {
+                        "type": "object",
+                        "required": [
                           "message",
                           "title"
                         ],
                         "properties": {
                           "link": {
-                            "$ref": "#/components/schemas/Url"
+                            "anyOf": [
+                              {
+                                "$ref": "#/components/schemas/Url"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
                           },
                           "message": {
                             "type": "string"
@@ -6127,7 +6243,7 @@
                       "type": {
                         "type": "string",
                         "enum": [
-                          "banner"
+                          "popup_modal"
                         ]
                       }
                     }

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
+
 // DESIGN STATUS:       ✅
 // ARCHITECTURE STATUS: ✴️
 //   * not done
@@ -38,29 +40,27 @@ type Win = {
 const buffer = ref<Win[]>([]);
 const loading = ref(true);
 
-watch(() => $wsConnection, (wsConnection) => {
-  if (wsConnection) {
-    useCreateSubscriptionToWebsocket(
-      wsConnection,
-      wsConnection => $dependencies.websockets.ui.wsChannelManagers.newestWins.subscribe(wsConnection, (message) => {
-        buffer.value.unshift(({
-          key: `${message.data.data.amount}-${message.data.data.currency}-${message.data.data.user_nickname}-${message.data.data.game.id}`,
-          amount: message.data.data.amount,
-          currency: message.data.data.currency,
-          userNickname: message.data.data.user_nickname,
-          game: {
-            id: message.data.data.game.id,
-            imageUrl: message.data.data.game.image_url,
-            name: message.data.data.game.name,
-          },
-        }));
+if ($wsConnection) {
+  useCreateSubscriptionToWebsocket(
+    $wsConnection,
+    wsConnection => $dependencies.websockets.ui.wsChannelManagers.newestWins.subscribe(wsConnection, (message) => {
+      buffer.value.unshift(({
+        key: `${message.data.data.amount}-${message.data.data.currency}-${message.data.data.user_nickname}-${message.data.data.game.id}`,
+        amount: message.data.data.amount,
+        currency: message.data.data.currency as WalletCurrency,
+        userNickname: message.data.data.user_nickname,
+        game: {
+          id: message.data.data.game.id,
+          imageUrl: message.data.data.game.image_url,
+          name: message.data.data.game.name,
+        },
+      }));
 
-        loading.value = false;
-      }),
-      wsConnection => $dependencies.websockets.ui.wsChannelManagers.newestWins.unsubscribe(wsConnection),
-    );
-  }
-}, { immediate: true });
+      loading.value = false;
+    }),
+    wsConnection => $dependencies.websockets.ui.wsChannelManagers.newestWins.unsubscribe(wsConnection),
+  );
+}
 </script>
 
 <template>

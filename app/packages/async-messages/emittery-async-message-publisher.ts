@@ -19,8 +19,18 @@ export class EmitteryAsyncMessagePublisher implements AsyncMessagePublisherI {
   subscribe<T extends keyof AsyncMessagesTypes>(
     messageName: T,
     callback: (message: AsyncMessagesTypes[T]) => void,
-  ): void {
+    listenerId = Date.now(),
+  ): number {
     this.emittery.on(messageName, callback);
+    this.listenersMap.set(listenerId, { callback: callback as (message: object) => void, message: messageName });
+    return listenerId;
+  }
+
+  unsubscribe(listenerId: number): void {
+    const listener = this.listenersMap.get(listenerId);
+    if (listener) {
+      this.emittery.off(listener.message, listener.callback);
+    }
   }
 
   private readonly emittery: Emittery;
@@ -34,4 +44,9 @@ export class EmitteryAsyncMessagePublisher implements AsyncMessagePublisherI {
       }
     } } });
   }
+
+  private listenersMap = new Map<number, {
+    callback: (message: object) => void;
+    message: string;
+  }>();
 }

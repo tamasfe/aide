@@ -24,7 +24,7 @@ export const createWebsocketDependencyInjectionI: (config: PublicRuntimeConfig, 
       createWebsocketConnection: new CreateWebsocketConnection(config.websocketApiBaseUrl, commonDependencies.logger, commonDependencies.asyncMessagePublisher),
       wsChannelManagers: {
         user: new WebsocketChannelManagerUser(websocketLeaseRepository, commonDependencies.asyncMessagePublisher, commonDependencies.logger),
-        newestWins: new WebsocketChannelManagerNewWins(commonDependencies.logger),
+        newestWins: new WebsocketChannelManagerNewWins(commonDependencies.logger, commonDependencies.asyncMessagePublisher),
       },
     },
   };

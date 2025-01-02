@@ -8,6 +8,9 @@ export interface AsyncMessagePublisherI {
 
   subscribe<T extends keyof AsyncMessagesTypes>(
     messageName: T,
-    callback: (message: AsyncMessagesTypes[T]) => void
-  ): void;
+    callback: (message: AsyncMessagesTypes[T]) => void,
+    listenerId?: number
+  ): number;
+
+  unsubscribe(listenerId: number): void;
 }

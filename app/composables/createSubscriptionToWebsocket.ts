@@ -2,13 +2,13 @@ import type { WebsocketConnectionI } from "~/packages/websocket/domain/websocket
 
 /**
  * This composable can only be used inside a vue component setup function,
- * as it uses the Vue onMounted and onUnmounted lifecycle hooks.
+ * as it uses the Vue onUnmounted lifecycle hook.
  */
 export const useCreateSubscriptionToWebsocket = (
   wsConnection: WebsocketConnectionI,
   subscribe: (wsConnection: WebsocketConnectionI) => void,
   unsubscribe: (wsConnection: WebsocketConnectionI) => void,
 ) => {
-  onMounted(() => subscribe(wsConnection));
+  subscribe(wsConnection);
   onUnmounted(() => unsubscribe(wsConnection));
 };

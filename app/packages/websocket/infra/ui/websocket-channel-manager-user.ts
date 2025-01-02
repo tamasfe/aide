@@ -17,15 +17,6 @@ export class WebsocketChannelManagerUser {
       return;
     }
 
-    const errorEnteringChannel = await wsConnection.enterChannel({
-      channel: "user",
-      accessToken: wsAccessTokenResult.value.token,
-    });
-    if (errorEnteringChannel.isFailure) {
-      this.logger.error("Error logging in to the user WS channel when subscribing user channel", errorEnteringChannel.error, { connection: wsConnection });
-      return;
-    }
-
     const resultSubscribingPayment = wsConnection.subscribeToMessage("payment_status_update", (message) => {
       this.asyncMessagePublisher.emit("girobet-backend:events:payments:payment-status-updated", {
         flowId: message.data.data.flow_id,
@@ -45,6 +36,24 @@ export class WebsocketChannelManagerUser {
     });
     if (resultSubscribingKyc.isFailure) {
       this.logger.error("Error subscribing to the WS message when subscribing to user channel", resultSubscribingKyc.error, { connection: wsConnection, message: "kyc_completed" });
+    }
+    else {
+      this.kycCompletedListenerId = resultSubscribingKyc.value;
+    }
+
+    const resultEnteringChannel = await wsConnection.enterChannel({
+      channel: "user",
+      accessToken: wsAccessTokenResult.value.token,
+    });
+    if (resultEnteringChannel.isFailure) {
+      this.logger.error("Error logging in to the user WS channel", resultEnteringChannel.error, { connection: wsConnection });
+      if (this.paymentStatusUpdateListenerId) {
+        wsConnection.unsubscribeFromMessage(this.paymentStatusUpdateListenerId);
+      }
+      if (this.kycCompletedListenerId) {
+        wsConnection.unsubscribeFromMessage(this.kycCompletedListenerId);
+      }
+      return;
     }
 
     return;
@@ -69,4 +78,5 @@ export class WebsocketChannelManagerUser {
   }
 
   private paymentStatusUpdateListenerId: number | null = null;
+  private kycCompletedListenerId: number | null = null;
 }
