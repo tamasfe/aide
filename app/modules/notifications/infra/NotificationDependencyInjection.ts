@@ -1,6 +1,6 @@
 import type { PublicRuntimeConfig } from "nuxt/schema";
 import type { NotificationRepositoryI } from "../domain/NotificationRepository";
-import { NotificationRepositoryLocalStorage } from "./NotificationRepositoryLocalStorage";
+import { NotificationRepositoryCookie } from "./NotificationRepositoryCookie";
 import { SearchNotificationBannersFromPromoBar } from "./ui/SearchNotificationBannersFromPromoBar";
 import { MarkNotificationBannerAsReadFromPromoBar } from "./ui/MarkNotificationBannerAsReadFromPromoBar";
 import type { CommonDependenciesI } from "~/dependency-injection/load-di";
@@ -13,7 +13,7 @@ export interface NotificationDependencyInjectionI {
 }
 
 export const createNotificationDependencyInjection: (config: PublicRuntimeConfig, commonDependencies: CommonDependenciesI) => Promise<NotificationDependencyInjectionI> = async (config: PublicRuntimeConfig, commonDependencies: CommonDependenciesI) => {
-  const notificationRepo: NotificationRepositoryI = new NotificationRepositoryLocalStorage(
+  const notificationRepo: NotificationRepositoryI = new NotificationRepositoryCookie(
     commonDependencies.translateFunction,
   );
 

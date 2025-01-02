@@ -8,7 +8,7 @@ import { type VariantProps, cva } from "class-variance-authority";
 
 const { $dependencies } = useNuxtApp();
 
-const ENABLE_SERVER_SIDE_RENDERING = false;
+const ENABLE_SERVER_SIDE_RENDERING = true;
 const DEFER_CLIENT_SIDE_LOADING = true;
 const { data: notificationBanners } = await useAsyncData("promo-bar",
   () => $dependencies.notifications.ui.searchNotificationBannersFromPromoBar.handle(),

@@ -14,6 +14,7 @@ import {
   type EmptyResult,
   type Result,
 } from "~/packages/result";
+import type { CookieRef } from "#app";
 
 const DISGREGARD_SAVED_BEFORE = new Date("2024-12-31T13:35:23.690Z");
 const generateBanners = (t: TranslateFunctionType): NotificationI[] => {
@@ -32,13 +33,12 @@ const generateBanners = (t: TranslateFunctionType): NotificationI[] => {
   ];
 };
 
-type NotificationsRecordLocalStorage = {
+type NotificationsRecordCookie = {
   savedAt: string;
   notifications: NotificationPropsI[];
 };
 
-export class NotificationRepositoryLocalStorage
-implements NotificationRepositoryI {
+export class NotificationRepositoryCookie implements NotificationRepositoryI {
   public async searchPaginating(
     searchParams: {
       readStatus: "read" | "unread" | null;
@@ -55,17 +55,6 @@ implements NotificationRepositoryI {
         ErrorRetrievingNotifications
       >
     > {
-    if (!this.isLocalStorageAvailable()) {
-      return fail(
-        ErrorRetrievingNotifications.newFromError(
-          {},
-          new Error(
-            "This repo should only be run in the client side. LocalStorage is not available on server side rendering",
-          ),
-        ),
-      );
-    }
-
     try {
       const notifications = this.retrieveNotifications();
 
@@ -111,17 +100,6 @@ implements NotificationRepositoryI {
     notificationId: number,
     status: "read" | "unread",
   ): Promise<EmptyResult<ErrorNotificationNotFound | ErrorSavingNotification>> {
-    if (!this.isLocalStorageAvailable()) {
-      return fail(
-        ErrorSavingNotification.newFromError(
-          {},
-          new Error(
-            "This repo should only be run in the client side. LocalStorage is not available on server side rendering",
-          ),
-        ),
-      );
-    }
-
     try {
       const notifications = this.retrieveNotifications();
 
@@ -152,18 +130,10 @@ implements NotificationRepositoryI {
     }
   }
 
-  constructor(private t: TranslateFunctionType) {}
+  public constructor(private t: TranslateFunctionType) {}
 
   private retrieveNotifications(): NotificationI[] {
-    const notificationsRecordStringified = window.localStorage.getItem(
-      this.STORAGE_ID_KEY,
-    );
-    const notificationsRecord: NotificationsRecordLocalStorage | null
-      = notificationsRecordStringified
-        ? (JSON.parse(
-            notificationsRecordStringified,
-          ) as NotificationsRecordLocalStorage)
-        : null;
+    const notificationsRecord = this.useCookie().value;
 
     return (() => {
       if (
@@ -182,7 +152,7 @@ implements NotificationRepositoryI {
   }
 
   private saveNotifications(notifications: NotificationI[]) {
-    const newNotificationRecord: NotificationsRecordLocalStorage = {
+    const newNotificationRecord: NotificationsRecordCookie = {
       savedAt: new Date().toISOString(),
       notifications: notifications.map(notification => ({
         ...notification,
@@ -191,15 +161,18 @@ implements NotificationRepositoryI {
       })),
     };
 
-    window.localStorage.setItem(
-      this.STORAGE_ID_KEY,
-      JSON.stringify(newNotificationRecord),
-    );
+    const cookie = this.useCookie();
+    cookie.value = newNotificationRecord;
   }
 
-  private isLocalStorageAvailable() {
-    return typeof window !== "undefined" && window.localStorage;
+  private useCookie(): CookieRef<NotificationsRecordCookie | null> {
+    const inOneYear = new Date(Date.now() + 365 * 24 * 3600 * 1000);
+    return useCookie<NotificationsRecordCookie | null>(this.COOKIE_NAME, {
+      default: () => null,
+      expires: inOneYear,
+      httpOnly: false,
+    });
   }
 
-  private STORAGE_ID_KEY = "girobet-notifications" as const;
+  private COOKIE_NAME = "girobet_notifications" as const;
 }
