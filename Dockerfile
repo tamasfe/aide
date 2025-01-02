@@ -10,4 +10,4 @@ COPY ./.output .
 
 ENTRYPOINT ["node"]
 
-CMD ["--import", "/app/server/sentry.server.config.mjs", "/app/server/index.mjs"]
+CMD ["/app/server/index.mjs"]
