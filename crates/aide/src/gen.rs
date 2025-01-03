@@ -133,7 +133,7 @@ impl GenContext {
         }
 
         let mut this = Self {
-            schema: SchemaGenerator::new(SchemaSettings::draft07()),
+            schema: SchemaGenerator::new(SchemaSettings::openapi3()),
             infer_responses: true,
             all_error_responses: false,
             extract_schemas: true,
@@ -150,13 +150,12 @@ impl GenContext {
     }
     fn set_extract_schemas(&mut self, extract: bool) {
         if extract {
-            self.schema = SchemaGenerator::new(SchemaSettings::draft07().with(|s| {
+            self.schema = SchemaGenerator::new(SchemaSettings::openapi3().with(|s| {
                 s.inline_subschemas = false;
-                s.definitions_path = "#/components/schemas/".into();
             }));
             self.extract_schemas = true;
         } else {
-            self.schema = SchemaGenerator::new(SchemaSettings::draft07().with(|s| {
+            self.schema = SchemaGenerator::new(SchemaSettings::openapi3().with(|s| {
                 s.inline_subschemas = true;
             }));
             self.extract_schemas = false;

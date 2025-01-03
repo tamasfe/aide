@@ -121,7 +121,7 @@ struct SchemaContext {
 impl SchemaContext {
     fn new() -> Self {
         Self {
-            generator: SchemaSettings::draft07()
+            generator: SchemaSettings::openapi3()
                 .with(|g| g.inline_subschemas = true)
                 .into_generator(),
             schemas: HashMap::default(),
