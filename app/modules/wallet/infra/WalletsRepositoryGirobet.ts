@@ -24,6 +24,7 @@ export class WalletsRepositoryGirobet implements WalletRepositoryI {
           walletId: wallet.wallet_id,
           balance: wallet.balance,
           currency: wallet.currency,
+          paymentMethod: wallet.payment_method,
         })));
       }
 
