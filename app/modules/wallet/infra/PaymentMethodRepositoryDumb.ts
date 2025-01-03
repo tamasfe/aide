@@ -3,22 +3,22 @@ import type { PaymentMethodI, PaymentMethodIdentifier } from "../domain/PaymentM
 import type { PaymentMethodRepositoryI } from "../domain/PaymentMethodRepository";
 import { success, type Result } from "~/packages/result";
 import type { InfrastructureError } from "~/packages/result/infrastructure-error";
-import type { components } from "~/packages/http-client/girobet-backend-generated-http-client/openapi-typescript";
+import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
 
 export class PaymentMethodRepositoryDumb implements PaymentMethodRepositoryI {
-  public async search(_currency: components["schemas"]["Currency"]): Promise<Result<PaymentMethodI[], InfrastructureError>> {
+  public async search(_currency: WalletCurrency): Promise<Result<PaymentMethodI[], InfrastructureError>> {
     return success([
       { id: 1, identifier: "pix" },
     ]);
   }
 
-  public async findOne(_currency: components["schemas"]["Currency"], _identifier: PaymentMethodIdentifier): Promise<Result<PaymentMethodI, ErrorPaymentMethodNotFound | InfrastructureError>> {
+  public async findOne(_currency: WalletCurrency, _identifier: PaymentMethodIdentifier): Promise<Result<PaymentMethodI, ErrorPaymentMethodNotFound | InfrastructureError>> {
     return success(
       { id: 1, identifier: "pix" },
     );
   }
 
-  public async findLimits(_currency: components["schemas"]["Currency"], _paymentMethodId: number) {
+  public async findLimits(_currency: WalletCurrency, _paymentMethodId: number) {
     return success({
       deposit: {
         cooldownSeconds: 10,

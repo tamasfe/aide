@@ -8,7 +8,7 @@ import type { ErrorWalletPaymentCooldownNotFinished } from "./ErrorWalletPayment
 import type { ErrorPaymentAmountExceedsTimeframeLimits } from "./ErrorPaymentAmountExceedsTimeframeLimits";
 import type { Result } from "~/packages/result";
 import type { InfrastructureError } from "~/packages/result/infrastructure-error";
-import type { components } from "~/packages/http-client/girobet-backend-generated-http-client/openapi-typescript";
+import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
 
 export interface PaymentRepositoryI {
   searchPaginating(searchParams: { type: PaymentType | null; walletId: number | null }, limit: number, offset: number): Promise<Result<{
@@ -20,12 +20,12 @@ export interface PaymentRepositoryI {
     };
   }, InfrastructureError>>;
 
-  createDepositFlow(amount: number, currency: components["schemas"]["Currency"], paymentMethodId: number): Promise<
+  createDepositFlow(amount: number, currency: WalletCurrency, paymentMethodId: number): Promise<
     Result<
       { flowId: number; pix: { code: string } },
       ErrorPendingPaymentFlow | ErrorPaymentMethodNotAllowed | ErrorPaymentAmountOutsideLimits | ErrorPaymentAmountExceedsTimeframeLimits | InfrastructureError
     >>;
-  createWithdrawalFlow(amount: number, currency: components["schemas"]["Currency"], paymentMethodId: number): Promise<
+  createWithdrawalFlow(amount: number, currency: WalletCurrency, paymentMethodId: number): Promise<
     Result<
       { flowId: number },
       ErrorPendingPaymentFlow | ErrorWalletHasInsufficientWagers | ErrorInsufficientFunds | ErrorPaymentAmountExceedsTimeframeLimits | ErrorWalletPaymentCooldownNotFinished | ErrorPaymentMethodNotAllowed | ErrorPaymentAmountOutsideLimits | InfrastructureError

@@ -6,14 +6,14 @@ import { HttpBackendApiError } from "~/packages/http-client/http-client-error";
 import { fail, success, type Result } from "~/packages/result";
 import { InfrastructureError } from "~/packages/result/infrastructure-error";
 import type { CommonDependenciesI } from "~/dependency-injection/load-di";
-import type { components } from "~/packages/http-client/girobet-backend-generated-http-client/openapi-typescript";
+import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
 
 export class PaymentMethodRepositoryGirobet implements PaymentMethodRepositoryI {
   constructor(clientOptions: { baseUrl: string }, commonDependencies: CommonDependenciesI) {
     this.apiClient = createBackendOpenApiClient(clientOptions, commonDependencies);
   }
 
-  public async search(currency: components["schemas"]["Currency"]): Promise<Result<PaymentMethodI[], InfrastructureError>> {
+  public async search(currency: WalletCurrency): Promise<Result<PaymentMethodI[], InfrastructureError>> {
     try {
       const { data, error, response } = await this.apiClient.GET("/payment/methods", {
         params: {
@@ -44,7 +44,7 @@ export class PaymentMethodRepositoryGirobet implements PaymentMethodRepositoryI 
     }
   }
 
-  public async findOne(currency: components["schemas"]["Currency"], identifier: PaymentMethodIdentifier): Promise<Result<PaymentMethodI, ErrorPaymentMethodNotFound | InfrastructureError>> {
+  public async findOne(currency: WalletCurrency, identifier: PaymentMethodIdentifier): Promise<Result<PaymentMethodI, ErrorPaymentMethodNotFound | InfrastructureError>> {
     const paymentMethodsResult = await this.search(currency);
     if (paymentMethodsResult.isFailure) {
       return paymentMethodsResult;
@@ -58,7 +58,7 @@ export class PaymentMethodRepositoryGirobet implements PaymentMethodRepositoryI 
     return success(paymentMethod);
   }
 
-  public async findLimits(currency: components["schemas"]["Currency"], paymentMethodId: number) {
+  public async findLimits(currency: WalletCurrency, paymentMethodId: number) {
     try {
       const { data, error, response } = await this.apiClient.GET("/payment/limits", {
         params: {

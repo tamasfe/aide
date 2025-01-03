@@ -2,6 +2,7 @@ import type { WalletRepositoryI } from "../domain/WalletRepository";
 import type { ErrorNoAuthenticatedWalletsFound } from "../domain/ErrorNoAuthenticatedWalletsFound";
 import { success, type Result } from "~/packages/result";
 import type { InfrastructureError } from "~/packages/result/infrastructure-error";
+import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
 import type { components } from "~/packages/http-client/girobet-backend-generated-http-client/openapi-typescript";
 
 export class WalletsRepositoryDumb implements WalletRepositoryI {
@@ -9,7 +10,7 @@ export class WalletsRepositoryDumb implements WalletRepositoryI {
     return success([{
       wallet_id: 1,
       balance: 123.05,
-      currency: "EUR" as components["schemas"]["Currency"],
+      currency: "EUR" as WalletCurrency,
     }]);
   }
 }

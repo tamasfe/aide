@@ -1,5 +1,5 @@
 import type { PaymentRepositoryI } from "../domain/PaymentRepository";
-import type { components } from "~/packages/http-client/girobet-backend-generated-http-client/openapi-typescript";
+import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
 import { success } from "~/packages/result";
 import type { AsyncMessagePublisherI } from "~/packages/async-messages/async-message-publisher";
 
@@ -9,7 +9,7 @@ export class CreateWithdrawalFlow {
     private readonly asyncMessagePublisher: AsyncMessagePublisherI,
   ) {}
 
-  public async handle(amount: number, currency: components["schemas"]["Currency"], paymentMethodId: number) {
+  public async handle(amount: number, currency: WalletCurrency, paymentMethodId: number) {
     const result = await this.paymentsRepo.createWithdrawalFlow(amount, currency, paymentMethodId);
     if (result.isFailure) {
       return result;

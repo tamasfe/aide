@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { components } from "~/packages/http-client/girobet-backend-generated-http-client/openapi-typescript";
+import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
 import type { SupportedCountryFlagCode } from "~/types/constants";
 
 // DESIGN STATUS:       ✅
@@ -16,7 +16,7 @@ defineProps<{
   open: boolean;
 }>();
 const currency = ref<{
-  code: components["schemas"]["Currency"];
+  code: WalletCurrency;
   countryCode: SupportedCountryFlagCode;
 }>({
   code: "BRL",

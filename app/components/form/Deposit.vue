@@ -3,7 +3,7 @@ import { toTypedSchema } from "@vee-validate/zod";
 import { z } from "zod";
 import type { PropType } from "vue";
 import type { SupportedCountryFlagCode } from "@/types/constants";
-import type { components } from "~/packages/http-client/girobet-backend-generated-http-client/openapi-typescript";
+import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
 
 // DESIGN STATUS:       ✅
 // ARCHITECTURE STATUS: ✴️
@@ -24,7 +24,7 @@ const props = defineProps({
   },
   currency: {
     type: Object as PropType<{
-      code: components["schemas"]["Currency"];
+      code: WalletCurrency;
       countryCode: SupportedCountryFlagCode;
     }>,
     required: true,

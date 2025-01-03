@@ -7,7 +7,7 @@ import { ErrorWalletPaymentCooldownNotFinished } from "../domain/ErrorWalletPaym
 import { ErrorPaymentAmountExceedsTimeframeLimits } from "../domain/ErrorPaymentAmountExceedsTimeframeLimits";
 import { ErrorPaymentAmountOutsideLimits } from "../domain/ErrorPaymentAmountOutsideLimits";
 import { ErrorPaymentMethodNotAllowed } from "../domain/ErrorPaymentMethodNotAllowed";
-import type { components } from "~/packages/http-client/girobet-backend-generated-http-client/openapi-typescript";
+import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
 import { createBackendOpenApiClient } from "~/packages/http-client/create-backend-open-api-client";
 import { HttpBackendApiError } from "~/packages/http-client/http-client-error";
 import { fail, success, type Result } from "~/packages/result";
@@ -36,7 +36,7 @@ export class PaymentRepositoryGirobet implements PaymentRepositoryI {
         return success({
           payments: data.data.map(paymentData => Payment.new({
             amount: Number(paymentData.amount),
-            currency: paymentData.currency as components["schemas"]["Currency"],
+            currency: paymentData.currency as WalletCurrency,
             createdAt: new Date(paymentData.created_at),
             id: paymentData.id,
             type: paymentData.payment_type,
@@ -74,7 +74,7 @@ export class PaymentRepositoryGirobet implements PaymentRepositoryI {
     }
   }
 
-  public async createDepositFlow(amount: number, currency: components["schemas"]["Currency"], paymentMethodId: number) {
+  public async createDepositFlow(amount: number, currency: WalletCurrency, paymentMethodId: number) {
     try {
       const { data, error, response } = await this.apiClient.POST("/payment/deposit", {
         body: {
@@ -132,7 +132,7 @@ export class PaymentRepositoryGirobet implements PaymentRepositoryI {
     }
   }
 
-  public async createWithdrawalFlow(amount: number, currency: components["schemas"]["Currency"], paymentMethodId: number) {
+  public async createWithdrawalFlow(amount: number, currency: WalletCurrency, paymentMethodId: number) {
     try {
       const { data, error, response } = await this.apiClient.POST("/payment/withdraw", {
         body: {
@@ -195,7 +195,7 @@ export class PaymentRepositoryGirobet implements PaymentRepositoryI {
     }
   }
 
-  public async findPaymentLimits(currency: components["schemas"]["Currency"], paymentMethodId: number): Promise<Result<{ deposit: { min: number | null; max: number | null }; withdrawal: { min: number | null; max: number | null } }, InfrastructureError>> {
+  public async findPaymentLimits(currency: WalletCurrency, paymentMethodId: number): Promise<Result<{ deposit: { min: number | null; max: number | null }; withdrawal: { min: number | null; max: number | null } }, InfrastructureError>> {
     try {
       const { data, error, response } = await this.apiClient.GET("/payment/limits", {
         params: {

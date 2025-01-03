@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { components } from "~/packages/http-client/girobet-backend-generated-http-client/openapi-typescript";
+import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
 
 const open = ref(true);
 const loading = ref(false);
@@ -8,7 +8,7 @@ const { $dependencies } = useNuxtApp();
 const props = defineProps<{
   code: string;
   amount: number;
-  currency: components["schemas"]["Currency"];
+  currency: WalletCurrency;
   paymentMethodId: number;
   paymentFlowId: number;
 }>();

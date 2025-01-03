@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { useClipboard } from "@vueuse/core";
+import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
 import type { components } from "~/packages/http-client/girobet-backend-generated-http-client/openapi-typescript";
 
 const props = defineProps({
   currency: {
-    type: String as PropType<components["schemas"]["Currency"]>,
+    type: String as PropType<WalletCurrency>,
     required: true,
   },
   balance: {

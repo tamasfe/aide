@@ -2,7 +2,7 @@ import { type PaymentType, Payment } from "../domain/Payment";
 import type { PaymentRepositoryI } from "../domain/PaymentRepository";
 import { success, type Result } from "~/packages/result";
 import type { InfrastructureError } from "~/packages/result/infrastructure-error";
-import type { components } from "~/packages/http-client/girobet-backend-generated-http-client/openapi-typescript";
+import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
 
 export class PaymentRepositoryDumb implements PaymentRepositoryI {
   public async searchPaginating(_searchParams: { type: PaymentType | null; walletId: number | null }, limit: number, offset: number): Promise<Result<{ payments: Payment[]; pagination: { limit: number; offset: number; totalItems: number } }, InfrastructureError>> {
@@ -26,7 +26,7 @@ export class PaymentRepositoryDumb implements PaymentRepositoryI {
     });
   }
 
-  public async createDepositFlow(_amount: number, _currency: components["schemas"]["Currency"], _paymentMethodId: number) {
+  public async createDepositFlow(_amount: number, _currency: WalletCurrency, _paymentMethodId: number) {
     return success({
       flowId: 123,
       pix: {
@@ -35,13 +35,13 @@ export class PaymentRepositoryDumb implements PaymentRepositoryI {
     });
   }
 
-  public async createWithdrawalFlow(_amount: number, _currency: components["schemas"]["Currency"], _paymentMethodId: number) {
+  public async createWithdrawalFlow(_amount: number, _currency: WalletCurrency, _paymentMethodId: number) {
     return success({
       flowId: 123,
     });
   }
 
-  public async findPaymentLimits(_currency: components["schemas"]["Currency"], _paymentMethodId: number): Promise<Result<{ deposit: { min: number; max: number }; withdrawal: { min: number; max: number } }, InfrastructureError>> {
+  public async findPaymentLimits(_currency: WalletCurrency, _paymentMethodId: number): Promise<Result<{ deposit: { min: number; max: number }; withdrawal: { min: number; max: number } }, InfrastructureError>> {
     return success({
       deposit: {
         min: 5,

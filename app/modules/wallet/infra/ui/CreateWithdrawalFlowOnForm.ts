@@ -1,5 +1,5 @@
 import type { CreateWithdrawalFlow } from "../../application/CreateWithdrawalFlow";
-import type { components } from "~/packages/http-client/girobet-backend-generated-http-client/openapi-typescript";
+import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
 import type { DateTimeFormatterFunctionType, NumberFormatterFunctionType, TranslateFunctionType } from "~/packages/translation";
 import type { LoggerI } from "~/packages/logger/Logger";
 
@@ -14,7 +14,7 @@ export class CreateWithdrawalFlowOnForm {
     private readonly n: NumberFormatterFunctionType,
   ) {}
 
-  public async handle(amount: number, currency: components["schemas"]["Currency"], paymentMethodId: number): Promise<SubmitErrorMessage > {
+  public async handle(amount: number, currency: WalletCurrency, paymentMethodId: number): Promise<SubmitErrorMessage > {
     const result = await this.createWithdrawalFlow.handle(amount, currency, paymentMethodId);
     if (result.isFailure) {
       if (result.error.name === "ErrorPendingPaymentFlow") {
