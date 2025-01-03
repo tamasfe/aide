@@ -10,7 +10,7 @@ type WalletStoreI = {
 } | {
   isInit: true;
   balanceStatus: WalletBalanceStatus;
-  wallet: components["schemas"]["UserWalletBalanceResponse"];
+  wallet: CamelizeKeys<components["schemas"]["UserWalletBalanceResponse"]>;
 };
 
 export const useWalletStore = defineStore("walletStore", {

@@ -41,3 +41,24 @@ export function copyToClipboard(text: string) {
   const value = String(text);
   navigator.clipboard.writeText(value);
 }
+
+export type Camelize<T extends string> = T extends `${infer A}_${infer B}` ? `${A}${Camelize<Capitalize<B>>}` : T;
+
+export type CamelizeKeys<T extends object> = {
+  [key in keyof T as key extends string ? Camelize<key> : key]: T[key] extends object ? CamelizeKeys<T[key]> : T[key]
+};
+
+export const camelize = <T extends string>(key: T): Camelize<T> => key.replace(/_(\w)/g, (match, letter) => letter.toUpperCase()) as Camelize<T>;
+
+export function camelizeKeys<T extends Record<string, unknown>>(obj: T): CamelizeKeys<T> {
+  const newObj = {} as CamelizeKeys<T>;
+  for (const key in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) {
+      const newKey = camelize(key);
+      const value = obj[key];
+      // @ts-expect-error Cannot make the type inference work, but there are unit tests that verify it's working as expected
+      newObj[newKey] = typeof value === "object" ? camelizeKeys(value as Record<string, unknown>) : value;
+    }
+  }
+  return newObj;
+}

@@ -15,12 +15,16 @@ export class WalletsRepositoryGirobet implements WalletRepositoryI {
     this.apiClient = createBackendOpenApiClient(clientOptions, commonDependencies);
   }
 
-  public async findAuthenticated(): Promise<Result<components["schemas"]["UserWalletBalanceResponse"][], InfrastructureError | ErrorCurrencyNotRecognized | ErrorNoAuthenticatedWalletsFound | ErrorInvalidBalance | ErrorUserNotAuthorized>> {
+  public async findAuthenticated(): Promise<Result<CamelizeKeys<components["schemas"]["UserWalletBalanceResponse"][]>, InfrastructureError | ErrorCurrencyNotRecognized | ErrorNoAuthenticatedWalletsFound | ErrorInvalidBalance | ErrorUserNotAuthorized>> {
     try {
       const { data, error, response } = await this.apiClient.GET("/user/balance", {});
 
       if (data) {
-        return success(data);
+        return success(data.map(wallet => ({
+          walletId: wallet.wallet_id,
+          balance: wallet.balance,
+          currency: wallet.currency,
+        })));
       }
 
       if (error) {
