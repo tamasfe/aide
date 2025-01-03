@@ -26,7 +26,9 @@ watch(userActionModalIsOpen, closeSidebarOnModalOpen);
 
     <AppHeader @click:menu="sidebarIsOpen = !sidebarIsOpen" />
 
-    <slot />
+    <div class="bg-default">
+      <slot />
+    </div>
 
     <AppFooter />
 

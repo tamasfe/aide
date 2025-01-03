@@ -16,7 +16,7 @@ const props = defineProps<{
 }>();
 
 // make computed based on what they have installed
-const icon = ref("ph:whatsapp-logo");
+const icon = ref("lucide:send");
 // ph:telegram-logo
 // ph:mail
 
@@ -32,15 +32,14 @@ const onShare = () => {
     variant="ghost"
     size="ghost"
     :class="cn(
-      'flex flex-row gap-1 items-center',
+      'flex flex-row gap-1 items-center hover:text-subtle-light p-3 -m-2',
       props.class,
     )"
     @click="onShare"
   >
     <BaseIcon
       :name="icon"
-      :size="28"
+      :size="20"
     />
-    <div>{{ $t("button.share") }}</div>
   </BaseButton>
 </template>

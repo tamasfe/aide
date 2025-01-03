@@ -3,7 +3,9 @@
 //   * lock scroll when fullscreen: import { useScrollLock } from "@vueuse/core"
 // ARCHITECTURE STATUS:  ✅
 
-const fullScreen = ref(false);
+const fullScreen = defineModel<boolean>("fullscreen", {
+  default: false,
+});
 
 const { $dependencies } = useNuxtApp();
 
@@ -36,12 +38,12 @@ const onToggleFullScreen = () => {
 </script>
 
 <template>
-  <div class="flex flex-col rounded">
+  <div class="flex flex-col">
     <GameFrameBackdrop
       :src="gameImageUrl"
       :authenticated="authenticated"
       :replace="true"
-      class="h-[70vh] rounded-t"
+      class="h-[70vh]"
     >
       <template #authenticated>
         <div
@@ -90,36 +92,5 @@ const onToggleFullScreen = () => {
         </div>
       </div>
     </GameFrameBackdrop>
-
-    <div class="rounded-b bg-subtle p-3 md:p-4 lg:px-6">
-      <div class="flex flex-col md:flex-row items-center justify-between gap-4 md:gap-0">
-        <div class="w-full flex justify-between md:justify-start flex-row md:flex-col items-center md:items-start font-semibold">
-          <h2 class="text-lg md:text-xl font-semibold">{{ gameTitle }}</h2>
-          <!-- <h3 class="text-subtle-light">Pragmatic Play</h3> -->
-        </div>
-        <div class="w-full flex justify-between md:justify-end items-center space-x-8 text-subtle font-semibold">
-          <ButtonShare
-            :subject="$t('play.share_subject')"
-            :body="$t('play.share_body')"
-            class="hover:text-subtle-light"
-          />
-
-          <GameFrameVotes :authenticated="authenticated" :game-id="gameId" />
-
-          <BaseButton
-            v-if="authenticated"
-            variant="ghost"
-            size="ghost"
-            class="flex flex-row gap-1 items-center hover:text-subtle-light"
-            @click="onToggleFullScreen"
-          >
-            <BaseIcon
-              name="lucide:maximize"
-              :size="24"
-            />
-          </BaseButton>
-        </div>
-      </div>
-    </div>
   </div>
 </template>

@@ -99,7 +99,7 @@
   }
 
   body {
-    background-color: rgb(var(--giro-bg));
+    background-color: rgb(var(--giro-bg-subtle));
     height: 100vh;
     color: var(--giro-text);
     @apply text-base;

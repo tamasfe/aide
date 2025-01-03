@@ -72,7 +72,7 @@ const onClickVote = async (newRating: "like" | "dislike") => {
 <template>
   <div
     :class="cn(
-      'flex flex-row gap-2 items-center text-button-secondary',
+      'flex flex-row gap-3 items-center text-button-secondary',
       initialLoading ? 'opacity-60' : 'opacity-100',
       props.class,
     )"
@@ -80,33 +80,33 @@ const onClickVote = async (newRating: "like" | "dislike") => {
     <BaseButton
       variant="ghost"
       size="ghost"
-      class="flex flex-row gap-1 items-center hover:text-subtle-light"
-      :disabled="authenticated === false"
+      class="flex flex-row gap-1 items-center hover:text-subtle-light p-3 -m-2"
+      :disabled="!authenticated"
       @click="onClickVote('dislike')"
     >
       <BaseIcon
         :class="{ 'text-emphasis': rating === 'dislike' }"
         name="lucide:thumbs-down"
-        :size="24"
+        :size="20"
       />
     </BaseButton>
     <div v-if="votes !== 0">
       <div class="flex flex-col gap-1 leading-none whitespace-nowrap items-center text-sm text-center justify-center">
-        <span>{{ n(votes, { style: "decimal" }) }}</span>
-        <span class="font-medium">{{ n(likesPercentage, { style: "percent" }) }}</span>
+        <span class="font-medium text-lg tabular-nums">{{ n(likesPercentage, { style: "percent" }) }}</span>
       </div>
     </div>
     <BaseButton
       variant="ghost"
       size="ghost"
-      class="flex flex-row gap-1 items-center hover:text-subtle-light"
-      :disabled="authenticated === false"
+      class="flex flex-row gap-1 items-center hover:text-subtle-light p-3 -m-2"
+      :disabled="!authenticated"
       @click="onClickVote('like')"
     >
       <BaseIcon
-        :class="{ 'text-emphasis': rating === 'like' }"
+        :class="{ 'text-emphasis fill-white': rating === 'like' }"
         name="lucide:thumbs-up"
-        :size="24"
+
+        :size="20"
       />
     </BaseButton>
   </div>

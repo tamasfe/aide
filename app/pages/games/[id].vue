@@ -21,6 +21,7 @@ const currentDevice = isMobile ? "mobile" : "desktop";
 const { params } = useRoute();
 const { $dependencies } = useNuxtApp();
 const walletStore = useWalletStore();
+const fullscreen = ref(false);
 
 const gameId = Number(params.id);
 if (!params.id || Number.isNaN(gameId)) {
@@ -49,17 +50,24 @@ const iFrameUrl = computed(() => {
   }
   return "";
 });
+
+const userStore = useUserStore();
+
+const authenticated = computed(() => {
+  return userStore.isAuthenticated;
+});
 </script>
 
 <template>
   <div v-if="currentDevice === 'mobile'">
-    <div v-if="game">
+    <div v-if="game" class="h-full">
       <GameFrameMobile
         v-if="game.isCompatibleWithDevice"
         :game-title="game.name"
         :game-id="game.id"
+        :fullscreen="fullscreen"
         :game-image-url="game.imageUrl"
-        :authenticated="walletStore.isInit === true"
+        :authenticated="authenticated ?? false"
         :i-frame-url="iFrameUrl"
       />
       <GameFloatTextNotSupportedOnDevice
@@ -77,15 +85,17 @@ const iFrameUrl = computed(() => {
     v-else-if="currentDevice === 'desktop'"
     class="pt-4 pb-12 giro__container giro__sections"
   >
-    <div v-if="game">
+    <div v-if="game" class="bg-subtle rounded-lg border border-muted/10 overflow-hidden">
       <GameFrameDesktop
         v-if="!isMobile && game.isCompatibleWithDevice"
         :game-title="game.name"
         :game-id="game.id"
+        :fullscreen="fullscreen"
         :game-image-url="game.imageUrl"
-        :authenticated="walletStore.isInit === true"
+        :authenticated="authenticated ?? false"
         :i-frame-url="iFrameUrl"
       />
+
       <GameFloatTextNotSupportedOnDevice
         v-else-if="!isMobile && !game.isCompatibleWithDevice"
         class="px-6 h-96"
@@ -96,9 +106,11 @@ const iFrameUrl = computed(() => {
         :id="gameId"
         :image-url="game.imageUrl"
         class="bg-subtle"
+        :authenticated="authenticated ?? false"
         :description="game.description"
         :title="game.name"
         :categories="['card', 'table', 'poker']"
+        @maximize="() => { fullscreen = true }"
       />
     </div>
     <div v-else class="h-[60vh] w-full">
