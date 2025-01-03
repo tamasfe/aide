@@ -43,7 +43,7 @@ const overlayTransition = ref({
   enter: "duration-150 ease-out",
   enterFrom: "opacity-0",
   enterTo: "opacity-100",
-  leave: "duration-150 ease-in",
+  leave: "duration-[50ms] ease-in",
   leaveFrom: "opacity-100",
   leaveTo: "opacity-0",
 });
@@ -52,7 +52,7 @@ const panelTransition = ref({
   enter: "duration-150 ease-out",
   enterFrom: "opacity-0 scale-95",
   enterTo: "opacity-100 scale-100",
-  leave: "duration-[10s] ease-in",
+  leave: "duration-[75ms] ease-in",
   leaveFrom: "opacity-100 scale-100",
   leaveTo: "opacity-0 scale-95",
 });
@@ -108,7 +108,7 @@ const onClose = (force: boolean) => {
     as="template"
   >
     <Dialog
-      :open="open"
+      open
       as="div"
       class="fixed inset-0 z-[10] flex items-center justify-center w-full h-full"
       @close="() => onClose(false)"
@@ -131,7 +131,7 @@ const onClose = (force: boolean) => {
           <BaseClose
             v-if="!unclosable"
             :disabled="disabled"
-            @close="onClose(true)"
+            @close="() => onClose(true)"
           />
 
           <slot />
