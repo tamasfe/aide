@@ -19,7 +19,7 @@ import { type VariantProps, cva } from "class-variance-authority";
 
 const dialogVariants = cva(
   [
-    "fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[10] overflow-y-scroll no-scrollbar outline outline-emphasis/50",
+    "z-[10] overflow-y-scroll no-scrollbar outline outline-emphasis/50",
   ],
   {
     variants: {
@@ -52,7 +52,7 @@ const panelTransition = ref({
   enter: "duration-150 ease-out",
   enterFrom: "opacity-0 scale-95",
   enterTo: "opacity-100 scale-100",
-  leave: "duration-150 ease-in",
+  leave: "duration-[10s] ease-in",
   leaveFrom: "opacity-100 scale-100",
   leaveTo: "opacity-0 scale-95",
 });
@@ -108,9 +108,9 @@ const onClose = (force: boolean) => {
     as="template"
   >
     <Dialog
-      v-model:open="open"
+      :open="open"
       as="div"
-      class="relative z-[10]"
+      class="fixed inset-0 z-[10] flex items-center justify-center w-full h-full"
       @close="() => onClose(false)"
     >
       <TransitionChild
