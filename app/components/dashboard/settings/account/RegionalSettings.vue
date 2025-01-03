@@ -27,7 +27,7 @@ const currency = ref({
           <BaseFlag
             :country-code="currency.countryCode"
           />
-          <p>{{ walletStore.wallet.currency }} (ID: #{{ walletStore.wallet.id }})</p>
+          <p>{{ walletStore.wallet.currency }} (ID: #{{ walletStore.wallet.wallet_id }})</p>
         </div>
       </template>
     </DashboardSectionItem>

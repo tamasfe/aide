@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
+import type { components } from "~/packages/http-client/girobet-backend-generated-http-client/openapi-typescript";
 
 // DESIGN STATUS:       ✅
 // ARCHITECTURE STATUS: ✅
@@ -9,7 +9,7 @@ defineProps<{
   min: number | null;
   max: number | null;
   cooldownSeconds: number | null;
-  currency: WalletCurrency;
+  currency: components["schemas"]["Currency"];
 }>();
 
 const secondsToDayFrequency = (seconds: number) => {

@@ -1,13 +1,7 @@
-import type { WalletCurrency } from "./WalletCurrency";
+import type { components } from "~/packages/http-client/girobet-backend-generated-http-client/openapi-typescript";
 
-export interface WalletI {
-  id: number;
-  balance: number;
-  currency: WalletCurrency;
-}
-
-export const newEmptyWallet = (): WalletI => ({
-  id: 0,
+export const newEmptyWallet = (): components["schemas"]["UserWalletBalanceResponse"] => ({
+  wallet_id: 0,
   balance: 0,
   currency: "BRL",
 });

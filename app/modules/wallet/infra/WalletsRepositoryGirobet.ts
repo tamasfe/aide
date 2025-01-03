@@ -1,8 +1,6 @@
 import type { WalletRepositoryI } from "../domain/WalletRepository";
 import { ErrorNoAuthenticatedWalletsFound } from "../domain/ErrorNoAuthenticatedWalletsFound";
-import type { WalletI } from "../domain/Wallet";
-import { WalletCurrencies, type WalletCurrency } from "../domain/WalletCurrency";
-import { ErrorCurrencyNotRecognized } from "../domain/ErrorCurrencyNotRecognized";
+import type { ErrorCurrencyNotRecognized } from "../domain/ErrorCurrencyNotRecognized";
 import type { ErrorInvalidBalance } from "../domain/ErrorInvalidBalance";
 import { ErrorUserNotAuthorized } from "../domain/ErrorUserNotAuthorized";
 import { fail, success, type Result } from "~/packages/result";
@@ -10,34 +8,19 @@ import { InfrastructureError } from "~/packages/result/infrastructure-error";
 import { createBackendOpenApiClient } from "~/packages/http-client/create-backend-open-api-client";
 import { HttpBackendApiError } from "~/packages/http-client/http-client-error";
 import type { CommonDependenciesI } from "~/dependency-injection/load-di";
+import type { components } from "~/packages/http-client/girobet-backend-generated-http-client/openapi-typescript";
 
 export class WalletsRepositoryGirobet implements WalletRepositoryI {
   constructor(clientOptions: { baseUrl: string }, commonDependencies: CommonDependenciesI) {
     this.apiClient = createBackendOpenApiClient(clientOptions, commonDependencies);
   }
 
-  public async findAuthenticated(): Promise<Result<WalletI[], InfrastructureError | ErrorCurrencyNotRecognized | ErrorNoAuthenticatedWalletsFound | ErrorInvalidBalance | ErrorUserNotAuthorized>> {
+  public async findAuthenticated(): Promise<Result<components["schemas"]["UserWalletBalanceResponse"][], InfrastructureError | ErrorCurrencyNotRecognized | ErrorNoAuthenticatedWalletsFound | ErrorInvalidBalance | ErrorUserNotAuthorized>> {
     try {
       const { data, error, response } = await this.apiClient.GET("/user/balance", {});
 
       if (data) {
-        const wallets: WalletI[] = [];
-        for (const wallet of data) {
-          const currency = String(wallet.currency);
-          if (!WalletCurrencies.includes(currency as WalletCurrency)) {
-            return fail(
-              new ErrorCurrencyNotRecognized(currency, { wallet }),
-            );
-          }
-
-          wallets.push({
-            id: wallet.wallet_id,
-            balance: wallet.balance,
-            currency: currency as WalletCurrency,
-          });
-        }
-
-        return success(wallets);
+        return success(data);
       }
 
       if (error) {

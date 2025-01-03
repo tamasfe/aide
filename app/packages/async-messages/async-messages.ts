@@ -1,6 +1,6 @@
 import type { SupportedLocale } from "../translation";
 import type { PaymentStatus } from "~/modules/wallet/domain/Payment";
-import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
+import type { components } from "~/packages/http-client/girobet-backend-generated-http-client/openapi-typescript";
 
 type NoDataRequiredModal = "login" | "register" | "search" | "forgot_password" | "deposit" | "withdrawal" | "cancel_registration" | "close_account";
 
@@ -14,7 +14,7 @@ export type UserInteractionModalState =
     data: { setting: "password" | "language" | "time_zone" | "payment_pix" };
   } | {
     modal: "deposit_confirm";
-    data: { flowId: number; paymentCode: string; amount: number; currency: WalletCurrency; paymentMethodId: number };
+    data: { flowId: number; paymentCode: string; amount: number; currency: components["schemas"]["Currency"]; paymentMethodId: number };
   } |
   {
     modal: "kyc";
@@ -86,7 +86,7 @@ export interface AsyncMessagesTypes {
     flowId: number;
     code: string;
     amount: number;
-    currency: WalletCurrency;
+    currency: components["schemas"]["Currency"];
   };
   "girobet:events:payments:withdrawal-flow-created": {
     flowId: number;

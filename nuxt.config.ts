@@ -93,6 +93,9 @@ export default defineNuxtConfig({
   typescript: {
     strict: true,
     typeCheck: true,
+    tsConfig: {
+      include: ["app/packages/http-client/**/*.d.ts"],
+    },
   },
   debug: false,
   // @nuxtjs/eslint
@@ -165,4 +168,5 @@ export default defineNuxtConfig({
       authToken: process.env.SENTRY_AUTH_TOKEN || "placeholder_sentry_auth_token",
     },
   },
+
 });

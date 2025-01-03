@@ -4,7 +4,6 @@ import { fail, success, type Result } from "~/packages/result";
 import { InfrastructureError } from "~/packages/result/infrastructure-error";
 import { createBackendOpenApiClient } from "~/packages/http-client/create-backend-open-api-client";
 import { HttpBackendApiError } from "~/packages/http-client/http-client-error";
-import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
 import type { CommonDependenciesI } from "~/dependency-injection/load-di";
 
 export class GameActionsRepositoryGirobet implements GameActionsRepositoryI {
@@ -30,7 +29,7 @@ export class GameActionsRepositoryGirobet implements GameActionsRepositoryI {
             id: gameActionData.id,
             action: gameActionData.action,
             amount: gameActionData.amount,
-            currency: gameActionData.currency as WalletCurrency,
+            currency: gameActionData.currency,
             createdAt: new Date(gameActionData.created_at),
             game: {
               id: gameActionData.game_id,

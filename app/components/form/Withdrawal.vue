@@ -2,7 +2,7 @@
 import { toTypedSchema } from "@vee-validate/zod";
 import { z } from "zod";
 import type { SupportedCountryFlagCode } from "@/types/constants";
-import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
+import type { components } from "~/packages/http-client/girobet-backend-generated-http-client/openapi-typescript";
 
 // DESIGN STATUS:       ✴️
 //   - finish withdrawal cpf fields just like on bet7k (ignore design)
@@ -15,7 +15,7 @@ import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
 const props = defineProps<{
   limits: { min: number | null; max: number | null; cooldownSeconds: number | null };
   currency: {
-    code: WalletCurrency;
+    code: components["schemas"]["Currency"];
     countryCode: SupportedCountryFlagCode;
   };
   paymentMethodId: number;

@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { useClipboard } from "@vueuse/core";
+import type { components } from "~/packages/http-client/girobet-backend-generated-http-client/openapi-typescript";
 
 const props = defineProps({
   currency: {
-    type: String,
+    type: String as PropType<components["schemas"]["Currency"]>,
     required: true,
   },
   balance: {
@@ -13,6 +14,10 @@ const props = defineProps({
   walletId: {
     type: Number,
     required: true,
+  },
+  paymentMethod: {
+    type: Object as PropType<components["schemas"]["UserWalletPaymentMethodResponse"]>,
+    required: false,
   },
   onClickDeposit: {
     type: Function as PropType<() => Promise<void>>,
@@ -38,7 +43,13 @@ const clipboard = useClipboard({
         <BaseFlag
           country-code="BR"
         />
-        <div class="flex-1">{{ currency }}</div>
+        <div class="flex-1">
+          {{ currency }}
+          <template v-if="paymentMethod">
+            • {{ paymentMethod.name }}
+          </template>
+        </div>
+
         <BaseIcon
           v-if="clipboard.copied.value"
           name="lucide:circle-check-big"
@@ -55,7 +66,7 @@ const clipboard = useClipboard({
       </div>
       <div class="flex items-center justify-center text-3xl font-medium">
         <BaseCurrency
-          :currency="currency"
+          :currency="currency as string"
           :value="balance"
         />
       </div>

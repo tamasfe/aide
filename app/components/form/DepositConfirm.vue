@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
+import type { components } from "~/packages/http-client/girobet-backend-generated-http-client/openapi-typescript";
 
 // DESIGN STATUS:       ✴️
 //   ✅ make every single part of the input/copy icon/button clickable to copy
@@ -17,7 +17,7 @@ import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
 const props = defineProps<{
   code: string;
   amount: number;
-  currency: WalletCurrency;
+  currency: components["schemas"]["Currency"];
   createNewDeposit: () => Promise<string>;
 }>();
 

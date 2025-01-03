@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
-
 // DESIGN STATUS:       ✅
 // ARCHITECTURE STATUS: ✴️
 //   * not done
@@ -47,7 +45,7 @@ if ($wsConnection) {
       buffer.value.unshift(({
         key: `${message.data.data.amount}-${message.data.data.currency}-${message.data.data.user_nickname}-${message.data.data.game.id}`,
         amount: message.data.data.amount,
-        currency: message.data.data.currency as WalletCurrency,
+        currency: message.data.data.currency,
         userNickname: message.data.data.user_nickname,
         game: {
           id: message.data.data.game.id,

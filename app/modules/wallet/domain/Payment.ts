@@ -1,4 +1,4 @@
-import type { WalletCurrency } from "./WalletCurrency";
+import type { components } from "~/packages/http-client/girobet-backend-generated-http-client/openapi-typescript";
 
 export type PaymentStatus = "pending" | "waiting_for_approval" | "approved" | "processing" | "completed" | "failed" | "cancelled" | "rejected" | "refunded";
 export type PaymentType = "deposit" | "withdrawal";
@@ -7,7 +7,7 @@ interface PaymentPropsI {
   id: number;
   amount: number;
   createdAt: Date;
-  currency: WalletCurrency;
+  currency: components["schemas"]["Currency"];
   type: PaymentType;
   status: PaymentStatus | null;
   walletId: number;
@@ -30,7 +30,7 @@ export class Payment {
     public readonly id: number,
     public readonly amount: number,
     public readonly createdAt: Date,
-    public readonly currency: WalletCurrency,
+    public readonly currency: components["schemas"]["Currency"],
     public readonly type: "deposit" | "withdrawal",
     public readonly status: PaymentStatus | null,
     public readonly walletId: number,

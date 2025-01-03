@@ -12,6 +12,7 @@ export class FindAuthenticatedUserWallet {
     }
 
     const selectedWallet = walletsResult.value[0];
+
     if (!selectedWallet) {
       return success(newEmptyWallet());
     }

@@ -14,14 +14,14 @@ const { data } = await useAsyncData("history-page-deposits-data", async () => {
   if (!walletStore.isInit) return;
 
   loading.value = true;
-  const data = await $dependencies.wallets.ui.searchPaymentsOnTable.handle(walletStore.wallet.id, "deposit", pageIndex.value);
+  const data = await $dependencies.wallets.ui.searchPaymentsOnTable.handle(walletStore.wallet.wallet_id, "deposit", pageIndex.value);
 
   pageSize.value = data.pageSize;
   totalItems.value = data.totalItems;
   loading.value = false;
   return data.payments;
 }, {
-  watch: [() => walletStore.wallet?.id, () => walletStore.wallet?.balance, pageIndex],
+  watch: [() => walletStore.wallet?.wallet_id, () => walletStore.wallet?.balance, pageIndex],
   lazy: DEFER_CLIENT_SIDE_LOADING,
   server: ENABLE_SERVER_SIDE_RENDERING,
 });

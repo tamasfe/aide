@@ -1,7 +1,7 @@
 import type { CreateDepositFlow } from "../../application/CreateDepositFlow";
-import type { WalletCurrency } from "../../domain/WalletCurrency";
 import type { NumberFormatterFunctionType, TranslateFunctionType } from "~/packages/translation";
 import type { LoggerI } from "~/packages/logger/Logger";
+import type { components } from "~/packages/http-client/girobet-backend-generated-http-client/openapi-typescript";
 
 type SubmitErrorMessage = string;
 
@@ -13,7 +13,7 @@ export class CreateDepositFlowOnForm {
     private readonly n: NumberFormatterFunctionType,
   ) {}
 
-  public async handle(amount: number, currency: WalletCurrency, paymentMethodId: number): Promise<SubmitErrorMessage > {
+  public async handle(amount: number, currency: components["schemas"]["Currency"], paymentMethodId: number): Promise<SubmitErrorMessage > {
     const result = await this.createDepositFlow.handle(amount, currency, paymentMethodId);
     if (result.isFailure) {
       if (result.error.name === "ErrorPendingPaymentFlow") {

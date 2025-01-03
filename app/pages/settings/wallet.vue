@@ -12,12 +12,12 @@ const { data: paymentsData } = await useAsyncData("wallet-page-payments-data", a
   if (!walletStore.isInit) return;
 
   loading.value = true;
-  const data = await $dependencies.wallets.ui.searchPaymentsOnTable.handle(walletStore.wallet.id, null, 0, NUMBER_OF_PAYMENTS_TO_SHOW);
+  const data = await $dependencies.wallets.ui.searchPaymentsOnTable.handle(walletStore.wallet.wallet_id, null, 0, NUMBER_OF_PAYMENTS_TO_SHOW);
 
   loading.value = false;
   return data.payments;
 }, {
-  watch: [() => walletStore.wallet?.id, () => walletStore.wallet?.balance],
+  watch: [() => walletStore.wallet?.wallet_id, () => walletStore.wallet?.balance],
   lazy: DEFER_CLIENT_SIDE_LOADING,
   server: ENABLE_SERVER_SIDE_RENDERING,
   default: () => [],
@@ -42,8 +42,9 @@ const { data: walletData } = await useAsyncData("wallet-page-wallet-data", async
         <DashboardSettingsWalletBalance
           v-if="walletData"
           :balance="walletData.balance"
+          :payment-method="walletData.payment_method ?? undefined"
           :currency="walletData.currency"
-          :wallet-id="walletData.id"
+          :wallet-id="walletData.wallet_id"
           :on-click-deposit="() => $dependencies.users.ui.emitCommandOpenUserActionModal.handle('deposit').then(() => {})"
           :on-click-withdraw="() => $dependencies.users.ui.emitCommandOpenUserActionModal.handle('withdrawal').then(() => {})"
         />

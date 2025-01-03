@@ -1,6 +1,6 @@
 import type { PaymentMethodRepositoryI } from "../../domain/PaymentMethodRepository";
-import type { WalletCurrency } from "../../domain/WalletCurrency";
 import type { LoggerI } from "~/packages/logger/Logger";
+import type { components } from "~/packages/http-client/girobet-backend-generated-http-client/openapi-typescript";
 
 interface PaymentMethodResponseI {
   id: number;
@@ -28,7 +28,7 @@ export class FindPreferredPaymentMethodOnPaymentModal {
   public FALLBACK_FOR_MAX_AMOUNT = null;
   public FALLBACK_FOR_COOLDOWN_SECONDS = null;
 
-  public async handle(currency: WalletCurrency): Promise<PaymentMethodResponseI | null> {
+  public async handle(currency: components["schemas"]["Currency"]): Promise<PaymentMethodResponseI | null> {
     const paymentMethodResult = await this.paymentMethodRepo.findOne(currency, this.PREFERRED_METHOD);
     if (paymentMethodResult.isFailure) {
       this.logger.error("! Error finding the payment method for the payment modal. This is critical as the user might not be able to deposit or withdraw any money!", paymentMethodResult.error);
