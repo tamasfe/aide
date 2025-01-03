@@ -21,7 +21,6 @@ use std::{
     collections::{HashMap, VecDeque},
 };
 
-use async_trait::async_trait;
 use axum::{
     body::Body,
     extract::{rejection::JsonRejection, FromRequest},
@@ -46,7 +45,6 @@ use serde_path_to_error::Segment;
 /// message.
 pub struct Json<T>(pub T);
 
-#[async_trait]
 impl<S, T> FromRequest<S> for Json<T>
 where
     S: Send + Sync,
