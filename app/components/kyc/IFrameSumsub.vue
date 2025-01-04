@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import snsWebSdk from "@sumsub/websdk";
 
-const loading = ref(false);
+const loading = ref(true);
 
 const props = defineProps<{
   initialAccessToken: string;
@@ -66,11 +66,13 @@ if (!isServer) {
 
 <template>
   <div>
-    <BaseSpinner
-      v-if="loading"
-      :size="30"
-      class="w-full"
-    />
-    <div :id="CONTAINER_ID" />
+    <div v-if="loading" class="py-16">
+      <BaseSpinner
+        class="text-subtle mx-auto 6"
+        :size="32"
+      />
+    </div>
+
+    <div v-show="!loading" :id="CONTAINER_ID" />
   </div>
 </template>

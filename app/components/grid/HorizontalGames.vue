@@ -97,7 +97,7 @@ await useAsyncData(`load-games-for-${props.categoryIdentifier}`,
         <div class="flex items-center justify-center w-full h-full bg-subtle rounded">
           <BaseSpinner
             class="text-subtle"
-            :size="34"
+            :size="32"
           />
         </div>
       </template>

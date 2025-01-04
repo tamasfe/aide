@@ -11,8 +11,8 @@ defineProps<{
       class="absolute left-0 top-0 w-full h-full bg-default/60 flex items-center justify-center"
     >
       <BaseSpinner
-        :size="40"
         class="text-subtle"
+        :size="32"
       />
     </div>
   </Transition>

@@ -41,6 +41,8 @@ const onClickCloseButton = () => {
       <div class="mr-4 flex justify-center items-center">
         <BaseSpinner
           v-if="loading"
+          class="text-subtle"
+          :size="22"
         />
         <BaseIcon
           v-else

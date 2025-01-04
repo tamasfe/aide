@@ -65,7 +65,10 @@ watchDeep(() => promotionsPreferences.value,
       />
       <div v-if="!errorLoading" class="w-full lg:max-w-72">
         <div v-if="!promotionsPreferences" class="w-full flex items-center justify-center">
-          <BaseSpinner :size="24" />
+          <BaseSpinner
+            class="text-subtle"
+            :size="32"
+          />
         </div>
         <div v-if="promotionsPreferences" class="space-y-8">
           <BaseToggle v-model="promotionsPreferences.email">

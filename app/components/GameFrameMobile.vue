@@ -21,7 +21,7 @@ const props = defineProps({
     type: Boolean,
     required: true,
   },
-  iFrameUrl: {
+  iframeUrl: {
     type: String,
     required: false,
   },
@@ -52,7 +52,7 @@ const onTogglePlaying = async () => {
     >
       <template #authenticated>
         <div
-          v-if="playing"
+          v-if="playing && iframeUrl"
           class="fixed top-0 left-0 w-full h-full z-[11] bg-subtle"
         >
           <div class="p-5 bg-subtle">
@@ -62,7 +62,13 @@ const onTogglePlaying = async () => {
             />
           </div>
 
-          <GameFrameIframe :game-id="gameId" :i-frame-url="iFrameUrl" />
+          <GameFrameIframe :game-id="gameId" :i-frame-url="iframeUrl" />
+        </div>
+        <div
+          v-if="playing && !iframeUrl"
+          class="flex flex-col items-center justify-center absolute inset-0"
+        >
+          <BaseSpinner class="text-subtle" :size="32" />
         </div>
       </template>
 

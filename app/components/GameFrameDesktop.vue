@@ -26,7 +26,7 @@ defineProps({
     type: Boolean,
     required: true,
   },
-  iFrameUrl: {
+  iframeUrl: {
     type: String,
     required: false,
   },
@@ -47,6 +47,7 @@ const onToggleFullScreen = () => {
     >
       <template #authenticated>
         <div
+          v-if="iframeUrl"
           :class="cn(
             'w-full h-full',
             fullScreen && 'fixed top-0 left-0 z-[11] bg-subtle',
@@ -63,7 +64,13 @@ const onToggleFullScreen = () => {
               />
             </div>
           </div>
-          <GameFrameIframe :game-id="gameId" :i-frame-url="iFrameUrl" />
+          <GameFrameIframe :game-id="gameId" :i-frame-url="iframeUrl" />
+        </div>
+        <div
+          v-else
+          class="flex flex-col items-center justify-center absolute inset-0"
+        >
+          <BaseSpinner class="text-subtle" :size="32" />
         </div>
       </template>
 

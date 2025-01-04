@@ -44,11 +44,11 @@ const { data: pageCategories } = await useAsyncData(`game-${params.id}-categorie
   return $dependencies.games.ui.searchGameCategoriesByGroup.handle("game_page", false);
 }, { lazy: DEFER_CLIENT_SIDE_LOADING_FOR_CATEGORIES, server: ENABLE_SERVER_SIDE_RENDERING_FOR_CATEGORIES });
 
-const iFrameUrl = computed(() => {
+const iframeUrl = computed(() => {
   if (walletStore.isInit) {
     return $dependencies.games.ui.buildGameSessionIFrameUrl.handle(gameId, currentDevice, walletStore.wallet.currency);
   }
-  return "";
+  return undefined;
 });
 
 const userStore = useUserStore();
@@ -68,7 +68,7 @@ const authenticated = computed(() => {
         :fullscreen="fullscreen"
         :game-image-url="game.imageUrl"
         :authenticated="authenticated ?? false"
-        :i-frame-url="iFrameUrl"
+        :iframe-url="iframeUrl"
       />
       <GameFloatTextNotSupportedOnDevice
         v-else-if="!game.isCompatibleWithDevice"
@@ -93,7 +93,7 @@ const authenticated = computed(() => {
         :fullscreen="fullscreen"
         :game-image-url="game.imageUrl"
         :authenticated="authenticated ?? false"
-        :i-frame-url="iFrameUrl"
+        :iframe-url="iframeUrl"
       />
 
       <GameFloatTextNotSupportedOnDevice
