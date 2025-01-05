@@ -113,8 +113,8 @@ const authenticated = computed(() => {
         @maximize="() => { fullscreen = true }"
       />
     </div>
-    <div v-else class="h-[60vh] w-full">
-      <BaseSkeleton class="w-full h-full" :loading="true" />
+    <div v-else class="h-[60vh] w-full rounded-lg border border-muted/10 overflow-hidden relative">
+      <BaseSkeleton class="absolute inset-0" :loading="true" />
     </div>
 
     <GridHorizontalGames
