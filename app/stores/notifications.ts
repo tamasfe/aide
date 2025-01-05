@@ -8,12 +8,7 @@ type NotificationsStoreState = {
 
 export const useNotificationsStore = defineStore("useNotificationsStore", {
   state: (): NotificationsStoreState => ({
-    toasts: [{
-      id: 123,
-      title: "yellow",
-      message: "Your payment was nice-o",
-      variant: "success",
-    }],
+    toasts: [],
   }),
 
   actions: {
