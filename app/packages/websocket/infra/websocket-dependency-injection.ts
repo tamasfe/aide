@@ -17,7 +17,7 @@ export interface WebsocketDependencyInjectionI {
 }
 
 export const createWebsocketDependencyInjectionI: (config: PublicRuntimeConfig, commonDependencies: CommonDependenciesI) => Promise<WebsocketDependencyInjectionI> = async (config: PublicRuntimeConfig, commonDependencies: CommonDependenciesI) => {
-  const websocketLeaseRepository: WebsocketAccessTokenRepositoryI = new WebsocketLeaseRepositoryGirobet({ baseUrl: config.apiBaseUrl }, commonDependencies);
+  const websocketLeaseRepository: WebsocketAccessTokenRepositoryI = new WebsocketLeaseRepositoryGirobet({ baseUrl: config.apiBaseUrlClient }, commonDependencies);
 
   return {
     ui: {

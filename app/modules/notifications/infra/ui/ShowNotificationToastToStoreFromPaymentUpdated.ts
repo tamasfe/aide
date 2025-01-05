@@ -9,12 +9,10 @@ export class ShowNotificationToastToStoreFromPaymentUpdated {
   ) {}
 
   public async handle(eventData: AsyncMessagesTypes["girobet-backend:events:payments:payment-status-updated"]) {
-    const id = Date.now();
-
     switch (eventData.status) {
       case "completed":
         this.notificationsStore.showToast({
-          id,
+          id: eventData.notificationId,
           title: this.t("notifications.payment_updated.completed.title"),
           message: this.t("notifications.payment_updated.completed.message"),
           variant: "success",
@@ -22,7 +20,7 @@ export class ShowNotificationToastToStoreFromPaymentUpdated {
         break;
       case "rejected":
         this.notificationsStore.showToast({
-          id,
+          id: eventData.notificationId,
           title: this.t("notifications.payment_updated.rejected.title"),
           message: this.t("notifications.payment_updated.rejected.message"),
           variant: "error",
@@ -30,7 +28,7 @@ export class ShowNotificationToastToStoreFromPaymentUpdated {
         break;
       case "failed":
         this.notificationsStore.showToast({
-          id,
+          id: eventData.notificationId,
           title: this.t("notifications.payment_updated.failed.title"),
           message: this.t("notifications.payment_updated.failed.message"),
           variant: "error",

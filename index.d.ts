@@ -7,7 +7,7 @@ import type {
 
 declare module "nuxt/schema" {
   interface PublicRuntimeConfig {
-    apiBaseUrl: string;
+    apiBaseUrlClient: string;
     websocketApiBaseUrl: string;
     genericFixedUserJurisdiction: string | undefined;
     errorCapturingEnabled: boolean;

@@ -100,8 +100,11 @@ export interface AsyncMessagesTypes {
    * Events coming from the Backend
    */
   "girobet-backend:events:payments:payment-status-updated": {
+    notificationId: number;
     flowId: number;
     status: PaymentStatus;
   };
-  "girobet-backend:events:kyc:kyc-process-completed": object;
+  "girobet-backend:events:kyc:kyc-process-completed": {
+    notificationId: number;
+  };
 }

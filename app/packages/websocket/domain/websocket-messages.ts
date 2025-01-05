@@ -14,6 +14,7 @@ export type WebsocketMessagesByType = {
   payment_status_update: WebsocketMessagesFromServer & {
     type: "notification";
     data: {
+      id: number;
       type: "payment_status_update";
     };
   };
@@ -21,6 +22,7 @@ export type WebsocketMessagesByType = {
   kyc_completed: WebsocketMessagesFromServer & {
     type: "notification";
     data: {
+      id: number;
       type: "kyc_completed";
     };
   };

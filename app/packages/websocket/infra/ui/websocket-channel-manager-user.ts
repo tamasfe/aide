@@ -19,6 +19,7 @@ export class WebsocketChannelManagerUser {
 
     const resultSubscribingPayment = wsConnection.subscribeToMessage("payment_status_update", (message) => {
       this.asyncMessagePublisher.emit("girobet-backend:events:payments:payment-status-updated", {
+        notificationId: message.data.id,
         flowId: message.data.data.flow_id,
         status: message.data.data.status,
       });
@@ -31,8 +32,8 @@ export class WebsocketChannelManagerUser {
       this.paymentStatusUpdateListenerId = resultSubscribingPayment.value;
     }
 
-    const resultSubscribingKyc = wsConnection.subscribeToMessage("kyc_completed", () => {
-      this.asyncMessagePublisher.emit("girobet-backend:events:kyc:kyc-process-completed", {});
+    const resultSubscribingKyc = wsConnection.subscribeToMessage("kyc_completed", (eventData) => {
+      this.asyncMessagePublisher.emit("girobet-backend:events:kyc:kyc-process-completed", { notificationId: eventData.data.id });
     });
     if (resultSubscribingKyc.isFailure) {
       this.logger.error("Error subscribing to the WS message when subscribing to user channel", resultSubscribingKyc.error, { connection: wsConnection, message: "kyc_completed" });

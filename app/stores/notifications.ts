@@ -1,6 +1,6 @@
 import type { NotificationToast } from "~/modules/notifications/domain/NotificationToast";
 
-const TOAST_DURATION = 30 * 1000; // Up to us
+const TOAST_DURATION = 6 * 1000; // Up to us
 
 type NotificationsStoreState = {
   toasts: NotificationToast[];
@@ -19,6 +19,9 @@ export const useNotificationsStore = defineStore("useNotificationsStore", {
 
     clearToast(id: number) {
       this.toasts = this.toasts.filter(toast => toast.id !== id);
+      const { $dependencies } = useNuxtApp();
+      // No need to await and make UX slower, if it fails: an error log is emitted from the UI handler
+      $dependencies.notifications.ui.markNotificationToastAsRead.handle(id);
     },
   },
 });
