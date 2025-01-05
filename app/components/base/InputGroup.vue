@@ -143,13 +143,12 @@ const [value, modifiers] = defineModel<number | string>({
           :required="required"
           :placeholder="fieldPlaceholder"
           variant="ghost"
-          size="ghost"
+          input-size="ghost"
+          autocorrect="off"
           :class="cn(
             fieldClass,
             'text-emphasis',
           )"
-          @input="(event) => $emit('input', event)"
-          @change="(event) => $emit('change', event)"
         />
         <BaseTextarea
           v-else-if="fieldType === 'textarea'"
@@ -160,7 +159,8 @@ const [value, modifiers] = defineModel<number | string>({
           :required="required"
           :placeholder="fieldPlaceholder"
           variant="ghost"
-          size="ghost"
+          input-size="ghost"
+          autocorrect="off"
           :class="cn(
             fieldClass,
             'text-emphasis',

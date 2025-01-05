@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { InputHTMLAttributes, HTMLAttributes } from "vue";
 import { type VariantProps, cva } from "class-variance-authority";
 import type { MaskInputOptions } from "maska";
+import type { InputHTMLAttributes } from "vue";
 
 const inputVariants = cva(
   "focus-visible:outline-none disabled:opacity-70",
@@ -25,25 +25,19 @@ const inputVariants = cva(
 
 type InputVariants = VariantProps<typeof inputVariants>;
 
-defineEmits<{
-  input: [value: string];
-  change: [value: string];
-}>();
-
-const props = withDefaults(defineProps<{
+// the vue-ignore is required as vue-sfc mistakenly thinks this prop is a complex object
+// and throws an error due to the extend. https://github.com/vuejs/core/issues/8286
+interface InputProps extends /** @vue-ignore */ InputHTMLAttributes {
   variant?: InputVariants["variant"];
-  size?: InputVariants["size"];
-  type?: "text" | "password"; // "text" with X inputmode is preferred as we do our own validation
-  required?: boolean;
-  disabled?: boolean;
-  placeholder?: string;
+  inputSize?: InputVariants["size"];
   mask?: string | MaskInputOptions;
   maskBehaviourEager?: boolean;
-  autocomplete?: InputHTMLAttributes["autocomplete"];
-  autocorrect?: "off";
-  inputmode?: "text" | "decimal" | "numeric" | "tel" | "search" | "email";
-  class?: HTMLAttributes["class"];
-}>(), {
+  // Explicitly extract class in the props, so it doesn't appear in the $attrs object,
+  // which allows us to manually handle the class binding
+  class?: string;
+}
+
+const props = withDefaults(defineProps<InputProps>(), {
   type: "text",
   required: false,
   disabled: false,
@@ -67,19 +61,10 @@ const [value, modifiers] = defineModel<string | number>({
     v-model="value"
     v-maska="mask"
     :data-maska-eager="maskBehaviourEager ?? false"
-    :type="type"
-    :required="required"
-    :disabled="disabled"
-    :placeholder="placeholder"
-    :autocomplete="autocomplete"
-    :autocorrect="autocorrect"
-    :inputmode="inputmode"
     :class="cn(
-      inputVariants({ variant, size }),
+      inputVariants({ variant, size: inputSize }),
       props.class,
     )"
-    @input="event => $emit('input', (event.target as HTMLInputElement)?.value ?? '')"
-    @change="event => $emit('change', (event.target as HTMLInputElement)?.value ?? '')"
   >
 </template>
 
