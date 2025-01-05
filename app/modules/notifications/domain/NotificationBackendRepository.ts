@@ -1,21 +1,21 @@
-import type { NotificationI, NotificationType } from "./Notification";
+import type { NotificationBackend } from "./NotificationBackend";
 import type { ErrorRetrievingNotifications } from "./ErrorRetrievingNotifications";
 import type { ErrorSavingNotification } from "./ErrorSavingNotification";
 import type { ErrorNotificationNotFound } from "./ErrorNotificationNotFound";
 import type { EmptyResult, Result } from "~/packages/result";
 
-export interface NotificationRepositoryI {
+export interface NotificationBackendRepositoryI {
   searchPaginating(
     searchParams: {
       readStatus: "read" | "unread" | null;
-      types: NotificationType[] | null;
+      types: NotificationBackend["type"][] | null;
     },
     limit: number,
     offset: number,
   ): Promise<
     Result<
       {
-        notifications: NotificationI[];
+        notifications: NotificationBackend[];
         pagination: {
           limit: number;
           offset: number;

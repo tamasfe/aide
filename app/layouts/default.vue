@@ -33,5 +33,7 @@ watch(userActionModalIsOpen, closeSidebarOnModalOpen);
     <AppFooter />
 
     <NavMobile @click:menu="sidebarIsOpen = !sidebarIsOpen" />
+
+    <AppNotificationToastContainer />
   </div>
 </template>

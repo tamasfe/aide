@@ -1,9 +1,5 @@
-import type {
-  NotificationType,
-  NotificationI,
-  NotificationPropsI,
-} from "../domain/Notification";
-import type { NotificationRepositoryI } from "../domain/NotificationRepository";
+import type { NotificationBannerI } from "../domain/NotificationBanner";
+import type { NotificationBannerRepositoryI } from "../domain/NotificationBannerRepository";
 import { ErrorRetrievingNotifications } from "../domain/ErrorRetrievingNotifications";
 import { ErrorSavingNotification } from "../domain/ErrorSavingNotification";
 import { ErrorNotificationNotFound } from "../domain/ErrorNotificationNotFound";
@@ -17,13 +13,12 @@ import {
 import type { CookieRef } from "#app";
 
 const DISGREGARD_SAVED_BEFORE = new Date("2024-12-31T13:35:23.690Z");
-const generateBanners = (t: TranslateFunctionType): NotificationI[] => {
+const generateBanners = (t: TranslateFunctionType): NotificationBannerI[] => {
   return [
     {
       id: 1111, // Make sure to not repeat the same id on different notifications or they may not be marked as read correctly.
       createdAt: new Date(),
       readAt: null,
-      type: "banner",
       data: {
         link: null,
         message: t("promo_bar.refer.message"),
@@ -33,28 +28,10 @@ const generateBanners = (t: TranslateFunctionType): NotificationI[] => {
   ];
 };
 
-type NotificationsRecordCookie = {
-  savedAt: string;
-  notifications: NotificationPropsI[];
-};
-
-export class NotificationRepositoryCookie implements NotificationRepositoryI {
-  public async searchPaginating(
-    searchParams: {
-      readStatus: "read" | "unread" | null;
-      types: NotificationType[] | null;
-    },
-    _limit: number,
-    _offset: number,
-  ): Promise<
-      Result<
-        {
-          notifications: NotificationI[];
-          pagination: { limit: number; offset: number; totalItems: number };
-        },
-        ErrorRetrievingNotifications
-      >
-    > {
+export class NotificationBannerRepositoryCookie implements NotificationBannerRepositoryI {
+  public async search(searchParams: { readStatus: "read" | "unread" | null }): Promise<
+    Result<{ notifications: NotificationBannerI[] }, ErrorRetrievingNotifications>
+  > {
     try {
       const notifications = this.retrieveNotifications();
 
@@ -70,13 +47,6 @@ export class NotificationRepositoryCookie implements NotificationRepositoryI {
             && notification.readAt !== null
           )
             return false;
-        }
-
-        if (
-          searchParams.types
-          && !searchParams.types.includes(notification.type)
-        ) {
-          return false;
         }
 
         return true;
@@ -110,7 +80,7 @@ export class NotificationRepositoryCookie implements NotificationRepositoryI {
         return fail(ErrorNotificationNotFound.new({ notificationId }));
       }
 
-      const updatedNotification: NotificationI = {
+      const updatedNotification: NotificationBannerI = {
         ...notification,
         readAt: status === "read" ? new Date() : null,
       };
@@ -132,7 +102,7 @@ export class NotificationRepositoryCookie implements NotificationRepositoryI {
 
   public constructor(private t: TranslateFunctionType) {}
 
-  private retrieveNotifications(): NotificationI[] {
+  private retrieveNotifications(): NotificationBannerI[] {
     const notificationsRecord = this.useCookie().value;
 
     return (() => {
@@ -151,7 +121,7 @@ export class NotificationRepositoryCookie implements NotificationRepositoryI {
     })();
   }
 
-  private saveNotifications(notifications: NotificationI[]) {
+  private saveNotifications(notifications: NotificationBannerI[]) {
     const newNotificationRecord: NotificationsRecordCookie = {
       savedAt: new Date().toISOString(),
       notifications: notifications.map(notification => ({
@@ -176,3 +146,20 @@ export class NotificationRepositoryCookie implements NotificationRepositoryI {
 
   private COOKIE_NAME = "girobet_notifications" as const;
 }
+
+type NotificationBannerProps = {
+  id: number;
+  createdAt: string;
+  readAt: string | null;
+
+  data: {
+    link: string | null;
+    message: string;
+    title: string;
+  };
+};
+
+type NotificationsRecordCookie = {
+  savedAt: string;
+  notifications: NotificationBannerProps[];
+};

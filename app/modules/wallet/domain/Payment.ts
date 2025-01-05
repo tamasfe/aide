@@ -1,6 +1,7 @@
 import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
+import type { components } from "~/packages/http-client/girobet-backend-generated-http-client/openapi-typescript";
 
-export type PaymentStatus = "pending" | "waiting_for_approval" | "approved" | "processing" | "completed" | "failed" | "cancelled" | "rejected" | "refunded";
+export type PaymentStatus = components["schemas"]["PaymentStatus"];
 export type PaymentType = "deposit" | "withdrawal";
 
 interface PaymentPropsI {

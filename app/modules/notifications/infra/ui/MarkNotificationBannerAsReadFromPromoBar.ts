@@ -1,9 +1,9 @@
-import type { NotificationRepositoryI } from "../../domain/NotificationRepository";
+import type { NotificationBannerRepositoryI } from "../../domain/NotificationBannerRepository";
 import type { LoggerI } from "~/packages/logger/Logger";
 
 export class MarkNotificationBannerAsReadFromPromoBar {
   constructor(
-    private notificationRepo: NotificationRepositoryI,
+    private notificationRepo: NotificationBannerRepositoryI,
     private logger: LoggerI,
   ) {}
 

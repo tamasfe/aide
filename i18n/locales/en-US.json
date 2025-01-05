@@ -405,5 +405,21 @@
         "not_set": "Not set"
       }
     }
+  },
+  "notifications": {
+    "payment_updated": {
+      "completed": {
+        "title": "Payment completed",
+        "message": "Your wallet has been adjusted accordingly"
+      },
+      "rejected": {
+        "title": "Payment rejected",
+        "message": "Your wallet has not been modified. Please try again"
+      },
+      "failed": {
+        "title": "Payment failed",
+        "message": "Please try again"
+      }
+    }
   }
 }
