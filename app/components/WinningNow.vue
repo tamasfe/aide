@@ -7,6 +7,8 @@
 
 const { $dependencies, $wsConnection } = useNuxtApp();
 
+const WINS_BUFFER_SIZE = 30;
+
 // NOTE: this component is using any for ref template of grid because generic types are not properly supported current version of Vue, so we have to use any type. when https://github.com/vuejs/language-tools/issues/3206 is fixed we SHOULD change this to respective type
 // eslint-disable-next-line
 const slider = ref<any>(null);
@@ -53,6 +55,10 @@ if ($wsConnection) {
           name: message.data.data.game.name,
         },
       }));
+
+      if (buffer.value.length > WINS_BUFFER_SIZE) {
+        buffer.value.pop();
+      }
 
       loading.value = false;
     }),
