@@ -19,7 +19,7 @@ defineEmits<{
     size="ghost"
     :disabled="disabled"
     :class="cn(
-      'absolute top-0 right-0 p-4 text-subtle hover:text-emphasis z-[10] rounded-full transition-colors duration-200',
+      'absolute top-0 right-0 p-4 text-subtle hover:text-emphasis z-[10] rounded-lg transition-colors duration-200',
       props.class,
     )"
     @click="$emit('close')"
