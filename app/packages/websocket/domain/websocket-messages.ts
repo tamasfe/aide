@@ -19,14 +19,6 @@ export type WebsocketMessagesByType = {
     };
   };
 
-  kyc_completed: WebsocketMessagesFromServer & {
-    type: "notification";
-    data: {
-      id: number;
-      type: "kyc_completed";
-    };
-  };
-
   channel_entered: WebsocketMessagesFromServer & {
     type: "protocol";
     data: {

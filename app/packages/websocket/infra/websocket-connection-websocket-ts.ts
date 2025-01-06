@@ -91,7 +91,6 @@ export class WebsocketConnectionWebsocketTs implements WebsocketConnectionI {
         switch (type) {
           case "winning_now":
           case "payment_status_update":
-          case "kyc_completed":
             if (typeof message.data === "object" && "type" in message.data && message.data.type === type) {
               listener(message as WebsocketMessagesByType[T]);
             }
@@ -115,6 +114,27 @@ export class WebsocketConnectionWebsocketTs implements WebsocketConnectionI {
     const listenerId = this.addListener(listenerWrapper);
     this.logger.debug("WS - Subscribed to message", {
       message: type,
+      listenerId,
+    });
+    return success(listenerId);
+  }
+
+  public subscribe(listener: (data: WebsocketMessagesFromServer) => void) {
+    const listenerWrapper = (_i: Websocket, event: MessageEvent<string>) => {
+      try {
+        listener(JSON.parse(event.data) as WebsocketMessagesFromServer);
+      }
+      catch (error) {
+        this.logger.error(
+          "WS - Failed to handle websocket message. This probably means the received message does not have the expected format and structure.",
+          InfrastructureError.newFromUnknownError({ wsEvent: event }, error),
+        );
+      }
+    };
+
+    const listenerId = this.addListener(listenerWrapper);
+    this.logger.debug("WS - Subscribed to message", {
+      message: "any",
       listenerId,
     });
     return success(listenerId);

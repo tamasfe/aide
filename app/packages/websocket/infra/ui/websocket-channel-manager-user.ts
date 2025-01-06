@@ -32,14 +32,18 @@ export class WebsocketChannelManagerUser {
       this.paymentStatusUpdateListenerId = resultSubscribingPayment.value;
     }
 
-    const resultSubscribingKyc = wsConnection.subscribeToMessage("kyc_completed", (eventData) => {
-      this.asyncMessagePublisher.emit("girobet-backend:events:kyc:kyc-process-completed", { notificationId: eventData.data.id });
+    const resultSubscribingGenericEvent = wsConnection.subscribe((eventData) => {
+      if (eventData.type !== "notification") return;
+      this.asyncMessagePublisher.emit("girobet-backend:events:backend-notification-received", { notification: {
+        ...camelizeKeys(eventData).data,
+        createdAt: new Date().toISOString(), // It would be better if this came from the Backend
+      } });
     });
-    if (resultSubscribingKyc.isFailure) {
-      this.logger.error("Error subscribing to the WS message when subscribing to user channel", resultSubscribingKyc.error, { connection: wsConnection, message: "kyc_completed" });
+    if (resultSubscribingGenericEvent.isFailure) {
+      this.logger.error("Error subscribing to the backend notification generic event when subscribing to user channel", resultSubscribingGenericEvent.error, { connection: wsConnection, message: "kyc_completed" });
     }
     else {
-      this.kycCompletedListenerId = resultSubscribingKyc.value;
+      this.backendNotificationListenerId = resultSubscribingGenericEvent.value;
     }
 
     const resultEnteringChannel = await wsConnection.enterChannel({
@@ -51,8 +55,8 @@ export class WebsocketChannelManagerUser {
       if (this.paymentStatusUpdateListenerId) {
         wsConnection.unsubscribeFromMessage(this.paymentStatusUpdateListenerId);
       }
-      if (this.kycCompletedListenerId) {
-        wsConnection.unsubscribeFromMessage(this.kycCompletedListenerId);
+      if (this.backendNotificationListenerId) {
+        wsConnection.unsubscribeFromMessage(this.backendNotificationListenerId);
       }
       return;
     }
@@ -79,5 +83,5 @@ export class WebsocketChannelManagerUser {
   }
 
   private paymentStatusUpdateListenerId: number | null = null;
-  private kycCompletedListenerId: number | null = null;
+  private backendNotificationListenerId: number | null = null;
 }

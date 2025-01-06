@@ -1,4 +1,5 @@
 import type { SupportedLocale } from "../translation";
+import type { NotificationBackend } from "~/modules/notifications/domain/NotificationBackend";
 import type { PaymentStatus } from "~/modules/wallet/domain/Payment";
 import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
 
@@ -106,5 +107,8 @@ export interface AsyncMessagesTypes {
   };
   "girobet-backend:events:kyc:kyc-process-completed": {
     notificationId: number;
+  };
+  "girobet-backend:events:backend-notification-received": {
+    notification: NotificationBackend;
   };
 }

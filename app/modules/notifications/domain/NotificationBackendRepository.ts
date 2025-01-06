@@ -7,8 +7,8 @@ import type { EmptyResult, Result } from "~/packages/result";
 export interface NotificationBackendRepositoryI {
   searchPaginating(
     searchParams: {
-      readStatus: "read" | "unread" | null;
-      types: NotificationBackend["type"][] | null;
+      readStatus?: "read" | "unread" | null;
+      types?: NotificationBackend["type"][] | null;
     },
     limit: number,
     offset: number,

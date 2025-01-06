@@ -420,6 +420,10 @@
         "title": "Payment failed",
         "message": "Please try again"
       }
+    },
+    "kyc_completed": {
+      "title": "Identity confirmed",
+      "message": "Your account has been verified"
     }
   }
 }

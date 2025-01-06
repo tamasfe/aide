@@ -14,8 +14,8 @@ export class NotificationBackendRepositoryGirobet implements NotificationBackend
   }
 
   public async searchPaginating(searchParams: {
-    readStatus: "read" | "unread" | null;
-    types: NotificationBackend["type"][] | null;
+    readStatus?: "read" | "unread" | null;
+    types?: NotificationBackend["type"][] | null;
   },
   limit: number, offset: number,
   ): Promise<Result<
@@ -33,6 +33,8 @@ export class NotificationBackendRepositoryGirobet implements NotificationBackend
       const { data, error, response } = await this.apiClient.GET("/notification/list", {
         params: {
           query: {
+            read_status: searchParams.readStatus || null,
+            types: searchParams.types || null,
             limit,
             offset,
           },
