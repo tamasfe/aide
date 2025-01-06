@@ -49,10 +49,10 @@ const allowedDomain = ref(new URL(props.allowedUrl).hostname);
         }) }}
       </div>
 
-      <BaseLink :to="allowedUrl" :external="true">
+      <BaseLink :to="allowedUrl" :external="true" class="my-4">
         <BaseButton
           size="xl"
-          class="my-4 w-full gap-1.5"
+          class="w-full gap-1.5"
         >
           <span>{{ $t("button.take_me_to", { domain: capitalizeBrandDomain(allowedDomain) }) }}</span>
           <BaseIcon
