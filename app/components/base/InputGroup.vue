@@ -52,7 +52,7 @@ const fieldClass = computed(() => {
   return "default-field";
 });
 
-defineEmits<{
+const emits = defineEmits<{
   input: [value: string];
   change: [value: string];
 }>();
@@ -149,6 +149,8 @@ const [value, modifiers] = defineModel<number | string>({
             fieldClass,
             'text-emphasis',
           )"
+          @input="event => $emit('input', (event.target as HTMLInputElement)?.value ?? '')"
+          @change="event => $emit('change', (event.target as HTMLInputElement)?.value ?? '')"
         />
         <BaseTextarea
           v-else-if="fieldType === 'textarea'"
