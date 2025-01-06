@@ -1,4 +1,5 @@
 import type { KycApiRepositoryI } from "../../domain/KycApiRepository";
+import type { components } from "~/packages/http-client/girobet-backend-generated-http-client/openapi-typescript";
 import type { LoggerI } from "~/packages/logger/Logger";
 
 export type FindUserKycStatusResponseI = {
@@ -8,7 +9,7 @@ export type FindUserKycStatusResponseI = {
   status: "INACTIVE";
   data: {
     accessToken: string;
-    provider: "sumsub";
+    provider: components["schemas"]["IntegrationIdentifier"];
     applicantData: {
       email: string;
       phone: string;

@@ -133,180 +133,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/ws/access-token": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Issue WebSocket Access Token
-         * @description This endpoint is used to generate authentication tokens (access tokens) for WebSocket connections in our system.
-         *
-         *     ## Access Token Generation
-         *
-         *     1. Send a POST request to the access token issuer endpoint.
-         *     2. The endpoint will return an access token.
-         *
-         *     ## Access Token Properties
-         *
-         *     - Access tokens are short-lived tokens, valid for 60 seconds from the time of generation.
-         *     - Each access token, once used, is tied to a specific websocket connection and is immediately invalidated.
-         *
-         *     ## Usage
-         *
-         *     - Use the generated access token when establishing a WebSocket connection.
-         *     - For detailed information on how to use the access token in a WebSocket connection, refer to the documentation found [here](#tag/websocket/GET/ws/connect).
-         *
-         *     ## Important Notes
-         *
-         *     - Always generate a new access token before attempting to log in to the user event stream.
-         *     - Ensure your client handles access token expiration and reconnection scenarios.
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["AccessTokenTokenResponse"];
-                    };
-                };
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/ws/connect": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Establish WebSocket Connection
-         * @description This route is the entry point for WebSocket connections in our system.
-         *
-         *     ## Connection Process
-         *
-         *     1. Connect to this endpoint using the WebSocket protocol.
-         *     2. Once connected, send a login message with your access token:
-         *
-         *        ```json
-         *        {
-         *          "type": "user_login",
-         *          "data": "<access-token>"
-         *        }
-         *        ```
-         *
-         *     ## Example (JavaScript)
-         *
-         *     ```javascript
-         *     const socket = new WebSocket("wss://your-domain.com/ws/connect");
-         *
-         *     // After connection is established, send login message
-         *     socket.onopen = () => {
-         *       const loginMessage = {
-         *         type: "user_login",
-         *         data: "your-access-token"
-         *       };
-         *       socket.send(JSON.stringify(loginMessage));
-         *     };
-         *     ```
-         *
-         *     ## Message Format
-         *
-         *     All WebSocket messages follow a JSON format. The message structure for client events matches the request body specifications in this OpenAPI documentation, while server events follow the HTTP response specifications.
-         *
-         *     ### Client Events (Sending)
-         *     Messages sent from the client should follow this format:
-         *     ```json
-         *     {
-         *       "type": "event_name",
-         *       "data": {}  // Data structure as specified in OpenAPI request bodies
-         *     }
-         *     ```
-         *
-         *     ### Server Events (Receiving)
-         *     Messages received from the server will follow this format:
-         *     ```json
-         *     {
-         *       "type": "event_name",
-         *       "data": {}  // Data structure as specified in OpenAPI responses
-         *     }
-         *     ```
-         *
-         *     ## Important Notes
-         *
-         *     - Access tokens are valid for 60 seconds.
-         *     - Ensure your client can handle reconnection if the access token expires.
-         *     - The server will emit an error event if authentication fails.
-         *     - After a successful login, you'll be subscribed to your respective channel.
-         *
-         *     For detailed information on access token generation and management, refer to the main WebSocket authentication documentation found [here](#tag/websocket/POST/ws/access-token).
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["WebsocketClientEvent"];
-                };
-            };
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["WebsocketServerEvent"];
-                    };
-                };
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/auth/whoami": {
         parameters: {
             query?: never;
@@ -2304,6 +2130,180 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/ws/access-token": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Issue WebSocket Access Token
+         * @description This endpoint is used to generate authentication tokens (access tokens) for WebSocket connections in our system.
+         *
+         *     ## Access Token Generation
+         *
+         *     1. Send a POST request to the access token issuer endpoint.
+         *     2. The endpoint will return an access token.
+         *
+         *     ## Access Token Properties
+         *
+         *     - Access tokens are short-lived tokens, valid for 60 seconds from the time of generation.
+         *     - Each access token, once used, is tied to a specific websocket connection and is immediately invalidated.
+         *
+         *     ## Usage
+         *
+         *     - Use the generated access token when establishing a WebSocket connection.
+         *     - For detailed information on how to use the access token in a WebSocket connection, refer to the documentation found [here](#tag/websocket/GET/ws/connect).
+         *
+         *     ## Important Notes
+         *
+         *     - Always generate a new access token before attempting to log in to the user event stream.
+         *     - Ensure your client handles access token expiration and reconnection scenarios.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AccessTokenTokenResponse"];
+                    };
+                };
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/ws/connect": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Establish WebSocket Connection
+         * @description This route is the entry point for WebSocket connections in our system.
+         *
+         *     ## Connection Process
+         *
+         *     1. Connect to this endpoint using the WebSocket protocol.
+         *     2. Once connected, send a login message with your access token:
+         *
+         *        ```json
+         *        {
+         *          "type": "user_login",
+         *          "data": "<access-token>"
+         *        }
+         *        ```
+         *
+         *     ## Example (JavaScript)
+         *
+         *     ```javascript
+         *     const socket = new WebSocket("wss://your-domain.com/ws/connect");
+         *
+         *     // After connection is established, send login message
+         *     socket.onopen = () => {
+         *       const loginMessage = {
+         *         type: "user_login",
+         *         data: "your-access-token"
+         *       };
+         *       socket.send(JSON.stringify(loginMessage));
+         *     };
+         *     ```
+         *
+         *     ## Message Format
+         *
+         *     All WebSocket messages follow a JSON format. The message structure for client events matches the request body specifications in this OpenAPI documentation, while server events follow the HTTP response specifications.
+         *
+         *     ### Client Events (Sending)
+         *     Messages sent from the client should follow this format:
+         *     ```json
+         *     {
+         *       "type": "event_name",
+         *       "data": {}  // Data structure as specified in OpenAPI request bodies
+         *     }
+         *     ```
+         *
+         *     ### Server Events (Receiving)
+         *     Messages received from the server will follow this format:
+         *     ```json
+         *     {
+         *       "type": "event_name",
+         *       "data": {}  // Data structure as specified in OpenAPI responses
+         *     }
+         *     ```
+         *
+         *     ## Important Notes
+         *
+         *     - Access tokens are valid for 60 seconds.
+         *     - Ensure your client can handle reconnection if the access token expires.
+         *     - The server will emit an error event if authentication fails.
+         *     - After a successful login, you'll be subscribed to your respective channel.
+         *
+         *     For detailed information on access token generation and management, refer to the main WebSocket authentication documentation found [here](#tag/websocket/POST/ws/access-token).
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["WebsocketClientEvent"];
+                };
+            };
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["WebsocketServerEvent"];
+                    };
+                };
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -2505,10 +2505,12 @@ export interface components {
              */
             email: string;
         };
+        /** @enum {string} */
+        IntegrationIdentifier: "softswiss" | "sumsub" | "paybrokers" | "starspay";
         InternalError: string;
         KycAccessTokenResponse: {
             /** @description KYC provider identifier. This should be used to differentiate which WebSDK/flow to use. */
-            provider_identifier: components["schemas"]["KycProviderIdentifier"];
+            provider_identifier: components["schemas"]["IntegrationIdentifier"];
             /** @description Access token provided by the KYC integration */
             token: string;
             /** @description User ID, this is the current user, and should never deviate from the current user */
@@ -2527,8 +2529,6 @@ export interface components {
             /** @description The user's phone number in E.164 format */
             phone_number: string;
         };
-        /** @enum {string} */
-        KycProviderIdentifier: "sumsub";
         KycStatusResponse: {
             /** @description Whether the user has an active KYC and thus does not need to go through the KYC process again. */
             has_active_kyc: boolean;
@@ -2872,7 +2872,11 @@ export interface components {
         ProtocolType: "welcome" | {
             error: string;
         } | "login_complete" | "login_failed" | "logout_complete" | {
-            channel_entered: components["schemas"]["WebsocketStreamChannel"];
+            channel_entered: {
+                name: components["schemas"]["WebsocketStreamChannel"];
+                /** Format: int64 */
+                retention: number;
+            };
         } | {
             channel_left: components["schemas"]["WebsocketStreamChannel"];
         };
@@ -2979,6 +2983,12 @@ export interface components {
                 max?: string | null;
                 /** @description The minimum allowed payment amount */
                 min?: string | null;
+            };
+        } | {
+            /** @enum {string} */
+            code: "GAME_LAUNCH_FAILED";
+            metadata: {
+                message: string;
             };
         } | {
             /** @enum {string} */

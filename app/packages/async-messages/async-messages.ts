@@ -1,4 +1,5 @@
 import type { SupportedLocale } from "../translation";
+import type { components } from "~/packages/http-client/girobet-backend-generated-http-client/openapi-typescript";
 import type { NotificationBackend } from "~/modules/notifications/domain/NotificationBackend";
 import type { PaymentStatus } from "~/modules/wallet/domain/Payment";
 import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
@@ -20,7 +21,7 @@ export type UserInteractionModalState =
   {
     modal: "kyc";
     data: {
-      provider: "sumsub";
+      provider: components["schemas"]["IntegrationIdentifier"];
       accessToken: string;
       applicantData: {
         email: string;

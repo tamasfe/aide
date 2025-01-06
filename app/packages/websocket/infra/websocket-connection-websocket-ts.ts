@@ -50,7 +50,7 @@ export class WebsocketConnectionWebsocketTs implements WebsocketConnectionI {
 
       const listenerToConfirmChannelEntering = (_i: Websocket, event: MessageEvent<string>) => {
         const message = JSON.parse(event.data) as WebsocketMessagesFromServer;
-        if (message.type === "protocol" && typeof message.data === "object" && "channel_entered" in message.data && message.data.channel_entered === payload.channel) {
+        if (message.type === "protocol" && typeof message.data === "object" && "channel_entered" in message.data && message.data.channel_entered.name === payload.channel) {
           return resolve(success());
         }
       };
