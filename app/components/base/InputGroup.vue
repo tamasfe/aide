@@ -149,8 +149,8 @@ const [value, modifiers] = defineModel<number | string>({
             fieldClass,
             'text-emphasis',
           )"
-          @input="event => $emit('input', (event.target as HTMLInputElement)?.value ?? '')"
-          @change="event => $emit('change', (event.target as HTMLInputElement)?.value ?? '')"
+          @input="event => emits('input', (event.target as HTMLInputElement)?.value ?? '')"
+          @change="event => emits('change', (event.target as HTMLInputElement)?.value ?? '')"
         />
         <BaseTextarea
           v-else-if="fieldType === 'textarea'"
@@ -167,8 +167,8 @@ const [value, modifiers] = defineModel<number | string>({
             fieldClass,
             'text-emphasis',
           )"
-          @input="(event) => $emit('input', event)"
-          @change="(event) => $emit('change', event)"
+          @input="(event) => emits('input', event)"
+          @change="(event) => emits('change', event)"
         />
         <!-- <BaseSelect
           v-else-if="fieldType === 'select'"
