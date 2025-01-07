@@ -98,14 +98,23 @@ if ($wsConnection) {
       <template #default="{ item }">
         <BaseLink :to="{ name: 'games-id', params: { id: item.game.id } }">
           <div class="group flex items-center space-x-3 bg-subtle p-2 rounded-lg outline-none border border-muted/10">
-            <div class="flex-shrink-0 self-stretch rounded overflow-hidden w-[4.8rem]">
-              <GamesImageLoader :src="item.game.imageUrl" class="rounded" />
+            <div class="relative aspect-[3/4] w-14 flex-shrink-0 rounded overflow-hidden border border-muted/10">
+              <NuxtImg
+                :src="item.game.imageUrl"
+                alt=""
+                class="block object-cover h-full w-full transition-transform transform hover:scale-105 cursor-pointer"
+              />
             </div>
-            <div class="font-medium leading-tight space-y-1">
-              <div>{{ item.userNickname }}</div>
-              <div class="text-subtle text-sm">{{ item.game.name }}</div>
+            <div class="font-medium leading-tight space-y-1 min-w-0 flex-1">
+              <div class="truncate">{{ item.userNickname }}</div>
+              <div class="text-subtle text-sm truncate min-w-0">{{ item.game.name }}</div>
               <div class="sm:text-lg font-semibold bg-button-primary text-transparent bg-clip-text">
-                <BaseCurrency :currency="item.currency" :value="item.amount" variant="ghost" />
+                <BaseCurrency
+                  :currency="item.currency"
+                  :value="item.amount"
+                  variant="ghost"
+                  class="truncate"
+                />
               </div>
             </div>
           </div>
