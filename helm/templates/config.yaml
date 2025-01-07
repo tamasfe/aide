@@ -4,7 +4,7 @@ metadata:
   name: "{{ .Release.Name }}"
 data:
   NUXT_PUBLIC_BASE_URL: "https://staging.girobet.vip"
-  NUXT_PUBLIC_API_BASE_URL: https://api-staging.girobet.vip
+  NUXT_PUBLIC_API_BASE_URL_CLIENT: https://api-staging.girobet.vip
   NUXT_PUBLIC_WEBSOCKET_API_BASE_URL: https://api-staging.girobet.vip/ws/connect
 
   NUXT_PUBLIC_ERROR_CAPTURING_ENABLED: "true"
