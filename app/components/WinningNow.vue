@@ -7,7 +7,7 @@
 
 const { $dependencies, $wsConnection } = useNuxtApp();
 
-const WINS_BUFFER_SIZE = 30;
+const WINS_BUFFER_SIZE = 6;
 
 // NOTE: this component is using any for ref template of grid because generic types are not properly supported current version of Vue, so we have to use any type. when https://github.com/vuejs/language-tools/issues/3206 is fixed we SHOULD change this to respective type
 // eslint-disable-next-line
@@ -40,12 +40,14 @@ type Win = {
 const buffer = ref<Win[]>([]);
 const loading = ref(true);
 
+let increment = 0;
+
 if ($wsConnection) {
   useCreateSubscriptionToWebsocket(
     $wsConnection,
     wsConnection => $dependencies.websockets.ui.wsChannelManagers.newestWins.subscribe(wsConnection, (message) => {
       buffer.value.unshift(({
-        key: `${message.data.data.amount}-${message.data.data.currency}-${message.data.data.user_nickname}-${message.data.data.game.id}`,
+        key: increment.toString(),
         amount: message.data.data.amount,
         currency: message.data.data.currency,
         userNickname: message.data.data.user_nickname,
@@ -56,9 +58,14 @@ if ($wsConnection) {
         },
       }));
 
+      increment += 1;
+
       if (buffer.value.length > WINS_BUFFER_SIZE) {
         buffer.value.pop();
       }
+
+      const emblaApi = slider.value.emblaApi;
+      emblaApi?.scrollTo(0);
 
       loading.value = false;
     }),
@@ -85,13 +92,13 @@ if ($wsConnection) {
       :gap="1"
       :options="{
         align: 'start',
-        loop: true,
+        loop: false,
       }"
     >
       <template #default="{ item }">
         <BaseLink :to="{ name: 'games-id', params: { id: item.game.id } }">
-          <div class="group flex items-center space-x-3 bg-subtle p-2 rounded-lg outline-none">
-            <div class="flex-shrink-0 rounded-lg w-[4.8rem]">
+          <div class="group flex items-center space-x-3 bg-subtle p-2 rounded-lg outline-none border border-muted/10">
+            <div class="flex-shrink-0 self-stretch rounded overflow-hidden w-[4.8rem]">
               <GamesImageLoader :src="item.game.imageUrl" class="rounded" />
             </div>
             <div class="font-medium leading-tight space-y-1">
