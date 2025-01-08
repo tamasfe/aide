@@ -27,11 +27,6 @@ tower-layer = { version = "0.3", optional = true }
 tower-service = { version = "0.3", optional = true }
 cfg-if = "1.0.0"
 
-
-# custom axum extractors
-serde_qs = { version = "0.13", optional = true }
-jwt-authorizer = { version = "0.14", default-features = false, optional = true }
-
 [features]
 macros = ["dep:aide-macros"]
 redoc = []
@@ -39,7 +34,7 @@ swagger = []
 scalar = []
 skip_serializing_defaults = []
 
-axum = ["dep:axum", "bytes", "http", "dep:tower-layer", "dep:tower-service", "serde_qs?/axum"]
+axum = ["dep:axum", "bytes", "http", "dep:tower-layer", "dep:tower-service"]
 axum-headers = ["axum-extra/typed-header"]
 axum-ws = ["axum/ws"]
 axum-multipart = ["axum/multipart"]
@@ -50,10 +45,6 @@ axum-extra-form = ["axum", "axum-extra", "axum-extra/form"]
 axum-extra-query = ["axum", "axum-extra", "axum-extra/query"]
 axum-extra-json-deserializer = ["axum", "axum-extra", "axum-extra/json-deserializer"]
 axum-wasm = ["axum"]
-
-
-serde_qs = ["dep:serde_qs"]
-jwt-authorizer = ["dep:jwt-authorizer"]
 
 [dev-dependencies]
 serde = { version = "1.0.144", features = ["derive"] }
