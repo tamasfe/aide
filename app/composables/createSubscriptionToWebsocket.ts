@@ -1,14 +1,19 @@
-import type { WebsocketConnectionI } from "~/packages/websocket/domain/websocket-connection";
+import type { WebsocketChannelI } from "../packages/websocket/infra/ui/websocket-channel-interface";
 
 /**
  * This composable can only be used inside a vue component setup function,
  * as it uses the Vue onUnmounted lifecycle hook.
  */
-export const useCreateSubscriptionToWebsocket = (
-  wsConnection: WebsocketConnectionI,
-  subscribe: (wsConnection: WebsocketConnectionI) => void,
-  unsubscribe: (wsConnection: WebsocketConnectionI) => void,
-) => {
-  subscribe(wsConnection);
-  onUnmounted(() => unsubscribe(wsConnection));
+export function useCreateSubscriptionToWebsocket<T>(
+  channel: WebsocketChannelI<T>,
+  callback: (data: T) => void,
+) {
+  const { $wsConnection } = useNuxtApp();
+
+  if ($wsConnection) {
+    onMounted(() =>
+      channel.subscribe($wsConnection, callback));
+
+    onUnmounted(() => channel.unsubscribe($wsConnection));
+  }
 };

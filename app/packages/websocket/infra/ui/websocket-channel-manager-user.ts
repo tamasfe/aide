@@ -1,9 +1,10 @@
 import type { WebsocketConnectionI } from "../../domain/websocket-connection";
 import type { WebsocketAccessTokenRepositoryI } from "../../domain/websocket-access-token-repository";
+import type { WebsocketChannelI } from "./websocket-channel-interface";
 import type { LoggerI } from "~/packages/logger/Logger";
 import type { AsyncMessagePublisherI } from "~/packages/async-messages/async-message-publisher";
 
-export class WebsocketChannelManagerUser {
+export class WebsocketChannelManagerUser implements WebsocketChannelI {
   constructor(
     private wsAccessTokenRepository: WebsocketAccessTokenRepositoryI,
     private asyncMessagePublisher: AsyncMessagePublisherI,

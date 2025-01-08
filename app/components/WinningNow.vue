@@ -5,7 +5,7 @@
 // TRANSLATION STATUS:  ✴️
 //   * not done
 
-const { $dependencies, $wsConnection } = useNuxtApp();
+const { $dependencies } = useNuxtApp();
 
 const WINS_BUFFER_SIZE = 6;
 
@@ -42,36 +42,33 @@ const loading = ref(true);
 
 let increment = 0;
 
-if ($wsConnection) {
-  useCreateSubscriptionToWebsocket(
-    $wsConnection,
-    wsConnection => $dependencies.websockets.ui.wsChannelManagers.newestWins.subscribe(wsConnection, (message) => {
-      buffer.value.unshift(({
-        key: increment.toString(),
-        amount: message.data.data.amount,
-        currency: message.data.data.currency,
-        userNickname: message.data.data.user_nickname,
-        game: {
-          id: message.data.data.game.id,
-          imageUrl: message.data.data.game.image_url,
-          name: message.data.data.game.name,
-        },
-      }));
+useCreateSubscriptionToWebsocket(
+  $dependencies.websockets.ui.wsChannelManagers.newestWins,
+  (message) => {
+    buffer.value.unshift(({
+      key: increment.toString(),
+      amount: message.data.data.amount,
+      currency: message.data.data.currency,
+      userNickname: message.data.data.user_nickname,
+      game: {
+        id: message.data.data.game.id,
+        imageUrl: message.data.data.game.image_url,
+        name: message.data.data.game.name,
+      },
+    }));
 
-      increment += 1;
+    increment += 1;
 
-      if (buffer.value.length > WINS_BUFFER_SIZE) {
-        buffer.value.pop();
-      }
+    if (buffer.value.length > WINS_BUFFER_SIZE) {
+      buffer.value.pop();
+    }
 
-      const emblaApi = slider.value.emblaApi;
-      emblaApi?.scrollTo(0);
+    const emblaApi = slider.value.emblaApi;
+    emblaApi?.scrollTo(0);
 
-      loading.value = false;
-    }),
-    wsConnection => $dependencies.websockets.ui.wsChannelManagers.newestWins.unsubscribe(wsConnection),
-  );
-}
+    loading.value = false;
+  },
+);
 </script>
 
 <template>

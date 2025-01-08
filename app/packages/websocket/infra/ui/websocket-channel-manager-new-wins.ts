@@ -1,9 +1,10 @@
 import type { WebsocketConnectionI } from "../../domain/websocket-connection";
 import type { WebsocketMessagesByType } from "../../domain/websocket-messages";
+import type { WebsocketChannelI } from "./websocket-channel-interface";
 import type { AsyncMessagePublisherI } from "~/packages/async-messages/async-message-publisher";
 import type { LoggerI } from "~/packages/logger/Logger";
 
-export class WebsocketChannelManagerNewWins {
+export class WebsocketChannelManagerNewWins implements WebsocketChannelI<WebsocketMessagesByType["winning_now"]> {
   constructor(private logger: LoggerI, private asyncMessagePublisher: AsyncMessagePublisherI) {}
 
   public async subscribe(wsConnection: WebsocketConnectionI, callback: (message: WebsocketMessagesByType["winning_now"]) => void): Promise<void> {

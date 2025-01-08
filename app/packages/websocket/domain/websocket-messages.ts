@@ -4,25 +4,14 @@ export type WebsocketMessagesToServer = components["schemas"]["WebsocketClientEv
 export type WebsocketMessagesFromServer = components["schemas"]["WebsocketServerEvent"];
 
 export type WebsocketMessagesByType = {
-  winning_now: WebsocketMessagesFromServer & {
+  winning_now: {
     type: "ticker";
-    data: {
-      type: "winning_now";
-    };
+    data: Extract<components["schemas"]["TickerType"], { type: "winning_now" }>;
   };
-
-  payment_status_update: WebsocketMessagesFromServer & {
+  payment_status_update: {
     type: "notification";
-    data: {
-      id: number;
-      type: "payment_status_update";
-    };
+    data: Extract<components["schemas"]["WebsocketServerEvent"]["data"], { type: "payment_status_update" } >;
   };
-
-  channel_entered: WebsocketMessagesFromServer & {
-    type: "protocol";
-    data: {
-      channel_entered: "newest_wins";
-    };
-  };
+  balance_update: Extract<components["schemas"]["WebsocketServerEvent"], { type: "balance_update" }>;
+  channel_entered: Extract<components["schemas"]["WebsocketServerEvent"], { type: "ticker"; data: { type: "winning_now" } }>;
 };
