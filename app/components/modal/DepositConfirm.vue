@@ -27,7 +27,7 @@ const createNewDeposit = async () => $dependencies.wallets.ui.createDepositFlowO
     :disabled="loading"
     :logo="false"
     banner="top"
-    banner-top="/assets/images/deposit_horizontal.jpg"
+    banner-top="/assets/images/banners/deposit_horizontal.jpg"
   >
     <FormDepositConfirm
       :key="paymentFlowId"

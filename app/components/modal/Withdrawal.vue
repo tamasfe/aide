@@ -29,7 +29,7 @@ const currency = ref<{
     :open="open"
     :logo="false"
     banner="top"
-    banner-top="/assets/images/withdrawal_horizontal.jpg"
+    banner-top="/assets/images/banners/withdrawal_horizontal.jpg"
     @close="onClosed"
   >
     <FormWithdrawal

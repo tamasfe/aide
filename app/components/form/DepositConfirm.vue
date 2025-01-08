@@ -53,7 +53,7 @@ const onClickGenerateNewCode = async () => {
       </div>
       <NuxtImg
         class="w-[6rem] h-auto self-start"
-        src="/assets/images/pix.svg"
+        src="/assets/images/logos/pix.svg"
         alt="Pix"
       />
     </div>

@@ -9,12 +9,12 @@ const year = ref(new Date().getFullYear());
 
 const logos = [
   {
-    src: "/assets/footer-logos/play-responsibly.svg",
+    src: "/assets/images/logos/play-responsibly.svg",
     alt: "footer.play_responsibly",
     key: "play-responsibly",
   },
   {
-    src: "/assets/footer-logos/responsible-gaming.svg",
+    src: "/assets/images/logos/responsible-gaming.svg",
     alt: "footer.responsible_gaming",
     key: "responsible-gaming",
   },
@@ -34,7 +34,7 @@ const scrollToTop = () => {
       <div class="flex-1 md:max-w-xs lg:max-w-sm flex flex-col items-center md:items-start space-y-6 md:space-y-8">
         <div class="w-40">
           <NuxtImg
-            src="/assets/images/logo-unsaturated.svg"
+            src="/assets/images/logos/logo-unsaturated.svg"
             alt="Logo"
             class="w-full object-cover"
           />

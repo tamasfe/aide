@@ -29,7 +29,7 @@ const props = defineProps({
 });
 
 const imageSettings = {
-  src: "/assets/images/logo-g-black-bg.png",
+  src: "/assets/images/logos/logo-g-black-bg.png",
   height: Math.abs(props.size / 5),
   width: Math.abs(props.size / 5),
   excavate: true,
