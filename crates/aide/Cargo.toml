@@ -12,7 +12,7 @@ readme = "README.md"
 [dependencies]
 indexmap = { version = "2.1", features = ["serde"] }
 schemars = { version = "0.8.16", features = ["impl_json_schema", "indexmap2"] }
-serde = "1"
+serde = { version = "1.0.144", features = ["derive"] }
 serde_json = "1"
 thiserror = "1"
 tracing = "0.1"
@@ -47,7 +47,6 @@ axum-extra-json-deserializer = ["axum", "axum-extra", "axum-extra/json-deseriali
 axum-wasm = ["axum"]
 
 [dev-dependencies]
-serde = { version = "1.0.144", features = ["derive"] }
 tokio = { version = "1.21.0", features = ["macros", "rt-multi-thread"] }
 
 [package.metadata.docs.rs]
