@@ -1,5 +1,6 @@
 import { ErrorUserNotAuthorized } from "~/modules/wallet/domain/ErrorUserNotAuthorized";
-import type { components } from "~/packages/http-client/girobet-backend-generated-http-client/openapi-typescript";
+import type { Wallet } from "~/modules/wallet/domain/Wallet";
+import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
 
 type WalletBalanceStatus = "ready" | "loading" | "hidden";
 
@@ -10,7 +11,7 @@ type WalletStoreI = {
 } | {
   isInit: true;
   balanceStatus: WalletBalanceStatus;
-  wallet: CamelizeKeys<components["schemas"]["UserWalletBalanceResponse"]>;
+  wallet: Wallet;
 };
 
 export const useWalletStore = defineStore("walletStore", {
@@ -54,6 +55,15 @@ export const useWalletStore = defineStore("walletStore", {
 
     async hideBalance() {
       this.balanceStatus = "hidden";
+    },
+
+    updateBalance(balance: number, currency: WalletCurrency) {
+      if (this.wallet === null) {
+        return;
+      }
+
+      this.wallet.balance = balance;
+      this.wallet.currency = currency;
     },
   },
 });

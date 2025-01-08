@@ -18,33 +18,27 @@ export class WebsocketChannelManagerUser implements WebsocketChannelI {
       return;
     }
 
-    const resultSubscribingPayment = wsConnection.subscribeToMessage("payment_status_update", (message) => {
-      this.asyncMessagePublisher.emit("girobet-backend:events:payments:payment-status-updated", {
-        notificationId: message.data.id,
-        flowId: message.data.data.flow_id,
-        status: message.data.data.status,
-      });
-    });
-    if (resultSubscribingPayment.isFailure) {
-      this.paymentStatusUpdateListenerId = null;
-      this.logger.error("Error subscribing to the WS message when subscribing to user channel", resultSubscribingPayment.error, { message: "payment_status_update", connection: wsConnection });
-    }
-    else {
-      this.paymentStatusUpdateListenerId = resultSubscribingPayment.value;
-    }
+    const resultSubscribingAsyncMessages = wsConnection.subscribe((eventData) => {
+      if (eventData.type === "balance_update") {
+        this.asyncMessagePublisher.emit("girobet-backend:events:wallets:wallet-balance-updated", camelizeKeys(eventData.data));
+      }
 
-    const resultSubscribingGenericEvent = wsConnection.subscribe((eventData) => {
-      if (eventData.type !== "notification") return;
-      this.asyncMessagePublisher.emit("girobet-backend:events:backend-notification-received", { notification: {
-        ...camelizeKeys(eventData).data,
-        createdAt: new Date().toISOString(), // It would be better if this came from the Backend
-      } });
+      if (eventData.type === "notification") {
+        if (eventData.data.type === "payment_status_update") {
+          this.asyncMessagePublisher.emit("girobet-backend:events:payments:payment-status-updated", camelizeKeys(eventData.data));
+        }
+
+        this.asyncMessagePublisher.emit("girobet-backend:events:backend-notification-received", { notification: {
+          ...camelizeKeys(eventData).data,
+          createdAt: new Date().toISOString(), // It would be better if this came from the Backend
+        } });
+      }
     });
-    if (resultSubscribingGenericEvent.isFailure) {
-      this.logger.error("Error subscribing to the backend notification generic event when subscribing to user channel", resultSubscribingGenericEvent.error, { connection: wsConnection, message: "kyc_completed" });
+    if (resultSubscribingAsyncMessages.isFailure) {
+      this.logger.error("Error subscribing to the backend notification generic event when subscribing to user channel", resultSubscribingAsyncMessages.error, { connection: wsConnection, message: "kyc_completed" });
     }
     else {
-      this.backendNotificationListenerId = resultSubscribingGenericEvent.value;
+      this.wslistenerId = resultSubscribingAsyncMessages.value;
     }
 
     const resultEnteringChannel = await wsConnection.enterChannel({
@@ -53,11 +47,9 @@ export class WebsocketChannelManagerUser implements WebsocketChannelI {
     });
     if (resultEnteringChannel.isFailure) {
       this.logger.error("Error logging in to the user WS channel", resultEnteringChannel.error, { connection: wsConnection });
-      if (this.paymentStatusUpdateListenerId) {
-        wsConnection.unsubscribeFromMessage(this.paymentStatusUpdateListenerId);
-      }
-      if (this.backendNotificationListenerId) {
-        wsConnection.unsubscribeFromMessage(this.backendNotificationListenerId);
+
+      if (this.wslistenerId) {
+        wsConnection.unsubscribeFromMessage(this.wslistenerId);
       }
       return;
     }
@@ -72,10 +64,10 @@ export class WebsocketChannelManagerUser implements WebsocketChannelI {
       return;
     }
 
-    if (this.paymentStatusUpdateListenerId) {
-      const resultUnsubcribing = wsConnection.unsubscribeFromMessage(this.paymentStatusUpdateListenerId);
+    if (this.wslistenerId) {
+      const resultUnsubcribing = wsConnection.unsubscribeFromMessage(this.wslistenerId);
       if (resultUnsubcribing.isFailure) {
-        this.logger.error("Error unsubscribing from the 'payment_status_update' message when unsubscribing from user channel", resultUnsubcribing.error, { connection: wsConnection, listenerId: this.paymentStatusUpdateListenerId });
+        this.logger.error("Error unsubscribing when unsubscribing from user channel", resultUnsubcribing.error, { connection: wsConnection, listenerId: this.wslistenerId });
         return;
       }
     }
@@ -83,6 +75,5 @@ export class WebsocketChannelManagerUser implements WebsocketChannelI {
     return;
   }
 
-  private paymentStatusUpdateListenerId: number | null = null;
-  private backendNotificationListenerId: number | null = null;
+  private wslistenerId: number | null = null;
 }

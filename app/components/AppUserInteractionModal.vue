@@ -51,7 +51,7 @@ $dependencies.common.asyncMessagePublisher.subscribe(
 
 $dependencies.common.asyncMessagePublisher.subscribe(
   "girobet-backend:events:payments:payment-status-updated",
-  ({ flowId }) => {
+  ({ data }) => {
     // If any of the invalid jurisdiction modals are open: keep them open
     if (modalIsJurisdictionModal(state.value.modal)) {
       return;
@@ -59,7 +59,7 @@ $dependencies.common.asyncMessagePublisher.subscribe(
     if (state.value.modal !== "deposit_confirm") {
       return;
     }
-    if (flowId === state.value.data.flowId) {
+    if (data.flowId === state.value.data.flowId) {
       state.value = { modal: null };
     }
   },

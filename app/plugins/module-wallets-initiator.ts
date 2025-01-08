@@ -50,6 +50,11 @@ export default defineNuxtPlugin({
       () => walletStore.refresh(),
     );
 
+    $dependencies.common.asyncMessagePublisher.subscribe(
+      "girobet-backend:events:wallets:wallet-balance-updated",
+      ({ balance, currency }) => walletStore.updateBalance(balance, currency),
+    );
+
     /**
      *
      * Init user pinia store

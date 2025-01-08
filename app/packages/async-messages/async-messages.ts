@@ -1,8 +1,8 @@
 import type { SupportedLocale } from "../translation";
 import type { components } from "~/packages/http-client/girobet-backend-generated-http-client/openapi-typescript";
 import type { NotificationBackend } from "~/modules/notifications/domain/NotificationBackend";
-import type { PaymentStatus } from "~/modules/wallet/domain/Payment";
 import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
+import type { CamelizeKeys } from "~/utils";
 
 type NoDataRequiredModal = "login" | "register" | "search" | "forgot_password" | "deposit" | "withdrawal" | "cancel_registration" | "close_account";
 
@@ -101,14 +101,11 @@ export interface AsyncMessagesTypes {
   /**
    * Events coming from the Backend
    */
-  "girobet-backend:events:payments:payment-status-updated": {
-    notificationId: number;
-    flowId: number;
-    status: PaymentStatus;
-  };
+  "girobet-backend:events:payments:payment-status-updated": CamelizeKeys<Extract<components["schemas"]["WebsocketServerEvent"]["data"], { type: "payment_status_update" }>>;
   "girobet-backend:events:kyc:kyc-process-completed": {
     notificationId: number;
   };
+  "girobet-backend:events:wallets:wallet-balance-updated": CamelizeKeys<Extract<components["schemas"]["WebsocketServerEvent"], { type: "balance_update" }>["data"]>;
   "girobet-backend:events:backend-notification-received": {
     notification: NotificationBackend;
   };
