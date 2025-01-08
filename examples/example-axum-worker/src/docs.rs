@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use crate::{extractors::Json, state::AppState};
+use crate::state::AppState;
 use aide::swagger::Swagger;
 use aide::{
     axum::{
@@ -11,7 +11,7 @@ use aide::{
     redoc::Redoc,
     scalar::Scalar,
 };
-use axum::{response::IntoResponse, Extension};
+use axum::{response::IntoResponse, Extension, Json};
 
 pub fn docs_routes(state: AppState) -> ApiRouter {
     // We infer the return types for these routes

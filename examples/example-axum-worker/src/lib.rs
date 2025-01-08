@@ -5,10 +5,9 @@ use aide::{
     openapi::{OpenApi, Tag},
     transform::TransformOpenApi,
 };
-use axum::{http, http::StatusCode, Extension};
+use axum::{http, http::StatusCode, Extension, Json};
 use docs::docs_routes;
 use errors::AppError;
-use extractors::Json;
 use state::AppState;
 use todos::routes::todo_routes;
 use tower_service::Service;
@@ -17,7 +16,6 @@ use worker::{console_log, event, Context, Env, HttpRequest};
 
 pub mod docs;
 pub mod errors;
-pub mod extractors;
 pub mod state;
 pub mod todos;
 

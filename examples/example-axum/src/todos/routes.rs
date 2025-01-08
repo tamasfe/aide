@@ -9,12 +9,13 @@ use axum::{
     extract::{Path, State},
     http::StatusCode,
     response::IntoResponse,
+    Json,
 };
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-use crate::{extractors::Json, state::AppState};
+use crate::state::AppState;
 
 use super::TodoItem;
 
