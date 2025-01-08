@@ -12,8 +12,7 @@ aide = { path = "../../crates/aide", features = [
     "redoc",
     "scalar",
     "swagger",
-    "axum",
-    "axum-extra",
+    "axum-json",
     "macros",
 ] }
 tower-service = "0.3.2"
