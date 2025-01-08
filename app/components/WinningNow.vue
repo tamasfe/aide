@@ -63,8 +63,7 @@ useCreateSubscriptionToWebsocket(
       buffer.value.pop();
     }
 
-    const emblaApi = slider.value.emblaApi;
-    emblaApi?.scrollTo(0);
+    slider.value?.emblaApi?.scrollTo(0);
 
     loading.value = false;
   },
