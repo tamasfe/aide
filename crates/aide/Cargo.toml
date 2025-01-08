@@ -14,7 +14,7 @@ indexmap = { version = "2.1", features = ["serde"] }
 schemars = { version = "0.8.16", features = ["impl_json_schema", "indexmap2"] }
 serde = { version = "1.0.144", features = ["derive"] }
 serde_json = "1"
-thiserror = "1"
+thiserror = "2.0"
 tracing = "0.1"
 aide-macros = { version = "0.7.0", path = "../aide-macros", optional = true }
 
