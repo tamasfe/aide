@@ -177,7 +177,7 @@ use crate::{
     util::merge_paths,
     OperationInput, OperationOutput,
 };
-#[cfg(not(feature = "axum-wasm"))]
+#[cfg(feature = "axum-tokio")]
 use axum::extract::connect_info::IntoMakeServiceWithConnectInfo;
 use axum::{
     body::{Body, Bytes, HttpBody},
@@ -681,7 +681,7 @@ impl ApiRouter<()> {
     /// See [`axum::Router::into_make_service_with_connect_info`] for details.
     #[tracing::instrument(skip_all)]
     #[must_use]
-    #[cfg(not(feature = "axum-wasm"))]
+    #[cfg(feature = "axum-tokio")]
     pub fn into_make_service_with_connect_info<C>(
         self,
     ) -> IntoMakeServiceWithConnectInfo<Router<()>, C> {
