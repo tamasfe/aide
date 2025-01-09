@@ -270,8 +270,8 @@ where
     /// See [`axum::routing::method_routing::MethodRouter::layer`].
     pub fn layer<L, NewError>(self, layer: L) -> ApiMethodRouter<S, NewError>
     where
-        L: Layer<Route<E>> + Clone + Send + 'static + std::marker::Sync,
-        L::Service: Service<Request<Body>> + Clone + Send + 'static + std::marker::Sync,
+        L: Layer<Route<E>> + Clone + Send + Sync + 'static,
+        L::Service: Service<Request<Body>> + Clone + Send + Sync + 'static,
         <L::Service as Service<Request<Body>>>::Response: IntoResponse + 'static,
         <L::Service as Service<Request<Body>>>::Error: Into<NewError> + 'static,
         <L::Service as Service<Request<Body>>>::Future: Send + 'static,
@@ -296,7 +296,7 @@ where
     /// See [`axum::routing::method_routing::MethodRouter::on_service`].
     pub fn on_service<T>(mut self, filter: MethodFilter, svc: T) -> Self
     where
-        T: Service<Request<Body>, Error = E> + Clone + Send + 'static + std::marker::Sync,
+        T: Service<Request<Body>, Error = E> + Clone + Send + Sync + 'static,
         T::Response: IntoResponse + 'static,
         T::Future: Send + 'static,
     {
@@ -307,7 +307,7 @@ where
     /// See [`axum::routing::method_routing::MethodRouter::fallback_service`].
     pub fn fallback_service<T>(mut self, svc: T) -> Self
     where
-        T: Service<Request<Body>, Error = E> + Clone + Send + 'static + std::marker::Sync,
+        T: Service<Request<Body>, Error = E> + Clone + Send + Sync + 'static,
         T::Response: IntoResponse + 'static,
         T::Future: Send + 'static,
     {
@@ -318,8 +318,8 @@ where
     /// See [`axum::routing::method_routing::MethodRouter::route_layer`].
     pub fn route_layer<L>(self, layer: L) -> ApiMethodRouter<S, E>
     where
-        L: Layer<Route<E>> + Clone + Send + 'static + std::marker::Sync,
-        L::Service: Service<Request<Body>, Error = E> + Clone + Send + 'static + std::marker::Sync,
+        L: Layer<Route<E>> + Clone + Send + Sync + 'static,
+        L::Service: Service<Request<Body>, Error = E> + Clone + Send + Sync + 'static,
         <L::Service as Service<Request<Body>>>::Response: IntoResponse + 'static,
         <L::Service as Service<Request<Body>>>::Future: Send + 'static,
         E: 'static,

@@ -512,7 +512,7 @@ where
     #[tracing::instrument(skip_all)]
     pub fn route_service<T>(mut self, path: &str, service: T) -> Self
     where
-        T: Service<Request<Body>, Error = Infallible> + Clone + Send + 'static + std::marker::Sync,
+        T: Service<Request<Body>, Error = Infallible> + Clone + Send + Sync + 'static,
         T::Response: IntoResponse,
         T::Future: Send + 'static,
     {
@@ -525,11 +525,7 @@ where
     #[tracing::instrument(skip_all)]
     pub fn route_service_with_tsr<T>(mut self, path: &str, service: T) -> Self
     where
-        T: Service<axum::extract::Request, Error = Infallible>
-            + Clone
-            + Send
-            + 'static
-            + std::marker::Sync,
+        T: Service<axum::extract::Request, Error = Infallible> + Clone + Send + Sync + 'static,
         T::Response: IntoResponse,
         T::Future: Send + 'static,
         Self: Sized,
@@ -584,7 +580,7 @@ where
     /// to pass on the API documentation from the nested service as well.
     pub fn nest_service<T>(mut self, path: &str, svc: T) -> Self
     where
-        T: Service<Request<Body>, Error = Infallible> + Clone + Send + 'static + std::marker::Sync,
+        T: Service<Request<Body>, Error = Infallible> + Clone + Send + Sync + 'static,
         T::Response: IntoResponse,
         T::Future: Send + 'static,
     {
@@ -620,8 +616,8 @@ where
     /// See [`axum::Router::layer`] for details.
     pub fn layer<L>(self, layer: L) -> ApiRouter<S>
     where
-        L: Layer<Route> + Clone + Send + 'static + std::marker::Sync,
-        L::Service: Service<Request<Body>> + Clone + Send + 'static + std::marker::Sync,
+        L: Layer<Route> + Clone + Send + Sync + 'static,
+        L::Service: Service<Request<Body>> + Clone + Send + Sync + 'static,
         <L::Service as Service<Request<Body>>>::Response: IntoResponse + 'static,
         <L::Service as Service<Request<Body>>>::Error: Into<Infallible> + 'static,
         <L::Service as Service<Request<Body>>>::Future: Send + 'static,
@@ -635,8 +631,8 @@ where
     /// See [`axum::Router::route_layer`] for details.
     pub fn route_layer<L>(mut self, layer: L) -> Self
     where
-        L: Layer<Route> + Clone + Send + 'static + std::marker::Sync,
-        L::Service: Service<Request<Body>> + Clone + Send + 'static + std::marker::Sync,
+        L: Layer<Route> + Clone + Send + Sync + 'static,
+        L::Service: Service<Request<Body>> + Clone + Send + Sync + 'static,
         <L::Service as Service<Request<Body>>>::Response: IntoResponse + 'static,
         <L::Service as Service<Request<Body>>>::Error: Into<Infallible> + 'static,
         <L::Service as Service<Request<Body>>>::Future: Send + 'static,
@@ -658,7 +654,7 @@ where
     /// See [`axum::Router::fallback_service`] for details.
     pub fn fallback_service<T>(mut self, svc: T) -> Self
     where
-        T: Service<Request<Body>, Error = Infallible> + Clone + Send + 'static + std::marker::Sync,
+        T: Service<Request<Body>, Error = Infallible> + Clone + Send + Sync + 'static,
         T::Response: IntoResponse,
         T::Future: Send + 'static,
     {
