@@ -14,10 +14,11 @@ const buttonVariants = cva(
     variants: {
       variant: {
         primary: "bg-button-primary hover:bg-button-primary-hover text-button-primary focus:ring-1 focus:ring-button-primary-hover",
-        secondary: "bg-button-secondary hover:bg-button-secondary-hover text-button-secondary",
+        // We can only apply translations to elements that don't have any background image/gradient as those are not animatable
+        secondary: "bg-button-secondary hover:bg-button-secondary-hover text-button-secondary transition-colors duration-[50ms]",
         emphasis: "bg-button-emphasis hover:bg-button-emphasis-hover text-button-emphasis",
-        subtle: "bg-button-subtle hover:bg-button-subtle-hover text-button-subtle focus:ring-1 focus:ring-text-subtle",
-        danger: "bg-button-danger hover:bg-button-danger-hover text-button-danger",
+        subtle: "bg-button-subtle hover:bg-button-subtle-hover text-button-subtle focus:ring-1 focus:ring-text-subtle transition-colors duration-[50ms]",
+        danger: "bg-button-danger hover:bg-button-danger-hover text-button-danger transition-colors duration-[50ms]",
         ghost: "",
       },
       size: {

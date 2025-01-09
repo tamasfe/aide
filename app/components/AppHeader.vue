@@ -12,22 +12,21 @@ const emit = defineEmits([
 </script>
 
 <template>
-  <nav class="sticky top-0 left-0 w-full z-[9]">
+  <nav class="sticky top-0 left-0 w-full z-[9] h-14">
     <PromoBar />
 
-    <div class="w-full bg-subtle">
-      <div class="giro__container flex items-center justify-between py-[0.525rem] sm:py-2">
+    <div class="w-full bg-subtle h-full">
+      <div class="giro__container flex items-center justify-between h-full gap-4">
         <div class="flex items-center gap-x-4 self-stretch">
           <BaseButton
             variant="ghost"
             size="ghost"
-            class="hidden sm:block p-4 -m-4"
+            class="hidden sm:block px-4 -mx-4 h-full text-subtle hover:text-emphasis transition-colors duration-200"
             @click="emit('click:menu')"
           >
             <BaseIcon
               name="lucide:menu"
               :size="26"
-              class="text-subtle"
             />
           </BaseButton>
 
@@ -35,15 +34,28 @@ const emit = defineEmits([
             :to="{ name: 'index' }"
             :class="[
               userStore.isAuthenticated
-                ? 'min-w-8 sm:min-w-[8.5rem]'
-                : 'min-w-32 sm:min-w-[8.5rem]',
+                ? ''
+                : '',
             ]"
-            class="-my-4 -mr-4 py-4 pr-4"
+            class="h-full flex items-center"
           >
-            <IconLogo v-if="!userStore.isAuthenticated" />
+            <NuxtImg
+              v-if="!userStore.isAuthenticated"
+              class="h-7"
+              src="/assets/images/logos/logo.svg"
+              alt="Logo"
+            />
             <template v-else>
-              <IconLogoSmall class="sm:hidden" />
-              <IconLogo class="hidden sm:block" />
+              <NuxtImg
+                class="h-7 sm:hidden"
+                src="/assets/images/logos/logo-sm.svg"
+                alt="Logo"
+              />
+              <NuxtImg
+                class="hidden sm:block h-7"
+                src="/assets/images/logos/logo.svg"
+                alt="Logo"
+              />
             </template>
           </BaseLink>
         </div>

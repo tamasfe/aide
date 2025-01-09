@@ -67,7 +67,7 @@ const links = [
       <PopoverOverlay class="fixed inset-0 bg-transparent" />
       <PopoverButton
         :class="cn(
-          'p-4 -m-4 flex items-center text-subtle hover:text-emphasis focus-visible:outline-none',
+          'p-4 -m-4 flex items-center text-subtle hover:text-emphasis transition-colors duration-200 focus-visible:outline-none',
           open && 'text-emphasis',
         )"
       >
@@ -93,7 +93,7 @@ const links = [
             <div
               v-for="item in links"
               :key="item.key"
-              class="text-subtle-light hover:text-white"
+              class="text-subtle-light hover:text-white transition-colors duration-[50ms]"
             >
               <BaseLink
                 v-if="item.action.toPage"
