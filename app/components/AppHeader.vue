@@ -17,11 +17,11 @@ const emit = defineEmits([
 
     <div class="w-full bg-subtle">
       <div class="giro__container flex items-center justify-between py-[0.525rem] sm:py-2">
-        <div class="flex items-center gap-x-4">
+        <div class="flex items-center gap-x-4 self-stretch">
           <BaseButton
             variant="ghost"
             size="ghost"
-            class="hidden sm:block"
+            class="hidden sm:block p-4 -m-4"
             @click="emit('click:menu')"
           >
             <BaseIcon
@@ -30,6 +30,7 @@ const emit = defineEmits([
               class="text-subtle"
             />
           </BaseButton>
+
           <BaseLink
             :to="{ name: 'index' }"
             :class="[
@@ -37,6 +38,7 @@ const emit = defineEmits([
                 ? 'min-w-8 sm:min-w-[8.5rem]'
                 : 'min-w-32 sm:min-w-[8.5rem]',
             ]"
+            class="-my-4 -mr-4 py-4 pr-4"
           >
             <IconLogo v-if="!userStore.isAuthenticated" />
             <template v-else>
@@ -46,7 +48,7 @@ const emit = defineEmits([
           </BaseLink>
         </div>
 
-        <div class="flex items-center gap-2.5 sm:gap-3">
+        <div class="flex items-center gap-3 sm:gap-3">
           <template v-if="!userStore.isAuthenticated">
             <BaseButton
               id="app-header-login-button"
@@ -75,7 +77,7 @@ const emit = defineEmits([
               {{ $t("button.deposit") }}
             </BaseButton>
 
-            <NavUser class="-mr-3" />
+            <NavUser class="ml-2" />
           </template>
         </div>
       </div>

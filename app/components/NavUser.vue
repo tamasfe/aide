@@ -67,7 +67,7 @@ const links = [
       <PopoverOverlay class="fixed inset-0 bg-transparent" />
       <PopoverButton
         :class="cn(
-          'px-2 flex items-center text-subtle hover:text-emphasis focus-visible:outline-none',
+          'p-4 -m-4 flex items-center text-subtle hover:text-emphasis focus-visible:outline-none',
           open && 'text-emphasis',
         )"
       >

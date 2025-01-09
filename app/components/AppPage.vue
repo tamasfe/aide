@@ -11,21 +11,25 @@ defineProps<{
 </script>
 
 <template>
-  <div class="text-base md:text-lg px-4 mt-8 pb-14 max-w-[850px] mx-auto">
-    <h1 class="text-3xl mb-6 font-semibold text-white">{{ title }}</h1>
+  <section class="py-8">
+    <DashboardSection class="text-base md:text-lg px-4 pb-14 max-w-[850px] mx-auto">
+      <template #title>
+        <h1 class="text-3xl font-semibold text-white">{{ title }}</h1>
+      </template>
 
-    <div
-      v-if="version || date"
-      class="mb-8 text-lg space-y-1"
-    >
-      <div v-if="version"><span class="text-emphasis font-medium">{{ $t('legal.version') }}:</span> {{ version }}</div>
-      <div v-if="date"><span class="text-emphasis font-medium">{{ $t('legal.updated') }}:</span> {{ date }}</div>
-    </div>
+      <div
+        v-if="version || date"
+        class="mb-8 text-lg space-y-1"
+      >
+        <div v-if="version"><span class="text-emphasis font-medium">{{ $t('legal.version') }}:</span> {{ version }}</div>
+        <div v-if="date"><span class="text-emphasis font-medium">{{ $t('legal.updated') }}:</span> {{ date }}</div>
+      </div>
 
-    <div class="text-subtle leading-6 md:leading-7">
-      <slot />
-    </div>
-  </div>
+      <div class="text-subtle leading-6 md:leading-7">
+        <slot />
+      </div>
+    </DashboardSection>
+  </section>
 </template>
 
 <style scoped>
