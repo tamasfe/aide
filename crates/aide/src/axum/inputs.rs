@@ -8,11 +8,8 @@ use crate::{
 };
 use axum::{
     body::Body,
-    extract::{Extension, Form, Json, MatchedPath, OriginalUri, Path, Query, RawQuery, State},
+    extract::{Extension, Path, RawQuery, State},
 };
-
-#[cfg(not(feature = "axum-wasm"))]
-use axum::extract::ConnectInfo;
 
 use indexmap::IndexMap;
 use schemars::{
@@ -29,14 +26,17 @@ use crate::{
 impl<T> OperationInput for Extension<T> {}
 impl<T> OperationInput for State<T> {}
 
-#[cfg(not(feature = "axum-wasm"))]
-impl<T> OperationInput for ConnectInfo<T> {}
-impl OperationInput for MatchedPath {}
-impl OperationInput for OriginalUri {}
 impl OperationInput for Body {}
 impl OperationInput for RawQuery {}
 
-#[cfg(feature = "axum-headers")]
+#[cfg(feature = "axum-tokio")]
+impl<T> OperationInput for axum::extract::ConnectInfo<T> {}
+#[cfg(feature = "axum-matched-path")]
+impl OperationInput for axum::extract::MatchedPath {}
+#[cfg(feature = "axum-original-uri")]
+impl OperationInput for axum::extract::OriginalUri {}
+
+#[cfg(feature = "axum-extra-headers")]
 impl<T> OperationInput for axum_extra::typed_header::TypedHeader<T>
 where
     T: axum_extra::headers::Header,
@@ -70,37 +70,46 @@ where
     }
 }
 
-impl<T> OperationInput for Json<T>
+#[cfg(any(feature = "axum-json", feature = "axum-extra-json-deserializer"))]
+fn operation_input_json<T: JsonSchema>(
+    ctx: &mut crate::gen::GenContext,
+    operation: &mut Operation,
+) {
+    let schema = ctx.schema.subschema_for::<T>().into_object();
+    let resolved_schema = ctx.resolve_schema(&schema);
+
+    set_body(
+        ctx,
+        operation,
+        RequestBody {
+            description: resolved_schema
+                .metadata
+                .as_ref()
+                .and_then(|m| m.description.clone()),
+            content: IndexMap::from_iter([(
+                "application/json".into(),
+                MediaType {
+                    schema: Some(SchemaObject {
+                        json_schema: schema.into(),
+                        example: None,
+                        external_docs: None,
+                    }),
+                    ..Default::default()
+                },
+            )]),
+            required: true,
+            extensions: IndexMap::default(),
+        },
+    );
+}
+
+#[cfg(feature = "axum-json")]
+impl<T> OperationInput for axum::Json<T>
 where
     T: JsonSchema,
 {
     fn operation_input(ctx: &mut crate::gen::GenContext, operation: &mut Operation) {
-        let schema = ctx.schema.subschema_for::<T>().into_object();
-        let resolved_schema = ctx.resolve_schema(&schema);
-
-        set_body(
-            ctx,
-            operation,
-            RequestBody {
-                description: resolved_schema
-                    .metadata
-                    .as_ref()
-                    .and_then(|m| m.description.clone()),
-                content: IndexMap::from_iter([(
-                    "application/json".into(),
-                    MediaType {
-                        schema: Some(SchemaObject {
-                            json_schema: schema.into(),
-                            example: None,
-                            external_docs: None,
-                        }),
-                        ..Default::default()
-                    },
-                )]),
-                required: true,
-                extensions: IndexMap::default(),
-            },
-        );
+        operation_input_json::<T>(ctx, operation);
     }
 }
 
@@ -110,11 +119,12 @@ where
     T: JsonSchema,
 {
     fn operation_input(ctx: &mut crate::gen::GenContext, operation: &mut Operation) {
-        Json::<T>::operation_input(ctx, operation);
+        operation_input_json::<T>(ctx, operation);
     }
 }
 
-impl<T> OperationInput for Form<T>
+#[cfg(feature = "axum-form")]
+impl<T> OperationInput for axum::extract::Form<T>
 where
     T: JsonSchema,
 {
@@ -159,7 +169,8 @@ where
     }
 }
 
-impl<T> OperationInput for Query<T>
+#[cfg(feature = "axum-query")]
+impl<T> OperationInput for axum::extract::Query<T>
 where
     T: JsonSchema,
 {

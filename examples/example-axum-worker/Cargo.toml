@@ -15,7 +15,6 @@ aide = { path = "../../crates/aide", features = [
     "axum",
     "axum-extra",
     "macros",
-    "axum-wasm",
 ] }
 tower-service = "0.3.2"
 worker = { version = "0.5.0", features = ["http", "axum"] }
