@@ -1,7 +1,7 @@
 use aide::operation::OperationIo;
+use axum::extract::FromRequest;
 use axum::response::IntoResponse;
 use axum_jsonschema::JsonSchemaRejection;
-use axum_macros::FromRequest;
 use serde::Serialize;
 use serde_json::json;
 
