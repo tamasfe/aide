@@ -67,7 +67,7 @@ const links = [
       <PopoverOverlay class="fixed inset-0 bg-transparent" />
       <PopoverButton
         :class="cn(
-          'p-4 -m-4 flex items-center text-subtle hover:text-emphasis transition-colors duration-200 focus-visible:outline-none',
+          'p-4 flex items-center text-subtle hover:text-emphasis transition-colors duration-200 focus-visible:outline-none',
           open && 'text-emphasis',
         )"
       >
@@ -86,7 +86,7 @@ const links = [
         leave-from-class="translate-y-0 opacity-100"
         leave-to-class="translate-y-1 opacity-0"
       >
-        <PopoverPanel class="absolute right-0 z-10 mt-4">
+        <PopoverPanel class="absolute right-[1px] z-10">
           <div
             class="flex flex-col py-2 bg-emphasis/85 backdrop-blur-2xl rounded"
           >
