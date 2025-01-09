@@ -195,12 +195,8 @@ use tower_service::Service;
 #[cfg(feature = "axum-extra")]
 use axum_extra::routing::RouterExt as _;
 
-use crate::{
-    transform::{TransformOpenApi, TransformPathItem},
-    util::path_colon_params,
-};
-
 use self::routing::ApiMethodRouter;
+use crate::transform::{TransformOpenApi, TransformPathItem};
 
 mod inputs;
 mod outputs;
@@ -438,12 +434,7 @@ where
 
         paths.paths = mem::take(&mut self.paths)
             .into_iter()
-            .map(|(route, path)| {
-                (
-                    path_colon_params(&route).into_owned(),
-                    ReferenceOr::Item(path),
-                )
-            })
+            .map(|(route, path)| (route, ReferenceOr::Item(path)))
             .collect();
 
         let _ = transform(TransformOpenApi::new(api));
