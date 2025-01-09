@@ -8,9 +8,7 @@ use crate::{
 };
 use axum::{
     body::Body,
-    extract::{
-        Extension, Form, Host, Json, MatchedPath, OriginalUri, Path, Query, RawQuery, State,
-    },
+    extract::{Extension, Form, Json, MatchedPath, OriginalUri, Path, Query, RawQuery, State},
 };
 
 #[cfg(not(feature = "axum-wasm"))]
@@ -37,7 +35,6 @@ impl OperationInput for MatchedPath {}
 impl OperationInput for OriginalUri {}
 impl OperationInput for Body {}
 impl OperationInput for RawQuery {}
-impl OperationInput for Host {}
 
 #[cfg(feature = "axum-headers")]
 impl<T> OperationInput for axum_extra::typed_header::TypedHeader<T>

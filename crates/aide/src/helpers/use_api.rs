@@ -107,9 +107,9 @@ where
 
 #[cfg(feature = "axum")]
 mod axum {
+    use axum::body::Body;
     use axum::extract::{FromRequest, FromRequestParts};
     use axum::response::{IntoResponse, IntoResponseParts, Response, ResponseParts};
-    use axum::{async_trait, body::Body};
     use http::request::Parts;
     use http::Request;
 
@@ -135,7 +135,6 @@ mod axum {
         }
     }
 
-    #[async_trait]
     impl<T, A, S> FromRequestParts<S> for UseApi<T, A>
     where
         T: FromRequestParts<S>,
@@ -151,7 +150,6 @@ mod axum {
         }
     }
 
-    #[async_trait]
     impl<T, A, S> FromRequest<S> for UseApi<T, A>
     where
         T: FromRequest<S>,

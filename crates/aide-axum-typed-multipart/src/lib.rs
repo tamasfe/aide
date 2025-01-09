@@ -8,11 +8,8 @@ use aide::{
     operation::set_body,
     OperationInput,
 };
-use axum::{
-    async_trait,
-    extract::{multipart::Field, FromRequest, Request},
-};
-use axum_typed_multipart::{TryFromField, TryFromMultipart};
+use axum::extract::{multipart::Field, FromRequest, Request};
+use axum_typed_multipart::{async_trait, TryFromField, TryFromMultipart};
 use indexmap::IndexMap;
 use schemars::JsonSchema;
 
@@ -29,7 +26,6 @@ impl<T> Deref for TypedMultipart<T> {
     }
 }
 
-#[async_trait]
 impl<T, S> FromRequest<S> for TypedMultipart<T>
 where
     T: TryFromMultipart,
@@ -39,7 +35,7 @@ where
 
     async fn from_request(req: Request, state: &S) -> Result<Self, Self::Rejection> {
         let a = axum_typed_multipart::TypedMultipart::from_request(req, state).await?;
-        return Ok(Self(a));
+        Ok(Self(a))
     }
 }
 
