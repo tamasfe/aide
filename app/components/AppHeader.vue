@@ -12,10 +12,10 @@ const emit = defineEmits([
 </script>
 
 <template>
-  <nav class="sticky top-0 left-0 w-full z-[9] h-14">
+  <nav class="sticky top-0 left-0 w-full z-[9] ">
     <PromoBar />
 
-    <div class="w-full bg-subtle h-full">
+    <div class="w-full bg-subtle h-14">
       <div class="giro__container flex items-center justify-between h-full gap-4">
         <div class="flex items-center gap-x-4 self-stretch">
           <BaseButton
@@ -32,11 +32,6 @@ const emit = defineEmits([
 
           <BaseLink
             :to="{ name: 'index' }"
-            :class="[
-              userStore.isAuthenticated
-                ? ''
-                : '',
-            ]"
             class="h-full flex items-center"
           >
             <NuxtImg
