@@ -17,6 +17,7 @@ export class UpdateUserSettings {
       current: string;
       new: string;
     };
+    username?: string;
     consents?: {
       email?: boolean | null;
       postMail?: boolean | null;
@@ -58,12 +59,20 @@ export class UpdateUserSettings {
       }
     }
 
+    if (settings.username) {
+      const updateUsernameResult = await this.authenticatedUserRepository.updateUsername(settings.username);
+      if (updateUsernameResult.isFailure) {
+        return updateUsernameResult;
+      }
+    }
+
     await this.asyncMessagePublisher.emit("girobet:events:users:user-settings-updated", {
       settings: {
         locale: settings.locale,
         password: settings.password ? true : false,
         consents: settings.consents,
         payment: settings.payment,
+        username: settings.username,
       },
     });
 

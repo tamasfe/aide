@@ -1,25 +1,14 @@
 import type { AuthenticatedUserRepositoryI } from "../domain/AuthenticatedUserRepository";
 import { UserTelephone } from "../domain/UserTelephone";
-import type { SupportedLocale } from "~/packages/translation";
+import { newExtendedUser, newLimitedExtendedUser } from "../domain/User";
 import { success } from "~/packages/result";
-
-interface UserResponseI {
-  id: number;
-  locale: SupportedLocale | null;
-  timeZone: string;
-  email: string;
-  cpf: string | null;
-  phone: {
-    value: string;
-    prefix: {
-      value: string;
-      countryCode: string;
-    };
-  };
-}
+import type { LoggerI } from "~/packages/logger/Logger";
 
 export class SearchAuthenticatedUser {
-  constructor(private readonly authenticatedUserRepo: AuthenticatedUserRepositoryI) {}
+  constructor(
+    private readonly authenticatedUserRepo: AuthenticatedUserRepositoryI,
+    private readonly logger: LoggerI,
+  ) {}
 
   public async handle() {
     const authenticatedUserResult = await this.authenticatedUserRepo.searchProfile();
@@ -31,24 +20,18 @@ export class SearchAuthenticatedUser {
       return success(null);
     }
 
-    const userTelephoneResult = UserTelephone.newFromSingleValue(authenticatedUserResult.value.telephone);
+    const userTelephoneResult = UserTelephone.new(String(authenticatedUserResult.value.phone.national.value), `+${authenticatedUserResult.value.phone.code.value}`);
 
     if (userTelephoneResult.isFailure) {
       return userTelephoneResult;
     }
 
-    const userResponse: UserResponseI = {
-      id: authenticatedUserResult.value.id,
-      locale: authenticatedUserResult.value.locale,
-      timeZone: authenticatedUserResult.value.timeZone,
-      email: authenticatedUserResult.value.email,
-      cpf: authenticatedUserResult.value.cpf?.value ?? null,
-      phone: {
-        value: userTelephoneResult.value.telephone,
-        prefix: userTelephoneResult.value.prefix,
-      },
-    };
+    const extendedUserResult = newExtendedUser(authenticatedUserResult.value);
+    if (extendedUserResult.isFailure) {
+      this.logger.warn("Error building extended user. Tolerating it but returning limited user information", { error: extendedUserResult.error, user: authenticatedUserResult.value });
+      return success(newLimitedExtendedUser(authenticatedUserResult.value));
+    }
 
-    return success(userResponse);
+    return extendedUserResult;
   }
 }

@@ -1,24 +1,11 @@
-import type { SupportedLocale } from "~/packages/translation";
+import type { ExtendedUserI } from "~/modules/users/domain/User";
 
 type UserStoreI = {
   isAuthenticated: false | null; // null means the store has not been initialized yet, false means the user is not authenticated
   user: null;
 } | {
   isAuthenticated: true;
-  user: {
-    id: number;
-    locale: SupportedLocale | null;
-    timeZone: string;
-    email: string;
-    cpf: string | null;
-    phone: {
-      value: string;
-      prefix: {
-        value: string;
-        countryCode: string;
-      };
-    };
-  };
+  user: ExtendedUserI;
 };
 
 export const useUserStore = defineStore("userStore", {

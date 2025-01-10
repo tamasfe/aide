@@ -20,8 +20,8 @@ const SUPPORTED_LANGUAGES_OPTIONS_MAP = computed(() => Object.fromEntries(SUPPOR
 const SUPPORTED_LANGUAGES_OPTIONS = computed(() => Object.values(SUPPORTED_LANGUAGES_OPTIONS_MAP.value));
 
 const accountLanguage = computed<SupportedLanguageOption | null>(() => {
-  if (userStore.isAuthenticated && userStore.user.locale) {
-    return SUPPORTED_LANGUAGES_OPTIONS_MAP.value[userStore.user.locale];
+  if (userStore.isAuthenticated && userStore.user.localeSupported) {
+    return SUPPORTED_LANGUAGES_OPTIONS_MAP.value[userStore.user.localeSupported];
   }
   return null;
 });

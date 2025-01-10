@@ -23,6 +23,7 @@ import { UpdateUserLocaleOnLocaleSelect } from "./ui/user-settings/UpdateUserLoc
 import { UpdateConsentsOnPreferencesPage } from "./ui/user-settings/UpdateConsentsOnPreferencesPage";
 import { UpdateSettingsOnForm } from "./ui/user-settings/UpdateSettingsOnForm";
 import { CloseAccountOnForm } from "./ui/CloseAccountOnForm";
+import { UpdateUsernameOnFormSubmission } from "./ui/UpdateUsernameOnFormSubmission";
 import type { CommonDependenciesI } from "~/dependency-injection/load-di";
 
 export interface UsersDependencyInjectionI {
@@ -35,6 +36,7 @@ export interface UsersDependencyInjectionI {
       updateLocaleOnLocaleSelect: UpdateUserLocaleOnLocaleSelect;
       updateConsentsOnPreferencesPage: UpdateConsentsOnPreferencesPage;
       updateSettingsOnForm: UpdateSettingsOnForm;
+      updateUsernameOnForm: UpdateUsernameOnFormSubmission;
     };
     attemptUserLoginOnFormSubmission: AttemptUserLoginOnFormSubmission;
     closeAccountOnForm: CloseAccountOnForm;
@@ -67,7 +69,7 @@ export const createUsersDependencyInjection = async (config: PublicRuntimeConfig
 
   return {
     queries: {
-      searchAuthenticatedUser: new SearchAuthenticatedUser(authenticatedUserRepo),
+      searchAuthenticatedUser: new SearchAuthenticatedUser(authenticatedUserRepo, commonDependencies.logger),
       searchUserSettingsSimplified: new SearchUserSettingsSimplified(authenticatedUserRepo),
     },
     ui: {
@@ -81,6 +83,12 @@ export const createUsersDependencyInjection = async (config: PublicRuntimeConfig
           commonDependencies.logger,
         ),
         updateSettingsOnForm: new UpdateSettingsOnForm(updateUserSettingsCommand, commonDependencies.logger, commonDependencies.translateFunction, commonDependencies.asyncMessagePublisher),
+        updateUsernameOnForm: new UpdateUsernameOnFormSubmission(
+          updateUserSettingsCommand,
+          commonDependencies.translateFunction,
+          commonDependencies.asyncMessagePublisher,
+          commonDependencies.logger,
+        ),
       },
       attemptUserLoginOnFormSubmission: new AttemptUserLoginOnFormSubmission(
         new LoginUser(authenticationRepo, commonDependencies.asyncMessagePublisher),

@@ -2,6 +2,7 @@ import type { User } from "./User";
 import type { ErrorInvalidCurrentPassword } from "./errors/ErrorInvalidCurrentPassword";
 import type { UserSettings } from "./UserSettings";
 import type { InvalidCPF } from "./UserCPF";
+import type { ErrorUsernameIsTaken } from "./errors/ErrorUsernameIsTaken";
 import type { EmptyResult, Result } from "~/packages/result";
 import type { InfrastructureError } from "~/packages/result/infrastructure-error";
 import type { SupportedLocale } from "~/packages/translation";
@@ -13,6 +14,8 @@ export interface AuthenticatedUserRepositoryI {
 
   closeAccount: (reason: string | null, currentPassword: string) => Promise<EmptyResult<ErrorInvalidCurrentPassword | InfrastructureError>>;
 
+  updatePassword(currentPassword: string, newPassword: string): Promise<EmptyResult<ErrorInvalidCurrentPassword | InfrastructureError>>;
+  updateUsername(username: string): Promise<EmptyResult<ErrorUsernameIsTaken | InfrastructureError>>;
   updateSettings(settings: {
     locale?: SupportedLocale | null;
     timeZone?: string | null;
@@ -32,5 +35,4 @@ export interface AuthenticatedUserRepositoryI {
     };
   }): Promise<EmptyResult<InfrastructureError>>;
 
-  updatePassword(currentPassword: string, newPassword: string): Promise<EmptyResult<ErrorInvalidCurrentPassword | InfrastructureError>>;
 }

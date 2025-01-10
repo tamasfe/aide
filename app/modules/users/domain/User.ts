@@ -1,56 +1,47 @@
-import { UserCPF } from "./UserCPF";
+import type { ErrorInvalidUserTelephone } from "./UserTelephone";
+import { UserTelephone } from "./UserTelephone";
+import { success, type Result } from "~/packages/result";
+import type { components } from "~/packages/http-client/girobet-backend-generated-http-client/openapi-typescript";
 import type { SupportedLocale } from "~/packages/translation";
-import { success } from "~/packages/result";
+import { searchSimilarLocale } from "~/packages/translation/utils";
+import type { CamelizeKeys } from "~/utils";
 
-interface UserPropsI {
-  id: number;
-  telephone: string;
-  email: string;
-  jurisdiction: string;
-  locale: SupportedLocale | null;
-  timeZone: string;
+export type User = CamelizeKeys<components["schemas"]["UserResponse"]>;
+
+export interface ExtendedUserI extends User {
+  localeSupported: SupportedLocale | null;
   cpf: string | null;
-}
-
-export class User {
-  public static new(props: UserPropsI) {
-    const cpfResult = props.cpf ? UserCPF.new(props.cpf) : success(null);
-    if (cpfResult.isFailure) {
-      return cpfResult;
-    }
-
-    return success(new User(
-      props.id,
-      props.telephone,
-      props.email,
-      props.jurisdiction,
-      props.locale,
-      props.timeZone,
-      cpfResult.value,
-    ));
-  }
-
-  public toJSON(): UserPropsI {
-    return {
-      id: this.id,
-      telephone: this.telephone,
-      email: this.email,
-      jurisdiction: this.jurisdiction,
-      locale: this.locale,
-      timeZone: this.timeZone,
-      cpf: this.cpf?.value ?? null,
+  phoneStructured: null | {
+    value: string;
+    prefix: {
+      value: string;
+      countryCode: string;
     };
-  }
-
-  private constructor(
-    public readonly id: number,
-    public readonly telephone: string,
-    public readonly email: string,
-    public readonly jurisdiction: string,
-    public readonly locale: SupportedLocale | null,
-    public readonly timeZone: string,
-    public readonly cpf: UserCPF | null,
-  ) {
-
-  }
+  };
 }
+
+export const newLimitedExtendedUser = (user: User): ExtendedUserI => ({
+  ...user,
+  localeSupported: searchSimilarLocale(user.locale),
+  cpf: user.documents ? (user.documents["CPF"] as string | null || null) : null,
+  phoneStructured: null,
+});
+
+export const newExtendedUser = (user: User): Result<ExtendedUserI, ErrorInvalidUserTelephone> => {
+  const telephoneResult = UserTelephone.new(String(user.phone.national.value), `+${user.phone.code.value}`);
+  if (telephoneResult.isFailure) {
+    return telephoneResult;
+  }
+
+  return success({
+    ...user,
+    localeSupported: searchSimilarLocale(user.locale),
+    cpf: user.documents ? (user.documents["CPF"] as string | null || null) : null,
+    phoneStructured: telephoneResult.isFailure
+      ? null
+      : {
+          value: telephoneResult.value.telephone,
+          prefix: telephoneResult.value.prefix,
+        },
+  });
+};

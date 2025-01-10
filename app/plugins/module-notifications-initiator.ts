@@ -1,10 +1,11 @@
 export default defineNuxtPlugin({
   name: "module-notifications-initiator",
-  dependsOn: ["dependency-injection"],
+  dependsOn: ["module-users-initiator"],
   parallel: true,
   async setup(_nuxtApp) {
     const { $dependencies } = useNuxtApp();
     const notificationsStore = useNotificationsStore();
+    const userStore = useUserStore();
 
     /**
      *
@@ -13,11 +14,13 @@ export default defineNuxtPlugin({
      */
     const ENABLE_SERVER_SIDE_RENDERING = false;
     const DEFER_CLIENT_SIDE_LOADING = true;
-    await useAsyncData("unread-toast-notifications", () =>
-      $dependencies.notifications.ui.searchLastUnreadNotificationToasts.handle()
-        .then(notifications => notifications.map(notification => notificationsStore.showToast(notification)))
-    , { lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING },
-    );
+    if (userStore.isAuthenticated) {
+      await useAsyncData("unread-toast-notifications", () =>
+        $dependencies.notifications.ui.searchLastUnreadNotificationToasts.handle()
+          .then(notifications => notifications.map(notification => notificationsStore.showToast(notification)))
+      , { lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING },
+      );
+    }
 
     /**
      *

@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type { PropType } from "vue";
+import type { UserInteractionModalState } from "~/packages/async-messages/async-messages";
 
-type ModalUpdateSettingsMode = "password" | "language" | "time_zone" | "payment_pix";
+type ModalUpdateSettingsMode = Extract<UserInteractionModalState, { modal: "settings" }>["data"]["setting"];
 
 const open = ref(true);
 
@@ -30,6 +31,7 @@ const onClosed = () => {
     <FormSettingsPassword v-if="setting === 'password'" />
     <FormSettingsLocale v-if="setting === 'language'" />
     <FormSettingsTimeZone v-if="setting === 'time_zone'" />
+    <FormSettingsUsername v-if="setting === 'username'" :initial="userStore.user?.username || ''" />
     <FormSettingsPixPayment
       v-if="setting === 'payment_pix' && userSettingsStore.settings"
       :payment-settings="userSettingsStore.settings.payment"

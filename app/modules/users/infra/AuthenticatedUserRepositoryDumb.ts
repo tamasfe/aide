@@ -2,6 +2,7 @@ import type { AuthenticatedUserRepositoryI } from "../domain/AuthenticatedUserRe
 import type { User } from "../domain/User";
 import { UserSettings } from "../domain/UserSettings";
 import type { ErrorInvalidCurrentPassword } from "../domain/errors/ErrorInvalidCurrentPassword";
+import type { ErrorUsernameIsTaken } from "../domain/errors/ErrorUsernameIsTaken";
 import type { LoggerI } from "~/packages/logger/Logger";
 import { success, type EmptyResult, type Result } from "~/packages/result";
 import type { InfrastructureError } from "~/packages/result/infrastructure-error";
@@ -62,6 +63,11 @@ export class AuthenticatedUserRepositoryDumb implements AuthenticatedUserReposit
 
   public async updatePassword(currentPassword: string, newPassword: string): Promise<EmptyResult<InfrastructureError>> {
     this.logger.debug("updatePassword called", { currentPassword, newPassword });
+    return success();
+  }
+
+  public async updateUsername(username: string): Promise<EmptyResult<ErrorUsernameIsTaken | InfrastructureError>> {
+    this.logger.debug("updateUsername called", { username });
     return success();
   }
 }

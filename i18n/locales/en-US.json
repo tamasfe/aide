@@ -17,7 +17,8 @@
     "telephone": "Telephone",
     "cpf": "CPF",
     "evp": "EVP",
-    "reason": "Your reason"
+    "reason": "Your reason",
+    "username": "Username"
   },
   "placeholder": {
     "search": "Search for a casino game...",
@@ -146,6 +147,11 @@
     },
     "time_zone": {
       "title": "Change your account time zone"
+    },
+    "username": {
+      "title": "Change your username",
+      "error_already_taken": "This username is already taken. Please pick another one",
+      "error_unknown": "An error occurred while changing your username. Please try again"
     }
   },
   "modal_cancel_registration": {
@@ -191,7 +197,10 @@
     "pix_key_type_invalid": "Invalid PIX Key Type",
     "pix_key_type_required": "PIX Key is required",
     "reason_required": "A reason for closing your account is required",
-    "reason_too_long": "Reason has to be shorter"
+    "reason_too_long": "Reason has to be shorter",
+    "username_required": "A username is required",
+    "username_too_short": "Must be longer than {min}",
+    "username_too_long": "Must be shorter than {max}"
   },
   "withdrawal_limits": {
     "summary": "For an easy, secure and simple withdraw process, make sure to follow these guidelines: The minimum withdrawal amount varies by method and is listed above. Withdrawals are always to be processed to the original deposit method unless otherwise specified or if that method doesn't support withdrawals.",
@@ -304,6 +313,7 @@
         "id_description": "Use this ID when you need to share with 3rd parties (including GiroBet Support) so your account is always secure.",
         "account_details": "Account Details",
         "username": "Username",
+        "username_description": "Usernames are public and will show in leaderboards.",
         "email": "Email",
         "password": "Password",
         "public_id": "Public ID",

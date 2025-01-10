@@ -14,7 +14,7 @@ export class SearchLastUnreadNotificationToasts {
     const resultSearching = await this.notificationRepo.searchPaginating({ readStatus: "unread" }, 7, 0);
 
     if (resultSearching.isFailure) {
-      this.logger.error("Error searching for notifications from the promo bar", resultSearching.error);
+      this.logger.error("Error searching for notifications toasts", resultSearching.error);
       return [];
     }
 

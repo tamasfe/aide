@@ -13,7 +13,7 @@ export type UserInteractionModalState =
     data: { token: string };
   } | {
     modal: "settings";
-    data: { setting: "password" | "language" | "time_zone" | "payment_pix" };
+    data: { setting: "password" | "language" | "time_zone" | "payment_pix" | "username" };
   } | {
     modal: "deposit_confirm";
     data: { flowId: number; paymentCode: string; amount: number; currency: WalletCurrency; paymentMethodId: number };
@@ -55,6 +55,7 @@ export interface AsyncMessagesTypes {
     settings: {
       locale?: SupportedLocale;
       password: boolean;
+      username?: string;
       consents?: {
         email?: boolean | null;
         postMail?: boolean | null;

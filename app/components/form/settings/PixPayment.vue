@@ -12,7 +12,7 @@ const props = defineProps<{
   paymentSettings: SearchUserSettingsResponseI["payment"];
   initialData?: {
     email: string;
-    phone: {
+    phoneStructured: null | {
       value: string;
       prefix: {
         value: string;
@@ -85,7 +85,7 @@ evp.value = props.paymentSettings.keyEvp ?? "";
  */
 
 const initialUserTelephoneResult = UserTelephone.newFromSingleValue(
-  props.paymentSettings.keyPhone ?? props.initialData?.phone.value ?? "",
+  props.paymentSettings.keyPhone ?? props.initialData?.phoneStructured?.value ?? "",
 );
 const [phone, phoneAttrs] = defineField("phone");
 phone.value = initialUserTelephoneResult.isFailure ? "" : initialUserTelephoneResult.value.telephone;

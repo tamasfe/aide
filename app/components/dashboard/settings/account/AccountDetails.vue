@@ -11,16 +11,17 @@ const userStore = useUserStore();
 
     <DashboardSectionItem :name="$t('dashboard.settings.account.username')">
       <template #default>
-        <p>banger69.camaro</p>
+        <p>{{ userStore.user?.username || '' }}</p>
       </template>
       <template #description>
-        <p>Usernames are public and will show in leaderboards.</p>
+        <p>{{ $t("dashboard.settings.account.username_description") }}</p>
       </template>
       <template #actions>
-        <div>
+        <div class="flex items-center gap-4">
           <BaseButton
             variant="secondary"
             size="dashboard"
+            @click="$dependencies.users.ui.emitCommandOpenUserActionModal.handle({ modal: 'settings', data: { setting: 'username' } })"
           >
             {{ $t('button.edit') }}
           </BaseButton>

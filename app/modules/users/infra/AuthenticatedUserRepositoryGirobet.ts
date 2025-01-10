@@ -1,7 +1,7 @@
 import type { AuthenticatedUserRepositoryI } from "../domain/AuthenticatedUserRepository";
-import { User } from "../domain/User";
 import { ErrorInvalidCurrentPassword } from "../domain/errors/ErrorInvalidCurrentPassword";
 import { UserSettings } from "../domain/UserSettings";
+import { ErrorUsernameIsTaken } from "../domain/errors/ErrorUsernameIsTaken";
 import { createBackendOpenApiClient } from "~/packages/http-client/create-backend-open-api-client";
 import { fail, success, type EmptyResult } from "~/packages/result";
 import { InfrastructureError } from "~/packages/result/infrastructure-error";
@@ -29,15 +29,7 @@ export class AuthenticatedUserSearcherGirobet implements AuthenticatedUserReposi
       }
 
       if (data) {
-        return User.new({
-          id: data.id,
-          locale: searchSimilarLocale(data.locale),
-          timeZone: data.time_zone,
-          jurisdiction: data.jurisdiction,
-          email: data.email,
-          telephone: `+${data.phone.code.value}${data.phone.national.value}`,
-          cpf: (data.documents ? data.documents["CPF"] as string | undefined : null) || null,
-        });
+        return success(camelizeKeys(data));
       }
 
       return fail(InfrastructureError.newFromError({ data, error, response }, new Error("Unexpected scenario: library did not return data nor error. This should never happen")));
@@ -191,6 +183,31 @@ export class AuthenticatedUserSearcherGirobet implements AuthenticatedUserReposi
       if (error) {
         if (error.code === "UNAUTHORIZED") {
           return fail(new ErrorInvalidCurrentPassword());
+        }
+        const httpError = HttpBackendApiError.newFromBackendError(error, response);
+        return fail(InfrastructureError.newFromError({}, httpError));
+      }
+
+      return fail(InfrastructureError.newFromError({ data, error, response }, new Error("Unexpected scenario: library did not return data nor error. This should never happen")));
+    }
+    catch (error) {
+      return fail(InfrastructureError.newFromUnknownError({}, error));
+    }
+  }
+
+  public async updateUsername(username: string): Promise<EmptyResult<ErrorUsernameIsTaken | InfrastructureError>> {
+    try {
+      const { data, error, response } = await this.apiClient.PATCH("/user/username", {
+        body: { username },
+      });
+
+      if (data || response.ok) {
+        return success();
+      }
+
+      if (error) {
+        if (error.code === "USERNAME_TAKEN") {
+          return fail(new ErrorUsernameIsTaken(username));
         }
         const httpError = HttpBackendApiError.newFromBackendError(error, response);
         return fail(InfrastructureError.newFromError({}, httpError));
