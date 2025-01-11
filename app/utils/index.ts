@@ -56,6 +56,19 @@ export function camelizeKeys<T extends Record<string, unknown>>(obj: T): Cameliz
     if (Object.prototype.hasOwnProperty.call(obj, key)) {
       const newKey = camelize(key);
       const value = obj[key];
+
+      // Handle arrays
+      if (Array.isArray(value)) {
+        // @ts-expect-error Cannot make the type inference work, but there are unit tests that verify it's working as expected
+        newObj[newKey] = value.map(item =>
+          item !== null && typeof item === "object"
+            ? camelizeKeys(item as Record<string, unknown>)
+            : item,
+        );
+        continue;
+      }
+
+      // Handle objects and primitives as before
       // @ts-expect-error Cannot make the type inference work, but there are unit tests that verify it's working as expected
       newObj[newKey] = value !== null && typeof value === "object"
         ? camelizeKeys(value as Record<string, unknown>)
