@@ -37,7 +37,13 @@ type Win = {
     name: string;
   };
 };
-const buffer = ref<Win[]>([]);
+
+const buffer = ref<Array<Win | undefined>>([
+  undefined,
+  undefined,
+  undefined,
+  undefined,
+]);
 const loading = ref(true);
 
 let increment = 0;
@@ -92,9 +98,9 @@ useCreateSubscriptionToWebsocket(
       }"
     >
       <template #default="{ item }">
-        <BaseLink :to="{ name: 'games-id', params: { id: item.game.id } }">
-          <div class="group flex items-center space-x-3 bg-subtle p-2 rounded-lg outline-none border border-muted/10">
-            <div class="relative aspect-[3/4] w-14 flex-shrink-0 rounded overflow-hidden border border-muted/10">
+        <BaseLink v-if="item?.game" :to="{ name: 'games-id', params: { id: item.game.id } }">
+          <div class="relative group flex items-center space-x-3 bg-subtle p-2 rounded-lg outline-none border border-muted/10 h-24">
+            <div class="self-strech relative aspect-[3/4] h-full rounded overflow-hidden border border-muted/10">
               <NuxtImg
                 :src="item.game.imageUrl"
                 alt=""
@@ -115,6 +121,14 @@ useCreateSubscriptionToWebsocket(
             </div>
           </div>
         </BaseLink>
+        <div v-else class="relative group flex items-center space-x-3 bg-subtle p-2 rounded-lg outline-none border border-muted/10 h-24">
+          <BaseSkeleton :loading="true" class="self-strech relative aspect-[3/4] h-full rounded overflow-hidden border border-muted/10" />
+          <div class="font-medium leading-tight space-y-1 min-w-0 flex-1">
+            <BaseSkeleton :loading="true" class="truncate h-4 w-1/3 rounded" />
+            <BaseSkeleton :loading="true" class="truncate h-3 w-1/2 rounded" />
+            <BaseSkeleton :loading="true" class="truncate h-6 w-1/5 rounded" />
+          </div>
+        </div>
       </template>
     </BaseSlider>
   </div>

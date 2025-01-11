@@ -1,4 +1,4 @@
-<script setup lang="ts" generic="T extends {key:string}[]">
+<script setup lang="ts" generic="T extends Array<{ key: string } | undefined>">
 import emblaCarouselVue from "embla-carousel-vue";
 import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
 import type { EmblaCarouselType, EmblaOptionsType } from "embla-carousel";
@@ -188,7 +188,7 @@ const dataToRender = computed(() => {
     >
       <div
         v-for="(item, idx) in dataToRender"
-        :key="item.key"
+        :key="item?.key ?? ''"
         class="giro__slider-slide"
       >
         <BaseSkeleton v-if="loading === true && data.length === 0" :loading="loading" class="h-full w-full rounded" />
