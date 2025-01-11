@@ -57,7 +57,9 @@ export function camelizeKeys<T extends Record<string, unknown>>(obj: T): Cameliz
       const newKey = camelize(key);
       const value = obj[key];
       // @ts-expect-error Cannot make the type inference work, but there are unit tests that verify it's working as expected
-      newObj[newKey] = typeof value === "object" ? camelizeKeys(value as Record<string, unknown>) : value;
+      newObj[newKey] = value !== null && typeof value === "object"
+        ? camelizeKeys(value as Record<string, unknown>)
+        : value;
     }
   }
   return newObj;
