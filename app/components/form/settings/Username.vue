@@ -8,7 +8,7 @@
 import { toTypedSchema } from "@vee-validate/zod";
 import { z } from "zod";
 
-const USERNAME_LENGTH_MIN = 4;
+const USERNAME_LENGTH_MIN = 3;
 const USERNAME_LENGTH_MAX = 64;
 
 const props = defineProps<{

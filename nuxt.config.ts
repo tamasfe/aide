@@ -15,7 +15,6 @@ export default defineNuxtConfig({
     "@vee-validate/nuxt",
     "nuxt-gtag",
   ],
-  ssr: true,
   devtools: {
     enabled: true,
   },
@@ -141,7 +140,7 @@ export default defineNuxtConfig({
       useCookie: true,
     },
     strategy: "prefix_and_default",
-    lazy: false,
+    lazy: true,
     defaultLocale: "en-us",
     vueI18n: "./i18n.config.ts",
   },

@@ -12,6 +12,7 @@ describe("camelizeKeys util unit tests", async () => {
     expect(
       camelizeKeys(
         {
+          some_null: null,
           hello_there: "some_snake_case_that_should_not_change",
           alreadyInCamelCase: "should_not_change",
           nested_object: {
@@ -21,9 +22,15 @@ describe("camelizeKeys util unit tests", async () => {
               even_more_snake: "should_not_not_change",
             },
           },
+          arrays_too: [
+            { some_snake: "should_not_change_3" },
+            { some_snake: "should_not_change_4" },
+            null, undefined, 1, "string", true,
+          ],
         },
       )).toEqual(
       {
+        someNull: null,
         helloThere: "some_snake_case_that_should_not_change",
         alreadyInCamelCase: "should_not_change",
         nestedObject: {
@@ -33,6 +40,11 @@ describe("camelizeKeys util unit tests", async () => {
             evenMoreSnake: "should_not_not_change",
           },
         },
+        arraysToo: [
+          { someSnake: "should_not_change_3" },
+          { someSnake: "should_not_change_4" },
+          null, undefined, 1, "string", true,
+        ],
       });
   });
 });
