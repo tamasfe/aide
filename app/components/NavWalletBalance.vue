@@ -2,6 +2,7 @@
 const walletStore = useWalletStore();
 const { t } = useI18n();
 const localePath = useLocalePath();
+const flashRef = ref<HTMLDivElement | null>(null);
 
 const onClickBalance = async () => {
   await navigateTo(localePath("/settings/wallet"));
@@ -17,10 +18,30 @@ const { data } = await useAsyncData("nav-wallet-balance-wallet", async () => {
   lazy: DEFER_CLIENT_SIDE_LOADING,
   server: ENABLE_SERVER_SIDE_RENDERING,
 });
+
+// Watch for balance changes and trigger animation
+watch(() => data.value?.wallet?.balance, (newBalance) => {
+  console.log("newBalance", newBalance, flashRef.value);
+
+  flashRef.value?.animate([
+    { opacity: 0, offset: 0 },
+    { opacity: 1, offset: 0.1 },
+    { opacity: 0, offset: 1 },
+  ], {
+    duration: 200,
+    iterations: 1,
+    easing: "ease-in-out",
+
+  });
+});
 </script>
 
 <template>
-  <div>
+  <div class="relative">
+    <div
+      ref="flashRef"
+      class="absolute inset-0 rounded bg-white/30 opacity-0 pointer-events-none"
+    />
     <BaseButton
       variant="secondary"
       :disabled="data?.balanceStatus !== 'ready'"

@@ -75,7 +75,7 @@ const emit = defineEmits([
               </BaseButton>
             </template>
             <template v-else>
-              <NavWalletBalance class="space-x-1 " />
+              <NavWalletBalance />
 
               <BaseButton
                 variant="emphasis"
