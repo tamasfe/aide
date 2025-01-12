@@ -42,8 +42,9 @@ pub fn iter_operations_mut(
 }
 
 /// Helper function for nesting functions in Axum.
+///
 /// Based on Axum's own implementation of nested paths.
-pub(crate) fn path_for_nested_route<'a>(path: &'a str, route: &'a str) -> String {    
+pub(crate) fn path_for_nested_route<'a>(path: &'a str, route: &'a str) -> String {
     if path.ends_with('/') {
         format!("{path}{}", route.trim_start_matches('/')).into()
     } else if route == "/" {
