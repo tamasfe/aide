@@ -1,10 +1,25 @@
 # Changelog
 
-## Unreleased
+## 0.14.0
 
+- **breaking:** Upgrade `axum` to `0.8` ([#168])
 - **breaking:** Rename `gen` module to `generate`,
   because `gen` is going to be a keyword in Rust 2024 ([#174])
+- **breaking:** Replace `axum-wasm` feature with inverted `axum-tokio`
+  Cargo feature ([#170])
+- **breaking:** Put axum extractor impls behind more fine-grained
+  Cargo features, see `Cargo.toml` or the docs.rs feature flags page
+  for a full list ([#170])
+- **breaking:** Drop `serde_qs`, `jwt-authorizer` features, please
+  open an issue if you were relying on one of these ([#170])
+- **fixed:** Remove trailing / from some nested paths ([#150])
+- **added:** `[api_]route_with_tsr[_and]` methods to `ApiRouter`,
+  gated behind the `axum-extra` Cargo feature ([#139])
 
+[#139]: https://github.com/tamasfe/aide/pull/139
+[#150]: https://github.com/tamasfe/aide/pull/150
+[#168]: https://github.com/tamasfe/aide/pull/168
+[#170]: https://github.com/tamasfe/aide/pull/170
 [#174]: https://github.com/tamasfe/aide/pull/174
 
 ## 0.13.5
