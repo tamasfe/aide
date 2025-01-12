@@ -22,11 +22,11 @@ pub mod todos;
 
 #[tokio::main]
 async fn main() {
-    aide::gen::on_error(|error| {
+    aide::generate::on_error(|error| {
         println!("{error}");
     });
 
-    aide::gen::extract_schemas(true);
+    aide::generate::extract_schemas(true);
 
     let state = AppState::default();
 

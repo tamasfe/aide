@@ -9,7 +9,7 @@ use crate::{
 
 impl OperationInput for Bytes {
     fn operation_input(
-        ctx: &mut crate::gen::GenContext,
+        ctx: &mut crate::generate::GenContext,
         operation: &mut crate::openapi::Operation,
     ) {
         set_body(
@@ -30,7 +30,7 @@ impl OperationInput for Bytes {
 
 impl OperationInput for BytesMut {
     fn operation_input(
-        ctx: &mut crate::gen::GenContext,
+        ctx: &mut crate::generate::GenContext,
         operation: &mut crate::openapi::Operation,
     ) {
         Bytes::operation_input(ctx, operation);
@@ -41,7 +41,7 @@ impl OperationOutput for Bytes {
     type Inner = Self;
 
     fn operation_response(
-        _ctx: &mut crate::gen::GenContext,
+        _ctx: &mut crate::generate::GenContext,
         _operation: &mut Operation,
     ) -> Option<crate::openapi::Response> {
         Some(Response {
@@ -55,7 +55,7 @@ impl OperationOutput for Bytes {
     }
 
     fn inferred_responses(
-        ctx: &mut crate::gen::GenContext,
+        ctx: &mut crate::generate::GenContext,
         operation: &mut Operation,
     ) -> Vec<(Option<u16>, Response)> {
         if let Some(res) = Self::operation_response(ctx, operation) {
@@ -70,14 +70,14 @@ impl OperationOutput for BytesMut {
     type Inner = Self;
 
     fn operation_response(
-        ctx: &mut crate::gen::GenContext,
+        ctx: &mut crate::generate::GenContext,
         operation: &mut Operation,
     ) -> Option<crate::openapi::Response> {
         Bytes::operation_response(ctx, operation)
     }
 
     fn inferred_responses(
-        ctx: &mut crate::gen::GenContext,
+        ctx: &mut crate::generate::GenContext,
         operation: &mut Operation,
     ) -> Vec<(Option<u16>, Response)> {
         Bytes::inferred_responses(ctx, operation)

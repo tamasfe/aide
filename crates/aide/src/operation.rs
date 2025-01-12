@@ -3,7 +3,7 @@
 use indexmap::IndexMap;
 use schemars::schema::SchemaObject;
 
-use crate::gen::GenContext;
+use crate::generate::GenContext;
 use crate::openapi::{
     self, Operation, Parameter, ParameterData, QueryStyle, ReferenceOr, RequestBody, Response,
 };

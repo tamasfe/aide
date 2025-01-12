@@ -2,7 +2,7 @@
 //! Miscellaneous utilities.
 
 use crate::{
-    gen::GenContext,
+    generate::GenContext,
     openapi::{Operation, PathItem},
     Error,
 };

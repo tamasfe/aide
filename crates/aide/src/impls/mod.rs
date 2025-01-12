@@ -19,12 +19,12 @@ impl<T, E> OperationInput for Result<T, E>
 where
     T: OperationInput,
 {
-    fn operation_input(ctx: &mut crate::gen::GenContext, operation: &mut Operation) {
+    fn operation_input(ctx: &mut crate::generate::GenContext, operation: &mut Operation) {
         T::operation_input(ctx, operation);
     }
 
     fn inferred_early_responses(
-        ctx: &mut crate::gen::GenContext,
+        ctx: &mut crate::generate::GenContext,
         operation: &mut Operation,
     ) -> Vec<(Option<u16>, Response)> {
         T::inferred_early_responses(ctx, operation)
@@ -39,14 +39,14 @@ where
     type Inner = T;
 
     fn operation_response(
-        ctx: &mut crate::gen::GenContext,
+        ctx: &mut crate::generate::GenContext,
         operation: &mut Operation,
     ) -> Option<Response> {
         T::operation_response(ctx, operation)
     }
 
     fn inferred_responses(
-        ctx: &mut crate::gen::GenContext,
+        ctx: &mut crate::generate::GenContext,
         operation: &mut Operation,
     ) -> Vec<(Option<u16>, Response)> {
         let mut responses = T::inferred_responses(ctx, operation);
@@ -59,7 +59,7 @@ impl<T> OperationInput for Option<T>
 where
     T: OperationInput,
 {
-    fn operation_input(ctx: &mut crate::gen::GenContext, operation: &mut Operation) {
+    fn operation_input(ctx: &mut crate::generate::GenContext, operation: &mut Operation) {
         // Make parameters proudced by T optional if T is wrapped in an Option.
         // TODO: we should probably do this for the body as well.
         let mut temp_op = Operation::default();
@@ -96,14 +96,14 @@ where
     type Inner = <T as OperationOutput>::Inner;
 
     fn operation_response(
-        ctx: &mut crate::gen::GenContext,
+        ctx: &mut crate::generate::GenContext,
         operation: &mut Operation,
     ) -> Option<Response> {
         T::operation_response(ctx, operation)
     }
 
     fn inferred_responses(
-        ctx: &mut crate::gen::GenContext,
+        ctx: &mut crate::generate::GenContext,
         operation: &mut Operation,
     ) -> Vec<(Option<u16>, Response)> {
         T::inferred_responses(ctx, operation)
@@ -114,7 +114,7 @@ impl<T> OperationInput for Box<T>
 where
     T: OperationInput,
 {
-    fn operation_input(ctx: &mut crate::gen::GenContext, operation: &mut Operation) {
+    fn operation_input(ctx: &mut crate::generate::GenContext, operation: &mut Operation) {
         T::operation_input(ctx, operation);
     }
 }
@@ -126,14 +126,14 @@ where
     type Inner = <T as OperationOutput>::Inner;
 
     fn operation_response(
-        ctx: &mut crate::gen::GenContext,
+        ctx: &mut crate::generate::GenContext,
         operation: &mut Operation,
     ) -> Option<Response> {
         T::operation_response(ctx, operation)
     }
 
     fn inferred_responses(
-        ctx: &mut crate::gen::GenContext,
+        ctx: &mut crate::generate::GenContext,
         operation: &mut Operation,
     ) -> Vec<(Option<u16>, Response)> {
         T::inferred_responses(ctx, operation)
@@ -144,7 +144,7 @@ impl<T> OperationInput for Rc<T>
 where
     T: OperationInput,
 {
-    fn operation_input(ctx: &mut crate::gen::GenContext, operation: &mut Operation) {
+    fn operation_input(ctx: &mut crate::generate::GenContext, operation: &mut Operation) {
         T::operation_input(ctx, operation);
     }
 }
@@ -156,14 +156,14 @@ where
     type Inner = <T as OperationOutput>::Inner;
 
     fn operation_response(
-        ctx: &mut crate::gen::GenContext,
+        ctx: &mut crate::generate::GenContext,
         operation: &mut Operation,
     ) -> Option<Response> {
         T::operation_response(ctx, operation)
     }
 
     fn inferred_responses(
-        ctx: &mut crate::gen::GenContext,
+        ctx: &mut crate::generate::GenContext,
         operation: &mut Operation,
     ) -> Vec<(Option<u16>, Response)> {
         T::inferred_responses(ctx, operation)
@@ -174,7 +174,7 @@ impl<T> OperationInput for Arc<T>
 where
     T: OperationInput,
 {
-    fn operation_input(ctx: &mut crate::gen::GenContext, operation: &mut Operation) {
+    fn operation_input(ctx: &mut crate::generate::GenContext, operation: &mut Operation) {
         T::operation_input(ctx, operation);
     }
 }
@@ -186,14 +186,14 @@ where
     type Inner = <T as OperationOutput>::Inner;
 
     fn operation_response(
-        ctx: &mut crate::gen::GenContext,
+        ctx: &mut crate::generate::GenContext,
         operation: &mut Operation,
     ) -> Option<Response> {
         T::operation_response(ctx, operation)
     }
 
     fn inferred_responses(
-        ctx: &mut crate::gen::GenContext,
+        ctx: &mut crate::generate::GenContext,
         operation: &mut Operation,
     ) -> Vec<(Option<u16>, Response)> {
         T::inferred_responses(ctx, operation)
@@ -201,7 +201,7 @@ where
 }
 
 impl OperationInput for String {
-    fn operation_input(ctx: &mut crate::gen::GenContext, operation: &mut Operation) {
+    fn operation_input(ctx: &mut crate::generate::GenContext, operation: &mut Operation) {
         set_body(
             ctx,
             operation,
@@ -222,7 +222,7 @@ impl OperationOutput for String {
     type Inner = Self;
 
     fn operation_response(
-        _ctx: &mut crate::gen::GenContext,
+        _ctx: &mut crate::generate::GenContext,
         _operation: &mut Operation,
     ) -> Option<crate::openapi::Response> {
         Some(Response {
@@ -236,7 +236,7 @@ impl OperationOutput for String {
     }
 
     fn inferred_responses(
-        ctx: &mut crate::gen::GenContext,
+        ctx: &mut crate::generate::GenContext,
         operation: &mut Operation,
     ) -> Vec<(Option<u16>, Response)> {
         if let Some(res) = Self::operation_response(ctx, operation) {
@@ -251,14 +251,14 @@ impl OperationOutput for &str {
     type Inner = Self;
 
     fn operation_response(
-        ctx: &mut crate::gen::GenContext,
+        ctx: &mut crate::generate::GenContext,
         operation: &mut Operation,
     ) -> Option<crate::openapi::Response> {
         String::operation_response(ctx, operation)
     }
 
     fn inferred_responses(
-        ctx: &mut crate::gen::GenContext,
+        ctx: &mut crate::generate::GenContext,
         operation: &mut Operation,
     ) -> Vec<(Option<u16>, Response)> {
         String::inferred_responses(ctx, operation)
@@ -269,14 +269,14 @@ impl OperationOutput for Cow<'_, str> {
     type Inner = Self;
 
     fn operation_response(
-        ctx: &mut crate::gen::GenContext,
+        ctx: &mut crate::generate::GenContext,
         operation: &mut Operation,
     ) -> Option<crate::openapi::Response> {
         String::operation_response(ctx, operation)
     }
 
     fn inferred_responses(
-        ctx: &mut crate::gen::GenContext,
+        ctx: &mut crate::generate::GenContext,
         operation: &mut Operation,
     ) -> Vec<(Option<u16>, Response)> {
         String::inferred_responses(ctx, operation)
@@ -287,7 +287,7 @@ impl OperationOutput for () {
     type Inner = Self;
 
     fn operation_response(
-        _ctx: &mut crate::gen::GenContext,
+        _ctx: &mut crate::generate::GenContext,
         _operation: &mut Operation,
     ) -> Option<crate::openapi::Response> {
         Some(Response {
@@ -297,7 +297,7 @@ impl OperationOutput for () {
     }
 
     fn inferred_responses(
-        ctx: &mut crate::gen::GenContext,
+        ctx: &mut crate::generate::GenContext,
         operation: &mut Operation,
     ) -> Vec<(Option<u16>, Response)> {
         if let Some(res) = Self::operation_response(ctx, operation) {
@@ -310,7 +310,7 @@ impl OperationOutput for () {
 
 impl OperationInput for Vec<u8> {
     fn operation_input(
-        ctx: &mut crate::gen::GenContext,
+        ctx: &mut crate::generate::GenContext,
         operation: &mut crate::openapi::Operation,
     ) {
         set_body(
@@ -333,7 +333,7 @@ impl OperationOutput for Vec<u8> {
     type Inner = Self;
 
     fn operation_response(
-        _ctx: &mut crate::gen::GenContext,
+        _ctx: &mut crate::generate::GenContext,
         _operation: &mut Operation,
     ) -> Option<crate::openapi::Response> {
         Some(Response {
@@ -347,7 +347,7 @@ impl OperationOutput for Vec<u8> {
     }
 
     fn inferred_responses(
-        ctx: &mut crate::gen::GenContext,
+        ctx: &mut crate::generate::GenContext,
         operation: &mut Operation,
     ) -> Vec<(Option<u16>, Response)> {
         if let Some(res) = Self::operation_response(ctx, operation) {
@@ -360,7 +360,7 @@ impl OperationOutput for Vec<u8> {
 
 impl OperationInput for &[u8] {
     fn operation_input(
-        ctx: &mut crate::gen::GenContext,
+        ctx: &mut crate::generate::GenContext,
         operation: &mut crate::openapi::Operation,
     ) {
         Vec::<u8>::operation_input(ctx, operation);
@@ -371,14 +371,14 @@ impl OperationOutput for &[u8] {
     type Inner = Self;
 
     fn operation_response(
-        ctx: &mut crate::gen::GenContext,
+        ctx: &mut crate::generate::GenContext,
         operation: &mut Operation,
     ) -> Option<crate::openapi::Response> {
         Vec::<u8>::operation_response(ctx, operation)
     }
 
     fn inferred_responses(
-        ctx: &mut crate::gen::GenContext,
+        ctx: &mut crate::generate::GenContext,
         operation: &mut Operation,
     ) -> Vec<(Option<u16>, Response)> {
         Vec::<u8>::inferred_responses(ctx, operation)
@@ -387,7 +387,7 @@ impl OperationOutput for &[u8] {
 
 impl OperationInput for Cow<'_, [u8]> {
     fn operation_input(
-        ctx: &mut crate::gen::GenContext,
+        ctx: &mut crate::generate::GenContext,
         operation: &mut crate::openapi::Operation,
     ) {
         Vec::<u8>::operation_input(ctx, operation);
@@ -398,14 +398,14 @@ impl OperationOutput for Cow<'_, [u8]> {
     type Inner = Self;
 
     fn operation_response(
-        ctx: &mut crate::gen::GenContext,
+        ctx: &mut crate::generate::GenContext,
         operation: &mut Operation,
     ) -> Option<crate::openapi::Response> {
         Vec::<u8>::operation_response(ctx, operation)
     }
 
     fn inferred_responses(
-        ctx: &mut crate::gen::GenContext,
+        ctx: &mut crate::generate::GenContext,
         operation: &mut Operation,
     ) -> Vec<(Option<u16>, Response)> {
         Vec::<u8>::inferred_responses(ctx, operation)
