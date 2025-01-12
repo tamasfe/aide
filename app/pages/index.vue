@@ -3,6 +3,7 @@ const { $dependencies } = useNuxtApp();
 
 const ENABLE_SERVER_SIDE_RENDERING = true;
 const DEFER_CLIENT_SIDE_LOADING = true;
+
 const { data: categories } = await useAsyncData("home-category-identifiers", async () => {
   return $dependencies.games.ui.searchGameCategoriesByGroup.handle("home", true);
 },
@@ -17,14 +18,12 @@ const { data: categories } = await useAsyncData("home-category-identifiers", asy
 
       <WinningNow />
 
-      <ClientOnly>
-        <GridHorizontalGames
-          v-for="category in categories"
-          :key="category.identifier"
-          :category-identifier="category.identifier"
-          :initial-games="category.games ?? undefined"
-        />
-      </ClientOnly>
+      <GridHorizontalGames
+        v-for="category in categories"
+        :key="category.identifier"
+        :category-identifier="category.identifier"
+        :initial-games="category.games ?? undefined"
+      />
 
       <GridHorizontalProviders />
     </div>
