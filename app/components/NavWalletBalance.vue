@@ -60,6 +60,17 @@ watch(() => data.value?.wallet?.balance, (newBalance) => {
         :currency="data.wallet.currency"
         :value="data.wallet.balance"
       />
+      <div v-if="!data?.wallet" class="flex gap-1 h-6">
+        <BaseSkeleton
+          class="w-6 rounded"
+          :loading="true"
+        />
+        <BaseSkeleton
+          class="w-12 rounded"
+          :loading="true"
+        />
+      </div>
+
       <span v-if="data?.balanceStatus === 'hidden'">
         {{ t("user_nav.balance_hidden_while_playing") }}
       </span>

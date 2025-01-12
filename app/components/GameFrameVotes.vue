@@ -90,10 +90,15 @@ const onClickVote = async (newRating: "like" | "dislike") => {
         :size="20"
       />
     </BaseButton>
-    <div class="w-16 bg-button-subtle-hover rounded py-2">
-      <div class="flex flex-col gap-1 leading-none whitespace-nowrap items-center text-sm text-center justify-center">
+    <div class="w-16 h-8 bg-button-subtle-hover rounded flex items-center justify-center">
+      <div v-if="!initialLoading" class="flex flex-col gap-1 leading-none whitespace-nowrap items-center text-sm text-center justify-center">
         <span class="font-medium tabular-nums">{{ n(likesPercentage, { style: "percent" }) }}</span>
       </div>
+      <BaseSkeleton
+        v-else
+        class="w-12 h-5 rounded"
+        :loading="initialLoading"
+      />
     </div>
     <BaseButton
       variant="ghost"
