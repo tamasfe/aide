@@ -33,11 +33,11 @@ async fn fetch(
     _ctx: Context,
 ) -> worker::Result<http::Response<axum::body::Body>> {
     console_error_panic_hook::set_once();
-    aide::gen::on_error(|error| {
+    aide::generate::on_error(|error| {
         println!("{error}");
     });
 
-    aide::gen::extract_schemas(true);
+    aide::generate::extract_schemas(true);
 
     let state = AppState::default();
 

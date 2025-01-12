@@ -11,7 +11,7 @@ use schemars::schema::{InstanceType, SingleOrVec};
 #[cfg(any(feature = "axum-form", feature = "axum-json"))]
 use schemars::JsonSchema;
 
-use crate::{gen::GenContext, operation::OperationOutput};
+use crate::{generate::GenContext, operation::OperationOutput};
 
 #[cfg(feature = "axum-json")]
 impl<T> OperationOutput for axum::Json<T>
@@ -41,7 +41,7 @@ where
     }
 
     fn inferred_responses(
-        ctx: &mut crate::gen::GenContext,
+        ctx: &mut crate::generate::GenContext,
         operation: &mut Operation,
     ) -> Vec<(Option<u16>, Response)> {
         if let Some(res) = Self::operation_response(ctx, operation) {
@@ -90,7 +90,7 @@ where
     }
 
     fn inferred_responses(
-        ctx: &mut crate::gen::GenContext,
+        ctx: &mut crate::generate::GenContext,
         operation: &mut Operation,
     ) -> Vec<(Option<u16>, Response)> {
         if let Some(res) = Self::operation_response(ctx, operation) {
@@ -139,7 +139,7 @@ impl<T> OperationOutput for Html<T> {
     }
 
     fn inferred_responses(
-        ctx: &mut crate::gen::GenContext,
+        ctx: &mut crate::generate::GenContext,
         operation: &mut Operation,
     ) -> Vec<(Option<u16>, Response)> {
         if let Some(res) = Self::operation_response(ctx, operation) {
@@ -159,7 +159,7 @@ impl OperationOutput for JsonRejection {
     }
 
     fn inferred_responses(
-        ctx: &mut crate::gen::GenContext,
+        ctx: &mut crate::generate::GenContext,
         operation: &mut Operation,
     ) -> Vec<(Option<u16>, Response)> {
         if let Some(res) = Self::operation_response(ctx, operation) {
@@ -184,7 +184,7 @@ impl OperationOutput for FormRejection {
     }
 
     fn inferred_responses(
-        ctx: &mut crate::gen::GenContext,
+        ctx: &mut crate::generate::GenContext,
         operation: &mut Operation,
     ) -> Vec<(Option<u16>, Response)> {
         if let Some(res) = Self::operation_response(ctx, operation) {

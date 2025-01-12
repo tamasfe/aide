@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+- **breaking:** Rename `gen` module to `generate`,
+  because `gen` is going to be a keyword in Rust 2024 ([#174])
+
+[#174]: https://github.com/tamasfe/aide/pull/174
+
 ## 0.13.5
 
 - **added:** Implement `OperationHandler` for `axum::handler::Layered` ([#133])

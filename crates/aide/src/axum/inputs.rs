@@ -41,7 +41,7 @@ impl<T> OperationInput for axum_extra::typed_header::TypedHeader<T>
 where
     T: axum_extra::headers::Header,
 {
-    fn operation_input(ctx: &mut crate::gen::GenContext, operation: &mut Operation) {
+    fn operation_input(ctx: &mut crate::generate::GenContext, operation: &mut Operation) {
         let s = ctx.schema.subschema_for::<String>();
         add_parameters(
             ctx,
@@ -72,7 +72,7 @@ where
 
 #[cfg(any(feature = "axum-json", feature = "axum-extra-json-deserializer"))]
 fn operation_input_json<T: JsonSchema>(
-    ctx: &mut crate::gen::GenContext,
+    ctx: &mut crate::generate::GenContext,
     operation: &mut Operation,
 ) {
     let schema = ctx.schema.subschema_for::<T>().into_object();
@@ -108,7 +108,7 @@ impl<T> OperationInput for axum::Json<T>
 where
     T: JsonSchema,
 {
-    fn operation_input(ctx: &mut crate::gen::GenContext, operation: &mut Operation) {
+    fn operation_input(ctx: &mut crate::generate::GenContext, operation: &mut Operation) {
         operation_input_json::<T>(ctx, operation);
     }
 }
@@ -118,7 +118,7 @@ impl<T> OperationInput for axum_extra::extract::JsonDeserializer<T>
 where
     T: JsonSchema,
 {
-    fn operation_input(ctx: &mut crate::gen::GenContext, operation: &mut Operation) {
+    fn operation_input(ctx: &mut crate::generate::GenContext, operation: &mut Operation) {
         operation_input_json::<T>(ctx, operation);
     }
 }
@@ -128,7 +128,7 @@ impl<T> OperationInput for axum::extract::Form<T>
 where
     T: JsonSchema,
 {
-    fn operation_input(ctx: &mut crate::gen::GenContext, operation: &mut Operation) {
+    fn operation_input(ctx: &mut crate::generate::GenContext, operation: &mut Operation) {
         let schema = ctx.schema.subschema_for::<T>().into_object();
         let resolved_schema = ctx.resolve_schema(&schema);
 
@@ -162,7 +162,7 @@ impl<T> OperationInput for Path<T>
 where
     T: JsonSchema,
 {
-    fn operation_input(ctx: &mut crate::gen::GenContext, operation: &mut Operation) {
+    fn operation_input(ctx: &mut crate::generate::GenContext, operation: &mut Operation) {
         let schema = ctx.schema.subschema_for::<T>().into_object();
         let params = parameters_from_schema(ctx, schema, ParamLocation::Path);
         add_parameters(ctx, operation, params);
@@ -174,7 +174,7 @@ impl<T> OperationInput for axum::extract::Query<T>
 where
     T: JsonSchema,
 {
-    fn operation_input(ctx: &mut crate::gen::GenContext, operation: &mut Operation) {
+    fn operation_input(ctx: &mut crate::generate::GenContext, operation: &mut Operation) {
         let schema = ctx.schema.subschema_for::<T>().into_object();
         let params = parameters_from_schema(ctx, schema, ParamLocation::Query);
         add_parameters(ctx, operation, params);
@@ -184,7 +184,7 @@ where
 #[cfg(feature = "axum-ws")]
 impl OperationInput for axum::extract::ws::WebSocketUpgrade {
     fn operation_input(
-        ctx: &mut crate::gen::GenContext,
+        ctx: &mut crate::generate::GenContext,
         operation: &mut crate::openapi::Operation,
     ) {
         if operation.responses.is_none() {
@@ -311,7 +311,7 @@ impl OperationInput for axum::extract::ws::WebSocketUpgrade {
 
 #[cfg(feature = "axum-multipart")]
 impl OperationInput for axum::extract::Multipart {
-    fn operation_input(ctx: &mut crate::gen::GenContext, operation: &mut Operation) {
+    fn operation_input(ctx: &mut crate::generate::GenContext, operation: &mut Operation) {
         set_body(
             ctx,
             operation,
@@ -353,7 +353,7 @@ mod extra {
         T: OperationInput,
     {
         fn operation_input(
-            ctx: &mut crate::gen::GenContext,
+            ctx: &mut crate::generate::GenContext,
             operation: &mut crate::openapi::Operation,
         ) {
             T::operation_input(ctx, operation);
@@ -365,7 +365,7 @@ mod extra {
         T: OperationInput,
     {
         fn operation_input(
-            ctx: &mut crate::gen::GenContext,
+            ctx: &mut crate::generate::GenContext,
             operation: &mut crate::openapi::Operation,
         ) {
             T::operation_input(ctx, operation);
@@ -383,7 +383,7 @@ mod extra {
     where
         T: JsonSchema,
     {
-        fn operation_input(ctx: &mut crate::gen::GenContext, operation: &mut Operation) {
+        fn operation_input(ctx: &mut crate::generate::GenContext, operation: &mut Operation) {
             let schema = ctx.schema.subschema_for::<T>().into_object();
             let resolved_schema = ctx.resolve_schema(&schema);
 
@@ -417,7 +417,7 @@ mod extra {
     where
         T: JsonSchema,
     {
-        fn operation_input(ctx: &mut crate::gen::GenContext, operation: &mut Operation) {
+        fn operation_input(ctx: &mut crate::generate::GenContext, operation: &mut Operation) {
             let schema = ctx.schema.subschema_for::<T>().into_object();
             let params = parameters_from_schema(ctx, schema, ParamLocation::Query);
             add_parameters(ctx, operation, params);

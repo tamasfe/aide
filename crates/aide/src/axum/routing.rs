@@ -4,7 +4,7 @@
 use std::{convert::Infallible, mem};
 
 use crate::{
-    gen::GenContext,
+    generate::GenContext,
     openapi::{Operation, PathItem, ReferenceOr, Response, StatusCode},
     Error,
 };
@@ -20,7 +20,7 @@ use tower_layer::Layer;
 use tower_service::Service;
 
 use crate::{
-    gen::in_context,
+    generate::in_context,
     operation::{OperationHandler, OperationInput, OperationOutput},
     transform::TransformOperation,
 };

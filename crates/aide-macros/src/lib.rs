@@ -125,7 +125,7 @@ pub fn derive_operation_io(ts: TokenStream) -> TokenStream {
             ts.extend(quote! {
                 impl #i_gen aide::OperationInput for #name #t_gen #w_gen {
                     fn operation_input(
-                        ctx: &mut aide::gen::GenContext,
+                        ctx: &mut aide::generate::GenContext,
                         operation: &mut aide::openapi::Operation
                     ) {
                         <#input as aide::OperationInput>::operation_input(
@@ -142,7 +142,7 @@ pub fn derive_operation_io(ts: TokenStream) -> TokenStream {
                 impl #i_gen aide::OperationOutput for #name #t_gen #w_gen {
                     type Inner = <#output as aide::OperationOutput>::Inner;
                     fn operation_response(
-                        ctx: &mut aide::gen::GenContext,
+                        ctx: &mut aide::generate::GenContext,
                         operation: &mut aide::openapi::Operation
                     ) -> Option<aide::openapi::Response> {
                         <#output as aide::OperationOutput>::operation_response(
@@ -151,7 +151,7 @@ pub fn derive_operation_io(ts: TokenStream) -> TokenStream {
                         )
                     }
                     fn inferred_responses(
-                        ctx: &mut aide::gen::GenContext,
+                        ctx: &mut aide::generate::GenContext,
                         operation: &mut aide::openapi::Operation
                     ) -> Vec<(Option<u16>, aide::openapi::Response)> {
                         <#output as aide::OperationOutput>::inferred_responses(

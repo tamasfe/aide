@@ -49,7 +49,7 @@
 use std::{any::type_name, marker::PhantomData};
 
 use crate::{
-    gen::GenContext,
+    generate::GenContext,
     openapi::{
         Components, Contact, Info, License, OpenApi, Operation, Parameter, PathItem, ReferenceOr,
         Response, SecurityScheme, Server, StatusCode, Tag,
@@ -59,7 +59,9 @@ use crate::{
 use indexmap::IndexMap;
 use serde::Serialize;
 
-use crate::{error::Error, gen::in_context, operation::OperationOutput, util::iter_operations_mut};
+use crate::{
+    error::Error, generate::in_context, operation::OperationOutput, util::iter_operations_mut,
+};
 
 /// A transform helper that wraps [`OpenApi`].
 #[must_use]

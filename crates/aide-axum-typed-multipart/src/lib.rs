@@ -3,7 +3,7 @@
 use std::ops::Deref;
 
 use aide::{
-    gen::GenContext,
+    generate::GenContext,
     openapi::{MediaType, Operation, RequestBody, SchemaObject},
     operation::set_body,
     OperationInput,

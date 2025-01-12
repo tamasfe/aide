@@ -64,7 +64,7 @@
 //!
 //! By default no action is taken on errors, in order to handle them
 //! it is possible to register an error handler in the thread-local context
-//! with [`aide::gen::on_error`](crate::gen::on_error).
+//! with [`aide::generate::on_error`](crate::generate::on_error).
 //!
 //! False positives are chosen over silently swallowing potential
 //! errors, these might happen when there is not enough contextual
@@ -124,7 +124,7 @@ mod macros;
 mod impls;
 
 pub mod error;
-pub mod gen;
+pub mod generate;
 pub mod operation;
 
 pub mod openapi;

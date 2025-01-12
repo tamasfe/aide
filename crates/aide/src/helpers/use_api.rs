@@ -5,7 +5,7 @@ use std::{
 
 use serde::{Deserialize, Serialize};
 
-use crate::gen::GenContext;
+use crate::generate::GenContext;
 use crate::openapi::{Operation, Response};
 use crate::{OperationInput, OperationOutput};
 
