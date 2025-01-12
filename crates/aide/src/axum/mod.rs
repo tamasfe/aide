@@ -174,7 +174,7 @@ use crate::{
     gen::{self, in_context},
     openapi::{OpenApi, PathItem, ReferenceOr, SchemaObject},
     operation::OperationHandler,
-    util::merge_paths,
+    util::{merge_paths, path_for_nested_route},
     OperationInput, OperationOutput,
 };
 #[cfg(feature = "axum-tokio")]
@@ -529,16 +529,14 @@ where
     ///
     /// The generated documentations are nested as well.
     #[tracing::instrument(skip_all)]
-    pub fn nest(mut self, mut path: &str, router: ApiRouter<S>) -> Self {
+    pub fn nest(mut self, path: &str, router: ApiRouter<S>) -> Self {
         self.router = self.router.nest(path, router.router);
-
-        path = path.trim_end_matches('/');
 
         self.paths.extend(
             router
                 .paths
                 .into_iter()
-                .map(|(route, path_item)| (path.to_string() + &route, path_item)),
+                .map(|(route, path_item)| (path_for_nested_route(&path, &route), path_item)),
         );
 
         self
@@ -553,15 +551,14 @@ where
     ///
     /// Thus the primary and probably the only use-case
     /// of this function is nesting routers with different states.
-    pub fn nest_api_service(mut self, mut path: &str, service: impl Into<ApiRouter<()>>) -> Self {
+    pub fn nest_api_service(mut self, path: &str, service: impl Into<ApiRouter<()>>) -> Self {
         let router: ApiRouter<()> = service.into();
 
-        path = path.trim_end_matches('/');
         self.paths.extend(
             router
                 .paths
                 .into_iter()
-                .map(|(route, path_item)| (path.to_string() + &route, path_item)),
+                .map(|(route, path_item)| (path_for_nested_route(&path, &route), path_item)),
         );
         self.router = self.router.nest_service(path, router.router);
         self
@@ -846,6 +843,13 @@ mod tests {
 
     async fn test_handler3() {}
 
+    fn nested_route() -> ApiRouter {
+        ApiRouter::new()
+            .api_route_with("/", routing::post(test_handler3), |t| t)
+            .api_route_with("/test1", routing::post(test_handler3), |t| t)
+            .api_route_with("/test2/", routing::post(test_handler3), |t| t)
+    }
+
     #[derive(Clone, Copy)]
     struct TestState {
         field1: u8,
@@ -893,6 +897,16 @@ mod tests {
 
         assert!(item.get.is_some());
         assert!(item.post.is_some());
+    }
+
+    #[test]
+    fn test_nested_routing() {
+        let app: ApiRouter = ApiRouter::new().nest("/app", nested_route());
+
+        assert!(app.paths.contains_key("/app"));
+        assert!(!app.paths.contains_key("/app/"));
+        assert!(app.paths.contains_key("/app/test1"));
+        assert!(app.paths.contains_key("/app/test2/"));
     }
 
     #[test]
