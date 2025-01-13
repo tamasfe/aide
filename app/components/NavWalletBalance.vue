@@ -20,9 +20,7 @@ const { data } = await useAsyncData("nav-wallet-balance-wallet", async () => {
 });
 
 // Watch for balance changes and trigger animation
-watch(() => data.value?.wallet?.balance, (newBalance) => {
-  console.log("newBalance", newBalance, flashRef.value);
-
+watch(() => data.value?.wallet?.balance, () => {
   flashRef.value?.animate([
     { opacity: 0, offset: 0 },
     { opacity: 1, offset: 0.1 },
@@ -31,7 +29,6 @@ watch(() => data.value?.wallet?.balance, (newBalance) => {
     duration: 200,
     iterations: 1,
     easing: "ease-in-out",
-
   });
 });
 </script>
