@@ -25,7 +25,7 @@ defineEmits<{
     @click="$emit('close')"
   >
     <span class="sr-only">{{ $t('i18n.close') }}</span>
-    <div class="bg-subtle/80 rounded-sm backdrop-blur p-2">
+    <div class="bg-subtle/80 rounded backdrop-blur p-2">
       <BaseIcon
         name="lucide:x"
         :size="20"
