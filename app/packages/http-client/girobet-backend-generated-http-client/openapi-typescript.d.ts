@@ -133,6 +133,42 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/docs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description This documentation page. */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description HTML content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/html": string;
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/ws/access-token": {
         parameters: {
             query?: never;
@@ -3088,6 +3124,9 @@ export interface components {
         } | {
             /** @enum {string} */
             code: "USERNAME_TAKEN";
+        } | {
+            /** @enum {string} */
+            code: "USERNAME_EXPLICIT";
         } | {
             /** @enum {string} */
             code: "USER_MISSING_PAYMENT_METHOD_ACCOUNT_TYPE_IDENTIFIER";

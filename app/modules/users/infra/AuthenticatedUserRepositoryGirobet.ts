@@ -2,6 +2,7 @@ import type { AuthenticatedUserRepositoryI } from "../domain/AuthenticatedUserRe
 import { ErrorInvalidCurrentPassword } from "../domain/errors/ErrorInvalidCurrentPassword";
 import { UserSettings } from "../domain/UserSettings";
 import { ErrorUsernameIsTaken } from "../domain/errors/ErrorUsernameIsTaken";
+import { ErrorUsernameCannotBeExplicit } from "../domain/errors/ErrorUsernameCannotBeExplicit";
 import { createBackendOpenApiClient } from "~/packages/http-client/create-backend-open-api-client";
 import { fail, success, type EmptyResult } from "~/packages/result";
 import { InfrastructureError } from "~/packages/result/infrastructure-error";
@@ -195,7 +196,7 @@ export class AuthenticatedUserSearcherGirobet implements AuthenticatedUserReposi
     }
   }
 
-  public async updateUsername(username: string): Promise<EmptyResult<ErrorUsernameIsTaken | InfrastructureError>> {
+  public async updateUsername(username: string): Promise<EmptyResult<ErrorUsernameIsTaken | ErrorUsernameCannotBeExplicit | InfrastructureError>> {
     try {
       const { data, error, response } = await this.apiClient.PATCH("/user/username", {
         body: { username },
@@ -208,6 +209,9 @@ export class AuthenticatedUserSearcherGirobet implements AuthenticatedUserReposi
       if (error) {
         if (error.code === "USERNAME_TAKEN") {
           return fail(new ErrorUsernameIsTaken(username));
+        }
+        if (error.code === "USERNAME_EXPLICIT") {
+          return fail(new ErrorUsernameCannotBeExplicit(username));
         }
         const httpError = HttpBackendApiError.newFromBackendError(error, response);
         return fail(InfrastructureError.newFromError({}, httpError));

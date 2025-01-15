@@ -22,7 +22,8 @@ const validationSchema = toTypedSchema(
   z.object({
     username: z.string({ required_error: t("validation.username_required") })
       .min(USERNAME_LENGTH_MIN, t("validation.username_too_short", { min: String(USERNAME_LENGTH_MIN) }))
-      .max(USERNAME_LENGTH_MAX, t("validation.username_too_long", { max: String(USERNAME_LENGTH_MAX) })),
+      .max(USERNAME_LENGTH_MAX, t("validation.username_too_long", { max: String(USERNAME_LENGTH_MAX) }))
+      .refine(value => /\s/.test(value ?? "") === false, { message: t("validation.username_no_spaces") }),
   }),
 );
 const { handleSubmit, errors: formErrors, defineField, meta } = useForm({ validationSchema });
