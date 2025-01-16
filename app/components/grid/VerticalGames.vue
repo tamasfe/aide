@@ -8,9 +8,6 @@ const props = defineProps<{
 const { $dependencies } = useNuxtApp();
 const { navigateBackOrHome } = useNavigateBackOrHome();
 
-const ENABLE_SERVER_SIDE_RENDERING = false;
-const DEFER_CLIENT_SIDE_LOADING = true;
-
 const loading = useState(`grid-vertical-games-loading-for-${props.categoryIdentifier}-${props.providerId}`, () => true);
 const totalGamesOfCategory = useState(`grid-vertical-games-total-for-${props.categoryIdentifier}-${props.providerId}`, () => 0);
 const nextGamesPageToSearch = useState(`grid-vertical-games-next-page-for-${props.categoryIdentifier}-${props.providerId}`, () => 0);
@@ -30,6 +27,8 @@ const onLoadData = async () => {
   loading.value = false;
 };
 
+const ENABLE_SERVER_SIDE_RENDERING = false;
+const DEFER_CLIENT_SIDE_LOADING = true;
 await useAsyncData(`load-games-for-${props.categoryIdentifier}`, () => onLoadData().then(() => true),
   { lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING },
 );

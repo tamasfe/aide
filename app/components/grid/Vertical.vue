@@ -32,13 +32,18 @@ const totalCount = computed(() => {
 });
 
 const SKELETON_ITEMS_TO_SHOW = 24;
-const dataLoadingSkeleton: { id: number; imageUrl: string }[] = Array.from({ length: SKELETON_ITEMS_TO_SHOW }).map((_elem, index) => ({ id: index, imageUrl: "" }));
+const dataLoadingSkeleton: { id: number; imageUrl: string; isSkeleton?: boolean }[] = Array.from({ length: SKELETON_ITEMS_TO_SHOW }).map((_elem, index) => ({ id: index, imageUrl: "", isSkeleton: true }));
 
-const dataToRender = computed(() => {
+const dataToRender = computed<(T[number] & { isSkeleton?: boolean })[]>(() => {
   if (props.loading === undefined) {
     return props.data;
   }
-  return props.data.length > 0 ? props.data : dataLoadingSkeleton;
+
+  if (props.loading === true) {
+    return props.data.concat(dataLoadingSkeleton);
+  }
+
+  return props.data;
 });
 </script>
 
@@ -53,8 +58,8 @@ const dataToRender = computed(() => {
         :key="datapoint.id"
         :style="{ aspectRatio: aspectRatio }"
       >
-        <slot v-if="loading === true && data.length === 0" name="loading">
-          <BaseSkeleton :loading="loading" class="h-full w-full rounded" />
+        <slot v-if="datapoint.isSkeleton" name="loading">
+          <BaseSkeleton :loading="true" class="h-full w-full rounded" />
         </slot>
         <slot v-else :data="datapoint" />
       </div>
