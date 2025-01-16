@@ -66,7 +66,7 @@ type ComboboxVariants = VariantProps<typeof comboboxVariants>;
     <div class="relative mt-2">
       <div class="flex items-center justify-between">
         <ComboboxInput
-          :class="cn('w-full block rounded-r-none', comboboxVariants({ size, variant }))"
+          :class="cn(comboboxVariants({ size, variant }), 'w-full py-4 block rounded-r-none')"
           :display-value="(option) => (option as O)?.title"
           inputmode="text"
           autocorrect="off"
@@ -74,20 +74,20 @@ type ComboboxVariants = VariantProps<typeof comboboxVariants>;
           @blur="query = ''"
         />
         <ComboboxButton
-          :class="cn('right-0 flex h-full items-center rounded-r rounded-l-none px-py-4', comboboxVariants({ variant, size }))"
+          :class="cn(comboboxVariants({ variant, size }), 'px-4 py-4 h-full rounded-r rounded-l-none')"
           @click="open ? undefined : query = '' "
         >
           <BaseIcon
             v-if="open"
             aria-hidden="true"
             name="lucide:chevron-up"
-            :size="20"
+            :size="18"
           />
           <BaseIcon
             v-if="!open"
             aria-hidden="true"
             name="lucide:chevron-down"
-            :size="20"
+            :size="18"
           />
         </ComboboxButton>
       </div>
