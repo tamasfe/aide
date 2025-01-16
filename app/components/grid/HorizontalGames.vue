@@ -21,22 +21,19 @@ const columns = ref({
   xl: 8,
 });
 
-const query = $dependencies.games.ui.searchGamesPaginatingOnGrid;
-
-const initialGames = ref(props.initialGames ? props.initialGames.map(game => useAddKeyFromId(game)) : []);
-const queriedGames = useState<{ id: number; imageUrl: string; key: string }[]>(`grid-horizontal-games-ids-for-${props.categoryIdentifier}`, () => []);
-const games = computed(() => queriedGames.value.length > 0 ? queriedGames.value : initialGames.value);
-
-const loading = useState(`grid-horizontal-games-loading-for-${props.categoryIdentifier}`, () => true);
-const nextGamesPageToSearch = useState(`grid-horizontal-games-next-page-for-${props.categoryIdentifier}`, () => 0);
+const paginationSize = computed(() => props.initialGames ? props.initialGames.length : 25);
+const slidesBeforeLoad = 4; // We aribitrarely set it to +1 the slides to scroll to give time for the loading one scroll ahead
+const games = useState<{ id: number; imageUrl: string; key: string }[]>(`grid-horizontal-games-ids-for-${props.categoryIdentifier}`, () => props.initialGames ? props.initialGames.map(game => useAddKeyFromId(game)) : []);
+const loading = useState(`grid-horizontal-games-loading-for-${props.categoryIdentifier}`, () => false);
+const nextGamesPageToSearch = useState(`grid-horizontal-games-next-page-for-${props.categoryIdentifier}`, () => props.initialGames ? 1 : 0);
 const canLoadMore = useState(`grid-horizontal-games-can-load-more-for-${props.categoryIdentifier}`, () => true);
 
 const onLoadData = async () => {
   if (!canLoadMore.value) return;
   loading.value = true;
 
-  const { games: foundGames, canLoadMore: updatedCanLoadMore } = await query.handle(props.categoryIdentifier, null, nextGamesPageToSearch.value);
-  queriedGames.value.push(...foundGames.map(game => useAddKeyFromId(game)));
+  const { games: foundGames, canLoadMore: updatedCanLoadMore } = await $dependencies.games.ui.searchGamesPaginatingOnGrid.handle(props.categoryIdentifier, null, nextGamesPageToSearch.value, paginationSize.value);
+  games.value.push(...foundGames.map(game => useAddKeyFromId(game)));
   canLoadMore.value = updatedCanLoadMore;
   nextGamesPageToSearch.value += 1;
 
@@ -45,62 +42,62 @@ const onLoadData = async () => {
 
 const ENABLE_SERVER_SIDE_RENDERING = false;
 const DEFER_CLIENT_SIDE_LOADING = true;
-await useAsyncData(`load-games-for-${props.categoryIdentifier}`,
-  () => onLoadData().then(() => true),
-  { lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING },
-);
+if (!props.initialGames) {
+  await useAsyncData(`load-games-for-${props.categoryIdentifier}`,
+    () => onLoadData().then(() => true),
+    { lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING },
+  );
+}
 </script>
 
 <template>
-  <div>
-    <GridHeaderHorizontal
-      v-if="loading || games.length > 0"
-      :data="games"
-      :loading="loading"
-      :can-load-more="canLoadMore"
-      :slides-to-scroll="slidesToScroll"
-      :columns="columns"
-      :slides-before-load="10"
-      aspect-ratio="3/4"
-      @trigger:load="onLoadData"
-    >
-      <template #title>
-        <GridHeaderTitle :title="t(`category.${categoryIdentifier}`)" />
-      </template>
+  <GridHeaderHorizontal
+    v-if="loading || games.length > 0"
+    :data="games"
+    :loading="loading"
+    :can-load-more="canLoadMore"
+    :slides-to-scroll="slidesToScroll"
+    :columns="columns"
+    :slides-before-load="slidesBeforeLoad"
+    aspect-ratio="3/4"
+    @trigger:load="onLoadData"
+  >
+    <template #title>
+      <GridHeaderTitle :title="t(`category.${categoryIdentifier}`)" />
+    </template>
 
-      <template #options>
-        <BaseLink
-          :to="{ name: 'categories-id', params: { id: props.categoryIdentifier } }"
-        >
-          <BaseButton
-            variant="subtle"
-            size="sm"
-          >
-            {{ $t("button.see_all") }}
-          </BaseButton>
-        </BaseLink>
-      </template>
-
-      <template #default="{ item: game }">
-        <BaseLink
-          :to="{ name: 'games-id', params: { id: game.id } }"
-          class="block bg-subtle rounded w-full h-full overflow-hidden border border-emphasis/50"
-        >
-          <GamesImageLoader :src="game.imageUrl" />
-        </BaseLink>
-      </template>
-
-      <template
-        v-if="canLoadMore"
-        #loading
+    <template #options>
+      <BaseLink
+        :to="{ name: 'categories-id', params: { id: props.categoryIdentifier } }"
       >
-        <div class="flex items-center justify-center w-full h-full bg-subtle rounded">
-          <BaseSpinner
-            class="text-subtle"
-            :size="32"
-          />
-        </div>
-      </template>
-    </GridHeaderHorizontal>
-  </div>
+        <BaseButton
+          variant="subtle"
+          size="sm"
+        >
+          {{ $t("button.see_all") }}
+        </BaseButton>
+      </BaseLink>
+    </template>
+
+    <template #default="{ item: game }">
+      <BaseLink
+        :to="{ name: 'games-id', params: { id: game.id } }"
+        class="block bg-subtle rounded w-full h-full overflow-hidden border border-emphasis/50"
+      >
+        <GamesImageLoader :src="game.imageUrl" />
+      </BaseLink>
+    </template>
+
+    <template
+      v-if="canLoadMore"
+      #loading
+    >
+      <div class="flex items-center justify-center w-full h-full bg-subtle rounded">
+        <BaseSpinner
+          class="text-subtle"
+          :size="32"
+        />
+      </div>
+    </template>
+  </GridHeaderHorizontal>
 </template>

@@ -11,14 +11,14 @@ export class SearchGamesPaginatingOnGrid {
 
   }
 
-  public static PAGINATION_SIZE = 25;
+  public static DEFAULT_PAGINATION_SIZE = 25;
 
-  public async handle(categoryIdentifier: string | null, providerId: number | null, pageToSearch: number): Promise<{
+  public async handle(categoryIdentifier: string | null, providerId: number | null, pageToSearch: number, pageSize = SearchGamesPaginatingOnGrid.DEFAULT_PAGINATION_SIZE): Promise<{
     games: SearchGameResultI[];
     canLoadMore: boolean;
     totalGames: number;
   }> {
-    const result = await this.query.handle(categoryIdentifier, null, providerId, pageToSearch, SearchGamesPaginatingOnGrid.PAGINATION_SIZE);
+    const result = await this.query.handle(categoryIdentifier, null, providerId, pageToSearch, pageSize);
 
     if (result.isFailure) {
       if (result.error instanceof ErrorSearchIndexNotFound) {
@@ -39,7 +39,7 @@ export class SearchGamesPaginatingOnGrid {
       };
     }
 
-    const canLoadMore = result.value.games.length === SearchGamesPaginatingOnGrid.PAGINATION_SIZE;
+    const canLoadMore = result.value.games.length === pageSize;
 
     return {
       games: result.value.games.map(game => ({ id: game.id, imageUrl: game.imageUrl })),

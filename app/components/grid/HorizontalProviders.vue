@@ -7,9 +7,6 @@ const nextProvidersPageToSearch = useState(`grid-horizontal-providers-next-page`
 const providers = useState<{ id: number; imageUrl: string; key: string }[]>(`grid-horizontal-providers-ids`, () => []);
 const canLoadMore = useState(`grid-horizontal-providers-can-load-more`, () => true);
 
-const ENABLE_SERVER_SIDE_RENDERING = false;
-const DEFER_CLIENT_SIDE_LOADING = true;
-
 const onLoadData = async () => {
   if (!canLoadMore.value) return;
   loading.value = true;
@@ -22,7 +19,11 @@ const onLoadData = async () => {
   loading.value = false;
 };
 
-await useAsyncData(`load-providers`, () => onLoadData().then(() => true), { lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING });
+const ENABLE_SERVER_SIDE_RENDERING = false;
+const DEFER_CLIENT_SIDE_LOADING = true;
+await useAsyncData(`load-providers`, () => onLoadData().then(() => true),
+  { lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING },
+);
 </script>
 
 <template>
