@@ -55,9 +55,9 @@ const onTogglePlaying = async () => {
           v-if="playing && iframeUrl"
           class="fixed top-0 left-0 w-full h-full z-[11] bg-subtle"
         >
-          <div class="p-5 bg-subtle">
+          <div class="bg-subtle flex items-center justify-end w-full">
             <BaseClose
-              class="p-0 pr-2"
+              class="block static p-0 pr-2 pl-2"
               @close="onTogglePlaying"
             />
           </div>

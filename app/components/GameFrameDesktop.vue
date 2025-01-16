@@ -57,9 +57,9 @@ const onToggleFullScreen = () => {
             v-if="fullScreen"
             class="p-0 bg-subtle"
           >
-            <div class="p-5 bg-subtle">
+            <div class="bg-subtle flex items-center justify-end w-full">
               <BaseClose
-                class="p-0 pr-2"
+                class="block static p-0 pr-4 pl-4"
                 @close="onToggleFullScreen"
               />
             </div>
