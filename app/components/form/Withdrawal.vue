@@ -48,6 +48,7 @@ const { handleSubmit, errors: formErrors, defineField, meta } = useForm({ valida
 const formErrorMessage = ref("");
 const loading = ref(false);
 const [amount, amountAttrs] = defineField("amount");
+amount.value = undefined;
 
 const onSubmit = handleSubmit(async (formData) => {
   loading.value = true;
@@ -111,6 +112,7 @@ const onSubmit = handleSubmit(async (formData) => {
             unsigned: true,
           },
         }"
+        :model-value="amount"
         @input="(value) => amount = Number(value.replace(/[^\d.]/g, ''))"
       >
         <template #prefix>
