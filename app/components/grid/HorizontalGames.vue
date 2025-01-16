@@ -89,7 +89,7 @@ if (!props.initialGames) {
     </template>
 
     <template
-      v-if="canLoadMore"
+      v-if="loading"
       #loading
     >
       <div class="flex items-center justify-center w-full h-full bg-subtle rounded">
