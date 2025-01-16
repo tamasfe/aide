@@ -220,6 +220,6 @@ const [value, modifiers] = defineModel<number | string>({
   @apply w-full h-full text-lg text-white font-medium placeholder:text-subtle bg-transparent;
 }
 .error {
-  @apply text-right text-sm whitespace-nowrap text-alert-error;
+  @apply text-right text-sm text-alert-error;
 }
 </style>
