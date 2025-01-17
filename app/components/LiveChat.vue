@@ -9,7 +9,7 @@ import { LiveChatWidget, type EventHandlerPayload } from "@livechat/widget-vue";
  */
 
 const { $dependencies } = useNuxtApp();
-const { locale } = useI18n();
+const userStore = useUserStore();
 
 const visibility = ref<"minimized" | "maximized" | "hidden">("hidden");
 const emit = defineEmits<{
@@ -39,14 +39,27 @@ function onVisibilityChanged(event: EventHandlerPayload<"onVisibilityChanged">) 
       break;
   }
 }
+
+const sessionVariables = computed(() => {
+  if (!userStore.user) return {};
+  return {
+    customerId: userStore.user.id,
+    customerPhone: `+${userStore.user.phone.code.value}${userStore.user.phone.national.value}`,
+    customerLocale: userStore.user.locale,
+    customerTimeZone: userStore.user.timeZone,
+    customerUsername: userStore.user.username,
+  };
+});
 </script>
 
 <template>
   <ClientOnly>
     <LiveChatWidget
-      :lang="locale"
       license="15201087"
       :visibility="visibility"
+      :customer-email="userStore.user?.email"
+      :customer-name="userStore.user?.name"
+      :session-variables="sessionVariables"
       @visibility-changed="onVisibilityChanged"
     />
   </ClientOnly>
