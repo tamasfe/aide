@@ -38,7 +38,7 @@ const clipboard = useClipboard({
 <template>
   <div class="flex flex-col items-center">
     <div
-      class="flex flex-col gap-4 w-full max-w-[30rem] bg-subtle rounded-lg p-4 border border-muted/10"
+      class="flex flex-col gap-4 w-full max-w-[30rem] bg-subtle rounded-lg p-4 border border-muted/5"
     >
       <div class="flex items-center justify-between gap-2 text-subtle text-sm">
         <BaseFlag

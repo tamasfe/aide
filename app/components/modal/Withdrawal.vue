@@ -32,6 +32,13 @@ const currency = ref<{
     banner-top="/assets/images/banners/withdrawal_horizontal.jpg"
     @close="onClosed"
   >
+    <template #title>
+      {{ $t('modal_payments.make_withdrawal') }}
+    </template>
+    <template #subtitle>
+      {{ $t('modal_payments.make_withdrawal_subtitle') }}
+    </template>
+
     <FormWithdrawal
       v-if="limits && paymentMethodId"
       :limits="limits"

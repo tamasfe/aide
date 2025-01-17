@@ -50,7 +50,7 @@ const onNotify = () => {
 
       <BaseButton
         size="xl"
-        class="my-4 w-full"
+        class="w-full"
         @click="onNotify"
       >
         {{ $t("button.notify_me") }}

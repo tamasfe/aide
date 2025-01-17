@@ -78,11 +78,6 @@ const onSubmit = handleSubmit(async (formData) => {
 
 <template>
   <BaseForm @submit="onSubmit">
-    <div class="mb-2 leading-snug">
-      <h2 class="text-xl font-semibold">{{ $t('modal_payments.make_deposit') }}</h2>
-      <h3 class="text-sm font-medium text-subtle">{{ $t('modal_payments.make_deposit_subtitle') }}</h3>
-    </div>
-
     <BaseAlert
       v-if="formErrorMessage"
       :message="formErrorMessage"

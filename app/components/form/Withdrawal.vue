@@ -71,24 +71,6 @@ const onSubmit = handleSubmit(async (formData) => {
 
 <template>
   <BaseForm @submit="onSubmit">
-    <div class="flex justify-between">
-      <div class="mb-2 leading-snug">
-        <h2 class="text-xl font-semibold">{{ $t('modal_payments.make_withdrawal') }}</h2>
-        <h3 class="text-sm font-medium text-subtle">{{ $t('modal_payments.make_withdrawal_subtitle') }}</h3>
-      </div>
-
-      <div
-        class="p-1 flex self-start items-center space-x-1.5 cursor-pointer text-primary hover:text-primary-hover"
-        @click="onToggleLimits"
-      >
-        <BaseIcon
-          name="lucide:info"
-          :size="18"
-        />
-        <div>{{ $t('modal_payments.limits') }}</div>
-      </div>
-    </div>
-
     <template v-if="!showLimits">
       <BaseAlert
         v-if="formErrorMessage"
@@ -99,7 +81,7 @@ const onSubmit = handleSubmit(async (formData) => {
 
       <BaseInputGroup
         v-bind="amountAttrs"
-        :placeholder="$t('placeholder.deposit_amount')"
+        :placeholder="$t('placeholder.withdrawal_amount')"
         autocomplete="text"
         inputmode="decimal"
         placeholder-placement="default"
@@ -129,15 +111,29 @@ const onSubmit = handleSubmit(async (formData) => {
         </template>
       </BaseInputGroup>
 
-      <div v-if="limits.max" class="flex space-x-2 font-medium text-sm">
-        <div class="text-subtle">{{ $t('modal_payments.available_withdraw') }}:</div>
-        <div class="text-subtle-light font-semibold">
-          <BaseCurrency :value="limits.max" :currency="currency.code" variant="ghost" />
+      <div class="flex justify-between items-center">
+        <div class="flex justify-between">
+          <div
+            class="flex self-start items-center space-x-1.5 cursor-pointer text-primary text-sm hover:text-primary-hover p-4 -m-4"
+            @click="onToggleLimits"
+          >
+            <BaseIcon
+              name="lucide:info"
+              :size="15"
+            />
+            <div>{{ $t('modal_payments.limits') }}</div>
+          </div>
+        </div>
+        <div v-if="limits.max" class="flex space-x-2 font-medium text-sm">
+          <div class="text-subtle">{{ $t('modal_payments.available_withdraw') }}:</div>
+          <div class="text-subtle-light font-semibold">
+            <BaseCurrency :value="limits.max" :currency="currency.code" variant="ghost" />
+          </div>
         </div>
       </div>
 
       <BaseButton
-        class="mt-4 mb-2 w-full"
+        class=" w-full mt-4"
         :disabled="!meta.valid"
         :loading="loading"
         size="xl"
@@ -158,7 +154,7 @@ const onSubmit = handleSubmit(async (formData) => {
 
       <BaseButton
         variant="subtle"
-        class="mt-2"
+        class="mt-4"
         @click="onToggleLimits"
       >
         {{ $t("button.go_back") }}

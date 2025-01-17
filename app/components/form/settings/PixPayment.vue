@@ -113,10 +113,6 @@ const onSubmit = handleSubmit(async (data) => {
 <template>
   <BaseForm class="space-y-4" @submit="onSubmit">
     <template #default="{ loading }">
-      <div class="leading-snug">
-        <h2 class="text-xl font-semibold">{{ $t('modal_user_settings.payment_pix.title') }}</h2>
-      </div>
-
       <BaseSelect
         :model-value="selectedKeyType"
         :options="paymentKeyTypeOptions"

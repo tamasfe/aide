@@ -41,10 +41,6 @@ const onSubmit = async () => {
 <template>
   <BaseForm v-if="userSettings.settings" class="space-y-4" @submit="onSubmit">
     <template #default="{ loading }">
-      <div class="leading-snug">
-        <h2 class="text-xl font-semibold">{{ $t('modal_user_settings.language.title') }}</h2>
-      </div>
-
       <BaseSelect
         v-model="selectedLanguage"
         :options="SUPPORTED_LANGUAGES_OPTIONS"

@@ -64,7 +64,6 @@ defineOptions({
 const props = withDefaults(
   defineProps<{
     open: boolean;
-    unclosable?: boolean;
     disabled?: boolean;
     variant?: DialogVariants["variant"];
     size?: DialogVariants["size"];
@@ -72,7 +71,6 @@ const props = withDefaults(
     class?: HTMLAttributes["class"];
   }>(),
   {
-    unclosable: false,
     disabled: false,
     closeOnClickOutside: true,
   },
@@ -91,7 +89,7 @@ const open = computed({
 });
 
 const onClose = (force: boolean) => {
-  if (props.disabled || props.unclosable) {
+  if (props.disabled) {
     return;
   }
   if (props.closeOnClickOutside || force) {
@@ -128,13 +126,7 @@ const onClose = (force: boolean) => {
           v-bind="$attrs"
           :class="cn(dialogVariants({ variant, size }), props.class)"
         >
-          <BaseClose
-            v-if="!unclosable"
-            :disabled="disabled"
-            @close="() => onClose(true)"
-          />
-
-          <slot />
+          <slot :close="onClose" />
         </DialogPanel>
       </TransitionChild>
     </Dialog>

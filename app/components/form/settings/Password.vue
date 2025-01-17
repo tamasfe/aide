@@ -46,10 +46,6 @@ const onSubmit = handleSubmit(async (formData) => {
 
 <template>
   <BaseForm v-slot="{ loading }" class="space-y-2" @submit="onSubmit">
-    <div class="leading-snug">
-      <h2 class="text-xl font-semibold">{{ $t('modal_user_settings.password.title') }}</h2>
-    </div>
-
     <BaseAlert
       v-if="formErrorMessage"
       :message="formErrorMessage"

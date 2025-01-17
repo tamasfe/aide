@@ -113,7 +113,7 @@ const scrollToTop = () => {
       >
         <BaseIcon
           name="lucide:chevron-up"
-          :size="26"
+          :size="20"
         />
       </BaseButton>
     </section>

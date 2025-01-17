@@ -85,7 +85,7 @@ const authenticated = computed(() => {
     v-else-if="currentDevice === 'desktop'"
     class="pt-4 pb-12 giro__container giro__sections"
   >
-    <div v-if="game" class="bg-subtle rounded-lg border border-muted/10 overflow-hidden">
+    <div v-if="game" class="bg-subtle rounded-lg border border-muted/5 overflow-hidden">
       <GameFrameDesktop
         v-if="!isMobile && game.isCompatibleWithDevice"
         :game-title="game.name"
@@ -113,7 +113,7 @@ const authenticated = computed(() => {
         @maximize="() => { fullscreen = true }"
       />
     </div>
-    <div v-else class="h-[60vh] w-full rounded-lg border border-muted/10 overflow-hidden relative">
+    <div v-else class="h-[60vh] w-full rounded-lg border border-muted/5 overflow-hidden relative">
       <BaseSkeleton class="absolute inset-0" :loading="true" />
     </div>
 

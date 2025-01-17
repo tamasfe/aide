@@ -36,6 +36,12 @@ defineProps<{
     banner-top="/assets/images/banners/deposit_horizontal.jpg"
     @close="onClosed"
   >
+    <template #title>
+      {{ $t('modal_payments.make_deposit') }}
+    </template>
+    <template #subtitle>
+      {{ $t('modal_payments.make_deposit_subtitle') }}
+    </template>
     <FormDeposit
       v-if="limits && paymentMethodId"
       :amounts="{ min: limits.min, max: limits.max }"

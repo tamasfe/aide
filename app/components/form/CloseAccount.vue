@@ -39,10 +39,6 @@ const onSubmit = handleSubmit(async (formData) => {
 
 <template>
   <BaseForm v-slot="{ loading }" class="space-y-2" @submit="onSubmit">
-    <h2 class="text-xl font-semibold">{{ $t("modal_close_account.title") }}</h2>
-    <p>{{ $t("modal_close_account.alternative_cool_off") }}</p>
-    <p>{{ $t("modal_close_account.help_us_improve") }}</p>
-
     <BaseAlert
       v-if="formErrorMessage"
       :message="formErrorMessage"

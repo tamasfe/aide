@@ -58,75 +58,36 @@ if (preloadBannerLinks.length > 0) {
     v-model:open="open"
     v-bind="$attrs"
     :disabled="disabled"
-    :unclosable="unclosable"
     :class="cn(
       'p-0',
       { 'lg:max-w-max': banner === 'left' }, // for lg screensize with left banner, let content size handle the width
     )"
     @close="emit('close')"
   >
-    <div
-      v-if="banner === 'none'"
-      class="pt-10 flex flex-col"
-    >
+    <template #default="{ close }">
       <div
-        v-if="logo"
-        class="logo"
+        v-if="banner !== 'left'"
+        class="h-14 flex justify-end px-5 items-center"
+        :class="{
+          'absolute top-0 left-0 right-0': banner !== 'none',
+        }"
       >
-        <IconLogo />
-      </div>
-
-      <div class="content-padding">
-        <slot />
-      </div>
-    </div>
-
-    <div
-      v-else-if="banner === 'top'"
-      class="flex flex-col"
-    >
-      <NuxtImg
-        v-if="bannerTop"
-        :src="bannerTop"
-        class="banner-top"
-        :class="{ 'mb-8': logo }"
-      />
-
-      <div
-        v-if="logo"
-        class="logo"
-      >
-        <IconLogo />
-      </div>
-
-      <div class="content-padding">
-        <slot />
-      </div>
-    </div>
-
-    <div
-      v-else-if="banner === 'left'"
-      class="flex flex-row"
-    >
-      <!-- hardcode a px value here that mostly works with all "left" size modals -->
-      <div class="w-[300px] hidden lg:block flex-shrink">
-        <NuxtImg
-          v-if="bannerLeft"
-          :src="bannerLeft"
-          class="h-full object-cover sm:rounded-l-lg"
+        <div v-if="banner === 'none'" class="flex-1">
+          <h2 v-if="$slots.title" class="text-xl leading-snug"><slot name="title" /></h2>
+          <h3 v-if="$slots.subtitle" class="text-subtle text-sm leading-snug"><slot name="subtitle" /></h3>
+        </div>
+        <BaseClose
+          v-if="!unclosable"
+          class="-mr-5"
+          :disabled="disabled"
+          @close="() => close(true)"
         />
       </div>
 
-      <div class="flex flex-col lg:pt-10 lg:min-w-[var(--giro-modal-default-max-width)]">
-        <NuxtImg
-          v-if="bannerTop"
-          :src="bannerTop"
-          :class="cn(
-            'banner-top lg:hidden',
-            { 'mb-8': logo },
-          )"
-        />
-
+      <div
+        v-if="banner === 'none'"
+        class="flex flex-col"
+      >
         <div
           v-if="logo"
           class="logo"
@@ -138,7 +99,89 @@ if (preloadBannerLinks.length > 0) {
           <slot />
         </div>
       </div>
-    </div>
+
+      <div
+        v-else-if="banner === 'top'"
+        class="flex flex-col"
+      >
+        <NuxtImg
+          v-if="bannerTop"
+          :src="bannerTop"
+          class="banner-top"
+          :class="{ 'mb-8': logo }"
+        />
+
+        <div
+          v-if="logo"
+          class="logo"
+        >
+          <IconLogo />
+        </div>
+
+        <div class="content-padding">
+          <h2 v-if="$slots.title" class="text-xl leading-snug"><slot name="title" /></h2>
+          <h3 v-if="$slots.subtitle" class="text-subtle text-sm leading-snug"><slot name="subtitle" /></h3>
+          <section
+            :class="{
+              'pt-4': $slots.title || $slots.subtitle,
+            }"
+          >
+            <slot />
+          </section>
+        </div>
+      </div>
+
+      <div
+        v-else-if="banner === 'left'"
+        class="flex flex-row"
+      >
+        <!-- hardcode a px value here that mostly works with all "left" size modals -->
+        <div class="w-[300px] hidden lg:block flex-shrink">
+          <NuxtImg
+            v-if="bannerLeft"
+            :src="bannerLeft"
+            class="h-full object-cover"
+          />
+        </div>
+
+        <div class="flex flex-col lg:min-w-[var(--giro-modal-default-max-width)]">
+          <NuxtImg
+            v-if="bannerTop"
+            :src="bannerTop"
+            :class="cn(
+              'banner-top lg:hidden',
+              { 'mb-8': logo },
+            )"
+          />
+
+          <div
+            class="h-14 flex justify-end px-5 items-center"
+          >
+            <div class="flex-1">
+              <h2 v-if="$slots.title" class="text-xl leading-snug"><slot name="title" /></h2>
+              <h3 v-if="$slots.subtitle" class="text-subtle text-sm leading-snug"><slot name="subtitle" /></h3>
+            </div>
+            <BaseClose
+              v-if="!unclosable"
+              class="-mr-5"
+              :disabled="disabled"
+              @close="() => close(true)"
+            />
+          </div>
+
+          <div
+            v-if="logo"
+            class="logo"
+          >
+            <IconLogo />
+          </div>
+
+          <div class="content-padding">
+            <slot />
+          </div>
+        </div>
+      </div>
+    </template>
   </BaseDialog>
 </template>
 
@@ -147,7 +190,7 @@ if (preloadBannerLinks.length > 0) {
   @apply mb-3 w-[9rem] self-center;
 }
 .banner-top {
-  @apply w-full aspect-[100/37] object-cover sm:rounded-t-lg;
+  @apply w-full aspect-[100/37] object-cover;
 }
 .content-padding {
   @apply p-5;

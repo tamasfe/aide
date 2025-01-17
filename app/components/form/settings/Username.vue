@@ -41,10 +41,6 @@ const onSubmit = handleSubmit(async (formData) => {
 
 <template>
   <BaseForm v-slot="{ loading }" class="space-y-4" @submit="onSubmit">
-    <div class="leading-snug">
-      <h2 class="text-xl font-semibold">{{ $t('modal_user_settings.username.title') }}</h2>
-    </div>
-
     <BaseAlert
       v-if="formErrorMessage"
       :message="formErrorMessage"
@@ -60,10 +56,6 @@ const onSubmit = handleSubmit(async (formData) => {
       :error-message="formErrors.username"
       :error-placement="'below'"
     />
-
-    <!-- <div>
-      <p>{{ $t("modal_user_settings.password.instructions") }}</p>
-    </div> -->
 
     <div
       class="flex items-center justify-between space-x-4"

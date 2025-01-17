@@ -39,10 +39,6 @@ const filteredOptions = computed(() => {
 <template>
   <BaseForm v-if="userSettings.settings" class="space-y-4" @submit="onSubmit">
     <template #default="{ loading }">
-      <div class="leading-snug">
-        <h2 class="text-xl font-semibold">{{ $t('modal_user_settings.time_zone.title') }}</h2>
-      </div>
-
       <BaseCombobox
         v-model:selected="selectedTimezone"
         v-model:query="query"

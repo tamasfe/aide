@@ -38,21 +38,19 @@ const onClickGenerateNewCode = async () => {
 
 <template>
   <BaseForm class="gap-4 items-center">
-    <div class="w-full flex flex-row items-center justify-between">
-      <div class="flex flex-row gap-2">
-        <BaseButton type="button" variant="ghost" @click="$dependencies.users.ui.emitCommandOpenUserActionModal.handle('deposit')">
-          <BaseIcon
-            name="lucide:arrow-left"
-            :size="20"
-          />
-        </BaseButton>
-        <div class="mb-2 leading-snug">
-          <h2 class="text-xl font-semibold">{{ $t('modal_payments.finalize_deposit') }}</h2>
-          <h3 class="text-sm font-medium text-subtle">{{ $t('modal_payments.finalize_deposit_subtitle') }}</h3>
-        </div>
+    <div class="w-full flex gap-4 flex-row items-center justify-between mb-4">
+      <BaseButton type="button" variant="subtle" @click="$dependencies.users.ui.emitCommandOpenUserActionModal.handle('deposit')">
+        <BaseIcon
+          name="lucide:arrow-left"
+          :size="20"
+        />
+      </BaseButton>
+      <div class="leading-snug flex-1">
+        <h2 class="text-xl font-semibold">{{ $t('modal_payments.finalize_deposit') }}</h2>
+        <h3 class="text-sm font-medium text-subtle">{{ $t('modal_payments.finalize_deposit_subtitle') }}</h3>
       </div>
       <NuxtImg
-        class="w-[6rem] h-auto self-start"
+        class="w-[6rem] h-auto"
         src="/assets/images/logos/pix.svg"
         alt="Pix"
       />
@@ -68,11 +66,11 @@ const onClickGenerateNewCode = async () => {
         <BaseCopy
           :value="code"
           :show-icon="false"
-          class="w-full block space-y-4 cursor-pointer"
+          class="w-full block space-y-4 cursor-pointer mb-2"
         >
           <template #default="{ copied }">
             <div>
-              <QRCode class="mx-auto px-3 bg-white" :value="code" :size="225" />
+              <QRCode class="mx-auto px-3 bg-white rounded-lg" :value="code" :size="225" />
             </div>
 
             <div class="text-4xl flex items-center justify-center font-bold bg-button-emphasis text-transparent bg-clip-text">
@@ -91,7 +89,7 @@ const onClickGenerateNewCode = async () => {
                   <BaseCopy
                     :value="code"
                     :copied="copied"
-                    :size="24"
+                    :size="20"
                     :show-label="false"
                   />
                 </div>
@@ -108,7 +106,7 @@ const onClickGenerateNewCode = async () => {
         <BaseButton
           variant="ghost"
           size="md"
-          class="my-4 text-subtle"
+          class="text-subtle"
           @click="$dependencies.users.ui.emitCommandCloseUserActionModal.handle()"
         >
           {{ $t("button.completed_payment") }}
@@ -129,7 +127,7 @@ const onClickGenerateNewCode = async () => {
         <BaseButton
           variant="ghost"
           size="md"
-          class="my-4 text-subtle"
+          class="text-subtle"
           @click="$dependencies.users.ui.emitCommandCloseUserActionModal.handle()"
         >
           {{ $t("button.cancel_deposit") }}

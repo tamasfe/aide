@@ -47,7 +47,9 @@ const links: Array<{ icon: string; url: ComputedRef }> = [
     <h3 class="hidden lg:block text-lg text-center text-emphasis font-semibold">
       {{ $t("footer.social_media") }}
     </h3>
-    <div class="mt-8 md:mt-0 flex space-x-4 lg:space-x-2 justify-evenly md:justify-start">
+    <div
+      class="mt-8 md:mt-0 flex space-x-4 lg:space-x-2 justify-evenly md:justify-start"
+    >
       <BaseLink
         v-for="(link, index) in links"
         :key="index"

@@ -5,7 +5,7 @@ defineProps<{
 </script>
 
 <template>
-  <div class="flex flex-col gap-8 px-4 sm:px-8 py-4 sm:py-8 bg-subtle rounded-lg border border-muted/10">
+  <div class="flex flex-col gap-8 px-4 sm:px-8 py-4 sm:py-8 bg-subtle rounded-lg border border-muted/5">
     <div>
       <h2 class="text-xl text-white">
         <slot name="title"> {{ title }} </slot>

@@ -41,7 +41,7 @@ const allowedDomain = ref(new URL(props.allowedUrl).hostname);
         }) }}
       </h1>
 
-      <div class="text-emphasis text-center">
+      <div class="text-emphasis text-center mb-4">
         {{ $t("modal_restrict.license_alternative_body", {
           country: blockedCountry,
           blockedDomain: capitalizeBrandDomain(blockedDomain),
@@ -49,7 +49,7 @@ const allowedDomain = ref(new URL(props.allowedUrl).hostname);
         }) }}
       </div>
 
-      <BaseLink :to="allowedUrl" :external="true" class="my-4">
+      <BaseLink :to="allowedUrl" :external="true">
         <BaseButton
           size="xl"
           class="w-full gap-1.5"
