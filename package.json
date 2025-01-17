@@ -34,6 +34,7 @@
     "@tanstack/vue-table": "8.19.3",
     "@vee-validate/nuxt": "^4.15.0",
     "@vee-validate/zod": "^4.15.0",
+    "@vite-pwa/nuxt": "0.10.6",
     "@vueuse/core": "^12.3.0",
     "ajv": "^8.17.1",
     "class-variance-authority": "^0.7.1",

@@ -14,6 +14,7 @@ export default defineNuxtConfig({
     "@sentry/nuxt/module",
     "@vee-validate/nuxt",
     "nuxt-gtag",
+    "@vite-pwa/nuxt",
   ],
   devtools: {
     enabled: true,
@@ -158,6 +159,42 @@ export default defineNuxtConfig({
   },
   // @pinia/nuxt
   pinia: {},
+  pwa: {
+    manifest: {
+      theme_color: "#e1ac3b",
+      background_color: "#100d26",
+      icons: [
+        {
+          purpose: "maskable",
+          sizes: "512x512",
+          src: "/assets/images/icon512_maskable.png",
+          type: "image/png",
+        },
+        {
+          purpose: "any",
+          sizes: "512x512",
+          src: "/assets/images/icon512_rounded.png",
+          type: "image/png",
+        },
+      ],
+      screenshots: [
+        {
+          src: "/assets/images/screenshots/1.jpg",
+          sizes: "1080x1920",
+          type: "image/jpeg",
+        },
+      ],
+      orientation: "portrait",
+      display: "standalone",
+      lang: "en-US",
+      name: "GiroBet",
+      short_name: "GiroBet",
+      start_url: "https://staging.girobet.vip",
+      scope: "https://staging.girobet.vip",
+      description: "Welcome to The GiroBet Experience the ultimate thrill of online gambling with us. Play slots, poker, blackjack, and more. Win big with our bonuses and promotions.",
+      id: "https://staging.girobet.vip",
+    },
+  },
   sentry: {
     // dynamicImportForServerEntry: true,
     sourceMapsUploadOptions: {

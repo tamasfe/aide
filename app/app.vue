@@ -11,6 +11,7 @@ setTimeout(() => {
 </script>
 
 <template>
+  <NuxtPwaManifest />
   <div>
     <AppHead />
     <NuxtLayout>
