@@ -44,7 +44,7 @@ const links = [
     title: t("user_nav.live_support"),
     icon: "lucide:message-circle-question",
     action: {
-      toPage: { name: "todo" },
+      buttonOnClick: () => $dependencies.common.asyncMessagePublisher.emit("girobet:commands:modals:open-live-chat", {}),
     },
   },
   {

@@ -17,6 +17,9 @@ importers:
       '@headlessui/vue':
         specifier: ^1.7.23
         version: 1.7.23(vue@3.5.13(typescript@5.6.3))
+      '@livechat/widget-vue':
+        specifier: ^1.3.3
+        version: 1.3.3(vue@3.5.13(typescript@5.6.3))
       '@opentelemetry/exporter-trace-otlp-grpc':
         specifier: ^0.57.0
         version: 0.57.0(@opentelemetry/api@1.9.0)
@@ -928,6 +931,14 @@ packages:
 
   '@kwsites/promise-deferred@1.1.1':
     resolution: {integrity: sha512-GaHYm+c0O9MjZRu0ongGBRbinu8gVAMd2UZjji6jVmqKtZluZnptXGWhz1E8j8D2HJ3f/yMxKAUC0b+57wncIw==}
+
+  '@livechat/widget-core@1.3.3':
+    resolution: {integrity: sha512-Pat0Bnc2PXV/IDYL6E8IEYBlg10ikhCWcfhq1dxZ2nN8g9e5dI4ouMHlBoNKs4k8Ve11Dbgg6+mWhfYON6QdMw==}
+
+  '@livechat/widget-vue@1.3.3':
+    resolution: {integrity: sha512-4aOI8fT/eRZZwmBUl2kOH/mvzpq1hb5mpnLH7jZpmfdaDHr+KhoQQqFWX15qya6KwFzjF6xIDsNxiQ81BW6rgQ==}
+    peerDependencies:
+      vue: 2 || 3
 
   '@mapbox/node-pre-gyp@2.0.0-rc.0':
     resolution: {integrity: sha512-nhSMNprz3WmeRvd8iUs5JqkKr0Ncx46JtPxM3AhXes84XpSJfmIwKeWXRpsr53S7kqPkQfPhzrMFUxSNb23qSA==}
@@ -4274,6 +4285,9 @@ packages:
     resolution: {integrity: sha512-umcy022ILvb5/3Djuu8LWeqUa8D68JaBzlttKeMWen48SjabqS3iY5w/vzeMzMUNhLDifyhbOwKDSznB1vvrwg==}
     engines: {node: '>= 18'}
 
+  mitt@3.0.0:
+    resolution: {integrity: sha512-7dX2/10ITVyqh4aOSVI9gdape+t9l2/8QxHrFmUXu4EEUpdlxl6RudZUPZoc+zuY2hk1j7XxVroIVIan/pD/SQ==}
+
   mitt@3.0.1:
     resolution: {integrity: sha512-vKivATfr97l2/QBCYAkXYDbrIWPM2IIKEl7YPhjCvKlG3kE2gm+uBo6nEXK3M5/Ffh/FLpKExzOQ3JJoJGFKBw==}
 
@@ -6917,6 +6931,15 @@ snapshots:
       - supports-color
 
   '@kwsites/promise-deferred@1.1.1': {}
+
+  '@livechat/widget-core@1.3.3':
+    dependencies:
+      mitt: 3.0.0
+
+  '@livechat/widget-vue@1.3.3(vue@3.5.13(typescript@5.6.3))':
+    dependencies:
+      '@livechat/widget-core': 1.3.3
+      vue: 3.5.13(typescript@5.6.3)
 
   '@mapbox/node-pre-gyp@2.0.0-rc.0':
     dependencies:
@@ -11089,6 +11112,8 @@ snapshots:
     dependencies:
       minipass: 7.1.2
       rimraf: 5.0.10
+
+  mitt@3.0.0: {}
 
   mitt@3.0.1: {}
 

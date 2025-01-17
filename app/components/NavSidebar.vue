@@ -6,6 +6,7 @@
 // TRANSLATION STATUS:  ✴️
 //   * translate final menu items
 
+const { $dependencies } = useNuxtApp();
 const open = defineModel("open", { default: false, type: Boolean });
 
 const { afterEach } = useRouter();
@@ -95,9 +96,7 @@ const links = [
   {
     title: "Live Support",
     icon: "emojione-v1:speech-balloon",
-    to: {
-      name: "todo",
-    },
+    onClick: () => $dependencies.common.asyncMessagePublisher.emit("girobet:commands:modals:open-live-chat", {}),
   },
   {
     title: "Aviator",
@@ -157,10 +156,26 @@ const links = [
             :key="`link-${index}`"
           >
             <NavSidebarLink
+              v-if="link.to"
               :title="link.title"
               :to="link.to"
               :icon="link.icon"
             />
+            <BaseButton
+              v-if="link.onClick"
+              class="px-4 py-2 flex items-center text-emphasis hover:text-white"
+              type="button"
+              variant="ghost"
+              @click="link.onClick"
+            >
+              <BaseIcon
+                v-if="link.icon"
+                :name="link.icon"
+                :size="22"
+                class="flex-shrink-0 text-subtle"
+              />
+              <div class="w-full ml-4 font-medium">{{ link.title }}</div>
+            </BaseButton>
           </div>
         </template>
       </div>

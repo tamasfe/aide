@@ -47,6 +47,9 @@ export interface AsyncMessagesTypes {
   "girobet:commands:modals:open-user-interaction-modal": UserInteractionModalState;
   "girobet:commands:modals:close-user-interaction-modal": object;
 
+  "girobet:commands:modals:open-live-chat": object;
+  "girobet:commands:modals:close-live-chat": object;
+
   "girobet:events:users:user-logged-in": object;
   "girobet:events:users:user-logged-out": object;
   "girobet:events:users:user-closed-account": object;

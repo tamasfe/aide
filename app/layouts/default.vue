@@ -16,6 +16,12 @@ const closeSidebarOnModalOpen = (value: boolean) => {
   }
 };
 watch(userActionModalIsOpen, closeSidebarOnModalOpen);
+
+const onLiveChatVisibilityChanged = (visibility: "minimized" | "maximized" | "hidden") => {
+  if (visibility === "maximized") {
+    sidebarIsOpen.value = false;
+  }
+};
 </script>
 
 <template>
@@ -35,5 +41,7 @@ watch(userActionModalIsOpen, closeSidebarOnModalOpen);
     <NavMobile @click:menu="sidebarIsOpen = !sidebarIsOpen" />
 
     <AppNotificationToastContainer />
+
+    <LazyLiveChat @visibility-changed="onLiveChatVisibilityChanged" />
   </div>
 </template>

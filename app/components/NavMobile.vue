@@ -14,7 +14,7 @@ const items = [
   { icon: "lucide:menu", text: "mobile_nav.menu", onClick: () => emit("click:menu") },
   { icon: "lucide:flame", text: "mobile_nav.hot", onClick: () => {} },
   { icon: "lucide:search", text: "mobile_nav.search", onClick: () => $dependencies.users.ui.emitCommandOpenUserActionModal.handle("search") },
-  { icon: "lucide:message-circle-question", text: "mobile_nav.support", onClick: () => {} },
+  { icon: "lucide:message-circle-question", text: "mobile_nav.support", onClick: () => $dependencies.common.asyncMessagePublisher.emit("girobet:commands:modals:open-live-chat", {}) },
   { icon: "lucide:trophy", text: "mobile_nav.promos", onClick: () => {} },
 ];
 </script>
