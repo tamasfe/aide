@@ -20,7 +20,12 @@ const items = [
 </script>
 
 <template>
-  <div class="sticky z-[10] sm:hidden bottom-0 left-0 w-full bg-default text-subtle">
+  <div
+    class="sticky z-[10] sm:hidden bottom-0 left-0 w-full bg-default text-subtle"
+    :class="{
+      'pb-8': $pwa?.isPWAInstalled,
+    }"
+  >
     <div class="w-full pt-2.5 px-4 pb-2 grid" :style="{ gridTemplateColumns: 'repeat(' + items.length + ', 1fr)' }">
       <BaseButton
         v-for="item in items"

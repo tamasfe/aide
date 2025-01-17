@@ -161,8 +161,8 @@ export default defineNuxtConfig({
   pinia: {},
   pwa: {
     manifest: {
-      theme_color: "#e1ac3b",
-      background_color: "#100d26",
+      theme_color: "#100d26",
+      background_color: "#e1ac3b",
       icons: [
         {
           purpose: "maskable",
