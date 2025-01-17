@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { DialogTitle } from "@headlessui/vue";
+
 // DESIGN STATUS: ✴️
 //   * close button ideally should float and not scroll
 //   * if a banner is present (left or top) we need to show bg on close thats semi-transparent black
@@ -73,7 +75,9 @@ if (preloadBannerLinks.length > 0) {
         }"
       >
         <div v-if="banner === 'none'" class="flex-1">
-          <h2 v-if="$slots.title" class="text-xl leading-snug"><slot name="title" /></h2>
+          <DialogTitle is="h2" v-if="$slots.title" class="text-xl leading-snug">
+            <slot name="title" />
+          </DialogTitle>
           <h3 v-if="$slots.subtitle" class="text-subtle text-sm leading-snug"><slot name="subtitle" /></h3>
         </div>
         <BaseClose
@@ -119,7 +123,9 @@ if (preloadBannerLinks.length > 0) {
         </div>
 
         <div class="content-padding">
-          <h2 v-if="$slots.title" class="text-xl leading-snug"><slot name="title" /></h2>
+          <DialogTitle is="h2" v-if="$slots.title" class="text-xl leading-snug">
+            <slot name="title" />
+          </DialogTitle>
           <h3 v-if="$slots.subtitle" class="text-subtle text-sm leading-snug"><slot name="subtitle" /></h3>
           <section
             :class="{
@@ -158,7 +164,9 @@ if (preloadBannerLinks.length > 0) {
             class="h-14 flex justify-end px-5 items-center"
           >
             <div class="flex-1">
-              <h2 v-if="$slots.title" class="text-xl leading-snug"><slot name="title" /></h2>
+              <DialogTitle is="h2" v-if="$slots.title" class="text-xl leading-snug">
+                <slot name="title" />
+              </DialogTitle>
               <h3 v-if="$slots.subtitle" class="text-subtle text-sm leading-snug"><slot name="subtitle" /></h3>
             </div>
             <BaseClose

@@ -125,33 +125,45 @@ const links = [
 
 <template>
   <BaseDrawer v-model:open="open">
-    <template #title>
-      <div class="flex items-center justify-between pt-1 pl-2 max-w-[10rem]">
-        <IconLogo />
-      </div>
-    </template>
-    <div class="no-scrollbar min-w-[20rem] mt-5 flex flex-col overflow-y-auto space-y-2">
-      <template v-for="(link, index) in links">
-        <NavSidebarLinkGroup
-          v-if="link.children"
-          :key="`parent-${index}`"
-          :parent="{
-            title: link.title,
-            icon: link.icon,
-          }"
-          :children="link.children"
-        />
-        <div
-          v-else
-          :key="`link-${index}`"
-        >
-          <NavSidebarLink
-            :title="link.title"
-            :to="link.to"
-            :icon="link.icon"
+    <template #default="{ close }">
+      <div class="h-14 flex justify-end px-5 items-center">
+        <div class="flex-1">
+          <NuxtImg
+            class="object-cover h-6"
+            src="/assets/images/logos/logo.svg"
+            alt="Logo"
           />
         </div>
-      </template>
-    </div>
+
+        <BaseClose
+          class="top-2 right-2 -mr-5"
+          @close="close"
+        />
+      </div>
+
+      <div class="no-scrollbar min-w-[20rem] flex flex-col overflow-y-auto px-2">
+        <template v-for="(link, index) in links">
+          <NavSidebarLinkGroup
+            v-if="link.children"
+            :key="`parent-${index}`"
+            :parent="{
+              title: link.title,
+              icon: link.icon,
+            }"
+            :children="link.children"
+          />
+          <div
+            v-else
+            :key="`link-${index}`"
+          >
+            <NavSidebarLink
+              :title="link.title"
+              :to="link.to"
+              :icon="link.icon"
+            />
+          </div>
+        </template>
+      </div>
+    </template>
   </BaseDrawer>
 </template>

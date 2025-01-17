@@ -33,7 +33,7 @@ const onToggle = () => {
       class="flex items-center justify-between cursor-pointer text-emphasis hover:text-white"
       @click="onToggle"
     >
-      <div class="p-2 flex items-center">
+      <div class="px-4 py-2 flex items-center">
         <BaseIcon
           v-if="parent.icon"
           :name="parent.icon"
@@ -48,7 +48,7 @@ const onToggle = () => {
         variant="ghost"
         size="ghost"
         :class="cn(
-          'mr-1.5',
+          'mr-4',
           open ? 'rotate-180' : 'rotate-0',
         )"
       >
@@ -61,7 +61,7 @@ const onToggle = () => {
     </div>
     <div
       v-if="open"
-      class="flex flex-col"
+      class="flex flex-col py-2"
     >
       <NavSidebarLink
         v-for="(link, index) in children"

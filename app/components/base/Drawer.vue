@@ -2,7 +2,6 @@
 import {
   Dialog,
   DialogPanel,
-  DialogTitle,
   TransitionRoot,
   TransitionChild,
 } from "@headlessui/vue";
@@ -117,19 +116,10 @@ const open = computed({
             v-bind="positionTransition"
           >
             <DialogPanel
-              class="bg-emphasis/85 backdrop-blur-2xl p-5 flex flex-col gap-4 h-full"
+              class="bg-emphasis/85 backdrop-blur-2xl flex flex-col gap-4 h-full"
               v-bind="$attrs"
             >
-              <BaseClose
-                class="top-2 right-2"
-                @close="onClose"
-              />
-
-              <DialogTitle as="h3">
-                <slot name="title" />
-              </DialogTitle>
-
-              <slot />
+              <slot :close="onClose" />
             </DialogPanel>
           </TransitionChild>
         </div>
