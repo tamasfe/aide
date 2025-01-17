@@ -161,7 +161,7 @@ export default defineNuxtConfig({
   pinia: {},
   pwa: {
     manifest: {
-      theme_color: "#100d26",
+      theme_color: "#131230",
       background_color: "#e1ac3b",
       icons: [
         {

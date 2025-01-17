@@ -21,10 +21,7 @@ const items = [
 
 <template>
   <div
-    class="sticky z-[10] sm:hidden bottom-0 left-0 w-full bg-default text-subtle"
-    :class="{
-      'pb-8': $pwa?.isPWAInstalled,
-    }"
+    class="sticky z-[10] sm:hidden bottom-0 left-0 w-full bg-default text-subtle pb-[env(safe-area-inset-bottom)]"
   >
     <div class="w-full pt-2.5 px-4 pb-2 grid" :style="{ gridTemplateColumns: 'repeat(' + items.length + ', 1fr)' }">
       <BaseButton
