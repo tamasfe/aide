@@ -21,9 +21,9 @@ const items = [
 
 <template>
   <div
-    class="sticky z-[10] sm:hidden bottom-0 left-0 w-full bg-default text-subtle"
+    class="fixed z-[10] sm:hidden bottom-0 left-0 right-0 bg-subtle/95 text-subtle pb-[env(safe-area-inset-bottom)] backdrop-blur-2xl"
   >
-    <div class="w-full pt-3 pb-[env(safe-area-inset-bottom,0.75rem)] px-4 grid" :style="{ gridTemplateColumns: 'repeat(' + items.length + ', 1fr)' }">
+    <div class="w-full pt-2.5 px-4 pb-2 grid" :style="{ gridTemplateColumns: 'repeat(' + items.length + ', 1fr)' }">
       <BaseButton
         v-for="item in items"
         :key="item.text"

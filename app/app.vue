@@ -12,10 +12,8 @@ setTimeout(() => {
 
 <template>
   <NuxtPwaManifest />
-  <div>
-    <AppHead />
-    <NuxtLayout>
-      <NuxtPage class="min-h-[80vh]" />
-    </NuxtLayout>
-  </div>
+  <AppHead />
+  <NuxtLayout>
+    <NuxtPage class="min-h-[80vh]" />
+  </NuxtLayout>
 </template>

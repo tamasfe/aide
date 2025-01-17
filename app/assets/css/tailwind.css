@@ -87,19 +87,19 @@
   html {
     font-optical-sizing: auto;
     font-family:
-        "Montserrat",
-        -apple-system,
-        ui-sans-serif,
-        system-ui,
-        sans-serif,
-        "Apple Color Emoji",
-        "Segoe UI Emoji",
-        "Segoe UI Symbol",
-        "Noto Color Emoji";
+      "Montserrat",
+      -apple-system,
+      ui-sans-serif,
+      system-ui,
+      sans-serif,
+      "Apple Color Emoji",
+      "Segoe UI Emoji",
+      "Segoe UI Symbol",
+      "Noto Color Emoji";
   }
 
   body {
-    background-color: rgb(var(--giro-bg-subtle));
+    background-color: rgb(var(--giro-bg));
     height: 100vh;
     color: var(--giro-text);
     @apply text-base;
@@ -160,6 +160,7 @@
   0% {
     opacity: 0;
   }
+
   100% {
     opacity: 1;
   }
