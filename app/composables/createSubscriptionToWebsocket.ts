@@ -14,6 +14,6 @@ export function useCreateSubscriptionToWebsocket<T>(
     onMounted(() =>
       channel.subscribe($wsConnection, callback));
 
-    onUnmounted(() => channel.unsubscribe($wsConnection));
+    onBeforeUnmount(() => channel.unsubscribe($wsConnection));
   }
 };
