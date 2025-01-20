@@ -1,7 +1,6 @@
 - [Aide](#aide)
   - [Crates](#crates)
     - [aide](#aide-1)
-    - [axum-jsonschema](#axum-jsonschema)
     - [aide-axum-sqlx-tx](#aide-axum-sqlx-tx)
     - [aide-axum-typed-multipart](#aide-axum-typed-multipart)
   - [Contributing](#contributing)
@@ -23,12 +22,6 @@ This repository contains several crates related to web-servers and their documen
 A code-first API documentation and utility library.
 
 Read the [docs](https://docs.rs/aide/latest/aide/).
-
-### axum-jsonschema
-
-A JSON request validation library for [axum](https://github.com/tokio-rs/axum).
-
-Read the [docs](https://docs.rs/axum-jsonschema/latest/axum_jsonschema/).
 
 ### [aide-axum-sqlx-tx](./crates/aide-axum-sqlx-tx/README.md)
 
