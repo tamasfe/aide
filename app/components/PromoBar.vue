@@ -7,12 +7,13 @@ import { type VariantProps, cva } from "class-variance-authority";
 // TRANSLATION STATUS:  ✅
 
 const { $dependencies } = useNuxtApp();
+const { locale } = useI18n();
 
 const ENABLE_SERVER_SIDE_RENDERING = true;
 const DEFER_CLIENT_SIDE_LOADING = true;
 const { data: notificationBanners } = await useAsyncData("promo-bar",
   () => $dependencies.notifications.ui.searchNotificationBannersFromPromoBar.handle(),
-  { lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING },
+  { watch: [() => locale.value], lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING },
 );
 
 const onClickCloseNotification = (notificationId: number) => {

@@ -1,8 +1,8 @@
 {
   "promo_bar": {
     "refer": {
-      "title": "Refer a Friend",
-      "message": "Refer a friend and earn REAL balance for each friend you invite"
+      "title": "Download Our App",
+      "message": "Download Our App for an Even Better Experience!"
     }
   },
   "winning_now": {
@@ -234,7 +234,8 @@
     "aml_kyc": "AML/KYC",
     "aml_policy": "AML Policy",
     "kyc_policy": "KYC Policy of OG OVERSEAS SERVICES LTD",
-    "responsible_gaming": "Responsible Gaming"
+    "responsible_gaming": "Responsible Gaming",
+    "download_app": "Download our App"
   },
   "wallet": {
     "payment": {

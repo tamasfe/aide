@@ -12,15 +12,15 @@ import {
 } from "~/packages/result";
 import type { CookieRef } from "#app";
 
-const DISGREGARD_SAVED_BEFORE = new Date("2024-12-31T13:35:23.690Z");
+const DISGREGARD_SAVED_BEFORE = new Date("2025-01-22T20:14:23.690Z");
 const generateBanners = (t: TranslateFunctionType): NotificationBannerI[] => {
   return [
     {
-      id: 1111, // Make sure to not repeat the same id on different notifications or they may not be marked as read correctly.
+      id: 1112, // Make sure to not repeat the same id on different notifications or they may not be marked as read correctly.
       createdAt: new Date(),
       readAt: null,
       data: {
-        link: null,
+        link: "/download-app",
         message: t("promo_bar.refer.message"),
         title: t("promo_bar.refer.title"),
       },

@@ -1,6 +1,9 @@
 {
   "promo_bar": {
-    "refer": "Refer a friend and earn REAL balance for each friend you invite"
+    "refer": {
+      "title": "Download O Nosso Aplicativo",
+      "message": "Faça o Download Do Nosso Aplicativo Para Uma Experiência Ainda Melhor!"
+    }
   },
   "winning_now": {
     "title": "Winning\nNow"
