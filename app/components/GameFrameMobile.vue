@@ -30,6 +30,7 @@ const props = defineProps({
 const playing = ref(false);
 
 const { $dependencies } = useNuxtApp();
+const url = useRequestURL();
 
 const onTogglePlaying = async () => {
   if (!props.authenticated) {
@@ -90,7 +91,8 @@ const onTogglePlaying = async () => {
           <div class="w-[32%] flex items-center justify-center">
             <ButtonShare
               :subject="$t('play.share_subject')"
-              :body="$t('play.share_body')"
+              :body="$t('play.share_body', { game: gameTitle })"
+              :url="url.toString()"
               class="text-subtle-light"
             />
           </div>

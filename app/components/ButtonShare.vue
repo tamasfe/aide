@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from "vue";
+import { AbstractExtendedError } from "~/packages/result";
+
+const { $dependencies } = useNuxtApp();
 
 // ARCHITECTURE STATUS:       ✴️
 //   - TODO Priority of checking installed apps (see below for order)
@@ -12,18 +15,51 @@ import type { HTMLAttributes } from "vue";
 const props = defineProps<{
   subject: string;
   body: string;
+  url: string;
   class?: HTMLAttributes["class"];
 }>();
 
-// make computed based on what they have installed
-const icon = ref("lucide:send");
-// ph:telegram-logo
-// ph:mail
+const shareData = computed<ShareData>(() => ({
+  title: props.subject,
+  text: props.body,
+  url: props.url,
+}));
 
-const onShare = () => {
-  // whatsapp
-  // telegram
-  window.location.href = `mailto:?subject=${encodeURIComponent(props.subject)}&body=${encodeURIComponent(props.body)}`;
+class ErrorSharing extends AbstractExtendedError {
+  override name = "ErrorSharing" as const;
+
+  // Possible share error types and their descriptions: @https://developer.mozilla.org/en-US/docs/Web/API/Navigator/share
+  public get type() {
+    if (this.cause.name === "InvalidStateError") return "InvalidStateError";
+    if (this.cause.name === "NotAllowedError") return "NotAllowedError";
+    if (this.cause.name === "TypeError") return "TypeError";
+    if (this.cause.name === "AbortError") return "AbortError";
+    if (this.cause.name === "DataError") return "DataError";
+    return "UnknownError";
+  }
+
+  constructor(metadata: Record<string, unknown>, error: unknown) {
+    super("Error sharing the content", metadata, AbstractExtendedError.parseCause(error));
+  }
+}
+
+const onShare = async () => {
+  try {
+    await navigator.share(shareData.value);
+  }
+  catch (error) {
+    const errorSharing = new ErrorSharing({ shareData: shareData.value }, error);
+
+    switch (errorSharing.type) {
+      case "AbortError":
+        // The user canceled the share, no need to log in error level
+        $dependencies.common.logger.warn("Share was aborted", { shareData: shareData.value });
+        return;
+
+      default:
+        $dependencies.common.logger.error("Error sharing the content", errorSharing);
+    }
+  }
 };
 </script>
 
@@ -38,7 +74,7 @@ const onShare = () => {
     @click="onShare"
   >
     <BaseIcon
-      :name="icon"
+      name="lucide:send"
       :size="20"
     />
   </BaseButton>

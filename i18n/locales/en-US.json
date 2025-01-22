@@ -213,8 +213,8 @@
   },
   "play": {
     "login_to_play": "Please Login to Play",
-    "share_subject": "YOOO",
-    "share_body": "HEYYYYYYYY"
+    "share_subject": "Play in Girobet",
+    "share_body": "Check out the game: {game} in Girobet"
   },
   "grid": {
     "game_count": "{count} Games",

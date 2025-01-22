@@ -7,6 +7,7 @@ const { t } = useI18n();
 
 // NOTE the entire bottom section might not come from the game API but would be a custom description we add ourself for the most popular games
 const { isMobile } = useDevice();
+const url = useRequestURL();
 
 defineProps({
   description: {
@@ -81,7 +82,8 @@ const emit = defineEmits<{
       <div class="order-1 col-span-full md:order-none md:col-span-1 self-start w-full flex justify-between md:justify-end items-center text-subtle font-semibold gap-4">
         <ButtonShare
           :subject="$t('play.share_subject')"
-          :body="$t('play.share_body')"
+          :body="$t('play.share_body', { game: title })"
+          :url="url.toString()"
           class="hover:text-subtle-light"
         />
 
