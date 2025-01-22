@@ -20,7 +20,7 @@ export type GridHorizontalProps<T> = {
 
 const props = withDefaults(defineProps<GridHorizontalProps<T>>(), {
   loading: false,
-  gap: 0.8,
+  gap: 0.56,
   canLoadMore: false,
   duration: 30,
 });
