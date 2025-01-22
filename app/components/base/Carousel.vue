@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import emblaCarouselVue from "embla-carousel-vue";
+import Autoplay from "embla-carousel-autoplay";
 import type { CSSProperties } from "vue";
 import type { EmblaOptionsType } from "embla-carousel";
+
+const AUTO_SLIDE_FREQUENCY_MS = 5000;
 
 const props = withDefaults(
   defineProps<{
@@ -18,7 +21,7 @@ const props = withDefaults(
 
 const { options } = toRefs(props);
 
-const [emblaRef, emblaApi] = emblaCarouselVue(options.value);
+const [emblaRef, emblaApi] = emblaCarouselVue(options.value, [Autoplay({ delay: AUTO_SLIDE_FREQUENCY_MS })]);
 
 const items = ref<number[]>([]);
 const hasMultipleSlides = ref(false);
