@@ -59,7 +59,6 @@ const onToggleFullScreen = () => {
           >
             <div class="bg-subtle flex items-center justify-end w-full">
               <BaseClose
-                class="block static p-0 pr-4 pl-4"
                 @close="onToggleFullScreen"
               />
             </div>

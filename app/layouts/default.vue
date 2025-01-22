@@ -32,7 +32,7 @@ const onLiveChatVisibilityChanged = (visibility: "minimized" | "maximized" | "hi
 
     <AppHeader @click:menu="sidebarIsOpen = !sidebarIsOpen" />
 
-    <div class="pt-14">
+    <div>
       <slot />
     </div>
 

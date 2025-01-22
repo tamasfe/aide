@@ -57,7 +57,6 @@ const onTogglePlaying = async () => {
         >
           <div class="bg-subtle flex items-center justify-end w-full">
             <BaseClose
-              class="block static p-0 pr-2 pl-2"
               @close="onTogglePlaying"
             />
           </div>
