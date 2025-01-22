@@ -23,7 +23,7 @@ const props = withDefaults(
     loading?: boolean;
   }>(), {
     pagination: false,
-    gap: 0.8,
+    gap: 0.56,
   },
 );
 
