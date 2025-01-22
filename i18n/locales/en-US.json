@@ -68,6 +68,10 @@
     "support": "Support",
     "promos": "Promos"
   },
+  "side_nav": {
+    "live_support":"Live Support",
+    "download_app": "Download Our App"
+  },
   "game_page": {
     "device_not_supported": "This game is not supported on your current device",
     "device_not_supported_alternative_desktop": "Please try playing it on a computer or laptop",

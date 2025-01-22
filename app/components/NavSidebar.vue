@@ -7,6 +7,7 @@
 //   * translate final menu items
 
 const { $dependencies } = useNuxtApp();
+const { t } = useI18n();
 const open = defineModel("open", { default: false, type: Boolean });
 
 const { afterEach } = useRouter();
@@ -94,29 +95,15 @@ const links = [
     ],
   },
   {
-    title: "Live Support",
+    title: t("side_nav.live_support"),
     icon: "emojione-v1:speech-balloon",
     onClick: () => $dependencies.common.asyncMessagePublisher.emit("girobet:commands:modals:open-live-chat", {}),
   },
   {
-    title: "Aviator",
-    icon: "emojione-v1:airplane",
+    title: t("side_nav.download_app"),
+    icon: "emojione-v1:mobile-phone",
     to: {
-      name: "todo",
-    },
-  },
-  {
-    title: "Fortune Tiger",
-    icon: "emojione-v1:tiger",
-    to: {
-      name: "todo",
-    },
-  },
-  {
-    title: "Live Casino",
-    icon: "emojione-v1:woman",
-    to: {
-      name: "todo",
+      name: "download-app",
     },
   },
 ];
