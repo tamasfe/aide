@@ -160,6 +160,11 @@ export default defineNuxtConfig({
   // @pinia/nuxt
   pinia: {},
   pwa: {
+    client: {
+      installPrompt: true,
+      registerPlugin: true,
+    },
+    injectRegister: "script-defer",
     manifest: {
       theme_color: "#131230",
       background_color: "#e1ac3b",
