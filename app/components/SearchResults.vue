@@ -106,14 +106,14 @@ const onClickLink = () => {
       :on-load-more="() => gamesOnLoadMore('append')"
       :loading="gamesLoading"
     >
-      <template #default="{ item: item }">
-        <BaseLink
-          :to="`/games/${item.id}`"
-          class="block bg-subtle rounded w-full h-full overflow-hidden"
+      <template #default="{ item: game }">
+        <GameImageLink
+          :id="game.id"
+          class="border-none"
+          :src="game.imageUrl"
+          animation-on-hover="zoom-in"
           @click="onClickLink"
-        >
-          <GamesImageLoader :src="item.imageUrl" />
-        </BaseLink>
+        />
       </template>
     </GridVerticalSearch>
 

@@ -77,18 +77,12 @@ await useAsyncData(`load-games-for-${props.categoryIdentifier}`, () => onLoadDat
       pagination
       @trigger:load="onLoadData"
     >
-      <template #default="{ data: item }">
-        <BaseLink
-          :to="{
-            name: 'games-id',
-            params: {
-              id: item.id,
-            },
-          }"
-          class="block bg-subtle rounded w-full h-full overflow-hidden"
-        >
-          <GamesImageLoader :src="item.imageUrl" />
-        </BaseLink>
+      <template #default="{ data: game }">
+        <GameImageLink
+          :id="game.id"
+          :src="game.imageUrl"
+          animation-on-hover="zoom-in"
+        />
       </template>
     </GridVertical>
   </GridHeader>

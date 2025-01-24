@@ -74,7 +74,7 @@ const onTogglePlaying = async () => {
 
       <div class="w-full max-w-lg p-6 flex flex-col justify-between gap-6">
         <div class="w-full flex flex-row items-center justify-start gap-6">
-          <GamesImageLoader
+          <GameImage
             :src="gameImageUrl"
             class="w-[32%] rounded"
           />

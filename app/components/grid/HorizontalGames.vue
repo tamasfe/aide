@@ -53,6 +53,7 @@ if (!props.initialGames) {
 <template>
   <GridHeaderHorizontal
     v-if="loading || games.length > 0"
+    class="gap-2"
     :data="games"
     :loading="loading"
     :can-load-more="canLoadMore"
@@ -80,12 +81,11 @@ if (!props.initialGames) {
     </template>
 
     <template #default="{ item: game }">
-      <BaseLink
-        :to="{ name: 'games-id', params: { id: game.id } }"
-        class="block bg-subtle rounded w-full h-full overflow-hidden border border-emphasis/50"
-      >
-        <GamesImageLoader :src="game.imageUrl" />
-      </BaseLink>
+      <GameImageLink
+        :id="game.id"
+        :src="game.imageUrl"
+        :animation-on-hover="'vertical-translate'"
+      />
     </template>
 
     <template

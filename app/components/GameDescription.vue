@@ -48,7 +48,7 @@ const emit = defineEmits<{
         <div class="flex items-center justify-center rounded-lg overflow-hidden border border-muted/5">
           <!-- Had to resort to using the native nuxt image component here, instead of our
            game image component to ensure the aspect catio scales correctly with the grid -->
-          <NuxtImg
+          <GameImage
             v-if="!isMobile"
             :src="imageUrl"
             alt=""
