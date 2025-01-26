@@ -31,8 +31,13 @@
   },
   "api_server": {
   },
+  "welcome_form": {
+    "title": "Welcome To Girobet",
+    "description": "Start winning..."
+  },
   "button": {
     "register": "Register",
+    "register_now": "Register Now",
     "login": "Login",
     "create_account": "Create Account",
     "continue": "Continue",
