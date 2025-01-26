@@ -13,7 +13,7 @@ const animationClasses = computed(() => {
   switch (props.animationOnHover) {
     case "vertical-translate":
       return {
-        link: "mt-2 transition-transform transform hover:-translate-y-2",
+        link: "mt-2 transition-transform transform lg:hover:-translate-y-2",
         img: "",
       };
 
