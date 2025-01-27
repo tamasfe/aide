@@ -21,7 +21,7 @@ const props = withDefaults(
 
 const { options } = toRefs(props);
 
-const [emblaRef, emblaApi] = emblaCarouselVue(options.value, [Autoplay({ delay: AUTO_SLIDE_FREQUENCY_MS })]);
+const [emblaRef, emblaApi] = emblaCarouselVue(options.value, [Autoplay({ delay: AUTO_SLIDE_FREQUENCY_MS, stopOnInteraction: true, stopOnFocusIn: true, stopOnMouseEnter: true })]);
 
 const items = ref<number[]>([]);
 const hasMultipleSlides = ref(false);

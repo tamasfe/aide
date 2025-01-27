@@ -3,20 +3,19 @@ const { isMobile } = useDevice();
 </script>
 
 <template>
-  <div class="giro__container-full-width md:px-[var(--giro-container-padding)]">
-    <div class="md:rounded-lg overflow-hidden">
-      <BaseCarousel
-        :side-controls="!isMobile"
-        class="w-full"
-        ratio="3/1"
-      >
-        <SlideAviator />
-        <SlideFortuneRabbit />
-        <SlideJetX />
-        <SlideFortuneTiger />
-        <SlideWin10K />
-        <SlideChooseGiroBet />
-      </BaseCarousel>
+  <BaseCarousel
+    :side-controls="!isMobile"
+    class="w-full md:rounded-lg overflow-hidden"
+    ratio="3/1"
+  >
+    <div class="px-4 md:px-0 grid grid-cols-3 gap-x-2 md:gap-x-4">
+      <SlideAviator class="rounded-sm md:rounded-lg overflow-auto" />
+      <SlideFortuneRabbit class="rounded-sm md:rounded-lg overflow-auto" />
+      <SlideJetX class="rounded-sm md:rounded-lg overflow-auto" />
     </div>
-  </div>
+
+    <SlideFortuneTiger />
+    <SlideWin10K />
+    <SlideChooseGiroBet />
+  </BaseCarousel>
 </template>
