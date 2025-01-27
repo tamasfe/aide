@@ -156,7 +156,7 @@ if (preloadBannerLinks.length > 0) {
             :src="bannerTop"
             :class="cn(
               'banner-top lg:hidden',
-              { 'mb-8': logo },
+              { 'mb-2': logo },
             )"
           />
 
