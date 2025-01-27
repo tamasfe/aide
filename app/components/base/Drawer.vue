@@ -88,7 +88,7 @@ const open = computed({
       as="template"
     >
       <Dialog
-        v-model:open="open"
+        open
         as="div"
         class="relative z-[9]"
         @close="onClose"
