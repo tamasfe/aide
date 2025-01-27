@@ -20,6 +20,7 @@ defineOptions({
 
 const props = withDefaults(
   defineProps<{
+    id?: string;
     fieldType?: "input" | "textarea" ;
     required?: boolean;
     placeholder?: string;
@@ -41,6 +42,7 @@ const props = withDefaults(
 const inputGroupContainer = ref<HTMLElement | null>(null);
 const floatingLabel = ref<HTMLElement | null>(null);
 const isInputFocused = ref(false);
+const id = ref(props.id ?? `giro-input-group-${useId()}`);
 
 const fieldPlaceholder = computed(() => {
   if (props.placeholderPlacement === "floating") return undefined;
@@ -117,6 +119,7 @@ const [value, modifiers] = defineModel<number | string>({
       <label
         v-if="placeholderPlacement === 'floating' && placeholder"
         ref="floatingLabel"
+        :for="id"
         class="floating-label pointer-events-none"
         :class="{
           'giro__input-has-value': !!value,
@@ -136,6 +139,7 @@ const [value, modifiers] = defineModel<number | string>({
       >
         <BaseInput
           v-if="fieldType === 'input'"
+          :id="id"
           v-model="value"
           :mask="mask"
           :mask-behaviour-eager="maskBehaviourEager"
@@ -147,13 +151,14 @@ const [value, modifiers] = defineModel<number | string>({
           autocorrect="off"
           :class="cn(
             fieldClass,
-            'text-emphasis',
+            'text-emphasis focus:h-full',
           )"
           @input="event => emits('input', (event.target as HTMLInputElement)?.value ?? '')"
           @change="event => emits('change', (event.target as HTMLInputElement)?.value ?? '')"
         />
         <BaseTextarea
           v-else-if="fieldType === 'textarea'"
+          :id="id"
           v-model="value"
           :mask="mask"
           :mask-behaviour-eager="maskBehaviourEager"
@@ -165,7 +170,7 @@ const [value, modifiers] = defineModel<number | string>({
           autocorrect="off"
           :class="cn(
             fieldClass,
-            'text-emphasis',
+            'text-emphasis focus:h-full',
           )"
           @input="(event) => emits('input', event)"
           @change="(event) => emits('change', event)"
@@ -214,7 +219,7 @@ const [value, modifiers] = defineModel<number | string>({
   transform: scale(0.9) translateY(-100%);
 }
 .floating-field {
-  @apply w-full h-[var(--giro-input-group-hidden-field-height)] font-medium bg-transparent;
+  @apply w-full h-full focus:h-[var(--giro-input-group-hidden-field-height)] font-medium bg-transparent;
 }
 .default-field {
   @apply w-full h-full text-lg text-white font-medium placeholder:text-subtle bg-transparent;
