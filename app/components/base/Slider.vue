@@ -99,6 +99,7 @@ const [emblaRef, emblaApi] = emblaCarouselVue(
         reloadEmbla();
       }
     },
+    skipSnaps: false,
     ...options.value,
   },
   initPlugins(),

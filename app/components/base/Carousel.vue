@@ -34,7 +34,10 @@ const props = withDefaults(
 
 const { options } = toRefs(props);
 
-const [emblaRef, emblaApi] = emblaCarouselVue(options.value, [
+const [emblaRef, emblaApi] = emblaCarouselVue({
+  skipSnaps: true,
+  ...options.value,
+}, [
   Autoplay({ delay: AUTO_SLIDE_FREQUENCY_MS, stopOnInteraction: false, stopOnFocusIn: true, stopOnMouseEnter: true }),
   WheelGesturesPlugin(),
 ]);
