@@ -60,6 +60,7 @@ if (!props.initialGames) {
     :slides-to-scroll="slidesToScroll"
     :columns="columns"
     :slides-before-load="slidesBeforeLoad"
+    :manual-scroll="true"
     aspect-ratio="3/4"
     @trigger:load="onLoadData"
   >
