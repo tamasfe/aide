@@ -1,6 +1,11 @@
 <script setup lang="ts">
 const { $dependencies } = useNuxtApp();
 const walletStore = useWalletStore();
+const { t } = useI18n();
+
+useHead({
+  title: t("page.dashboard_history"),
+});
 
 const ENABLE_SERVER_SIDE_RENDERING = false;
 const DEFER_CLIENT_SIDE_LOADING = true;

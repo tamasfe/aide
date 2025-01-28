@@ -1,3 +1,11 @@
+<script setup lang="ts">
+const { t } = useI18n();
+
+useHead({
+  title: t("page.responsible_gaming"),
+});
+</script>
+
 <template>
   <AppPage
     :title="$t('page.responsible_gaming')"

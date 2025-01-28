@@ -6,6 +6,10 @@ const { $dependencies } = useNuxtApp();
 const walletStore = useWalletStore();
 const { t } = useI18n();
 
+useHead({
+  title: t("page.dashboard_history"),
+});
+
 type GameActionTableRow = {
   id: number;
   date: string;

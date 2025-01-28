@@ -238,6 +238,7 @@
     "providers": "🏆 Game Studios"
   },
   "page": {
+    "home": "GiroBet · Some Other Description Only Showing on Homepage",
     "aviator": "Aviator",
     "slots": "Slots",
     "live_casino": "Live Casino",
@@ -252,7 +253,14 @@
     "aml_policy": "AML Policy",
     "kyc_policy": "KYC Policy of OG OVERSEAS SERVICES LTD",
     "responsible_gaming": "Responsible Gaming",
-    "download_app": "Download our App"
+    "download_app": "Download our App",
+    "providers": "Games Studios",
+    "provider": "Games from Studio {provider}",
+    "games": "Games",
+    "game": "Play {game}",
+    "category": "{category} Games",
+    "dashboard_history": "History of Transactions",
+    "dashboard_settings": "Account Settings"
   },
   "wallet": {
     "payment": {

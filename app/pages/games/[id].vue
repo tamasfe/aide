@@ -21,6 +21,7 @@ const currentDevice = isMobile ? "mobile" : "desktop";
 const { params } = useRoute();
 const { $dependencies } = useNuxtApp();
 const walletStore = useWalletStore();
+const { t } = useI18n();
 const fullscreen = ref(false);
 
 const gameId = Number(params.id);
@@ -28,6 +29,10 @@ if (!params.id || Number.isNaN(gameId)) {
   $dependencies.common.logger.warn("Game ID route parameter should be a number", { gameId });
   await navigateTo("/");
 }
+
+useHead({
+  title: t("page.game", { game: "" }),
+});
 
 const ENABLE_SERVER_SIDE_RENDERING_FOR_GAME = true;
 const DEFER_CLIENT_SIDE_LOADING_FOR_GAME = true;
@@ -55,6 +60,14 @@ const userStore = useUserStore();
 
 const authenticated = computed(() => {
   return userStore.isAuthenticated;
+});
+
+watch(() => game.value, (game) => {
+  if (game) {
+    useHead({
+      title: t("page.game", { game: game.name }),
+    });
+  }
 });
 </script>
 

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const { params } = useRoute();
 const { $dependencies } = useNuxtApp();
+const { t } = useI18n();
 
 const ENABLE_SERVER_SIDE_RENDERING = false;
 const DEFER_CLIENT_SIDE_LOADING = true;
@@ -11,12 +12,24 @@ if (!providerId || Number.isNaN(providerId)) {
   await navigateTo("/");
 }
 
+useHead({
+  title: t("page.provider", { provider: params.id }),
+});
+
 const { data: providerFromApi, status } = await useAsyncData(`provider-${providerId}`, async () => {
   return $dependencies.providers.ui.findProviderByIdOnProviderPage.handle(providerId);
 }, { lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING });
 if (!providerFromApi.value && (status.value === "success" || status.value === "error")) {
   await navigateTo("/");
 }
+
+watch(() => providerFromApi.value, (provider) => {
+  if (provider) {
+    useHead({
+      title: t("page.provider", { provider: provider.name }),
+    });
+  }
+});
 </script>
 
 <template>

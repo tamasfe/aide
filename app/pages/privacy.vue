@@ -1,3 +1,11 @@
+<script setup lang="ts">
+const { t } = useI18n();
+
+useHead({
+  title: t("page.privacy"),
+});
+</script>
+
 <template>
   <AppPage
     :title="$t('page.privacy')"

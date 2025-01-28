@@ -1,6 +1,11 @@
 <script setup lang="ts">
 const userSettingsStore = useUserSettingsStore();
 const { $dependencies } = useNuxtApp();
+const { t } = useI18n();
+
+useHead({
+  title: t("page.dashboard_settings"),
+});
 
 const ENABLE_SERVER_SIDE_RENDERING = false;
 const DEFER_CLIENT_SIDE_LOADING = true;

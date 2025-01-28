@@ -1,3 +1,11 @@
+<script setup lang="ts">
+const { t } = useI18n();
+
+useHead({
+  title: t("page.terms"),
+});
+</script>
+
 <template>
   <AppPage
     :title="$t('page.terms')"

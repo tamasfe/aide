@@ -1,3 +1,11 @@
+<script setup lang="ts">
+const { t } = useI18n();
+
+useHead({
+  title: t("page.aml_kyc"),
+});
+</script>
+
 <template>
   <div>
     <AppPage

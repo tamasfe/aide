@@ -5,6 +5,10 @@ const { $dependencies } = useNuxtApp();
 const userSettingsStore = useUserSettingsStore();
 const { t } = useI18n();
 
+useHead({
+  title: t("page.dashboard_settings"),
+});
+
 const promotionsPreferences = ref<null | {
   email: boolean;
   phone: boolean;

@@ -1,6 +1,11 @@
 <script setup lang="ts">
 const { $pwa } = useNuxtApp();
 const { isChrome, isApple, isAndroid, isSafari, isFirefox } = useDevice();
+const { t } = useI18n();
+
+useHead({
+  title: t("page.download_app"),
+});
 
 const onClickDownloadPWA = async () => {
   if (!$pwa) {
