@@ -1,17 +1,25 @@
 <script setup lang="ts">
-const open = ref(true);
-
 // DESIGN STATUS:       ✅
 // ARCHITECTURE STATUS: ✅
 // TRANSLATION STATUS:  ✅
+const { $dependencies } = useNuxtApp();
+
+defineProps<{
+  open: boolean;
+}>()
+
+const onClosed = () => {
+  $dependencies.users.ui.emitCommandCloseUserActionModal.handle();
+};
 </script>
 
 <template>
   <BaseModal
-    v-model:open="open"
+    :open="open"
     :logo="false"
     banner="top"
     banner-top="/assets/images/banners/cancel_registration.jpg"
+    @close="onClosed"
   >
     <template #title>
       {{ $t("modal_cancel_registration.title") }}

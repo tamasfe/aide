@@ -3,12 +3,9 @@
 // ARCHITECTURE STATUS: ✅
 // TRANSLATION STATUS:  ✅
 
-defineProps({
-  open: {
-    type: Boolean,
-    required: true,
-  },
-});
+defineProps<{
+  open: boolean;
+}>();
 
 const { $dependencies } = useNuxtApp();
 

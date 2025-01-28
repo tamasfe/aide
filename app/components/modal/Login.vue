@@ -1,10 +1,12 @@
 <script setup lang="ts">
-const open = ref(true);
-const loading = ref(false);
-
 // DESIGN STATUS:       ✅
 // ARCHITECTURE STATUS: ✅
 // TRANSLATION STATUS:  ✅
+defineProps<{
+  open: boolean;
+}>();
+
+const loading = ref(false);
 
 const { $dependencies } = useNuxtApp();
 const onClosed = () => {
@@ -15,7 +17,7 @@ const onClosed = () => {
 <template>
   <BaseModal
     id="base-modal-login"
-    v-model:open="open"
+    :open="open"
     :disabled="loading"
     banner="left"
     banner-left="/assets/images/banners/login_vertical.jpg"

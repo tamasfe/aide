@@ -93,14 +93,14 @@ const { data: paymentMethodData } = await useAsyncData("user-modals-payment-meth
       :open="state.modal === 'register'"
     />
     <ModalForgotPassword
-      v-if="state.modal === 'forgot_password'"
+      :open="state.modal === 'forgot_password'"
     />
     <ModalRecoverPassword
-      v-if="state.modal === 'recover_password'"
+      :open="state.modal === 'recover_password'"
       :token="recoverPasswordToken"
     />
     <ModalCancelRegistration
-      v-if="state.modal === 'cancel_registration'"
+      :open="state.modal === 'cancel_registration'"
     />
     <ModalDeposit
       :open="state.modal === 'deposit'"

@@ -1,12 +1,8 @@
 <script setup lang="ts">
-const open = ref(true);
-
-defineProps({
-  token: {
-    type: String,
-    required: true,
-  },
-});
+defineProps<{
+  open: boolean;
+  token: string;
+}>();
 
 const { $dependencies } = useNuxtApp();
 const onClosed = () => {
@@ -17,7 +13,7 @@ const onClosed = () => {
 <template>
   <BaseModal
     id="base-modal-recover-password"
-    v-model:open="open"
+    :open="open"
     banner="left"
     banner-left="/assets/images/banners/login_vertical.jpg"
     banner-top="/assets/images/banners/login_horizontal.jpg"
