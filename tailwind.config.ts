@@ -102,6 +102,9 @@ export default <Partial<Config>>{
         "button-emphasis": "var(--giro-button-emphasis)",
         "button-emphasis-hover": "var(--giro-button-emphasis-hover)",
       },
+      screens: {
+        xs: "400px",
+      },
     },
   },
   variants: {

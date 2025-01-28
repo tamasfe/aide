@@ -123,7 +123,7 @@ const onSubmit = handleSubmit(async (formData) => {
         :key="index"
         variant="subtle"
         size="input"
-        class="w-full bg-subtle hover:bg-subtle/80 text-white font-semibold text-lg"
+        class="w-full bg-subtle hover:bg-subtle/80 text-white font-semibold text-base xs:text-lg"
         @click="amount = presetAmount"
       >
         <BaseCurrency :currency="currency.code" :value="presetAmount" variant="emphasis" />
