@@ -3,6 +3,7 @@ import emblaCarouselVue from "embla-carousel-vue";
 import Autoplay from "embla-carousel-autoplay";
 import type { CSSProperties } from "vue";
 import type { EmblaOptionsType } from "embla-carousel";
+import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
 
 const AUTO_SLIDE_FREQUENCY_MS = 5000;
 
@@ -21,7 +22,10 @@ const props = withDefaults(
 
 const { options } = toRefs(props);
 
-const [emblaRef, emblaApi] = emblaCarouselVue(options.value, [Autoplay({ delay: AUTO_SLIDE_FREQUENCY_MS, stopOnInteraction: false, stopOnFocusIn: true, stopOnMouseEnter: true })]);
+const [emblaRef, emblaApi] = emblaCarouselVue(options.value, [
+  Autoplay({ delay: AUTO_SLIDE_FREQUENCY_MS, stopOnInteraction: false, stopOnFocusIn: true, stopOnMouseEnter: true }),
+  WheelGesturesPlugin(),
+]);
 
 const items = ref<number[]>([]);
 const hasMultipleSlides = ref(false);
