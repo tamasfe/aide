@@ -46,7 +46,6 @@ const sliderOptions = computed<EmblaOptionsType>(() => {
     breakpoints: {
       "(min-width: 640px)": {
         slidesToScroll: slidesToScroll.value?.md,
-        dragFree: slidesToScroll.value ? false : true,
       },
       "(min-width: 768px)": {
         slidesToScroll: slidesToScroll.value?.lg,
