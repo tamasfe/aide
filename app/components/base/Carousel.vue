@@ -7,14 +7,26 @@ import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
 
 const AUTO_SLIDE_FREQUENCY_MS = 5000;
 
+type SliderBreakpoints = "sm" | "md" | "lg" | "xl";
+type SliderBreakpointValues = Record<SliderBreakpoints, number>;
+
 const props = withDefaults(
   defineProps<{
+    slides?: SliderBreakpointValues;
+    gap?: number;
     options?: EmblaOptionsType;
     bottomControls?: boolean;
     sideControls?: boolean;
-    ratio?: CSSProperties["aspectRatio"];
+    slideRatio?: CSSProperties["aspectRatio"];
   }>(),
   {
+    slides: () => ({
+      sm: 1.1,
+      md: 2,
+      lg: 2,
+      xl: 3,
+    }),
+    gap: 1,
     bottomControls: true,
     sideControls: false,
   },
@@ -59,6 +71,19 @@ const getCarouselMetadata = () => {
   }
 };
 
+const slideSizes = computed(() => {
+  return Object.keys(props.slides).reduce(
+    (sizes, key) => {
+      const column = props.slides[key as keyof SliderBreakpointValues];
+      const numberOfGaps = Math.ceil(column) - 1;
+      sizes[key as keyof SliderBreakpointValues]
+        = `calc((100% - ${numberOfGaps * props.gap}rem)/${column})`;
+      return sizes;
+    },
+    {} as Record<keyof SliderBreakpointValues, string>,
+  );
+});
+
 onMounted(() => {
   emblaApi.value
     ?.on("init", getCarouselMetadata)
@@ -82,7 +107,6 @@ defineExpose({
 <template>
   <div
     class="relative"
-    :style="{ aspectRatio: ratio }"
   >
     <slot
       v-if="sideControls && hasMultipleSlides"
@@ -133,14 +157,17 @@ defineExpose({
       ref="emblaRef"
       class="giro__carousel h-full"
     >
-      <div class="giro__carousel-container h-full select-none">
+      <div
+        class="giro__carousel-container h-full select-none"
+        :style="{ gap: `${gap}rem` }"
+      >
         <slot />
       </div>
     </div>
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="postcss">
 .giro__carousel {
   overflow: hidden;
 }
@@ -156,5 +183,33 @@ defineExpose({
 .giro__slide-dot-wrapper:hover .giro__slide-dot {
   transition: transform 150ms;
   transform: translateY(-50%);
+}
+
+.giro__carousel-container > * {
+  aspect-ratio: v-bind("slideRatio");
+  transform: translate3d(0, 0, 0);
+  flex-shrink: 0;
+  flex-grow: 0;
+  flex-basis: v-bind("slideSizes.sm");
+  min-width: 0;
+
+}
+
+@media (min-width: 640px) {
+  .giro__carousel-container > * {
+    flex-basis: v-bind("slideSizes.md");
+  }
+}
+
+@media (min-width: 768px) {
+  .giro__carousel-container > * {
+    flex-basis: v-bind("slideSizes.lg");
+  }
+}
+
+@media (min-width: 1024px) {
+  .giro__carousel-container > * {
+    flex-basis: v-bind("slideSizes.xl");
+  }
 }
 </style>

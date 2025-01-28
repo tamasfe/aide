@@ -9,7 +9,7 @@
     <NuxtImg
       src="/assets/images/slides/fortune-tiger.jpg"
       alt=""
-      class="object-cover object-center w-full h-full"
+      class="rounded-sm md:rounded-lg object-cover object-center w-full h-full"
     />
   </BaseLink>
 </template>
