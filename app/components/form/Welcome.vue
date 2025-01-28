@@ -8,6 +8,7 @@ const { $dependencies } = useNuxtApp();
 
     <BaseButton
       variant="primary"
+      class="welcome-button-fade-in"
       @click="() => $dependencies.users.ui.emitCommandOpenUserActionModal.handle('register')"
     >
       {{ $t("button.register_now") }}
@@ -18,7 +19,13 @@ const { $dependencies } = useNuxtApp();
 </template>
 
 <style scoped>
-/*
-Here implement the animation from the main primary bottom from https://roobet.com/
-*/
+.welcome-button-fade-in {
+  background: linear-gradient(420deg, rgb(255, 206, 0) 0%, rgb(255, 206, 0) 15%, rgb(255, 183, 0) 15%, rgb(255, 183, 0) 100%) left center / 100% 100% no-repeat;
+  transition: background-size 0.3s ease-in-out;
+  background-size: 250% 100%;
+}
+
+.welcome-button-fade-in:hover {
+  background-size: 750% 100%;
+}
 </style>
