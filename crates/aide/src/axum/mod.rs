@@ -536,7 +536,7 @@ where
             router
                 .paths
                 .into_iter()
-                .map(|(route, path_item)| (path_for_nested_route(&path, &route), path_item)),
+                .map(|(route, path_item)| (path_for_nested_route(path, &route), path_item)),
         );
 
         self
@@ -558,7 +558,7 @@ where
             router
                 .paths
                 .into_iter()
-                .map(|(route, path_item)| (path_for_nested_route(&path, &route), path_item)),
+                .map(|(route, path_item)| (path_for_nested_route(path, &route), path_item)),
         );
         self.router = self.router.nest_service(path, router.router);
         self
