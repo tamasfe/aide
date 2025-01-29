@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
 
-const loading = ref(false);
 const { $dependencies } = useNuxtApp();
 
 const props = defineProps<{
@@ -20,13 +19,17 @@ const props = defineProps<{
 //   - currently this is hardcoded for pix... eventually this needs to be generalized and refactored to support multiple payment methods/currencies/providers/jurisdictions
 // TRANSLATION STATUS:  ✅
 
-const createNewDeposit = async () => $dependencies.wallets.ui.createDepositFlowOnForm.handle(props.amount, props.currency, props.paymentMethodId);
+const createNewDeposit = async () => {
+  if (!props.payment) {
+    return "";
+  }
+  return $dependencies.wallets.ui.createDepositFlowOnForm.handle(props.payment.amount, props.payment.currency, props.payment.paymentMethodId);
+};
 </script>
 
 <template>
   <BaseModal
     :open="open"
-    :disabled="loading"
     :logo="false"
     banner="top"
     banner-top="/assets/images/banners/deposit_horizontal.jpg"
