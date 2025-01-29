@@ -1,9 +1,12 @@
-use crate::openapi::{MediaType, Operation, Response, SchemaObject};
+use crate::{
+    openapi::{MediaType, Operation, Response, SchemaObject},
+    util::no_content_response,
+};
 #[cfg(feature = "axum-form")]
 use axum::extract::rejection::FormRejection;
 #[cfg(feature = "axum-json")]
 use axum::extract::rejection::JsonRejection;
-use axum::response::{Html, Redirect};
+use axum::response::{Html, NoContent, Redirect};
 #[cfg(any(feature = "axum-json", feature = "axum-form"))]
 use http::StatusCode;
 use indexmap::IndexMap;
@@ -12,6 +15,21 @@ use schemars::schema::{InstanceType, SingleOrVec};
 use schemars::JsonSchema;
 
 use crate::{generate::GenContext, operation::OperationOutput};
+
+impl OperationOutput for NoContent {
+    type Inner = ();
+
+    fn operation_response(_ctx: &mut GenContext, _operation: &mut Operation) -> Option<Response> {
+        Some(no_content_response())
+    }
+
+    fn inferred_responses(
+        _ctx: &mut GenContext,
+        _operation: &mut Operation,
+    ) -> Vec<(Option<u16>, Response)> {
+        vec![(Some(204), no_content_response())]
+    }
+}
 
 #[cfg(feature = "axum-json")]
 impl<T> OperationOutput for axum::Json<T>

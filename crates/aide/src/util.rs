@@ -3,7 +3,7 @@
 
 use crate::{
     generate::GenContext,
-    openapi::{Operation, PathItem},
+    openapi::{Operation, PathItem, Response},
     Error,
 };
 
@@ -133,6 +133,13 @@ pub(crate) fn merge_paths(ctx: &mut GenContext, path: &str, target: &mut PathIte
     }
     target.parameters.extend(from.parameters);
     target.extensions.extend(from.extensions);
+}
+
+pub(crate) fn no_content_response() -> Response {
+    Response {
+        description: "no content".to_string(),
+        ..Default::default()
+    }
 }
 
 // FIXME: remove the code below when the upstream openapiv3 3.1 is available.

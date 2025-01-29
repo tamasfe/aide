@@ -3,6 +3,7 @@ use std::{borrow::Cow, convert::Infallible, rc::Rc, sync::Arc};
 use crate::{
     openapi::{MediaType, Operation, RequestBody, Response},
     operation::set_body,
+    util::no_content_response,
     OperationInput,
 };
 use indexmap::IndexMap;
@@ -290,10 +291,7 @@ impl OperationOutput for () {
         _ctx: &mut crate::generate::GenContext,
         _operation: &mut Operation,
     ) -> Option<crate::openapi::Response> {
-        Some(Response {
-            description: "no content".to_string(),
-            ..Default::default()
-        })
+        Some(no_content_response())
     }
 
     fn inferred_responses(
