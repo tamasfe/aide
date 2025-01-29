@@ -151,6 +151,7 @@ const [value, modifiers] = defineModel<number | string>({
           autocorrect="off"
           :class="cn(
             fieldClass,
+            value !== '' && value !== undefined ? 'h-[var(--giro-input-group-hidden-field-height)]' : 'h-full',
             'text-emphasis focus:h-full',
           )"
           @input="event => emits('input', (event.target as HTMLInputElement)?.value ?? '')"
@@ -170,6 +171,7 @@ const [value, modifiers] = defineModel<number | string>({
           autocorrect="off"
           :class="cn(
             fieldClass,
+            value !== '' && value !== undefined ? 'h-[var(--giro-input-group-hidden-field-height)]' : 'h-full',
             'text-emphasis focus:h-full',
           )"
           @input="(event) => emits('input', event)"
@@ -219,7 +221,7 @@ const [value, modifiers] = defineModel<number | string>({
   transform: scale(0.9) translateY(-100%);
 }
 .floating-field {
-  @apply w-full h-full focus:h-[var(--giro-input-group-hidden-field-height)] font-medium bg-transparent;
+  @apply w-full focus:h-[var(--giro-input-group-hidden-field-height)] font-medium bg-transparent;
 }
 .default-field {
   @apply w-full h-full text-lg text-white font-medium placeholder:text-subtle bg-transparent;
