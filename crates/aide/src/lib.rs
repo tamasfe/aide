@@ -109,15 +109,7 @@
 //! it might support older versions but without guarantees.
 //!
 #![cfg_attr(docsrs, feature(doc_auto_cfg))]
-#![warn(clippy::pedantic, missing_docs)]
-#![allow(
-    clippy::default_trait_access,
-    clippy::module_name_repetitions,
-    clippy::wildcard_imports,
-    clippy::too_many_lines,
-    clippy::single_match_else,
-    clippy::manual_let_else
-)]
+#![warn(missing_docs)]
 
 #[macro_use]
 mod macros;
