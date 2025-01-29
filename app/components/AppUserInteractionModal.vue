@@ -12,12 +12,6 @@ const modalIsJurisdictionModal = (modal: UserInteractionModalState["modal"] | nu
   return modal === "restrict_license_no_alternative" || modal === "restrict_license_alternative" || modal === "restrict_expanding";
 };
 
-watch(() => isOpen.value, (value) => {
-  if (value === false) {
-    state.value = { modal: null };
-  }
-});
-
 $dependencies.common.asyncMessagePublisher.subscribe(
   "girobet:commands:modals:open-user-interaction-modal",
   (event) => {
@@ -37,7 +31,6 @@ $dependencies.common.asyncMessagePublisher.subscribe(
       return;
     }
 
-    state.value = { modal: null };
     isOpen.value = false;
   },
 );
@@ -53,7 +46,7 @@ $dependencies.common.asyncMessagePublisher.subscribe(
       return;
     }
     if (data.flowId === state.value.data.flowId) {
-      state.value = { modal: null };
+      isOpen.value = false;
     }
   },
 );
@@ -80,63 +73,61 @@ const { data: paymentMethodData } = await useAsyncData("user-modals-payment-meth
 <template>
   <div>
     <ModalLogin
-      :open="state.modal === 'login'"
+      :open="isOpen && state.modal === 'login'"
     />
     <ModalRegister
-      :open="state.modal === 'register'"
+      :open="isOpen && state.modal === 'register'"
     />
     <ModalForgotPassword
-      :open="state.modal === 'forgot_password'"
+      :open="isOpen && state.modal === 'forgot_password'"
     />
     <ModalRecoverPassword
-      :open="state.modal === 'recover_password'"
+      :open="isOpen && state.modal === 'recover_password'"
       :token="recoverPasswordToken"
     />
     <ModalCancelRegistration
-      :open="state.modal === 'cancel_registration'"
+      :open="isOpen && state.modal === 'cancel_registration'"
     />
     <ModalDeposit
-      :open="state.modal === 'deposit'"
+      :open="isOpen && state.modal === 'deposit'"
       :limits="paymentMethodData?.depositAmounts ?? null"
       :payment-method-id="paymentMethodData?.id ?? null"
     />
     <ModalDepositConfirm
-      :open="state.modal === 'deposit_confirm'"
+      :open="isOpen && state.modal === 'deposit_confirm'"
       :payment="state.modal === 'deposit_confirm' ? state.data : undefined"
     />
     <ModalWithdrawal
-      :open="state.modal === 'withdrawal'"
+      :open="isOpen && state.modal === 'withdrawal'"
       :limits="paymentMethodData?.withdrawalAmounts ?? null"
       :payment-method-id="paymentMethodData?.id ?? null"
     />
-    <ModalSearch
-      :open="state.modal === 'search'"
-    />
+    <ModalSearch :open="isOpen && state.modal === 'search'" />
     <ModalUpdateSettings
-      :open="state.modal === 'settings'"
+      :open="isOpen && state.modal === 'settings'"
       :setting="state.modal === 'settings' ? state.data.setting : undefined"
     />
     <ModalKycFlow
-      :open="state.modal === 'kyc'"
+      :open="isOpen && state.modal === 'kyc'"
       :applicant-data="state.modal === 'kyc' ? state.data.applicantData : undefined"
       :initial-access-token="state.modal === 'kyc' ? state.data.accessToken : undefined"
     />
     <ModalCloseAccount
-      :open="state.modal === 'close_account'"
+      :open="isOpen && state.modal === 'close_account'"
     />
     <ModalRestrictExpanding
-      v-if="state.modal === 'restrict_expanding'"
+      v-if="isOpen && state.modal === 'restrict_expanding'"
       :blocked-country="state.data.blockedCountry"
       :blocked-domain="state.data.currentHost"
     />
     <ModalRestrictLicenseAlternative
-      v-if="state.modal === 'restrict_license_alternative'"
+      v-if="isOpen && state.modal === 'restrict_license_alternative'"
       :blocked-country="state.data.blockedCountry"
       :blocked-domain="state.data.currentHost"
       :allowed-url="state.data.allowedUrl"
     />
     <ModalRestrictLicenseNoAlternative
-      v-if="state.modal === 'restrict_license_no_alternative'"
+      v-if="isOpen && state.modal === 'restrict_license_no_alternative'"
       :blocked-country="state.data.blockedCountry"
     />
   </div>
