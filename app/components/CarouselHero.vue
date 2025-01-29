@@ -6,15 +6,15 @@ const showFormWelcome = computed(() => userStore.isAuthenticated !== true);
 
 const slides = computed(() => {
   if (showFormWelcome.value) return {
-    sm: 1.05,
-    md: 2,
+    sm: 1.2,
+    md: 1.2,
     lg: 1.5,
-    xl: 2.05,
+    xl: 2.2,
   };
 
   return {
-    sm: 1.05,
-    md: 2.1,
+    sm: 1.2,
+    md: 1.2,
     lg: 2.5,
     xl: 3,
   };
@@ -22,14 +22,14 @@ const slides = computed(() => {
 </script>
 
 <template>
-  <div class="w-full" :class="{ 'md:grid md:grid-cols-3 space-y-[var(--giro-section-gap)] md:space-y-0': showFormWelcome }">
+  <div class="w-full" :class="{ 'sm:grid sm:grid-cols-3 space-y-[var(--giro-section-gap)] sm:space-y-0': showFormWelcome }">
     <BaseCarousel
       :side-controls="!isMobile"
       :options="{ align: 'start' }"
       :slides="slides"
       :gap="1"
       class="w-full overflow-hidden"
-      :class="{ 'md:col-span-2': showFormWelcome }"
+      :class="{ 'sm:col-span-2': showFormWelcome }"
       slide-ratio="1080/607"
     >
       <SlideAviator />
