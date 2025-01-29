@@ -1,7 +1,10 @@
 <script setup lang="ts">
-const open = ref(true);
-
-defineProps({});
+defineProps({
+  open: {
+    type: Boolean,
+    required: true,
+  },
+});
 
 const { $dependencies } = useNuxtApp();
 
@@ -13,7 +16,7 @@ const onClosed = () => {
 <template>
   <BaseModal
     id="base-modal-close-account"
-    v-model:open="open"
+    :open="open"
     :logo="false"
     @close="onClosed"
   >

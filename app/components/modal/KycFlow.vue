@@ -3,10 +3,10 @@ import { InfrastructureError } from "~/packages/result/infrastructure-error";
 
 const { $dependencies } = useNuxtApp();
 
-const open = ref(true);
 const props = defineProps<{
-  initialAccessToken: string;
-  applicantData: {
+  open: boolean;
+  initialAccessToken?: string;
+  applicantData?: {
     email: string;
     phone: string;
     language: string;
@@ -38,6 +38,7 @@ const onSubmitted = () => {
     @close="() => $dependencies.users.ui.emitCommandCloseUserActionModal.handle()"
   >
     <KycIFrameSumsub
+      v-if="props.applicantData && props.initialAccessToken"
       :initial-access-token="props.initialAccessToken"
       :applicant="props.applicantData"
       :renew-access-token="() => $dependencies.kyc.ui.renewAccessToken.handle()"

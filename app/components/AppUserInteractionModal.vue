@@ -6,26 +6,11 @@ const { searchParams } = useRequestURL();
 const walletStore = useWalletStore();
 
 const state = useState<UserInteractionModalState | { modal: null }>("user-modal-state", () => ({ modal: null }));
+const isOpen = defineModel<boolean>("open", { type: Boolean, required: true });
 
 const modalIsJurisdictionModal = (modal: UserInteractionModalState["modal"] | null): boolean => {
   return modal === "restrict_license_no_alternative" || modal === "restrict_license_alternative" || modal === "restrict_expanding";
 };
-
-const isOpen = defineModel<boolean>("open", { type: Boolean, required: true });
-watch(state, () => {
-  if (state.value.modal === null) {
-    isOpen.value = false;
-  }
-  else {
-    isOpen.value = true;
-  }
-});
-
-watch(isOpen, () => {
-  if (isOpen.value === false) {
-    state.value = { modal: null };
-  }
-});
 
 $dependencies.common.asyncMessagePublisher.subscribe(
   "girobet:commands:modals:open-user-interaction-modal",
@@ -35,6 +20,7 @@ $dependencies.common.asyncMessagePublisher.subscribe(
     }
 
     state.value = event;
+    isOpen.value = true;
   },
 );
 
@@ -45,7 +31,7 @@ $dependencies.common.asyncMessagePublisher.subscribe(
       return;
     }
 
-    state.value = { modal: null };
+    isOpen.value = false;
   },
 );
 
@@ -108,12 +94,8 @@ const { data: paymentMethodData } = await useAsyncData("user-modals-payment-meth
       :payment-method-id="paymentMethodData?.id ?? null"
     />
     <ModalDepositConfirm
-      v-if="state.modal === 'deposit_confirm'"
-      :code="state.data.paymentCode"
-      :amount="state.data.amount"
-      :currency="state.data.currency"
-      :payment-method-id="state.data.paymentMethodId"
-      :payment-flow-id="state.data.flowId"
+      :open="state.modal === 'deposit_confirm'"
+      :payment="state.modal === 'deposit_confirm' ? state.data : undefined"
     />
     <ModalWithdrawal
       :open="state.modal === 'withdrawal'"
@@ -121,19 +103,19 @@ const { data: paymentMethodData } = await useAsyncData("user-modals-payment-meth
       :payment-method-id="paymentMethodData?.id ?? null"
     />
     <ModalSearch
-      v-if="state.modal === 'search'"
+      :open="state.modal === 'search'"
     />
     <ModalUpdateSettings
-      v-if="state.modal === 'settings'"
-      :setting="state.data.setting"
+      :open="state.modal === 'settings'"
+      :setting="state.modal === 'settings' ? state.data.setting : undefined"
     />
     <ModalKycFlow
-      v-if="state.modal === 'kyc'"
-      :applicant-data="state.data.applicantData"
-      :initial-access-token="state.data.accessToken"
+      :open="state.modal === 'kyc'"
+      :applicant-data="state.modal === 'kyc' ? state.data.applicantData : undefined"
+      :initial-access-token="state.modal === 'kyc' ? state.data.accessToken : undefined"
     />
     <ModalCloseAccount
-      v-if="state.modal === 'close_account'"
+      :open="state.modal === 'close_account'"
     />
     <ModalRestrictExpanding
       v-if="state.modal === 'restrict_expanding'"

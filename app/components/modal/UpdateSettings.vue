@@ -4,11 +4,13 @@ import type { UserInteractionModalState } from "~/packages/async-messages/async-
 
 type ModalUpdateSettingsMode = Extract<UserInteractionModalState, { modal: "settings" }>["data"]["setting"];
 
-const open = ref(true);
-
 defineProps({
   setting: {
     type: String as PropType<ModalUpdateSettingsMode>,
+    required: false,
+  },
+  open: {
+    type: Boolean,
     required: true,
   },
 });
@@ -24,24 +26,26 @@ const onClosed = () => {
 <template>
   <BaseModal
     id="base-modal-update-settings"
-    v-model:open="open"
+    :open="open"
     :logo="false"
     @close="onClosed"
   >
-    <template v-if="setting === 'username'" #title>
-      {{ $t('modal_user_settings.username.title') }}
-    </template>
-    <template v-else-if="setting === 'password'" #title>
-      {{ $t('modal_user_settings.password.title') }}
-    </template>
-    <template v-else-if="setting === 'language'" #title>
-      {{ $t('modal_user_settings.language.title') }}
-    </template>
-    <template v-else-if="setting === 'time_zone'" #title>
-      {{ $t('modal_user_settings.time_zone.title') }}
-    </template>
-    <template v-else-if="setting === 'payment_pix'" #title>
-      {{ $t('modal_user_settings.payment_pix.title') }}
+    <template #title>
+      <span v-if="setting === 'username'">
+        {{ $t('modal_user_settings.username.title') }}
+      </span>
+      <span v-else-if="setting === 'password'">
+        {{ $t('modal_user_settings.password.title') }}
+      </span>
+      <span v-else-if="setting === 'language'">
+        {{ $t('modal_user_settings.language.title') }}
+      </span>
+      <span v-else-if="setting === 'time_zone'">
+        {{ $t('modal_user_settings.time_zone.title') }}
+      </span>
+      <span v-else-if="setting === 'payment_pix'">
+        {{ $t('modal_user_settings.payment_pix.title') }}
+      </span>
     </template>
 
     <FormSettingsPassword v-if="setting === 'password'" />

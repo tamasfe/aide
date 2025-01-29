@@ -1,16 +1,18 @@
 <script setup lang="ts">
 import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
 
-const open = ref(true);
 const loading = ref(false);
 const { $dependencies } = useNuxtApp();
 
 const props = defineProps<{
-  code: string;
-  amount: number;
-  currency: WalletCurrency;
-  paymentMethodId: number;
-  paymentFlowId: number;
+  open: boolean;
+  payment?: {
+    paymentCode: string;
+    amount: number;
+    currency: WalletCurrency;
+    paymentMethodId: number;
+    flowId: number;
+  };
 }>();
 
 // DESIGN STATUS:       ✅
@@ -23,17 +25,18 @@ const createNewDeposit = async () => $dependencies.wallets.ui.createDepositFlowO
 
 <template>
   <BaseModal
-    v-model:open="open"
+    :open="open"
     :disabled="loading"
     :logo="false"
     banner="top"
     banner-top="/assets/images/banners/deposit_horizontal.jpg"
   >
     <FormDepositConfirm
-      :key="paymentFlowId"
-      :code="code"
-      :amount="amount"
-      :currency="currency"
+      v-if="payment"
+      :key="payment.flowId"
+      :code="payment.paymentCode"
+      :amount="payment.amount"
+      :currency="payment.currency"
       :create-new-deposit="createNewDeposit"
     />
   </BaseModal>

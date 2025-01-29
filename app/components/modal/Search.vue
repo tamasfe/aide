@@ -1,12 +1,14 @@
 <script setup lang="ts">
 const { $dependencies } = useNuxtApp();
-const open = ref(true);
 const loading = ref(false);
 const query = useState("search-modal-query", () => "");
 
-const onOpen = () => {
-  open.value = true;
-};
+defineProps({
+  open: {
+    type: Boolean,
+    required: true,
+  },
+});
 
 const onClose = () => {
   $dependencies.users.ui.emitCommandCloseUserActionModal.handle();
@@ -15,7 +17,7 @@ const onClose = () => {
 
 <template>
   <BaseModal
-    v-model:open="open"
+    :open="open"
     :disabled="false"
     :close-on-click-outside="true"
     banner="none"
@@ -25,7 +27,6 @@ const onClose = () => {
       v-model="query"
       :open="open"
       :loading="loading"
-      @focus="onOpen"
       @close="onClose"
     />
 
