@@ -12,6 +12,12 @@ const modalIsJurisdictionModal = (modal: UserInteractionModalState["modal"] | nu
   return modal === "restrict_license_no_alternative" || modal === "restrict_license_alternative" || modal === "restrict_expanding";
 };
 
+watch(() => isOpen.value, (value) => {
+  if (value === false) {
+    state.value = { modal: null };
+  }
+});
+
 $dependencies.common.asyncMessagePublisher.subscribe(
   "girobet:commands:modals:open-user-interaction-modal",
   (event) => {
@@ -31,6 +37,7 @@ $dependencies.common.asyncMessagePublisher.subscribe(
       return;
     }
 
+    state.value = { modal: null };
     isOpen.value = false;
   },
 );

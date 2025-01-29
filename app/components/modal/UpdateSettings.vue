@@ -18,9 +18,7 @@ defineProps({
 const { $dependencies } = useNuxtApp();
 const userSettingsStore = useUserSettingsStore();
 const userStore = useUserStore();
-const onClosed = () => {
-  $dependencies.users.ui.emitCommandCloseUserActionModal.handle();
-};
+const onClosed = () => $dependencies.users.ui.emitCommandCloseUserActionModal.handle();
 </script>
 
 <template>
