@@ -6,15 +6,15 @@ const showFormWelcome = computed(() => userStore.isAuthenticated !== true);
 
 const slides = computed(() => {
   if (showFormWelcome.value) return {
-    sm: 1.2,
-    md: 1.2,
+    sm: 1.1,
+    md: 1.1,
     lg: 1.5,
-    xl: 2.2,
+    xl: 2.1,
   };
 
   return {
-    sm: 1.2,
-    md: 1.2,
+    sm: 1.1,
+    md: 1.1,
     lg: 2.5,
     xl: 3,
   };
