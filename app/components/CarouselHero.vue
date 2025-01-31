@@ -6,14 +6,14 @@ const showFormWelcome = computed(() => userStore.isAuthenticated !== true);
 
 const slides = computed(() => {
   if (showFormWelcome.value) return {
-    sm: 1.1,
+    sm: 1.05,
     md: 1.1,
     lg: 1.5,
-    xl: 2.1,
+    xl: 2.02,
   };
 
   return {
-    sm: 1.1,
+    sm: 1.05,
     md: 1.1,
     lg: 2.5,
     xl: 3,
@@ -27,8 +27,8 @@ const slides = computed(() => {
       :side-controls="!isMobile"
       :options="{ align: 'start' }"
       :slides="slides"
-      :gap="1"
-      class="w-full overflow-hidden"
+      :gap="isMobile ? 0.35 : 1"
+      class="pt-4 md:pt-0 pl-4 md:pl-0 w-full overflow-hidden"
       :class="{ 'sm:col-span-2': showFormWelcome }"
       slide-ratio="1080/607"
     >
