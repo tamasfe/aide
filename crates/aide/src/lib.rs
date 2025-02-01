@@ -117,6 +117,7 @@
 #![warn(clippy::pedantic, missing_docs)]
 #![allow(
     clippy::default_trait_access,
+    clippy::doc_markdown,
     clippy::module_name_repetitions,
     clippy::wildcard_imports,
     clippy::too_many_lines,

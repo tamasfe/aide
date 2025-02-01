@@ -294,7 +294,7 @@ impl<'t> TransformOpenApi<'t> {
                         .collect(),
                 );
             }
-        };
+        }
 
         self
     }
@@ -689,7 +689,7 @@ impl<'t> TransformOperation<'t> {
                     .is_some()
                 {
                     ctx.error(Error::ResponseExists(StatusCode::Code(N)));
-                };
+                }
             } else {
                 tracing::debug!(type_name = type_name::<R>(), "no response info of type");
             }
@@ -725,7 +725,7 @@ impl<'t> TransformOperation<'t> {
                         .is_some();
                     if existing {
                         ctx.error(Error::ResponseExists(StatusCode::Code(N)));
-                    };
+                    }
                 }
             } else {
                 tracing::debug!(type_name = type_name::<R>(), "no response info of type");
@@ -757,7 +757,7 @@ impl<'t> TransformOperation<'t> {
                     .is_some()
                 {
                     ctx.error(Error::ResponseExists(StatusCode::Range(N)));
-                };
+                }
             } else {
                 tracing::debug!(type_name = type_name::<R>(), "no response info of type");
             }
@@ -795,7 +795,7 @@ impl<'t> TransformOperation<'t> {
                         .is_some();
                     if existing {
                         ctx.error(Error::ResponseExists(StatusCode::Range(N)));
-                    };
+                    }
                 }
             } else {
                 tracing::debug!(type_name = type_name::<R>(), "no response info of type");
@@ -941,7 +941,7 @@ impl<'t> TransformOperation<'t> {
                         .collect(),
                 );
             }
-        };
+        }
 
         self
     }
