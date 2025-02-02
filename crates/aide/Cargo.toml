@@ -8,6 +8,7 @@ license = "MIT OR Apache-2.0"
 repository = "https://github.com/tamasfe/aide"
 description = "A code-first API documentation library"
 readme = "README.md"
+build = "build.rs"
 
 [dependencies]
 indexmap = { version = "2.1", features = ["serde"] }
@@ -33,6 +34,7 @@ redoc = []
 swagger = []
 scalar = []
 skip_serializing_defaults = []
+update_docs = []
 
 axum = ["dep:axum", "bytes", "http", "dep:tower-layer", "dep:tower-service"]
 axum-form = ["axum", "axum/form"]
@@ -54,6 +56,9 @@ axum-extra-json-deserializer = ["axum-extra", "axum-extra/json-deserializer"]
 
 [dev-dependencies]
 tokio = { version = "1.21.0", features = ["macros", "rt-multi-thread"] }
+
+[build-dependencies]
+reqwest = { version = "0.12.12", features = ["blocking"]}
 
 [package.metadata.docs.rs]
 all-features = true
