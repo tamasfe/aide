@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.14.1
+
+- **fixed:** Update the outdated feature list in the crate root documentation ([#186])
+- **added:** Implement OperationOutput for axum::response::NoContent ([#184])
+
+[#184]: https://github.com/tamasfe/aide/pull/184
+[#186]: https://github.com/tamasfe/aide/pull/186
+
 ## 0.14.0
 
 - **breaking:** Upgrade `axum` to `0.8` ([#168])
