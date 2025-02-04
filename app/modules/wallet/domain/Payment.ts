@@ -2,7 +2,7 @@ import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
 import type { components } from "~/packages/http-client/girobet-backend-generated-http-client/openapi-typescript";
 
 export type PaymentStatus = components["schemas"]["PaymentStatus"];
-export type PaymentType = "deposit" | "withdrawal";
+export type PaymentType = components["schemas"]["PaymentType"];
 
 interface PaymentPropsI {
   id: number;
