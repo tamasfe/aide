@@ -194,7 +194,7 @@ export default defineNuxtConfig({
       lang: "en-US",
       name: "GiroBet",
       short_name: "GiroBet",
-      start_url: "https://staging.girobet.vip",
+      start_url: "https://staging.girobet.vip/redirect",
       scope: "https://staging.girobet.vip",
       description: "Welcome to The GiroBet Experience the ultimate thrill of online gambling with us. Play slots, poker, blackjack, and more. Win big with our bonuses and promotions.",
       id: "https://staging.girobet.vip",
