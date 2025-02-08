@@ -1,4 +1,5 @@
 - [Aide](#aide)
+  - [Community Projects](#community-projects)
   - [Contributing](#contributing)
   - [License](#license)
   - [Similar Libraries](#similar-libraries)
