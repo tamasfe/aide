@@ -6,7 +6,7 @@ metadata:
     app: "{{ .Release.Name }}"
 spec:
   revisionHistoryLimit: 3
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: "{{ .Release.Name }}"
