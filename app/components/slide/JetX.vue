@@ -7,7 +7,7 @@
     }"
   >
     <NuxtImg
-      src="/assets/images/slides/jet-x.jpg"
+      src="/assets/girobet/images/slides/jet-x.jpg"
       alt=""
       class="rounded-sm md:rounded-lg object-cover object-center w-full h-full"
     />

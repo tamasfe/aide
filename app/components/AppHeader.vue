@@ -38,18 +38,18 @@ const emit = defineEmits([
               <NuxtImg
                 v-if="!userStore.isAuthenticated"
                 class="h-7"
-                src="/assets/images/logos/logo.svg"
+                src="/assets/girobet/images/logos/logo.svg"
                 alt="Logo"
               />
               <template v-else>
                 <NuxtImg
                   class="h-7 sm:hidden"
-                  src="/assets/images/logos/logo-sm.svg"
+                  src="/assets/girobet/images/logos/logo-sm.svg"
                   alt="Logo"
                 />
                 <NuxtImg
                   class="hidden sm:block h-7"
-                  src="/assets/images/logos/logo.svg"
+                  src="/assets/girobet/images/logos/logo.svg"
                   alt="Logo"
                 />
               </template>

@@ -33,7 +33,7 @@ defineProps<{
     :disabled="false"
     :logo="false"
     banner="top"
-    banner-top="/assets/images/banners/deposit_horizontal.jpg"
+    banner-top="/assets/girobet/images/banners/deposit_horizontal.jpg"
     @close="onClosed"
   >
     <template #title>

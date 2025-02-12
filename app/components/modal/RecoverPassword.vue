@@ -15,8 +15,8 @@ const onClosed = () => {
     id="base-modal-recover-password"
     :open="open"
     banner="left"
-    banner-left="/assets/images/banners/login_vertical.jpg"
-    banner-top="/assets/images/banners/login_horizontal.jpg"
+    banner-left="/assets/girobet/images/banners/login_vertical.jpg"
+    banner-top="/assets/girobet/images/banners/login_horizontal.jpg"
     @close="onClosed"
   >
     <FormRecoverPassword :token="token" />

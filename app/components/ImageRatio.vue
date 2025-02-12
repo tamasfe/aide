@@ -11,7 +11,7 @@ const props = withDefaults(defineProps<{
 
 <template>
   <NuxtImg
-    src="/assets/images/games/2.png"
+    src="/assets/girobet/images/games/2.png"
     alt=""
     :class="cn(
       'block w-full h-auto flex-shrink-0 object-cover object-center',

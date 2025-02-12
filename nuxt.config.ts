@@ -172,19 +172,19 @@ export default defineNuxtConfig({
         {
           purpose: "maskable",
           sizes: "512x512",
-          src: "/assets/images/icon512_maskable.png",
+          src: "/assets/girobet/images/icon512_maskable.png",
           type: "image/png",
         },
         {
           purpose: "any",
           sizes: "512x512",
-          src: "/assets/images/icon512_rounded.png",
+          src: "/assets/girobet/images/icon512_rounded.png",
           type: "image/png",
         },
       ],
       screenshots: [
         {
-          src: "/assets/images/screenshots/1.jpg",
+          src: "/assets/girobet/images/screenshots/1.jpg",
           sizes: "1080x1920",
           type: "image/jpeg",
         },

@@ -16,6 +16,6 @@ export class FindProviderImageSrcById {
   }
 
   private dumbImageSrcFromLocal(providerId: number): string {
-    return `/assets/images/providers/${providerId}.png`;
+    return `/assets/girobet/images/providers/${providerId}.png`;
   }
 }

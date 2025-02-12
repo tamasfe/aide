@@ -20,8 +20,8 @@ const onClosed = () => {
     :open="open"
     :disabled="loading"
     banner="left"
-    banner-left="/assets/images/banners/login_vertical.jpg"
-    banner-top="/assets/images/banners/login_horizontal.jpg"
+    banner-left="/assets/girobet/images/banners/login_vertical.jpg"
+    banner-top="/assets/girobet/images/banners/login_horizontal.jpg"
     @close="onClosed"
   >
     <FormLogin />

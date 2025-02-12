@@ -116,7 +116,7 @@ const links = [
         <div class="flex-1">
           <NuxtImg
             class="object-cover h-6"
-            src="/assets/images/logos/logo.svg"
+            src="/assets/girobet/images/logos/logo.svg"
             alt="Logo"
           />
         </div>

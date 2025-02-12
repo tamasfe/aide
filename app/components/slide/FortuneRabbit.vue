@@ -7,7 +7,7 @@
     }"
   >
     <NuxtImg
-      src="/assets/images/slides/fortune-rabbit.jpg"
+      src="/assets/girobet/images/slides/fortune-rabbit.jpg"
       alt=""
       class="rounded-sm md:rounded-lg object-cover object-center w-full h-full"
     />

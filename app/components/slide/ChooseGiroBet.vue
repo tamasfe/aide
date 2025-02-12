@@ -7,7 +7,7 @@
     }"
   >
     <NuxtImg
-      src="/assets/images/slides/choose-girobet.jpg"
+      src="/assets/girobet/images/slides/choose-girobet.jpg"
       alt=""
       class="rounded-sm md:rounded-lg object-cover object-center w-full h-full"
     />

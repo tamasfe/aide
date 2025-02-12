@@ -51,7 +51,7 @@ const onClickGenerateNewCode = async () => {
       </div>
       <NuxtImg
         class="w-[6rem] h-auto"
-        src="/assets/images/logos/pix.svg"
+        src="/assets/girobet/images/logos/pix.svg"
         alt="Pix"
       />
     </div>

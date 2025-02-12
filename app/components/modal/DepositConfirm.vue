@@ -32,7 +32,7 @@ const createNewDeposit = async () => {
     :open="open"
     :logo="false"
     banner="top"
-    banner-top="/assets/images/banners/deposit_horizontal.jpg"
+    banner-top="/assets/girobet/images/banners/deposit_horizontal.jpg"
   >
     <FormDepositConfirm
       v-if="payment"

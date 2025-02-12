@@ -6,7 +6,7 @@ const { $dependencies } = useNuxtApp();
 
 defineProps<{
   open: boolean;
-}>()
+}>();
 
 const onClosed = () => {
   $dependencies.users.ui.emitCommandCloseUserActionModal.handle();
@@ -18,7 +18,7 @@ const onClosed = () => {
     :open="open"
     :logo="false"
     banner="top"
-    banner-top="/assets/images/banners/cancel_registration.jpg"
+    banner-top="/assets/girobet/images/banners/cancel_registration.jpg"
     @close="onClosed"
   >
     <template #title>
