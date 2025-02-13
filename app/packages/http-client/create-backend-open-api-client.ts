@@ -33,17 +33,28 @@ const createMiddlewareJurisdictionErrorHandler: (commonDependencies: CommonDepen
             } });
             return;
 
-          case "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE":
+          case "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE": {
+            const allowedUrl = jsonResponse.metadata.alternative_site.domains[0]?.frontend;
+            if (!allowedUrl) {
+              await emitOpenUserModal.handle({ modal: "restrict_license_no_alternative", data: {
+                jurisdiction: jsonResponse.metadata.jurisdiction,
+                currentHost,
+                blockedCountry: useCountryName(jsonResponse.metadata.jurisdiction, locale) || jsonResponse.metadata.jurisdiction,
+              } });
+              return;
+            }
+
             await emitOpenUserModal.handle({
               modal: "restrict_license_alternative",
               data: {
                 jurisdiction: jsonResponse.metadata.jurisdiction,
-                allowedUrl: jsonResponse.metadata.alternative_site.base_url,
+                allowedUrl,
                 currentHost,
                 blockedCountry: useCountryName(jsonResponse.metadata.jurisdiction, locale) || jsonResponse.metadata.jurisdiction,
               },
             });
             return;
+          }
 
           case "USER_ACCOUNT_JURISDICTION_MISMATCH":
             await emitOpenUserModal.handle({

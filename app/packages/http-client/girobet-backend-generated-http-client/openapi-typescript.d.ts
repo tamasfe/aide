@@ -259,29 +259,7 @@ export interface paths {
         put?: never;
         /**
          * Login
-         * @description Authenticates a user and returns a JWT token.
-         *
-         *     ## Endpoint
-         *
-         *     ```
-         *     POST /api/login
-         *     ```
-         *
-         *     ## Response
-         *
-         *     Success (200 OK):
-         *     ```json
-         *     {
-         *       "token": "<some-jwt>"
-         *     }
-         *     ```
-         *
-         *     ## Usage
-         *
-         *     Include the JWT via the following header:
-         *     ```
-         *     Authorization: Bearer <some-jwt>
-         *     ```
+         * @description Authenticates a user and sets the session cookie
          */
         post: {
             parameters: {
@@ -298,13 +276,6 @@ export interface paths {
             responses: {
                 /** @description no content */
                 200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description no content */
-                302: {
                     headers: {
                         [name: string]: unknown;
                     };
@@ -335,7 +306,7 @@ export interface paths {
         };
         /**
          * Logout
-         * @description User logout, which will forcefully expire the current session and thus make the JWT token invalid.
+         * @description User logout, which will forcefully expire the current session cookie.
          */
         get: {
             parameters: {
@@ -1049,7 +1020,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["SiteResponse"];
+                        "application/json": components["schemas"]["Site"];
                     };
                 };
                 "4XX": {
@@ -2450,14 +2421,6 @@ export interface components {
             /** Format: uuid */
             token: string;
         };
-        AlternativeSite: {
-            /** @description The base URL of the alternative site. This url should be used to redirect the user to the alternative site. The URL may include a path too, so this needs to be taken into account. */
-            base_url: components["schemas"]["Url"];
-            /** @description The name of the alternative site. */
-            name: string;
-            /** @description The field "servable" indicates if this site is able to be served by the current casino instance. If there's an alternative, which can not be served by the current casino instance, but can be served by another casino instance, this is false. Example scenario: Cross-regional deployments of this system, with independent databases require the ability to point to each other as alternatives, as they can't serve the requested site themselves. */
-            servable: boolean;
-        };
         /**
          * @description A country represented by its ISO 3166-1 alpha-2 code.
          * @enum {string}
@@ -2702,11 +2665,6 @@ export interface components {
             wallet_id?: components["schemas"]["WalletId"] | null;
         };
         LoginRequest: {
-            /**
-             * Format: uri
-             * @description The URL to redirect to after login. If not set a 200 OK response is returned.
-             */
-            next?: string | null;
             /** @description The password of the user. */
             password: string;
             /**
@@ -2714,10 +2672,6 @@ export interface components {
              * @description The email address of the user.
              */
             username: string;
-        };
-        LoginResponse: {
-            /** @description The JWT token that can be used to authenticate the user */
-            token: string;
         };
         Maybe_Boolean: boolean | null;
         Maybe_PixKeyTypeDiscriminants: components["schemas"]["PixKeyTypeDiscriminants"] | null;
@@ -3221,7 +3175,7 @@ export interface components {
             code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
             metadata: {
                 /** @description Alternative site that the user may be redirected to */
-                alternative_site: components["schemas"]["AlternativeSite"];
+                alternative_site: components["schemas"]["Site"];
                 /** @description The violating jurisdiction. */
                 jurisdiction: components["schemas"]["Country"];
             };
@@ -3344,14 +3298,24 @@ export interface components {
             /** @description The jurisdiction of the signup flow. This field can not be changed once set. The user will be created in this jurisdiction and thus is subject to the laws of this jurisdiction. Changing a user jurisdiction after signup is not easily possible without additional verification, information and setup. */
             jurisdiction: components["schemas"]["Country"];
         };
-        SiteResponse: {
+        Site: {
             /** @description The base URL of the site. This may be used for redirects, links, etc. */
-            base_url: components["schemas"]["Url"];
+            domains: components["schemas"]["SiteDomainMapping"][];
+            /** @description The identifier of the site. Use this identifier to uniquely and programmatically identify the site. */
+            identifier: components["schemas"]["SiteIdentifier"];
             /** @description The name of the site. */
             name: string;
-            /** @description Whether the site is servable by the current instance. If `false` the site is not servable but is accessible by a different casino instance of the owning company. */
+            /** @description This field indicates if this site is able to be served by the current casino instance. If there's an alternative, which can not be served by the current casino instance, but can be served by another casino instance we know of, this is false. Example scenario: Cross-regional deployments of this system, with independent databases require the ability to point to each other as alternatives, as they can't serve the requested site themselves. */
             servable: boolean;
         };
+        SiteDomain: string;
+        SiteDomainMapping: {
+            /** @description The API domain of the site. */
+            api: components["schemas"]["SiteDomain"];
+            /** @description The frontend domain of the site. */
+            frontend: components["schemas"]["SiteDomain"];
+        };
+        SiteIdentifier: string;
         /** Format: float */
         SystemAmount: number;
         SystemValidationError: {
