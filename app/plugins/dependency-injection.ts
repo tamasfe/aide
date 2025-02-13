@@ -4,6 +4,7 @@ import { createKycDependencyInjection } from "~/modules/kyc/infra/KycDependencyI
 import { createNotificationDependencyInjection } from "~/modules/notifications/infra/NotificationDependencyInjection";
 import { createProvidersDependencyInjection } from "~/modules/providers/infra/ProvidersDependencyInjection";
 import { createSignupFlowsDependencyInjection } from "~/modules/signup-flows/infra/SignupFlowsDependencyInjection";
+import { createSitesDependencyInjection } from "~/modules/sites/infra/SitesDependencyInjection";
 import { createUsersDependencyInjection } from "~/modules/users/infra/UsersDependencyInjection";
 import { createWalletsDependencyInjection } from "~/modules/wallet/infra/WalletsDependencyInjection";
 import { createWebsocketDependencyInjectionI } from "~/packages/websocket/infra/websocket-dependency-injection";
@@ -37,6 +38,7 @@ export default defineNuxtPlugin({
           kyc: await createKycDependencyInjection(config.public, commonDependencies),
           websockets: await createWebsocketDependencyInjectionI(config.public, commonDependencies),
           notifications: await createNotificationDependencyInjection(config.public, commonDependencies, notificationsStore),
+          sites: await createSitesDependencyInjection(config.public, commonDependencies),
         },
       },
     };
