@@ -7,6 +7,7 @@
 //   * translate final menu items
 
 const { $dependencies } = useNuxtApp();
+const siteStore = useSiteStore();
 const { t } = useI18n();
 const open = defineModel("open", { default: false, type: Boolean });
 
@@ -116,7 +117,7 @@ const links = [
         <div class="flex-1">
           <NuxtImg
             class="object-cover h-6"
-            src="/assets/girobet/images/logos/logo.svg"
+            :src="siteStore.getAssetPath('images/logos/logo.svg')"
             alt="Logo"
           />
         </div>

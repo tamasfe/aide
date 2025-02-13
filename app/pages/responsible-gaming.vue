@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const { t } = useI18n();
+const url = useRequestURL();
 
 useHead({
   title: t("page.responsible_gaming"),
@@ -14,7 +15,7 @@ useHead({
   >
     <h4>1. Commitment to Responsible Gaming</h4>
 
-    <p>GiroBet.com is committed to providing an excellent and enjoyable gaming experience while recognizing our responsibility to prevent and mitigate problematic gambling behaviors. We encourage all players to engage in gaming as a form of entertainment and to be mindful of their gaming habits.</p>
+    <p>{{ url.host }} is committed to providing an excellent and enjoyable gaming experience while recognizing our responsibility to prevent and mitigate problematic gambling behaviors. We encourage all players to engage in gaming as a form of entertainment and to be mindful of their gaming habits.</p>
 
     <h4>2. Guidelines for Responsible Gaming</h4>
 
@@ -56,7 +57,7 @@ useHead({
 
     <h4>5. Self-Exclusion and Cooling-Off Periods</h4>
 
-    <p>If you are concerned about your gambling behavior, GiroBet.com offers tools to help you manage or take a break from gaming:</p>
+    <p>If you are concerned about your gambling behavior, {{ url.host }} offers tools to help you manage or take a break from gaming:</p>
 
     <ul>
       <li><strong>Self-Exclusion:</strong> You can request to exclude yourself from your gaming account for a minimum of 30 days. During this period, your account will be locked, and no promotional material will be sent to you.</li>
@@ -67,11 +68,11 @@ useHead({
 
     <h4>6. Monitoring and Intervention</h4>
 
-    <p>GiroBet.com utilizes advanced monitoring tools to detect and assess potentially problematic gambling behaviors. This includes real-time analysis of gaming patterns, spending habits, and self-assessment data. If our system identifies risky behavior, we may reach out to offer support, provide resources, or suggest self-exclusion options. Our aim is to ensure a safe and responsible gaming environment for all players.</p>
+    <p>{{ url.host }} utilizes advanced monitoring tools to detect and assess potentially problematic gambling behaviors. This includes real-time analysis of gaming patterns, spending habits, and self-assessment data. If our system identifies risky behavior, we may reach out to offer support, provide resources, or suggest self-exclusion options. Our aim is to ensure a safe and responsible gaming environment for all players.</p>
 
     <h4>7. Preventing Underage Gambling</h4>
 
-    <p>GiroBet.com strictly prohibits underage gambling. Players must be of legal gambling age in their jurisdiction (at least 18+) to create an account and play. It is the responsibility of the player to ensure they meet the legal age requirements of their location. To assist in preventing underage gambling, we advise parents and guardians to:</p>
+    <p>{{ url.host }} strictly prohibits underage gambling. Players must be of legal gambling age in their jurisdiction (at least 18+) to create an account and play. It is the responsibility of the player to ensure they meet the legal age requirements of their location. To assist in preventing underage gambling, we advise parents and guardians to:</p>
 
     <ul>
       <li><strong>Protect Access:</strong> Use strong passwords for computers, mobiles, and tablets.</li>

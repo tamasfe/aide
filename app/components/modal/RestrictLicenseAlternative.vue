@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const open = ref(true);
+const siteStore = useSiteStore();
 
 // DESIGN STATUS:       ✅
 // ARCHITECTURE STATUS: ✴️
@@ -31,7 +32,7 @@ const allowedDomain = ref(new URL(props.allowedUrl).hostname);
     :unclosable="true"
     :logo="false"
     banner="top"
-    banner-top="/assets/girobet/images/banners/jurisdiction_horizontal.jpg"
+    :banner-top="siteStore.getAssetPath('images/banners/jurisdiction_horizontal.jpg')"
   >
     <div class="flex flex-col items-center gap-4">
       <h1 class="text-2xl font-semibold text-center">

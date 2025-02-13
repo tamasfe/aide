@@ -32,7 +32,7 @@
   "api_server": {
   },
   "welcome_form": {
-    "title": "Welcome To Girobet",
+    "title": "Welcome To {siteName}",
     "description": "Start winning..."
   },
   "button": {
@@ -230,15 +230,15 @@
   },
   "play": {
     "login_to_play": "Please Login to Play",
-    "share_subject": "Play in Girobet",
-    "share_body": "Check out the game: {game} in Girobet"
+    "share_subject": "Play in {siteName}",
+    "share_body": "Check out the game: {game} in {siteName}"
   },
   "grid": {
     "game_count": "{count} Games",
     "providers": "🏆 Game Studios"
   },
   "page": {
-    "home": "GiroBet · Daily Cash Prizes and VIP Experience",
+    "home": "{siteName} · Daily Cash Prizes and VIP Experience",
     "aviator": "Aviator",
     "slots": "Slots",
     "live_casino": "Live Casino",
@@ -307,13 +307,12 @@
     "no_results": "No Results"
   },
   "footer": {
-    "summary": "Welcome to The GiroBet Experience the ultimate thrill of online gambling with us. Play slots, poker, blackjack, and more. Win big with our bonuses and promotions.",
+    "summary": "Welcome to The {siteName} Experience the ultimate thrill of online gambling with us. Play slots, poker, blackjack, and more. Win big with our bonuses and promotions.",
     "popular": "Popular",
-    "girobet": "GiroBet",
     "legal": "Legal",
     "social_media": "Social Media",
     "legal_notice": "Prior to engaging in any online gambling activities on our platform, it is imperative to verify that such actions are legally permissible within your jurisdiction. It is your responsibility to ascertain and adhere to the laws and regulations governing online gambling in your country or region.",
-    "copyright": "© {year} GiroBet. All Rights Reserved.",
+    "copyright": "© {year} {siteName}. All Rights Reserved.",
     "play_responsibly": "Play Responsibly",
     "responsible_gaming": "Responsible Gaming",
     "user_account_language": "Your account language is set to {language}.",
@@ -338,7 +337,7 @@
     },
     "settings": {
       "account": {
-        "id_description": "Use this ID when you need to share with 3rd parties (including GiroBet Support) so your account is always secure.",
+        "id_description": "Use this ID when you need to share with 3rd parties (including our Support) so your account is always secure.",
         "account_details": "Account Details",
         "username": "Username",
         "username_description": "Usernames are public and will show in leaderboards.",
@@ -363,7 +362,7 @@
         "language": "Language",
         "time_zone": "Time Zone",
         "close_account": "Close Account",
-        "close_account_warning": "Your account will be deactivated and you will be excluded from any further communications from GiroBet."
+        "close_account_warning": "Your account will be deactivated and you will be excluded from any further communications from us."
       },
       "preferences": {
         "bonuses": "Do You Love Bonuses?",

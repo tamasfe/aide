@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const { t } = useI18n();
+const siteStore = useSiteStore();
 const open = ref(true);
 
 // DESIGN STATUS:       ✅
@@ -23,7 +24,7 @@ const onNotify = () => {
     country: props.blockedCountry,
     blockedDomain: capitalizeBrandDomain(props.blockedDomain),
   });
-  window.location.href = `mailto:support@girobet.com?subject=${encodeURIComponent(notifyMeEmailSubject)}`;
+  window.location.href = `${siteStore.supportEmail}?subject=${encodeURIComponent(notifyMeEmailSubject)}`;
 };
 </script>
 
@@ -34,7 +35,7 @@ const onNotify = () => {
     :unclosable="true"
     :logo="false"
     banner="top"
-    banner-top="/assets/girobet/images/banners/jurisdiction_horizontal.jpg"
+    :banner-top="siteStore.getAssetPath('images/banners/jurisdiction_horizontal.jpg')"
   >
     <div class="flex flex-col items-center gap-4">
       <h1 class="text-2xl font-semibold text-center">

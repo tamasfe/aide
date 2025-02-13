@@ -1,10 +1,11 @@
 <script setup lang="ts">
 const { $dependencies } = useNuxtApp();
+const siteStore = useSiteStore();
 </script>
 
 <template>
   <div class="flex flex-col items-center justify-center gap-y-3 text-center">
-    <h1 class="text-2xl md:text-3xl font-semibold text-white">{{ $t("welcome_form.title") }}</h1>
+    <h1 class="text-2xl md:text-3xl font-semibold text-white">{{ $t("welcome_form.title", { siteName: siteStore.name }) }}</h1>
 
     <BaseButton
       variant="primary"

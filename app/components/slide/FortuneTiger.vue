@@ -1,4 +1,6 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const siteStore = useSiteStore();
+</script>
 
 <template>
   <BaseLink
@@ -7,7 +9,7 @@
     }"
   >
     <NuxtImg
-      src="/assets/girobet/images/slides/fortune-tiger.jpg"
+      :src="siteStore.getAssetPath('images/slides/fortune-tiger.jpg')"
       alt=""
       class="rounded-sm md:rounded-lg object-cover object-center w-full h-full"
     />

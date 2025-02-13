@@ -5,6 +5,7 @@
 // TRANSLATION STATUS:  ✅
 const { $dependencies } = useNuxtApp();
 const userStore = useUserStore();
+const siteStore = useSiteStore();
 
 const emit = defineEmits([
   "click:menu",
@@ -38,18 +39,18 @@ const emit = defineEmits([
               <NuxtImg
                 v-if="!userStore.isAuthenticated"
                 class="h-7"
-                src="/assets/girobet/images/logos/logo.svg"
+                :src="siteStore.getAssetPath('images/logos/logo.svg')"
                 alt="Logo"
               />
               <template v-else>
                 <NuxtImg
                   class="h-7 sm:hidden"
-                  src="/assets/girobet/images/logos/logo-sm.svg"
+                  :src="siteStore.getAssetPath('images/logos/logo-sm.svg')"
                   alt="Logo"
                 />
                 <NuxtImg
                   class="hidden sm:block h-7"
-                  src="/assets/girobet/images/logos/logo.svg"
+                  :src="siteStore.getAssetPath('images/logos/logo.svg')"
                   alt="Logo"
                 />
               </template>

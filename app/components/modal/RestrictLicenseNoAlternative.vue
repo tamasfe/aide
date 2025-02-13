@@ -5,7 +5,10 @@ const open = ref(true);
 // ARCHITECTURE STATUS: ✴️
 //   * we need to load the appropriate domain
 // TRANSLATION STATUS:  ✅
-const blockedDomain = ref("girobet.com");
+
+const url = useRequestURL();
+const siteStore = useSiteStore();
+const blockedDomain = url.host;
 
 defineProps({
   blockedCountry: {
@@ -22,7 +25,7 @@ defineProps({
     :unclosable="true"
     :logo="false"
     banner="top"
-    banner-top="/assets/girobet/images/banners/jurisdiction_horizontal.jpg"
+    :banner-top="siteStore.getAssetPath('images/banners/jurisdiction_horizontal.jpg')"
   >
     <div class="flex flex-col items-center gap-4">
       <h1 class="text-2xl font-semibold text-center">

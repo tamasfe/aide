@@ -2,6 +2,7 @@
 import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
 
 const { $dependencies } = useNuxtApp();
+const siteStore = useSiteStore();
 
 const props = defineProps<{
   open: boolean;
@@ -32,7 +33,7 @@ const createNewDeposit = async () => {
     :open="open"
     :logo="false"
     banner="top"
-    banner-top="/assets/girobet/images/banners/deposit_horizontal.jpg"
+    :banner-top="siteStore.getAssetPath('images/banners/deposit_horizontal.jpg')"
   >
     <FormDepositConfirm
       v-if="payment"

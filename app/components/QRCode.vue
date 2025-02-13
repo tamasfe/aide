@@ -28,8 +28,10 @@ const props = defineProps({
   },
 });
 
+const siteStore = useSiteStore();
+
 const imageSettings = {
-  src: "/assets/girobet/images/logos/logo-g-black-bg.png",
+  src: siteStore.getAssetPath("images/logos/logo-g-black-bg.png"),
   height: Math.abs(props.size / 5),
   width: Math.abs(props.size / 5),
   excavate: true,

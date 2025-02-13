@@ -1,9 +1,10 @@
 <script setup lang="ts">
 const { $dependencies } = useNuxtApp();
 const { t } = useI18n();
+const siteStore = useSiteStore();
 
 useHead({
-  title: t("page.home"),
+  title: t("page.home", { siteName: siteStore.name }),
 });
 
 const ENABLE_SERVER_SIDE_RENDERING = true;

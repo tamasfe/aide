@@ -21,6 +21,8 @@ const props = defineProps<{
   createNewDeposit: () => Promise<string>;
 }>();
 
+const siteStore = useSiteStore();
+
 const COUNTDOWN_MS = 5 * 60 * 1000;
 const countdownHasEnded = ref(false);
 const loadingGenerateNewCode = ref(false);
@@ -51,7 +53,7 @@ const onClickGenerateNewCode = async () => {
       </div>
       <NuxtImg
         class="w-[6rem] h-auto"
-        src="/assets/girobet/images/logos/pix.svg"
+        :src="siteStore.getAssetPath('images/logos/pix.svg')"
         alt="Pix"
       />
     </div>

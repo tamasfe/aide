@@ -4,6 +4,8 @@ defineProps<{
   token: string;
 }>();
 
+const siteStore = useSiteStore();
+
 const { $dependencies } = useNuxtApp();
 const onClosed = () => {
   $dependencies.users.ui.emitCommandCloseUserActionModal.handle();
@@ -15,8 +17,8 @@ const onClosed = () => {
     id="base-modal-recover-password"
     :open="open"
     banner="left"
-    banner-left="/assets/girobet/images/banners/login_vertical.jpg"
-    banner-top="/assets/girobet/images/banners/login_horizontal.jpg"
+    :banner-left="siteStore.getAssetPath('images/banners/login_vertical.jpg')"
+    :banner-top="siteStore.getAssetPath('images/banners/login_horizontal.jpg')"
     @close="onClosed"
   >
     <FormRecoverPassword :token="token" />

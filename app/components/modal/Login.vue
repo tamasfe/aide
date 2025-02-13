@@ -7,7 +7,7 @@ defineProps<{
 }>();
 
 const loading = ref(false);
-
+const siteStore = useSiteStore();
 const { $dependencies } = useNuxtApp();
 const onClosed = () => {
   $dependencies.users.ui.emitCommandCloseUserActionModal.handle();
@@ -20,8 +20,8 @@ const onClosed = () => {
     :open="open"
     :disabled="loading"
     banner="left"
-    banner-left="/assets/girobet/images/banners/login_vertical.jpg"
-    banner-top="/assets/girobet/images/banners/login_horizontal.jpg"
+    :banner-left="siteStore.getAssetPath('images/banners/login_vertical.jpg')"
+    :banner-top="siteStore.getAssetPath('images/banners/login_horizontal.jpg')"
     @close="onClosed"
   >
     <FormLogin />

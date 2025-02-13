@@ -7,6 +7,7 @@ defineProps<{
   open: boolean;
 }>();
 
+const siteStore = useSiteStore();
 const { $dependencies } = useNuxtApp();
 
 const ENABLE_SERVER_SIDE_RENDERING = false;
@@ -25,8 +26,8 @@ const onClosed = () => {
     :open="open"
     :close-on-click-outside="false"
     banner="left"
-    banner-left="/assets/girobet/images/banners/register_vertical.jpg"
-    banner-top="/assets/girobet/images/banners/register_horizontal.jpg"
+    :banner-left="siteStore.getAssetPath('images/banners/register_vertical.jpg')"
+    :banner-top="siteStore.getAssetPath('images/banners/register_horizontal.jpg')"
     @close="onClosed"
   >
     <FormRegister

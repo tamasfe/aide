@@ -4,17 +4,18 @@
 // ARCHITECTURE STATUS: ✴️
 //   * logo should be refactored out like the <AppHeader> component
 // TRANSLATION STATUS:  ✅
+const siteStore = useSiteStore();
 
 const year = ref(new Date().getFullYear());
 
 const logos = [
   {
-    src: "/assets/girobet/images/logos/play-responsibly.svg",
+    src: siteStore.getAssetPath("images/logos/play-responsibly.svg"),
     alt: "footer.play_responsibly",
     key: "play-responsibly",
   },
   {
-    src: "/assets/girobet/images/logos/responsible-gaming.svg",
+    src: siteStore.getAssetPath("images/logos/responsible-gaming.svg"),
     alt: "footer.responsible_gaming",
     key: "responsible-gaming",
   },
@@ -34,12 +35,12 @@ const scrollToTop = () => {
       <div class="flex-1 md:max-w-xs lg:max-w-sm flex flex-col items-center md:items-start space-y-6 md:space-y-8">
         <div class="w-40">
           <NuxtImg
-            src="/assets/girobet/images/logos/logo-unsaturated.svg"
+            :src="siteStore.getAssetPath('images/logos/logo-unsaturated.svg')"
             alt="Logo"
             class="w-full object-cover"
           />
         </div>
-        <p>{{ $t("footer.summary") }}</p>
+        <p>{{ $t("footer.summary", { siteName: siteStore.name }) }}</p>
         <div class="w-full">
           <LocaleSelect class="sm:w-[12rem]" />
         </div>
@@ -55,7 +56,7 @@ const scrollToTop = () => {
         ]"
       />
       <FooterColumn
-        :title="$t('footer.girobet')"
+        :title="siteStore.name"
         :links="[
           { title: $t('page.affiliate_program'), to: { name: 'affiliate-program' } },
           { title: $t('page.faq'), to: { name: 'faq' } },
@@ -102,7 +103,7 @@ const scrollToTop = () => {
           {{ $t("footer.legal_notice") }}
         </div>
         <div class="text-center text-sm">
-          {{ $t("footer.copyright", { year }) }}
+          {{ $t("footer.copyright", { year, siteName: siteStore.name }) }}
         </div>
       </div>
       <BaseButton

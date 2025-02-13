@@ -7,6 +7,7 @@ import type { SupportedCountryFlagCode } from "~/types/constants";
 // TRANSLATION STATUS:  ✅
 
 const { $dependencies } = useNuxtApp();
+const siteStore = useSiteStore();
 
 const onClosed = () => {
   $dependencies.users.ui.emitCommandCloseUserActionModal.handle();
@@ -33,7 +34,7 @@ defineProps<{
     :disabled="false"
     :logo="false"
     banner="top"
-    banner-top="/assets/girobet/images/banners/deposit_horizontal.jpg"
+    :banner-top="siteStore.getAssetPath('images/banners/deposit_horizontal.jpg')"
     @close="onClosed"
   >
     <template #title>
