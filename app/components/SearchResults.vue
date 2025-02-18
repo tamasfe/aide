@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // 2 alternates if ever needed...
-import { useThrottleFn } from "@vueuse/core";
+import { debouncedWatch } from "@vueuse/core";
 // import { debouncedWatch } from "@vueuse/core";
 
 const { $dependencies } = useNuxtApp();
@@ -88,8 +88,8 @@ const loading = computed(() => gamesLoading.value || providersLoading.value);
 const noResults = computed(() => games.value.length === 0 && providers.value.length === 0);
 
 // 2 alternate methods if ever needed
-watch(() => query, useThrottleFn(onQueryChange, 150, true, true, true), { immediate: true });
-// debouncedWatch(() => query, onQueryChange, { debounce: 150, immediate: true });
+// watch(() => query, useThrottleFn(onQueryChange, 150, true, true, true), { immediate: true });
+debouncedWatch(() => query, onQueryChange, { debounce: 150, immediate: true });
 
 const onClickLink = () => {
   $dependencies.users.ui.emitCommandCloseUserActionModal.handle();
