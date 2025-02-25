@@ -82,8 +82,8 @@ const emit = defineEmits<{
       </div>
       <div class="order-1 col-span-full md:order-none md:col-span-1 self-start w-full flex justify-between md:justify-end items-center text-subtle font-semibold gap-4">
         <ButtonShare
-          :subject="$t('play.share_subject', { siteName: siteStore.name })"
-          :body="$t('play.share_body', { game: title, siteName: siteStore.name })"
+          :subject="$t('play.share_subject', { siteName: siteStore.site.name })"
+          :body="$t('play.share_body', { game: title, siteName: siteStore.site.name })"
           :url="url.toString()"
           class="hover:text-subtle-light"
         />

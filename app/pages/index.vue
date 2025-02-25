@@ -4,7 +4,7 @@ const { t } = useI18n();
 const siteStore = useSiteStore();
 
 useHead({
-  title: t("page.home", { siteName: siteStore.name }),
+  title: t("page.home", { siteName: siteStore.site.name }),
 });
 
 const ENABLE_SERVER_SIDE_RENDERING = true;

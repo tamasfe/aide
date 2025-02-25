@@ -16,7 +16,7 @@ useHead({
   >
     <p><strong>Introduction</strong></p>
     <p>At {{ url.host }}, protecting the privacy and personal data of our clients is a top priority. This Privacy Policy outlines the types of information we collect, how we process it, and the measures we take to ensure its protection, in compliance with the General Data Protection Regulation (GDPR), the Brazilian General Data Protection Law (LGPD), Canadian privacy laws, and international privacy laws.</p>
-    <p>If you have any questions or need further clarification about our Privacy Policy, please reach out to us via email at <a :href="'mailto:' + siteStore.supportEmail">{{ siteStore.supportEmail }}</a>.</p>
+    <p>If you have any questions or need further clarification about our Privacy Policy, please reach out to us via email at <a :href="'mailto:' + siteStore.site.supportEmail">{{ siteStore.site.supportEmail }}</a>.</p>
 
     <p><strong>Scope</strong></p>
     <p>This Privacy Policy applies to all data processing activities carried out by {{ url.host }} and is valid for all clients regarding the information they share with us, whether online or offline, and across all jurisdictions in which we operate.</p>
@@ -71,7 +71,7 @@ useHead({
       <li><strong>Right to Data Portability</strong>: Request that your data be transferred to another organization or directly to you under certain conditions.</li>
       <li><strong>Right to Withdraw Consent</strong>: You may withdraw your consent to our processing of your data at any time, without affecting the lawfulness of processing based on consent before its withdrawal.</li>
     </ol>
-    <p>To exercise any of these rights, please contact us at <a :href="`mailto:${siteStore.supportEmail}`">{{ siteStore.supportEmail }}</a>. We will respond to your request within the applicable legal timeframe.</p>
+    <p>To exercise any of these rights, please contact us at <a :href="`mailto:${siteStore.site.supportEmail}`">{{ siteStore.site.supportEmail }}</a>. We will respond to your request within the applicable legal timeframe.</p>
 
     <p><strong>Children’s Privacy</strong></p>
     <p>{{ url.host }} is committed to protecting the privacy of children. We do not knowingly collect personal information from children under the age of 18. If you believe your child has provided us with personal data, please contact us immediately, and we will take steps to remove such information from our records.</p>
@@ -88,6 +88,6 @@ useHead({
     <p><strong>Contact Us</strong></p>
     <p>For any questions or concerns regarding this Privacy Policy or our data processing practices, please contact us at:</p>
 
-    <p><strong>Email:</strong> <a :href="`mailto:${siteStore.supportEmail}`">{{ siteStore.supportEmail }}</a></p>
+    <p><strong>Email:</strong> <a :href="`mailto:${siteStore.site.supportEmail}`">{{ siteStore.site.supportEmail }}</a></p>
   </AppPage>
 </template>

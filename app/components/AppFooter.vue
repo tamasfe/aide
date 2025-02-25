@@ -40,7 +40,7 @@ const scrollToTop = () => {
             class="w-full object-cover"
           />
         </div>
-        <p>{{ $t("footer.summary", { siteName: siteStore.name }) }}</p>
+        <p>{{ $t("footer.summary", { siteName: siteStore.site.name }) }}</p>
         <div class="w-full">
           <LocaleSelect class="sm:w-[12rem]" />
         </div>
@@ -56,7 +56,7 @@ const scrollToTop = () => {
         ]"
       />
       <FooterColumn
-        :title="siteStore.name"
+        :title="siteStore.site.name"
         :links="[
           { title: $t('page.affiliate_program'), to: { name: 'affiliate-program' } },
           { title: $t('page.faq'), to: { name: 'faq' } },
@@ -103,7 +103,7 @@ const scrollToTop = () => {
           {{ $t("footer.legal_notice") }}
         </div>
         <div class="text-center text-sm">
-          {{ $t("footer.copyright", { year, siteName: siteStore.name }) }}
+          {{ $t("footer.copyright", { year, siteName: siteStore.site.name }) }}
         </div>
       </div>
       <BaseButton

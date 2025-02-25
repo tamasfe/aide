@@ -1,5 +1,6 @@
 import type { SitesRepositoryI } from "../domain/SitesRepository";
 import type { Site } from "../domain/Site";
+import type { License } from "../domain/License";
 import type { LoggerI } from "~/packages/logger/Logger";
 import { success, type Result } from "~/packages/result";
 import type { InfrastructureError } from "~/packages/result/infrastructure-error";
@@ -15,5 +16,16 @@ export class SitesRepositoryDumb implements SitesRepositoryI {
       identifier: "girobet",
       domains: [],
     });
+  }
+
+  public async findMatchedLicenses(): Promise<Result<License[], InfrastructureError>> {
+    this.logger.debug("findLicenses called");
+    return success([
+      {
+        id: 1,
+        name: "Anjouan",
+        rootJurisdiction: "KM" as const,
+      },
+    ]);
   }
 }
