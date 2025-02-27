@@ -121,101 +121,23 @@ useHead({
     </AppPage>
 
     <AppPage
-      :title="$t('page.kyc_policy')"
+      :title="$t('kyc_policy.title')"
       version="2.0"
-      date="September 1, 2024"
+      date="2025-02-19"
     >
-      <h4>1. Objective</h4>
+      <p class="whitespace-pre-wrap">
+        {{ $t("kyc_policy.content_1") }}
+      </p>
 
-      <p>{{ url.host }} is committed to adhering to "Know Your Customer" (KYC) principles to prevent financial crime and money laundering. Our policy ensures thorough client identification, due diligence, and ongoing monitoring in compliance with global standards.</p>
+      <h4>{{ $t("kyc_policy.subtitle_2") }}</h4>
+      <p class="whitespace-pre-wrap">
+        {{ $t("kyc_policy.content_2") }}
+      </p>
 
-      <h4>2. KYC Documentation and Verification</h4>
-
-      <p>{{ url.host }} reserves the right to request any KYC documentation necessary to verify the identity and location of users at any time. Service restrictions, payment holds, or withdrawal delays may be applied until identity verification is satisfactorily completed.</p>
-
-      <h4>3. Risk-Based Approach</h4>
-
-      <p>We employ a dynamic, risk-based approach to KYC, performing due diligence checks tailored to the user's risk profile:</p>
-      <ul>
-        <li><strong>Simplified Due Diligence (SDD):</strong> For low-risk transactions below specific thresholds.</li>
-        <li><strong>Customer Due Diligence (CDD):</strong> Standard verification for most users.</li>
-        <li><strong>Enhanced Due Diligence (EDD):</strong> For high-risk customers, large transactions, or suspicious activity.</li>
-      </ul>
-
-      <h4>4. Full KYC Process</h4>
-
-      <p> When a user’s aggregate lifetime deposits exceed EUR 5,000, requests a withdrawal, or engages in suspicious activity, a full KYC process is mandatory. This includes:</p>
-      <ol>
-        <li><strong>Proof of ID:</strong> A government-issued photo ID, potentially requiring front and back images.</li>
-        <li><strong>Selfie Verification:</strong> A selfie of the user holding the ID document.</li>
-        <li><strong>Proof of Address</strong> A bank statement or utility bill issued within the last three months.</li>
-      </ol>
-
-      <h4>5. Document Verification Guidelines</h4>
-
-      <ol>
-        <li>
-          <strong>Proof of ID:</strong>
-          <ul>
-            <li>Must include a clear signature.</li>
-            <li>Issued by a non-restricted country.</li>
-            <li>Full name must match the user’s account.</li>
-            <li>Must not expire within the next three months.</li>
-            <li>The user must be over 18 years of age.</li>
-          </ul>
-        </li>
-        <li>
-          <strong>Countries Considered Restricted for Proof of ID:</strong>
-          <ul>
-            <li>Austria</li>
-            <li>France and its territories</li>
-            <li>Germany</li>
-            <li>Netherlands and its territories</li>
-            <li>Spain</li>
-            <li>Union of Comoros</li>
-            <li>United Kingdom</li>
-            <li>USA and its territories</li>
-            <li>All FATF Blacklisted countries, and any other jurisdictions deemed prohibited by the Anjouan Offshore Financial Authority.</li>
-          </ul>
-        </li>
-        <li>
-          <strong>Proof of Address:</strong>
-          <ul>
-            <li>Must be a bank statement or utility bill.</li>
-            <li>Issued by a non-restricted country.</li>
-            <li>Full name must match the user’s name as in the proof of ID.</li>
-            <li>The document must be issued within the last three months.</li>
-          </ul>
-        </li>
-        <li>
-          <strong>Countries Considered Restricted for Proof of Address:</strong>
-          <ul>
-            <li>Austria</li>
-            <li>France and its territories</li>
-            <li>Germany</li>
-            <li>Netherlands and its territories</li>
-            <li>Spain</li>
-            <li>Union of Comoros</li>
-            <li>United Kingdom</li>
-            <li>USA and its territories</li>
-            <li>All FATF Blacklisted countries, and any other jurisdictions deemed prohibited by the Anjouan Offshore Financial Authority.</li>
-          </ul>
-        </li>
-        <li>
-          <strong>Selfie with ID:</strong>
-          <ul>
-            <li>The person in the selfie must be the same as in the ID document.</li>
-            <li>The ID document in the selfie must match the one provided for Proof of ID, including the photo and ID number.</li>
-          </ul>
-        </li>
-      </ol>
-
-      <h4>6. Notes on the KYC Process</h4>
-
-      <ol>
-        <li><strong>Failed Verification:</strong> If the KYC process is unsuccessful, the reason will be documented, and a support ticket will be created in the system. The ticket number, along with an explanation, will be communicated to the user.</li>
-        <li><strong>Account Approval</strong> Once all proper documents are in our possession and verified, the account will be approved.</li>
-      </ol>
+      <h4>{{ $t("kyc_policy.subtitle_3") }}</h4>
+      <p class="whitespace-pre-wrap">
+        {{ $t("kyc_policy.content_3") }}
+      </p>
     </AppPage>
   </div>
 </template>

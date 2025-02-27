@@ -5,6 +5,13 @@
 //   * logo should be refactored out like the <AppHeader> component
 // TRANSLATION STATUS:  ✅
 const siteStore = useSiteStore();
+const url = useRequestURL();
+
+/**
+ * This license number should be given by the backend and transported through the siteStore.getActiveLicense().
+ * Until the Backend returns it: we use a hardcoded value.
+ */
+const LICENSE_NUMBER = "ALSI-082309005-FI4";
 
 const year = ref(new Date().getFullYear());
 
@@ -100,6 +107,8 @@ const scrollToTop = () => {
     <section class="giro__container relative flex flex-col text-subtle">
       <div class="flex flex-col items-center space-y-5 md:space-y-8">
         <div class="max-w-[42rem] lg:max-w-[52rem] text-sm sm:text-center">
+          {{ $t("footer.license_active", { licenseNumber: LICENSE_NUMBER, host: url.host, supportEmail: siteStore.site.supportEmail }) }}
+          <br><br>
           {{ $t("footer.legal_notice") }}
         </div>
         <div class="text-center text-sm">

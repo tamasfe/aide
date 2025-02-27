@@ -125,13 +125,13 @@ export default defineNuxtConfig({
       {
         language: "en-US",
         code: "en-us",
-        file: "en-US.json",
+        files: ["en-US.json", "en-US.kyc_policy.yml"],
         isCatchallLocale: true,
       },
       {
         language: "pt-BR",
         code: "pt-br",
-        file: "pt-BR.json",
+        files: ["pt-BR.json", "pt-BR.kyc_policy.yml"],
       },
     ],
     detectBrowserLanguage: {
