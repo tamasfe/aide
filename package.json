@@ -29,7 +29,7 @@
     "@opentelemetry/sdk-trace-base": "^1.30.0",
     "@opentelemetry/sdk-trace-node": "^1.30.0",
     "@pinia/nuxt": "^0.9.0",
-    "@sentry/nuxt": "^8.47.0",
+    "@sentry/nuxt": "^9.2.0",
     "@sentry/opentelemetry": "^8.47.0",
     "@tanstack/vue-table": "8.19.3",
     "@vee-validate/nuxt": "^4.15.0",
@@ -87,5 +87,10 @@
     "typescript": "~5.6.3",
     "vitest": "^2.1.8",
     "vue-tsc": "^2.2.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "@vercel/nft": "^0.27.4"
+    }
   }
 }
