@@ -1,7 +1,7 @@
 use std::{borrow::Cow, convert::Infallible, rc::Rc, sync::Arc};
 
 use crate::{
-    openapi::{MediaType, Operation, RequestBody, Response},
+    openapi::{MediaType, Operation, RequestBody, Response, StatusCode},
     operation::set_body,
     util::no_content_response,
     OperationInput,
@@ -27,7 +27,7 @@ where
     fn inferred_early_responses(
         ctx: &mut crate::generate::GenContext,
         operation: &mut Operation,
-    ) -> Vec<(Option<u16>, Response)> {
+    ) -> Vec<(Option<StatusCode>, Response)> {
         T::inferred_early_responses(ctx, operation)
     }
 }
@@ -49,7 +49,7 @@ where
     fn inferred_responses(
         ctx: &mut crate::generate::GenContext,
         operation: &mut Operation,
-    ) -> Vec<(Option<u16>, Response)> {
+    ) -> Vec<(Option<StatusCode>, Response)> {
         let mut responses = T::inferred_responses(ctx, operation);
         responses.extend(E::inferred_responses(ctx, operation));
         responses
@@ -106,7 +106,7 @@ where
     fn inferred_responses(
         ctx: &mut crate::generate::GenContext,
         operation: &mut Operation,
-    ) -> Vec<(Option<u16>, Response)> {
+    ) -> Vec<(Option<StatusCode>, Response)> {
         T::inferred_responses(ctx, operation)
     }
 }
@@ -136,7 +136,7 @@ where
     fn inferred_responses(
         ctx: &mut crate::generate::GenContext,
         operation: &mut Operation,
-    ) -> Vec<(Option<u16>, Response)> {
+    ) -> Vec<(Option<StatusCode>, Response)> {
         T::inferred_responses(ctx, operation)
     }
 }
@@ -166,7 +166,7 @@ where
     fn inferred_responses(
         ctx: &mut crate::generate::GenContext,
         operation: &mut Operation,
-    ) -> Vec<(Option<u16>, Response)> {
+    ) -> Vec<(Option<StatusCode>, Response)> {
         T::inferred_responses(ctx, operation)
     }
 }
@@ -196,7 +196,7 @@ where
     fn inferred_responses(
         ctx: &mut crate::generate::GenContext,
         operation: &mut Operation,
-    ) -> Vec<(Option<u16>, Response)> {
+    ) -> Vec<(Option<StatusCode>, Response)> {
         T::inferred_responses(ctx, operation)
     }
 }
@@ -239,9 +239,9 @@ impl OperationOutput for String {
     fn inferred_responses(
         ctx: &mut crate::generate::GenContext,
         operation: &mut Operation,
-    ) -> Vec<(Option<u16>, Response)> {
+    ) -> Vec<(Option<StatusCode>, Response)> {
         if let Some(res) = Self::operation_response(ctx, operation) {
-            Vec::from([(Some(200), res)])
+            Vec::from([(Some(StatusCode::Code(200)), res)])
         } else {
             Vec::new()
         }
@@ -261,7 +261,7 @@ impl OperationOutput for &str {
     fn inferred_responses(
         ctx: &mut crate::generate::GenContext,
         operation: &mut Operation,
-    ) -> Vec<(Option<u16>, Response)> {
+    ) -> Vec<(Option<StatusCode>, Response)> {
         String::inferred_responses(ctx, operation)
     }
 }
@@ -279,7 +279,7 @@ impl OperationOutput for Cow<'_, str> {
     fn inferred_responses(
         ctx: &mut crate::generate::GenContext,
         operation: &mut Operation,
-    ) -> Vec<(Option<u16>, Response)> {
+    ) -> Vec<(Option<StatusCode>, Response)> {
         String::inferred_responses(ctx, operation)
     }
 }
@@ -297,9 +297,9 @@ impl OperationOutput for () {
     fn inferred_responses(
         ctx: &mut crate::generate::GenContext,
         operation: &mut Operation,
-    ) -> Vec<(Option<u16>, Response)> {
+    ) -> Vec<(Option<StatusCode>, Response)> {
         if let Some(res) = Self::operation_response(ctx, operation) {
-            Vec::from([(Some(ctx.no_content_status), res)])
+            Vec::from([(Some(StatusCode::Code(ctx.no_content_status)), res)])
         } else {
             Vec::new()
         }
@@ -347,9 +347,9 @@ impl OperationOutput for Vec<u8> {
     fn inferred_responses(
         ctx: &mut crate::generate::GenContext,
         operation: &mut Operation,
-    ) -> Vec<(Option<u16>, Response)> {
+    ) -> Vec<(Option<StatusCode>, Response)> {
         if let Some(res) = Self::operation_response(ctx, operation) {
-            Vec::from([(Some(200), res)])
+            Vec::from([(Some(StatusCode::Code(200)), res)])
         } else {
             Vec::new()
         }
@@ -378,7 +378,7 @@ impl OperationOutput for &[u8] {
     fn inferred_responses(
         ctx: &mut crate::generate::GenContext,
         operation: &mut Operation,
-    ) -> Vec<(Option<u16>, Response)> {
+    ) -> Vec<(Option<StatusCode>, Response)> {
         Vec::<u8>::inferred_responses(ctx, operation)
     }
 }
@@ -405,7 +405,7 @@ impl OperationOutput for Cow<'_, [u8]> {
     fn inferred_responses(
         ctx: &mut crate::generate::GenContext,
         operation: &mut Operation,
-    ) -> Vec<(Option<u16>, Response)> {
+    ) -> Vec<(Option<StatusCode>, Response)> {
         Vec::<u8>::inferred_responses(ctx, operation)
     }
 }
