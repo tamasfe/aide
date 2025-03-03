@@ -235,7 +235,7 @@ macro_rules! method_router_top_level {
 fn set_inferred_response(
     ctx: &mut GenContext,
     operation: &mut Operation,
-    status: Option<u16>,
+    status: Option<StatusCode>,
     res: Response,
 ) {
     if operation.responses.is_none() {
@@ -246,12 +246,10 @@ fn set_inferred_response(
 
     match status {
         Some(status) => {
-            if responses.responses.contains_key(&StatusCode::Code(status)) {
-                ctx.error(Error::InferredResponseConflict(status));
+            if responses.responses.contains_key(&status) {
+                ctx.error(Error::InferredResponseConflict(status.to_string()));
             } else {
-                responses
-                    .responses
-                    .insert(StatusCode::Code(status), ReferenceOr::Item(res));
+                responses.responses.insert(status, ReferenceOr::Item(res));
             }
         }
         None => {

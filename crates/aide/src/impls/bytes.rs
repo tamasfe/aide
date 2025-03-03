@@ -2,7 +2,7 @@ use bytes::{Bytes, BytesMut};
 use indexmap::IndexMap;
 
 use crate::{
-    openapi::{MediaType, Operation, RequestBody, Response},
+    openapi::{MediaType, Operation, RequestBody, Response, StatusCode},
     operation::set_body,
     OperationInput, OperationOutput,
 };
@@ -57,9 +57,9 @@ impl OperationOutput for Bytes {
     fn inferred_responses(
         ctx: &mut crate::generate::GenContext,
         operation: &mut Operation,
-    ) -> Vec<(Option<u16>, Response)> {
+    ) -> Vec<(Option<StatusCode>, Response)> {
         if let Some(res) = Self::operation_response(ctx, operation) {
-            Vec::from([(Some(200), res)])
+            Vec::from([(Some(StatusCode::Code(200)), res)])
         } else {
             Vec::new()
         }
@@ -79,7 +79,7 @@ impl OperationOutput for BytesMut {
     fn inferred_responses(
         ctx: &mut crate::generate::GenContext,
         operation: &mut Operation,
-    ) -> Vec<(Option<u16>, Response)> {
+    ) -> Vec<(Option<StatusCode>, Response)> {
         Bytes::inferred_responses(ctx, operation)
     }
 }
