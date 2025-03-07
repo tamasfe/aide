@@ -84,6 +84,17 @@ macro_rules! impl_operation_input {
                     $ty::operation_input(ctx, operation);
                 )*
             }
+
+            fn inferred_early_responses(
+                ctx: &mut GenContext,
+                operation: &mut Operation,
+            ) -> Vec<(Option<u16>, Response)> {
+                let mut responses = Vec::new();
+                $(
+                    responses.extend($ty::inferred_early_responses(ctx, operation));
+                )*
+                responses
+            }
         }
     };
 }
