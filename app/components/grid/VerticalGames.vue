@@ -81,7 +81,7 @@ await useAsyncData(`load-games-for-${props.categoryIdentifier}`, () => onLoadDat
         <GameImageLink
           :id="game.id"
           :src="game.imageUrl"
-          animation-on-hover="zoom-in"
+          animation-on-hover="vertical-translate"
         />
       </template>
     </GridVertical>
