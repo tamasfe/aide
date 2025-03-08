@@ -12,6 +12,7 @@ useHead({
     :title="$t('responsible_gaming.title')"
     version="2.0"
     date="September 1, 2024"
+    :show-print-button="true"
   >
     <p class="whitespace-pre-wrap">{{ $t('responsible_gaming.content_1', { host: url.host }) }}</p>
 

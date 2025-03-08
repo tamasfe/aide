@@ -14,6 +14,7 @@ useHead({
       :title="$t('page.aml_policy')"
       version="2.0"
       date="September 1, 2024"
+      :show-print-button="true"
     >
       <h4>1. Objective of the Policy</h4>
 

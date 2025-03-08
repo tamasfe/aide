@@ -13,6 +13,7 @@ useHead({
     :title="$t('page.privacy')"
     version="2.1"
     date="August 27, 2024"
+    :show-print-button="true"
   >
     <p><strong>Introduction</strong></p>
     <p>At {{ url.host }}, protecting the privacy and personal data of our clients is a top priority. This Privacy Policy outlines the types of information we collect, how we process it, and the measures we take to ensure its protection, in compliance with the General Data Protection Regulation (GDPR), the Brazilian General Data Protection Law (LGPD), Canadian privacy laws, and international privacy laws.</p>

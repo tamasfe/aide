@@ -72,7 +72,8 @@
     "save_password_and_login": "Save Password and Login",
     "nevermind": "Nevermind",
     "download_app": "Download App",
-    "update_app": "Update App"
+    "update_app": "Update App",
+    "print": "Print"
   },
   "mobile_nav": {
     "menu": "Menu",

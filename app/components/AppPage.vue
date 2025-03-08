@@ -7,7 +7,12 @@ defineProps<{
   title: string;
   version?: string;
   date?: string;
+  showPrintButton?: boolean;
 }>();
+
+const onClickPrintButton = () => {
+  window.print();
+};
 </script>
 
 <template>
@@ -17,12 +22,16 @@ defineProps<{
         <h1 class="text-3xl font-semibold text-white">{{ title }}</h1>
       </template>
 
-      <div
-        v-if="version || date"
-        class="mb-8 text-lg space-y-1"
-      >
-        <div v-if="version"><span class="text-emphasis font-medium">{{ $t('legal.version') }}:</span> {{ version }}</div>
-        <div v-if="date"><span class="text-emphasis font-medium">{{ $t('legal.updated') }}:</span> {{ date }}</div>
+      <div v-if="version || date || showPrintButton" class="mb-8 md:flex md:items-start md:justify-between space-y-4 md:space-y-0">
+        <div class="space-y-1 text-lg">
+          <div v-if="version"><span class="text-emphasis font-medium">{{ $t('legal.version') }}:</span> {{ version }}</div>
+          <div v-if="date"><span class="text-emphasis font-medium">{{ $t('legal.updated') }}:</span> {{ date }}</div>
+        </div>
+        <div v-if="showPrintButton" class="print:hidden">
+          <BaseButton variant="secondary" @click="onClickPrintButton">
+            {{ $t("button.print") }}
+          </BaseButton>
+        </div>
       </div>
 
       <div class="text-subtle leading-6 md:leading-7">

@@ -13,7 +13,7 @@ const emit = defineEmits([
 </script>
 
 <template>
-  <nav class="sticky top-0 left-0 right-0 z-[9] ">
+  <nav class="sticky top-0 left-0 right-0 z-[9] print:hidden">
     <PromoBar />
 
     <div class="w-full bg-subtle h-14">

@@ -7,7 +7,10 @@ useHead({
 </script>
 
 <template>
-  <AppPage :title="$t('page.betting_terms')">
+  <AppPage
+    :title="$t('page.betting_terms')"
+    :show-print-button="true"
+  >
     <p>content</p>
   </AppPage>
 </template>

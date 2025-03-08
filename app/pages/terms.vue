@@ -14,6 +14,7 @@ useHead({
     :title="$t('terms_and_conditions.title')"
     version="2.0"
     date="September 1, 2024"
+    :show-print-button="true"
   >
     <div v-for="index in NUMBER_OF_TERM_SECTIONS" :key="index">
       <h4>{{ $t(`terms_and_conditions.subtitle_${index}`) }}</h4>
