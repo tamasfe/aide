@@ -6,7 +6,13 @@
     }
   },
   "winning_now": {
-    "title": "Winning\nNow"
+    "title": "Winning Now",
+    "table": {
+      "header_user_nickname": "User",
+      "header_game": "Game",
+      "header_amount": "Amount",
+      "empty": "No Recent Bets"
+    }
   },
   "field": {
     "email": "Email",

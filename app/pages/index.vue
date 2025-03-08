@@ -22,7 +22,7 @@ const { data: categories } = await useAsyncData("home-category-identifiers", asy
     <div class="giro__container giro__sections">
       <SearchPopover />
 
-      <WinningNow />
+      <WinningNowSlider />
 
       <GridHorizontalGames
         v-for="category in categories"
@@ -32,6 +32,8 @@ const { data: categories } = await useAsyncData("home-category-identifiers", asy
       />
 
       <GridHorizontalProviders />
+
+      <WinningNowTable />
     </div>
   </NuxtLayout>
 </template>
