@@ -15,7 +15,7 @@ import { type VariantProps, cva } from "class-variance-authority";
 // TRANSLATION STATUS:  ✅
 
 const drawerVariants = cva(
-  "fixed top-0 bottom-0 h-full w-full sm:w-auto min-h-0",
+  "fixed top-0 bottom-0 h-full w-full sm:w-[250px] min-h-0",
   {
     variants: {
       position: {

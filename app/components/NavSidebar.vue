@@ -128,7 +128,7 @@ const links = [
         />
       </div>
 
-      <div class="no-scrollbar min-w-[20rem] flex flex-col overflow-y-auto px-2">
+      <div class="no-scrollbar flex flex-col overflow-y-auto px-2">
         <template v-for="(link, index) in links">
           <NavSidebarLinkGroup
             v-if="link.children"
