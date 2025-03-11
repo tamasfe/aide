@@ -18,6 +18,26 @@ afterEach(() => {
   }
 });
 
+const ENABLE_SERVER_SIDE_RENDERING = false;
+const DEFER_CLIENT_SIDE_LOADING = true;
+const { data: categoriesData } = await useAsyncData("sidebar-category-identifiers", async () => {
+  return $dependencies.games.ui.searchGameCategoriesByGroup.handle("sidebar_menu", false);
+},
+{ lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING },
+);
+
+const guessIcon = (categoryIdentifier: string): string => {
+  switch (categoryIdentifier) {
+    case "your-top-picks":
+      return "emojione-v1:heart-suit";
+    case "latest-releases":
+      return "emojione-v1:rocket";
+
+    default:
+      return ["emojione-v1:candy", "emojione-v1:slot-machine", "emojione-v1:fire", "emojione-v1:up-arrow", "emojione-v1:eight-spoked-asterisk", "emojione-v1:confetti-ball", "emojione-v1:alien"].sort(() => Math.random() - 0.5)[0] as string;
+  }
+};
+
 const links = [
   {
     title: "Casino",
@@ -129,6 +149,20 @@ const links = [
       </div>
 
       <div class="no-scrollbar flex flex-col overflow-y-auto px-2">
+        <div v-if="categoriesData">
+          <NavSidebarLink
+            v-for="category in categoriesData"
+            :key="category.identifier"
+            :title="toSentenceCase(category.identifier)"
+            :to="{
+              name: 'categories',
+              params: {
+                id: category.identifier,
+              },
+            }"
+            :icon="guessIcon(category.identifier)"
+          />
+        </div>
         <template v-for="(link, index) in links">
           <NavSidebarLinkGroup
             v-if="link.children"
