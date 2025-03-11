@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { Win } from "~/types/wins";
+
 // DESIGN STATUS:       ✅
 // ARCHITECTURE STATUS: ✴️
 //   * not done
@@ -24,18 +26,6 @@ const slidesToScroll = {
   md: 1,
   lg: 1,
   xl: 1,
-};
-
-type Win = {
-  key: string;
-  amount: number;
-  currency: string;
-  userNickname: string;
-  game: {
-    id: number;
-    imageUrl: string;
-    name: string;
-  };
 };
 
 const buffer = ref<Array<Win | undefined>>([

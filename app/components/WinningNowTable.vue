@@ -1,51 +1,14 @@
 <script setup lang="ts">
 import { createColumnHelper, type ColumnDef } from "@tanstack/vue-table";
 import { BaseCurrency, BaseLink, GameImage } from "#components";
+import type { Win } from "~/types/wins";
 
-const { $dependencies } = useNuxtApp();
 const { t } = useI18n();
 
-type Win = {
-  key: string;
-  amount: number;
-  currency: string;
-  userNickname: string;
-  game: {
-    id: number;
-    imageUrl: string;
-    name: string;
-  };
-};
-
-const winsBufferSize = ref(10);
-const buffer = ref<Array<Win>>([]);
-const loading = ref(true);
-const increment = ref(0);
-
-useCreateSubscriptionToWebsocket(
-  $dependencies.websockets.ui.wsChannelManagers.newestWins,
-  (message) => {
-    buffer.value.unshift(({
-      key: increment.value.toString(),
-      amount: message.data.data.amount,
-      currency: message.data.data.currency,
-      userNickname: message.data.data.user_nickname,
-      game: {
-        id: message.data.data.game.id,
-        imageUrl: message.data.data.game.image_url,
-        name: message.data.data.game.name,
-      },
-    }));
-
-    increment.value += 1;
-
-    if (buffer.value.length > winsBufferSize.value) {
-      buffer.value.pop();
-    }
-
-    loading.value = false;
-  },
-);
+defineProps<{
+  data: Win[];
+  loading: boolean;
+}>();
 
 const column = createColumnHelper<Win>();
 
@@ -69,26 +32,18 @@ const columns: ColumnDef<Win>[] = [
 </script>
 
 <template>
-  <div>
-    <h2 class="text-xl font-semibold sm:text-2xl flex items-center space-x-2">
-      {{ $t('winning_now.title') }}
-    </h2>
-
-    <DataTable
-      :key="increment"
-      class="mt-6"
-      :data="buffer"
-      :loading="loading"
-      :columns="columns"
-    >
-      <template #empty>
-        <slot name="empty">
-          <BaseEmpty
-            :title="$t('winning_now.table.empty')"
-            icon="lucide:wallet-cards"
-          />
-        </slot>
-      </template>
-    </DataTable>
-  </div>
+  <DataTable
+    :data="data"
+    :loading="loading"
+    :columns="columns"
+  >
+    <template #empty>
+      <slot name="empty">
+        <BaseEmpty
+          :title="$t('winning_now.table.empty')"
+          icon="lucide:wallet-cards"
+        />
+      </slot>
+    </template>
+  </DataTable>
 </template>

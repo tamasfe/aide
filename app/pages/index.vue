@@ -33,7 +33,7 @@ const { data: categories } = await useAsyncData("home-category-identifiers", asy
 
       <GridHorizontalProviders />
 
-      <WinningNowTable />
+      <WinningNowTabs />
     </div>
   </NuxtLayout>
 </template>
