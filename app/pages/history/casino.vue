@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import { createColumnHelper, type ColumnDef } from "@tanstack/vue-table";
-import { DataTableCopyCell, DataTableLinkCell } from "#components";
-
 const { $dependencies } = useNuxtApp();
 const walletStore = useWalletStore();
 const { t } = useI18n();
@@ -9,45 +6,6 @@ const { t } = useI18n();
 useHead({
   title: t("page.dashboard_history"),
 });
-
-type GameActionTableRow = {
-  id: number;
-  date: string;
-  game: {
-    name: string;
-    id: number;
-  };
-  action: string;
-  amount: string;
-};
-
-const column = createColumnHelper<GameActionTableRow>();
-
-const columns: ColumnDef<GameActionTableRow>[] = [
-  column.accessor("id", {
-    header: t("dashboard.history.casino.table_header_id"),
-    cell: ({ getValue }) => h(DataTableCopyCell, { value: getValue() }),
-  }),
-  column.accessor("date", {
-    header: t("dashboard.history.casino.table_header_date"),
-  }),
-  column.accessor("game", {
-    header: t("dashboard.history.casino.table_header_game"),
-    cell: ({ getValue }) => h(
-      DataTableLinkCell,
-      { href: `/games/${getValue().id}` },
-      () => getValue().name),
-  }),
-  column.accessor("action", {
-    header: t("dashboard.history.casino.table_header_action"),
-  }),
-  column.accessor("amount", {
-    header: t("dashboard.history.casino.table_header_amount"),
-    meta: {
-      align: "right",
-    },
-  }),
-] as ColumnDef<GameActionTableRow>[];
 
 const ENABLE_SERVER_SIDE_RENDERING = false;
 const DEFER_CLIENT_SIDE_LOADING = true;
@@ -89,18 +47,10 @@ const pagination = computed(() => {
     name="dashboard"
     section="history"
   >
-    <DataTable
+    <DataTableGameActionsCasino
       :data="data?.gameActions ?? []"
-      :columns="columns"
       :loading="loading"
       :pagination="pagination"
-    >
-      <template #empty>
-        <BaseEmpty
-          :title="t('dashboard.history.casino.table_empty')"
-          icon="lucide:trophy"
-        />
-      </template>
-    </DataTable>
+    />
   </NuxtLayout>
 </template>

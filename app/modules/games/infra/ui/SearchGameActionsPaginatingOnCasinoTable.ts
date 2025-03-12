@@ -2,6 +2,9 @@ import type { GameActionsRepositoryI } from "../../domain/GameActionsRepository"
 import type { DateTimeFormatterFunctionType, NumberFormatterFunctionType, TranslateFunctionType } from "~/packages/translation";
 import type { LoggerI } from "~/packages/logger/Logger";
 
+/**
+ * We do not simply return the GameAction domain object as the "action", "ampount", and "date" need to be formatted through i18n.
+ */
 type GameActionResponse = {
   id: number;
   date: string;
@@ -10,8 +13,10 @@ type GameActionResponse = {
     id: number;
   };
   action: string;
-  amount: string;
+  amount: number;
+  currency: string;
 };
+
 export class SearchGameActionsPaginatingOnCasinoTable {
   constructor(
     private gameActionsRepo: GameActionsRepositoryI,
@@ -63,13 +68,14 @@ export class SearchGameActionsPaginatingOnCasinoTable {
 
         return {
           id: gameAction.id,
-          date: this.d(gameAction.createdAt.toISOString(), { dateStyle: "medium" }),
+          date: this.d(new Date(gameAction.createdAt).toISOString(), { dateStyle: "medium" }),
           game: {
-            name: gameAction.game.name.toUpperCase(),
-            id: gameAction.game.id,
+            name: gameAction.gameName.toUpperCase(),
+            id: gameAction.gameId,
           },
           action: action.toUpperCase(),
-          amount: this.n(gameAction.amount, { style: "currency", currency: gameAction.currency }),
+          amount: gameAction.amount,
+          currency: gameAction.currency,
         };
       }),
     };

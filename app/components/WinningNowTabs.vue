@@ -2,12 +2,14 @@
 import type { Win } from "~/types/wins";
 
 const { $dependencies } = useNuxtApp();
+const userStore = useUserStore();
 
 const winsBufferSize = ref(10);
-const loading = ref(true);
+const loadingWins = ref(true);
+const loadingMyBets = ref(true);
 const increment = ref(0);
 
-const WINNING_NOW_TABS = ["latest-wins", "highest-wins"] as const;
+const WINNING_NOW_TABS = ["my-bets", "latest-wins", "highest-wins"] as const;
 const currentTab = ref<typeof WINNING_NOW_TABS[number]>("latest-wins");
 const latestWinsBuffer = ref<Array<Win>>([]);
 const highestWinsBuffer = ref<Array<Win>>([]);
@@ -49,8 +51,24 @@ useCreateSubscriptionToWebsocket(
     }
 
     increment.value += 1;
-    loading.value = false;
+    loadingWins.value = false;
   },
+);
+
+const ENABLE_SERVER_SIDE_RENDERING = false;
+const DEFER_CLIENT_SIDE_LOADING = true;
+const { data: myBetsData } = await useAsyncData(`winning-now-my-bets-table`, async () => {
+  if (!userStore.isAuthenticated) {
+    return;
+  }
+
+  loadingMyBets.value = true;
+  const result = await $dependencies.games.ui.searchGameActionsPaginatingOnCasinoTable.handle(0);
+  loadingMyBets.value = false;
+
+  return result;
+},
+{ watch: [() => userStore.isAuthenticated], lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING },
 );
 </script>
 
@@ -67,22 +85,32 @@ useCreateSubscriptionToWebsocket(
           :key="tab"
           :is-active="tab === currentTab"
           :value="tab"
+          :disabled="tab === 'my-bets' && !userStore.isAuthenticated"
         >
           {{ toSentenceCase(tab) }}
         </TabsTrigger>
       </TabsList>
+      <TabsContent value="my-bets">
+        <DataTableGameActionsMyBets
+          v-if="userStore.isAuthenticated && myBetsData"
+          :data="myBetsData.gameActions"
+          :loading="loadingWins"
+          :username="userStore.user.username"
+          :pagination="undefined"
+        />
+      </TabsContent>
       <TabsContent value="latest-wins">
-        <WinningNowTable
+        <DataTableWins
           :key="increment"
           :data="latestWinsBuffer"
-          :loading="loading"
+          :loading="loadingWins"
         />
       </TabsContent>
       <TabsContent value="highest-wins">
-        <WinningNowTable
+        <DataTableWins
           :key="increment"
           :data="highestWinsBuffer"
-          :loading="loading"
+          :loading="loadingWins"
         />
       </TabsContent>
     </Tabs>

@@ -1,5 +1,5 @@
 import type { GameActionsRepositoryI } from "../domain/GameActionsRepository";
-import type { GameActionI } from "../domain/GameAction";
+import type { GameAction } from "../domain/GameAction";
 import { fail, success, type Result } from "~/packages/result";
 import { InfrastructureError } from "~/packages/result/infrastructure-error";
 import { createBackendOpenApiClient } from "~/packages/http-client/create-backend-open-api-client";
@@ -11,7 +11,7 @@ export class GameActionsRepositoryGirobet implements GameActionsRepositoryI {
     this.apiClient = createBackendOpenApiClient(clientOptions, commonDependencies);
   }
 
-  public async searchPaginating(searchParams: { type: "bet" | "win" | null }, limit: number, offset: number): Promise<Result<{ gameActions: GameActionI[]; pagination: { limit: number; offset: number; totalItems: number } }, InfrastructureError>> {
+  public async searchPaginating(searchParams: { type: "bet" | "win" | null }, limit: number, offset: number): Promise<Result<{ gameActions: GameAction[]; pagination: { limit: number; offset: number; totalItems: number } }, InfrastructureError>> {
     try {
       const { data, error, response } = await this.apiClient.GET("/game/action/list", {
         params: {
@@ -25,17 +25,7 @@ export class GameActionsRepositoryGirobet implements GameActionsRepositoryI {
 
       if (data) {
         return success({
-          gameActions: data.data.map(gameActionData => ({
-            id: gameActionData.id,
-            action: gameActionData.action,
-            amount: gameActionData.amount,
-            currency: gameActionData.currency,
-            createdAt: new Date(gameActionData.created_at),
-            game: {
-              id: gameActionData.game_id,
-              name: gameActionData.game_name,
-            },
-          })),
+          gameActions: data.data.map(gameAction => camelizeKeys(gameAction)),
           pagination: {
             limit: data.metadata.pagination.limit,
             offset: data.metadata.pagination.offset,

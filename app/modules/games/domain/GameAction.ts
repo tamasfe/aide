@@ -1,13 +1,4 @@
-import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
+import type { components } from "~/packages/http-client/girobet-backend-generated-http-client/openapi-typescript";
+import type { CamelizeKeys } from "~/utils";
 
-export interface GameActionI {
-  id: number;
-  action: "bet" | "win" | "rollback";
-  amount: number;
-  currency: WalletCurrency;
-  createdAt: Date;
-  game: {
-    name: string;
-    id: number;
-  };
-}
+export type GameAction = CamelizeKeys<components["schemas"]["GameActionResponse"]>;

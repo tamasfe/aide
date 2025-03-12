@@ -86,6 +86,17 @@
     "live_support":"Live Support",
     "download_app": "Download Our App"
   },
+  "game_actions": {
+    "table": {
+      "empty": "No Game Rounds",
+      "header_id": "ID",
+      "header_date": "Date",
+      "header_game": "Game",
+      "header_action": "Type",
+      "header_amount": "Amount",
+      "header_username": "User"
+    }
+  },
   "game_page": {
     "device_not_supported": "This game is not supported on your current device",
     "device_not_supported_alternative_desktop": "Please try playing it on a computer or laptop",
@@ -396,14 +407,6 @@
       }
     },
     "history": {
-      "casino": {
-        "table_empty": "No Game Rounds",
-        "table_header_id": "ID",
-        "table_header_date": "Date",
-        "table_header_game": "Game",
-        "table_header_action": "Type",
-        "table_header_amount": "Amount"
-      },
       "deposits": {
         "table_empty": "No Deposits"
       },
