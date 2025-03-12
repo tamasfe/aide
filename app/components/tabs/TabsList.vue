@@ -2,7 +2,10 @@
 import { type HTMLAttributes, computed } from "vue";
 import { TabsList, type TabsListProps } from "radix-vue";
 
-const props = defineProps<TabsListProps & { class?: HTMLAttributes["class"] }>();
+const props = defineProps<TabsListProps & {
+  class?: HTMLAttributes["class"];
+  stickyOnMobile?: boolean;
+}>();
 
 const delegatedProps = computed(() => {
   const { class: _, ...delegated } = props;
@@ -13,12 +16,20 @@ const delegatedProps = computed(() => {
 
 <template>
   <TabsList
-    v-bind="delegatedProps"
     :class="cn(
-      'inline-flex items-center justify-center rounded-lg bg-button-secondary p-2 text-muted-foreground',
-      props.class,
+      'w-full flex items-center space-x-6',
+      stickyOnMobile === true ? 'sticky md:static z-[8] top-[60px]' : 'static',
     )"
   >
-    <slot />
+    <div
+      v-bind="delegatedProps"
+      :class="cn(
+        'w-full inline-flex items-center justify-between rounded-lg bg-button-secondary px-2 py-1.5 text-muted-foreground',
+        props.class,
+      )"
+    >
+      <slot />
+    </div>
+    <slot name="suffix" />
   </TabsList>
 </template>

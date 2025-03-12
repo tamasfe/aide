@@ -20,7 +20,7 @@ const onClose = () => {
 </script>
 
 <template>
-  <Popover class="relative">
+  <Popover>
     <SearchBar
       v-model="query"
       :open="open"
@@ -45,7 +45,7 @@ const onClose = () => {
     >
       <PopoverPanel
         v-if="open && query !== ''"
-        class="absolute z-[8] mt-3 w-full outline-none"
+        class="z-[8] mt-3 absolute left-0 px-4 w-full outline-none"
         static
       >
         <div

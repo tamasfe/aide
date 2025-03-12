@@ -7,9 +7,10 @@ useHead({
   title: t("page.home", { siteName: siteStore.site.name }),
 });
 
+const currentTab = ref("lobby");
+
 const ENABLE_SERVER_SIDE_RENDERING = true;
 const DEFER_CLIENT_SIDE_LOADING = true;
-
 const { data: categories } = await useAsyncData("home-category-identifiers", async () => {
   return $dependencies.games.ui.searchGameCategoriesByGroup.handle("home", true);
 },
@@ -20,18 +21,69 @@ const { data: categories } = await useAsyncData("home-category-identifiers", asy
 <template>
   <NuxtLayout name="carousel">
     <div class="giro__container giro__sections">
-      <SearchPopover />
-
       <WinningNowSlider />
 
-      <GridHorizontalGames
-        v-for="category in categories"
-        :key="category.identifier"
-        :category-identifier="category.identifier"
-        :initial-games="category.games ?? undefined"
-      />
+      <Tabs v-model="currentTab" class="space-y-6">
+        <TabsList class="md:max-w-xs" :sticky-on-mobile="true">
+          <TabsTrigger
+            :is-active="'lobby' === currentTab"
+            value="lobby"
+            class="space-x-2"
+          >
+            <BaseIcon name="lucide:home" :size="14" />
+            <span>Lobby</span>
+          </TabsTrigger>
 
-      <GridHorizontalProviders />
+          <TabsTrigger
+            :is-active="'slots' === currentTab"
+            value="slots"
+            class="space-x-2"
+          >
+            <BaseIcon name="lucide:coins" :size="14" />
+            <span>Slots</span>
+          </TabsTrigger>
+
+          <TabsTrigger
+            :is-active="'roulette' === currentTab"
+            value="roulette"
+            class="space-x-2"
+          >
+            <BaseIcon name="lucide:circle-dot" :size="14" />
+            <span>Roulette</span>
+          </TabsTrigger>
+
+          <template #suffix>
+            <SearchPopover class="hidden md:block w-full" />
+          </template>
+        </TabsList>
+
+        <TabsContent value="lobby" class="giro__sections">
+          <GridHorizontalGames
+            v-for="category in categories"
+            :key="category.identifier"
+            :category-identifier="category.identifier"
+            :initial-games="category.games ?? undefined"
+          />
+
+          <GridHorizontalProviders />
+        </TabsContent>
+
+        <TabsContent value="slots">
+          <GridVerticalGames
+            title="Slots"
+            category-identifier="slots"
+            :provider-id="null"
+          />
+        </TabsContent>
+
+        <TabsContent value="roulette">
+          <GridVerticalGames
+            title="Roulette"
+            category-identifier="roulette"
+            :provider-id="null"
+          />
+        </TabsContent>
+      </Tabs>
 
       <WinningNowTabs />
     </div>
