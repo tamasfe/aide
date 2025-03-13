@@ -195,7 +195,7 @@ if (preloadBannerLinks.length > 0) {
 
 <style scoped>
 .logo {
-  @apply mb-3 w-[9rem] self-center;
+  @apply mb-3 w-[9rem] lg:w-[10rem] self-center;
 }
 .banner-top {
   @apply w-full aspect-[100/37] object-cover;

@@ -154,7 +154,7 @@ const emptyQuery = ref("");
         <div class="px-0">
           <SearchBar
             v-model="emptyQuery"
-
+            input-size="md"
             @click="$dependencies.common.asyncMessagePublisher.emit('girobet:commands:modals:open-user-interaction-modal', { modal: 'search' })"
           />
         </div>

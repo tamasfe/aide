@@ -30,12 +30,14 @@ const props = withDefaults(
     mask?: string | MaskInputOptions;
     maskBehaviourEager?: boolean;
     class?: HTMLAttributes["class"];
+    inputSize?: "ghost" | "md" | "lg";
   }>(),
   {
     fieldType: "input",
     required: true,
     placeholderPlacement: "floating",
     errorPlacement: "floating",
+    inputSize: "ghost",
   },
 );
 
@@ -147,7 +149,7 @@ const [value, modifiers] = defineModel<number | string>({
           :required="required"
           :placeholder="fieldPlaceholder"
           variant="ghost"
-          input-size="ghost"
+          :input-size="inputSize"
           autocorrect="off"
           :class="cn(
             fieldClass,
@@ -167,7 +169,7 @@ const [value, modifiers] = defineModel<number | string>({
           :required="required"
           :placeholder="fieldPlaceholder"
           variant="ghost"
-          input-size="ghost"
+          :input-size="inputSize"
           autocorrect="off"
           :class="cn(
             fieldClass,
@@ -224,7 +226,7 @@ const [value, modifiers] = defineModel<number | string>({
   @apply w-full focus:h-[var(--giro-input-group-hidden-field-height)] font-medium bg-transparent;
 }
 .default-field {
-  @apply w-full h-full text-lg text-white font-medium placeholder:text-subtle bg-transparent;
+  @apply w-full h-full text-white font-medium placeholder:text-subtle bg-transparent;
 }
 .error {
   @apply text-right text-sm text-alert-error;

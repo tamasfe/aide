@@ -12,7 +12,8 @@ const inputVariants = cva(
         ghost: "",
       },
       size: {
-        md: "h-[var(--giro-field-height)] px-4 text-base font-medium rounded",
+        md: "h-[var(--giro-field-height)] text-base font-medium rounded",
+        lg: "h-[var(--giro-field-height)] text-lg font-medium rounded",
         ghost: "",
       },
     },
@@ -62,6 +63,7 @@ const [value, modifiers] = defineModel<string | number>({
     v-maska="mask"
     :data-maska-eager="maskBehaviourEager ?? false"
     :class="cn(
+      'text-lg',
       inputVariants({ variant, size: inputSize }),
       props.class,
     )"

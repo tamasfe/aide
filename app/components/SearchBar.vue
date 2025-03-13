@@ -5,6 +5,7 @@
 withDefaults(defineProps<{
   loading?: boolean;
   open?: boolean;
+  inputSize?: "md" | "lg" | "ghost";
 }>(), {
   loading: false,
   open: false,
@@ -35,6 +36,7 @@ const onClickCloseButton = () => {
     autocomplete="off"
     placeholder-placement="default"
     error-placement="below"
+    :input-size="inputSize"
     @focus="emit('focus')"
   >
     <template #prefix>

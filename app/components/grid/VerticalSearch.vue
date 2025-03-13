@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const { t } = useI18n();
 
-defineProps<{
+const props = defineProps<{
   itemType: "game" | "provider";
   items: { id: number; imageUrl: string }[];
   totalResults: number;
@@ -11,20 +11,31 @@ defineProps<{
 
 const itemTypeToAspectRatio = {
   game: "3/4",
-  provider: "16/9",
+  provider: "9/3",
 };
 
 const itemTypeToColumns = {
   game: { sm: 3, md: 4, lg: 6, xl: 8 },
-  provider: { sm: 2, md: 2, lg: 3, xl: 3 },
+  provider: { sm: 2, md: 2, lg: 3, xl: 4 },
 };
+
+// For some reason TS recognizes that only a string can be returned, but the eslint rule breaks anyway. So we disable the eslint rule.
+// eslint-disable-next-line vue/return-in-computed-property
+const title: ComputedRef<string> = computed(() => {
+  switch (props.itemType) {
+    case "game":
+      return t("search.number_of_results_games", { total: props.totalResults });
+    case "provider":
+      return t("search.number_of_results_providers", { total: props.totalResults });
+  }
+});
 </script>
 
 <template>
   <GridHeader>
     <template #title>
       <div class="flex gap-4 items-center">
-        <GridHeaderTitle :title="t('search.number_of_results', { total: totalResults })" />
+        <GridHeaderTitle :title="title" />
       </div>
     </template>
 

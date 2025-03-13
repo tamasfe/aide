@@ -21,13 +21,14 @@ const onClose = () => {
     :disabled="false"
     :close-on-click-outside="true"
     banner="none"
-    class="sm:max-w-4xl sm:h-[80vh]"
+    class="sm:max-w-screen-lg sm:mx-4 sm:h-[80vh]"
     @close="onClose"
   >
     <SearchBar
       v-model="query"
       :open="open"
       :loading="loading"
+      input-size="lg"
       @close="onClose"
     />
 
@@ -41,7 +42,7 @@ const onClose = () => {
       leave-to-class="translate-y-1 opacity-0"
     >
       <div
-        v-show="open && query !== ''"
+        v-show="open"
         class="px-0 rounded text-default p-4 outline-none"
         role="dialog"
         aria-modal="true"
@@ -49,14 +50,5 @@ const onClose = () => {
         <SearchResults :query="query" />
       </div>
     </transition>
-
-    <div
-      v-show="open && query === ''"
-      class="px-0 rounded text-default p-4 outline-none text-center"
-      role="dialog"
-      aria-modal="true"
-    >
-      (TODO: Place here some default content so it does not look so empty)
-    </div>
   </BaseModal>
 </template>

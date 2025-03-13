@@ -13,8 +13,6 @@ const { query } = defineProps({
   },
 });
 
-const initialLoad = useState(() => true);
-
 /**
  * Game search
  */
@@ -62,19 +60,8 @@ const providersOnLoadMore = async (actionOnItemsArray: "append" | "replace") => 
 };
 
 const onQueryChange = async () => {
-  if (!query) {
-    initialLoad.value = true;
-
-    gamesTotalItems.value = 0;
-    games.value = [];
-
-    providersTotalItems.value = 0;
-    providers.value = [];
-    return;
-  }
-
-  initialLoad.value = false;
-
+  games.value = [];
+  providers.value = [];
   gamesCurrentPage.value = 0;
   providersCurrentPage.value = 0;
 
@@ -111,7 +98,7 @@ const onClickLink = () => {
           :id="game.id"
           class="border-none"
           :src="game.imageUrl"
-          animation-on-hover="zoom-in"
+          animation-on-hover="vertical-translate"
           @click="onClickLink"
         />
       </template>

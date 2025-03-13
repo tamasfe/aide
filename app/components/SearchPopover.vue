@@ -26,6 +26,7 @@ const onClose = () => {
       :open="open"
       :loading="loading"
       :class="{ 'bg-emphasis': open }"
+      input-size="lg"
       @focus="onOpen"
       @close="onClose"
     />
@@ -45,7 +46,7 @@ const onClose = () => {
     >
       <PopoverPanel
         v-if="open && query !== ''"
-        class="z-[8] mt-3 absolute left-0 px-4 w-full outline-none"
+        class="z-[8] mt-3 absolute left-0 px-8 w-full outline-none"
         static
       >
         <div
