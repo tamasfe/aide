@@ -21,6 +21,7 @@ const onClose = () => {
     :disabled="false"
     :close-on-click-outside="true"
     banner="none"
+    class="sm:max-w-4xl sm:h-[80vh]"
     @close="onClose"
   >
     <SearchBar
@@ -48,5 +49,14 @@ const onClose = () => {
         <SearchResults :query="query" />
       </div>
     </transition>
+
+    <div
+      v-show="open && query === ''"
+      class="px-0 rounded text-default p-4 outline-none text-center"
+      role="dialog"
+      aria-modal="true"
+    >
+      (TODO: Place here some default content so it does not look so empty)
+    </div>
   </BaseModal>
 </template>

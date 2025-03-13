@@ -128,6 +128,8 @@ const links = [
     },
   },
 ];
+
+const emptyQuery = ref("");
 </script>
 
 <template>
@@ -148,8 +150,17 @@ const links = [
         />
       </div>
 
-      <div class="no-scrollbar flex flex-col overflow-y-auto px-2">
-        <div v-if="categoriesData">
+      <div class="no-scrollbar flex flex-col overflow-y-auto px-4">
+        <div class="px-0">
+          <SearchBar
+            v-model="emptyQuery"
+
+            @click="$dependencies.common.asyncMessagePublisher.emit('girobet:commands:modals:open-user-interaction-modal', { modal: 'search' })"
+          />
+        </div>
+
+        <!-- Dynamic links -->
+        <div v-if="categoriesData && categoriesData.length" class="mt-2 space-y-2">
           <NavSidebarLink
             v-for="category in categoriesData"
             :key="category.identifier"
@@ -163,43 +174,47 @@ const links = [
             :icon="guessIcon(category.identifier)"
           />
         </div>
-        <template v-for="(link, index) in links">
-          <NavSidebarLinkGroup
-            v-if="link.children"
-            :key="`parent-${index}`"
-            :parent="{
-              title: link.title,
-              icon: link.icon,
-            }"
-            :children="link.children"
-          />
-          <div
-            v-else
-            :key="`link-${index}`"
-          >
-            <NavSidebarLink
-              v-if="link.to"
-              :title="link.title"
-              :to="link.to"
-              :icon="link.icon"
+
+        <!-- Fixed links -->
+        <div class="mt-2 space-y-2">
+          <template v-for="(link, index) in links">
+            <NavSidebarLinkGroup
+              v-if="link.children"
+              :key="`parent-${index}`"
+              :parent="{
+                title: link.title,
+                icon: link.icon,
+              }"
+              :children="link.children"
             />
-            <BaseButton
-              v-if="link.onClick"
-              class="px-4 py-2 flex items-center text-emphasis hover:text-white"
-              type="button"
-              variant="ghost"
-              @click="link.onClick"
+            <div
+              v-else
+              :key="`link-${index}`"
             >
-              <BaseIcon
-                v-if="link.icon"
-                :name="link.icon"
-                :size="22"
-                class="flex-shrink-0 text-subtle"
+              <NavSidebarLink
+                v-if="link.to"
+                :title="link.title"
+                :to="link.to"
+                :icon="link.icon"
               />
-              <div class="w-full ml-4 font-medium">{{ link.title }}</div>
-            </BaseButton>
-          </div>
-        </template>
+              <BaseButton
+                v-if="link.onClick"
+                class="py-2 flex items-center text-emphasis hover:text-white"
+                type="button"
+                variant="ghost"
+                @click="link.onClick"
+              >
+                <BaseIcon
+                  v-if="link.icon"
+                  :name="link.icon"
+                  :size="22"
+                  class="flex-shrink-0 text-subtle"
+                />
+                <div class="w-full ml-4 font-medium">{{ link.title }}</div>
+              </BaseButton>
+            </div>
+          </template>
+        </div>
       </div>
     </template>
   </BaseDrawer>
