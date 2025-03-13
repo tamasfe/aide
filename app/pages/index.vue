@@ -31,7 +31,7 @@ const { data: categories } = await useAsyncData("home-category-identifiers", asy
             class="space-x-2"
           >
             <BaseIcon name="lucide:home" :size="14" />
-            <span>Lobby</span>
+            <span>{{ toSentenceCase($t(`home_page.category_tabs.lobby`)) }}</span>
           </TabsTrigger>
 
           <TabsTrigger
@@ -40,7 +40,7 @@ const { data: categories } = await useAsyncData("home-category-identifiers", asy
             class="space-x-2"
           >
             <BaseIcon name="lucide:coins" :size="14" />
-            <span>Slots</span>
+            <span>{{ toSentenceCase($t(`category.slots`)) }}</span>
           </TabsTrigger>
 
           <TabsTrigger
@@ -49,7 +49,7 @@ const { data: categories } = await useAsyncData("home-category-identifiers", asy
             class="space-x-2"
           >
             <BaseIcon name="lucide:circle-dot" :size="14" />
-            <span>Roulette</span>
+            <span>{{ toSentenceCase($t(`category.roulette`)) }}</span>
           </TabsTrigger>
 
           <template #suffix>

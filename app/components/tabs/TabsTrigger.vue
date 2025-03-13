@@ -22,7 +22,7 @@ const forwardedProps = useForwardProps(delegatedProps);
     :is-active="isActive"
     :state="isActive ? 'active' : 'inactive'"
     :class="cn(
-      'inline-flex items-center justify-center whitespace-nowrap px-3 py-1.5 text-md font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 rounded-lg data-[state=active]:bg-button-subtle data-[state=active]:text-foreground data-[state=active]:shadow hover:bg-button-secondary-hover',
+      'px-3 py-1.5 w-full inline-flex items-center justify-center whitespace-nowrap text-md font-medium ring-offset-background transition-all rounded-lg data-[state=active]:bg-button-subtle data-[state=active]:text-foreground data-[state=active]:shadow hover:bg-button-secondary-hover disabled:pointer-events-none disabled:opacity-50 focus-visible:outline-none focus-visible:ring focus-visible:ring-offset',
       props.class,
     )"
   >

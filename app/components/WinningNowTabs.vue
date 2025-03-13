@@ -9,8 +9,8 @@ const loadingWins = ref(true);
 const loadingMyBets = ref(true);
 const increment = ref(0);
 
-const WINNING_NOW_TABS = ["my-bets", "latest-wins", "highest-wins"] as const;
-const currentTab = ref<typeof WINNING_NOW_TABS[number]>("latest-wins");
+const WINNING_NOW_TABS = ["my_bets", "latest_wins", "highest_wins"] as const;
+const currentTab = ref<typeof WINNING_NOW_TABS[number]>("latest_wins");
 const latestWinsBuffer = ref<Array<Win>>([]);
 const highestWinsBuffer = ref<Array<Win>>([]);
 
@@ -78,19 +78,19 @@ const { data: myBetsData } = await useAsyncData(`winning-now-my-bets-table`, asy
       {{ $t('winning_now.title') }}
     </h2>
 
-    <Tabs v-model="currentTab" class="mt-6">
-      <TabsList class="mb-4">
+    <Tabs v-model="currentTab" class="mt-4">
+      <TabsList class="mb-4 max-w-sm">
         <TabsTrigger
           v-for="tab in WINNING_NOW_TABS"
           :key="tab"
           :is-active="tab === currentTab"
           :value="tab"
-          :disabled="tab === 'my-bets' && !userStore.isAuthenticated"
+          :disabled="tab === 'my_bets' && !userStore.isAuthenticated"
         >
-          {{ toSentenceCase(tab) }}
+          {{ toSentenceCase($t(`home_page.winning_now_tabs.${tab}`)) }}
         </TabsTrigger>
       </TabsList>
-      <TabsContent value="my-bets">
+      <TabsContent value="my_bets">
         <DataTableGameActionsMyBets
           v-if="userStore.isAuthenticated && myBetsData"
           :data="myBetsData.gameActions"
@@ -99,14 +99,14 @@ const { data: myBetsData } = await useAsyncData(`winning-now-my-bets-table`, asy
           :pagination="undefined"
         />
       </TabsContent>
-      <TabsContent value="latest-wins">
+      <TabsContent value="latest_wins">
         <DataTableWins
           :key="increment"
           :data="latestWinsBuffer"
           :loading="loadingWins"
         />
       </TabsContent>
-      <TabsContent value="highest-wins">
+      <TabsContent value="highest_wins">
         <DataTableWins
           :key="increment"
           :data="highestWinsBuffer"

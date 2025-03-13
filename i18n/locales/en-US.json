@@ -102,6 +102,16 @@
     "device_not_supported_alternative_desktop": "Please try playing it on a computer or laptop",
     "device_not_supported_alternative_mobile": "Please try playing it on a mobile device"
   },
+  "home_page": {
+    "category_tabs": {
+      "lobby": "lobby"
+    },
+    "winning_now_tabs": {
+      "my_bets": "My Bets",
+      "latest_wins": "Latest Wins",
+      "highest_wins": "Highest Wins"
+    }
+  },
   "download_app_page": {
     "title": "Download Our App Now",
     "description": "Download our app and enjoy the best and fastest online casino experience on the go. Play your favorite games, deposit and withdraw funds, and get in touch with our support team, all from the palm of your hand.",
@@ -423,6 +433,7 @@
     }
   },
   "category": {
+    "lobby": "Lobby",
     "blackjack": "Blackjack",
     "casual": "Casual",
     "card": "Card",
