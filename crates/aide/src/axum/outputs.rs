@@ -39,10 +39,16 @@ where
     type Inner = T;
 
     fn operation_response(ctx: &mut GenContext, _operation: &mut Operation) -> Option<Response> {
-        let mut schema = ctx.schema.subschema_for::<T>().into_object();
+        let schema = ctx.schema.subschema_for::<T>().into_object();
 
         Some(Response {
-            description: schema.metadata().description.clone().unwrap_or_default(),
+            description: ctx
+                .resolve_schema(&schema)
+                .metadata
+                .as_ref()
+                .and_then(|metadata| metadata.description.as_ref())
+                .cloned()
+                .unwrap_or_default(),
             content: IndexMap::from_iter([(
                 "application/json".into(),
                 MediaType {
@@ -88,10 +94,16 @@ where
     type Inner = T;
 
     fn operation_response(ctx: &mut GenContext, _operation: &mut Operation) -> Option<Response> {
-        let mut schema = ctx.schema.subschema_for::<T>().into_object();
+        let schema = ctx.schema.subschema_for::<T>().into_object();
 
         Some(Response {
-            description: schema.metadata().description.clone().unwrap_or_default(),
+            description: ctx
+                .resolve_schema(&schema)
+                .metadata
+                .as_ref()
+                .and_then(|metadata| metadata.description.as_ref())
+                .cloned()
+                .unwrap_or_default(),
             content: IndexMap::from_iter([(
                 "application/x-www-form-urlencoded".into(),
                 MediaType {
