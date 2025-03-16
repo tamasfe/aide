@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.14.2
+
+- **fixed:** `OperationInput` tuple implementations now returns inferred early
+  responses of inner types ([#197])
+- **fixed:** Properly infer response descriptions ([#193])
+- **added:** Brought back `serde_qs` support ([#200])
+
+[#193]: https://github.com/tamasfe/aide/pull/193
+[#197]: https://github.com/tamasfe/aide/pull/197
+[#200]: https://github.com/tamasfe/aide/pull/200
+
 ## 0.14.1
 
 - **fixed:** Update the outdated feature list in the crate root documentation ([#186])
