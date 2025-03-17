@@ -30,7 +30,7 @@ pub enum Error {
     #[error(r#"transformations do not support references"#)]
     UnexpectedReference,
     #[error("did not apply inferred response because a response for status {0} already exists")]
-    InferredResponseConflict(u16),
+    InferredResponseConflict(String),
     #[error("did not apply inferred default response because a default response already exists")]
     InferredDefaultResponseConflict,
     #[error("{0}")]

@@ -5,8 +5,8 @@ use std::{
 
 use serde::{Deserialize, Serialize};
 
-use crate::generate::GenContext;
 use crate::openapi::{Operation, Response};
+use crate::{generate::GenContext, openapi::StatusCode};
 use crate::{OperationInput, OperationOutput};
 
 /// helper trait to allow simplified use of [`UseApi`] in responses
@@ -82,7 +82,7 @@ where
     fn inferred_early_responses(
         ctx: &mut GenContext,
         operation: &mut Operation,
-    ) -> Vec<(Option<u16>, Response)> {
+    ) -> Vec<(Option<StatusCode>, Response)> {
         A::inferred_early_responses(ctx, operation)
     }
 }
@@ -100,7 +100,7 @@ where
     fn inferred_responses(
         ctx: &mut GenContext,
         operation: &mut Operation,
-    ) -> Vec<(Option<u16>, Response)> {
+    ) -> Vec<(Option<StatusCode>, Response)> {
         A::inferred_responses(ctx, operation)
     }
 }

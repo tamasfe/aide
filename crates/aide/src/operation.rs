@@ -6,6 +6,7 @@ use schemars::schema::SchemaObject;
 use crate::generate::GenContext;
 use crate::openapi::{
     self, Operation, Parameter, ParameterData, QueryStyle, ReferenceOr, RequestBody, Response,
+    StatusCode,
 };
 use crate::Error;
 
@@ -65,7 +66,7 @@ pub trait OperationInput {
     fn inferred_early_responses(
         ctx: &mut GenContext,
         operation: &mut Operation,
-    ) -> Vec<(Option<u16>, Response)> {
+    ) -> Vec<(Option<StatusCode>, Response)> {
         Vec::new()
     }
 }
@@ -179,7 +180,7 @@ pub trait OperationOutput {
     fn inferred_responses(
         ctx: &mut GenContext,
         operation: &mut Operation,
-    ) -> Vec<(Option<u16>, Response)> {
+    ) -> Vec<(Option<StatusCode>, Response)> {
         Vec::new()
     }
 }
