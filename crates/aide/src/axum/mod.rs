@@ -431,7 +431,6 @@ where
         }
 
         let paths = api.paths.as_mut().unwrap();
-
         paths.paths = mem::take(&mut self.paths)
             .into_iter()
             .map(|(route, path)| (route, ReferenceOr::Item(path)))
@@ -446,7 +445,6 @@ where
                 }
 
                 let components = api.components.get_or_insert_with(Default::default);
-
                 components
                     .schemas
                     .extend(ctx.schema.take_definitions().into_iter().map(
@@ -464,14 +462,64 @@ where
 
                 true
             });
-
         if needs_reset {
             generate::reset_context();
         }
     }
+
+    /// Adds documentation to an existing route without changing the route handler.
+    ///
+    /// This method allows you to add OpenAPI documentation to routes that have been
+    /// previously defined using `Router` methods, particularly useful when working
+    /// with frameworks like Leptos that only implement traits for `axum::Router`.
+    pub fn api_route_docs(mut self, path: &str, docs: routing::ApiMethodDocs) -> Self {
+        in_context(|_ctx| {
+            if let Some(path_item) = self.paths.get_mut(path) {
+                docs.apply_to_path_item(path_item);
+            } else {
+                let mut path_item = PathItem::default();
+                docs.apply_to_path_item(&mut path_item);
+                self.paths.insert(path.into(), path_item);
+            }
+        });
+
+        self
+    }
+
+    /// Adds documentation to an existing route with a transform function.
+    ///
+    /// This method allows you to add OpenAPI documentation to routes that have been
+    /// previously defined using `Router` methods, and additionally provides a transform
+    /// function to edit the generated path item.
+    pub fn api_route_docs_with(
+        mut self,
+        path: &str,
+        docs: routing::ApiMethodDocs,
+        transform: impl FnOnce(TransformPathItem) -> TransformPathItem,
+    ) -> Self {
+        in_context(|ctx| {
+            let mut path_item = if let Some(existing) = self.paths.get_mut(path) {
+                let mut new_item = existing.clone();
+                docs.apply_to_path_item(&mut new_item);
+                new_item
+            } else {
+                let mut new_item = PathItem::default();
+                docs.apply_to_path_item(&mut new_item);
+                new_item
+            };
+            let _ = transform(TransformPathItem::new(&mut path_item));
+
+            if let Some(existing) = self.paths.get_mut(path) {
+                merge_paths(ctx, path, existing, path_item);
+            } else {
+                self.paths.insert(path.into(), path_item);
+            }
+        });
+
+        self
+    }
 }
 
-/// Existing methods extended with api-specifics.
 impl<S> ApiRouter<S>
 where
     S: Clone + Send + Sync + 'static,
@@ -495,7 +543,9 @@ where
         path: &str,
         method_router: impl Into<ApiMethodRouter<S>>,
     ) -> Self {
-        self.router = self.router.route(path, method_router.into().router);
+        self.router = self
+            .router
+            .route_with_tsr(path, method_router.into().router);
         self
     }
 
@@ -516,10 +566,9 @@ where
     #[tracing::instrument(skip_all)]
     pub fn route_service_with_tsr<T>(mut self, path: &str, service: T) -> Self
     where
-        T: Service<axum::extract::Request, Error = Infallible> + Clone + Send + Sync + 'static,
+        T: Service<Request<Body>, Error = Infallible> + Clone + Send + Sync + 'static,
         T::Response: IntoResponse,
         T::Future: Send + 'static,
-        Self: Sized,
     {
         self.router = self.router.route_service_with_tsr(path, service);
         self
@@ -531,14 +580,12 @@ where
     #[tracing::instrument(skip_all)]
     pub fn nest(mut self, path: &str, router: ApiRouter<S>) -> Self {
         self.router = self.router.nest(path, router.router);
-
         self.paths.extend(
             router
                 .paths
                 .into_iter()
                 .map(|(route, path_item)| (path_for_nested_route(path, &route), path_item)),
         );
-
         self
     }
 
@@ -553,7 +600,6 @@ where
     /// of this function is nesting routers with different states.
     pub fn nest_api_service(mut self, path: &str, service: impl Into<ApiRouter<()>>) -> Self {
         let router: ApiRouter<()> = service.into();
-
         self.paths.extend(
             router
                 .paths
@@ -573,20 +619,18 @@ where
         T::Future: Send + 'static,
     {
         self.router = self.router.nest_service(path, svc);
-
         self
     }
 
     /// See [`axum::Router::merge`] for details.
     ///
     /// If an another [`ApiRouter`] is provided, the generated documentations
-    /// are merged as well..
+    /// are merged as well.
     pub fn merge<R>(mut self, other: R) -> Self
     where
         R: Into<ApiRouter<S>>,
     {
         let other: ApiRouter<S> = other.into();
-
         for (key, path) in other.paths {
             match self.paths.entry(key) {
                 Entry::Occupied(mut o) => {
@@ -710,7 +754,6 @@ impl<S> From<ApiRouter<S>> for Router<S> {
 /// that implement [`IntoResponse`] and [`OperationOutput`],
 /// it should not be implemented manually.
 pub trait IntoApiResponse: IntoResponse + OperationOutput {}
-
 impl<T> IntoApiResponse for T where T: IntoResponse + OperationOutput {}
 
 /// Convenience extension trait for [`axum::Router`].
@@ -725,6 +768,9 @@ pub trait RouterExt<S>: private::Sealed + Sized {
     fn api_route(self, path: &str, method_router: ApiMethodRouter<S>) -> ApiRouter<S>;
     #[cfg(feature = "axum-extra")]
     /// Add an API route, see [`ApiRouter::api_route_with_tsr`](crate::axum::ApiRouter::api_route_with_tsr)
+    /// for details.
+    ///
+    /// This method additionally turns the router into an [`ApiRouter`].
     fn api_route_with_tsr(self, path: &str, method_router: ApiMethodRouter<S>) -> ApiRouter<S>;
 }
 
@@ -781,7 +827,6 @@ pub enum DefinitelyNotService {}
 
 impl Service<Request<Body>> for DefinitelyNotService {
     type Response = String;
-
     type Error = Infallible;
 
     type Future =
@@ -822,7 +867,6 @@ where
     O: OperationOutput,
 {
 }
-
 impl<H, I, O, T, S> AxumOperationHandler<I, O, T, S> for H
 where
     H: Handler<T, S> + OperationHandler<I, O>,
@@ -838,7 +882,6 @@ mod tests {
     use axum::{extract::State, handler::Handler};
 
     async fn test_handler1(State(_): State<TestState>) {}
-
     async fn test_handler2(State(_): State<u8>) {}
 
     async fn test_handler3() {}
