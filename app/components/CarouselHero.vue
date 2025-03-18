@@ -1,8 +1,13 @@
 <script setup lang="ts">
 const { isMobile } = useDevice();
-const userStore = useUserStore();
 
-const showFormWelcome = computed(() => userStore.isAuthenticated !== true);
+/**
+ * In the future show it if:
+ *  1. User is not authenticated
+ *  2. Split test is enabled
+ */
+// const userStore = useUserStore();
+const showFormWelcome = ref(false);// computed(() => userStore.isAuthenticated !== true);
 
 const slides = computed(() => {
   if (showFormWelcome.value) return {

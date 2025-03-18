@@ -1,6 +1,12 @@
 {
   "i18n-ally.localesPaths": [],
   "eslint.format.enable": true,
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/bower_components": true,
+    "**/*.code-search": true,
+    ".nuxt/**": true
+  },
   "[vue]": {
     "editor.defaultFormatter": "dbaeumer.vscode-eslint"
   },
