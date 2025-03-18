@@ -79,6 +79,38 @@ impl<S, E> ApiMethodRouter<S, E> {
     }
 }
 
+/// Documentation for an API method without attaching a handler.
+///
+/// Used with `api_route_docs` to attach documentation to an existing route
+/// without changing the handler.
+#[must_use]
+pub struct ApiMethodDocs {
+    method: &'static str,
+    operation: Operation,
+}
+
+impl ApiMethodDocs {
+    /// Create a new API method documentation.
+    pub fn new(method: &'static str, operation: Operation) -> Self {
+        Self { method, operation }
+    }
+
+    /// Apply this documentation to a path item.
+    pub(crate) fn apply_to_path_item(&self, path_item: &mut PathItem) {
+        match self.method {
+            "delete" => path_item.delete = Some(self.operation.clone()),
+            "get" => path_item.get = Some(self.operation.clone()),
+            "head" => path_item.head = Some(self.operation.clone()),
+            "options" => path_item.options = Some(self.operation.clone()),
+            "patch" => path_item.patch = Some(self.operation.clone()),
+            "post" => path_item.post = Some(self.operation.clone()),
+            "put" => path_item.put = Some(self.operation.clone()),
+            "trace" => path_item.trace = Some(self.operation.clone()),
+            _ => {}
+        }
+    }
+}
+
 macro_rules! method_router_chain_method {
     ($name:ident, $name_with:ident) => {
         #[doc = concat!("Route `", stringify!($name) ,"` requests to the given handler. See [`axum::routing::MethodRouter::", stringify!($name) , "`] for more details.")]
