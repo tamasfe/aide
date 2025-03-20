@@ -283,7 +283,7 @@
     "download_app": "Download our App",
     "providers": "Games Studios",
     "provider": "Games from Studio {provider}",
-    "games": "Games",
+    "games": "All Games",
     "game": "Play {game}",
     "category": "{category} Games",
     "dashboard_history": "History of Transactions",

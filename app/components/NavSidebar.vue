@@ -32,52 +32,49 @@ const links = [
     icon: "emojione-v1:cherries",
     children: [
       {
-        title: "All Games",
+        title: t("page.games"),
         icon: "emojione-v1:palm-tree",
         to: {
-          name: "todo",
+          name: "games",
         },
       },
       {
-        title: "Top 20 in Brazil", // bind "Brazil" to {country} in nuxt/i18n
-        icon: "emojione-v1:up-arrow",
-        to: {
-          name: "todo",
-        },
-      },
-      {
-        title: "Crash Games",
+        title: t("page.category", { category: t("category.crash") }),
         icon: "emojione-v1:fire",
         to: {
-          name: "todo",
+          name: "categories-id",
+          params: { id: "crash" },
         },
       },
       {
-        title: "Slot Games",
+        title: t("page.category", { category: t("category.slots") }),
         icon: "emojione-v1:slot-machine",
         to: {
-          name: "todo",
+          name: "categories-id",
+          params: { id: "slots" },
         },
       },
       {
-        title: "Roulette Games",
+        title: t("page.category", { category: t("category.roulette") }),
         icon: "emojione-v1:eight-spoked-asterisk",
         to: {
-          name: "todo",
+          name: "categories-id",
+          params: { id: "roulette" },
         },
       },
       {
-        title: "Live Casino",
+        title: t("page.category", { category: t("category.live") }),
         icon: "emojione-v1:woman",
         to: {
-          name: "todo",
+          name: "categories-id",
+          params: { id: "live" },
         },
       },
       {
         title: "Providers",
         icon: "emojione-v1:diamond-suit",
         to: {
-          name: "todo",
+          name: "providers",
         },
       },
       {
@@ -98,7 +95,8 @@ const links = [
         title: "JetX",
         icon: "emojione-v1:rocket",
         to: {
-          name: "todo",
+          name: "games-id",
+          params: { id: "29773842" },
         },
       },
     ],
