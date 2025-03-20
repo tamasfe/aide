@@ -55,24 +55,23 @@ const scrollToTop = () => {
       <FooterColumn
         :title="$t('footer.popular')"
         :links="[
-          { title: $t('page.aviator'), to: { name: 'todo' } },
-          { title: $t('page.slots'), to: { name: 'todo' } },
-          { title: $t('page.live_casino'), to: { name: 'todo' } },
+          // { title: $t('page.aviator'), to: { name: 'todo' } },
+          { title: $t('page.slots'), to: { name: 'categories-id', params: { id: 'slots' } } },
+          { title: $t('page.live_casino'), to: { name: 'categories-id', params: { id: 'live' } } },
         ]"
       />
       <FooterColumn
         :title="siteStore.site.name"
         :links="[
-          { title: $t('page.affiliate_program'), to: { name: 'affiliate-program' } },
+          // { title: $t('page.affiliate_program'), to: { name: 'affiliate-program' } },
           { title: $t('page.faq'), to: { name: 'faq' } },
           { title: $t('page.support'), onClick: () => $dependencies.common.asyncMessagePublisher.emit('girobet:commands:modals:open-live-chat', {}) },
-          { title: $t('page.telegram'), to: { name: 'todo' } },
+          // { title: $t('page.telegram'), to: { name: 'todo' } },
         ]"
       />
       <FooterColumn
         :title="$t('footer.legal')"
         :links="[
-          { title: $t('page.betting_terms'), to: { name: 'betting-terms' } },
           { title: $t('page.terms'), to: { name: 'terms' } },
           { title: $t('page.privacy'), to: { name: 'privacy' } },
           { title: $t('page.aml_kyc'), to: { name: 'aml-kyc' } },
