@@ -24,7 +24,7 @@ const delegatedProps = computed(() => {
     <div
       v-bind="delegatedProps"
       :class="cn(
-        'w-full inline-flex items-center justify-between rounded-lg bg-button-secondary px-2 py-1.5 text-muted-foreground space-x-2',
+        'w-full inline-flex items-center justify-between rounded-lg bg-button-secondary px-2 py-1.5 text-muted-foreground space-x-2 overflow-x-auto md:overflow-x-hidden',
         props.class,
       )"
     >
