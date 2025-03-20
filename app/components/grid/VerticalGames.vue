@@ -87,5 +87,13 @@ await useAsyncData(`load-games-for-${props.categoryIdentifier}`, () => onLoadDat
         />
       </template>
     </GridVertical>
+
+    <BaseEmpty
+      v-if="!loading && gameIds && gameIds.length === 0"
+      :title="$t('search.no_games')"
+      icon="lucide:search-x"
+      :size="32"
+      text-class="text-lg"
+    />
   </GridHeader>
 </template>

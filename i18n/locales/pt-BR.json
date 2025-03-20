@@ -239,7 +239,8 @@
   },
   "search": {
     "number_of_results": "{total} Results",
-    "no_results": "No Results"
+    "no_results": "No Results",
+    "no_games": "Nenhum jogo encontrado"
   },
   "footer": {
     "summary": "Bem-vindo ao GiroBet. Experimente a emoção máxima do jogo online conosco. Jogue slots, pôquer, blackjack e muito mais. Ganhe muito com nossos bônus e promoções.",

@@ -332,7 +332,8 @@
   "search": {
     "number_of_results_games": "{total} Games",
     "number_of_results_providers": "{total} Game Studios",
-    "no_results": "No Results"
+    "no_results": "No Results",
+    "no_games": "No Games found"
   },
   "footer": {
     "summary": "Welcome to The {siteName} Experience the ultimate thrill of online gambling with us. Play slots, poker, blackjack, and more. Win big with our bonuses and promotions.",
