@@ -9,8 +9,8 @@ const loadingWins = ref(true);
 const loadingMyBets = ref(true);
 const increment = ref(0);
 
-const WINNING_NOW_TABS = ["my_bets", "latest_wins", "highest_wins"] as const;
-const currentTab = ref<typeof WINNING_NOW_TABS[number]>("latest_wins");
+const WINNING_NOW_TABS = ["my_bets", "latest_bets", "high_rollers"] as const;
+const currentTab = ref<typeof WINNING_NOW_TABS[number]>("latest_bets");
 const latestWinsBuffer = ref<Array<Win>>([]);
 const highestWinsBuffer = ref<Array<Win>>([]);
 
@@ -99,14 +99,14 @@ const { data: myBetsData } = await useAsyncData(`winning-now-my-bets-table`, asy
           :pagination="undefined"
         />
       </TabsContent>
-      <TabsContent value="latest_wins">
+      <TabsContent value="latest_bets">
         <DataTableWins
           :key="increment"
           :data="latestWinsBuffer"
           :loading="loadingWins"
         />
       </TabsContent>
-      <TabsContent value="highest_wins">
+      <TabsContent value="high_rollers">
         <DataTableWins
           :key="increment"
           :data="highestWinsBuffer"
