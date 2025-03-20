@@ -44,7 +44,7 @@ const links: Array<{ icon: string; url: ComputedRef }> = [
 
 <template>
   <div class="flex flex-col">
-    <h3 class="hidden lg:block text-lg text-center text-emphasis font-semibold">
+    <h3 class="hidden lg:block text-lg text-emphasis font-semibold">
       {{ $t("footer.social_media") }}
     </h3>
     <div
