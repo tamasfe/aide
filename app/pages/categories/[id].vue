@@ -18,7 +18,12 @@ useHead({
 <template>
   <NuxtLayout name="carousel">
     <div class="giro__container giro__sections">
-      <GridVerticalGames :title="categoryTitle" :category-identifier="String(categoryIdentifier)" :provider-id="null" />
+      <GridVerticalGames
+        :title="categoryTitle"
+        :category-identifier="String(categoryIdentifier)"
+        :provider-id="null"
+        :show-back-button="true"
+      />
     </div>
   </NuxtLayout>
 </template>

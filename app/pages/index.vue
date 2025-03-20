@@ -8,7 +8,17 @@ useHead({
 });
 
 const currentTab = ref("lobby");
+const menuTabs = ref([
+  { value: "lobby", iconName: "lucide:home", label: t(`home_page.category_tabs.lobby`) },
+  { value: "slots", iconName: "lucide:coins", label: t(`category.slots`) },
+  { value: "crash", iconName: "lucide:crosshair", label: t(`category.crash`) },
+  { value: "table", iconName: "lucide:files", label: t(`category.table`) },
+  { value: "live", iconName: "lucide:users", label: t(`category.live`) },
+]);
 
+/**
+ * "Lobby" tab contents
+ */
 const ENABLE_SERVER_SIDE_RENDERING = true;
 const DEFER_CLIENT_SIDE_LOADING = true;
 const { data: categories } = await useAsyncData("home-category-identifiers", async () => {
@@ -24,32 +34,16 @@ const { data: categories } = await useAsyncData("home-category-identifiers", asy
       <WinningNowSlider />
 
       <Tabs v-model="currentTab" class="space-y-6">
-        <TabsList class="md:max-w-xs" :sticky-on-mobile="true">
+        <TabsList class="md:max-w-lg" :sticky-on-mobile="true">
           <TabsTrigger
-            :is-active="'lobby' === currentTab"
-            value="lobby"
+            v-for="tab in menuTabs"
+            :key="tab.value"
+            :is-active="tab.value === currentTab"
+            :value="tab.value"
             class="space-x-2"
           >
-            <BaseIcon name="lucide:home" :size="14" />
-            <span>{{ toSentenceCase($t(`home_page.category_tabs.lobby`)) }}</span>
-          </TabsTrigger>
-
-          <TabsTrigger
-            :is-active="'slots' === currentTab"
-            value="slots"
-            class="space-x-2"
-          >
-            <BaseIcon name="lucide:coins" :size="14" />
-            <span>{{ toSentenceCase($t(`category.slots`)) }}</span>
-          </TabsTrigger>
-
-          <TabsTrigger
-            :is-active="'roulette' === currentTab"
-            value="roulette"
-            class="space-x-2"
-          >
-            <BaseIcon name="lucide:circle-dot" :size="14" />
-            <span>{{ toSentenceCase($t(`category.roulette`)) }}</span>
+            <BaseIcon :name="tab.iconName" :size="14" />
+            <span>{{ toSentenceCase(tab.label) }}</span>
           </TabsTrigger>
 
           <template #suffix>
@@ -68,18 +62,14 @@ const { data: categories } = await useAsyncData("home-category-identifiers", asy
           <GridHorizontalProviders />
         </TabsContent>
 
-        <TabsContent value="slots">
+        <TabsContent
+          v-for="tab in menuTabs.filter(tab => tab.value !== 'lobby')"
+          :key="tab.value"
+          :value="tab.value"
+        >
           <GridVerticalGames
-            title="Slots"
-            category-identifier="slots"
-            :provider-id="null"
-          />
-        </TabsContent>
-
-        <TabsContent value="roulette">
-          <GridVerticalGames
-            title="Roulette"
-            category-identifier="roulette"
+            :title="tab.label"
+            :category-identifier="tab.value"
             :provider-id="null"
           />
         </TabsContent>

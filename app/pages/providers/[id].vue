@@ -35,7 +35,12 @@ watch(() => providerFromApi.value, (provider) => {
 <template>
   <NuxtLayout name="carousel">
     <div class="giro__container giro__sections">
-      <GridVerticalGames :title="providerFromApi?.name || ''" :provider-id="providerId" :category-identifier="null" />
+      <GridVerticalGames
+        :title="providerFromApi?.name || ''"
+        :provider-id="providerId"
+        :category-identifier="null"
+        :show-back-button="true"
+      />
     </div>
   </NuxtLayout>
 </template>

@@ -26,18 +26,6 @@ const { data: categoriesData } = await useAsyncData("sidebar-category-identifier
 { lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING },
 );
 
-const guessIcon = (categoryIdentifier: string): string => {
-  switch (categoryIdentifier) {
-    case "your-top-picks":
-      return "emojione-v1:heart-suit";
-    case "latest-releases":
-      return "emojione-v1:rocket";
-
-    default:
-      return ["emojione-v1:candy", "emojione-v1:slot-machine", "emojione-v1:fire", "emojione-v1:up-arrow", "emojione-v1:eight-spoked-asterisk", "emojione-v1:confetti-ball", "emojione-v1:alien"].sort(() => Math.random() - 0.5)[0] as string;
-  }
-};
-
 const links = [
   {
     title: "Casino",
@@ -171,7 +159,7 @@ const emptyQuery = ref("");
                 id: category.identifier,
               },
             }"
-            :icon="guessIcon(category.identifier)"
+            :icon="guessCategoryIcon(category.identifier)"
           />
         </div>
 

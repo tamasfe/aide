@@ -3,6 +3,7 @@ const props = defineProps<{
   title: string;
   categoryIdentifier: string | null;
   providerId: number | null;
+  showBackButton?: boolean;
 }>();
 
 const { $dependencies } = useNuxtApp();
@@ -39,6 +40,7 @@ await useAsyncData(`load-games-for-${props.categoryIdentifier}`, () => onLoadDat
     <template #title>
       <div class="flex gap-4 items-center">
         <BaseButton
+          v-if="props.showBackButton === true"
           variant="subtle"
           size="sm"
           class="p-1.5"
