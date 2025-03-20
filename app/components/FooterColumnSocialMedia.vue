@@ -6,9 +6,9 @@
 
 const locale = ref("pt-br");
 
-const telegramUrl = computed(() => {
-  return "TODO";
-});
+// const telegramUrl = computed(() => {
+//   return "TODO";
+// });
 
 const instagramUrl = computed(() => {
   if (locale.value === "pt-br") {
@@ -18,13 +18,13 @@ const instagramUrl = computed(() => {
   return "https://www.instagram.com/girobetofficial/";
 });
 
-const xUrl = computed(() => {
-  if (locale.value === "pt-br") {
-    return "https://x.com/girobet";
-  }
-  // eventually default to english
-  return "https://x.com/girobet";
-});
+// const xUrl = computed(() => {
+//   if (locale.value === "pt-br") {
+//     return "https://x.com/girobet";
+//   }
+//   // eventually default to english
+//   return "https://x.com/girobet";
+// });
 
 const tiktokUrl = computed(() => {
   if (locale.value === "pt-br") {
@@ -35,9 +35,9 @@ const tiktokUrl = computed(() => {
 });
 
 const links: Array<{ icon: string; url: ComputedRef }> = [
-  { icon: "ph:telegram-logo", url: telegramUrl },
+  // { icon: "ph:telegram-logo", url: telegramUrl },
   { icon: "ph:instagram-logo", url: instagramUrl },
-  { icon: "ph:x-logo", url: xUrl },
+  // { icon: "ph:x-logo", url: xUrl },
   { icon: "ph:tiktok-logo", url: tiktokUrl },
 ];
 </script>
