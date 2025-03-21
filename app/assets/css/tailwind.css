@@ -8,7 +8,9 @@
   --giro-container-max-width: 1272px;
   --giro-container-padding: 1rem;
   --giro-modal-default-max-width: 30rem;
-  --giro-section-gap: 2rem;
+
+  --giro-section-gap-sm: 0.75rem;
+  --giro-section-gap-lg: 1.5rem;
 
   /* background */
 
@@ -138,8 +140,7 @@
 }
 
 .giro__sections {
-  @apply flex flex-col;
-  gap: var(--giro-section-gap);
+  @apply flex flex-col gap-[var(--giro-section-gap-sm)] md:gap-[var(--giro-section-gap-lg)];
 }
 
 .giro__select-fade-enter-active,

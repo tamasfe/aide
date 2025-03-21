@@ -1,6 +1,6 @@
 <template>
-  <div class="md:py-8">
-    <div class="giro__container-full-width mb-[var(--giro-section-gap)] md:px-4">
+  <div>
+    <div class="giro__container-full-width mb-[var(--giro-section-gap-sm)] md:mb-[var(--giro-section-gap-lg)] md:px-4">
       <CarouselHero />
     </div>
 

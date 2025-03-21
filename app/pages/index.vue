@@ -33,7 +33,7 @@ const { data: categories } = await useAsyncData("home-category-identifiers", asy
     <div class="giro__container giro__sections">
       <WinningNowSlider />
 
-      <Tabs v-model="currentTab" class="space-y-6">
+      <Tabs v-model="currentTab" class="space-y-[var(--giro-section-gap-sm)] md:space-y-[var(--giro-section-gap-lg)]">
         <TabsList class="md:max-w-lg" :sticky-on-mobile="true">
           <TabsTrigger
             v-for="tab in menuTabs"

@@ -27,13 +27,13 @@ const slides = computed(() => {
 </script>
 
 <template>
-  <div class="w-full" :class="{ 'sm:grid sm:grid-cols-3 space-y-[var(--giro-section-gap)] sm:space-y-0': showFormWelcome }">
+  <div class="w-full" :class="{ 'sm:grid sm:grid-cols-3 space-y-[var(--giro-section-gap-sm)] sm:space-y-0': showFormWelcome }">
     <BaseCarousel
       :side-controls="!isMobile"
       :options="{ align: 'start' }"
       :slides="slides"
       :gap="isMobile ? 0.35 : 1"
-      class="pt-4 md:pt-0 pl-4 md:pl-0 w-full overflow-hidden"
+      class="pt-2 md:pt-0 pl-4 md:pl-0 w-full overflow-hidden"
       :class="{ 'sm:col-span-2': showFormWelcome }"
       slide-ratio="1080/607"
     >

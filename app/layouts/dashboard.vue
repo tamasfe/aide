@@ -21,7 +21,7 @@ watch([() => userStore.isAuthenticated], async () => {
     <ScrollOffscreen>
       <NavDashboard
         :section="section"
-        class="mb-[var(--giro-section-gap)]"
+        class="mb-[var(--giro-section-gap-sm)] md:mb-[var(--giro-section-gap-lg)]"
       />
     </ScrollOffscreen>
 
