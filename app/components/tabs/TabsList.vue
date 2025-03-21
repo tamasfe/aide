@@ -27,7 +27,7 @@ const delegatedProps = computed(() => {
       <div
         v-bind="delegatedProps"
         :class="cn(
-          'py-1.5 w-full flex items-center justify-between space-x-2 overflow-x-scroll md:overflow-x-hidden custom-scrollbar',
+          'py-1.5 w-full flex items-center justify-between space-x-2 overflow-x-auto md:overflow-x-hidden ',
           props.class,
         )"
       >
@@ -39,9 +39,10 @@ const delegatedProps = computed(() => {
 </template>
 
 <style scoped>
+  /* This CSS class allows for a visible horizontall scrollbar in-tune with our stylings. */
   .custom-scrollbar::-webkit-scrollbar {
-    width: 1px;
-    height: 1px;
+    width: 0.5px;
+    height: 0.5px;
   }
 
   .custom-scrollbar::-webkit-scrollbar-track {
