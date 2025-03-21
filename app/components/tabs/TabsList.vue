@@ -22,13 +22,17 @@ const delegatedProps = computed(() => {
     )"
   >
     <div
-      v-bind="delegatedProps"
-      :class="cn(
-        'w-full inline-flex items-center justify-between bg-button-secondary px-2 py-1.5 text-muted-foreground space-x-2 overflow-x-scroll md:overflow-x-hidden custom-scrollbar rounded-t-lg rounded-b-none md:rounded-lg',
-        props.class,
-      )"
+      class="w-full px-2.5 flex rounded-lg bg-button-secondary"
     >
-      <slot />
+      <div
+        v-bind="delegatedProps"
+        :class="cn(
+          'py-1.5 w-full flex items-center justify-between space-x-2 overflow-x-scroll md:overflow-x-hidden custom-scrollbar',
+          props.class,
+        )"
+      >
+        <slot />
+      </div>
     </div>
     <slot name="suffix" />
   </TabsList>
@@ -41,17 +45,17 @@ const delegatedProps = computed(() => {
   }
 
   .custom-scrollbar::-webkit-scrollbar-track {
-    border-radius: 0rem;
-    background: var(--giro-button-secondary);
+    border-radius: 10rem;
+    background: transparent;
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: var(--giro-button-secondary);
-    border-radius: 0rem;
+    background: transparent;
+    border-radius: 10rem;
     border: 1px solid var(--giro-button-text-secondary);
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: var(--giro-button-secondary);
+    background: transparent;
   }
 </style>
