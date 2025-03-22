@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { GameSummaryI } from "~/modules/games/domain/Game";
+
 const props = defineProps<{
   title: string;
   categoryIdentifier: string | null;
@@ -12,7 +14,7 @@ const { navigateBackOrHome } = useNavigateBackOrHome();
 const loading = useState(`grid-vertical-games-loading-for-${props.categoryIdentifier}-${props.providerId}`, () => true);
 const totalGamesOfCategory = useState(`grid-vertical-games-total-for-${props.categoryIdentifier}-${props.providerId}`, () => 0);
 const nextGamesPageToSearch = useState(`grid-vertical-games-next-page-for-${props.categoryIdentifier}-${props.providerId}`, () => 0);
-const gameIds = useState<{ id: number; imageUrl: string }[]>(`grid-vertical-games-ids-for-${props.categoryIdentifier}-${props.providerId}`, () => []);
+const gameIds = useState<(GameSummaryI & { key: string })[]>(`grid-vertical-games-ids-for-${props.categoryIdentifier}-${props.providerId}`, () => []);
 const canLoadMore = useState(`grid-vertical-games-can-load-more-for-${props.categoryIdentifier}-${props.providerId}`, () => true);
 
 const onLoadData = async () => {
@@ -20,7 +22,7 @@ const onLoadData = async () => {
   loading.value = true;
 
   const { games: foundGames, canLoadMore: updatedCanLoadMore, totalGames } = await $dependencies.games.ui.searchGamesPaginatingOnGrid.handle(props.categoryIdentifier, props.providerId, nextGamesPageToSearch.value);
-  gameIds.value.push(...foundGames);
+  gameIds.value.push(...foundGames.map(game => useAddKeyFromId(game)));
   canLoadMore.value = updatedCanLoadMore;
   nextGamesPageToSearch.value += 1;
   totalGamesOfCategory.value = totalGames;
@@ -82,6 +84,7 @@ await useAsyncData(`load-games-for-${props.categoryIdentifier}`, () => onLoadDat
       <template #default="{ data: game }">
         <GameImageLink
           :id="game.id"
+          :slug="game.slug"
           :src="game.imageUrl"
           animation-on-hover="vertical-translate"
         />

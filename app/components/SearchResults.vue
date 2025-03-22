@@ -1,6 +1,9 @@
 <script setup lang="ts">
 // 2 alternates if ever needed...
 import { debouncedWatch } from "@vueuse/core";
+import type { GameSummaryI } from "~/modules/games/domain/Game";
+import type { Keyified } from "~/types/utils";
+
 // import { debouncedWatch } from "@vueuse/core";
 
 const { $dependencies } = useNuxtApp();
@@ -17,7 +20,7 @@ const { query } = defineProps({
  * Game search
  */
 const gamesCurrentPage = useState(() => 0);
-const games = useState<{ id: number; imageUrl: string }[]>(() => []);
+const games = useState<Keyified<GameSummaryI>[]>(() => []);
 const gamesTotalItems = useState(() => 0);
 const gamesLoading = useState(() => false);
 const gamesOnLoadMore = async (actionOnItemsArray: "append" | "replace") => {
@@ -26,10 +29,10 @@ const gamesOnLoadMore = async (actionOnItemsArray: "append" | "replace") => {
 
   gamesTotalItems.value = result.totalGames;
   if (actionOnItemsArray === "append") {
-    games.value.push(...result.games);
+    games.value.push(...result.games.map(game => useAddKeyFromId(game)));
   }
   else if (actionOnItemsArray === "replace") {
-    games.value = result.games;
+    games.value = result.games.map(game => useAddKeyFromId(game));
   }
 
   gamesCurrentPage.value++;
@@ -40,7 +43,7 @@ const gamesOnLoadMore = async (actionOnItemsArray: "append" | "replace") => {
  * Provider search
  */
 const providersCurrentPage = useState(() => 0);
-const providers = useState<{ id: number; imageUrl: string }[]>(() => []);
+const providers = useState<Keyified<{ id: number; imageUrl: string }>[]>(() => []);
 const providersTotalItems = useState(() => 0);
 const providersLoading = useState(() => false);
 const providersOnLoadMore = async (actionOnItemsArray: "append" | "replace") => {
@@ -49,10 +52,10 @@ const providersOnLoadMore = async (actionOnItemsArray: "append" | "replace") => 
 
   providersTotalItems.value = result.totalProviders;
   if (actionOnItemsArray === "append") {
-    providers.value.push(...result.providers);
+    providers.value.push(...result.providers.map(provider => ({ id: provider.id, imageUrl: provider.imageUrl, key: provider.id.toString() })));
   }
   else if (actionOnItemsArray === "replace") {
-    providers.value = result.providers;
+    providers.value = result.providers.map(provider => ({ id: provider.id, imageUrl: provider.imageUrl, key: provider.id.toString() }));
   }
 
   providersCurrentPage.value++;
@@ -96,6 +99,7 @@ const onClickLink = () => {
       <template #default="{ item: game }">
         <GameImageLink
           :id="game.id"
+          :slug="game.slug"
           class="border-none"
           :src="game.imageUrl"
           animation-on-hover="vertical-translate"

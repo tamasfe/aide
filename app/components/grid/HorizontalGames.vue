@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import type { GameSummaryI } from "~/modules/games/domain/Game";
+
 const props = defineProps<{
   categoryIdentifier: string;
-  initialGames?: { id: number; imageUrl: string }[];
+  initialGames?: GameSummaryI[];
 }>();
 
 const { $dependencies } = useNuxtApp();
@@ -23,7 +25,7 @@ const columns = ref({
 
 const paginationSize = computed(() => props.initialGames ? props.initialGames.length : 25);
 const slidesBeforeLoad = 4; // We aribitrarely set it to +1 the slides to scroll to give time for the loading one scroll ahead
-const games = useState<{ id: number; imageUrl: string; key: string }[]>(`grid-horizontal-games-ids-for-${props.categoryIdentifier}`, () => props.initialGames ? props.initialGames.map(game => useAddKeyFromId(game)) : []);
+const games = useState<(GameSummaryI & { key: string })[]>(`grid-horizontal-games-ids-for-${props.categoryIdentifier}`, () => props.initialGames ? props.initialGames.map(game => useAddKeyFromId(game)) : []);
 const loading = useState(`grid-horizontal-games-loading-for-${props.categoryIdentifier}`, () => false);
 const nextGamesPageToSearch = useState(`grid-horizontal-games-next-page-for-${props.categoryIdentifier}`, () => props.initialGames ? 1 : 0);
 const canLoadMore = useState(`grid-horizontal-games-can-load-more-for-${props.categoryIdentifier}`, () => true);
@@ -84,6 +86,7 @@ if (!props.initialGames) {
     <template #default="{ item: game }">
       <GameImageLink
         :id="game.id"
+        :slug="game.slug"
         :src="game.imageUrl"
         :animation-on-hover="'vertical-translate'"
       />

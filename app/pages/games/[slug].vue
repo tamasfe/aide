@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { destructureGameUrlSlug } from "~/modules/games/domain/Game";
+
 // DESIGN STATUS:       ✅
 // ARCHITECTURE STATUS: ✴️
 //   * there are some edge cases we should handle, like what happens when you run out of money (how to display it to the user, etc)
@@ -24,14 +26,16 @@ const walletStore = useWalletStore();
 const { t } = useI18n();
 const fullscreen = ref(false);
 
-const gameId = Number(params.id);
-if (!params.id || Number.isNaN(gameId)) {
-  $dependencies.common.logger.warn("Game ID route parameter should be a number", { gameId });
+const gameData = destructureGameUrlSlug(params.slug);
+if (!gameData) {
+  $dependencies.common.logger.warn("Game ID could not be destructured from slug route parameter", { slug: params.slug });
   await navigateTo("/");
+  throw new Error("Game ID could not be destructured from slug route parameter");
 }
+const gameId = gameData.id;
 
 useHead({
-  title: t("page.game", { game: "" }),
+  title: t("page.game", { game: toSentenceCase(gameData.identifier) }),
 });
 
 const ENABLE_SERVER_SIDE_RENDERING_FOR_GAME = true;
@@ -39,9 +43,13 @@ const DEFER_CLIENT_SIDE_LOADING_FOR_GAME = true;
 const { data: game, status: statusLoadingGame } = await useAsyncData(`game-${params.id}`, async () => {
   return $dependencies.games.ui.findGameCompatibilityByIdOnGamePage.handle(gameId, currentDevice);
 }, { lazy: DEFER_CLIENT_SIDE_LOADING_FOR_GAME, server: ENABLE_SERVER_SIDE_RENDERING_FOR_GAME });
-if (!game.value && statusLoadingGame.value === "success") {
-  await navigateTo("/");
-}
+
+/* Redirect if the game is successfully searched, but server returns no results (404) */
+watch([() => game.value, () => statusLoadingGame.value], async ([game, statusLoadingGame]) => {
+  if (game === null && statusLoadingGame === "success") {
+    await navigateTo("/");
+  }
+});
 
 const ENABLE_SERVER_SIDE_RENDERING_FOR_CATEGORIES = false;
 const DEFER_CLIENT_SIDE_LOADING_FOR_CATEGORIES = true;

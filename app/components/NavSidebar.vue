@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { toGameUrlSlug } from "~/modules/games/domain/Game";
+
 // DESIGN STATUS:       ✴️
 //   * hide the scrollbar like on bet7k
 // ARCHITECTURE STATUS: ✴️
@@ -95,8 +97,8 @@ const links = [
         title: "JetX",
         icon: "emojione-v1:rocket",
         to: {
-          name: "games-id",
-          params: { id: "29773842" },
+          name: "games-slug",
+          params: { slug: toGameUrlSlug(29773842, "JetX") },
         },
       },
     ],

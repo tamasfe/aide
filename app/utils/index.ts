@@ -80,3 +80,7 @@ export function camelizeKeys<T extends Record<string, unknown>>(obj: T): Cameliz
 
 // Take into account strings that come from kebab-case and snake_case
 export const toSentenceCase = (str: string) => str.split(/[-_]/).map(capitalize).join(" ");
+
+export const toKebabCase = (str: string) => str.trim().replace(/([a-z0-9])([A-Z])/g, "$1-$2")
+  .replace(/[\s_]+/g, "-")
+  .toLowerCase();
