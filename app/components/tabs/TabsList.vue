@@ -22,12 +22,12 @@ const delegatedProps = computed(() => {
     )"
   >
     <div
-      class="w-full px-3 flex rounded bg-button-secondary"
+      class="w-full px-1.5 flex rounded bg-button-secondary"
     >
       <div
         v-bind="delegatedProps"
         :class="cn(
-          'py-3 w-full flex items-center justify-between space-x-2 overflow-x-auto md:overflow-x-hidden ',
+          'py-1.5 w-full flex items-center justify-between space-x-2 overflow-x-auto md:overflow-x-hidden ',
           props.class,
         )"
       >
