@@ -78,8 +78,8 @@ const { data: myBetsData } = await useAsyncData(`winning-now-my-bets-table`, asy
       {{ $t('winning_now.title') }}
     </h2>
 
-    <Tabs v-model="currentTab" class="mt-4">
-      <TabsList class="mb-4 max-w-sm">
+    <Tabs v-model="currentTab" class="mt-4 space-y-4">
+      <TabsList class="max-w-sm">
         <TabsTrigger
           v-for="tab in WINNING_NOW_TABS"
           :key="tab"
