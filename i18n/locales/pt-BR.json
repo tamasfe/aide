@@ -1,362 +1,488 @@
 {
   "promo_bar": {
     "refer": {
-      "title": "Download O Nosso Aplicativo",
-      "message": "Faça o Download Do Nosso Aplicativo Para Uma Experiência Ainda Melhor!"
+      "title": "Baixe Nosso Aplicativo",
+      "message": "Baixe Nosso Aplicativo para uma Experiência Ainda Melhor!"
     }
   },
   "winning_now": {
-    "title": "Winning Now",
+    "title": "Ganhando Agora",
     "table": {
-      "header_user_nickname": "User",
-      "header_game": "Game",
-      "header_amount": "Amount",
-      "empty": "No Recent Bets"
+      "header_user_nickname": "Usuário",
+      "header_game": "Jogo",
+      "header_amount": "Valor",
+      "empty": "Sem Apostas Recentes"
     }
   },
   "field": {
-    "email": "Email",
-    "password": "Password",
-    "password_new": "Enter a new password",
-    "password_confirm": "Confirm new password",
-    "telephone": "Telephone",
-    "cpf": "CPF"
+    "email": "E-mail",
+    "password": "Senha",
+    "password_current": "Senha atual",
+    "password_new": "Nova senha",
+    "password_confirm": "Confirme a nova senha",
+    "telephone": "Telefone",
+    "cpf": "CPF",
+    "evp": "EVP",
+    "reason": "Seu motivo",
+    "username": "Nome de usuário"
   },
   "placeholder": {
-    "search": "Search for a casino game...",
-    "deposit_amount": "Deposit amount",
-    "withdrawal_amount": "Withdrawal amount"
+    "search": "Buscar um jogo de cassino...",
+    "deposit_amount": "Valor do depósito",
+    "withdrawal_amount": "Valor do saque"
   },
   "api_client": {
-    "signup_try_again": "An error occurred while trying to create your account. Please try again.",
-    "signup_success": "Your account has been created successfully"
+    "signup_try_again": "Ocorreu um erro ao tentar criar sua conta. Por favor, tente novamente.",
+    "signup_success": "Sua conta foi criada com sucesso"
   },
-  "api_server": {
+  "api_server": {},
+  "welcome_form": {
+    "title": "Bem-vindo ao {siteName}",
+    "description": "Comece a ganhar..."
   },
   "button": {
-    "register": "Register",
-    "login": "Login",
-    "create_account": "Create Account",
-    "continue": "Continue",
-    "see_all": "See All",
-    "send_recovery_email": "Send Recovery Email and Close",
-    "deposit": "Deposit",
-    "deposit_now": "Deposit Now",
-    "copy_code": "Copy Code ({remaining} Remaining)",
-    "completed_payment": "I completed the payment",
-    "withdraw": "Withdraw",
-    "go_back": "Go Back",
-    "take_me_to": "Take me to {domain}",
-    "notify_me": "Notify Me When Available",
-    "share": "Share",
-    "play_now": "Play Now",
-    "close_account": "Close Account",
-    "edit": "Edit",
-    "change": "Change",
-    "copy": "Copy",
-    "upload": "Upload",
-    "confirm": "Confirm",
-    "save_password_and_login": "Save Password and Login",
-    "nevermind": "Nevermind",
-    "download_app": "Download App",
-    "update_app": "Update App"
+    "register": "Cadastrar",
+    "register_now": "Cadastre-se Agora",
+    "login": "Entrar",
+    "create_account": "Criar Conta",
+    "continue": "Continuar",
+    "see_all": "Ver Todos",
+    "send_recovery_email": "Enviar E-mail de Recuperação e Fechar",
+    "deposit": "Depositar",
+    "deposit_now": "Depositar Agora",
+    "copy_code": "Copiar Código ({remaining} Restantes)",
+    "copied_code": "Código Copiado com Sucesso!",
+    "completed_payment": "Completei o pagamento",
+    "cancel_deposit": "Cancelar Depósito",
+    "withdraw": "Sacar",
+    "go_back": "Voltar",
+    "take_me_to": "Me leve para {domain}",
+    "notify_me": "Me Avise Quando Disponível",
+    "share": "Compartilhar",
+    "play_now": "Jogar Agora",
+    "close_account": "Fechar Conta",
+    "edit": "Editar",
+    "change": "Alterar",
+    "copy": "Copiar",
+    "upload": "Enviar",
+    "confirm": "Confirmar",
+    "cancel": "Cancelar",
+    "save": "Salvar",
+    "save_password_and_login": "Salvar Senha e Entrar",
+    "nevermind": "Não importa",
+    "download_app": "Baixar Aplicativo",
+    "update_app": "Atualizar Aplicativo",
+    "print": "Imprimir"
   },
   "mobile_nav": {
     "menu": "Menu",
-    "hot": "Hot",
-    "search": "Search",
-    "support": "Support",
-    "promos": "Promos"
+    "hot": "Quente",
+    "search": "Buscar",
+    "support": "Suporte",
+    "promos": "Promoções"
+  },
+  "side_nav": {
+    "live_support": "Suporte ao Vivo",
+    "download_app": "Baixe Nosso Aplicativo"
+  },
+  "game_actions": {
+    "table": {
+      "empty": "Sem Rodadas de Jogo",
+      "header_id": "ID",
+      "header_date": "Data",
+      "header_game": "Jogo",
+      "header_action": "Tipo",
+      "header_amount": "Valor",
+      "header_username": "Usuário"
+    }
   },
   "game_page": {
-    "device_not_supported": "This game is not supported on your current device",
-    "device_not_supported_alternative_desktop": "Please try playing it on a computer or laptop",
-    "device_not_supported_alternative_mobile": "Please try playing it on a mobile device"
+    "device_not_supported": "Este jogo não é compatível com seu dispositivo atual",
+    "device_not_supported_alternative_desktop": "Por favor, tente jogar em um computador ou laptop",
+    "device_not_supported_alternative_mobile": "Por favor, tente jogar em um dispositivo móvel"
   },
   "home_page": {
     "category_tabs": {
       "lobby": "lobby"
     },
     "winning_now_tabs": {
-      "my_bets": "My Bets",
-      "latest_wins": "Latest Wins",
-      "highest_wins": "Highest Wins"
+      "my_bets": "Minhas Apostas",
+      "latest_bets": "Últimas Apostas",
+      "high_rollers": "Grandes Apostadores"
     }
   },
   "download_app_page": {
-    "title": "Download Our App Now",
-    "description": "Download our app and enjoy the best and fastest online casino experience on the go. Play your favorite games, deposit and withdraw funds, and get in touch with our support team, all from the palm of your hand.",
-    "download_not_available": "We are currently working on an update of our App. It will be back to being available for download shortly.",
-    "download_already_downloaded": "You already have our app installed on your device. Enjoy the best online casino experience on the go!"
+    "title": "Baixe Nosso Aplicativo Agora",
+    "description": "Baixe nosso aplicativo e desfrute da melhor e mais rápida experiência de cassino online em qualquer lugar. Jogue seus jogos favoritos, faça depósitos e saques, e entre em contato com nossa equipe de suporte, tudo na palma da sua mão.",
+    "download_not_available": "Estamos trabalhando atualmente em uma atualização do nosso Aplicativo. Ele estará disponível para download em breve.",
+    "download_already_downloaded": "Você já tem nosso aplicativo instalado em seu dispositivo. Aproveite a melhor experiência de cassino online em qualquer lugar!"
   },
   "user_nav": {
-    "wallet": "Wallet",
-    "history": "History",
-    "account_settings": "Account Settings",
-    "live_support": "Live Support",
-    "logout": "Log out",
-    "balance_hidden_while_playing": "Playing..."
+    "wallet": "Carteira",
+    "history": "Histórico",
+    "account_settings": "Configurações da Conta",
+    "live_support": "Suporte ao Vivo",
+    "logout": "Sair",
+    "balance_hidden_while_playing": "Jogando..."
   },
   "modal_login": {
-    "error_invalid_credentials": "Your email or password are incorrect",
-    "error_unknown": "An error occurred while trying to log in. Please try again."
+    "error_invalid_credentials": "Seu e-mail ou senha estão incorretos",
+    "error_unknown": "Ocorreu um erro ao tentar fazer login. Por favor, tente novamente."
+  },
+  "modal_close_account": {
+    "title": "Sentimos muito em vê-lo partir",
+    "alternative_cool_off": "Tem certeza de que não gostaria de definir um período de Resfriamento? Confira nossas Ferramentas de Jogo Responsável para todas as formas de manter o controle dos seus hábitos de jogo.",
+    "help_us_improve": "Nos ajude a melhorar, contando por que está saindo",
+    "error_unknown": "Ocorreu um erro ao fechar sua conta. Por favor, tente novamente em alguns minutos"
   },
   "modal_session": {
-    "dont_have_account": "Don't have an account yet?",
-    "create_free_account": "Create a Free account",
-    "forgot_password": "Forgot your password?",
-    "accept_terms": "By registering, you agree to our",
-    "have_account": "Have an account already?",
-    "error_submitting_flow": "An error occurred while registering your account. Please try again",
-    "error_validating_field": "Error validating field. Please refresh and try again",
-    "error_submitting_flow_already_taken_cpf": "This CPF is already in use",
-    "error_submitting_flow_already_taken_email": "This email is already in use",
-    "error_submitting_flow_already_taken_telephone": "This phone number is already in use"
+    "dont_have_account": "Ainda não tem uma conta?",
+    "create_free_account": "Crie uma conta gratuita",
+    "forgot_password": "Esqueceu sua senha?",
+    "accept_terms": "Ao se cadastrar, você concorda com nossos",
+    "have_account": "Já tem uma conta?",
+    "error_submitting_flow": "Ocorreu um erro ao registrar sua conta. Por favor, tente novamente",
+    "error_validating_field": "Erro ao validar campo. Por favor, atualize e tente novamente",
+    "error_submitting_flow_already_taken_cpf": "Este CPF já está em uso",
+    "error_submitting_flow_already_taken_email": "Este e-mail já está em uso",
+    "error_submitting_flow_already_taken_telephone": "Este número de telefone já está em uso"
   },
   "modal_payments": {
-    "make_deposit": "Make a Deposit",
-    "make_deposit_subtitle": "Add funds to your account",
-    "generate_new_code": "Generate a new code",
-    "finalize_deposit": "Finalize Deposit",
-    "finalize_deposit_subtitle": "Scan QR or copy code",
-    "finalize_deposit_code_has_expired": "The payment code has expired",
-    "make_withdrawal": "Make a Withdrawal",
-    "make_withdrawal_subtitle": "Withdraw funds from your account",
-    "available_withdraw": "Available to withdraw",
-    "limits": "limits",
-    "error_creating_flow_pending_deposit": "You have an existing deposit in progress. Please wait for it to complete or cancel before trying again",
-    "error_creating_flow_pending_withdrawal": "You have an existing withdrawal in progress. Please wait for it to complete or cancel before trying again",
-    "error_creating_deposit_flow_unknown": "An error occurred while handling your deposit. Please try again",
-    "error_creating_withdrawal_insufficient_wagers": "Insufficient wagers placed to enable withdrawal. Please place more bets and try again",
-    "error_creating_withdrawal_insufficient_funds": "Insufficient funds in your wallet to withdraw. Please deposit more funds or reduce the amount to withdraw and try again",
-    "error_creating_withdrawal_cooldown_not_finished": "O seu tempo de espera entre retiradas termina no {dateTime}. Por favor, aguarde mais um pouco e tente novamente",
-    "error_creating_withdrawal_flow_unknown": "An error occurred while handling your withdrawal. Please try again"
+    "make_deposit": "Fazer um Depósito",
+    "make_deposit_subtitle": "Adicione fundos à sua conta",
+    "generate_new_code": "Gerar um novo código",
+    "finalize_deposit": "Finalizar Depósito",
+    "finalize_deposit_subtitle": "Escaneie QR ou copie o código",
+    "finalize_deposit_code_has_expired": "O código de pagamento expirou",
+    "make_withdrawal": "Fazer um Saque",
+    "make_withdrawal_subtitle": "Retire fundos da sua conta",
+    "available_withdraw": "Disponível para saque",
+    "limits": "limites",
+    "error_creating_flow_pending_deposit": "Você tem um depósito em andamento. Aguarde a conclusão ou cancele antes de tentar novamente",
+    "error_creating_flow_pending_withdrawal": "Você tem um saque em andamento. Aguarde a conclusão ou cancele antes de tentar novamente",
+    "error_creating_deposit_flow_amount_exceeds_timeframe_limits": "O valor que você está tentando depositar excede os limites para o período selecionado. Aguarde e tente novamente",
+    "error_creating_deposit_flow_amount_below_minimum": "O valor que você está tentando depositar está abaixo do mínimo permitido {min}. Por favor, tente novamente",
+    "error_creating_deposit_flow_amount_above_maximum": "O valor que você está tentando depositar está acima do máximo permitido {max}. Por favor, tente novamente",
+    "error_creating_deposit_flow_method_not_allowed": "O método de depósito selecionado não é permitido. Tente outro método",
+    "error_creating_deposit_flow_unknown": "Ocorreu um erro ao processar seu depósito. Por favor, tente novamente",
+    "error_creating_withdrawal_insufficient_wagers": "Apostas insuficientes para habilitar o saque. Por favor, faça mais apostas e tente novamente",
+    "error_creating_withdrawal_insufficient_funds": "Fundos insuficientes em sua carteira para saque. Deposite mais fundos ou reduza o valor do saque e tente novamente",
+    "error_creating_withdrawal_flow_amount_exceeds_timeframe_limits": "O valor que você está tentando sacar excede os limites para o período selecionado. Aguarde e tente novamente",
+    "error_creating_withdrawal_cooldown_not_finished": "Seu período de carência entre saques termina em {dateTime}. Aguarde até lá e tente novamente",
+    "error_creating_withdrawal_flow_method_not_allowed": "O método de saque selecionado não é permitido. Tente outro método",
+    "error_creating_withdrawal_flow_amount_below_minimum": "O valor que você está tentando sacar está abaixo do mínimo permitido {min}. Altere o valor e tente novamente",
+    "error_creating_withdrawal_flow_amount_above_maximum": "O valor que você está tentando sacar está acima do máximo permitido {max}. Altere o valor e tente novamente",
+    "error_creating_withdrawal_flow_unknown": "Ocorreu um erro ao processar seu saque. Por favor, tente novamente"
+  },
+  "modal_user_settings": {
+    "error_unknown": "Ocorreu um erro ao salvar suas configurações. Por favor, tente novamente em alguns minutos",
+    "language": {
+      "title": "Alterar o idioma da sua conta"
+    },
+    "password": {
+      "title": "Alterar sua senha",
+      "instructions_intro": "Sua nova senha deve conter pelo menos:",
+      "error_invalid_current_password": "Sua senha atual está incorreta",
+      "error_unknown": "Ocorreu um erro ao alterar sua senha. Por favor, tente novamente"
+    },
+    "payment_pix": {
+      "title": "Alterar suas configurações PIX",
+      "key_type_cpf_selected_explanation": "O CPF vinculado à sua conta será o vinculado ao seu PIX"
+    },
+    "time_zone": {
+      "title": "Alterar o fuso horário da sua conta"
+    },
+    "username": {
+      "title": "Alterar seu nome de usuário",
+      "error_already_taken": "Este nome de usuário já está em uso. Escolha outro",
+      "error_explicit": "O nome de usuário não pode conter palavras explícitas. Escolha outro",
+      "error_unknown": "Ocorreu um erro ao alterar seu nome de usuário. Por favor, tente novamente"
+    }
   },
   "modal_cancel_registration": {
-    "headline": "Wait! Are you sure you want to cancel?",
-    "body": "Players are cashing out everyday with our super fast withdrawals. Click Continue to complete your registration.",
-    "cancel": "No thanks, I want to cancel"
+    "headline": "Espere! Tem certeza de que deseja cancelar?",
+    "body": "Jogadores estão sacando todos os dias com nossos saques super rápidos. Clique em Continuar para concluir seu cadastro.",
+    "cancel": "Não, quero cancelar"
   },
   "modal_forgot_password": {
-    "error_unknown": "An error occurred. Please try again"
+    "error_unknown": "Ocorreu um erro. Por favor, tente novamente"
   },
   "modal_restrict": {
-    "expanding_headline": "Sorry, {blockedDomain} is not available within {country}",
-    "expanding_body": "Unfortunately, at this time we don't have local deposit options for players from {country}. We're growing as fast as possible and looking to serve you as soon as we can. Check back soon to join the luckiest online casino in the world!",
-    "expanding_subject": "Add me to the waitlist in {country} for {blockedDomain}",
-    "license_alternative_headline": "Go to {allowedDomain} for the Best Casino Experience in {country}",
-    "license_alternative_body": "Due to the restrictions of our gaming license, the url {blockedDomain} cannot accept players located in {country}. However, we can provide you a full unrestricted experience on our dedicated {country} website at {allowedDomain}!",
-    "license_no_alternative_headline": "Sorry, {blockedDomain} is not available within {country}",
-    "license_no_alternative_body": "Due to the restrictions of our gaming license, the url {blockedDomain} cannot accept players located in {country}. If you think this is a mistake, please check your connection or with your ISP. We apologize for the inconvenience and hope to serve you in the near future."
+    "expanding_headline": "Desculpe, {blockedDomain} não está disponível em {country}",
+    "expanding_body": "Infelizmente, no momento, não temos opções de depósito local para jogadores de {country}. Estamos crescendo o mais rápido possível e procurando atendê-lo assim que pudermos. Volte em breve para se juntar ao cassino online mais sortudo do mundo!",
+    "expanding_subject": "Me adicione à lista de espera em {country} para {blockedDomain}",
+    "license_alternative_headline": "Vá para {allowedDomain} para a Melhor Experiência de Cassino em {country}",
+    "license_alternative_body": "Devido às restrições de nossa licença de jogo, o url {blockedDomain} não pode aceitar jogadores localizados em {country}. No entanto, podemos fornecer uma experiência completa sem restrições em nosso site dedicado a {country} em {allowedDomain}!",
+    "license_no_alternative_headline": "Desculpe, {blockedDomain} não está disponível em {country}",
+    "license_no_alternative_body": "Devido às restrições de nossa licença de jogo, o url {blockedDomain} não pode aceitar jogadores localizados em {country}. Se você acha que isso é um erro, verifique sua conexão ou com seu provedor de internet. Pedimos desculpas pelo inconveniente e esperamos poder atendê-lo em breve."
   },
   "validation": {
-    "cpf_invalid": "Invalid CPF",
-    "cpf_required": "CPF is required",
-    "email_invalid": "Invalid email",
-    "email_required": "Email is required",
-    "password_invalid": "Invalid password",
-    "password_required": "Password is required",
-    "password_does_not_match": "Passwords do not match",
-    "password_invalid_too_short": "Password must be longer than {min}",
-    "password_invalid_too_long": "Password must be shorter than {max}",
-    "telephone_invalid": "Invalid phone",
-    "telephone_required": "Phone is required",
-    "telephone_invalid_too_short": "Phone is missing {num} digits",
-    "telephone_invalid_too_long": "Phone is {num} digits too long",
-    "amount_required": "Amount is required",
-    "amount_deposit_min": "Minimum deposit amount is {min}",
-    "amount_deposit_max": "Maximum deposit amount is {max}",
-    "amount_withdrawal_min": "Minimum withdrawal amount is {min}",
-    "amount_withdrawal_max": "Maximum withdrawal amount is {max}"
+    "cpf_invalid": "CPF inválido",
+    "cpf_required": "CPF é obrigatório",
+    "email_invalid": "E-mail inválido",
+    "email_required": "E-mail é obrigatório",
+    "evp_invalid": "EVP inválido",
+    "evp_required": "EVP é obrigatório",
+    "password_invalid": "Senha inválida",
+    "password_required": "Senha é obrigatória",
+    "password_does_not_match": "As senhas não coincidem",
+    "password_invalid_too_short": "A senha deve ser mais longa que {min}",
+    "password_invalid_too_long": "A senha deve ser mais curta que {max}",
+    "telephone_invalid": "Telefone inválido",
+    "telephone_required": "Telefone é obrigatório",
+    "telephone_prefix_invalid": "Prefixo de telefone inválido",
+    "telephone_prefix_required": "Prefixo de telefone é obrigatório",
+    "telephone_invalid_too_short": "Telefone está faltando {num} dígitos",
+    "telephone_invalid_too_long": "Telefone está {num} dígitos maior",
+    "amount_required": "Valor é obrigatório",
+    "amount_deposit_min": "Valor mínimo de depósito é {min}",
+    "amount_deposit_max": "Valor máximo de depósito é {max}",
+    "amount_withdrawal_min": "Valor mínimo de saque é {min}",
+    "amount_withdrawal_max": "Valor máximo de saque é {max}",
+    "pix_key_type_invalid": "Tipo de Chave PIX inválido",
+    "pix_key_type_required": "Chave PIX é obrigatória",
+    "reason_required": "Um motivo para fechar sua conta é obrigatório",
+    "reason_too_long": "O motivo deve ser mais curto",
+    "username_required": "Um nome de usuário é obrigatório",
+    "username_too_short": "Deve ser mais longo que {min}",
+    "username_too_long": "Deve ser mais curto que {max}",
+    "username_invalid_characters": "Nome de usuário pode conter letras, números e . {'@'} $ # & _ -"
   },
   "withdrawal_limits": {
-    "summary": "For an easy, secure and simple withdraw process, make sure to follow these guidelines: The minimum withdrawal amount varies by method and is listed above. Withdrawals are always to be processed to the original deposit method unless otherwise specified or if that method doesn't support withdrawals."
+    "summary": "Para um processo de saque fácil, seguro e simples, certifique-se de seguir estas diretrizes: O valor mínimo de saque varia de acordo com o método e está listado acima. Os saques devem ser sempre processados para o método de depósito original, a menos que especificado de outra forma ou se esse método não suportar saques.",
+    "limits_minimum": "Valor Mínimo de Saque",
+    "limits_maximum": "Valor Máximo de Saque",
+    "limits_amount": "Número de Saques",
+    "limits_bets_to_withdraw": "Apostas para Habilitar Saque"
   },
   "play": {
-    "login_to_play": "Please Login to Play",
-    "share_subject": "YOOO",
-    "share_body": "HEYYYYYYYY"
+    "login_to_play": "Por favor, Faça Login para Jogar",
+    "share_subject": "Jogue em {siteName}",
+    "share_body": "Confira o jogo: {game} em {siteName}"
   },
   "grid": {
     "game_count": "{count} Jogos",
     "providers": "🏆 Estúdios de Jogos"
   },
   "page": {
-    "aviator": "Aviator",
+    "home": "{siteName} · Prêmios em Dinheiro Diários e Experiência VIP",
+    "aviator": "Aviador",
     "slots": "Slots",
-    "live_casino": "Live Casino",
-    "affiliate_program": "Affiliate Program",
-    "faq": "FAQ",
-    "support": "Support",
+    "live_casino": "Cassino ao Vivo",
+    "affiliate_program": "Programa de Afiliados",
+    "faq": "Perguntas Frequentes",
+    "support": "Suporte",
     "telegram": "Telegram",
-    "betting_terms": "Betting Terms",
-    "terms": "Terms & Conditions",
-    "privacy": "Privacy Policy",
+    "betting_terms": "Termos de Apostas",
+    "terms": "Termos & Condições",
+    "privacy": "Política de Privacidade",
     "aml_kyc": "AML/KYC",
-    "aml_policy": "AML Policy",
-    "kyc_policy": "KYC Policy of OG OVERSEAS SERVICES LTD",
-    "responsible_gaming": "Responsible Gaming"
+    "aml_policy": "Política AML",
+    "responsible_gaming": "Jogo Responsável",
+    "download_app": "Baixe Nosso Aplicativo",
+    "providers": "Estúdios de Jogos",
+    "provider": "Jogos do Estúdio {provider}",
+    "games": "Todos os Jogos",
+    "game": "Jogar {game}",
+    "category": "Jogos de {category}",
+    "dashboard_history": "Histórico de Transações",
+    "dashboard_settings": "Configurações da Conta"
   },
   "wallet": {
     "payment": {
-      "empty": "No Transactions",
+      "empty": "Sem Transações",
       "type": {
-        "deposit": "Deposit",
-        "withdrawal": "Withdrawal"
+        "deposit": "Depósito",
+        "withdrawal": "Saque"
       },
       "status": {
-        "pending": "Pending",
-        "waiting_for_approval": "Waiting for Approval",
-        "approved": "Approved",
-        "processing": "Processing",
-        "completed": "Completed",
-        "failed": "Failed",
-        "cancelled": "Cancelled",
-        "rejected": "Rejected",
-        "refunded": "Refunded"
+        "pending": "Pendente",
+        "waiting_for_approval": "Aguardando Aprovação",
+        "approved": "Aprovado",
+        "processing": "Processando",
+        "completed": "Concluído",
+        "failed": "Falhou",
+        "cancelled": "Cancelado",
+        "rejected": "Rejeitado",
+        "refunded": "Reembolsado"
       }
     }
   },
   "game": {
     "game_action": {
       "action": {
-        "bet": "Bet",
-        "win": "Win",
-        "rollback": "Rollback"
+        "bet": "Aposta",
+        "win": "Vitória",
+        "rollback": "Estorno"
       }
     }
   },
   "legal": {
-    "version": "Version",
-    "updated": "Updated"
+    "version": "Versão",
+    "updated": "Atualizado"
   },
   "i18n": {
-    "close": "Close"
+    "close": "Fechar"
   },
   "recover_password": {
-    "error_invalid_token": "There was a problem with your recovery link. \nPlease restart the password recovery process and try again",
-    "error_unknown": "There was a problem resetting your password. \nPlease restart the password recovery process and try again"
+    "error_invalid_token": "Houve um problema com seu link de recuperação. \nPor favor, reinicie o processo de recuperação de senha e tente novamente",
+    "error_unknown": "Houve um problema para redefinir sua senha. \nPor favor, reinicie o processo de recuperação de senha e tente novamente"
   },
   "search": {
-    "number_of_results": "{total} Results",
-    "no_results": "No Results",
-    "no_games": "Nenhum jogo encontrado"
+    "number_of_results_games": "{total} Jogos",
+    "number_of_results_providers": "{total} Estúdios de Jogos",
+    "no_results": "Sem Resultados",
+    "no_games": "Nenhum Jogo encontrado"
   },
   "footer": {
-    "summary": "Bem-vindo ao GiroBet. Experimente a emoção máxima do jogo online conosco. Jogue slots, pôquer, blackjack e muito mais. Ganhe muito com nossos bônus e promoções.",
+    "summary": "Bem-vindo à Experiência {siteName} - Experimente a máxima emoção de jogos online conosco. Jogue slots, poker, blackjack e muito mais. Ganhe grande com nossos bônus e promoções.",
     "popular": "Popular",
-    "girobet": "GiroBet",
     "legal": "Legal",
-    "social_media": "Social Media",
-    "license_active": "Esse site {host} is owned and operated by Everest Entertainment. registration number: 27465, registered address: 9 Barrack Road, Belize City, Belize.. Contact us {supportEmail}. {host} is licensed and regulated by the Government of the Autonomous Island of Anjouan, Union of Comoros and operates under License No. {licenseNumber}. {host} has passed all regulatory compliance and is legally authorized to conduct gaming operations for any and all games of chance and wagering.",
-    "legal_notice": "Antes de se envolver em qualquer atividade de jogo online em nossa plataforma, é imperativo verificar se tais ações são legalmente permitidas em sua jurisdição. É sua responsabilidade verificar e aderir às leis e regulamentos que regem o jogo online em seu país ou região.",
-    "copyright": "© {year} GiroBet. All Rights Reserved.",
-    "play_responsibly": "Play Responsibly",
-    "responsible_gaming": "Responsible Gaming",
-    "user_account_language": "Seu idioma está definido como {language}.",
-    "user_account_language_unknown": "Your account language is different to the current language.",
-    "change_language": "Mudar para {language}"
+    "social_media": "Redes Sociais",
+    "license_active": "Este site {host} é de propriedade e operado pela Everest Entertainment. número de registro: 27465, endereço registrado: 9 Barrack Road, Belize City, Belize. Entre em contato {supportEmail}. {host} é licenciado e regulado pelo Governo da Ilha Autônoma de Anjouan, União das Comores e opera sob a Licença Nº {licenseNumber}. {host} passou em todas as conformidades regulatórias e está legalmente autorizado a realizar operações de jogos de azar e apostas.",
+    "legal_notice": "Antes de participar de qualquer atividade de jogos online em nossa plataforma, é fundamental verificar se tais ações são legalmente permitidas em sua jurisdição. É sua responsabilidade verificar e aderir às leis e regulamentos que regem os jogos online em seu país ou região.",
+    "copyright": "© {year} {siteName}. Todos os Direitos Reservados.",
+    "play_responsibly": "Jogue com Responsabilidade",
+    "responsible_gaming": "Jogo Responsável",
+    "user_account_language": "O idioma da sua conta está definido como {language}.",
+    "user_account_language_unknown": "O idioma da sua conta é diferente do idioma atual.",
+    "change_language": "Alterar para {language}"
   },
   "console_warning": {
-    "title": "Atenção!",
+    "title": "ATENÇÃO!!!",
     "description": "Não copie/cole NADA nesta janela. Golpistas estão tentando roubar sua senha."
   },
   "dashboard": {
     "nav": {
-      "wallet": "Wallet",
-      "account": "Account",
-      "preferences": "Preferences",
-      "verification": "Verification",
-      "limits": "Limits",
-      "deposits": "Deposits",
-      "withdrawals": "Withdrawals",
-      "casino": "Casino",
-      "sportsbook": "Sportsbook"
+      "wallet": "Carteira",
+      "account": "Conta",
+      "preferences": "Preferências",
+      "verification": "Verificação",
+      "limits": "Limites",
+      "deposits": "Depósitos",
+      "withdrawals": "Saques",
+      "casino": "Cassino",
+      "sportsbook": "Apostas Esportivas"
     },
     "settings": {
       "account": {
-        "account_details": "Account Details",
-        "username": "Username",
-        "email": "Email",
-        "password": "Password",
-        "public_id": "Public ID",
-        "personal_details": "Personal Details",
-        "name": "Name",
-        "phone": "Phone",
-        "date_of_birth": "Date of Birth",
-        "address": "Address",
-        "city": "City",
-        "postal_code": "Postal Code",
-        "country": "Country",
-        "document": "Document",
-        "payment_settings": "Payment Settings",
-        "key_type": "Key Type",
-        "key_value": "Key Value",
-        "regional_settings": "Regional Settings",
-        "wallets": "Wallets",
-        "language": "Language",
-        "time_zone": "Time Zone",
-        "close_account": "Close Account",
-        "close_account_warning": "Your account will be deactivated and you will be excluded from any further communications from GiroBet."
+        "id_description": "Use este ID quando precisar compartilhar com terceiros (incluindo nosso Suporte) para manter sua conta sempre segura.",
+        "account_details": "Detalhes da Conta",
+        "username": "Nome de usuário",
+        "username_description": "Nomes de usuário são públicos e aparecerão nos rankings.",
+        "email": "E-mail",
+        "password": "Senha",
+        "public_id": "ID Público",
+        "personal_details": "Detalhes Pessoais",
+        "name": "Nome",
+        "phone": "Telefone",
+        "date_of_birth": "Data de Nascimento",
+        "address": "Endereço",
+        "city": "Cidade",
+        "postal_code": "Código Postal",
+        "country": "País",
+        "document": "Documento",
+        "payment_settings": "Configurações de Pagamento",
+        "payment_settings_key_type_not_set": "Não definido",
+        "key_type": "Tipo de Chave",
+        "key_value": "Valor da Chave",
+        "regional_settings": "Configurações Regionais",
+        "wallets": "Carteiras",
+        "language": "Idioma",
+        "time_zone": "Fuso Horário",
+        "close_account": "Fechar Conta",
+        "close_account_warning": "Sua conta será desativada e você será excluído de qualquer comunicação adicional conosco."
       },
       "preferences": {
-        "bonuses": "Do You Love Bonuses?",
-        "communication": "Communication"
+        "bonuses": "Você Gosta de Bônus?",
+        "bonuses_description": "Receber ofertas e promoções",
+        "bonuses_by_email": "Por E-mail",
+        "bonuses_by_phone": "Por Telefone",
+        "bonuses_by_browser": "Por Navegador",
+        "communication": "Comunicação",
+        "communications_allow_deposit": "Receber notificações de depósito",
+        "error_loading_settings": "Ocorreu um erro ao carregar suas configurações. Por favor, atualize a página e tente novamente."
       },
       "verification": {
-        "identity": "Identity",
-        "address": "Address"
+        "identity": "Identidade",
+        "address": "Endereço",
+        "kyc_missing": "Você precisa enviar seu documento de identidade",
+        "kyc_active": "Você já enviou com sucesso seu documento de identidade"
       },
       "limits": {
-        "suspend_account": "Suspend Account"
+        "suspend_account": "Suspender Conta"
       },
       "wallet": {
-        "transactions_title": "Recent Transactions",
-        "transactions_empty": "No Transactions"
+        "transactions_title": "Transações Recentes",
+        "transactions_empty": "Sem Transações"
       }
     },
     "history": {
-      "casino": {
-        "table_empty": "No Game Rounds",
-        "table_header_id": "ID",
-        "table_header_date": "Date",
-        "table_header_game": "Game",
-        "table_header_action": "Type",
-        "table_header_amount": "Amount"
-      },
       "deposits": {
-        "table_empty": "No Deposits"
+        "table_empty": "Sem Depósitos"
       },
       "shared": {
         "table_payments_header_id": "ID",
-        "table_payments_header_date": "Date",
-        "table_payments_header_type": "Type",
+        "table_payments_header_date": "Data",
+        "table_payments_header_type": "Tipo",
         "table_payments_header_status": "Status",
-        "table_payments_header_amount": "Amount"
+        "table_payments_header_amount": "Valor"
       },
       "withdrawals": {
-        "table_empty": "No Withdrawals"
+        "table_empty": "Sem Saques"
       }
     }
   },
   "category": {
+    "lobby": "Lobby",
     "blackjack": "Blackjack",
     "casual": "Casual",
-    "card": "Card",
+    "card": "Cartas",
     "craps": "Craps",
     "crash": "Crash",
-    "fishing": "Fishing",
+    "fishing": "Pesca",
     "jackpot": "Jackpot",
-    "live": "Live",
-    "lottery": "Lottery",
-    "mines": "Mines",
+    "live": "Ao Vivo",
+    "lottery": "Loteria",
+    "mines": "Minas",
     "poker": "Poker",
-    "scratch": "Scratch",
+    "scratch": "Raspadinha",
     "slots": "Slots",
-    "table": "Table",
-    "roulette": "Roulette",
-    "video_poker": "Video Poker",
-    "virtual_sports": "Virtual Sports",
-    "weekly-top-picks": "Weekly Top Picks"
+    "table": "Mesa",
+    "roulette": "Roleta",
+    "video_poker": "Vídeo Poker",
+    "virtual_sports": "Esportes Virtuais",
+    "weekly-top-picks": "Melhores da Semana"
+  },
+  "user_settings": {
+    "payment": {
+      "pix_key_type": {
+        "CPF": "CPF",
+        "EMAIL": "E-mail",
+        "PHONE": "Telefone",
+        "EVP": "EVP",
+        "not_set": "Não definido"
+      }
+    }
+  },
+  "notifications": {
+    "payment_updated": {
+      "completed": {
+        "title": "Pagamento concluído",
+        "message": "Sua carteira foi ajustada de acordo"
+      },
+      "rejected": {
+        "title": "Pagamento rejeitado",
+        "message": "Sua carteira não foi modificada. Por favor, tente novamente"
+      },
+      "failed": {
+        "title": "Pagamento falhou",
+        "message": "Por favor, tente novamente"
+      }
+    },
+    "kyc_completed": {
+      "title": "Identidade confirmada",
+      "message": "Sua conta foi verificada"
+    }
   }
 }
