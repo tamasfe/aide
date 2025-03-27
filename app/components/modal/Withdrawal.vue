@@ -7,6 +7,7 @@ import type { SupportedCountryFlagCode } from "~/types/constants";
 // TRANSLATION STATUS:  ✅
 const { $dependencies } = useNuxtApp();
 const siteStore = useSiteStore();
+const userUnlockedBalance = useWalletStore().wallet?.balanceUnlocked ?? null;
 
 const onClosed = () => {
   $dependencies.users.ui.emitCommandCloseUserActionModal.handle();
@@ -42,9 +43,10 @@ const currency = ref<{
 
     <FormWithdrawal
       v-if="limits && paymentMethodId"
-      :limits="limits"
+      :payment-method-limits="limits"
       :payment-method-id="paymentMethodId"
       :currency="currency"
+      :user-unlocked-balance="userUnlockedBalance"
     />
   </BaseModal>
 </template>

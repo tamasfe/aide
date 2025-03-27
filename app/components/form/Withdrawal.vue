@@ -13,7 +13,8 @@ import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
 // ZOD SCHEMA:          ✅
 
 const props = defineProps<{
-  limits: { min: number | null; max: number | null; cooldownSeconds: number | null };
+  paymentMethodLimits: { min: number | null; max: number | null; cooldownSeconds: number | null };
+  userUnlockedBalance: number | null;
   currency: {
     code: WalletCurrency;
     countryCode: SupportedCountryFlagCode;
@@ -26,6 +27,13 @@ const onToggleLimits = () => {
   showLimits.value = !showLimits.value;
 };
 
+const maximumWithdrawal = computed(() => {
+  if (props.paymentMethodLimits.max !== null && props.userUnlockedBalance !== null) {
+    return Math.min(props.paymentMethodLimits.max, props.userUnlockedBalance);
+  }
+  return props.paymentMethodLimits.max ?? props.userUnlockedBalance ?? null;
+});
+
 /**
  *
  * Form initialisation
@@ -34,11 +42,11 @@ const onToggleLimits = () => {
 const { $dependencies } = useNuxtApp();
 const { t, locale } = useI18n();
 let schemaForAmount = z.number({ required_error: t("validation.amount_required") });
-if (props.limits.min !== null) {
-  schemaForAmount = schemaForAmount.min(props.limits.min, t("validation.amount_withdrawal_min", { min: `${props.limits.min} ${props.currency.code}` }));
+if (props.paymentMethodLimits.min !== null) {
+  schemaForAmount = schemaForAmount.min(props.paymentMethodLimits.min, t("validation.amount_withdrawal_min", { min: `${props.paymentMethodLimits.min}` }));
 }
-if (props.limits.max !== null) {
-  schemaForAmount = schemaForAmount.max(props.limits.max, t("validation.amount_withdrawal_max", { max: `${props.limits.max} ${props.currency.code}` }));
+if (maximumWithdrawal.value !== null) {
+  schemaForAmount = schemaForAmount.max(maximumWithdrawal.value, t("validation.amount_withdrawal_max", { max: `${maximumWithdrawal.value}` }));
 }
 const validationSchema = toTypedSchema(
   z.object({ amount: schemaForAmount }),
@@ -124,10 +132,10 @@ const onSubmit = handleSubmit(async (formData) => {
             <div>{{ $t('modal_payments.limits') }}</div>
           </div>
         </div>
-        <div v-if="limits.max" class="flex space-x-2 font-medium text-sm">
+        <div v-if="maximumWithdrawal !== null" class="flex space-x-2 font-medium text-sm">
           <div class="text-subtle">{{ $t('modal_payments.available_withdraw') }}:</div>
           <div class="text-subtle-light font-semibold">
-            <BaseCurrency :value="limits.max" :currency="currency.code" variant="ghost" />
+            <BaseCurrency :value="maximumWithdrawal" :currency="currency.code" variant="ghost" />
           </div>
         </div>
       </div>
@@ -145,9 +153,9 @@ const onSubmit = handleSubmit(async (formData) => {
     </template>
     <template v-else>
       <InfoWithdrawalLimits
-        :min="limits.min"
-        :max="limits.max"
-        :cooldown-seconds="limits.cooldownSeconds"
+        :min="paymentMethodLimits.min"
+        :max="paymentMethodLimits.max"
+        :cooldown-seconds="paymentMethodLimits.cooldownSeconds"
         :bets-to-enable-withdrawal="null"
         :currency="currency.code"
       />
