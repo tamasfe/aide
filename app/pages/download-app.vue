@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const { $pwa } = useNuxtApp();
 const { isChrome, isApple, isAndroid, isSafari, isFirefox } = useDevice();
+const siteStore = useSiteStore();
 const { t } = useI18n();
 
 useHead({
@@ -52,7 +53,7 @@ const onClickRefreshPWA = async () => {
       <span v-else>an unknown browser</span>
     </p>
 
-    <p v-if="$pwa === undefined">
+    <p v-if="$pwa === undefined || siteStore.site.identifier !== 'girobet'">
       {{ $t("download_app_page.download_not_available") }}
     </p>
     <div v-else>

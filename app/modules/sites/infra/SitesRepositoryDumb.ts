@@ -16,6 +16,14 @@ export class SitesRepositoryDumb implements SitesRepositoryI {
       identifier: "girobet",
       domains: [],
     });
+
+    // In case we want to see the ZambaBet site:
+    // return success({
+    //   servable: true,
+    //   name: "ZambaBet",
+    //   identifier: "zambabet",
+    //   domains: [],
+    // });
   }
 
   public async findMatchedLicenses(): Promise<Result<License[], InfrastructureError>> {
