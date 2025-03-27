@@ -7,8 +7,7 @@ spec:
     - name: public
       namespace: envoy-gateway-system
   hostnames:
-    - "staging.girobet.vip"
-    - "staging.zamba.bet"
+    - "{{ .Values.config.public_domain }}"
   rules:
     - backendRefs:
         - name: "{{ .Release.Name }}"
