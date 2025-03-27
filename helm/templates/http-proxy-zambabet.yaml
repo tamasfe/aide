@@ -1,7 +1,7 @@
 apiVersion: projectcontour.io/v1
 kind: HTTPProxy
 metadata:
-  name: "{{ .Release.Name }}"
+  name: "{{ .Release.Name }}-zambabet"
 spec:
   virtualhost:
     fqdn: staging.zamba.bet

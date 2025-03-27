@@ -1,7 +1,7 @@
 apiVersion: projectcontour.io/v1
 kind: HTTPProxy
 metadata:
-  name: "{{ .Release.Name }}"
+  name: "{{ .Release.Name }}-girobet"
 spec:
   virtualhost:
     fqdn: staging.girobet.vip
