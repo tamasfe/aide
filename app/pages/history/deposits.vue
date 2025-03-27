@@ -26,7 +26,7 @@ const { data } = await useAsyncData("history-page-deposits-data", async () => {
   loading.value = false;
   return data.payments;
 }, {
-  watch: [() => walletStore.wallet?.walletId, () => walletStore.wallet?.balance, pageIndex],
+  watch: [() => walletStore.wallet?.walletId, () => walletStore.balance, pageIndex],
   lazy: DEFER_CLIENT_SIDE_LOADING,
   server: ENABLE_SERVER_SIDE_RENDERING,
 });

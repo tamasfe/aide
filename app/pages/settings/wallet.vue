@@ -22,18 +22,10 @@ const { data: paymentsData } = await useAsyncData("wallet-page-payments-data", a
   loading.value = false;
   return data.payments;
 }, {
-  watch: [() => walletStore.wallet?.walletId, () => walletStore.wallet?.balance],
+  watch: [() => walletStore.wallet?.walletId, () => walletStore.balance],
   lazy: DEFER_CLIENT_SIDE_LOADING,
   server: ENABLE_SERVER_SIDE_RENDERING,
   default: () => [],
-});
-
-const { data: walletData } = await useAsyncData("wallet-page-wallet-data", async () => {
-  return walletStore.wallet;
-}, {
-  watch: [() => walletStore.balanceStatus],
-  lazy: DEFER_CLIENT_SIDE_LOADING,
-  server: ENABLE_SERVER_SIDE_RENDERING,
 });
 </script>
 
@@ -45,11 +37,11 @@ const { data: walletData } = await useAsyncData("wallet-page-wallet-data", async
     <div>
       <ClientOnly>
         <DashboardSettingsWalletBalance
-          v-if="walletData"
-          :balance="walletData.balance"
-          :payment-method="walletData.paymentMethod ?? undefined"
-          :currency="walletData.currency"
-          :wallet-id="walletData.walletId"
+          v-if="walletStore.wallet"
+          :balance="walletStore.balance"
+          :payment-method="walletStore.wallet.paymentMethod ?? undefined"
+          :currency="walletStore.wallet.currency"
+          :wallet-id="walletStore.wallet.walletId"
           :on-click-deposit="() => $dependencies.users.ui.emitCommandOpenUserActionModal.handle('deposit').then(() => {})"
           :on-click-withdraw="() => $dependencies.users.ui.emitCommandOpenUserActionModal.handle('withdrawal').then(() => {})"
         />

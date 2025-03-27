@@ -14,6 +14,7 @@ type GameActionResponse = {
   };
   action: string;
   amount: number;
+  amountBonus: number;
   currency: string;
 };
 
@@ -59,9 +60,8 @@ export class SearchGameActionsPaginatingOnCasinoTable {
        */
         const action: string = (() => {
           switch (gameAction.action) {
-            case "bet":
+            case "wager":
             case "win":
-            case "rollback":
               return this.t(`game.game_action.action.${gameAction.action}`);
           }
         })();
@@ -74,7 +74,8 @@ export class SearchGameActionsPaginatingOnCasinoTable {
             id: gameAction.gameId,
           },
           action: action.toUpperCase(),
-          amount: gameAction.amount,
+          amount: gameAction.amountLocked + gameAction.amountUnlocked,
+          amountBonus: gameAction.amountBonus,
           currency: gameAction.currency,
         };
       }),

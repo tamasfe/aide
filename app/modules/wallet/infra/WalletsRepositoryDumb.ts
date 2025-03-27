@@ -6,7 +6,9 @@ export class WalletsRepositoryDumb implements WalletRepositoryI {
   public async findAuthenticated() {
     return success([{
       walletId: 1,
-      balance: 123.05,
+      balanceUnlocked: 120.05,
+      balanceLocked: 3,
+      balanceBonus: 99,
       currency: "EUR" as WalletCurrency,
     }]);
   }

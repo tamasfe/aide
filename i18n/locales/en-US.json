@@ -94,6 +94,7 @@
       "header_game": "Game",
       "header_action": "Type",
       "header_amount": "Amount",
+      "header_amount_bonus": "Bonus Amount",
       "header_username": "User"
     }
   },
@@ -314,7 +315,8 @@
       "action": {
         "bet": "Bet",
         "win": "Win",
-        "rollback": "Rollback"
+        "rollback": "Rollback",
+        "wager": "Wager"
       }
     }
   },

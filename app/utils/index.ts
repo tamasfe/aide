@@ -44,6 +44,14 @@ export function copyToClipboard(text: string) {
 
 export type Camelize<T extends string> = T extends `${infer A}_${infer B}` ? `${A}${Camelize<Capitalize<B>>}` : T;
 
+export type CamelizeKeysWithArrays<T> = T extends (infer U)[]
+  ? CamelizeKeysWithArrays<U>[]
+  : T extends object
+    ? {
+        [key in keyof T as key extends string ? Camelize<key> : key]: CamelizeKeysWithArrays<T[key]>;
+      }
+    : T;
+
 export type CamelizeKeys<T extends object> = {
   [key in keyof T as key extends string ? Camelize<key> : key]: T[key] extends object ? CamelizeKeys<T[key]> : T[key]
 };

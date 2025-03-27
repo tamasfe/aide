@@ -104,7 +104,7 @@ const scrollToTop = () => {
     <section class="giro__container relative flex flex-col text-subtle">
       <div class="flex flex-col items-center space-y-5 md:space-y-8">
         <div class="max-w-[42rem] lg:max-w-[52rem] text-sm sm:text-center">
-          {{ $t("footer.license_active", { licenseNumber: LICENSE_NUMBER, host: url.host, supportEmail: siteStore.site.supportEmail }) }}
+          {{ $t("footer.license_active", { licenseNumber: LICENSE_NUMBER, host: url.host, supportEmail: siteStore.currentDomain.email }) }}
           <br><br>
           {{ $t("footer.legal_notice") }}
         </div>

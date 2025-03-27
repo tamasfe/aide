@@ -20,12 +20,7 @@ export class WalletsRepositoryGirobet implements WalletRepositoryI {
       const { data, error, response } = await this.apiClient.GET("/user/balance", {});
 
       if (data) {
-        return success(data.map(wallet => ({
-          walletId: wallet.wallet_id,
-          balance: wallet.balance,
-          currency: wallet.currency,
-          paymentMethod: wallet.payment_method,
-        })));
+        return success(data.map(wallet => camelizeKeys(wallet)));
       }
 
       if (error) {

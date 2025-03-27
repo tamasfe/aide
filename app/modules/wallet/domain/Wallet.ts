@@ -5,6 +5,8 @@ export type Wallet = CamelizeKeys<components["schemas"]["UserWalletBalanceRespon
 
 export const newEmptyWallet = (): Wallet => ({
   walletId: 0,
-  balance: 0,
+  balanceBonus: 0,
+  balanceLocked: 0,
+  balanceUnlocked: 0,
   currency: "BRL",
 });

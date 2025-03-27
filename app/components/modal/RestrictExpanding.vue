@@ -24,7 +24,7 @@ const onNotify = () => {
     country: props.blockedCountry,
     blockedDomain: capitalizeBrandDomain(props.blockedDomain),
   });
-  window.location.href = `${siteStore.site.supportEmail}?subject=${encodeURIComponent(notifyMeEmailSubject)}`;
+  window.location.href = `${siteStore.currentDomain.email}?subject=${encodeURIComponent(notifyMeEmailSubject)}`;
 };
 </script>
 

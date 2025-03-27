@@ -13,6 +13,7 @@ type GameActionTableRow = {
   };
   action: string;
   amount: number;
+  amountBonus: number;
   currency: string;
 };
 
@@ -49,6 +50,11 @@ const columns: ColumnDef<GameActionTableRow>[] = [
   }),
   column.accessor("amount", {
     header: t("game_actions.table.header_amount"),
+    meta: { align: "right" },
+    cell: ({ getValue, row }) => h(BaseCurrency, { class: "flex justify-end", value: Number(getValue()), currency: row.original.currency, variant: "ghost" }),
+  }),
+  column.accessor("amountBonus", {
+    header: t("game_actions.table.header_amount_bonus"),
     meta: { align: "right" },
     cell: ({ getValue, row }) => h(BaseCurrency, { class: "flex justify-end", value: Number(getValue()), currency: row.original.currency, variant: "ghost" }),
   }),

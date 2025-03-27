@@ -52,7 +52,11 @@ export default defineNuxtPlugin({
 
     $dependencies.common.asyncMessagePublisher.subscribe(
       "girobet-backend:events:wallets:wallet-balance-updated",
-      ({ balance, currency }) => walletStore.updateBalance(balance, currency),
+      ({ balanceBonus, currency, balanceLocked, balanceUnlocked }) => walletStore.updateBalance({
+        bonus: balanceBonus,
+        locked: balanceLocked,
+        unlocked: balanceUnlocked,
+      }, currency),
     );
 
     /**

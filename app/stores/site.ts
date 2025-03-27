@@ -1,23 +1,27 @@
 import type { Site } from "~/modules/sites/domain/Site";
 import type { License } from "~/modules/sites/domain/License";
 
-type SiteAugmented = Site & {
-  supportEmail: string;
-};
+type SiteDomain = Site["domains"][number];
+const defaultDomain: SiteDomain = { api: "https://api-staging.girobet.vip", email: "support@girobet.vip", frontend: "https://staging.girobet.vip" };
 
-const defaultSite: SiteAugmented = {
+const defaultSite: Site = {
   identifier: "girobet",
   name: "GiroBet",
   servable: true,
-  supportEmail: "support@girobet.vip",
-  domains: [{ api: "https://api-staging.girobet.vip", frontend: "https://staging.girobet.vip" }],
+  domains: [defaultDomain],
 };
 
 export const useSiteStore = defineStore("siteStore", {
-  state: (): { site: SiteAugmented; licenses: License[] } => ({
+  state: (): { site: Site; licenses: License[] } => ({
     site: { ...defaultSite },
     licenses: [],
   }),
+
+  getters: {
+    currentDomain: (state): SiteDomain => {
+      return state.site.domains.find((domain: SiteDomain) => useRequestURL().href.startsWith(domain.frontend)) || state.site.domains[0] || defaultDomain;
+    },
+  },
 
   actions: {
     async refresh() {
@@ -32,11 +36,9 @@ export const useSiteStore = defineStore("siteStore", {
         return;
       }
 
-      const supportEmail = `support@${resultFindingSite.value.domains[0]?.frontend}`;
-
       if (resultFindingLicenses.isFailure) {
         $dependencies.common.logger.error("Error searching for licenses, loading default Girobet one in order to not break the site", resultFindingLicenses.error);
-        this.$state = { site: { ...resultFindingSite.value, supportEmail }, licenses: [] };
+        this.$state = { site: { ...resultFindingSite.value }, licenses: [] };
         return;
       }
 
@@ -45,7 +47,7 @@ export const useSiteStore = defineStore("siteStore", {
         return;
       }
 
-      this.$state = { site: { ...resultFindingSite.value, supportEmail }, licenses: resultFindingLicenses.value };
+      this.$state = { site: { ...resultFindingSite.value }, licenses: resultFindingLicenses.value };
     },
 
     getAssetPath(path: string) {
@@ -59,5 +61,6 @@ export const useSiteStore = defineStore("siteStore", {
       }
       return activeLicense;
     },
+
   },
 });

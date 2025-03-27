@@ -64,7 +64,7 @@ const { data: paymentMethodData } = await useAsyncData("user-modals-payment-meth
   }
   return await $dependencies.wallets.ui.findPreferredPaymentMethodOnPaymentModal.handle(walletStore.wallet.currency);
 }, {
-  watch: [() => walletStore.wallet?.balance],
+  watch: [() => walletStore.wallet?.currency],
   lazy: DEFER_CLIENT_SIDE_LOADING,
   server: ENABLE_SERVER_SIDE_RENDERING,
 });

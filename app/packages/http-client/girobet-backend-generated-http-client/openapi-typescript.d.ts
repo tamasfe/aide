@@ -133,74 +133,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/docs/private/api.json": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * OpenAPI Spec
-         * @description Returns the OpenAPI spec to this API
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: never;
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/docs": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * API Docs
-         * @description This documentation page
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description HTML content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "text/html": string;
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/auth/whoami": {
         parameters: {
             query?: never;
@@ -1323,7 +1255,7 @@ export interface paths {
             parameters: {
                 query?: {
                     /** @description The type of the game action to filter by. If not set, all game actions (bet, win, etc.) will be included. */
-                    action_type?: components["schemas"]["ListGameActionsTypeQuery"] | null;
+                    action_type?: components["schemas"]["ListBetTypeQuery"] | null;
                     /** @description Game ID to filter the game actions by. If not set, all game actions will be included. */
                     game_id?: components["schemas"]["GameId"] | null;
                     limit?: number;
@@ -2413,6 +2345,74 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/docs/private/api.json": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * OpenAPI Spec
+         * @description Returns the OpenAPI spec to this API
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: never;
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/docs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * API Docs
+         * @description This documentation page
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description HTML content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/html": string;
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -2421,6 +2421,10 @@ export interface components {
             /** Format: uuid */
             token: string;
         };
+        /** Format: int64 */
+        BetId: number;
+        /** @enum {string} */
+        BetType: "wager" | "win";
         /**
          * @description A country represented by its ISO 3166-1 alpha-2 code.
          * @enum {string}
@@ -2475,9 +2479,13 @@ export interface components {
         };
         GameActionResponse: {
             /** @description The type of the action that was performed. Either Bets or Wins. */
-            action: components["schemas"]["GameActionType"];
-            /** @description The amount of the action. This is the amount that was bet, won, etc. */
-            amount: components["schemas"]["SystemAmount"];
+            action: components["schemas"]["BetType"];
+            /** @description The amount of the bet that was used from the bonus balance. */
+            amount_bonus: components["schemas"]["SystemAmount"];
+            /** @description The amount of the bet that was used from the locked balance. */
+            amount_locked: components["schemas"]["SystemAmount"];
+            /** @description The amount of the bet that was used from the unlocked balance. */
+            amount_unlocked: components["schemas"]["SystemAmount"];
             /**
              * Format: date-time
              * @description The date and time the action was performed.
@@ -2490,10 +2498,8 @@ export interface components {
             /** @description The name of the game the action was performed on. */
             game_name: string;
             /** @description The ID of the game action. */
-            id: components["schemas"]["GameRoundActionId"];
+            id: components["schemas"]["BetId"];
         };
-        /** @enum {string} */
-        GameActionType: "bet" | "win" | "rollback";
         /** @enum {string} */
         GameCategoryGroupType: "home" | "game_page" | "inventory";
         /** Format: int64 */
@@ -2591,8 +2597,6 @@ export interface components {
             /** @description The slug of the game. This may be used in URLs. */
             slug: string;
         };
-        /** Format: int64 */
-        GameRoundActionId: number;
         /** @enum {string} */
         Gender: "male" | "female" | "other";
         GetPaymentMethodsQuery: {
@@ -2644,14 +2648,14 @@ export interface components {
             /** @description The root jurisdiction of the license. While licenses can cover multiple jurisdictions, this is the jurisdiction that the license is rooted in. Examples include Curacao, Anjouan, etc. */
             root_jurisdiction: components["schemas"]["Country"];
         };
+        /** @enum {string} */
+        ListBetTypeQuery: "bet" | "win";
         ListGameActionsQuery: {
             /** @description The type of the game action to filter by. If not set, all game actions (bet, win, etc.) will be included. */
-            action_type?: components["schemas"]["ListGameActionsTypeQuery"] | null;
+            action_type?: components["schemas"]["ListBetTypeQuery"] | null;
             /** @description Game ID to filter the game actions by. If not set, all game actions will be included. */
             game_id?: components["schemas"]["GameId"] | null;
         };
-        /** @enum {string} */
-        ListGameActionsTypeQuery: "bet" | "win";
         ListNotificationsQuery: {
             /** @description The read status of the notifications to filter by. */
             read_status?: components["schemas"]["ReadStatus"] | null;
@@ -3312,6 +3316,8 @@ export interface components {
         SiteDomainMapping: {
             /** @description The API domain of the site. */
             api: components["schemas"]["SiteDomain"];
+            /** @description The email domain of the site, to be used for contact purposes. */
+            email: components["schemas"]["SiteDomain"];
             /** @description The frontend domain of the site. */
             frontend: components["schemas"]["SiteDomain"];
         };
@@ -3407,8 +3413,12 @@ export interface components {
             username: string;
         };
         UserWalletBalanceResponse: {
-            /** @description The balance of the wallet. */
-            balance: components["schemas"]["SystemAmount"];
+            /** @description The bonus balance of the wallet. This can not be withdrawn until the bonus amount gets converted to real money. */
+            balance_bonus: components["schemas"]["SystemAmount"];
+            /** @description The locked balance of the wallet. This can not be withdrawn until the user completes additional rollover requirements. */
+            balance_locked: components["schemas"]["SystemAmount"];
+            /** @description The unlocked balance of the wallet, which can be withdrawn */
+            balance_unlocked: components["schemas"]["SystemAmount"];
             /** @description The currency of the wallet. */
             currency: components["schemas"]["Currency"];
             /** @description The payment method that's bound to this wallet. If the wallet has not had any deposits, this field will be unset. */
@@ -3483,7 +3493,9 @@ export interface components {
             type: "notification";
         } | {
             data: {
-                balance: components["schemas"]["SystemAmount"];
+                balance_bonus: components["schemas"]["SystemAmount"];
+                balance_locked: components["schemas"]["SystemAmount"];
+                balance_unlocked: components["schemas"]["SystemAmount"];
                 currency: components["schemas"]["Currency"];
             };
             /** @enum {string} */

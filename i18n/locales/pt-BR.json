@@ -93,6 +93,7 @@
       "header_game": "Jogo",
       "header_action": "Tipo",
       "header_amount": "Valor",
+      "header_amount_bonus": "Bônus",
       "header_username": "Usuário"
     }
   },
@@ -313,7 +314,8 @@
       "action": {
         "bet": "Aposta",
         "win": "Vitória",
-        "rollback": "Estorno"
+        "rollback": "Estorno",
+        "wager": "Aposta"
       }
     }
   },

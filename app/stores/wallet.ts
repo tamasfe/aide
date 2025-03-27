@@ -21,6 +21,22 @@ export const useWalletStore = defineStore("walletStore", {
     wallet: null,
   }),
 
+  getters: {
+    balance: (state): number => {
+      if (!state.wallet) {
+        return 0;
+      }
+      return state.wallet.balanceLocked + state.wallet.balanceUnlocked;
+    },
+
+    balanceBonus: (state): number => {
+      if (!state.wallet) {
+        return 0;
+      }
+      return state.wallet.balanceBonus;
+    },
+  },
+
   actions: {
     async refresh() {
       const { $dependencies } = useNuxtApp();
@@ -57,12 +73,18 @@ export const useWalletStore = defineStore("walletStore", {
       this.balanceStatus = "hidden";
     },
 
-    updateBalance(balance: number, currency: WalletCurrency) {
+    updateBalance(balances: {
+      locked: number;
+      unlocked: number;
+      bonus: number;
+    }, currency: WalletCurrency) {
       if (this.wallet === null) {
         return;
       }
 
-      this.wallet.balance = balance;
+      this.wallet.balanceBonus = balances.bonus;
+      this.wallet.balanceLocked = balances.locked;
+      this.wallet.balanceUnlocked = balances.unlocked;
       this.wallet.currency = currency;
     },
   },
