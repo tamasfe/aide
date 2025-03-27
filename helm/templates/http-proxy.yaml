@@ -1,15 +1,15 @@
-apiVersion: projectcontour.io/v1
-kind: HTTPProxy
-metadata:
-  name: "{{ .Release.Name }}"
-spec:
-  virtualhost:
-    fqdn: staging.girobet.vip
-    tls:
-      secretName: "{{ .Release.Name }}-certificate"
-  routes:
-    - timeoutPolicy:
-        response: 30s
-      services:
-        - name: "{{ .Release.Name }}"
-          port: 80
+# apiVersion: projectcontour.io/v1
+# kind: HTTPProxy
+# metadata:
+#   name: "{{ .Release.Name }}"
+# spec:
+#   virtualhost:
+#     fqdn: staging.girobet.vip
+#     tls:
+#       secretName: "{{ .Release.Name }}-certificate"
+#   routes:
+#     - timeoutPolicy:
+#         response: 30s
+#       services:
+#         - name: "{{ .Release.Name }}"
+#           port: 80

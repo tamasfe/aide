@@ -8,6 +8,7 @@ spec:
       namespace: envoy-gateway-system
   hostnames:
     - "staging.girobet.vip"
+    - "staging.zamba.bet"
   rules:
     - backendRefs:
         - name: "{{ .Release.Name }}"
