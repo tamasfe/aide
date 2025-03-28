@@ -89,6 +89,7 @@ jobs:
 
       - run: |
           argocd app sync girobet-frontend
+          argocd app sync zambabet-frontend
         env:
           ARGOCD_AUTH_TOKEN: ${{ secrets.ARGOCD_AUTH_TOKEN }}
           ARGOCD_SERVER: argocd.taild2b874.ts.net
