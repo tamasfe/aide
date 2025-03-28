@@ -22,7 +22,15 @@ const props = defineProps({
   },
 });
 
-const allowedDomain = ref(new URL(props.allowedUrl).hostname);
+const allowedDomain = (() => {
+  try {
+    return ref(new URL(props.allowedUrl).hostname);
+  }
+  catch (error) {
+    console.error("Invalid URL provided for allowedUrl prop:", { allowedUrl: props.allowedUrl, error });
+    return ref(props.allowedUrl);
+  }
+})();
 </script>
 
 <template>
