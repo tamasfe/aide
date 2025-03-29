@@ -6,7 +6,7 @@ export default defineNuxtPlugin({
     const siteStore = useSiteStore();
 
     const ENABLE_SERVER_SIDE_RENDERING = true;
-    const DEFER_CLIENT_SIDE_LOADING = true;
+    const DEFER_CLIENT_SIDE_LOADING = false;
     await useAsyncData("site-store-refresh",
       async () => {
         await siteStore.refresh();
