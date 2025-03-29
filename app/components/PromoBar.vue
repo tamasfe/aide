@@ -29,11 +29,11 @@ const promoBarVariants = cva(
   {
     variants: {
       variant: {
-        purple: "bg-promo-purple text-promo-purple",
+        primary: "bg-promo-primary text-promo-primary",
       },
     },
     defaultVariants: {
-      variant: "purple",
+      variant: "primary",
     },
   },
 );
@@ -44,7 +44,7 @@ const props = withDefaults(defineProps<{
   variant?: PromoBarVariants["variant"];
   class?: HTMLAttributes["class"];
 }>(), {
-  variant: "purple",
+  variant: "primary",
 });
 </script>
 

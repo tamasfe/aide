@@ -54,7 +54,7 @@ export default <Partial<Config>>{
         "danger-hover": "var(--giro-button-danger-hover)",
       },
       promo: {
-        purple: "var(--giro-promo-purple)",
+        primary: "var(--color-promo-primary)",
       },
     }),
     textColor: ({ colors }) => ({
@@ -83,7 +83,7 @@ export default <Partial<Config>>{
         danger: "var(--giro-button-text-danger)",
       },
       promo: {
-        purple: "var(--giro-promo-text-purple)",
+        primary: "var(--color-promo-text-primary)",
       },
     }),
     borderRadius: {

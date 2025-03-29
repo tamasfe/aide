@@ -11,12 +11,17 @@ export default defineNuxtPlugin({
       async () => {
         await siteStore.refresh();
 
-        useHeadSafe({
+        useHead({
           link: [
             {
               rel: "icon",
               type: "image/png",
               href: `/assets/${siteStore.site.identifier}/favicon.png`,
+            },
+            {
+              rel: "stylesheet",
+              type: "text/css",
+              href: `/assets/${siteStore.site.identifier}/variables.css`,
             },
           ],
         });

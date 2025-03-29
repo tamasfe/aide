@@ -10,20 +10,20 @@ export class SitesRepositoryDumb implements SitesRepositoryI {
 
   public async findCurrentMatched(): Promise<Result<Site, InfrastructureError>> {
     this.logger.debug("findCurrent called");
-    return success({
-      servable: true,
-      name: "GiroBet",
-      identifier: "girobet",
-      domains: [],
-    });
-
-    // In case we want to see the ZambaBet site:
     // return success({
     //   servable: true,
-    //   name: "ZambaBet",
-    //   identifier: "zambabet",
+    //   name: "GiroBet",
+    //   identifier: "girobet",
     //   domains: [],
     // });
+
+    // In case we want to see the ZambaBet site:
+    return success({
+      servable: true,
+      name: "ZambaBet",
+      identifier: "zambabet",
+      domains: [],
+    });
   }
 
   public async findMatchedLicenses(): Promise<Result<License[], InfrastructureError>> {
