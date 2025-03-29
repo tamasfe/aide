@@ -17,10 +17,10 @@ export const createSitesDependencyInjection = async (config: PublicRuntimeConfig
   const apiBaseUrl = config.apiBaseUrlClient;
 
   const sitesRepo: SitesRepositoryI = (() => {
-    return new SitesRepositoryDumb(commonDependencies.logger);
     if (apiBaseUrl) {
       return new SitesRepositoryGirobet({ baseUrl: apiBaseUrl }, commonDependencies);
     }
+    return new SitesRepositoryDumb(commonDependencies.logger);
   })();
 
   return {
