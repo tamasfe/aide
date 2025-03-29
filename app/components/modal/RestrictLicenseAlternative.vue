@@ -24,11 +24,11 @@ const props = defineProps({
 
 const allowedDomain = (() => {
   try {
-    return ref(new URL(props.allowedUrl).hostname);
+    return ref(capitalize(capitalizeBrandDomain(new URL(props.allowedUrl).hostname)));
   }
   catch (error) {
     console.error("Invalid URL provided for allowedUrl prop:", { allowedUrl: props.allowedUrl, error });
-    return ref(props.allowedUrl);
+    return ref(capitalize(capitalizeBrandDomain(props.allowedUrl)));
   }
 })();
 </script>
@@ -46,7 +46,7 @@ const allowedDomain = (() => {
       <h1 class="text-2xl font-semibold text-center">
         {{ $t("modal_restrict.license_alternative_headline", {
           country: blockedCountry,
-          allowedDomain: capitalizeBrandDomain(allowedDomain),
+          allowedDomain,
         }) }}
       </h1>
 
@@ -54,7 +54,7 @@ const allowedDomain = (() => {
         {{ $t("modal_restrict.license_alternative_body", {
           country: blockedCountry,
           blockedDomain: capitalizeBrandDomain(blockedDomain),
-          allowedDomain: capitalizeBrandDomain(allowedDomain),
+          allowedDomain,
         }) }}
       </div>
 
@@ -63,7 +63,7 @@ const allowedDomain = (() => {
           size="xl"
           class="w-full gap-1.5"
         >
-          <span>{{ $t("button.take_me_to", { domain: capitalizeBrandDomain(allowedDomain) }) }}</span>
+          <span>{{ $t("button.take_me_to", { domain: allowedDomain }) }}</span>
           <BaseIcon
             name="lucide:arrow-right"
             :size="20"
