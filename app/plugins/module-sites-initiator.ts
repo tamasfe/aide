@@ -8,7 +8,21 @@ export default defineNuxtPlugin({
     const ENABLE_SERVER_SIDE_RENDERING = true;
     const DEFER_CLIENT_SIDE_LOADING = true;
     await useAsyncData("site-store-refresh",
-      () => siteStore.refresh().then(() => 1),
+      async () => {
+        await siteStore.refresh();
+
+        useHeadSafe({
+          link: [
+            {
+              rel: "icon",
+              type: "image/png",
+              href: `/assets/${siteStore.site.identifier}/favicon.png`,
+            },
+          ],
+        });
+
+        return 1;
+      },
       { lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING },
     );
 
