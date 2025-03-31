@@ -53,7 +53,7 @@ const delegatedProps = computed(() => {
   .custom-scrollbar::-webkit-scrollbar-thumb {
     background: transparent;
     border-radius: 10rem;
-    border: 1px solid var(--giro-button-text-secondary);
+    border: 1px solid var(--color-button-text-secondary);
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {

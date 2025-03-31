@@ -89,7 +89,7 @@ const [value, modifiers] = defineModel<string | number>({
   /* To remove the MacOS auto-fill styles */
   input:-webkit-autofill {
     -webkit-background-clip: text !important;
-    -webkit-text-fill-color: rgb(var(--giro-bg-text-emphasis)) !important;
+    -webkit-text-fill-color: rgb(var(--color-bg-text-emphasis)) !important;
     -webkit-text-stroke: unset;
   }
 </style>
