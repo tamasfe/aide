@@ -46,7 +46,7 @@ const onClose = () => {
     >
       <PopoverPanel
         v-if="open && query !== ''"
-        class="z-[8] mt-3 absolute left-0 px-8 w-full outline-none"
+        class="z-[8] mt-3 absolute max-w-screen-2xl inset-x-0 px-8 lg:px-0 w-full outline-none"
         static
       >
         <div
