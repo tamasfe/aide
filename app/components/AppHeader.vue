@@ -79,6 +79,7 @@ const emit = defineEmits([
               <NavWalletBalance />
 
               <BaseButton
+                id="app-header-deposit-button"
                 variant="emphasis"
                 class=""
                 @click="$dependencies.users.ui.emitCommandOpenUserActionModal.handle('deposit')"
