@@ -32,6 +32,7 @@ const onNotify = () => {
   <BaseModal
     id="modal-restrict-expanding"
     v-model:open="open"
+    data-modal-is-juridiction-blocked="true"
     :close-on-click-outside="false"
     :unclosable="true"
     :logo="false"
