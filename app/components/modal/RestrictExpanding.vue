@@ -30,6 +30,7 @@ const onNotify = () => {
 
 <template>
   <BaseModal
+    id="modal-restrict-expanding"
     v-model:open="open"
     :close-on-click-outside="false"
     :unclosable="true"

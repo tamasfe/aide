@@ -20,7 +20,9 @@ defineProps({
 
 <template>
   <BaseModal
+    id="modal-restrict-no-alternative"
     v-model:open="open"
+    data-modal-is-juridiction-blocked="true"
     :close-on-click-outside="false"
     :unclosable="true"
     :logo="false"

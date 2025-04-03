@@ -35,7 +35,9 @@ const allowedDomain = (() => {
 
 <template>
   <BaseModal
+    id="modal-restrict-license-alternative"
     v-model:open="open"
+    data-modal-is-juridiction-blocked="true"
     :close-on-click-outside="false"
     :unclosable="true"
     :logo="false"
