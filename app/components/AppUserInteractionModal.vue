@@ -71,7 +71,7 @@ const { data: paymentMethodData } = await useAsyncData("user-modals-payment-meth
 </script>
 
 <template>
-  <div id="app-user-interaction-modal" :data-is-jurisdiction-modal="modalIsJurisdictionModal(state.modal)" :data-is-open="isOpen">
+  <div id="app-user-interaction-modal" :data-is-open="isOpen">
     <ModalLogin
       :open="isOpen && state.modal === 'login'"
     />
