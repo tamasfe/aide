@@ -1,4 +1,9 @@
 # Changelog
+## Latest
+- **added:** Add methods for attaching documentation to existing routes ([#203])
+- **fixed:** Fix `route_with_tsr` incorrect handling ([#203])
+
+[#203]: https://github.com/tamasfe/aide/pull/203
 
 ## 0.14.2
 

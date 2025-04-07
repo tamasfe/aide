@@ -566,9 +566,10 @@ where
     #[tracing::instrument(skip_all)]
     pub fn route_service_with_tsr<T>(mut self, path: &str, service: T) -> Self
     where
-        T: Service<Request<Body>, Error = Infallible> + Clone + Send + Sync + 'static,
+        T: Service<axum::extract::Request, Error = Infallible> + Clone + Send + Sync + 'static,
         T::Response: IntoResponse,
         T::Future: Send + 'static,
+        Self: Sized,
     {
         self.router = self.router.route_service_with_tsr(path, service);
         self
