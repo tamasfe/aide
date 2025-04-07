@@ -5,8 +5,8 @@ use std::{
 
 use serde::{Deserialize, Serialize};
 
-use crate::generate::GenContext;
 use crate::openapi::{Operation, Response};
+use crate::{generate::GenContext, openapi::StatusCode};
 use crate::{OperationInput, OperationOutput};
 
 /// Trait that allows implementing a custom Api definition for any type.
@@ -133,7 +133,7 @@ where
     fn inferred_early_responses(
         ctx: &mut GenContext,
         operation: &mut Operation,
-    ) -> Vec<(Option<u16>, Response)> {
+    ) -> Vec<(Option<StatusCode>, Response)> {
         T::inferred_early_responses(ctx, operation)
     }
 }
@@ -151,7 +151,7 @@ where
     fn inferred_responses(
         ctx: &mut GenContext,
         operation: &mut Operation,
-    ) -> Vec<(Option<u16>, Response)> {
+    ) -> Vec<(Option<StatusCode>, Response)> {
         T::inferred_responses(ctx, operation)
     }
 }

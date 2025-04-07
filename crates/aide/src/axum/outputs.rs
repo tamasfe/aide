@@ -1,5 +1,5 @@
 use crate::{
-    openapi::{MediaType, Operation, Response, SchemaObject},
+    openapi::{MediaType, Operation, Response, SchemaObject, StatusCode},
     util::no_content_response,
 };
 #[cfg(feature = "axum-form")]
@@ -7,8 +7,6 @@ use axum::extract::rejection::FormRejection;
 #[cfg(feature = "axum-json")]
 use axum::extract::rejection::JsonRejection;
 use axum::response::{Html, NoContent, Redirect};
-#[cfg(any(feature = "axum-json", feature = "axum-form"))]
-use http::StatusCode;
 use indexmap::IndexMap;
 use schemars::schema::{InstanceType, SingleOrVec};
 #[cfg(any(feature = "axum-form", feature = "axum-json"))]
@@ -26,8 +24,8 @@ impl OperationOutput for NoContent {
     fn inferred_responses(
         _ctx: &mut GenContext,
         _operation: &mut Operation,
-    ) -> Vec<(Option<u16>, Response)> {
-        vec![(Some(204), no_content_response())]
+    ) -> Vec<(Option<StatusCode>, Response)> {
+        vec![(Some(StatusCode::Code(204)), no_content_response())]
     }
 }
 
@@ -67,9 +65,9 @@ where
     fn inferred_responses(
         ctx: &mut crate::generate::GenContext,
         operation: &mut Operation,
-    ) -> Vec<(Option<u16>, Response)> {
+    ) -> Vec<(Option<StatusCode>, Response)> {
         if let Some(res) = Self::operation_response(ctx, operation) {
-            let success_response = [(Some(200), res)];
+            let success_response = [(Some(StatusCode::Code(200)), res)];
 
             if ctx.all_error_responses {
                 [
@@ -122,9 +120,9 @@ where
     fn inferred_responses(
         ctx: &mut crate::generate::GenContext,
         operation: &mut Operation,
-    ) -> Vec<(Option<u16>, Response)> {
+    ) -> Vec<(Option<StatusCode>, Response)> {
         if let Some(res) = Self::operation_response(ctx, operation) {
-            let success_response = [(Some(200), res)];
+            let success_response = [(Some(StatusCode::Code(200)), res)];
 
             if ctx.all_error_responses {
                 [
@@ -171,9 +169,9 @@ impl<T> OperationOutput for Html<T> {
     fn inferred_responses(
         ctx: &mut crate::generate::GenContext,
         operation: &mut Operation,
-    ) -> Vec<(Option<u16>, Response)> {
+    ) -> Vec<(Option<StatusCode>, Response)> {
         if let Some(res) = Self::operation_response(ctx, operation) {
-            Vec::from([(Some(200), res)])
+            Vec::from([(Some(StatusCode::Code(200)), res)])
         } else {
             Vec::new()
         }
@@ -191,12 +189,18 @@ impl OperationOutput for JsonRejection {
     fn inferred_responses(
         ctx: &mut crate::generate::GenContext,
         operation: &mut Operation,
-    ) -> Vec<(Option<u16>, Response)> {
+    ) -> Vec<(Option<StatusCode>, Response)> {
         if let Some(res) = Self::operation_response(ctx, operation) {
             Vec::from([
                 // rejection_response(StatusCode::BAD_REQUEST, &res),
-                rejection_response(StatusCode::PAYLOAD_TOO_LARGE, &res),
-                rejection_response(StatusCode::UNSUPPORTED_MEDIA_TYPE, &res),
+                rejection_response(
+                    StatusCode::Code(http::StatusCode::PAYLOAD_TOO_LARGE.into()),
+                    &res,
+                ),
+                rejection_response(
+                    StatusCode::Code(http::StatusCode::UNSUPPORTED_MEDIA_TYPE.into()),
+                    &res,
+                ),
                 // rejection_response(StatusCode::UNPROCESSABLE_ENTITY, &res),
             ])
         } else {
@@ -216,12 +220,18 @@ impl OperationOutput for FormRejection {
     fn inferred_responses(
         ctx: &mut crate::generate::GenContext,
         operation: &mut Operation,
-    ) -> Vec<(Option<u16>, Response)> {
+    ) -> Vec<(Option<StatusCode>, Response)> {
         if let Some(res) = Self::operation_response(ctx, operation) {
             Vec::from([
                 // rejection_response(StatusCode::BAD_REQUEST, &res),
-                rejection_response(StatusCode::PAYLOAD_TOO_LARGE, &res),
-                rejection_response(StatusCode::UNSUPPORTED_MEDIA_TYPE, &res),
+                rejection_response(
+                    StatusCode::Code(http::StatusCode::PAYLOAD_TOO_LARGE.into()),
+                    &res,
+                ),
+                rejection_response(
+                    StatusCode::Code(http::StatusCode::UNSUPPORTED_MEDIA_TYPE.into()),
+                    &res,
+                ),
                 // rejection_response(StatusCode::UNPROCESSABLE_ENTITY, &res),
             ])
         } else {
@@ -231,8 +241,11 @@ impl OperationOutput for FormRejection {
 }
 
 #[cfg(any(feature = "axum-json", feature = "axum-form"))]
-fn rejection_response(status_code: StatusCode, response: &Response) -> (Option<u16>, Response) {
-    (Some(status_code.as_u16()), response.clone())
+fn rejection_response(
+    status_code: StatusCode,
+    response: &Response,
+) -> (Option<StatusCode>, Response) {
+    (Some(status_code), response.clone())
 }
 
 impl OperationOutput for Redirect {
