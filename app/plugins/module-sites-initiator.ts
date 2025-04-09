@@ -12,6 +12,13 @@ export default defineNuxtPlugin({
       },
     );
 
+    /**
+     * More info at https://nuxtseo.com/docs/site-config/nitro-api/update-site-config
+     */
+    updateSiteConfig({
+      name: siteStore.site.name,
+    });
+
     if (import.meta.server) {
       useHead({
         link: [

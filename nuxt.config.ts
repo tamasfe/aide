@@ -33,7 +33,6 @@ export default defineNuxtConfig({
   },
   site: {
     url: process.env.NUXT_PUBLIC_BASE_URL,
-    name: "GiroBet",
     // description: "Welcome to my awesome site!", // TODO
     // defaultLocale: "en", // TODO not needed if you have @nuxtjs/i18n installed
   },
