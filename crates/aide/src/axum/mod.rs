@@ -168,7 +168,7 @@
 //! and the documented routes will be updated as expected.
 //!
 
-use std::{convert::Infallible, future::Future, mem, pin::Pin};
+use std::{convert::Infallible, future::Future, pin::Pin};
 
 use crate::{
     generate::{self, in_context},
@@ -431,10 +431,11 @@ where
         }
 
         let paths = api.paths.as_mut().unwrap();
-        paths.paths = mem::take(&mut self.paths)
-            .into_iter()
-            .map(|(route, path)| (route, ReferenceOr::Item(path)))
-            .collect();
+        paths.paths.extend(
+            self.paths
+                .drain(..)
+                .map(|(route, path)| (route, ReferenceOr::Item(path))),
+        );
 
         let _ = transform(TransformOpenApi::new(api));
 
