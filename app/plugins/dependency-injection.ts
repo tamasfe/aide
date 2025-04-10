@@ -3,6 +3,8 @@ import { createGamesDependencyInjection } from "~/modules/games/infra/GamesDepen
 import { createKycDependencyInjection } from "~/modules/kyc/infra/KycDependencyInjection";
 import { createNotificationDependencyInjection } from "~/modules/notifications/infra/NotificationDependencyInjection";
 import { createProvidersDependencyInjection } from "~/modules/providers/infra/ProvidersDependencyInjection";
+import { MarketingSearchParamsRepoLocalStorage } from "~/modules/search-params-tracking/marketing-search-params-repo-local-storage";
+import { StoreMarketingSearchParams } from "~/modules/search-params-tracking/ui/store-marketing-search-params";
 import { createSignupFlowsDependencyInjection } from "~/modules/signup-flows/infra/SignupFlowsDependencyInjection";
 import { createSitesDependencyInjection } from "~/modules/sites/infra/SitesDependencyInjection";
 import { createUsersDependencyInjection } from "~/modules/users/infra/UsersDependencyInjection";
@@ -18,6 +20,7 @@ export default defineNuxtPlugin({
     const { hostname } = useRequestURL();
     const requestHeaders = useRequestHeaders();
     const notificationsStore = useNotificationsStore();
+    const route = useRoute();
 
     const commonDependencies = await loadDependencies(config.public, $i18n, {
       currentHost: hostname,
@@ -39,6 +42,10 @@ export default defineNuxtPlugin({
           websockets: await createWebsocketDependencyInjectionI(config.public, commonDependencies),
           notifications: await createNotificationDependencyInjection(config.public, commonDependencies, notificationsStore),
           sites: await createSitesDependencyInjection(config.public, commonDependencies),
+          searchParamsTracking: {
+            repository: new MarketingSearchParamsRepoLocalStorage(),
+            storeMarketingSearchParams: new StoreMarketingSearchParams(route, new MarketingSearchParamsRepoLocalStorage()),
+          },
         },
       },
     };

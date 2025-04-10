@@ -12,6 +12,7 @@ export interface SignupFlowPropsI {
   telephone: null | string;
   locale: null | string;
   timeZone: null | string;
+  utmParameters: null | Record<string, string>;
 }
 
 export class SignupFlow {
@@ -37,7 +38,7 @@ export class SignupFlow {
     }
 
     return success(
-      new SignupFlow(props.id, userEmailResult.value, userPasswordResult.value, userCPFResult.value, userTelephoneResult.value, props.locale, props.timeZone),
+      new SignupFlow(props.id, userEmailResult.value, userPasswordResult.value, userCPFResult.value, userTelephoneResult.value, props.locale, props.timeZone, props.utmParameters),
     );
   }
 
@@ -57,6 +58,7 @@ export class SignupFlow {
     public readonly telephone: null | UserTelephone,
     public readonly locale: null | string,
     public readonly timeZone: null | string,
+    public readonly utmParameters: null | Record<string, string>,
   ) {}
 
   public toJSON(): SignupFlowPropsI {
@@ -68,6 +70,7 @@ export class SignupFlow {
       telephone: this.telephone?.value ?? null,
       locale: this.locale,
       timeZone: this.timeZone,
+      utmParameters: this.utmParameters,
     };
   }
 }

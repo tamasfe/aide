@@ -1,3 +1,4 @@
+import { request } from "http";
 import { SignupFlow } from "../domain/SignupFlow";
 import type { SignupFlowApiRepositoryI } from "../domain/SignupFlowApiRepositoryI";
 import { SignupFlowNotFound } from "../domain/SignupFlowNotFound";
@@ -39,6 +40,7 @@ export class SignupFlowApiRepositoryGirobet implements SignupFlowApiRepositoryI 
         telephone: (data.fields.phone || null) as string | null,
         locale: (data.fields.locale || null) as string | null,
         timeZone: (data.fields.time_zone || null) as string | null,
+        utmParameters: null,
       },
       )));
     }
@@ -130,6 +132,9 @@ export class SignupFlowApiRepositoryGirobet implements SignupFlowApiRepositoryI 
     }
     if (signupFlow.locale !== null) {
       requestBody.locale = signupFlow.locale;
+    }
+    if (signupFlow.utmParameters !== null) {
+      requestBody.signup_attributes = JSON.stringify(signupFlow.utmParameters);
     }
     const { data, error, response } = await this.apiClient.PATCH("/signup/flow/{flow_id}", {
       params: {

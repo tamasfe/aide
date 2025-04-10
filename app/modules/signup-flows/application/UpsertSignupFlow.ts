@@ -14,6 +14,7 @@ type Payload = {
   telephone: string | null;
   telephonePrefix: string | null;
   CPF: string | null;
+  utmParameters: Record<string, string> | null;
 };
 export class UpsertSignupFlow {
   constructor(
@@ -88,6 +89,7 @@ export class UpsertSignupFlow {
         telephone: userTelephoneResult.value?.value,
         locale: userLocaleResult.value,
         timeZone: userTimeZoneResult.value,
+        utmParameters: signupFlowPayload.utmParameters,
       },
     );
 

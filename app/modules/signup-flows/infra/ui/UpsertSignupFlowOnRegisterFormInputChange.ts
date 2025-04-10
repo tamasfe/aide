@@ -13,6 +13,7 @@ export class UpsertSignupFlowOnRegisterFormInputChange {
     telephone?: string;
     telephonePrefix?: string;
     CPF?: string;
+    utmParameters?: Record<string, string>;
   }) {
     const resultUpsertingSignupFlow = await this.upsertSignupFlow.handle({
       CPF: payload.CPF ?? null,
@@ -20,6 +21,7 @@ export class UpsertSignupFlowOnRegisterFormInputChange {
       password: payload.password ?? null,
       telephone: payload.telephone ?? null,
       telephonePrefix: payload.telephonePrefix ?? null,
+      utmParameters: payload.utmParameters ?? null,
     });
 
     if (resultUpsertingSignupFlow.isFailure) {

@@ -34,6 +34,18 @@ const loadingSubmit = ref(false);
 
 const onSubmit = handleSubmit(async () => {
   loadingSubmit.value = true;
+
+  const resultSearchParams = $dependencies.searchParamsTracking.repository.searchAttributed();
+  if (resultSearchParams.isFailure) {
+    $dependencies.common.logger.error("Error retrieving the saved marketing queyr parameters. This might affect our attribution", resultSearchParams.error);
+  }
+  else {
+    if (resultSearchParams.value) {
+      $dependencies.common.logger.debug("Signup params found for user", { params: resultSearchParams.value.params });
+      await $dependencies.signupFlows.ui.upsertSignupFlowOnRegisterFormInputChange.handle({ utmParameters: resultSearchParams.value.params });
+    }
+  }
+
   const errorSubmitting = await $dependencies.signupFlows.ui.submitSignupFlowOnFormSubmission.handle();
   loadingSubmit.value = false;
   errorMessage.value = errorSubmitting;
