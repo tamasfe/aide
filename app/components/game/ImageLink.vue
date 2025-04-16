@@ -3,7 +3,7 @@ import type { HTMLAttributes } from "vue";
 import { toGameUrlSlug } from "~/modules/games/domain/Game";
 
 const props = defineProps<{
-  src: string;
+  src: string | null;
   id: number;
   slug?: string;
   altText?: string;

@@ -134,7 +134,8 @@ export class SignupFlowApiRepositoryGirobet implements SignupFlowApiRepositoryI 
       requestBody.locale = signupFlow.locale;
     }
     if (signupFlow.utmParameters !== null) {
-      requestBody.signup_attributes = JSON.stringify(signupFlow.utmParameters);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      requestBody.signup_params = signupFlow.utmParameters as any; // Because the type is not correctly auto generated
     }
     const { data, error, response } = await this.apiClient.PATCH("/signup/flow/{flow_id}", {
       params: {

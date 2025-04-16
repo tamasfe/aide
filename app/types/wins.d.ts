@@ -5,7 +5,7 @@ export type Win = {
   userNickname: string;
   game: {
     id: number;
-    imageUrl: string;
+    imageUrl: string | null;
     name: string;
   };
 };

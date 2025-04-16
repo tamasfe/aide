@@ -29,7 +29,7 @@ export class GamesApiRepositoryGirobet implements GamesApiRepositoryI {
 
       if (data) {
         return success({
-          games: data.data.map(game => camelizeKeys(game)),
+          games: data.data.map(game => camelizeKeys({ ...game, image_url: game.image_url || null })),
           pagination: {
             limit: data.metadata.pagination.limit,
             offset: data.metadata.pagination.offset,
@@ -80,7 +80,7 @@ export class GamesApiRepositoryGirobet implements GamesApiRepositoryI {
       if (data) {
         return success({
           id: data.id,
-          imageUrl: data.image_url,
+          imageUrl: data.image_url || null,
           name: data.name,
           slug: data.slug,
           description: data.description || null,

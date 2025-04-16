@@ -5,7 +5,7 @@ const { src } = defineProps({
     required: true,
   },
   src: {
-    type: String,
+    type: [String, null],
     required: true,
   },
 });

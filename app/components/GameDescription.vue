@@ -28,7 +28,7 @@ defineProps({
     required: true,
   },
   imageUrl: {
-    type: String,
+    type: [String, null],
     required: true,
   },
   categories: {

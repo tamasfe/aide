@@ -43,7 +43,7 @@ const gamesOnLoadMore = async (actionOnItemsArray: "append" | "replace") => {
  * Provider search
  */
 const providersCurrentPage = useState(() => 0);
-const providers = useState<Keyified<{ id: number; imageUrl: string }>[]>(() => []);
+const providers = useState<Keyified<{ id: number; imageUrl: string | null }>[]>(() => []);
 const providersTotalItems = useState(() => 0);
 const providersLoading = useState(() => false);
 const providersOnLoadMore = async (actionOnItemsArray: "append" | "replace") => {
@@ -122,7 +122,7 @@ const onClickLink = () => {
           class="block bg-subtle rounded w-full h-full overflow-hidden"
           @click="onClickLink"
         >
-          <ProviderImageLoader :src="item.imageUrl" :provider-id="item.id" />
+          <Provide r-image-loader :src="item.imageUrl" :provider-id="item.id" />
         </BaseLink>
       </template>
     </GridVerticalSearch>

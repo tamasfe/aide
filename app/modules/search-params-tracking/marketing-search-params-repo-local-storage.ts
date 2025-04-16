@@ -20,7 +20,6 @@ export class MarketingSearchParamsRepoLocalStorage {
       }
 
       // Find first params according to the timestamp inside
-
       const sortedParams = currentParams.sort((a, b) => new Date(a.at).getTime() - new Date(b.at).getTime());
       const firstParams = sortedParams[0];
       return firstParams

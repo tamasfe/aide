@@ -2,7 +2,7 @@ export type GameDevice = "mobile" | "desktop";
 
 export interface GameI {
   id: number;
-  imageUrl: string;
+  imageUrl: string | null;
   name: string;
   slug: string;
   description: string | null;
@@ -11,7 +11,7 @@ export interface GameI {
 
 export interface GameSummaryI {
   id: number;
-  imageUrl: string;
+  imageUrl: string | null;
   name: string;
   slug: string;
 }

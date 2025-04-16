@@ -11,7 +11,7 @@ const DEFER_CLIENT_SIDE_LOADING = true;
 const loading = useState(`grid-vertical-providers-loading`, () => true);
 const totalProviders = useState(`grid-vertical-providers-total`, () => 0);
 const nextProvidersPageToSearch = useState(`grid-vertical-providers-next-page`, () => 0);
-const providers = useState<Keyified<{ id: number; imageUrl: string }>[]>(`grid-vertical-providers-ids`, () => []);
+const providers = useState<Keyified<{ id: number; imageUrl: string | null }>[]>(`grid-vertical-providers-ids`, () => []);
 const canLoadMore = useState(`grid-vertical-providers-can-load-more`, () => true);
 
 const onLoadData = async () => {

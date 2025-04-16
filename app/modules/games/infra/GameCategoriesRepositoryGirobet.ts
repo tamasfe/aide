@@ -30,7 +30,7 @@ export class GameCategoriesRepositoryGirobet implements GameCategoriesRepository
               id: game.id,
               slug: game.slug,
               name: game.name,
-              imageUrl: game.image_url,
+              imageUrl: game.image_url || null,
             }))
           : null,
       })));

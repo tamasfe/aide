@@ -11,8 +11,10 @@ const props = defineProps<{
   authenticated: boolean;
   replace: boolean;
   class?: HTMLAttributes["class"];
-  src: string;
+  src: string | null;
 }>();
+
+const siteStore = useSiteStore();
 
 const srcBackground = computed(() => {
   return props.src + "?variant=background";
@@ -32,7 +34,7 @@ const srcBackground = computed(() => {
     />
     <template v-if="!replace || (replace && !authenticated)">
       <GameImage
-        :src="srcBackground"
+        :src="srcBackground || siteStore.getAssetPath('images/logos/logo.svg')"
         class="absolute top-0 left-0 z-[1] w-full h-full object-cover"
       />
       <div class="absolute z-[2] top-0 left-0 w-full h-full bg-default/85 backdrop-blur-2xl" />

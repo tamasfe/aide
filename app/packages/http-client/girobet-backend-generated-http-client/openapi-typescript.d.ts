@@ -523,7 +523,21 @@ export interface paths {
          *     	"last_name": "Doe",
          *     	"email": "john@doe.com",
          *     	"password": "test",
-         *     	"CPF": "549.448.010-09"
+         *     	"CPF": "549.448.010-09",
+         *     	"signup_params": {           // optional
+         *     		"utm_source": "google",
+         *     		"utm_medium": "cpc",
+         *     		"utm_campaign": "test",
+         *     		"utm_term": "test",
+         *     		"utm_content": "test",
+         *     		"utm_referrer": "test",
+         *     		"utm_adgroup": "test",
+         *     		"utm_ad": "test",
+         *     		"utm_creative": "test",
+         *     		"utm_matchtype": "test",
+         *     		"utm_network": "test",
+         *     		"utm_device": "test"
+         *     	}
          *     }
          *     ```
          *
@@ -2501,7 +2515,7 @@ export interface components {
             id: components["schemas"]["BetId"];
         };
         /** @enum {string} */
-        GameCategoryGroupType: "home" | "game_page" | "inventory";
+        GameCategoryGroupType: "home" | "game_page" | "inventory" | "sidebar_menu";
         /** Format: int64 */
         GameCategoryId: number;
         GameCategoryListQuery: {
@@ -2540,7 +2554,7 @@ export interface components {
             /** @description The ID of the game provider. */
             id: components["schemas"]["GameProviderId"];
             /** @description The URL to the image of the game provider. */
-            image_url: string;
+            image_url?: string | null;
             /** @description The name of the game provider. Do not use this in URLs, as it may contain special characters. */
             name: string;
             /** @description The slug of the game provider. This may be used in URLs. */
@@ -2575,7 +2589,7 @@ export interface components {
             /** @description The ID of the game. */
             id: components["schemas"]["GameId"];
             /** @description The URL to the image of the game. */
-            image_url: string;
+            image_url?: string | null;
             /** @description Whether the game is available in HD. */
             is_hd: boolean;
             /** @description Additional metadata about the game. This is used to store arbitrary unstructured data and can thus not be relied upon to return a specific data. */
@@ -2611,7 +2625,7 @@ export interface components {
             email: string;
         };
         /** @enum {string} */
-        IntegrationIdentifier: "softswiss" | "sumsub" | "paybrokers" | "starspay" | "sandbox";
+        IntegrationIdentifier: "softswiss" | "sumsub" | "paybrokers" | "starspay" | "sandbox" | "infinigame";
         InternalError: string;
         KycAccessTokenResponse: {
             /** @description KYC provider identifier. This should be used to differentiate which WebSDK/flow to use. */
@@ -2998,7 +3012,7 @@ export interface components {
         SearchGameProviderResponse: {
             /** @description The ID of the game provider. */
             id: components["schemas"]["GameProviderId"];
-            image_url: string;
+            image_url?: string | null;
             /** @description The name of the game provider. Do not use this in URLs, as it may contain special characters. */
             name: string;
             /**
@@ -3025,7 +3039,7 @@ export interface components {
             /** @description The ID of the game. */
             id: components["schemas"]["GameId"];
             /** @description The URL to the image of the game. */
-            image_url: string;
+            image_url?: string | null;
             /** @description The name of the game. Do not use this in URLs, as it may contain special characters. */
             name: string;
             /** @description The provider of the game. */
@@ -3094,6 +3108,9 @@ export interface components {
             metadata: {
                 message: string;
             };
+        } | {
+            /** @enum {string} */
+            code: "GAME_SESSION_NOT_FOUND";
         } | {
             /** @enum {string} */
             code: "PAYMENT_AMOUNT_EXCEEDS_TIMEFRAME_LIMITS";
@@ -3304,7 +3321,7 @@ export interface components {
         };
         Site: {
             /** @description The base URL of the site. This may be used for redirects, links, etc. */
-            domains: components["schemas"]["SiteDomainMapping"][];
+            domains: components["schemas"]["SiteDomain"][];
             /** @description The identifier of the site. Use this identifier to uniquely and programmatically identify the site. */
             identifier: components["schemas"]["SiteIdentifier"];
             /** @description The name of the site. */
@@ -3312,15 +3329,15 @@ export interface components {
             /** @description This field indicates if this site is able to be served by the current casino instance. If there's an alternative, which can not be served by the current casino instance, but can be served by another casino instance we know of, this is false. Example scenario: Cross-regional deployments of this system, with independent databases require the ability to point to each other as alternatives, as they can't serve the requested site themselves. */
             servable: boolean;
         };
-        SiteDomain: string;
-        SiteDomainMapping: {
+        SiteDomain: {
             /** @description The API domain of the site. */
-            api: components["schemas"]["SiteDomain"];
+            api: components["schemas"]["SiteDomainHost"];
             /** @description The email domain of the site, to be used for contact purposes. */
-            email: components["schemas"]["SiteDomain"];
+            email: components["schemas"]["SiteDomainHost"];
             /** @description The frontend domain of the site. */
-            frontend: components["schemas"]["SiteDomain"];
+            frontend: components["schemas"]["SiteDomainHost"];
         };
+        SiteDomainHost: string;
         SiteIdentifier: string;
         /** Format: float */
         SystemAmount: number;
@@ -3347,7 +3364,7 @@ export interface components {
             /** @description The ID of the game. */
             id: components["schemas"]["GameId"];
             /** @description The URL to the image of the game. */
-            image_url: string;
+            image_url?: string | null;
             /** @description The name of the game. Do not use this in URLs, as it may contain special characters. */
             name: string;
         };

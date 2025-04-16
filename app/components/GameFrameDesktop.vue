@@ -19,7 +19,7 @@ defineProps({
     required: true,
   },
   gameImageUrl: {
-    type: String,
+    type: [String, null],
     required: true,
   },
   authenticated: {

@@ -24,7 +24,7 @@ useCreateSubscriptionToWebsocket(
       userNickname: message.data.data.user_nickname,
       game: {
         id: message.data.data.game.id,
-        imageUrl: message.data.data.game.image_url,
+        imageUrl: message.data.data.game.image_url || null,
         name: message.data.data.game.name,
       },
     }));
@@ -40,7 +40,7 @@ useCreateSubscriptionToWebsocket(
       userNickname: message.data.data.user_nickname,
       game: {
         id: message.data.data.game.id,
-        imageUrl: message.data.data.game.image_url,
+        imageUrl: message.data.data.game.image_url || null,
         name: message.data.data.game.name,
       },
     }));

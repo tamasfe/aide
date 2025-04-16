@@ -4,7 +4,7 @@ const { t } = useI18n();
 
 const loading = useState(`grid-horizontal-providers-loading`, () => true);
 const nextProvidersPageToSearch = useState(`grid-horizontal-providers-next-page`, () => 0);
-const providers = useState<{ id: number; imageUrl: string; key: string }[]>(`grid-horizontal-providers-ids`, () => []);
+const providers = useState<{ id: number; imageUrl: string | null; key: string }[]>(`grid-horizontal-providers-ids`, () => []);
 const canLoadMore = useState(`grid-horizontal-providers-can-load-more`, () => true);
 
 const onLoadData = async () => {
