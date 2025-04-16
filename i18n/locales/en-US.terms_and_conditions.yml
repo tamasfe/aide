@@ -8,12 +8,13 @@ terms_and_conditions:
     You should carefully review these Terms as they contain important information concerning your
     rights and obligations concerning the use of the Website and form a binding legal agreement
     between you - our customer (the "Customer"), and us. By using this Website and/or accessing
-    the Service, you, whether you are a guest or a registered user with an account (“Account”),
+    the Service, you, whether you are a guest or a registered user with an account ("Account"),
     agree to be bound by these Terms, together with any amendments, which may be published
     from time to time. If you do not accept these Terms, you should refrain from accessing the
     Service and using the Website.
-    The Service is owned by Everest Entertainment, a limited liability company with registration
-    number 27465, with registered address 9 Barrack Road, Belize City, Belize.,
+    The Service is owned by ORBIT Interactive Tech LTD, a limited liability company with
+    registration number 27465, with registered address 9 Barrack Road, Belize City, Belize.,
+    licensed in the State of Anjouan under the Computer Gaming Licensing Act 007 of 2005..
 
   subtitle_2: 2. General Terms
   content_2: |
@@ -64,7 +65,7 @@ terms_and_conditions:
     bets made using the Service.
 
     3.12. You, or, if applicable, your employees, employers, agents, or family members, are not
-    registered as an Affiliate in our Affiliate program
+    registered as an Affiliate in our Affiliate program.
 
   subtitle_4: 4. Restricted use
   content_4: |
@@ -80,6 +81,7 @@ terms_and_conditions:
 
         4.1.3. If you are a resident of one of the following countries, or accessing the Website from one
         of the following countries:
+          b.Country is not one of the following Restricted Countries:
             Austria
             France and it's territories
             Germany
@@ -439,9 +441,10 @@ terms_and_conditions:
     Address in your Account.
 
     12.4. From time to time, we may contact you by email for the purpose of offering you information
-    about betting, unique promotional offerings, and other information from {host}. You agree to receive
-    such emails when you agree to these Terms when registering at the Website. You can choose to
-    opt out of receiving such promotional offerings from us at any time by submitting a request to the Customer Support.
+    about betting, unique promotional offerings, and other information from {host}. You agree to
+    receive such emails when you agree to these Terms when registering at the Website. You can
+    choose to opt out of receiving such promotional offerings from us at any time by submitting a
+    request to the Customer Support.
 
   subtitle_13: 13. Matters Beyond Our Control
   content_13: |
@@ -455,20 +458,32 @@ terms_and_conditions:
 
   subtitle_14: 14. Liability
   content_14: |
-    14.1. TO THE EXTENT PERMITTED BY APPLICABLE LAW, WE WILL NOT COMPENSATE YOU FOR ANY REASONABLYFORESEEABLE LOSS OR DAMAGE (EITHER DIRECT OR INDIRECT) YOU MAY SUFFER IF WE FAIL TO CARRY OUTOUR OBLIGATIONS UNDER THESE TERMS UNLESS WE BREACH ANY DUTIES IMPOSED ON US BY LAW (INCLUDINGIF WE CAUSE DEATH OR PERSONAL INJURY BY OUR NEGLIGENCE) IN WHICH CASE WE SHALL NOT BE LIABLETO YOU IF THAT FAILURE IS ATTRIBUTED TO:
-      - (I) YOUR OWN FAULT;
-      - (II) A THIRD PARTY UNCONNECTED WITHOUR PERFORMANCE OF THESE TERMS (FOR INSTANCE PROBLEMS DUE TO COMMUNICATIONS NETWORK PERFORMANCE,CONGESTION, AND CONNECTIVITY OR THE PERFORMANCE OF YOUR COMPUTER EQUIPMENT);
-      - OR (III) ANY OTHEREVENTS WHICH NEITHER WE NOR OUR SUPPLIERS COULD HAVE FORESEEN OR FORESTALLED EVEN IF WE OR THEYHAD TAKEN REASONABLE CARE.
-    AS THIS SERVICE IS FOR CONSUMER USE ONLY WE WILL NOT BE LIABLE FORANY BUSINESS LOSSES OF ANY KIND.
+    14.1. TO THE EXTENT PERMITTED BY APPLICABLE LAW, WE WILL NOT COMPENSATE
+    YOU FOR ANY REASONABLY FORESEEABLE LOSS OR DAMAGE (EITHER DIRECT OR
+    INDIRECT) YOU MAY SUFFER IF WE FAIL TO CARRY OUT OUR OBLIGATIONS UNDER
+    THESE TERMS UNLESS WE BREACH ANY DUTIES IMPOSED ON US BY LAW (INCLUDING
+    IF WE CAUSE DEATH OR PERSONAL INJURY BY OUR NEGLIGENCE) IN WHICH CASE
+    WE SHALL NOT BE LIABLE TO YOU IF THAT FAILURE IS ATTRIBUTED TO: (I) YOUR OWN
+    FAULT; (II) A THIRD PARTY UNCONNECTED WITH OUR PERFORMANCE OF THESE
+    TERMS (FOR INSTANCE PROBLEMS DUE TO COMMUNICATIONS NETWORK
+    PERFORMANCE, CONGESTION, AND CONNECTIVITY OR THE PERFORMANCE OF YOUR
+    COMPUTER EQUIPMENT); OR (III) ANY OTHER EVENTS WHICH NEITHER WE NOR OUR
+    SUPPLIERS COULD HAVE FORESEEN OR FORESTALLED EVEN IF WE OR THEY HAD
+    TAKEN REASONABLE CARE. AS THIS SERVICE IS FOR CONSUMER USE ONLY WE WILL
+    NOT BE LIABLE FOR ANY BUSINESS LOSSES OF ANY KIND.
 
-    14.2. IN THE EVENT THAT WE ARE HELD LIABLE FOR ANY EVENT UNDER THESE TERMS, OUR TOTAL AGGREGATE LIABILITY TO YOU UNDER OR IN CONNECTION WITH THESE TERMS SHALL NOT EXCEED
-      - (A) THE VALUE OF THE BETS AND OR WAGERS YOU PLACED VIA YOUR ACCOUNT IN RESPECT OF THE RELEVANT BET/WAGER OR PRODUCT THAT GAVE RISE TO THE RELEVANT LIABILITY,
-      - OR (B) EUR €500 IN AGGREGATE,
-    WHICHEVER IS LOWER.
+    14.2. IN THE EVENT THAT WE ARE HELD LIABLE FOR ANY EVENT UNDER THESE
+    TERMS, OUR TOTAL AGGREGATE LIABILITY TO YOU UNDER OR IN CONNECTION WITH
+    THESE TERMS SHALL NOT EXCEED (A) THE VALUE OF THE BETS AND OR WAGERS
+    YOU PLACED VIA YOUR ACCOUNT IN RESPECT OF THE RELEVANT BET/WAGER OR
+    PRODUCT THAT GAVE RISE TO THE RELEVANT LIABILITY, OR (B) EUR €500 IN
+    AGGREGATE, WHICHEVER IS LOWER.
 
-    14.3. WE STRONGLY RECOMMEND THAT YOU
-      - (I) TAKE CARE TO VERIFY THE SUITABILITY AND COMPATIBILITY OF THE SERVICE WITH YOUR OWN COMPUTER EQUIPMENT PRIOR TO USE;
-      - AND (II) TAKE REASONABLE PRECAUTIONS TO PROTECT YOURSELF AGAINST HARMFUL PROGRAMS OR DEVICES INCLUDING THROUGH INSTALLATION OF ANTI-VIRUS SOFTWARE.
+    14.3. WE STRONGLY RECOMMEND THAT YOU (I) TAKE CARE TO VERIFY THE
+    SUITABILITY AND COMPATIBILITY OF THE SERVICE WITH YOUR OWN COMPUTER
+    EQUIPMENT PRIOR TO USE; AND (II) TAKE REASONABLE PRECAUTIONS TO PROTECT
+    YOURSELF AGAINST HARMFUL PROGRAMS OR DEVICES INCLUDING THROUGH
+    INSTALLATION OF ANTI-VIRUS SOFTWARE.
 
   subtitle_15: 15. Gambling By Those Under Age
   content_15: |
@@ -497,7 +512,8 @@ terms_and_conditions:
 
     15.3. In the event we suspect you are in breach of the provisions of this Clause or are
     attempting to rely on them for a fraudulent purpose, we reserve the right to take any action
-    necessary i
+    necessary in order to investigate the matter, including informing the relevant law enforcement
+    agencies.
 
   subtitle_16: 16. Fraud
   content_16: |
@@ -563,10 +579,10 @@ terms_and_conditions:
 
     19.3. Prohibited Behaviour includes, but is not limited to, accessing or using the Service to:
         - promote or share information that you know is false, misleading or unlawful;
-
-        - conduct any unlawful or illegal activity, such as, but not limited to, any activity that furthers or
+        conduct any unlawful or illegal activity, such as, but not limited to, any activity that furthers or
         promotes any criminal activity or enterprise, violates another Customer's or any other third
-        party’s privacy or other rights or that creates or spreads computer viruses;
+
+        - party's privacy or other rights or that creates or spreads computer viruses;
 
         - harm minors in any way;
 
@@ -576,7 +592,7 @@ terms_and_conditions:
 
         - transmit or make available any content that the user does not have a right to make available
         under any law or contractual or fiduciary relationship, including without limitation, any content
-        that infringes a third party’s copyright, trademark or other intellectual property and proprietary
+        that infringes a third party's copyright, trademark or other intellectual property and proprietary
         rights;
 
         - transmit or make available any content or material that contains any software virus or other
@@ -588,8 +604,7 @@ terms_and_conditions:
         limitation, intercepting, emulating or redirecting the communication protocols used by us,
         creating or using cheats, mods or hacks or any other software designed to modify the Service,
         or using any software that intercepts or collects information from or through the Service;
-
-        - retrieve or index any information from the Service using any robot, spider or other automated
+        retrieve or index any information from the Service using any robot, spider or other automated
         mechanism;
 
         - participate in any activity or action that, in the sole and entire unfettered discretion of us results
@@ -600,15 +615,14 @@ terms_and_conditions:
         or other forms of solicitations;
 
         - create Accounts on the Website by automated means or under false or fraudulent pretences;
-
-        - impersonate another Customer or any other third party, or
+        impersonate another Customer or any other third party, or
         any other act or thing done that we reasonably consider to be contrary to our business
         principles.
 
     The above list of Prohibited Behaviour is not exhaustive and may be modified by us at any time
     or from time to time. We reserve the right to investigate and to take all such actions as we in our
     sole discretion deem appropriate or necessary under the circumstances, including without
-    limitation deleting the Customer’s posting(s) from the Service and/or terminating their Account,
+    limitation deleting the Customer's posting(s) from the Service and/or terminating their Account,
     and take any action against any Customer or third party who directly or indirectly in, or
     knowingly permits any third party to directly or indirectly engage in Prohibited Behaviour, with or
     without notice to such Customer or third party.
@@ -623,7 +637,7 @@ terms_and_conditions:
     over or responsibility for the availability nor their accuracy, completeness, accessibility and
     usefulness. Accordingly when accessing such websites we recommend that you should take the
     usual precautions when visiting a new website including reviewing their privacy policy and terms
-    of use
+    of use.
 
   subtitle_21: 21. Complaints
   content_21: |

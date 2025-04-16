@@ -1,16 +1,16 @@
 kyc_policy:
-  title: KYC Policy of Everest Entertainment
+  title: KYC Policy of ORBIT Interactive Tech LTD
   content_1: |
     The Company adheres to and complies with “Know your customer” principles, which aim to prevent financial crime and money laundering through client identification and due diligence.
 
-    The Company reserves the right, at any time, to ask for any KYC documentation it deems necessary to determine the identity and location of a user in girobet.vip. We reserve the right to restrict the service, payment, or withdrawal until identity is sufficiently determined, or for any other reason in our sole discretion based on the legal framework.
+    The Company reserves the right, at any time, to ask for any KYC documentation it deems necessary to determine the identity and location of a user in {host}. We reserve the right to restrict the service, payment, or withdrawal until identity is sufficiently determined, or for any other reason in our sole discretion based on the legal framework.
 
     We take a risk-based approach and perform strict due diligence checks and ongoing monitoring of all clients, customers, and transactions. As per the money laundering regulations, we utilize three stages of due diligence checks, depending on the risk, transaction, and customer type.
       - SDD — simplified due diligence is used in instances of extremely low-risk transactions that do not meet the required thresholds
       - CDD — customer due diligence is the standard for due diligence checks, used in most cases for verification and identification
       - EDD — Enhanced Due Diligence is used for high-risk customers, large transactions or special cases.
 
-    Separately and in addition to the above ,when a user makes an aggregate lifetime total of deposits exceeding EUR 5,000 or requests a withdrawal of any amount inside the girobet.vip, or attempts to or completes a transaction that is deemed suspicious, then it is compulsory for them to complete the full KYC process.
+    Separately and in addition to the above ,when a user makes an aggregate lifetime total of deposits exceeding EUR 5,000 or requests a withdrawal of any amount inside the {host}, or attempts to or completes a transaction that is deemed suspicious, then it is compulsory for them to complete the full KYC process.
 
     During this process, the user will have to input some basic details about themselves and then upload
       1) A copy of Government Issued Photo ID (in some cases front and back depending on the ID document)
@@ -58,7 +58,5 @@ kyc_policy:
 
   subtitle_3: Notes on the “KYC Process”
   content_3: |
-    1) When the KYC process is unsuccessful then the reason is documented and a support ticket is
-    created in the system. The ticket number along with an explanation is communicated back to the
-    user.
-    2) Once all proper documents are in our possession then the account gets approved. If the user is
+    1) When the KYC process is unsuccessful then the reason is documented and a support ticket is created in the system. The ticket number along with an explanation is communicated back to the user.
+    2) Once all proper documents are in our possession then the account gets approved.

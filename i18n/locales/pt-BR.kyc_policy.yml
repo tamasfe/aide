@@ -1,66 +1,62 @@
 kyc_policy:
-  title: Política de KYC da Everest Entertainment
+  title: KYC Policy of ORBIT Interactive Tech LTD
   content_1: |
-    A Empresa adere e cumpre os princípios de "Conheça seu cliente", que visam prevenir crimes financeiros e lavagem de dinheiro por meio da identificação e due diligence do cliente.
+    The Company adheres to and complies with “Know your customer” principles, which aim to prevent financial crime and money laundering through client identification and due diligence.
 
-    A Empresa reserva-se o direito de, a qualquer momento, solicitar qualquer documentação de KYC que considere necessária para determinar a identidade e localização de um usuário no girobet.vip. Reservamo-nos o direito de restringir o serviço, pagamento ou saque até que a identidade seja suficientemente determinada, ou por qualquer outro motivo a nosso exclusivo critério com base no marco legal.
+    The Company reserves the right, at any time, to ask for any KYC documentation it deems necessary to determine the identity and location of a user in {host}. We reserve the right to restrict the service, payment, or withdrawal until identity is sufficiently determined, or for any other reason in our sole discretion based on the legal framework.
 
-    Adotamos uma abordagem baseada em risco e realizamos verificações rigorosas de due diligence e monitoramento contínuo de todos os clientes e transações. De acordo com as regulamentações de combate à lavagem de dinheiro, utilizamos três estágios de verificações de due diligence, dependendo do risco, transação e tipo de cliente:
-      - SDD — due diligence simplificada é usada em casos de transações de risco extremamente baixo que não atendem aos limites necessários
-      - CDD — due diligence do cliente é o padrão para verificações de due diligence, usado na maioria dos casos para verificação e identificação
-      - EDD — Due Diligence Aprimorada é usada para clientes de alto risco, transações grandes ou casos especiais.
+    We take a risk-based approach and perform strict due diligence checks and ongoing monitoring of all clients, customers, and transactions. As per the money laundering regulations, we utilize three stages of due diligence checks, depending on the risk, transaction, and customer type.
+      - SDD — simplified due diligence is used in instances of extremely low-risk transactions that do not meet the required thresholds
+      - CDD — customer due diligence is the standard for due diligence checks, used in most cases for verification and identification
+      - EDD — Enhanced Due Diligence is used for high-risk customers, large transactions or special cases.
 
-    Separadamente e além do exposto acima, quando um usuário fizer um total de depósitos vitalícios agregados superior a 5.000 euros ou solicitar um saque de qualquer valor dentro do girobet.vip, ou tentar ou concluir uma transação considerada suspeita, é obrigatório que ele complete o processo completo de KYC.
+    Separately and in addition to the above ,when a user makes an aggregate lifetime total of deposits exceeding EUR 5,000 or requests a withdrawal of any amount inside the {host}, or attempts to or completes a transaction that is deemed suspicious, then it is compulsory for them to complete the full KYC process.
 
-    Durante este processo, o usuário terá que inserir alguns detalhes básicos sobre si mesmo e depois fazer upload de:
-      1) Uma cópia de Documento de Identificação Oficial com Foto (em alguns casos frente e verso, dependendo do documento de identificação)
-      2) Uma selfie segurando o documento de identificação
-      3) Um extrato bancário/Conta de serviço público
+    During this process, the user will have to input some basic details about themselves and then upload
+      1) A copy of Government Issued Photo ID (in some cases front and back depending on the ID document)
+      2) A selfie of themselves holding the ID doc
+      3) A bank statement/Utility Bill
 
-  subtitle_2: Diretrizes para o "Processo de KYC"
+  subtitle_2: Guideline for the “KYC Process”
   content_2: |
-    1) Comprovante de Identidade
-      a. Assinatura está presente
-      b. País não está na lista de Países Restritos:
-          Áustria
-          França e seus territórios
-          Alemanha
-          Países Baixos e seus territórios
-          Espanha
-          União das Comores
-          Reino Unido
-          EUA e seus territórios
-          Todos os países na lista negra do GAFI
-          Quaisquer outras jurisdições consideradas proibidas pela Autoridade Financeira Offshore de Anjouan
+    1) Proof of ID
+      a. Signature Is there
+      b. Country is not one of the following Restricted Countries:
+          Austria
+          France and it's territories
+          Germany
+          Netherlands and it's territories
+          Spain
+          Union of Comoros
+          United Kingdom
+          USA and it's territories
+          All FATF Blacklisted countries,
+          any other jurisdictions deemed prohibited by Anjouan Offshore Financial Authority.
+      c. Full Name matches client's name
+      d. Document does not expire in the next 3 months
+      e. Owner is over 18 years of age
 
-      c. Nome completo corresponde ao nome do cliente
-      d. Documento não expira nos próximos 3 meses
-      e. Proprietário tem mais de 18 anos
+    2) Proof of Residence
+      a. Bank Statement or Utility Bill
+      b. Country is not one of the following Restricted Countries:
+          Austria
+          France and it's territories
+          Germany
+          Netherlands and it's territories
+          Spain
+          Union of Comoros
+          United Kingdom
+          USA and it's territories
+          All FATF Blacklisted countries,
+          any other jurisdictions deemed prohibited by Anjouan Offshore Financial Authority.
+      c. Full Name matches client's name and is same as in proof of ID.
+      d. Date of Issue: In the last 3 months
 
-    2) Comprovante de Residência
-      a. Extrato bancário ou Conta de serviço público
-      b. País não está na lista de Países Restritos:
-          Áustria
-          França e seus territórios
-          Alemanha
-          Países Baixos e seus territórios
-          Espanha
-          União das Comores
-          Reino Unido
-          EUA e seus territórios
-          Todos os países na lista negra do GAFI
-          Quaisquer outras jurisdições consideradas proibidas pela Autoridade Financeira Offshore de Anjouan
+    3) Selfie with ID
+      a. Holder is the same as in the ID document above
+      b. ID document is the same as in “1”. Make sure photo/ID number is the same
 
-      c. Nome completo corresponde ao nome do cliente e é o mesmo do comprovante de identidade
-      d. Data de Emissão: Nos últimos 3 meses
-
-    3) Selfie com Documento de Identificação
-      a. Portador é o mesmo do documento de identificação acima
-      b. Documento de identificação é o mesmo do item "1". Verificar se a foto/número do ID é o mesmo
-
-  subtitle_3: Observações sobre o "Processo de KYC"
+  subtitle_3: Notes on the “KYC Process”
   content_3: |
-    1) Quando o processo de KYC for malsucedido, o motivo é documentado e um chamado de suporte é
-    criado no sistema. O número do chamado junto com uma explicação é comunicado de volta ao
-    usuário.
-    2) Uma vez que todos os documentos adequados estejam em nosso poder, a conta é aprovada. Se o usuário for
+    1) When the KYC process is unsuccessful then the reason is documented and a support ticket is created in the system. The ticket number along with an explanation is communicated back to the user.
+    2) Once all proper documents are in our possession then the account gets approved.
