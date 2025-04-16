@@ -158,6 +158,7 @@ export default defineNuxtConfig({
   // @pinia/nuxt
   pinia: {},
   pwa: {
+    disable: true,
     client: {
       installPrompt: true,
       registerPlugin: true,
@@ -192,10 +193,10 @@ export default defineNuxtConfig({
       lang: "en-US",
       name: "GiroBet", // TODO: be able to customise this depending on current site name
       short_name: "GiroBet", // TODO: be able to customise this depending on current site name
-      start_url: "https://staging.girobet.vip/redirect",
-      scope: "https://staging.girobet.vip", // TODO: be able to customise this depending on current site name
+      start_url: "https://girobet.vip/redirect",
+      scope: "https://girobet.vip", // TODO: be able to customise this depending on current site name
       description: "Welcome to The GiroBet Experience the ultimate thrill of online gambling with us. Play slots, poker, blackjack, and more. Win big with our bonuses and promotions.",
-      id: "https://staging.girobet.vip", // TODO: be able to customise this depending on current site name
+      id: "https://girobet.vip", // TODO: be able to customise this depending on current site name
     },
   },
   sentry: {
