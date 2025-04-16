@@ -10,7 +10,7 @@ useHead({
 
 <template>
   <div>
-    <!-- <AppPage
+    <AppPage
       :title="$t('page.aml_policy')"
       version="2.0"
       date="September 1, 2024"
@@ -119,7 +119,7 @@ useHead({
         </li>
         <li><strong>Use of Player Accounts:</strong> Player accounts must not be used as bank accounts. In cases of deposits or withdrawals without gaming activity, {{ url.host }} reserves the right to request explanations before processing the withdrawal.</li>
       </ul>
-    </AppPage> -->
+    </AppPage>
 
     <AppPage
       :title="$t('kyc_policy.title')"
