@@ -50,12 +50,7 @@
 //!
 //! ## Supported Frameworks
 //!
-//! - [axum](https://docs.rs/axum/latest/axum/): [`aide::axum`](axum).
-//! - [actix-web](https://docs.rs/actix-web/latest/actix_web/) is **not
-//!   supported** since `0.5.0` only due to lack of developer capacity,
-//!   but it's likely to be supported again in the future. If you use
-//!   `actix-web` you can still use the macro-based `0.4.*` version of the
-//!   library for the time being.
+//! - [axum](https://docs.rs/axum/latest/axum/): [`aide::axum`](axum) only for best integration with lowest boilerplate.
 //!
 //! ## Errors
 //!
