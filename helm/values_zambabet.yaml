@@ -1,4 +1,4 @@
 config:
   public_domain: "zamba.bet"
   public_api_domain: "api.zamba.bet"
-  internal_api_domain: "zambabet-api.default.svc.cluster.local"
+  internal_api_domain: "api.default.svc.cluster.local"

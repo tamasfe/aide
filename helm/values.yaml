@@ -1,4 +1,4 @@
 config:
   public_domain: "staging.girobet.vip"
   public_api_domain: "api-staging.girobet.vip"
-  internal_api_domain: "girobet-api.default.svc.cluster.local"
+  internal_api_domain: "api.default.svc.cluster.local"
