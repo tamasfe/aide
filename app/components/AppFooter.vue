@@ -106,11 +106,11 @@ const scrollToTop = () => {
         <div class="max-w-[42rem] lg:max-w-[52rem] text-sm sm:text-center">
           <p v-if="siteStore.site.identifier === 'zambabet'">
             This website {{ url.host }} is owned and operated by ORBIT Interactive Tech LTD. registration number: 27465, registered address: 9 Barrack Road, Belize City, Belize..
-            Contact us at {{ siteStore.supportEmail }}. {{ url.host }} is licensed and regulated by the Government of the Autonomous Island of Anjouan, Union of Comoros and operates under License No. {{ LICENSE_NUMBER }}. {{ url.host }} has passed all regulatory compliance and is legally authorized to conduct gaming operations for any and all games of chance and wagering.
+            Contact us at {{ siteStore.currentDomain.email }}. {{ url.host }} is licensed and regulated by the Government of the Autonomous Island of Anjouan, Union of Comoros and operates under License No. {{ LICENSE_NUMBER }}. {{ url.host }} has passed all regulatory compliance and is legally authorized to conduct gaming operations for any and all games of chance and wagering.
           </p>
           <p v-else-if="siteStore.site.identifier === 'girobet'">
             This website {{ url.host }} is owned and operated by Hyperion Holdings Ltd. registration number: 46242,
-            registered address: 9 Barrack Road, Belize City, Belize. Contact us {{ siteStore.supportEmail }}. Hyperion Holdings Ltd.
+            registered address: 9 Barrack Road, Belize City, Belize. Contact us {{ siteStore.currentDomain.email }}. Hyperion Holdings Ltd.
             is licensed and regulated by the Government of the Autonomous Island of Anjouan, Union of Comoros and
             operates under License No. ALSI. {{ url.host }} has passed all regulatory compliance and is legally authorized to
             conduct gaming operations for any and all games of chance and wagering.
