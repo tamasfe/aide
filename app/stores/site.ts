@@ -21,6 +21,14 @@ export const useSiteStore = defineStore("siteStore", {
     currentDomain: (state): SiteDomain => {
       return state.site.domains.find((domain: SiteDomain) => useRequestURL().href.startsWith(domain.frontend)) || state.site.domains[0] || defaultDomain;
     },
+
+    supportEmail: (): string => {
+      /**
+       * TODO: remove this hotfix when the backend returns a correct email for support
+       */
+      const url = useRequestURL();
+      return `support@${url.host}`;
+    },
   },
 
   actions: {
