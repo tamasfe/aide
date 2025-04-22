@@ -21,6 +21,15 @@ export const useSiteStore = defineStore("siteStore", {
     currentDomain: (state): SiteDomain => {
       return state.site.domains.find((domain: SiteDomain) => useRequestURL().href.startsWith(domain.frontend)) || state.site.domains[0] || defaultDomain;
     },
+
+    supportEmail: (state): string => {
+      const currentDomain = state.site.domains.find((domain: SiteDomain) => useRequestURL().href.startsWith(domain.frontend)) || state.site.domains[0] || defaultDomain;
+      if (currentDomain.email.includes("@")) {
+        return currentDomain.email;
+      }
+      const hostname = new URL(currentDomain.frontend).hostname;
+      return `support@${hostname}`;
+    },
   },
 
   actions: {
