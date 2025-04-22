@@ -104,7 +104,21 @@ const scrollToTop = () => {
     <section class="giro__container relative flex flex-col text-subtle">
       <div class="flex flex-col items-center space-y-5 md:space-y-8">
         <div class="max-w-[42rem] lg:max-w-[52rem] text-sm sm:text-center">
-          {{ $t("footer.license_active", { licenseNumber: LICENSE_NUMBER, host: url.host, supportEmail: siteStore.currentDomain.email }) }}
+          <p v-if="siteStore.site.identifier === 'zambabet'">
+            This website {{ url.host }} is owned and operated by ORBIT Interactive Tech LTD. registration number: 27465, registered address: 9 Barrack Road, Belize City, Belize..
+            Contact us at {{ siteStore.currentDomain.email }}. {{ url.host }} is licensed and regulated by the Government of the Autonomous Island of Anjouan, Union of Comoros and operates under License No. {{ LICENSE_NUMBER }}. {{ url.host }} has passed all regulatory compliance and is legally authorized to conduct gaming operations for any and all games of chance and wagering.
+          </p>
+          <p v-else-if="siteStore.site.identifier === 'girobet'">
+            This website {{ url.host }} is owned and operated by Hyperion Holdings Ltd. registration number: 46242,
+            registered address: 9 Barrack Road, Belize City, Belize. Contact us {{ siteStore.currentDomain.email }}. Hyperion Holdings Ltd.
+            is licensed and regulated by the Government of the Autonomous Island of Anjouan, Union of Comoros and
+            operates under License No. ALSI. {{ url.host }} has passed all regulatory compliance and is legally authorized to
+            conduct gaming operations for any and all games of chance and wagering.
+            <br><br>
+            For the purpose of processing payments the transactions are processed by AlphaDominion Services LTD, company
+            with Organization number 650965, Record Number 38864127, with head office at Elpidas 8, Pyrgos 4534,
+            Limassol, Cyprus.
+          </p>
           <br><br>
           {{ $t("footer.legal_notice") }}
         </div>
