@@ -13,7 +13,7 @@ useHead({
   <AppPage
     :title="$t('terms_and_conditions.title')"
     version="2.0"
-    date="September 1, 2024"
+    date="4/15/2025"
     :show-print-button="true"
   >
     <div v-for="index in NUMBER_OF_TERM_SECTIONS" :key="index">

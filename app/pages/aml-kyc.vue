@@ -13,7 +13,7 @@ useHead({
     <AppPage
       :title="$t('page.aml_policy')"
       version="2.0"
-      date="September 1, 2024"
+      date="4/15/2025"
       :show-print-button="true"
     >
       <h4>1. Objective of the Policy</h4>
