@@ -1,28 +1,28 @@
 //! # Aide
 //!
 //! `aide` is a code-first [Open API](https://www.openapis.org/) documentation
-//! generator library. It aims for tight integrations with frameworks and
-//! following their conventions, while tries to be out
+//! generator library. It aims for tight integration with [axum](https://docs.rs/axum/latest/axum/) framework
+//! and follows it's conventions, while tries to be out
 //! of the way when it is not needed.
 //!
 //! The goal is to minimize the learning curve, mental context switches
 //! and make documentation somewhat slightly less of a chore.
 //!
 //! See the [examples](https://github.com/tamasfe/aide/tree/master/examples)
-//! to see how Aide is used with various frameworks.
+//! to see how `aide::axum` is used.
 //!
 //! Currently only Open API version `3.1.0` is supported.
 //!
-//! Previous releases of aide relied heavily on macros, and the
+//! Previous releases of aide relied heavily on declarative macros, and the
 //! [`linkme`](https://docs.rs/linkme/latest/linkme/) crate for automagic global state.
 //! While it all worked, macros were hard to reason about,
 //! rustfmt did not work with them, code completion was hit-and-miss.
 //!
-//! With `0.5.0`, aide was rewritten and instead it is based on on good old functions,
-//! type inference and declarative APIs based on the builder pattern.
+//! Current `aide` is based on good old functions,
+//! type inference and declarative APIs using the builder pattern.
 //!
-//! Now all documentation can be traced in the source code[^1],
-//! no more macro and global magic all over the place.[^2]
+//! All documentation can be traced in the source code[^1],
+//! no declarative macro and global magic all over the place.[^2]
 //!
 //! [^1]: and with [tracing] spans
 //!
@@ -33,10 +33,11 @@
 //!
 //! The library uses [`schemars`] for schema generation for types.
 //! It should be enough to slap [`JsonSchema`](schemars::JsonSchema)
-//! alongside [serde]'s `Serialize/Deserialize` for JSON-based APIs.
+//! alongside [serde]'s `Serialize/Deserialize` for 
+//! [JSON-based APIs](https://www.openapis.org/blog/2021/02/18/openapi-specification-3-1-released).
 //!
 //! Additionally the [`OperationInput`] and [`OperationOutput`] traits
-//! are used for extractor and response types in frameworks to automatically generate
+//! are used for extractor and response types to automatically generate
 //! expected HTTP parameter and response documentation.
 //!
 //! For example a `Json<T>` extractor will generate an `application/json`
@@ -47,10 +48,6 @@
 //!
 //! All manual documentation is based on composable [`transform`]
 //! functions and builder-pattern-like API.
-//!
-//! ## Supported Frameworks
-//!
-//! - [axum](https://docs.rs/axum/latest/axum/): [`aide::axum`](axum) only for best integration with lowest boilerplate.
 //!
 //! ## Errors
 //!
