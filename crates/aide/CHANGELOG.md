@@ -1,5 +1,6 @@
 # Changelog
 ## Latest
+- **added:** Basic `axum` `TypedPath` support and `TypedPath<T>` description from `T` doc comment([#212])
 - **added:** Add methods for attaching documentation to existing routes ([#203])
 - **fixed:** Fix `route_with_tsr` incorrect handling ([#203])
 
