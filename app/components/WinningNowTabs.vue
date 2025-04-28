@@ -5,8 +5,7 @@ const { $dependencies } = useNuxtApp();
 const userStore = useUserStore();
 
 const winsBufferSize = ref(10);
-const loadingWins = ref(true);
-const loadingMyBets = ref(true);
+const loadingMyBets = ref(false);
 const increment = ref(0);
 
 const WINNING_NOW_TABS = ["my_bets", "latest_bets", "high_rollers"] as const;
@@ -51,7 +50,6 @@ useCreateSubscriptionToWebsocket(
     }
 
     increment.value += 1;
-    loadingWins.value = false;
   },
 );
 
@@ -94,7 +92,7 @@ const { data: myBetsData } = await useAsyncData(`winning-now-my-bets-table`, asy
         <DataTableGameActionsMyBets
           v-if="userStore.isAuthenticated && myBetsData"
           :data="myBetsData.gameActions"
-          :loading="loadingWins"
+          :loading="loadingMyBets"
           :username="userStore.user.username"
           :pagination="undefined"
         />
@@ -103,14 +101,14 @@ const { data: myBetsData } = await useAsyncData(`winning-now-my-bets-table`, asy
         <DataTableWins
           :key="increment"
           :data="latestWinsBuffer"
-          :loading="loadingWins"
+          :loading="false"
         />
       </TabsContent>
       <TabsContent value="high_rollers">
         <DataTableWins
           :key="increment"
           :data="highestWinsBuffer"
-          :loading="loadingWins"
+          :loading="false"
         />
       </TabsContent>
     </Tabs>
