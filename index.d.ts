@@ -5,7 +5,7 @@ import type {
   ComponentCustomProperties as _ComponentCustomProperties,
 } from "vue";
 
-declare module "nuxt/schema" {
+declare module "@nuxt/schema" {
   interface PublicRuntimeConfig {
     apiBaseUrlClient: string;
     websocketApiBaseUrl: string;

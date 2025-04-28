@@ -45,7 +45,7 @@ export default defineNuxtConfig({
       errorCapturingEnabled: process.env.NUXT_PUBLIC_ERROR_CAPTURING_ENABLED === "true",
       release: process.env.NUXT_PUBLIC_RELEASE || "development",
       log: {
-        level: process.env.NUXT_PUBLIC_LOG_LEVEL,
+        level: process.env.NUXT_PUBLIC_LOG_LEVEL as "warn" | "error" | "debug" | "info",
       },
       serviceName: process.env.NUXT_PUBLIC_SERVICE_NAME || "girobet-frontend",
       games: {

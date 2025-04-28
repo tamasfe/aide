@@ -10,13 +10,13 @@ const alternateLinks = computed(() => {
   }
 
   return i18nHead.value.link
-    .filter(link => link.rel === "alternate")
+    .filter(link => link.rel === "alternate" && link.href !== undefined)
     .map((link) => {
       if (!link.hreflang) return link;
       if (link.hreflang === "x-default" || link.hreflang === defaultLocale || link.hreflang.split("-")[0] === defaultLocale.split("-")[0]) {
         return {
           ...link,
-          href: link.href.replace(baseUrl.value, baseUrl.value + `/${defaultLocale}`),
+          href: (link.href as string).replace(baseUrl.value, baseUrl.value + `/${defaultLocale}`),
         };
       }
       return link;
@@ -29,7 +29,7 @@ const canonicalLink = computed(() => {
   }
 
   const canonicalLink = i18nHead.value.link.find(link => link.rel === "canonical");
-  if (!canonicalLink || locale.value !== defaultLocale) {
+  if (!canonicalLink || locale.value !== defaultLocale || !canonicalLink.href) {
     return null;
   }
   return {
