@@ -51,19 +51,22 @@ const props = withDefaults(defineProps<{
 <template>
   <Transition name="slide">
     <div v-if="notificationBanners?.length">
-      <BaseLink
+      <div
         v-for="(banner, index) in notificationBanners"
         v-show="index === 0"
         :key="banner.id"
-        :to="banner.data.link || ''"
         :class="cn(
           promoBarVariants({ variant }),
           props.class,
         )"
       >
-        <div class="px-3 py-2 mr-10 text-sm md:text-base leading-tight text-left">
-          {{ banner.data.message }}
-        </div>
+        <BaseLink
+          :to="banner.data.link || ''"
+        >
+          <div class="px-3 py-2 mr-10 text-sm md:text-base leading-tight text-left">
+            {{ banner.data.message }}
+          </div>
+        </BaseLink>
         <BaseButton
           variant="ghost"
           size="ghost"
@@ -75,7 +78,7 @@ const props = withDefaults(defineProps<{
             :size="20"
           />
         </BaseButton>
-      </BaseLink>
+      </div>
     </div>
   </Transition>
 </template>
