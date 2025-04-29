@@ -174,6 +174,9 @@ importers:
       '@vue/typescript-plugin':
         specifier: ^2.2.10
         version: 2.2.10(typescript@5.6.3)
+      '@zadigetvoltaire/nuxt-gtm':
+        specifier: ^0.0.13
+        version: 0.0.13(magicast@0.3.5)(nuxt@3.17.0(@netlify/blobs@8.2.0)(@parcel/watcher@2.5.1)(@types/node@22.15.3)(db0@0.3.2)(eslint@9.25.1(jiti@2.4.2))(ioredis@5.6.1)(magicast@0.3.5)(optionator@0.9.4)(rollup@4.40.1)(terser@5.39.0)(typescript@5.6.3)(vite@6.3.3(@types/node@22.15.3)(jiti@2.4.2)(terser@5.39.0)(yaml@2.7.1))(vue-tsc@2.2.10(typescript@5.6.3))(yaml@2.7.1))(vue@3.5.13(typescript@5.6.3))
       embla-carousel:
         specifier: ^8.6.0
         version: 8.6.0
@@ -183,9 +186,6 @@ importers:
       happy-dom:
         specifier: ^15.11.7
         version: 15.11.7
-      nuxt-gtag:
-        specifier: ^3.0.2
-        version: 3.0.2(magicast@0.3.5)
       openapi-typescript:
         specifier: ^7.6.1
         version: 7.6.1(typescript@5.6.3)
@@ -1305,6 +1305,14 @@ packages:
     resolution: {integrity: sha512-tMXdRCfYVixjuFK+Hk0Q1s38gV9zDiDJfWL3h1rv4Qc39oILCu1TRTDt7+fGUI8K4G1Fj125Hx/ru3azECWTyQ==}
     engines: {node: '>=6'}
     hasBin: true
+
+  '@gtm-support/core@2.3.1':
+    resolution: {integrity: sha512-eD0hndQjhgKm5f/7IA9fZYujmHiVMY+fnYv4mdZSmz5XJQlS4TiTmpdZx2l7I2A9rI9J6Ysz8LpXYYNo/Xq4LQ==}
+
+  '@gtm-support/vue-gtm@2.2.0':
+    resolution: {integrity: sha512-7nhBTRkTG0mD+7r7JvNalJz++YwszZk0oP1HIY6fCgz6wNKxT6LuiXCqdPrZmNPe/WbPIKuqxGZN5s+i6NZqow==}
+    peerDependencies:
+      vue: '>= 3.2.0 < 4.0.0'
 
   '@headlessui/vue@1.7.23':
     resolution: {integrity: sha512-JzdCNqurrtuu0YW6QaDtR2PIYCKPUWq28csDyMvN4zmGccmE7lz40Is6hc3LA4HFeCI7sekZ/PQMTNmn9I/4Wg==}
@@ -3292,6 +3300,11 @@ packages:
   '@whatwg-node/server@0.9.71':
     resolution: {integrity: sha512-ueFCcIPaMgtuYDS9u0qlUoEvj6GiSsKrwnOLPp9SshqjtcRaR1IEHRjoReq3sXNydsF5i0ZnmuYgXq9dV53t0g==}
     engines: {node: '>=18.0.0'}
+
+  '@zadigetvoltaire/nuxt-gtm@0.0.13':
+    resolution: {integrity: sha512-7SgXtIB8uLdLGJaoUAQSGCSbRnNzplNkNVFKIHaVI4We0vqghstBoVPlJCJ9VdwsfdNyk3/C+Lh1uKpzTrtEuw==}
+    peerDependencies:
+      nuxt: ^3.0.0
 
   abbrev@1.1.1:
     resolution: {integrity: sha512-nne9/IiQ/hzIhY6pdDnbBtz7DjPTKrY00P/zvPSm5pOFkl6xuGrGnXn/VtTNNfNtAfZ9/1RtehkszU9qcTii0Q==}
@@ -5843,9 +5856,6 @@ packages:
   nth-check@2.1.1:
     resolution: {integrity: sha512-lqjrjmaOoAnWfMmBPL+XNnynZh2+swxiX3WUE0s4yEHI6m+AwrK2UZOimIRl3X/4QctVqS8AiZjFqyOGrMXb/w==}
 
-  nuxt-gtag@3.0.2:
-    resolution: {integrity: sha512-0Spu/rffPxW7REebkjE22qQOuVZIQuyIuvd61InDdJU+d+gRIqWhrUuKBWdk43N/J1elj+cTK2kEdk5FQX7vdQ==}
-
   nuxt-link-checker@4.3.0:
     resolution: {integrity: sha512-Ps//GJjuQ6yKZvSrOmpH7goG7YKioBctlm9IfTn3EDvp0cO0Cho0n7DO7RcVquclj/rLtVCukacRlbN411/z0Q==}
 
@@ -6875,6 +6885,10 @@ packages:
 
   simple-swizzle@0.2.2:
     resolution: {integrity: sha512-JA//kQgZtbuY83m+xT+tXJkmJncGMTFT+C+g2h2R9uxkYIrE2yy9sgmcLhCnw57/WSD+Eh3J97FPEDFnbXnDUg==}
+
+  sirv@2.0.4:
+    resolution: {integrity: sha512-94Bdh3cC2PKrbgSOUqTiGPWVZeSiXfKOVZNJniWoqrWrRkB1CJzBU3NEbiTsPcYy1lDsANA/THzS+9WBiy5nfQ==}
+    engines: {node: '>= 10'}
 
   sirv@3.0.1:
     resolution: {integrity: sha512-FoqMu0NCGBLCcAkS1qA+XJIQTR6/JHfQXl+uGteNCQ76T91DMUjPa9xfmeqMY3z80nLSg9yQmNjK0Px6RWsH/A==}
@@ -9091,6 +9105,15 @@ snapshots:
       long: 5.3.2
       protobufjs: 7.5.0
       yargs: 17.7.2
+
+  '@gtm-support/core@2.3.1': {}
+
+  '@gtm-support/vue-gtm@2.2.0(vue@3.5.13(typescript@5.6.3))':
+    dependencies:
+      '@gtm-support/core': 2.3.1
+      vue: 3.5.13(typescript@5.6.3)
+    optionalDependencies:
+      vue-router: 4.5.1(vue@3.5.13(typescript@5.6.3))
 
   '@headlessui/vue@1.7.23(vue@3.5.13(typescript@5.6.3))':
     dependencies:
@@ -11792,6 +11815,17 @@ snapshots:
       '@whatwg-node/fetch': 0.10.6
       '@whatwg-node/promise-helpers': 1.3.1
       tslib: 2.8.1
+
+  '@zadigetvoltaire/nuxt-gtm@0.0.13(magicast@0.3.5)(nuxt@3.17.0(@netlify/blobs@8.2.0)(@parcel/watcher@2.5.1)(@types/node@22.15.3)(db0@0.3.2)(eslint@9.25.1(jiti@2.4.2))(ioredis@5.6.1)(magicast@0.3.5)(optionator@0.9.4)(rollup@4.40.1)(terser@5.39.0)(typescript@5.6.3)(vite@6.3.3(@types/node@22.15.3)(jiti@2.4.2)(terser@5.39.0)(yaml@2.7.1))(vue-tsc@2.2.10(typescript@5.6.3))(yaml@2.7.1))(vue@3.5.13(typescript@5.6.3))':
+    dependencies:
+      '@gtm-support/vue-gtm': 2.2.0(vue@3.5.13(typescript@5.6.3))
+      '@nuxt/kit': 3.17.0(magicast@0.3.5)
+      defu: 6.1.4
+      nuxt: 3.17.0(@netlify/blobs@8.2.0)(@parcel/watcher@2.5.1)(@types/node@22.15.3)(db0@0.3.2)(eslint@9.25.1(jiti@2.4.2))(ioredis@5.6.1)(magicast@0.3.5)(optionator@0.9.4)(rollup@4.40.1)(terser@5.39.0)(typescript@5.6.3)(vite@6.3.3(@types/node@22.15.3)(jiti@2.4.2)(terser@5.39.0)(yaml@2.7.1))(vue-tsc@2.2.10(typescript@5.6.3))(yaml@2.7.1)
+      sirv: 2.0.4
+    transitivePeerDependencies:
+      - magicast
+      - vue
 
   abbrev@1.1.1: {}
 
@@ -14643,15 +14677,6 @@ snapshots:
     dependencies:
       boolbase: 1.0.0
 
-  nuxt-gtag@3.0.2(magicast@0.3.5):
-    dependencies:
-      '@nuxt/kit': 3.17.0(magicast@0.3.5)
-      defu: 6.1.4
-      pathe: 1.1.2
-      ufo: 1.6.1
-    transitivePeerDependencies:
-      - magicast
-
   nuxt-link-checker@4.3.0(magicast@0.3.5)(vite@6.3.3(@types/node@22.15.3)(jiti@2.4.2)(terser@5.39.0)(yaml@2.7.1))(vue@3.5.13(typescript@5.6.3)):
     dependencies:
       '@nuxt/devtools-kit': 2.4.0(magicast@0.3.5)(vite@6.3.3(@types/node@22.15.3)(jiti@2.4.2)(terser@5.39.0)(yaml@2.7.1))
@@ -16012,6 +16037,12 @@ snapshots:
   simple-swizzle@0.2.2:
     dependencies:
       is-arrayish: 0.3.2
+
+  sirv@2.0.4:
+    dependencies:
+      '@polka/url': 1.0.0-next.29
+      mrmime: 2.0.1
+      totalist: 3.0.1
 
   sirv@3.0.1:
     dependencies:

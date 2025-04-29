@@ -13,7 +13,7 @@ export default defineNuxtConfig({
     "@pinia/nuxt",
     "@sentry/nuxt/module",
     "@vee-validate/nuxt",
-    "nuxt-gtag",
+    "@zadigetvoltaire/nuxt-gtm",
     "@vite-pwa/nuxt",
   ],
   devtools: {
@@ -111,10 +111,12 @@ export default defineNuxtConfig({
       },
     },
   },
-  // nuxt-gtag
-  gtag: {
-    id: "G-XXXXXXXXXX",
+  // nuxt-gtm: https://nuxt.com/modules/nuxt-gtm
+  gtm: {
+    id: "GTM-MWG96744", // New "Giro" GTM account
     enabled: process.env.NODE_ENV === "production",
+    debug: process.env.NODE_ENV !== "production", // Whether or not display console logs debugs (optional)
+    devtools: process.env.NODE_ENV !== "production", // (optional)
   },
   // @nuxtjs/i18n
   i18n: {

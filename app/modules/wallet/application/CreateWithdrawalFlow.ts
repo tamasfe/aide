@@ -17,6 +17,8 @@ export class CreateWithdrawalFlow {
 
     await this.asyncMessagePublisher.emit("girobet:events:payments:withdrawal-flow-created", {
       flowId: result.value.flowId,
+      amount,
+      currency,
     });
 
     return success();

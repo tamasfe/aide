@@ -96,6 +96,8 @@ export interface AsyncMessagesTypes {
   };
   "girobet:events:payments:withdrawal-flow-created": {
     flowId: number;
+    amount: number;
+    currency: WalletCurrency;
   };
 
   "girobet:events:websockets:connection-state-changed": {
