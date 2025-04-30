@@ -15,6 +15,7 @@ export default defineNuxtConfig({
     "@vee-validate/nuxt",
     "@zadigetvoltaire/nuxt-gtm",
     "@vite-pwa/nuxt",
+    "nuxt-gtag",
   ],
   devtools: {
     enabled: true,
@@ -110,6 +111,11 @@ export default defineNuxtConfig({
         semi: true,
       },
     },
+  },
+  // https://nuxt.com/modules/gtag
+  gtag: {
+    id: "G-7F9NEQ1MND", // New "Giro" GA account
+    enabled: process.env.NODE_ENV === "production",
   },
   // nuxt-gtm: https://nuxt.com/modules/nuxt-gtm
   gtm: {

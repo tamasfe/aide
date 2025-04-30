@@ -84,6 +84,7 @@
     "embla-carousel": "^8.6.0",
     "eslint": "^9.25.1",
     "happy-dom": "^15.11.7",
+    "nuxt-gtag": "^3.0.2",
     "openapi-typescript": "^7.6.1",
     "openapi-typescript-helpers": "^0.0.15",
     "playwright-core": "^1.52.0",
