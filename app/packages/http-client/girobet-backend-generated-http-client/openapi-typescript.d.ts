@@ -180,6 +180,52 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/auth/fasttrack-token": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Fasttrack token
+         * @description This endpoint returns a JWT token, to be used by the Fasttrack frontend SDK for user verification
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["GetFasttrackTokenResponseBody"];
+                    };
+                };
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/auth/login": {
         parameters: {
             query?: never;
@@ -2613,6 +2659,10 @@ export interface components {
         };
         /** @enum {string} */
         Gender: "male" | "female" | "other";
+        GetFasttrackTokenResponseBody: {
+            /** @description The JWT token for the user. */
+            jwt: string;
+        };
         GetPaymentMethodsQuery: {
             /** @description The currency to get the payment methods for. */
             currency: components["schemas"]["Currency"];
@@ -2625,7 +2675,7 @@ export interface components {
             email: string;
         };
         /** @enum {string} */
-        IntegrationIdentifier: "softswiss" | "sumsub" | "paybrokers" | "starspay" | "sandbox" | "infinigame";
+        IntegrationIdentifier: "softswiss" | "sumsub" | "paybrokers" | "starspay" | "sandbox" | "infinigame" | "digito";
         InternalError: string;
         KycAccessTokenResponse: {
             /** @description KYC provider identifier. This should be used to differentiate which WebSDK/flow to use. */
@@ -2729,7 +2779,8 @@ export interface components {
             type: "custom";
         } | {
             data: {
-                link?: components["schemas"]["Url"] | null;
+                /** Format: uri */
+                link?: string | null;
                 message?: string | null;
                 title: string;
             };
@@ -2737,7 +2788,8 @@ export interface components {
             type: "banner";
         } | {
             data: {
-                link?: components["schemas"]["Url"] | null;
+                /** Format: uri */
+                link?: string | null;
                 message: string;
                 title: string;
             };
@@ -3219,6 +3271,9 @@ export interface components {
             code: "HOST_NOT_SUPPORTED";
         } | {
             /** @enum {string} */
+            code: "MISSING_ORIGIN";
+        } | {
+            /** @enum {string} */
             code: "GAME_NOT_FOUND";
         } | {
             /** @enum {string} */
@@ -3378,8 +3433,6 @@ export interface components {
             /** @enum {string} */
             type: "winning_now";
         };
-        /** Format: uri */
-        Url: string;
         /** Format: int64 */
         UserId: number;
         UserPhysicalAddressResponse: {
@@ -3491,7 +3544,8 @@ export interface components {
                 type: "custom";
             } | {
                 data: {
-                    link?: components["schemas"]["Url"] | null;
+                    /** Format: uri */
+                    link?: string | null;
                     message?: string | null;
                     title: string;
                 };
@@ -3499,7 +3553,8 @@ export interface components {
                 type: "banner";
             } | {
                 data: {
-                    link?: components["schemas"]["Url"] | null;
+                    /** Format: uri */
+                    link?: string | null;
                     message: string;
                     title: string;
                 };
