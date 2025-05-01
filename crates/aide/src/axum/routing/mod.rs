@@ -1,5 +1,7 @@
 //! Method routing that closely mimics [`axum::routing`] while extending
 //! it with API documentation-specific features..
+#[cfg(feature = "axum-extra-typed-routing")]
+pub mod typed;
 
 use std::{convert::Infallible, mem};
 

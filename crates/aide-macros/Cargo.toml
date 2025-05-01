@@ -13,3 +13,7 @@ proc-macro = true
 darling = "0.20.0"
 quote = "1.0.21"
 syn = "2.0.15"
+proc-macro2 = "1.0"
+
+[features]
+axum-extra-typed-routing = []

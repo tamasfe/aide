@@ -166,3 +166,26 @@ pub fn derive_operation_io(ts: TokenStream) -> TokenStream {
 
     ts.into()
 }
+
+#[cfg(feature = "axum-extra-typed-routing")]
+/// Example usage:
+/// ```ignore
+/// #[aide::axum_typed_path]
+/// #[typed_path("/foo/bar")]
+/// struct FooBar;
+/// ```
+#[proc_macro_attribute] // functions tagged with `#[proc_macro_attribute]` must currently reside in the root of the crate
+pub fn axum_typed_path(_attr: TokenStream, item: TokenStream) -> TokenStream {
+    let input = proc_macro2::TokenStream::from(item);
+    quote! {
+        #[derive(
+            ::axum_extra::routing::TypedPath,
+            ::aide_macros::OperationIo,
+            ::schemars::JsonSchema,
+            ::serde::Deserialize,
+        )]
+        #[aide(input_with = "aide::axum::routing::typed::TypedPath<Self>")]
+        #input
+    }
+    .into()
+}
