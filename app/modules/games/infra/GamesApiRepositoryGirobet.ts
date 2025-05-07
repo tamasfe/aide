@@ -1,4 +1,4 @@
-import type { GameI, GameSummaryI } from "../domain/Game";
+import { destructureGameIdentifier, type Game, type GameSearchResponse } from "../domain/Game";
 import type { GamesApiRepositoryI } from "../domain/GamesApiRepository";
 import { ErrorGameNotFound } from "../domain/ErrorGameNotFound";
 import { ErrorSearchIndexNotFound } from "../domain/ErrorSearchIndexNotFound";
@@ -13,14 +13,14 @@ export class GamesApiRepositoryGirobet implements GamesApiRepositoryI {
     this.apiClient = createBackendOpenApiClient(clientOptions, commonDependencies);
   }
 
-  public async searchPaginating(searchParams: { category: string | null; query: string | null; providerId: number | null }, limit: number, offset: number): Promise<Result<{ games: GameSummaryI[]; pagination: { limit: number; offset: number; totalItems: number } }, ErrorSearchIndexNotFound | InfrastructureError>> {
+  public async searchPaginating(searchParams: { category: string | null; query: string | null; providerIdentifier: string | null }, limit: number, offset: number): Promise<Result<{ games: GameSearchResponse[]; pagination: { limit: number; offset: number; totalItems: number } }, ErrorSearchIndexNotFound | InfrastructureError>> {
     try {
       const { data, error, response } = await this.apiClient.GET("/game/search", {
         params: {
           query: {
             category: searchParams.category,
             query: searchParams.query,
-            provider_id: searchParams.providerId,
+            provider_identifier: searchParams.providerIdentifier,
             limit,
             offset,
           },
@@ -29,7 +29,7 @@ export class GamesApiRepositoryGirobet implements GamesApiRepositoryI {
 
       if (data) {
         return success({
-          games: data.data.map(game => camelizeKeys({ ...game, image_url: game.image_url || null })),
+          games: data.data.map(game => camelizeKeys({ ...game })),
           pagination: {
             limit: data.metadata.pagination.limit,
             offset: data.metadata.pagination.offset,
@@ -67,50 +67,45 @@ export class GamesApiRepositoryGirobet implements GamesApiRepositoryI {
     }
   }
 
-  public async findById(gameId: number): Promise<Result<GameI, ErrorGameNotFound | InfrastructureError>> {
+  public async findByIdentifier(gameIdentifier: string): Promise<Result<Game, ErrorGameNotFound | InfrastructureError>> {
     try {
-      const { data, error, response } = await this.apiClient.GET("/game/{game_id}", {
+      const { gameSlug, providerSlug } = destructureGameIdentifier(gameIdentifier);
+      const { data, error, response } = await this.apiClient.GET("/game/{provider_slug}/{game_slug}", {
         params: {
           path: {
-            game_id: gameId,
+            game_slug: gameSlug,
+            provider_slug: providerSlug,
           },
         },
       });
 
       if (data) {
-        return success({
-          id: data.id,
-          imageUrl: data.image_url || null,
-          name: data.name,
-          slug: data.slug,
-          description: data.description || null,
-          devices: data.devices,
-        });
+        return success(camelizeKeys({ ...data }));
       }
 
       if (error) {
         if (error.code === "GAME_NOT_FOUND") {
           return fail(
-            ErrorGameNotFound.newFromGameId(gameId),
+            ErrorGameNotFound.newFromGameIdentifier(gameIdentifier),
           );
         }
         return fail(
           InfrastructureError.newFromError({
-            gameId,
+            gameIdentifier,
           }, HttpBackendApiError.newFromBackendError(error, response)),
         );
       }
 
       return fail(
         InfrastructureError.newFromUnknownError({
-          gameId,
+          gameIdentifier,
         }, new Error("Unexpected scenario: library did not return data nor error. This should never happen")),
       );
     }
     catch (error: unknown) {
       return fail(
         InfrastructureError.newFromUnknownError({
-          gameId,
+          gameIdentifier,
         }, error),
       );
     }

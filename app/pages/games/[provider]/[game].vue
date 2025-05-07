@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { destructureGameUrlSlug } from "~/modules/games/domain/Game";
+import { constructGameIdentifier } from "~/modules/games/domain/Game";
 
 // DESIGN STATUS:       ✅
 // ARCHITECTURE STATUS: ✴️
@@ -26,22 +26,24 @@ const walletStore = useWalletStore();
 const { t } = useI18n();
 const fullscreen = ref(false);
 
-const gameData = destructureGameUrlSlug(params.slug);
-if (!gameData) {
-  $dependencies.common.logger.warn("Game ID could not be destructured from slug route parameter", { slug: params.slug });
+const providerSlug = params.provider;
+const gameSlug = params.game;
+if (!providerSlug || !gameSlug || typeof providerSlug !== "string" || typeof gameSlug !== "string") {
+  $dependencies.common.logger.warn("Game slug route parameter is missing", { providerSlug, gameSlug });
   await navigateTo("/");
-  throw new Error("Game ID could not be destructured from slug route parameter");
+  throw new Error("Game slug route parameter is missing");
 }
-const gameId = gameData.id;
+
+const gameIdentifier = constructGameIdentifier(providerSlug, gameSlug);
 
 useHead({
-  title: t("page.game", { game: toSentenceCase(gameData.identifier) }),
+  title: t("page.game", { game: toSentenceCase(gameIdentifier) }),
 });
 
 const ENABLE_SERVER_SIDE_RENDERING_FOR_GAME = true;
 const DEFER_CLIENT_SIDE_LOADING_FOR_GAME = true;
-const { data: game, status: statusLoadingGame } = await useAsyncData(`game-${params.id}`, async () => {
-  return $dependencies.games.ui.findGameCompatibilityByIdOnGamePage.handle(gameId, currentDevice);
+const { data: game, status: statusLoadingGame } = await useAsyncData(`game-${gameIdentifier}`, async () => {
+  return $dependencies.games.ui.findGameCompatibilityByIdentifierOnGamePage.handle(gameIdentifier, currentDevice);
 }, { lazy: DEFER_CLIENT_SIDE_LOADING_FOR_GAME, server: ENABLE_SERVER_SIDE_RENDERING_FOR_GAME });
 
 /* Redirect if the game is successfully searched, but server returns no results (404) */
@@ -53,13 +55,13 @@ watch([() => game.value, () => statusLoadingGame.value], async ([game, statusLoa
 
 const ENABLE_SERVER_SIDE_RENDERING_FOR_CATEGORIES = false;
 const DEFER_CLIENT_SIDE_LOADING_FOR_CATEGORIES = true;
-const { data: pageCategories } = await useAsyncData(`game-${params.id}-categories`, async () => {
+const { data: pageCategories } = await useAsyncData(`game-${gameIdentifier}-categories`, async () => {
   return $dependencies.games.ui.searchGameCategoriesByGroup.handle("game_page", false);
 }, { lazy: DEFER_CLIENT_SIDE_LOADING_FOR_CATEGORIES, server: ENABLE_SERVER_SIDE_RENDERING_FOR_CATEGORIES });
 
 const iframeUrl = computed(() => {
   if (walletStore.isInit) {
-    return $dependencies.games.ui.buildGameSessionIFrameUrl.handle(gameId, currentDevice, walletStore.wallet.currency);
+    return $dependencies.games.ui.buildGameSessionIFrameUrl.handle(gameIdentifier, currentDevice, walletStore.wallet.currency);
   }
   return undefined;
 });
@@ -85,9 +87,8 @@ watch(() => game.value, (game) => {
       <GameFrameMobile
         v-if="game.isCompatibleWithDevice"
         :game-title="game.name"
-        :game-id="game.id"
+        :game-identifier="game.identifier"
         :fullscreen="fullscreen"
-        :game-image-url="game.imageUrl"
         :authenticated="authenticated ?? false"
         :iframe-url="iframeUrl"
       />
@@ -110,9 +111,8 @@ watch(() => game.value, (game) => {
       <GameFrameDesktop
         v-if="!isMobile && game.isCompatibleWithDevice"
         :game-title="game.name"
-        :game-id="game.id"
+        :game-identifier="game.identifier"
         :fullscreen="fullscreen"
-        :game-image-url="game.imageUrl"
         :authenticated="authenticated ?? false"
         :iframe-url="iframeUrl"
       />
@@ -124,12 +124,10 @@ watch(() => game.value, (game) => {
       />
 
       <GameDescription
-        :id="gameId"
-        :image-url="game.imageUrl"
+        :game="game"
         class="bg-subtle"
         :authenticated="authenticated ?? false"
         :description="game.description"
-        :title="game.name"
         :categories="['card', 'table', 'poker']"
         @maximize="() => { fullscreen = true }"
       />

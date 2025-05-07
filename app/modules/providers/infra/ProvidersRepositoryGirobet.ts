@@ -1,5 +1,5 @@
 import type { ProvidersRepositoryI } from "../domain/ProvidersRepository";
-import type { ProviderI } from "../domain/Provider";
+import type { Provider } from "../domain/Provider";
 import { ErrorProviderNotFound } from "../domain/ErrorProviderNotFound";
 import { fail, success, type Result } from "~/packages/result";
 import { InfrastructureError } from "~/packages/result/infrastructure-error";
@@ -12,7 +12,7 @@ export class ProvidersRepositoryGirobet implements ProvidersRepositoryI {
     this.apiClient = createBackendOpenApiClient(clientOptions, commonDependencies);
   }
 
-  public async searchPaginating(searchParams: { query: string | null }, limit: number, offset: number): Promise<Result<{ providers: ProviderI[]; pagination: { limit: number; offset: number; totalItems: number } }, InfrastructureError>> {
+  public async searchPaginating(searchParams: { query: string | null }, limit: number, offset: number): Promise<Result<{ providers: Provider[]; pagination: { limit: number; offset: number; totalItems: number } }, InfrastructureError>> {
     try {
       const { data, error, response } = await this.apiClient.GET("/game-provider/search", {
         params: {
@@ -26,13 +26,7 @@ export class ProvidersRepositoryGirobet implements ProvidersRepositoryI {
 
       if (data) {
         return success({
-          providers: data.data.map(provider => ({
-            id: provider.id,
-            imageUrl: provider.image_url || null,
-            name: provider.name,
-            slug: provider.slug,
-            description: null,
-          })),
+          providers: data.data.map(provider => camelizeKeys({ ...provider })),
           pagination: {
             limit: data.metadata.pagination.limit,
             offset: data.metadata.pagination.offset,
@@ -64,49 +58,43 @@ export class ProvidersRepositoryGirobet implements ProvidersRepositoryI {
     }
   }
 
-  public async findById(providerId: number): Promise<Result<ProviderI, ErrorProviderNotFound | InfrastructureError>> {
+  public async findByIdentifier(providerIdentifier: string): Promise<Result<Provider, ErrorProviderNotFound | InfrastructureError>> {
     try {
-      const { data, error, response } = await this.apiClient.GET("/game-provider/{provider_id}", {
+      const { data, error, response } = await this.apiClient.GET("/game-provider/{provider_identifier}", {
         params: {
           path: {
-            provider_id: providerId,
+            provider_identifier: providerIdentifier,
           },
         },
       });
 
       if (data) {
-        return success({
-          id: data.id,
-          imageUrl: data.image_url || null,
-          name: data.name,
-          slug: data.slug,
-          description: data.description || null,
-        });
+        return success(camelizeKeys(data));
       }
 
       if (error) {
         if (error.code === "GAME_PROVIDER_NOT_FOUND") {
           return fail(
-            ErrorProviderNotFound.newFromId(providerId),
+            ErrorProviderNotFound.newFromIdentifier(providerIdentifier),
           );
         }
         return fail(
           InfrastructureError.newFromError({
-            providerId,
+            providerId: providerIdentifier,
           }, HttpBackendApiError.newFromBackendError(error, response)),
         );
       }
 
       return fail(
         InfrastructureError.newFromUnknownError({
-          providerId,
+          providerId: providerIdentifier,
         }, new Error("Unexpected scenario: library did not return data nor error. This should never happen")),
       );
     }
     catch (error: unknown) {
       return fail(
         InfrastructureError.newFromUnknownError({
-          providerId,
+          providerId: providerIdentifier,
         }, error),
       );
     }

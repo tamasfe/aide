@@ -1,28 +1,29 @@
 <script setup lang="ts">
-import type { GameSummaryI } from "~/modules/games/domain/Game";
+import type { GameSearchResponse } from "~/modules/games/domain/Game";
+import type { Keyified } from "~/types/utils";
 
 const props = defineProps<{
   title: string;
   categoryIdentifier: string | null;
-  providerId: number | null;
+  providerIdentifier: string | null;
   showBackButton?: boolean;
 }>();
 
 const { $dependencies } = useNuxtApp();
 const { navigateBackOrHome } = useNavigateBackOrHome();
 
-const loading = useState(`grid-vertical-games-loading-for-${props.categoryIdentifier}-${props.providerId}`, () => true);
-const totalGamesOfCategory = useState(`grid-vertical-games-total-for-${props.categoryIdentifier}-${props.providerId}`, () => 0);
-const nextGamesPageToSearch = useState(`grid-vertical-games-next-page-for-${props.categoryIdentifier}-${props.providerId}`, () => 0);
-const gameIds = useState<(GameSummaryI & { key: string })[]>(`grid-vertical-games-ids-for-${props.categoryIdentifier}-${props.providerId}`, () => []);
-const canLoadMore = useState(`grid-vertical-games-can-load-more-for-${props.categoryIdentifier}-${props.providerId}`, () => true);
+const loading = useState(`grid-vertical-games-loading-for-${props.categoryIdentifier}-${props.providerIdentifier}`, () => true);
+const totalGamesOfCategory = useState(`grid-vertical-games-total-for-${props.categoryIdentifier}-${props.providerIdentifier}`, () => 0);
+const nextGamesPageToSearch = useState(`grid-vertical-games-next-page-for-${props.categoryIdentifier}-${props.providerIdentifier}`, () => 0);
+const gameIds = useState<Keyified <GameSearchResponse>[]>(`grid-vertical-games-ids-for-${props.categoryIdentifier}-${props.providerIdentifier}`, () => []);
+const canLoadMore = useState(`grid-vertical-games-can-load-more-for-${props.categoryIdentifier}-${props.providerIdentifier}`, () => true);
 
 const onLoadData = async () => {
   if (!canLoadMore.value) return;
   loading.value = true;
 
-  const { games: foundGames, canLoadMore: updatedCanLoadMore, totalGames } = await $dependencies.games.ui.searchGamesPaginatingOnGrid.handle(props.categoryIdentifier, props.providerId, nextGamesPageToSearch.value);
-  gameIds.value.push(...foundGames.map(game => useAddKeyFromId(game)));
+  const { games: foundGames, canLoadMore: updatedCanLoadMore, totalGames } = await $dependencies.games.ui.searchGamesPaginatingOnGrid.handle(props.categoryIdentifier, props.providerIdentifier, nextGamesPageToSearch.value);
+  gameIds.value.push(...foundGames.map(game => useAddKeyFromIdentifier(game)));
   canLoadMore.value = updatedCanLoadMore;
   nextGamesPageToSearch.value += 1;
   totalGamesOfCategory.value = totalGames;
@@ -83,9 +84,7 @@ await useAsyncData(`load-games-for-${props.categoryIdentifier}`, () => onLoadDat
     >
       <template #default="{ data: game }">
         <GameImageLink
-          :id="game.id"
-          :slug="game.slug"
-          :src="game.imageUrl"
+          :identifier="game.identifier"
           animation-on-hover="vertical-translate"
         />
       </template>

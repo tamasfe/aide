@@ -6,9 +6,9 @@ const { t } = useI18n();
 const ENABLE_SERVER_SIDE_RENDERING = false;
 const DEFER_CLIENT_SIDE_LOADING = true;
 
-const providerId = Number(params.id);
-if (!providerId || Number.isNaN(providerId)) {
-  $dependencies.common.logger.warn("Provider ID route parameter should be a number", { providerId });
+const providerIdentifier = String(params.identifier);
+if (!providerIdentifier || Number.isNaN(providerIdentifier)) {
+  $dependencies.common.logger.warn("Provider slug route parameter should be a number", { providerIdentifier });
   await navigateTo("/");
 }
 
@@ -16,8 +16,8 @@ useHead({
   title: t("page.provider", { provider: params.id }),
 });
 
-const { data: providerFromApi, status } = await useAsyncData(`provider-${providerId}`, async () => {
-  return $dependencies.providers.ui.findProviderByIdOnProviderPage.handle(providerId);
+const { data: providerFromApi, status } = await useAsyncData(`provider-${providerIdentifier}`, async () => {
+  return $dependencies.providers.ui.findProviderByIdentifierOnProviderPage.handle(providerIdentifier);
 }, { lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING });
 if (!providerFromApi.value && (status.value === "success" || status.value === "error")) {
   await navigateTo("/");
@@ -37,7 +37,7 @@ watch(() => providerFromApi.value, (provider) => {
     <div class="giro__container giro__sections">
       <GridVerticalGames
         :title="providerFromApi?.name || ''"
-        :provider-id="providerId"
+        :provider-identifier="providerIdentifier"
         :category-identifier="null"
         :show-back-button="true"
       />

@@ -28,18 +28,18 @@ export default defineNuxtPlugin({
       () => walletStore.refresh(),
     );
 
-    const currentSessionGameId = useState<null | number>("current-session-game-id", () => null);
+    const currentSessionGameId = useState<null | string>("current-session-game-identifier", () => null);
     $dependencies.common.asyncMessagePublisher.subscribe(
       "girobet:events:games:game-session-started",
-      ({ gameId }) => {
+      ({ gameIdentifier }) => {
         walletStore.hideBalance();
-        currentSessionGameId.value = gameId;
+        currentSessionGameId.value = gameIdentifier;
       },
     );
     $dependencies.common.asyncMessagePublisher.subscribe(
       "girobet:events:games:game-session-finished",
-      ({ gameId }) => {
-        if (gameId === currentSessionGameId.value) {
+      ({ gameIdentifier }) => {
+        if (gameIdentifier === currentSessionGameId.value) {
           walletStore.refresh();
         }
       },

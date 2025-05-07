@@ -3,7 +3,7 @@ import type { HTMLAttributes } from "vue";
 
 const siteStore = useSiteStore();
 const props = defineProps<{
-  src: string | null;
+  identifier: string;
   altText?: string;
   class?: HTMLAttributes["class"];
 }>();
@@ -12,9 +12,9 @@ const props = defineProps<{
 <template>
   <div :class="cn('flex items-center justify-center h-full', props.class)">
     <NuxtImg
-      :src="src || siteStore.getAssetPath('images/logos/logo-sm.svg')"
+      :src="siteStore.getCdnGameImageUrl(identifier) || siteStore.getAssetPath('images/logos/logo-sm.svg')"
       :alt="altText || ''"
-      :class="props.src ? 'block w-full h-full object-cover': 'px-8 block w-full h-full'"
+      :class="props.identifier ? 'block w-full h-full object-cover': 'px-8 block w-full h-full'"
     />
   </div>
 </template>

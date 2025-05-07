@@ -1,7 +1,7 @@
 import type { PublicRuntimeConfig } from "nuxt/schema";
 import { SearchGamesPaginating } from "../application/SearchGamesPaginating";
 import { SearchGameCategoriesByCategoryGroup } from "../application/SearchGameCategoriesByCategoryGroup";
-import { FindGameCompatibilityById } from "../application/FindGameCompatibilityById";
+import { FindGameCompatibilityByIdentifier } from "../application/FindGameCompatibilityById";
 import type { GamesApiRepositoryI } from "../domain/GamesApiRepository";
 import type { GameActionsRepositoryI } from "../domain/GameActionsRepository";
 import type { GameRatingsRepositoryI } from "../domain/GameRatingsRepository";
@@ -10,7 +10,7 @@ import { GamesApiRepositoryGirobet } from "./GamesApiRepositoryGirobet";
 import { SearchGameCategoriesByGroup } from "./ui/SearchGameCategoriesByGroup";
 import { GameCategoriesRepositoryDumb } from "./GameCategoriesRepositoryDumb";
 import { GameCategoriesRepositoryGirobet } from "./GameCategoriesRepositoryGirobet";
-import { FindGameCompatibilityByIdOnGamePage } from "./ui/FindGameCompatibilityByIdOnGamePage";
+import { FindGameCompatibilityByIdentifierOnGamePage } from "./ui/FindGameCompatibilityByIdOnGamePage";
 import { BuildGameSessionIFrameUrl } from "./ui/BuildGameSessionIFrameUrl";
 import { SearchGamesByQueryPaginatingOnSearchBar } from "./ui/SearchGamesByQueryPaginatingOnSearchBar";
 import { SearchGamesPaginatingOnGrid } from "./ui/SearchGamesPaginatingOnGrid";
@@ -26,7 +26,7 @@ import type { CommonDependenciesI } from "~/dependency-injection/load-di";
 export interface GamesDependencyInjectionI {
   ui: {
     buildGameSessionIFrameUrl: BuildGameSessionIFrameUrl;
-    findGameCompatibilityByIdOnGamePage: FindGameCompatibilityByIdOnGamePage;
+    findGameCompatibilityByIdentifierOnGamePage: FindGameCompatibilityByIdentifierOnGamePage;
 
     searchGameRatingFromGameFrameVotes: SearchGameRatingFromGameFrameVotes;
     searchGamesPaginatingOnGrid: SearchGamesPaginatingOnGrid;
@@ -78,7 +78,7 @@ export const createGamesDependencyInjection = async (publicConfig: PublicRuntime
   return {
     ui: {
       buildGameSessionIFrameUrl: new BuildGameSessionIFrameUrl(publicConfig.games.apiBaseUrlClient || ""),
-      findGameCompatibilityByIdOnGamePage: new FindGameCompatibilityByIdOnGamePage(new FindGameCompatibilityById(gamesApiRepository), commonDependencies.logger),
+      findGameCompatibilityByIdentifierOnGamePage: new FindGameCompatibilityByIdentifierOnGamePage(new FindGameCompatibilityByIdentifier(gamesApiRepository), commonDependencies.logger),
       searchGamesPaginatingOnGrid: new SearchGamesPaginatingOnGrid(searchGamesPaginatingQuery, commonDependencies.logger),
       searchGamesByQueryPaginatingOnSearchBar: new SearchGamesByQueryPaginatingOnSearchBar(searchGamesPaginatingQuery, commonDependencies.logger),
       searchGameCategoriesByGroup: new SearchGameCategoriesByGroup(

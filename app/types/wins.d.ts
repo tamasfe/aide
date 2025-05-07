@@ -4,8 +4,7 @@ export type Win = {
   currency: string;
   userNickname: string;
   game: {
-    id: number;
-    imageUrl: string | null;
+    identifier: string;
     name: string;
   };
 };

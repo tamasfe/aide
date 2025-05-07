@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { createColumnHelper, type ColumnDef } from "@tanstack/vue-table";
-import { BaseCurrency, DataTableCopyCell, DataTableLinkCell } from "#components";
+import { BaseCurrency, DataTableCopyCell } from "#components";
 
 const { t } = useI18n();
 
@@ -9,7 +9,6 @@ type GameActionTableRow = {
   date: string;
   game: {
     name: string;
-    id: number;
   };
   action: string;
   amount: number;
@@ -41,8 +40,8 @@ const columns: ColumnDef<GameActionTableRow>[] = [
   column.accessor("game", {
     header: t("game_actions.table.header_game"),
     cell: ({ getValue }) => h(
-      DataTableLinkCell,
-      { href: `/games/${getValue().id}` },
+      // DataTableLinkCell,
+      // { href: `/games/${getValue().identifier}` },
       () => getValue().name),
   }),
   column.accessor("action", {

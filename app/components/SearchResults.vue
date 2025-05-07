@@ -1,7 +1,8 @@
 <script setup lang="ts">
 // 2 alternates if ever needed...
 import { debouncedWatch } from "@vueuse/core";
-import type { GameSummaryI } from "~/modules/games/domain/Game";
+import type { GameSearchResponse } from "~/modules/games/domain/Game";
+import type { Provider } from "~/modules/providers/domain/Provider";
 import type { Keyified } from "~/types/utils";
 
 // import { debouncedWatch } from "@vueuse/core";
@@ -20,7 +21,7 @@ const { query } = defineProps({
  * Game search
  */
 const gamesCurrentPage = useState(() => 0);
-const games = useState<Keyified<GameSummaryI>[]>(() => []);
+const games = useState<Keyified<GameSearchResponse>[]>(() => []);
 const gamesTotalItems = useState(() => 0);
 const gamesLoading = useState(() => false);
 const gamesOnLoadMore = async (actionOnItemsArray: "append" | "replace") => {
@@ -29,10 +30,10 @@ const gamesOnLoadMore = async (actionOnItemsArray: "append" | "replace") => {
 
   gamesTotalItems.value = result.totalGames;
   if (actionOnItemsArray === "append") {
-    games.value.push(...result.games.map(game => useAddKeyFromId(game)));
+    games.value.push(...result.games.map(game => useAddKeyFromIdentifier(game)));
   }
   else if (actionOnItemsArray === "replace") {
-    games.value = result.games.map(game => useAddKeyFromId(game));
+    games.value = result.games.map(game => useAddKeyFromIdentifier(game));
   }
 
   gamesCurrentPage.value++;
@@ -43,7 +44,7 @@ const gamesOnLoadMore = async (actionOnItemsArray: "append" | "replace") => {
  * Provider search
  */
 const providersCurrentPage = useState(() => 0);
-const providers = useState<Keyified<{ id: number; imageUrl: string | null }>[]>(() => []);
+const providers = useState<Keyified<Provider>[]>(() => []);
 const providersTotalItems = useState(() => 0);
 const providersLoading = useState(() => false);
 const providersOnLoadMore = async (actionOnItemsArray: "append" | "replace") => {
@@ -52,10 +53,10 @@ const providersOnLoadMore = async (actionOnItemsArray: "append" | "replace") => 
 
   providersTotalItems.value = result.totalProviders;
   if (actionOnItemsArray === "append") {
-    providers.value.push(...result.providers.map(provider => ({ id: provider.id, imageUrl: provider.imageUrl, key: provider.id.toString() })));
+    providers.value.push(...result.providers.map(provider => useAddKeyFromIdentifier(provider)));
   }
   else if (actionOnItemsArray === "replace") {
-    providers.value = result.providers.map(provider => ({ id: provider.id, imageUrl: provider.imageUrl, key: provider.id.toString() }));
+    providers.value = result.providers.map(provider => useAddKeyFromIdentifier(provider));
   }
 
   providersCurrentPage.value++;
@@ -98,10 +99,8 @@ const onClickLink = () => {
     >
       <template #default="{ item: game }">
         <GameImageLink
-          :id="game.id"
-          :slug="game.slug"
+          :identifier="game.identifier"
           class="border-none"
-          :src="game.imageUrl"
           animation-on-hover="vertical-translate"
           @click="onClickLink"
         />
@@ -118,11 +117,11 @@ const onClickLink = () => {
     >
       <template #default="{ item: item }">
         <BaseLink
-          :to="`/providers/${item.id}`"
+          :to="`/games/${item.identifier}`"
           class="block bg-subtle rounded w-full h-full overflow-hidden"
           @click="onClickLink"
         >
-          <Provide r-image-loader :src="item.imageUrl" :provider-id="item.id" />
+          <ProviderImageLoader :provider-identifier="item.identifier" />
         </BaseLink>
       </template>
     </GridVerticalSearch>

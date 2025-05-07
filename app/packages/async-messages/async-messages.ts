@@ -81,10 +81,10 @@ export interface AsyncMessagesTypes {
   };
 
   "girobet:events:games:game-session-started": {
-    gameId: number;
+    gameIdentifier: string;
   };
   "girobet:events:games:game-session-finished": {
-    gameId: number;
+    gameIdentifier: string;
   };
 
   "girobet:events:payments:deposit-flow-created": {

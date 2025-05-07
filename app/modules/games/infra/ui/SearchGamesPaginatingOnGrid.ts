@@ -1,24 +1,22 @@
 import type { SearchGamesPaginating } from "../../application/SearchGamesPaginating";
 import { ErrorSearchIndexNotFound } from "../../domain/ErrorSearchIndexNotFound";
-import type { GameSummaryI } from "../../domain/Game";
+import type { GameSearchResponse } from "../../domain/Game";
 import type { LoggerI } from "~/packages/logger/Logger";
 
 export class SearchGamesPaginatingOnGrid {
   constructor(
     private query: SearchGamesPaginating,
     private logger: LoggerI,
-  ) {
-
-  }
+  ) {}
 
   public static DEFAULT_PAGINATION_SIZE = 25;
 
-  public async handle(categoryIdentifier: string | null, providerId: number | null, pageToSearch: number, pageSize = SearchGamesPaginatingOnGrid.DEFAULT_PAGINATION_SIZE): Promise<{
-    games: GameSummaryI[];
+  public async handle(categoryIdentifier: string | null, providerIdentifier: string | null, pageToSearch: number, pageSize = SearchGamesPaginatingOnGrid.DEFAULT_PAGINATION_SIZE): Promise<{
+    games: GameSearchResponse[];
     canLoadMore: boolean;
     totalGames: number;
   }> {
-    const result = await this.query.handle(categoryIdentifier, null, providerId, pageToSearch, pageSize);
+    const result = await this.query.handle(categoryIdentifier, null, providerIdentifier, pageToSearch, pageSize);
 
     if (result.isFailure) {
       if (result.error instanceof ErrorSearchIndexNotFound) {

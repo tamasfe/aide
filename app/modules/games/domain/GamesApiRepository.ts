@@ -1,12 +1,12 @@
-import type { GameI, GameSummaryI } from "./Game";
+import type { Game, GameSearchResponse } from "./Game";
 import type { ErrorGameNotFound } from "./ErrorGameNotFound";
 import type { ErrorSearchIndexNotFound } from "./ErrorSearchIndexNotFound";
 import type { Result } from "~/packages/result";
 import type { InfrastructureError } from "~/packages/result/infrastructure-error";
 
 export interface GamesApiRepositoryI {
-  searchPaginating(searchParams: { category: string | null; query: string | null; providerId: number | null }, limit: number, offset: number): Promise<Result<{
-    games: GameSummaryI[];
+  searchPaginating(searchParams: { category: string | null; query: string | null; providerIdentifier: string | null }, limit: number, offset: number): Promise<Result<{
+    games: GameSearchResponse[];
     pagination: {
       limit: number;
       offset: number;
@@ -14,5 +14,5 @@ export interface GamesApiRepositoryI {
     };
   }, ErrorSearchIndexNotFound | InfrastructureError>>;
 
-  findById(gameId: number): Promise<Result<GameI, ErrorGameNotFound | InfrastructureError>>;
+  findByIdentifier(identifier: string): Promise<Result<Game, ErrorGameNotFound | InfrastructureError>>;
 }

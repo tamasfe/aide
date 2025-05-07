@@ -1,23 +1,21 @@
 <script setup lang="ts">
-const { src } = defineProps({
-  providerId: {
-    type: Number,
-    required: true,
-  },
-  src: {
-    type: [String, null],
+const { providerIdentifier } = defineProps({
+  providerIdentifier: {
+    type: String,
     required: true,
   },
 });
 
-const imageSrc = computed(() => `${src}?color=white`);
+const siteStore = useSiteStore();
+
+const imageSrc = computed(() => `${siteStore.getCdnProviderImageUrl(providerIdentifier)}?color=white`);
 </script>
 
 <template>
   <div class="flex items-center justify-center h-full">
     <NuxtImg
       :src="imageSrc"
-      :alt="`Provider ${providerId} logo`"
+      :alt="`Provider ${providerIdentifier} logo`"
       class="w-full h-full object-contain group-hover:opacity-80"
     />
   </div>

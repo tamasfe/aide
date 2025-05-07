@@ -26,12 +26,7 @@ export class GameCategoriesRepositoryGirobet implements GameCategoriesRepository
         id: category.id,
         identifier: category.identifier,
         games: category.games
-          ? category.games.map(game => ({
-              id: game.id,
-              slug: game.slug,
-              name: game.name,
-              imageUrl: game.image_url || null,
-            }))
+          ? category.games.map(game => camelizeKeys(game))
           : null,
       })));
     }

@@ -2,8 +2,8 @@
 const { $dependencies } = useNuxtApp();
 
 const props = defineProps({
-  gameId: {
-    type: Number,
+  gameIdentifier: {
+    type: String,
     required: true,
   },
   iFrameUrl: {
@@ -14,13 +14,13 @@ const props = defineProps({
 
 onMounted(() => {
   $dependencies.common.asyncMessagePublisher.emit("girobet:events:games:game-session-started", {
-    gameId: props.gameId,
+    gameIdentifier: props.gameIdentifier,
   });
 });
 
 onUnmounted(() => {
   $dependencies.common.asyncMessagePublisher.emit("girobet:events:games:game-session-finished", {
-    gameId: props.gameId,
+    gameIdentifier: props.gameIdentifier,
   });
 });
 </script>

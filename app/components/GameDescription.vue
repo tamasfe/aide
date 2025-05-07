@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { Game } from "~/modules/games/domain/Game";
+
 const { t } = useI18n();
 
 // DESIGN STATUS           ✅
@@ -11,24 +13,12 @@ const url = useRequestURL();
 const siteStore = useSiteStore();
 
 defineProps({
-  description: {
-    type: [String, null],
-    required: true,
-  },
-  title: {
-    type: String,
-    required: true,
-  },
-  id: {
-    type: Number,
+  game: {
+    type: Object as PropType<Game>,
     required: true,
   },
   authenticated: {
     type: Boolean,
-    required: true,
-  },
-  imageUrl: {
-    type: [String, null],
     required: true,
   },
   categories: {
@@ -51,14 +41,14 @@ const emit = defineEmits<{
            game image component to ensure the aspect catio scales correctly with the grid -->
           <GameImage
             v-if="!isMobile"
-            :src="imageUrl"
+            :identifier="game.identifier"
             alt=""
             class="block w-full object-cover aspect-[3/4] transition-transform transform hover:scale-105 cursor-pointer"
           />
         </div>
       </div>
       <div class="order-3 md:order-none">
-        <h2 class="text-2xl mb-2">{{ title }}</h2>
+        <h2 class="text-2xl mb-2">{{ game.name }}</h2>
         <div class="flex items-center space-x-2">
           <BaseLink
             v-for="categoryIdentifier in categories"
@@ -83,12 +73,12 @@ const emit = defineEmits<{
       <div class="order-1 col-span-full md:order-none md:col-span-1 self-start w-full flex justify-between md:justify-end items-center text-subtle font-semibold gap-4">
         <ButtonShare
           :subject="$t('play.share_subject', { siteName: siteStore.site.name })"
-          :body="$t('play.share_body', { game: title, siteName: siteStore.site.name })"
+          :body="$t('play.share_body', { game: game.name, siteName: siteStore.site.name })"
           :url="url.toString()"
           class="hover:text-subtle-light"
         />
 
-        <GameFrameVotes :authenticated="authenticated" :game-id="id" />
+        <GameFrameVotes :authenticated="authenticated" :game-identifier="game.identifier" />
 
         <BaseButton
           v-if="authenticated"
@@ -105,10 +95,10 @@ const emit = defineEmits<{
       </div>
 
       <p
-        v-if="description"
+        v-if="game.description"
         class="text-subtle col-span-2 order-4 md:order-none"
       >
-        {{ description }}
+        {{ game.description }}
       </p>
     </div>
   </div>

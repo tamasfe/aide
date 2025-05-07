@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { Provider } from "~/modules/providers/domain/Provider";
 import type { Keyified } from "~/types/utils";
 
 const { $dependencies } = useNuxtApp();
@@ -11,7 +12,7 @@ const DEFER_CLIENT_SIDE_LOADING = true;
 const loading = useState(`grid-vertical-providers-loading`, () => true);
 const totalProviders = useState(`grid-vertical-providers-total`, () => 0);
 const nextProvidersPageToSearch = useState(`grid-vertical-providers-next-page`, () => 0);
-const providers = useState<Keyified<{ id: number; imageUrl: string | null }>[]>(`grid-vertical-providers-ids`, () => []);
+const providers = useState<Keyified<Provider>[]>(`grid-vertical-providers-ids`, () => []);
 const canLoadMore = useState(`grid-vertical-providers-can-load-more`, () => true);
 
 const onLoadData = async () => {
@@ -19,7 +20,7 @@ const onLoadData = async () => {
   loading.value = true;
 
   const { providers: foundProviders, canLoadMore: updatedCanLoadMore, totalProviders: total } = await $dependencies.providers.ui.searchProvidersOnGrid.handle(null, nextProvidersPageToSearch.value);
-  providers.value.push(...foundProviders.map(provider => ({ ...provider, key: provider.id.toString() })));
+  providers.value.push(...foundProviders.map(provider => useAddKeyFromIdentifier(provider)));
   canLoadMore.value = updatedCanLoadMore;
   nextProvidersPageToSearch.value += 1;
   totalProviders.value = total;
@@ -71,14 +72,14 @@ await useAsyncData(`load-vertical-providers`, () => onLoadData().then(() => true
       <template #default="{ data: item }">
         <BaseLink
           :to="{
-            name: 'providers-id',
+            name: 'providers-identifier',
             params: {
-              id: item.id,
+              identifier: item.identifier,
             },
           }"
           class="flex-1 rounded-lg overflow-hidden"
         >
-          <ProviderImageLoader :src="item.imageUrl" :provider-id="item.id" />
+          <ProviderImageLoader :provider-identifier="item.identifier" />
         </BaseLink>
       </template>
     </GridVertical>

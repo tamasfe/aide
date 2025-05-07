@@ -1,23 +1,23 @@
 import type { GamesApiRepositoryI } from "../domain/GamesApiRepository";
-import type { GameDevice, GameI } from "../domain/Game";
+import type { GameDevice, Game } from "../domain/Game";
 import type { ErrorGameNotFound } from "../domain/ErrorGameNotFound";
 import { success, type Result } from "~/packages/result";
 import type { InfrastructureError } from "~/packages/result/infrastructure-error";
 
-export interface FindGameCompatibilityByIdResponseI extends GameI {
+export interface FindGameCompatibilityByIdResponseI extends Game {
   isCompatibleWithDevice: boolean;
 }
 
-export class FindGameCompatibilityById {
+export class FindGameCompatibilityByIdentifier {
   constructor(private gameRepo: GamesApiRepositoryI) {}
 
-  public async handle(gameId: number, userCurrentDevice: GameDevice): Promise<Result<FindGameCompatibilityByIdResponseI, ErrorGameNotFound | InfrastructureError>> {
-    const gameResult = await this.gameRepo.findById(gameId);
+  public async handle(identifier: string, userCurrentDevice: GameDevice): Promise<Result<FindGameCompatibilityByIdResponseI, ErrorGameNotFound | InfrastructureError>> {
+    const gameResult = await this.gameRepo.findByIdentifier(identifier);
     if (gameResult.isFailure) {
       return gameResult;
     }
 
-    const gameIsCompatibleWithDevice = gameResult.value.devices.includes(userCurrentDevice);
+    const gameIsCompatibleWithDevice = (gameResult.value.devices as GameDevice[]).includes(userCurrentDevice);
 
     return success({
       ...gameResult.value,

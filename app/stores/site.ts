@@ -2,7 +2,7 @@ import type { Site } from "~/modules/sites/domain/Site";
 import type { License } from "~/modules/sites/domain/License";
 
 type SiteDomain = Site["domains"][number];
-const defaultDomain: SiteDomain = { api: "https://api-staging.girobet.vip", email: "support@girobet.vip", frontend: "https://staging.girobet.vip" };
+const defaultDomain: SiteDomain = { api: "https://api-staging.girobet.vip", email: "support@girobet.vip", frontend: "https://staging.girobet.vip", cdn: "https://cdn.girobet.vip" };
 
 const defaultSite: Site = {
   identifier: "girobet",
@@ -68,6 +68,18 @@ export const useSiteStore = defineStore("siteStore", {
         throw new Error("No active license found. This should never happen as the site should either have a valid license or have thrown an invalid jurisdiction error");
       }
       return activeLicense;
+    },
+
+    getCdnGameImageUrl(gameIdentifier: string): string {
+      const cdnUrl = this.currentDomain.cdn;
+
+      return `${cdnUrl}/games/${gameIdentifier}.webp`;
+    },
+
+    getCdnProviderImageUrl(providerIdentifier: string): string {
+      const cdnUrl = this.currentDomain.cdn;
+
+      return `${cdnUrl}/providers/${providerIdentifier}.webp`;
     },
 
   },

@@ -1,11 +1,11 @@
-import type { ProviderI } from "./Provider";
+import type { Provider } from "./Provider";
 import type { ErrorProviderNotFound } from "./ErrorProviderNotFound";
 import type { Result } from "~/packages/result";
 import type { InfrastructureError } from "~/packages/result/infrastructure-error";
 
 export interface ProvidersRepositoryI {
   searchPaginating(searchParams: { query: string | null }, limit: number, offset: number): Promise<Result<{
-    providers: ProviderI[];
+    providers: Provider[];
     pagination: {
       limit: number;
       offset: number;
@@ -13,5 +13,5 @@ export interface ProvidersRepositoryI {
     };
   }, InfrastructureError>>;
 
-  findById(id: number): Promise<Result<ProviderI, ErrorProviderNotFound | InfrastructureError>>;
+  findByIdentifier(identifier: string): Promise<Result<Provider, ErrorProviderNotFound | InfrastructureError>>;
 }

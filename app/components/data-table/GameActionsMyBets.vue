@@ -9,7 +9,7 @@ type GameActionTableRow = {
   date: string;
   game: {
     name: string;
-    id: number;
+    identifier: string;
   };
   action: string;
   amount: number;
@@ -40,7 +40,7 @@ const columns: ColumnDef<GameActionTableRow>[] = [
     header: t("game_actions.table.header_game"),
     cell: ({ getValue }) => h(
       DataTableLinkCell,
-      { href: `/games/${getValue().id}` },
+      { href: `/games/${getValue().identifier}` },
       () => getValue().name),
   }),
   column.accessor("date", {

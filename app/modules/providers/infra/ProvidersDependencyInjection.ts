@@ -1,19 +1,18 @@
 import type { PublicRuntimeConfig } from "nuxt/schema";
 import type { ProvidersRepositoryI } from "../domain/ProvidersRepository";
 import { SearchProvidersPaginating } from "../application/SearchProvidersPaginating";
-import { FindProviderById } from "../application/FindProviderById";
 import { FindProviderImageSrcById } from "./ui/FindProviderImageSrcById";
 import { ProvidersRepositoryDumb } from "./ProvidersRepositoryDumb";
 import { ProvidersRepositoryGirobet } from "./ProvidersRepositoryGirobet";
 import { SearchProvidersOnGrid } from "./ui/SearchProvidersOnGrid";
-import { FindProviderByIdOnProviderPage } from "./ui/FindProviderByIdOnProviderPage";
+import { FindProviderByIdentifierOnProviderPage } from "./ui/FindProviderByIdOnProviderPage";
 import type { CommonDependenciesI } from "~/dependency-injection/load-di";
 
 export interface ProvidersDependencyInjectionI {
   ui: {
     findProviderImageSrcById: FindProviderImageSrcById;
     searchProvidersOnGrid: SearchProvidersOnGrid;
-    findProviderByIdOnProviderPage: FindProviderByIdOnProviderPage;
+    findProviderByIdentifierOnProviderPage: FindProviderByIdentifierOnProviderPage;
   };
 }
 
@@ -35,8 +34,8 @@ export const createProvidersDependencyInjection = async (publicConfig: PublicRun
         new SearchProvidersPaginating(providersApiRepository),
         commonDependencies.logger,
       ),
-      findProviderByIdOnProviderPage: new FindProviderByIdOnProviderPage(
-        new FindProviderById(providersApiRepository),
+      findProviderByIdentifierOnProviderPage: new FindProviderByIdentifierOnProviderPage(
+        providersApiRepository,
         commonDependencies.logger,
       ),
     },

@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from "vue";
-import { toGameUrlSlug } from "~/modules/games/domain/Game";
+import { destructureGameIdentifier } from "~/modules/games/domain/Game";
 
 const props = defineProps<{
-  src: string | null;
-  id: number;
+  identifier: string;
   slug?: string;
   altText?: string;
   animationOnHover?: "vertical-translate" | "zoom-in" | null;
@@ -38,11 +37,11 @@ const animationClasses = computed(() => {
 
 <template>
   <BaseLink
-    :to="{ name: 'games-slug', params: { slug: toGameUrlSlug(props.id, props.slug || '') } }"
+    :to="{ name: 'games-provider-game', params: { provider: destructureGameIdentifier(identifier).providerSlug, game: destructureGameIdentifier(identifier).gameSlug } }"
     :class="cn('block bg-subtle rounded w-full h-full overflow-hidden border border-emphasis/50', animationClasses.link, props.class)"
   >
     <GameImage
-      :src="src"
+      :identifier="identifier"
       :alt="altText || ''"
       :class="cn('block w-full h-full object-cover cursor-pointer', animationClasses.img)"
     />

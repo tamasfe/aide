@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { toGameUrlSlug } from "~/modules/games/domain/Game";
+import { destructureGameIdentifier } from "~/modules/games/domain/Game";
 import type { Win } from "~/types/wins";
 
 // DESIGN STATUS:       ✅
@@ -48,8 +48,7 @@ useCreateSubscriptionToWebsocket(
       currency: message.data.data.currency,
       userNickname: message.data.data.user_nickname,
       game: {
-        id: message.data.data.game.id,
-        imageUrl: message.data.data.game.image_url || null,
+        identifier: message.data.data.game.identifier,
         name: message.data.data.game.name,
       },
     }));
@@ -89,11 +88,11 @@ useCreateSubscriptionToWebsocket(
       }"
     >
       <template #default="{ item }">
-        <BaseLink v-if="item?.game" :to="{ name: 'games-slug', params: { slug: toGameUrlSlug(item.game.id, item.game.name) } }">
+        <BaseLink v-if="item?.game" :to="{ name: 'games-provider-game', params: { provider: destructureGameIdentifier(item.game.identifier).providerSlug, game: destructureGameIdentifier(item.game.identifier).gameSlug } }">
           <div class="relative group flex items-center space-x-3 bg-subtle p-2 rounded-lg outline-none border border-muted/5 h-24">
             <div class="self-strech relative aspect-[3/4] h-full rounded overflow-hidden border border-muted/5">
               <NuxtImg
-                :src="item.game.imageUrl || undefined"
+                :src="item.game.identifier"
                 alt=""
                 class="block object-cover h-full w-full transition-transform transform hover:scale-105 cursor-pointer"
               />

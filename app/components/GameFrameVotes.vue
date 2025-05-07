@@ -9,7 +9,7 @@ import type { HTMLAttributes } from "vue";
 
 const props = defineProps<{
   class?: HTMLAttributes["class"];
-  gameId: number;
+  gameIdentifier: string;
   authenticated: boolean;
 }>();
 
@@ -24,14 +24,14 @@ const likes = ref<number>(0);
 const dislikes = ref<number>(0);
 const rating = ref<"like" | "dislike" | null>(null);
 
-await useAsyncData(`game-frame-votes-for-game-${props.gameId}`, async () => {
+await useAsyncData(`game-frame-votes-for-game-${props.gameIdentifier}`, async () => {
   initialLoading.value = true;
-  const result = await $dependencies.games.ui.searchGameRatingFromGameFrameVotes.handle(props.gameId);
+  const result = await $dependencies.games.ui.searchGameRatingFromGameFrameVotes.handle(props.gameIdentifier);
   if (!result) return null;
 
   likes.value = result.likes;
   dislikes.value = result.dislikes;
-  rating.value = result.rating;
+  rating.value = result.ownRating;
 
   initialLoading.value = false;
   return result;
@@ -51,7 +51,7 @@ const onClickVote = async (newRating: "like" | "dislike") => {
     rating.value = null;
     if (newRating === "like") likes.value -= 1;
     if (newRating === "dislike") dislikes.value -= 1;
-    $dependencies.games.ui.rateGameFromGameFrameVotes.handle(props.gameId, null);
+    $dependencies.games.ui.rateGameFromGameFrameVotes.handle(props.gameIdentifier, null);
   }
   else {
     if (newRating === "like") {
@@ -64,7 +64,7 @@ const onClickVote = async (newRating: "like" | "dislike") => {
     }
 
     rating.value = newRating;
-    $dependencies.games.ui.rateGameFromGameFrameVotes.handle(props.gameId, newRating);
+    $dependencies.games.ui.rateGameFromGameFrameVotes.handle(props.gameIdentifier, newRating);
   }
 };
 </script>

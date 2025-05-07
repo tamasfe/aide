@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { GameSummaryI } from "~/modules/games/domain/Game";
+import type { GameSearchResponse } from "~/modules/games/domain/Game";
 
 const props = defineProps<{
   categoryIdentifier: string;
-  initialGames?: GameSummaryI[];
+  initialGames?: GameSearchResponse[];
 }>();
 
 const { $dependencies } = useNuxtApp();
@@ -25,7 +25,7 @@ const columns = ref({
 
 const paginationSize = computed(() => props.initialGames ? props.initialGames.length : 25);
 const slidesBeforeLoad = 4; // We aribitrarely set it to +1 the slides to scroll to give time for the loading one scroll ahead
-const games = useState<(GameSummaryI & { key: string })[]>(`grid-horizontal-games-ids-for-${props.categoryIdentifier}`, () => props.initialGames ? props.initialGames.map(game => useAddKeyFromId(game)) : []);
+const games = useState<(GameSearchResponse & { key: string })[]>(`grid-horizontal-games-ids-for-${props.categoryIdentifier}`, () => props.initialGames ? props.initialGames.map(game => useAddKeyFromIdentifier(game)) : []);
 const loading = useState(`grid-horizontal-games-loading-for-${props.categoryIdentifier}`, () => false);
 const nextGamesPageToSearch = useState(`grid-horizontal-games-next-page-for-${props.categoryIdentifier}`, () => props.initialGames ? 1 : 0);
 const canLoadMore = useState(`grid-horizontal-games-can-load-more-for-${props.categoryIdentifier}`, () => true);
@@ -35,7 +35,7 @@ const onLoadData = async () => {
   loading.value = true;
 
   const { games: foundGames, canLoadMore: updatedCanLoadMore } = await $dependencies.games.ui.searchGamesPaginatingOnGrid.handle(props.categoryIdentifier, null, nextGamesPageToSearch.value, paginationSize.value);
-  games.value.push(...foundGames.map(game => useAddKeyFromId(game)));
+  games.value.push(...foundGames.map(game => useAddKeyFromIdentifier(game)));
   canLoadMore.value = updatedCanLoadMore;
   nextGamesPageToSearch.value += 1;
 
@@ -85,9 +85,7 @@ if (!props.initialGames) {
 
     <template #default="{ item: game }">
       <GameImageLink
-        :id="game.id"
-        :slug="game.slug"
-        :src="game.imageUrl"
+        :identifier="game.identifier"
         :animation-on-hover="'vertical-translate'"
       />
     </template>

@@ -1,10 +1,13 @@
 <script setup lang="ts">
+import type { Provider } from "~/modules/providers/domain/Provider";
+import type { Keyified } from "~/types/utils";
+
 const { $dependencies } = useNuxtApp();
 const { t } = useI18n();
 
 const loading = useState(`grid-horizontal-providers-loading`, () => true);
 const nextProvidersPageToSearch = useState(`grid-horizontal-providers-next-page`, () => 0);
-const providers = useState<{ id: number; imageUrl: string | null; key: string }[]>(`grid-horizontal-providers-ids`, () => []);
+const providers = useState<Keyified<Provider>[]>(`grid-whorizontal-providers-ids`, () => []);
 const canLoadMore = useState(`grid-horizontal-providers-can-load-more`, () => true);
 
 const onLoadData = async () => {
@@ -12,7 +15,7 @@ const onLoadData = async () => {
   loading.value = true;
 
   const { providers: foundProviders, canLoadMore: updatedCanLoadMore } = await $dependencies.providers.ui.searchProvidersOnGrid.handle(null, nextProvidersPageToSearch.value);
-  providers.value.push(...foundProviders.map(provider => useAddKeyFromId(provider)));
+  providers.value.push(...foundProviders.map(provider => useAddKeyFromIdentifier(provider)));
   canLoadMore.value = updatedCanLoadMore;
   nextProvidersPageToSearch.value += 1;
 
@@ -74,11 +77,11 @@ await useAsyncData(`load-providers`, () => onLoadData().then(() => true),
         <div class="flex-1 rounded-lg overflow-hidden">
           <BaseLink
             :to="{
-              name: 'providers-id',
-              params: { id: item.id },
+              name: 'providers-identifier',
+              params: { identifier: item.identifier },
             }"
           >
-            <ProviderImageLoader :src="item.imageUrl" :provider-id="item.id" />
+            <ProviderImageLoader :provider-identifier="item.identifier" />
           </BaseLink>
         </div>
 

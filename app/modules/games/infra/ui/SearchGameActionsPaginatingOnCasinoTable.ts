@@ -10,7 +10,7 @@ type GameActionResponse = {
   date: string;
   game: {
     name: string;
-    id: number;
+    identifier: string;
   };
   action: string;
   amount: number;
@@ -71,7 +71,7 @@ export class SearchGameActionsPaginatingOnCasinoTable {
           date: this.d(new Date(gameAction.createdAt).toISOString(), { dateStyle: "medium" }),
           game: {
             name: gameAction.gameName.toUpperCase(),
-            id: gameAction.gameId,
+            identifier: gameAction.gameIdentifier,
           },
           action: action.toUpperCase(),
           amount: gameAction.amountLocked + gameAction.amountUnlocked,

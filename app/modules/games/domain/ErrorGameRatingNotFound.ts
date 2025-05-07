@@ -3,8 +3,8 @@ import { CustomError } from "~/packages/result";
 export class ErrorGameRatingNotFound extends CustomError {
   override name = "ErrorGameRatingNotFound" as const;
 
-  public static newFromGameId(gameId: number) {
-    return new ErrorGameRatingNotFound({ gameId });
+  public static newFromGameIdentifier(gameIdentifier: string) {
+    return new ErrorGameRatingNotFound({ gameIdentifier });
   }
 
   private constructor(metadata: Record<string, unknown>) {

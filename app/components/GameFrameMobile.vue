@@ -9,12 +9,8 @@ const props = defineProps({
     type: String,
     required: true,
   },
-  gameId: {
-    type: Number,
-    required: true,
-  },
-  gameImageUrl: {
-    type: [String, null],
+  gameIdentifier: {
+    type: String,
     required: true,
   },
   authenticated: {
@@ -46,8 +42,8 @@ const onTogglePlaying = async () => {
 <template>
   <div class="flex flex-col h-full">
     <GameFrameBackdrop
+      :game-identifier="gameIdentifier"
       class="h-full"
-      :src="gameImageUrl"
       :authenticated="authenticated"
       :replace="false"
     >
@@ -62,7 +58,7 @@ const onTogglePlaying = async () => {
             />
           </div>
 
-          <GameFrameIframe :game-id="gameId" :i-frame-url="iframeUrl" />
+          <GameFrameIframe :game-identifier="gameIdentifier" :i-frame-url="iframeUrl" />
         </div>
         <div
           v-if="playing && !iframeUrl"
@@ -75,7 +71,7 @@ const onTogglePlaying = async () => {
       <div class="w-full max-w-lg p-6 flex flex-col justify-between gap-6">
         <div class="w-full flex flex-row items-center justify-start gap-6">
           <GameImage
-            :src="gameImageUrl"
+            :identifier="gameIdentifier"
             class="w-[32%] rounded"
           />
           <div class="flex flex-col gap-1">
@@ -83,7 +79,7 @@ const onTogglePlaying = async () => {
             <GameFrameVotes
               :authenticated="authenticated"
               class="mt-4 gap-4 text-subtle-light"
-              :game-id="gameId"
+              :game-identifier="gameIdentifier"
             />
           </div>
         </div>

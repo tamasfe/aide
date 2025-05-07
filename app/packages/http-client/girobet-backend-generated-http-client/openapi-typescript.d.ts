@@ -1135,7 +1135,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/game-provider/{provider_id}": {
+    "/game-provider/{provider_identifier}": {
         parameters: {
             query?: never;
             header?: never;
@@ -1155,7 +1155,7 @@ export interface paths {
                 header?: never;
                 path: {
                     /** @description The ID of the game provider. */
-                    provider_id: components["schemas"]["GameProviderId"];
+                    provider_identifier: string;
                 };
                 cookie?: never;
             };
@@ -1187,7 +1187,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/game/{game_id}/session": {
+    "/game/{provider_slug}/{game_slug}/session": {
         parameters: {
             query?: never;
             header?: never;
@@ -1213,8 +1213,8 @@ export interface paths {
                 };
                 header?: never;
                 path: {
-                    /** @description The ID of the game to retrieve. */
-                    game_id: components["schemas"]["GameId"];
+                    game_slug: string;
+                    provider_slug: string;
                 };
                 cookie?: never;
             };
@@ -1262,7 +1262,7 @@ export interface paths {
                     /** @description The category identifier to filter games by. If set, only games in this category are returned. Note: this is not the category ID, but the identifier. */
                     category?: string | null;
                     /** @description The provider to filter games by. If set, only games by this provider are returned. */
-                    provider_id?: number | null;
+                    provider_identifier?: string | null;
                     /** @description An organic search query to find games by. Searched fields include but are not limited to: name, description, provider name... */
                     query?: string | null;
                     limit?: number;
@@ -1279,7 +1279,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["PaginatorResponse_for_SearchGameResponse_and_SearchGameQuery"];
+                        "application/json": components["schemas"]["PaginatorResponse_for_GameSearchResponse_and_SearchGameQuery"];
                     };
                 };
                 "4XX": {
@@ -1317,7 +1317,7 @@ export interface paths {
                     /** @description The type of the game action to filter by. If not set, all game actions (bet, win, etc.) will be included. */
                     action_type?: components["schemas"]["ListBetTypeQuery"] | null;
                     /** @description Game ID to filter the game actions by. If not set, all game actions will be included. */
-                    game_id?: components["schemas"]["GameId"] | null;
+                    game_identifier?: components["schemas"]["GameIdentifier"] | null;
                     limit?: number;
                     offset?: number;
                 };
@@ -1410,7 +1410,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/game/{game_id}/rating": {
+    "/game/{provider_slug}/{game_slug}/rating": {
         parameters: {
             query?: never;
             header?: never;
@@ -1431,8 +1431,8 @@ export interface paths {
                 query?: never;
                 header?: never;
                 path: {
-                    /** @description The ID of the game to retrieve. */
-                    game_id: components["schemas"]["GameId"];
+                    game_slug: string;
+                    provider_slug: string;
                 };
                 cookie?: never;
             };
@@ -1465,7 +1465,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/game/{game_id}/ratings": {
+    "/game/{provider_slug}/{game_slug}/ratings": {
         parameters: {
             query?: never;
             header?: never;
@@ -1481,8 +1481,8 @@ export interface paths {
                 query?: never;
                 header?: never;
                 path: {
-                    /** @description The ID of the game to retrieve. */
-                    game_id: components["schemas"]["GameId"];
+                    game_slug: string;
+                    provider_slug: string;
                 };
                 cookie?: never;
             };
@@ -1521,7 +1521,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/game/{game_id}": {
+    "/game/{provider_slug}/{game_slug}": {
         parameters: {
             query?: never;
             header?: never;
@@ -1539,8 +1539,8 @@ export interface paths {
                 query?: never;
                 header?: never;
                 path: {
-                    /** @description The ID of the game to retrieve. */
-                    game_id: components["schemas"]["GameId"];
+                    game_slug: string;
+                    provider_slug: string;
                 };
                 cookie?: never;
             };
@@ -2553,8 +2553,8 @@ export interface components {
             created_at: string;
             /** @description The currency the amount was in. */
             currency: components["schemas"]["Currency"];
-            /** @description The ID of the game the action was performed on. */
-            game_id: components["schemas"]["GameId"];
+            /** @description The identifier of the game the action was performed on. */
+            game_identifier: components["schemas"]["GameIdentifier"];
             /** @description The name of the game the action was performed on. */
             game_name: string;
             /** @description The ID of the game action. */
@@ -2575,36 +2575,30 @@ export interface components {
         };
         GameCategoryListResponse: {
             /** @description The games in the category. This field is only populated when the category is requested with the `include` parameter set to `games`. */
-            games?: components["schemas"]["SearchGameResponse"][] | null;
+            games?: components["schemas"]["GameSearchResponse"][] | null;
             /** @description The ID of the game category. */
             id: components["schemas"]["GameCategoryId"];
             /** @description The identifier of the game category. This is a unique string that can be used to identify the category in the game search endpoint. */
             identifier: string;
         };
-        /** Format: int64 */
-        GameId: number;
+        /** @description Game identifier, in the format <provider>/<game> */
+        GameIdentifier: string;
         GameParams: {
-            /** @description The ID of the game to retrieve. */
-            game_id: components["schemas"]["GameId"];
+            game_slug: string;
+            provider_slug: string;
         };
-        /** Format: int64 */
-        GameProviderId: number;
         GameProviderParams: {
             /** @description The ID of the game provider. */
-            provider_id: components["schemas"]["GameProviderId"];
+            provider_identifier: string;
         };
         /** @description The response to a game provider request. It contains all available information about the provider. */
         GameProviderResponse: {
             /** @description The description of the game provider. This text does not follow HTML or Markdown, so newlines may need to be handled explicitly. */
             description?: string | null;
-            /** @description The ID of the game provider. */
-            id: components["schemas"]["GameProviderId"];
-            /** @description The URL to the image of the game provider. */
-            image_url?: string | null;
+            /** @description The slug of the game provider. This may be used in URLs. */
+            identifier: string;
             /** @description The name of the game provider. Do not use this in URLs, as it may contain special characters. */
             name: string;
-            /** @description The slug of the game provider. This may be used in URLs. */
-            slug: string;
         };
         /** @enum {string} */
         GameRating: "like" | "dislike";
@@ -2632,10 +2626,8 @@ export interface components {
             description?: string | null;
             /** @description The devices the game is available on. */
             devices: components["schemas"]["Device"][];
-            /** @description The ID of the game. */
-            id: components["schemas"]["GameId"];
-            /** @description The URL to the image of the game. */
-            image_url?: string | null;
+            /** @description The identifier of the game. This may be used in URLs and for game lookups. */
+            identifier: components["schemas"]["GameIdentifier"];
             /** @description Whether the game is available in HD. */
             is_hd: boolean;
             /** @description Additional metadata about the game. This is used to store arbitrary unstructured data and can thus not be relied upon to return a specific data. */
@@ -2654,8 +2646,20 @@ export interface components {
              * @description The date the game was released. If the game has not been released yet, this field is `null`. Unreleased games are not available to play.
              */
             released_at?: string | null;
-            /** @description The slug of the game. This may be used in URLs. */
-            slug: string;
+        };
+        /** @description The response to a game search request. It only contains a limited set of information about the game. If more information is needed, the game ID can be used to fetch the full game details via the "get game" endpoint. */
+        GameSearchResponse: {
+            /** @description The identifier of the game. This may be used in URLs and for game lookups. */
+            identifier: components["schemas"]["GameIdentifier"];
+            /** @description The name of the game. Do not use this in URLs, as it may contain special characters. */
+            name: string;
+            /** @description The provider of the game. */
+            provider: components["schemas"]["SearchGameProviderResponse"];
+            /**
+             * Format: double
+             * @description The search score of the game.
+             */
+            score?: number | null;
         };
         /** @enum {string} */
         Gender: "male" | "female" | "other";
@@ -2718,7 +2722,7 @@ export interface components {
             /** @description The type of the game action to filter by. If not set, all game actions (bet, win, etc.) will be included. */
             action_type?: components["schemas"]["ListBetTypeQuery"] | null;
             /** @description Game ID to filter the game actions by. If not set, all game actions will be included. */
-            game_id?: components["schemas"]["GameId"] | null;
+            game_identifier?: components["schemas"]["GameIdentifier"] | null;
         };
         ListNotificationsQuery: {
             /** @description The read status of the notifications to filter by. */
@@ -2836,6 +2840,10 @@ export interface components {
             data: components["schemas"]["GameActionResponse"][];
             metadata: components["schemas"]["PaginatorMetadata_for_ListGameActionsQuery"];
         };
+        PaginatorResponse_for_GameSearchResponse_and_SearchGameQuery: {
+            data: components["schemas"]["GameSearchResponse"][];
+            metadata: components["schemas"]["PaginatorMetadata_for_SearchGameQuery"];
+        };
         PaginatorResponse_for_NotificationResponse_and_ListNotificationsQuery: {
             data: components["schemas"]["NotificationResponse"][];
             metadata: components["schemas"]["PaginatorMetadata_for_ListNotificationsQuery"];
@@ -2847,10 +2855,6 @@ export interface components {
         PaginatorResponse_for_SearchGameProviderResponse_and_SearchGameProviderQuery: {
             data: components["schemas"]["SearchGameProviderResponse"][];
             metadata: components["schemas"]["PaginatorMetadata_for_SearchGameProviderQuery"];
-        };
-        PaginatorResponse_for_SearchGameResponse_and_SearchGameQuery: {
-            data: components["schemas"]["SearchGameResponse"][];
-            metadata: components["schemas"]["PaginatorMetadata_for_SearchGameQuery"];
         };
         PaginatorSelection: {
             /**
@@ -3062,9 +3066,8 @@ export interface components {
         };
         /** @description The response to a game provider search request. It only contains a limited set of information about the provider. If more information is needed, the provider ID can be used to fetch the full provider details via the "get provider" endpoint. */
         SearchGameProviderResponse: {
-            /** @description The ID of the game provider. */
-            id: components["schemas"]["GameProviderId"];
-            image_url?: string | null;
+            /** @description The slug of the game provider. This may be used in URLs. */
+            identifier: string;
             /** @description The name of the game provider. Do not use this in URLs, as it may contain special characters. */
             name: string;
             /**
@@ -3072,37 +3075,14 @@ export interface components {
              * @description The search score of the game provider.
              */
             score?: number | null;
-            /** @description The slug of the game provider. This may be used in URLs. */
-            slug: string;
         };
         SearchGameQuery: {
             /** @description The category identifier to filter games by. If set, only games in this category are returned. Note: this is not the category ID, but the identifier. */
             category?: string | null;
-            /**
-             * Format: int64
-             * @description The provider to filter games by. If set, only games by this provider are returned.
-             */
-            provider_id?: number | null;
+            /** @description The provider to filter games by. If set, only games by this provider are returned. */
+            provider_identifier?: string | null;
             /** @description An organic search query to find games by. Searched fields include but are not limited to: name, description, provider name... */
             query?: string | null;
-        };
-        /** @description The response to a game search request. It only contains a limited set of information about the game. If more information is needed, the game ID can be used to fetch the full game details via the "get game" endpoint. */
-        SearchGameResponse: {
-            /** @description The ID of the game. */
-            id: components["schemas"]["GameId"];
-            /** @description The URL to the image of the game. */
-            image_url?: string | null;
-            /** @description The name of the game. Do not use this in URLs, as it may contain special characters. */
-            name: string;
-            /** @description The provider of the game. */
-            provider: components["schemas"]["SearchGameProviderResponse"];
-            /**
-             * Format: double
-             * @description The search score of the game.
-             */
-            score?: number | null;
-            /** @description The slug of the game. This may be used in URLs. */
-            slug: string;
         };
         SelectWalletRequest: {
             /** @description The ID of the wallet to select. */
@@ -3387,6 +3367,8 @@ export interface components {
         SiteDomain: {
             /** @description The API domain of the site. */
             api: components["schemas"]["SiteDomainHost"];
+            /** @description The CDN domain of the site, to be used for serving static assets. */
+            cdn: components["schemas"]["SiteDomainHost"];
             /** @description The email domain of the site, to be used for contact purposes. */
             email: components["schemas"]["SiteDomainHost"];
             /** @description The frontend domain of the site. */
@@ -3416,10 +3398,8 @@ export interface components {
             [key: string]: components["schemas"]["SystemValidationErrors"];
         } | components["schemas"]["SystemValidationError"][];
         TickerGame: {
-            /** @description The ID of the game. */
-            id: components["schemas"]["GameId"];
-            /** @description The URL to the image of the game. */
-            image_url?: string | null;
+            /** @description The identifier of the game. This is a unique string that identifies the game across all jurisdictions. */
+            identifier: components["schemas"]["GameIdentifier"];
             /** @description The name of the game. Do not use this in URLs, as it may contain special characters. */
             name: string;
         };

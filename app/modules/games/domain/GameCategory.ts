@@ -1,9 +1,9 @@
-import type { GameSummaryI } from "./Game";
+import type { GameSearchResponse } from "./Game";
 
 interface GameCategoryPropsI {
   id: number;
   identifier: string;
-  games: GameSummaryI[] | null;
+  games: GameSearchResponse[] | null;
 }
 
 export class GameCategory {
@@ -26,7 +26,7 @@ export class GameCategory {
   private constructor(
     public readonly id: number,
     public readonly identifier: string,
-    public readonly games: GameSummaryI[] | null,
+    public readonly games: GameSearchResponse[] | null,
   ) {
   }
 }

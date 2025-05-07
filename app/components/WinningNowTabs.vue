@@ -22,8 +22,7 @@ useCreateSubscriptionToWebsocket(
       currency: message.data.data.currency,
       userNickname: message.data.data.user_nickname,
       game: {
-        id: message.data.data.game.id,
-        imageUrl: message.data.data.game.image_url || null,
+        identifier: message.data.data.game.identifier,
         name: message.data.data.game.name,
       },
     }));
@@ -38,8 +37,7 @@ useCreateSubscriptionToWebsocket(
       currency: message.data.data.currency,
       userNickname: message.data.data.user_nickname,
       game: {
-        id: message.data.data.game.id,
-        imageUrl: message.data.data.game.image_url || null,
+        identifier: message.data.data.game.identifier,
         name: message.data.data.game.name,
       },
     }));

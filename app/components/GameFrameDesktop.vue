@@ -14,12 +14,8 @@ defineProps({
     type: String,
     required: true,
   },
-  gameId: {
-    type: Number,
-    required: true,
-  },
-  gameImageUrl: {
-    type: [String, null],
+  gameIdentifier: {
+    type: String,
     required: true,
   },
   authenticated: {
@@ -40,7 +36,7 @@ const onToggleFullScreen = () => {
 <template>
   <div class="flex flex-col">
     <GameFrameBackdrop
-      :src="gameImageUrl"
+      :game-identifier="gameIdentifier"
       :authenticated="authenticated"
       :replace="true"
       class="h-[70vh]"
@@ -63,7 +59,7 @@ const onToggleFullScreen = () => {
               />
             </div>
           </div>
-          <GameFrameIframe :game-id="gameId" :i-frame-url="iframeUrl" />
+          <GameFrameIframe :game-identifier="gameIdentifier" :i-frame-url="iframeUrl" />
         </div>
         <div
           v-else

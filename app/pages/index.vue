@@ -70,7 +70,7 @@ const { data: categories } = await useAsyncData("home-category-identifiers", asy
           <GridVerticalGames
             :title="tab.label"
             :category-identifier="tab.value"
-            :provider-id="null"
+            :provider-identifier="null"
           />
         </TabsContent>
       </Tabs>
