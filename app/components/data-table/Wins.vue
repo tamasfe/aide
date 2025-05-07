@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { createColumnHelper, type ColumnDef } from "@tanstack/vue-table";
-import { BaseCurrency, BaseLink, GameImage } from "#components";
+import { BaseCurrency, GameImage, GamePageLink } from "#components";
 import type { Win } from "~/types/wins";
 
 const { t } = useI18n();
@@ -18,7 +18,7 @@ const columns: ColumnDef<Win>[] = [
   }),
   column.accessor("game.name", {
     header: t("winning_now.table.header_game"),
-    cell: ({ row }) => h(BaseLink, { to: `/games/${row.original.game.identifier}`, class: "flex items-center space-x-2 hover:underline" }, () => [
+    cell: ({ row }) => h(GamePageLink, { identifier: row.original.game.identifier, class: "flex items-center space-x-2 hover:underline" }, () => [
       h(GameImage, { identifier: row.original.game.identifier, altText: row.original.game.name, class: "w-8 h-8 rounded-lg" }),
       h("span", row.original.game.name),
     ]),

@@ -116,13 +116,13 @@ const onClickLink = () => {
       :loading="providersLoading"
     >
       <template #default="{ item: item }">
-        <BaseLink
-          :to="`/games/${item.identifier}`"
+        <GamePageLink
+          :identifier="item.identifier"
           class="block bg-subtle rounded w-full h-full overflow-hidden"
           @click="onClickLink"
         >
           <ProviderImageLoader :provider-identifier="item.identifier" />
-        </BaseLink>
+        </GamePageLink>
       </template>
     </GridVerticalSearch>
   </div>

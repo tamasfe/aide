@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from "vue";
-import { destructureGameIdentifier } from "~/modules/games/domain/Game";
 
 const props = defineProps<{
   identifier: string;
@@ -36,8 +35,8 @@ const animationClasses = computed(() => {
 </script>
 
 <template>
-  <BaseLink
-    :to="{ name: 'games-provider-game', params: { provider: destructureGameIdentifier(identifier).providerSlug, game: destructureGameIdentifier(identifier).gameSlug } }"
+  <GamePageLink
+    :identifier="identifier"
     :class="cn('block bg-subtle rounded w-full h-full overflow-hidden border border-emphasis/50', animationClasses.link, props.class)"
   >
     <GameImage
@@ -45,5 +44,5 @@ const animationClasses = computed(() => {
       :alt="altText || ''"
       :class="cn('block w-full h-full object-cover cursor-pointer', animationClasses.img)"
     />
-  </BaseLink>
+  </GamePageLink>
 </template>
