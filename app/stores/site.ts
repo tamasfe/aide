@@ -71,13 +71,13 @@ export const useSiteStore = defineStore("siteStore", {
     },
 
     getCdnGameImageUrl(gameIdentifier: string): string {
-      const cdnUrl = this.currentDomain.cdn;
+      const cdnUrl = this.currentDomain.cdn.startsWith("https") ? this.currentDomain.cdn : `https://${this.currentDomain.cdn}`;
 
       return `${cdnUrl}/games/${gameIdentifier}.webp`;
     },
 
     getCdnProviderImageUrl(providerIdentifier: string): string {
-      const cdnUrl = this.currentDomain.cdn;
+      const cdnUrl = this.currentDomain.cdn.startsWith("https") ? this.currentDomain.cdn : `https://${this.currentDomain.cdn}`;
 
       return `${cdnUrl}/providers/${providerIdentifier}.webp`;
     },
