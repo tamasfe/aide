@@ -82,7 +82,7 @@ export const useSiteStore = defineStore("siteStore", {
 
       const baseImagePath = `/games/${gameIdentifier}.webp`;
       if (!options) {
-        return `${cdnUrl}${baseImagePath}`;
+        return `https://${cdnUrl}${baseImagePath}`;
       }
 
       const transformations = [];
@@ -107,12 +107,12 @@ export const useSiteStore = defineStore("siteStore", {
         }
       }
 
-      return `${cdnUrl}/cdn-cgi/image/${transformations.join(",")}${baseImagePath}`;
+      return `https://${cdnUrl}/cdn-cgi/image/${transformations.join(",")}${baseImagePath}`;
     },
     getCdnProviderImageUrl(providerIdentifier: string): string {
       const cdnUrl = this.currentDomain.cdn.startsWith("https") ? this.currentDomain.cdn : `https://${this.currentDomain.cdn}`;
 
-      return `${cdnUrl}/providers/${providerIdentifier}.webp`;
+      return `https://${cdnUrl}/providers/${providerIdentifier}.webp`;
     },
 
   },
