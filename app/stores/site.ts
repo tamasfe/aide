@@ -70,12 +70,45 @@ export const useSiteStore = defineStore("siteStore", {
       return activeLicense;
     },
 
-    getCdnGameImageUrl(gameIdentifier: string): string {
-      const cdnUrl = this.currentDomain.cdn.startsWith("https") ? this.currentDomain.cdn : `https://${this.currentDomain.cdn}`;
+    /**
+     * Options is tied to what our CDN provider supports
+     * In our case: Cloudflare https://developers.cloudflare.com/images/transform-images/transform-via-url/#format
+     */
+    getCdnGameImageUrl(gameIdentifier: string, options?: {
+      format?: "avif" | "webp" | "jpeg";
+      size?: "150w" | "300w" | "600w";
+    }): string {
+      const cdnUrl = this.currentDomain.cdn;
 
-      return `${cdnUrl}/games/${gameIdentifier}.webp`;
+      const baseImageSrc = `${cdnUrl}/games/${gameIdentifier}.webp`;
+      if (!options) {
+        return baseImageSrc;
+      }
+
+      const transformations = [];
+
+      if (options.format) {
+        transformations.push(`format=${options.format}`);
+      }
+
+      if (options.size) {
+        switch (options.size) {
+          case "150w":
+            transformations.push("width=150");
+            transformations.push("quality=75");
+            break;
+          case "300w":
+            transformations.push("width=300");
+            transformations.push("quality=85");
+            break;
+          case "600w":
+            transformations.push("width=600");
+            break;
+        }
+      }
+
+      return `${cdnUrl}/cdn-cgi/image/${transformations.join(",")}/${baseImageSrc}`;
     },
-
     getCdnProviderImageUrl(providerIdentifier: string): string {
       const cdnUrl = this.currentDomain.cdn.startsWith("https") ? this.currentDomain.cdn : `https://${this.currentDomain.cdn}`;
 

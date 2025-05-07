@@ -43,7 +43,7 @@ const emit = defineEmits<{
             v-if="!isMobile"
             :identifier="game.identifier"
             alt=""
-            class="block w-full object-cover aspect-[3/4] transition-transform transform hover:scale-105 cursor-pointer"
+            class="block w-full max-w-48 object-cover aspect-[3/4] transition-transform transform hover:scale-105 cursor-pointer"
           />
         </div>
       </div>

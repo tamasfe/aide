@@ -27,10 +27,12 @@ const props = defineProps<{
       name="authenticated"
     />
     <template v-if="!replace || (replace && !authenticated)">
-      <GameImage
-        :identifier="gameIdentifier"
-        class="absolute top-0 left-0 z-[1] w-full h-full object-cover"
-      />
+      <div class="flex items-center justify-center absolute top-0 inset-x-0 z-[1] object-center h-full object-cover">
+        <GameImage
+          :identifier="gameIdentifier"
+          class="w-auto"
+        />
+      </div>
       <div class="absolute z-[2] top-0 left-0 w-full h-full bg-default/85 backdrop-blur-2xl" />
       <div class="h-full relative z-[3] flex items-center justify-center">
         <slot />
