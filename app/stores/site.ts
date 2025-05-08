@@ -110,7 +110,7 @@ export const useSiteStore = defineStore("siteStore", {
       return `https://${cdnUrl}/cdn-cgi/image/${transformations.join(",")}${baseImagePath}`;
     },
     getCdnProviderImageUrl(providerIdentifier: string): string {
-      const cdnUrl = this.currentDomain.cdn.startsWith("https") ? this.currentDomain.cdn : `https://${this.currentDomain.cdn}`;
+      const cdnUrl = this.currentDomain.cdn;
 
       return `https://${cdnUrl}/providers/${providerIdentifier}/default/white.svg`;
     },
