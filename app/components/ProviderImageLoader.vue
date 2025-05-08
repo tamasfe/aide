@@ -8,7 +8,7 @@ const { providerIdentifier } = defineProps({
 
 const siteStore = useSiteStore();
 
-const imageSrc = computed(() => `${siteStore.getCdnProviderImageUrl(providerIdentifier)}?color=white`);
+const imageSrc = computed(() => `${siteStore.getCdnProviderImageUrl(providerIdentifier)}`);
 </script>
 
 <template>
