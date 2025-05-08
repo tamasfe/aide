@@ -112,7 +112,7 @@ export const useSiteStore = defineStore("siteStore", {
     getCdnProviderImageUrl(providerIdentifier: string): string {
       const cdnUrl = this.currentDomain.cdn.startsWith("https") ? this.currentDomain.cdn : `https://${this.currentDomain.cdn}`;
 
-      return `https://${cdnUrl}/providers/${providerIdentifier}.webp`;
+      return `https://${cdnUrl}/providers/${providerIdentifier}/default/white.svg`;
     },
 
   },
