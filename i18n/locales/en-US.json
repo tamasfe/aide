@@ -318,7 +318,8 @@
         "rollback": "Rollback",
         "wager": "Wager"
       }
-    }
+    },
+    "game_image_alt": "The game {game} from {provider}"
   },
   "legal": {
     "version": "Version",

@@ -317,7 +317,8 @@
         "rollback": "Estorno",
         "wager": "Aposta"
       }
-    }
+    },
+    "game_image_alt": "O jogo {game} do {provider}"
   },
   "legal": {
     "version": "Versão",

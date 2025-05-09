@@ -76,7 +76,7 @@ export const useSiteStore = defineStore("siteStore", {
      */
     getCdnGameImageUrl(gameIdentifier: string, options?: {
       format?: "avif" | "webp" | "jpeg";
-      size?: "150w" | "300w" | "600w";
+      size?: "200w" | "300w" | "600w";
     }): string {
       const cdnDomain = this.currentDomain.cdn;
       const baseImagePath = `/games/${gameIdentifier}.webp`;
@@ -93,8 +93,8 @@ export const useSiteStore = defineStore("siteStore", {
 
       if (options.size) {
         switch (options.size) {
-          case "150w":
-            transformations.push("width=150");
+          case "200w":
+            transformations.push("width=200");
             transformations.push("quality=75");
             break;
           case "300w":
