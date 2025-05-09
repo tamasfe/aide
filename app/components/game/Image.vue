@@ -30,7 +30,7 @@ const onImageLoad = () => {
 </script>
 
 <template>
-  <picture :class="cn(imageExists === false ? 'px-8 block w-full h-full hide-text' : 'block w-full h-full object-cover hide-text', props.class)">
+  <picture :class="cn(imageExists === false ? 'max-w-16 mx-auto block w-full h-full hide-text' : 'block w-full h-full object-cover hide-text', props.class)">
     <template v-if="imageExists">
       <template
         v-for="size in [
