@@ -76,7 +76,8 @@ export const useSiteStore = defineStore("siteStore", {
      */
     getCdnGameImageUrl(gameIdentifier: string, options?: {
       format?: "avif" | "webp" | "jpeg";
-      size?: "200w" | "300w" | "600w";
+      size?: "100w" | "200w" | "300w" | "600w";
+      quality?: "100" | "85" | "75" | "50";
     }): string {
       const cdnDomain = this.currentDomain.cdn;
       const baseImagePath = `/games/${gameIdentifier}.webp`;
@@ -92,19 +93,11 @@ export const useSiteStore = defineStore("siteStore", {
       }
 
       if (options.size) {
-        switch (options.size) {
-          case "200w":
-            transformations.push("width=200");
-            transformations.push("quality=75");
-            break;
-          case "300w":
-            transformations.push("width=300");
-            transformations.push("quality=85");
-            break;
-          case "600w":
-            transformations.push("width=600");
-            break;
-        }
+        transformations.push(`width=${options.size.replace("w", "")}`);
+      }
+
+      if (options.quality) {
+        transformations.push(`quality=${options.quality}`);
       }
 
       return `https://${cdnDomain}/cdn-cgi/image/${transformations.join(",")}${baseImagePath}`;

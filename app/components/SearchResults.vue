@@ -102,6 +102,7 @@ const onClickLink = () => {
           :identifier="game.identifier"
           class="border-none"
           animation-on-hover="vertical-translate"
+          fallback-image-class="px-8"
           @click="onClickLink"
         />
       </template>

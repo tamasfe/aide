@@ -19,7 +19,7 @@ const fallbackAltText = computed(() => {
   });
 });
 
-const fallbackImgSrc = ref(siteStore.getCdnGameImageUrl(props.identifier, { size: "200w" }));
+const fallbackImgSrc = ref(siteStore.getCdnGameImageUrl(props.identifier, { size: "100w", quality: "50" }));
 const imageExists = ref<boolean | null>(null);
 const onImageError = () => {
   imageExists.value = false;
@@ -57,7 +57,7 @@ const onImageLoad = () => {
     <NuxtImg
       :class="cn('block w-full h-full', imageExists ? '' : props.fallbackImageClass)"
       :src="fallbackImgSrc"
-      :placeholder="fallbackImgSrc"
+      :placeholder="siteStore.getAssetPath('images/logos/logo-sm.svg')"
       :alt="altText || fallbackAltText"
       @error="onImageError"
       @load="onImageLoad"
