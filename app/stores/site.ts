@@ -2,7 +2,7 @@ import type { Site } from "~/modules/sites/domain/Site";
 import type { License } from "~/modules/sites/domain/License";
 
 type SiteDomain = Site["domains"][number];
-const defaultDomain: SiteDomain = { api: "https://api-staging.girobet.vip", email: "support@girobet.vip", frontend: "https://staging.girobet.vip", cdn: "https://cdn.girobet.vip" };
+const defaultDomain: SiteDomain = { api: "https://api-staging.girobet.vip", email: "support@girobet.vip", frontend: "https://staging.girobet.vip", cdn: "cdn.girobet.vip" };
 
 const defaultSite: Site = {
   identifier: "girobet",
@@ -78,11 +78,11 @@ export const useSiteStore = defineStore("siteStore", {
       format?: "avif" | "webp" | "jpeg";
       size?: "150w" | "300w" | "600w";
     }): string {
-      const cdnUrl = this.currentDomain.cdn;
-
+      const cdnDomain = this.currentDomain.cdn;
       const baseImagePath = `/games/${gameIdentifier}.webp`;
+
       if (!options) {
-        return `https://${cdnUrl}${baseImagePath}`;
+        return `https://${cdnDomain}${baseImagePath}`;
       }
 
       const transformations = [];
@@ -107,12 +107,12 @@ export const useSiteStore = defineStore("siteStore", {
         }
       }
 
-      return `https://${cdnUrl}/cdn-cgi/image/${transformations.join(",")}${baseImagePath}`;
+      return `https://${cdnDomain}/cdn-cgi/image/${transformations.join(",")}${baseImagePath}`;
     },
     getCdnProviderImageUrl(providerIdentifier: string): string {
-      const cdnUrl = this.currentDomain.cdn;
+      const cdnDomain = this.currentDomain.cdn;
 
-      return `https://${cdnUrl}/providers/${providerIdentifier}/default/white.svg`;
+      return `https://${cdnDomain}/providers/${providerIdentifier}/default/white.svg`;
     },
 
   },
