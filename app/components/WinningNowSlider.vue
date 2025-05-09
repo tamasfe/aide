@@ -90,9 +90,8 @@ useCreateSubscriptionToWebsocket(
         <GamePageLink v-if="item?.game" :identifier="item.game.identifier">
           <div class="relative group flex items-center space-x-3 bg-subtle p-2 rounded-lg outline-none border border-muted/5 h-24">
             <div class="self-strech relative aspect-[3/4] h-full rounded overflow-hidden border border-muted/5">
-              <NuxtImg
-                :src="item.game.identifier"
-                alt=""
+              <GameImage
+                :identifier="item.game.identifier"
                 class="block object-cover h-full w-full transition-transform transform hover:scale-105 cursor-pointer"
               />
             </div>
