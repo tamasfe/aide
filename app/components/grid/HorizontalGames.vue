@@ -87,6 +87,7 @@ if (!props.initialGames) {
       <GameImageLink
         :identifier="game.identifier"
         :animation-on-hover="'vertical-translate'"
+        fallback-image-class="px-8"
       />
     </template>
 

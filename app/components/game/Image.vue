@@ -8,6 +8,7 @@ const props = defineProps<{
   identifier: string;
   altText?: string;
   class?: HTMLAttributes["class"];
+  fallbackImageClass?: HTMLAttributes["class"];
 }>();
 
 const fallbackAltText = computed(() => {
@@ -30,7 +31,7 @@ const onImageLoad = () => {
 </script>
 
 <template>
-  <picture :class="cn(imageExists === false ? 'max-w-16 mx-auto block w-full h-full hide-text' : 'block w-full h-full object-cover hide-text', props.class)">
+  <picture :class="cn('block w-full h-full object-cover hide-text', props.class)">
     <template v-if="imageExists">
       <template
         v-for="size in [
@@ -54,7 +55,7 @@ const onImageLoad = () => {
       </template>
     </template>
     <NuxtImg
-      class="block w-full h-full"
+      :class="cn('block w-full h-full', imageExists ? '' : props.fallbackImageClass)"
       :src="fallbackImgSrc"
       :placeholder="fallbackImgSrc"
       :alt="altText || fallbackAltText"

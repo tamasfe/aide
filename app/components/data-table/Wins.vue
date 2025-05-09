@@ -19,7 +19,7 @@ const columns: ColumnDef<Win>[] = [
   column.accessor("game.name", {
     header: t("winning_now.table.header_game"),
     cell: ({ row }) => h(GamePageLink, { identifier: row.original.game.identifier, class: "flex items-center space-x-2 hover:underline" }, () => [
-      h(GameImage, { identifier: row.original.game.identifier, altText: row.original.game.name, class: "w-8 h-8 rounded-lg" }),
+      h(GameImage, { identifier: row.original.game.identifier, altText: row.original.game.name, class: "w-8 h-8 rounded-lg", "fallback-image-class": "px-1.5" }),
       h("span", row.original.game.name),
     ]),
   }),
