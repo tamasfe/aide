@@ -19,17 +19,19 @@ const fallbackAltText = computed(() => {
 });
 
 const fallbackImgSrc = ref(siteStore.getCdnGameImageUrl(props.identifier, { size: "200w" }));
-const showFallbackImg = ref(false);
-
+const imageExists = ref<boolean | null>(null);
 const onImageError = () => {
-  showFallbackImg.value = true;
+  imageExists.value = false;
   fallbackImgSrc.value = siteStore.getAssetPath("images/logos/logo-sm.svg");
+};
+const onImageLoad = () => {
+  imageExists.value = true;
 };
 </script>
 
 <template>
-  <picture :class="cn(showFallbackImg ? 'px-8 block w-full h-full' : 'block w-full h-full object-cover', props.class)">
-    <template v-if="!showFallbackImg">
+  <picture :class="cn(imageExists === false ? 'px-8 block w-full h-full hide-text' : 'block w-full h-full object-cover hide-text', props.class)">
+    <template v-if="imageExists">
       <template
         v-for="size in [
           { imageSize: '200w' as const, screenSize: '400px' },
@@ -42,9 +44,11 @@ const onImageError = () => {
           <source
             :type="`image/${format}`"
             :alt="altText || fallbackAltText"
+            :placeholder="fallbackImgSrc"
             :media="size.screenSize ? `(max-width: ${size.screenSize})` : ''"
             :srcset="
               `${siteStore.getCdnGameImageUrl(props.identifier, { format, size: size.imageSize })}`"
+            @error="onImageError"
           >
         </template>
       </template>
@@ -55,6 +59,15 @@ const onImageError = () => {
       :placeholder="fallbackImgSrc"
       :alt="altText || fallbackAltText"
       @error="onImageError"
+      @load="onImageLoad"
     />
   </picture>
 </template>
+
+<style scoped>
+.hide-text {
+    text-indent: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+}
+</style>
