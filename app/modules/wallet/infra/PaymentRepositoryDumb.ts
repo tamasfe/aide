@@ -32,12 +32,22 @@ export class PaymentRepositoryDumb implements PaymentRepositoryI {
       pix: {
         code: "code_returned",
       },
+      metadata: {
+        paymentCounts: {
+          total: Math.floor(Math.random() * 100),
+        },
+      },
     });
   }
 
   public async createWithdrawalFlow(_amount: number, _currency: WalletCurrency, _paymentMethodId: number) {
     return success({
       flowId: 123,
+      metadata: {
+        paymentCounts: {
+          total: Math.floor(Math.random() * 100),
+        },
+      },
     });
   }
 

@@ -15,15 +15,13 @@ export class CreateDepositFlow {
       return result;
     }
 
-    const VARIABLE_TO_REMOVE_ONCE_BACKEND_RETURNS_RESPONSE = 1234567890;
-
     await this.asyncMessagePublisher.emit("girobet:events:payments:deposit-flow-created", {
       paymentMethodId,
       flowId: Number(result.value.flowId),
       code: result.value.pix.code,
       amount,
       currency,
-      sucessfulDeposits: VARIABLE_TO_REMOVE_ONCE_BACKEND_RETURNS_RESPONSE,
+      totalDeposits: result.value.metadata.paymentCounts.total,
     });
 
     return success();

@@ -90,6 +90,11 @@ export class PaymentRepositoryGirobet implements PaymentRepositoryI {
           pix: {
             code: data.pix.code,
           },
+          metadata: {
+            paymentCounts: {
+              total: data.status_counts.total,
+            },
+          },
         });
       }
 
@@ -145,6 +150,11 @@ export class PaymentRepositoryGirobet implements PaymentRepositoryI {
       if (data) {
         return success({
           flowId: data.flow_id,
+          metadata: {
+            paymentCounts: {
+              total: data.status_counts.total,
+            },
+          },
         });
       }
 

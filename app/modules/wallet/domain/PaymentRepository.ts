@@ -22,12 +22,12 @@ export interface PaymentRepositoryI {
 
   createDepositFlow(amount: number, currency: WalletCurrency, paymentMethodId: number): Promise<
     Result<
-      { flowId: number; pix: { code: string } },
+      { flowId: number; pix: { code: string }; metadata: { paymentCounts: { total: number } } },
       ErrorPendingPaymentFlow | ErrorPaymentMethodNotAllowed | ErrorPaymentAmountOutsideLimits | ErrorPaymentAmountExceedsTimeframeLimits | InfrastructureError
     >>;
   createWithdrawalFlow(amount: number, currency: WalletCurrency, paymentMethodId: number): Promise<
     Result<
-      { flowId: number },
+      { flowId: number; metadata: { paymentCounts: { total: number } } },
       ErrorPendingPaymentFlow | ErrorWalletHasInsufficientWagers | ErrorInsufficientFunds | ErrorPaymentAmountExceedsTimeframeLimits | ErrorWalletPaymentCooldownNotFinished | ErrorPaymentMethodNotAllowed | ErrorPaymentAmountOutsideLimits | InfrastructureError
     >>;
 }

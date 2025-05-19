@@ -61,20 +61,20 @@ export default defineNuxtPlugin({
       fireGtmEvent(gtm, "SIGNUP", { user_id: String(userStore.user?.id || "") });
     });
 
-    $dependencies.common.asyncMessagePublisher.subscribe("girobet:events:payments:deposit-flow-created", async ({ amount, currency, sucessfulDeposits }) => {
+    $dependencies.common.asyncMessagePublisher.subscribe("girobet:events:payments:deposit-flow-created", async ({ amount, currency, totalDeposits }) => {
       const gtm = useGtm();
       if (!gtm) {
         return;
       }
-      fireGtmEvent(gtm, "DEPOSIT_INITIATED", { amount_decimal: amount, deposit_count: sucessfulDeposits, currency, user_id: String(userStore.user?.id || "") });
+      fireGtmEvent(gtm, "DEPOSIT_INITIATED", { amount_decimal: amount, deposit_count: totalDeposits, currency, user_id: String(userStore.user?.id || "") });
     });
 
-    $dependencies.common.asyncMessagePublisher.subscribe("girobet:events:payments:withdrawal-flow-created", async ({ amount, currency, sucessfulWithdrawals }) => {
+    $dependencies.common.asyncMessagePublisher.subscribe("girobet:events:payments:withdrawal-flow-created", async ({ amount, currency, totalWithdrawals }) => {
       const gtm = useGtm();
       if (!gtm) {
         return;
       }
-      fireGtmEvent(gtm, "WITHDRAWAL_INITIATED", { amount_decimal: amount, withdrawal_count: sucessfulWithdrawals, currency, user_id: String(userStore.user?.id || "") });
+      fireGtmEvent(gtm, "WITHDRAWAL_INITIATED", { amount_decimal: amount, withdrawal_count: totalWithdrawals, currency, user_id: String(userStore.user?.id || "") });
     });
 
     $dependencies.common.asyncMessagePublisher.subscribe("girobet-backend:events:tracker:payment-updated", async (event) => {

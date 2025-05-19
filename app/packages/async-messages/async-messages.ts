@@ -93,13 +93,13 @@ export interface AsyncMessagesTypes {
     code: string;
     amount: number;
     currency: WalletCurrency;
-    sucessfulDeposits: number;
+    totalDeposits: number;
   };
   "girobet:events:payments:withdrawal-flow-created": {
     flowId: number;
     amount: number;
     currency: WalletCurrency;
-    sucessfulWithdrawals: number;
+    totalWithdrawals: number;
   };
 
   "girobet:events:websockets:connection-state-changed": {
