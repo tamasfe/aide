@@ -18,6 +18,9 @@ export class WebsocketConnectionWebsocketTs implements WebsocketConnectionI {
     return new WebsocketConnectionWebsocketTs(websocketConnectUrl, logger, asyncMessagePublisher);
   }
 
+  /**
+   * For the "tracker" channel: the WS connection needs to have already entered the "user" channel. If not, the backend will return an error.
+   */
   public async enterChannel(
     payload:
       | { channel: "user"; accessToken: string }
@@ -45,6 +48,18 @@ export class WebsocketConnectionWebsocketTs implements WebsocketConnectionI {
         };
         this.addListener(listenerToConfirmChannelEntering, listenerId);
         this.emit({ type: "user_login", data: payload.accessToken });
+        return;
+      }
+
+      if (payload.channel === "tracker") {
+        const listenerToConfirmChannelEntering = (_i: Websocket, event: MessageEvent<string>) => {
+          const message = JSON.parse(event.data) as WebsocketMessagesFromServer;
+          if (message.type === "protocol" && message.data === "tracker_entered") {
+            return resolve(success());
+          }
+        };
+        this.addListener(listenerToConfirmChannelEntering, listenerId);
+        this.emit({ type: "tracker_enter" });
         return;
       }
 
@@ -78,6 +93,10 @@ export class WebsocketConnectionWebsocketTs implements WebsocketConnectionI {
         this.emit({ data: "newest_wins", type: "channel_leave" });
         this.logger.debug("WS - Left channel", { channel });
         return success();
+
+      case "tracker":
+        this.logger.warn("WS - Attempted to leave the tracker channel. But as of now the only way to do is to leave the 'user' channel.", { channel });
+        return success();
     }
   }
 
@@ -101,6 +120,16 @@ export class WebsocketConnectionWebsocketTs implements WebsocketConnectionI {
               listener(message as WebsocketMessagesByType[T]);
             }
             return;
+
+          case "balance_update":
+          case "tracker":
+            if (typeof message.data === "object" && "type" in message && message.type === "tracker") {
+              listener(message as WebsocketMessagesByType[T]);
+            }
+            return;
+
+          default:
+            throw new Error(`The message type: "${type}" has not been handled here yet`);
         }
       }
       catch (error) {

@@ -55,10 +55,11 @@ export class SearchPaymentsOnTable {
             case "waiting_for_approval":
             case "approved":
             case "processing":
-            case "completed":
+            case "succeeded":
             case "failed":
             case "rejected":
             case "refunded":
+            case "initiated":
               return this.t(`wallet.payment.status.${payment.status}`);
           }
         })();

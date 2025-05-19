@@ -306,7 +306,9 @@
         "failed": "Failed",
         "cancelled": "Cancelled",
         "rejected": "Rejected",
-        "refunded": "Refunded"
+        "refunded": "Refunded",
+        "succeeded": "Succeeded",
+        "initiated": "Initiated"
       }
     }
   },
@@ -481,6 +483,10 @@
       "failed": {
         "title": "Payment failed",
         "message": "Please try again"
+      },
+      "waiting_for_approval": {
+        "title": "Payment waiting for approval",
+        "message": "Your wallet will be adjusted accordingly once the payment is approved"
       }
     },
     "kyc_completed": {

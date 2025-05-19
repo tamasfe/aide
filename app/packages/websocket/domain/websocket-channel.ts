@@ -1,1 +1,1 @@
-export type WebsocketChannel = "user" | "newest_wins";
+export type WebsocketChannel = "user" | "newest_wins" | "tracker";

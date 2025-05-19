@@ -1,3 +1,33 @@
+type GtmEvent = "LOGIN" | "LOGOUT" | "SIGNUP" | "DEPOSIT_INITIATED" | "WITHDRAWAL_INITIATED" | "DEPOSIT_SUCCEEDED" | "WITHDRAWAL_SUCCEEDED";
+
+/**
+ * Safely-typed util function to fire our GiroBet GTM events.
+ * Take into account that the variable names are not to be changed here, they need to match the GTM data layer variable names
+ * specified in the GTM container.
+ */
+const fireGtmEvent = <E extends GtmEvent>(gtm: NonNullable<ReturnType<typeof useGtm>>, event: E, data: E extends "LOGIN" | "LOGOUT" | "SIGNUP" ? { user_id: string } :
+  E extends "DEPOSIT_INITIATED" | "DEPOSIT_SUCCEEDED" ?
+      {
+        amount_decimal: number;
+        currency: string;
+        user_id: string;
+        deposit_count: number;
+      } : E extends "WITHDRAWAL_INITIATED" | "WITHDRAWAL_SUCCEEDED" ? {
+        amount_decimal: number;
+        currency: string;
+        user_id: string;
+        withdrawal_count: number;
+      } : never) => {
+  gtm.trackEvent({
+    event,
+    value: "amount_decimal" in data ? data.amount_decimal : null,
+    ...data,
+    // label: to define
+    // action: to define
+    // category: to define
+  });
+};
+
 export default defineNuxtPlugin({
   name: "package-google-tag-manager",
   dependsOn: ["dependency-injection"],
@@ -6,9 +36,6 @@ export default defineNuxtPlugin({
     const userStore = useUserStore();
     const { $dependencies } = useNuxtApp();
 
-    /**
-     * login & logout GTM triggers
-     */
     watch(() => userStore.isAuthenticated, (isAuthenticated) => {
       const gtm = useGtm();
       if (!gtm) {
@@ -19,41 +46,51 @@ export default defineNuxtPlugin({
         if (!userStore.user) {
           return;
         }
-        gtm.trackEvent({ event: "LOGIN", user_id: String(userStore.user.id) });
+        fireGtmEvent(gtm, "LOGIN", { user_id: String(userStore.user.id) });
       }
       else if (isAuthenticated === false) {
-        gtm.trackEvent({ event: "LOGOUT", userId: "" });
+        fireGtmEvent(gtm, "LOGOUT", { user_id: String(userStore.user?.id || "") });
       }
     });
 
-    /**
-     * signup GTM trigger
-     */
     $dependencies.common.asyncMessagePublisher.subscribe("girobet:events:signup-flows:signup-flow-submitted", async () => {
       const gtm = useGtm();
       if (!gtm) {
         return;
       }
-      gtm.trackEvent({ event: "SIGNUP" });
+      fireGtmEvent(gtm, "SIGNUP", { user_id: String(userStore.user?.id || "") });
     });
 
-    /**
-     * deposit & withdrawal GTM triggers
-     */
-    $dependencies.common.asyncMessagePublisher.subscribe("girobet:events:payments:deposit-flow-created", async ({ amount, currency }) => {
+    $dependencies.common.asyncMessagePublisher.subscribe("girobet:events:payments:deposit-flow-created", async ({ amount, currency, sucessfulDeposits }) => {
       const gtm = useGtm();
       if (!gtm) {
         return;
       }
-      gtm.trackEvent({ event: "DEPOSIT_INITIATED", amount_decimal: amount, currency, user_id: String(userStore.user?.id || "") });
+      fireGtmEvent(gtm, "DEPOSIT_INITIATED", { amount_decimal: amount, deposit_count: sucessfulDeposits, currency, user_id: String(userStore.user?.id || "") });
     });
 
-    $dependencies.common.asyncMessagePublisher.subscribe("girobet:events:payments:withdrawal-flow-created", async ({ amount, currency }) => {
+    $dependencies.common.asyncMessagePublisher.subscribe("girobet:events:payments:withdrawal-flow-created", async ({ amount, currency, sucessfulWithdrawals }) => {
       const gtm = useGtm();
       if (!gtm) {
         return;
       }
-      gtm.trackEvent({ event: "WITHDRAWAL_INITIATED", amount_decimal: amount, currency, user_id: String(userStore.user?.id || "") });
+      fireGtmEvent(gtm, "WITHDRAWAL_INITIATED", { amount_decimal: amount, withdrawal_count: sucessfulWithdrawals, currency, user_id: String(userStore.user?.id || "") });
+    });
+
+    $dependencies.common.asyncMessagePublisher.subscribe("girobet-backend:events:tracker:payment-updated", async (event) => {
+      const gtm = useGtm();
+      if (!gtm) {
+        return;
+      }
+
+      if (event.status === "succeeded") {
+        if (event.paymentType === "deposit") {
+          fireGtmEvent(gtm, "DEPOSIT_SUCCEEDED", { amount_decimal: event.amount, deposit_count: event.statusCounts.succeeded, currency: event.currency, user_id: String(userStore.user?.id || "") });
+        }
+        if (event.paymentType === "withdrawal") {
+          fireGtmEvent(gtm, "WITHDRAWAL_SUCCEEDED", { amount_decimal: event.amount, withdrawal_count: event.statusCounts.succeeded, currency: event.currency, user_id: String(userStore.user?.id || "") });
+        }
+      }
     });
   },
 });

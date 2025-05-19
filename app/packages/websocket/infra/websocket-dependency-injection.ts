@@ -4,6 +4,7 @@ import { WebsocketLeaseRepositoryGirobet } from "./websocket-lease-repository-gi
 import { CreateWebsocketConnection } from "./ui/create-websocket-connection";
 import { WebsocketChannelManagerUser } from "./ui/websocket-channel-manager-user";
 import { WebsocketChannelManagerNewWins } from "./ui/websocket-channel-manager-new-wins";
+import { WebsocketChannelManagerTracker } from "./ui/websocket-channel-manager-tracker";
 import type { CommonDependenciesI } from "~/dependency-injection/load-di";
 
 export interface WebsocketDependencyInjectionI {
@@ -12,6 +13,7 @@ export interface WebsocketDependencyInjectionI {
     wsChannelManagers: {
       user: WebsocketChannelManagerUser;
       newestWins: WebsocketChannelManagerNewWins;
+      tracker: WebsocketChannelManagerTracker;
     };
   };
 }
@@ -25,6 +27,7 @@ export const createWebsocketDependencyInjectionI: (config: PublicRuntimeConfig, 
       wsChannelManagers: {
         user: new WebsocketChannelManagerUser(websocketLeaseRepository, commonDependencies.asyncMessagePublisher, commonDependencies.logger),
         newestWins: new WebsocketChannelManagerNewWins(commonDependencies.logger, commonDependencies.asyncMessagePublisher),
+        tracker: new WebsocketChannelManagerTracker(commonDependencies.logger, commonDependencies.asyncMessagePublisher),
       },
     },
   };

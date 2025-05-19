@@ -15,10 +15,13 @@ export class CreateWithdrawalFlow {
       return result;
     }
 
+    const VARIABLE_TO_REMOVE_ONCE_BACKEND_RETURNS_RESPONSE = 1234567890;
+
     await this.asyncMessagePublisher.emit("girobet:events:payments:withdrawal-flow-created", {
       flowId: result.value.flowId,
       amount,
       currency,
+      sucessfulWithdrawals: VARIABLE_TO_REMOVE_ONCE_BACKEND_RETURNS_RESPONSE,
     });
 
     return success();

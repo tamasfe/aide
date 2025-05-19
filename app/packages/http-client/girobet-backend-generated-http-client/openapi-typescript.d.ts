@@ -70,6 +70,9 @@ export interface paths {
                     };
                     content?: never;
                 };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *     This enum covers a wide range of error scenarios, from wallet-related issues to payment processing problems, user authentication errors, and more. */
                 "4XX": {
                     headers: {
                         [name: string]: unknown;
@@ -115,2104 +118,9 @@ export interface paths {
                     };
                     content?: never;
                 };
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/auth/whoami": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Whoami
-         * @description The whoami endpoint returns some basic information about the currently logged in user.
-         *     This is primarily used for verifying that the user is logged in.
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["WhoamiResponse"];
-                    };
-                };
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/auth/fasttrack-token": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Fasttrack token
-         * @description This endpoint returns a JWT token, to be used by the Fasttrack frontend SDK for user verification
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["GetFasttrackTokenResponseBody"];
-                    };
-                };
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/auth/login": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Login
-         * @description Authenticates a user and sets the session cookie
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["LoginRequest"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/auth/logout": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Logout
-         * @description User logout, which will forcefully expire the current session cookie.
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/auth/forgot-password": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Password reset request
-         * @description This endpoint will take a user email and send out a password reset email to the user.
-         *     The email will contain a link that the user can click on to reset their password. The link will be valid for 60 minutes.
-         *     Note that this endpoint will always return a 200 status code, even if the email does not exist in the database.
-         *     This is to prevent attackers from using this endpoint to determine if an email exists in the database.
-         *     The endpoint will also always take the same amount of time to respond, regardless of whether the email exists in the database or not.
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["InitializePasswordResetRequest"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/auth/reset-password": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Password reset
-         * @description This endpoint takes a password reset token and the newly chosen password from the user.
-         *     The token is sent to the user's email when they request a password reset.
-         *     If the token is valid, the user's password will be updated to the new password.
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["FinalizePasswordResetRequest"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/signup/flow": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Create Signup Flow
-         * @description Create a new signup flow that can be incrementally patched and the submitted for completion.
-         *     This endpoint requires the `CF-IPCountry` header to be set and to be a valid jurisdiction.
-         *     This header is normally set by Cloudflare and is used to determine the jurisdiction of the user,
-         *     buy you may also set it manually during development.
-         *     Note that you may need to configure the CORS settings to allow the `CF-IPCountry` header to be sent.
-         *
-         *     The ID returned by the signup flow can be stored in the frontend URL or other storage
-         *     to recover the signup flow if the user reloads the page or does other destructive actions.
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["CreateSignupFlowResponse"];
-                    };
-                };
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/signup/flow/{flow_id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get Signup Flow
-         * @description Get the specified signup flow and all the fields that have been added to it.
-         *     Use this for recovering form data if the user reloads the page or does other destructive actions.
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    /** @description The ID of the signup flow to retrieve. */
-                    flow_id: string;
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["SignupFlowResponse"];
-                    };
-                };
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        /**
-         * Submit Signup Flow
-         * @description Submit the specified signup flow and create the user entry.
-         *     This can fail if certain validation of fields and jurisdiction dependent information is unsuccessful.
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    /** @description The ID of the signup flow to retrieve. */
-                    flow_id: string;
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Update Signup Flow
-         * @description
-         *     Patch the specified signup flow with additional information.
-         *
-         *     Example request body for brazilian users:
-         *     ```
-         *      {
-         *     	"first_name": "John",
-         *     	"last_name": "Doe",
-         *     	"email": "john@doe.com",
-         *     	"password": "test",
-         *     	"CPF": "549.448.010-09",
-         *     	"signup_params": {           // optional
-         *     		"utm_source": "google",
-         *     		"utm_medium": "cpc",
-         *     		"utm_campaign": "test",
-         *     		"utm_term": "test",
-         *     		"utm_content": "test",
-         *     		"utm_referrer": "test",
-         *     		"utm_adgroup": "test",
-         *     		"utm_ad": "test",
-         *     		"utm_creative": "test",
-         *     		"utm_matchtype": "test",
-         *     		"utm_network": "test",
-         *     		"utm_device": "test"
-         *     	}
-         *     }
-         *     ```
-         *
-         *     #### Testing CPFs that you can use to create a user
-         *
-         *     - 549.448.010-09
-         *     - 653.358.910-50
-         *     - 715.176.900-80
-         *     - 395.677.760-32
-         *     - 993.093.100-73
-         *
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    /** @description The ID of the signup flow to retrieve. */
-                    flow_id: string;
-                };
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["PatchSignupFlowRequest"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/payment/deposit": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Create Deposit Flow
-         * @description Create a new deposit flow.
-         *         This flow will be active as long as we don't receive a
-         *         confirmation from our payment providers, that a deposit has been completed.
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["PaymentTransactionRequest"];
-                };
-            };
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["CreateDepositFlowResponse"];
-                    };
-                };
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/payment/withdraw": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Create Withdrawal Flow
-         * @description Create a withdrawal flow.
-         *         This flow will be active as long as we don't receive a confirmation from our payment provider,
-         *         that they have successfully withdrawn the desired amount into the user's bank account.
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["PaymentTransactionRequest"];
-                };
-            };
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["CreateWithdrawalFlowResponse"];
-                    };
-                };
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/payment/list": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * List Payment Flows
-         * @description List all payment flows for the currently logged in user.
-         */
-        get: {
-            parameters: {
-                query?: {
-                    /** @description The payment type to filter the payment flows by. If not set, all payment types will be included. */
-                    payment_type?: components["schemas"]["PaymentType"] | null;
-                    /** @description The wallet ID to filter the payment flows by. If not set, all wallets of the user will be included. */
-                    wallet_id?: components["schemas"]["WalletId"] | null;
-                    limit?: number;
-                    offset?: number;
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["PaginatorResponse_for_PaymentFlowResponse_and_ListPaymentFlowsQuery"];
-                    };
-                };
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/payment/limits": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get Payment Limits
-         * @description Get the payment limits for the currently logged in user.
-         */
-        get: {
-            parameters: {
-                query: {
-                    /** @description The currency to get the payment limits for. */
-                    currency: components["schemas"]["Currency"];
-                    /** @description The payment method to get the payment limits for. */
-                    payment_method_id: components["schemas"]["PaymentMethodId"];
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["PaymentLimitsResponse"];
-                    };
-                };
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/payment/methods": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get Payment Methods
-         * @description Get all payment methods that can be used by the the user for the given currency.
-         */
-        get: {
-            parameters: {
-                query: {
-                    /** @description The currency to get the payment methods for. */
-                    currency: components["schemas"]["Currency"];
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["PaymentMethodResponse"][];
-                    };
-                };
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/payment/{flow_id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get Payment Flow
-         * @description Get a payment flow by its ID.
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    /** @description The ID of the payment flow. */
-                    flow_id: components["schemas"]["PaymentFlowId"];
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["PaymentFlowResponse"];
-                    };
-                };
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/system/licenses": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get Matched Licenses
-         * @description Get the available system licenses for the requested jurisdiction/site header combination.
-         *             The licenses are ordered in their priority order,
-         *             and thus the first license in the list is the most preferred one.
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["LicenseResponse"][];
-                    };
-                };
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/system/site": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get Matched Site
-         * @description The the matched site based on the host header.
-         *             Use this to differentiate between different sites in a multi-site setup,
-         *             allowing for different configurations, themes, etc.
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["Site"];
-                    };
-                };
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/system/preflight": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Preflight Check
-         * @description This preflight endpoint should be the first endpoint
-         *             to be called by the client or the SSR implementation.
-         *             It is used to check if the user is able to access the
-         *             host + jurisdiction combination. Should they not be allowed to access
-         *             the site, the endpoint will return a `JURISDICTION_NOT_SUPPORTED` error,
-         *             possibly containing a list of alternative sites that the user can access.
-         *
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/game-provider/search": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Search Game Providers
-         * @description Search for games providers by providing a search query.
-         */
-        get: {
-            parameters: {
-                query?: {
-                    /** @description An organic search query to find game providers by. Searched fields include but are not limited to: name, description, slug... */
-                    query?: string | null;
-                    limit?: number;
-                    offset?: number;
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["PaginatorResponse_for_SearchGameProviderResponse_and_SearchGameProviderQuery"];
-                    };
-                };
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/game-provider/{provider_identifier}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get Game Provider
-         * @description Get a game provider by its ID.
-         *             This can be used to show a more detailed view of of the
-         *             provider profile in the frontend, which may require more data than
-         *             the search endpoint provides.
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    /** @description The ID of the game provider. */
-                    provider_identifier: string;
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["GameProviderResponse"];
-                    };
-                };
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/game/{provider_slug}/{game_slug}/session": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Create Game Session
-         * @description Create a new game session by providing the game ID,
-         *         as well as the currency with which the game should be played with,
-         *         and the client type of the user.
-         *         The response will redirect the user to the third party URL of the game provider.
-         *         Please note that this request should be used in conjunction with an iframe,
-         *         so that the user does not get redirected from the casino website.
-         */
-        get: {
-            parameters: {
-                query: {
-                    /** @description The device type the game session is started on. Some games may only be available on certain devices. */
-                    client_type: components["schemas"]["Device"];
-                    /** @description The currency (wallet) to use for the game session. It can not be changed during the session. */
-                    currency: components["schemas"]["Currency"];
-                };
-                header?: never;
-                path: {
-                    game_slug: string;
-                    provider_slug: string;
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description no content */
-                307: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/game/search": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Search Games
-         * @description Search for games by providing a search query.
-         */
-        get: {
-            parameters: {
-                query?: {
-                    /** @description The category identifier to filter games by. If set, only games in this category are returned. Note: this is not the category ID, but the identifier. */
-                    category?: string | null;
-                    /** @description The provider to filter games by. If set, only games by this provider are returned. */
-                    provider_identifier?: string | null;
-                    /** @description An organic search query to find games by. Searched fields include but are not limited to: name, description, provider name... */
-                    query?: string | null;
-                    limit?: number;
-                    offset?: number;
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["PaginatorResponse_for_GameSearchResponse_and_SearchGameQuery"];
-                    };
-                };
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/game/action/list": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * List Game Actions
-         * @description Get a list of all game actions of the user.
-         */
-        get: {
-            parameters: {
-                query?: {
-                    /** @description The type of the game action to filter by. If not set, all game actions (bet, win, etc.) will be included. */
-                    action_type?: components["schemas"]["ListBetTypeQuery"] | null;
-                    /** @description Game ID to filter the game actions by. If not set, all game actions will be included. */
-                    game_identifier?: components["schemas"]["GameIdentifier"] | null;
-                    limit?: number;
-                    offset?: number;
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["PaginatorResponse_for_GameActionResponse_and_ListGameActionsQuery"];
-                    };
-                };
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/game/category/list": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get Available Game Categories
-         * @description Get a list of all game categories available in the casino.
-         *         This can be used to show a list of game categories to the user,
-         *         so that they can choose which category they want to explore.
-         *         There are two major types of categories, staic and dynamic.
-         *         Static categories are predefined by the casino, while dynamic categories
-         *         cover games based on user behavior and other factors.
-         *         Dynamic categories are recalcuated periodically.
-         */
-        get: {
-            parameters: {
-                query?: {
-                    /** @description The group of game categories to filter by. If set, only categories in this group are returned. */
-                    group?: components["schemas"]["GameCategoryGroupType"] | null;
-                    /** @description Whether to include the games in the category in the response. If set to `true`, the games in the category are included in the response. */
-                    include_games?: boolean;
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["GameCategoryListResponse"][];
-                    };
-                };
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/game/{provider_slug}/{game_slug}/rating": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Rate Game
-         * @description Rate a game by its ID.
-         *         This can be used to allow users to rate games,
-         *         so that other users can see the rating of the game.
-         *         Sending a rating of null will remove the rating of the user.
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    game_slug: string;
-                    provider_slug: string;
-                };
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["RateGameRequest"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                204: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/game/{provider_slug}/{game_slug}/ratings": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get Game Ratings
-         * @description User ratings split up into likes and dislikes
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    game_slug: string;
-                    provider_slug: string;
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["GameRatingsResponse"];
-                    };
-                };
-                /** @description no content */
-                204: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/game/{provider_slug}/{game_slug}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get Game
-         * @description Get a game by its ID. This can be used to show a more detailed view of a game,
-         *         including its name, description,
-         *         and other metadata, that might be required to display the game on the frontend.
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    game_slug: string;
-                    provider_slug: string;
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["GameResponse"];
-                    };
-                };
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/notification/list": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get All Notifications
-         * @description Get a list of all notifications for the current user.
-         */
-        get: {
-            parameters: {
-                query?: {
-                    /** @description The read status of the notifications to filter by. */
-                    read_status?: components["schemas"]["ReadStatus"] | null;
-                    /** @description The types of the notifications to filter by. */
-                    types?: components["schemas"]["NotificationTypeDiscriminants"][] | null;
-                    limit?: number;
-                    offset?: number;
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["PaginatorResponse_for_NotificationResponse_and_ListNotificationsQuery"];
-                    };
-                };
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/notification/{notification_id}/read-status": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Update Notification Read Status
-         * @description Mark a notification as read.
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    /** @description The ID of the notification to retrieve. */
-                    notification_id: components["schemas"]["NotificationId"];
-                };
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["ReadStatus"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/user/profile": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get User Profile
-         * @description Get the user profile of the currently logged in user.
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["UserResponse"];
-                    };
-                };
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/user/balance": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get User Balance
-         * @description Get the balance of the currently logged in user. The wallets are returned in the order of their selection. Frontends mays utilize this order to display the wallets, and to identify the active wallet.
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["UserWalletBalanceResponse"][];
-                    };
-                };
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/user/settings": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get User Settings
-         * @description Get the settings of the currently logged in user.
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["PatchUserSettingsRequest"];
-                    };
-                };
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Update User Settings
-         * @description Update the settings of the currently logged in user.
-         *
-         *     This endpoint allows for partial updates of the user settings, by
-         *     only updating the fields that are provided in the request.
-         *
-         *     If a field is set to `null`, it will be reset to the default value.
-         *
-         *     If a field is not provided, it will not be updated.
-         *
-         *     Partial updates follow the [RFC 7396](https://datatracker.ietf.org/doc/html/rfc7396) JSON Merge Patch standard.
-         *
-         *     ```json
-         *     // Given the following JSON
-         *     {
-         *     	"title": "Goodbye!",
-         *     	"author" : {
-         *     		"givenName" : "John",
-         *     		"familyName" : "Doe"
-         *     	},
-         *     	"tags":[ "example", "sample" ],
-         *     	"content": "This will be unchanged"
-         *     }
-         *
-         *     // Merged with the following patch
-         *     {
-         *     	"title": "Hello!",
-         *     	"phoneNumber": "+01-123-456-7890",
-         *     	"author": {
-         *     		"familyName": null
-         *     	},
-         *     	"tags": [ "example" ]
-         *     }
-         *
-         *     // Will result in the following JSON
-         *     {
-         *     	"title": "Hello!",
-         *     	"author" : {
-         *     		"givenName" : "John"
-         *     	},
-         *     	"tags": [ "example" ],
-         *     	"content": "This will be unchanged",
-         *     	"phoneNumber": "+01-123-456-7890"
-         *     }
-         *     ```
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["PatchUserSettingsRequest"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/user/address": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Update User Address
-         * @description Update the address of the currently logged in user. The address is used for shipping and other purposes.
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["PatchUserAddressRequest"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/user/active-wallet": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Update User Active Wallet
-         * @description Update the selected wallet of the user. The user balance endpoint will return the user's wallets in the order of their selection time.
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["SelectWalletRequest"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/user/password": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Update User Password
-         * @description Update the password of the currently logged in user. The current password is required to ensure that the user is authorized to change the password.
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["PatchUserPasswordRequest"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/user/username": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Update Username
-         * @description Update the username of the currently logged in user. The username must be unique.
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["PatchUsernameRequest"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/user/delete": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Delete User Account
-         * @description Delete the account of the currently logged in user. The user must provide the current password to ensure that they are authorized to delete the account.
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["DeleteUserAccountRequest"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/kyc/token": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get KYC Access Token
-         * @description This endpoint returns a temporary short-lived token that is bound to the user.
-         *     It can be used in conjunction with a KYC provider's SDK to perform KYC validation in the frontend.
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["KycAccessTokenResponse"];
-                    };
-                };
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/kyc/status": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get KYC Status
-         * @description Returns the current KYC status of the user.
-         *     This endpoint may be used to prevent the user from going through the KYC process again if they have already completed it.
-         *
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["KycStatusResponse"];
-                    };
-                };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *     This enum covers a wide range of error scenarios, from wallet-related issues to payment processing problems, user authentication errors, and more. */
                 "4XX": {
                     headers: {
                         [name: string]: unknown;
@@ -2281,6 +189,9 @@ export interface paths {
                         "application/json": components["schemas"]["AccessTokenTokenResponse"];
                     };
                 };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *     This enum covers a wide range of error scenarios, from wallet-related issues to payment processing problems, user authentication errors, and more. */
                 "4XX": {
                     headers: {
                         [name: string]: unknown;
@@ -2387,6 +298,2231 @@ export interface paths {
                         "application/json": components["schemas"]["WebsocketServerEvent"];
                     };
                 };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *     This enum covers a wide range of error scenarios, from wallet-related issues to payment processing problems, user authentication errors, and more. */
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/whoami": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Whoami
+         * @description The whoami endpoint returns some basic information about the currently logged in user.
+         *     This is primarily used for verifying that the user is logged in.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["WhoamiResponse"];
+                    };
+                };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *     This enum covers a wide range of error scenarios, from wallet-related issues to payment processing problems, user authentication errors, and more. */
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/fasttrack-token": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Fasttrack token
+         * @description This endpoint returns a JWT token, to be used by the Fasttrack frontend SDK for user verification
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["GetFasttrackTokenResponseBody"];
+                    };
+                };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *     This enum covers a wide range of error scenarios, from wallet-related issues to payment processing problems, user authentication errors, and more. */
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/login": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Login
+         * @description Authenticates a user and sets the session cookie
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["LoginRequest"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *     This enum covers a wide range of error scenarios, from wallet-related issues to payment processing problems, user authentication errors, and more. */
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/logout": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Logout
+         * @description User logout, which will forcefully expire the current session cookie.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *     This enum covers a wide range of error scenarios, from wallet-related issues to payment processing problems, user authentication errors, and more. */
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/forgot-password": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Password reset request
+         * @description This endpoint will take a user email and send out a password reset email to the user.
+         *     The email will contain a link that the user can click on to reset their password. The link will be valid for 60 minutes.
+         *     Note that this endpoint will always return a 200 status code, even if the email does not exist in the database.
+         *     This is to prevent attackers from using this endpoint to determine if an email exists in the database.
+         *     The endpoint will also always take the same amount of time to respond, regardless of whether the email exists in the database or not.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["InitializePasswordResetRequest"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *     This enum covers a wide range of error scenarios, from wallet-related issues to payment processing problems, user authentication errors, and more. */
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/reset-password": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Password reset
+         * @description This endpoint takes a password reset token and the newly chosen password from the user.
+         *     The token is sent to the user's email when they request a password reset.
+         *     If the token is valid, the user's password will be updated to the new password.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["FinalizePasswordResetRequest"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *     This enum covers a wide range of error scenarios, from wallet-related issues to payment processing problems, user authentication errors, and more. */
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/signup/flow": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Create Signup Flow
+         * @description Create a new signup flow that can be incrementally patched and the submitted for completion.
+         *     This endpoint requires the `CF-IPCountry` header to be set and to be a valid jurisdiction.
+         *     This header is normally set by Cloudflare and is used to determine the jurisdiction of the user,
+         *     buy you may also set it manually during development.
+         *     Note that you may need to configure the CORS settings to allow the `CF-IPCountry` header to be sent.
+         *
+         *     The ID returned by the signup flow can be stored in the frontend URL or other storage
+         *     to recover the signup flow if the user reloads the page or does other destructive actions.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CreateSignupFlowResponse"];
+                    };
+                };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *     This enum covers a wide range of error scenarios, from wallet-related issues to payment processing problems, user authentication errors, and more. */
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/signup/flow/{flow_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Signup Flow
+         * @description Get the specified signup flow and all the fields that have been added to it.
+         *     Use this for recovering form data if the user reloads the page or does other destructive actions.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description The ID of the signup flow to retrieve. */
+                    flow_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["SignupFlowResponse"];
+                    };
+                };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *     This enum covers a wide range of error scenarios, from wallet-related issues to payment processing problems, user authentication errors, and more. */
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        /**
+         * Submit Signup Flow
+         * @description Submit the specified signup flow and create the user entry.
+         *     This can fail if certain validation of fields and jurisdiction dependent information is unsuccessful.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description The ID of the signup flow to retrieve. */
+                    flow_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *     This enum covers a wide range of error scenarios, from wallet-related issues to payment processing problems, user authentication errors, and more. */
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update Signup Flow
+         * @description
+         *     Patch the specified signup flow with additional information.
+         *
+         *     Example request body for brazilian users:
+         *     ```
+         *      {
+         *     	"first_name": "John",
+         *     	"last_name": "Doe",
+         *     	"email": "john@doe.com",
+         *     	"password": "test",
+         *     	"CPF": "549.448.010-09",
+         *     	"signup_params": {           // optional
+         *     		"utm_source": "google",
+         *     		"utm_medium": "cpc",
+         *     		"utm_campaign": "test",
+         *     		"utm_term": "test",
+         *     		"utm_content": "test",
+         *     		"utm_referrer": "test",
+         *     		"utm_adgroup": "test",
+         *     		"utm_ad": "test",
+         *     		"utm_creative": "test",
+         *     		"utm_matchtype": "test",
+         *     		"utm_network": "test",
+         *     		"utm_device": "test"
+         *     	}
+         *     }
+         *     ```
+         *
+         *     #### Testing CPFs that you can use to create a user
+         *
+         *     - 549.448.010-09
+         *     - 653.358.910-50
+         *     - 715.176.900-80
+         *     - 395.677.760-32
+         *     - 993.093.100-73
+         *
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description The ID of the signup flow to retrieve. */
+                    flow_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["PatchSignupFlowRequest"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *     This enum covers a wide range of error scenarios, from wallet-related issues to payment processing problems, user authentication errors, and more. */
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/payment/deposit": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create Deposit Flow
+         * @description Create a new deposit flow.
+         *         This flow will be active as long as we don't receive a
+         *         confirmation from our payment providers, that a deposit has been completed.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["PaymentTransactionRequest"];
+                };
+            };
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CreateDepositFlowResponse"];
+                    };
+                };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *     This enum covers a wide range of error scenarios, from wallet-related issues to payment processing problems, user authentication errors, and more. */
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/payment/withdraw": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create Withdrawal Flow
+         * @description Create a withdrawal flow.
+         *         This flow will be active as long as we don't receive a confirmation from our payment provider,
+         *         that they have successfully withdrawn the desired amount into the user's bank account.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["PaymentTransactionRequest"];
+                };
+            };
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CreateWithdrawalFlowResponse"];
+                    };
+                };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *     This enum covers a wide range of error scenarios, from wallet-related issues to payment processing problems, user authentication errors, and more. */
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/payment/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Payment Flows
+         * @description List all payment flows for the currently logged in user.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description The payment type to filter the payment flows by. If not set, all payment types will be included. */
+                    payment_type?: components["schemas"]["PaymentType"] | null;
+                    /** @description The wallet ID to filter the payment flows by. If not set, all wallets of the user will be included. */
+                    wallet_id?: components["schemas"]["WalletId"] | null;
+                    limit?: number;
+                    offset?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PaginatorResponse_for_PaymentFlowResponse_and_ListPaymentFlowsQuery"];
+                    };
+                };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *     This enum covers a wide range of error scenarios, from wallet-related issues to payment processing problems, user authentication errors, and more. */
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/payment/limits": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Payment Limits
+         * @description Get the payment limits for the currently logged in user.
+         */
+        get: {
+            parameters: {
+                query: {
+                    /** @description The currency to get the payment limits for. */
+                    currency: components["schemas"]["Currency"];
+                    /** @description The payment method to get the payment limits for. */
+                    payment_method_id: components["schemas"]["PaymentMethodId"];
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PaymentLimitsResponse"];
+                    };
+                };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *     This enum covers a wide range of error scenarios, from wallet-related issues to payment processing problems, user authentication errors, and more. */
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/payment/methods": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Payment Methods
+         * @description Get all payment methods that can be used by the the user for the given currency.
+         */
+        get: {
+            parameters: {
+                query: {
+                    /** @description The currency to get the payment methods for. */
+                    currency: components["schemas"]["Currency"];
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PaymentMethodResponse"][];
+                    };
+                };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *     This enum covers a wide range of error scenarios, from wallet-related issues to payment processing problems, user authentication errors, and more. */
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/payment/{flow_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Payment Flow
+         * @description Get a payment flow by its ID.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description The ID of the payment flow. */
+                    flow_id: components["schemas"]["PaymentFlowId"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PaymentFlowResponse"];
+                    };
+                };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *     This enum covers a wide range of error scenarios, from wallet-related issues to payment processing problems, user authentication errors, and more. */
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/system/licenses": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Matched Licenses
+         * @description Get the available system licenses for the requested jurisdiction/site header combination.
+         *             The licenses are ordered in their priority order,
+         *             and thus the first license in the list is the most preferred one.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["LicenseResponse"][];
+                    };
+                };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *     This enum covers a wide range of error scenarios, from wallet-related issues to payment processing problems, user authentication errors, and more. */
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/system/site": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Matched Site
+         * @description The the matched site based on the host header.
+         *             Use this to differentiate between different sites in a multi-site setup,
+         *             allowing for different configurations, themes, etc.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Site"];
+                    };
+                };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *     This enum covers a wide range of error scenarios, from wallet-related issues to payment processing problems, user authentication errors, and more. */
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/system/preflight": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Preflight Check
+         * @description This preflight endpoint should be the first endpoint
+         *             to be called by the client or the SSR implementation.
+         *             It is used to check if the user is able to access the
+         *             host + jurisdiction combination. Should they not be allowed to access
+         *             the site, the endpoint will return a `JURISDICTION_NOT_SUPPORTED` error,
+         *             possibly containing a list of alternative sites that the user can access.
+         *
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *     This enum covers a wide range of error scenarios, from wallet-related issues to payment processing problems, user authentication errors, and more. */
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/game-provider/search": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Search Game Providers
+         * @description Search for games providers by providing a search query.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description An organic search query to find game providers by. Searched fields include but are not limited to: name, description, slug... */
+                    query?: string | null;
+                    limit?: number;
+                    offset?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PaginatorResponse_for_SearchGameProviderResponse_and_SearchGameProviderQuery"];
+                    };
+                };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *     This enum covers a wide range of error scenarios, from wallet-related issues to payment processing problems, user authentication errors, and more. */
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/game-provider/{provider_identifier}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Game Provider
+         * @description Get a game provider by its ID.
+         *             This can be used to show a more detailed view of of the
+         *             provider profile in the frontend, which may require more data than
+         *             the search endpoint provides.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description The ID of the game provider. */
+                    provider_identifier: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description The response to a game provider request. It contains all available information about the provider. */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["GameProviderResponse"];
+                    };
+                };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *     This enum covers a wide range of error scenarios, from wallet-related issues to payment processing problems, user authentication errors, and more. */
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/game/{provider_slug}/{game_slug}/session": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Create Game Session
+         * @description Create a new game session by providing the game ID,
+         *         as well as the currency with which the game should be played with,
+         *         and the client type of the user.
+         *         The response will redirect the user to the third party URL of the game provider.
+         *         Please note that this request should be used in conjunction with an iframe,
+         *         so that the user does not get redirected from the casino website.
+         */
+        get: {
+            parameters: {
+                query: {
+                    /** @description The device type the game session is started on. Some games may only be available on certain devices. */
+                    client_type: components["schemas"]["Device"];
+                    /** @description The currency (wallet) to use for the game session. It can not be changed during the session. */
+                    currency: components["schemas"]["Currency"];
+                };
+                header?: never;
+                path: {
+                    game_slug: string;
+                    provider_slug: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description no content */
+                307: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *     This enum covers a wide range of error scenarios, from wallet-related issues to payment processing problems, user authentication errors, and more. */
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/game/search": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Search Games
+         * @description Search for games by providing a search query.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description The category identifier to filter games by. If set, only games in this category are returned. Note: this is not the category ID, but the identifier. */
+                    category?: string | null;
+                    /** @description The provider to filter games by. If set, only games by this provider are returned. */
+                    provider_identifier?: string | null;
+                    /** @description An organic search query to find games by. Searched fields include but are not limited to: name, description, provider name... */
+                    query?: string | null;
+                    limit?: number;
+                    offset?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PaginatorResponse_for_GameSearchResponse_and_SearchGameQuery"];
+                    };
+                };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *     This enum covers a wide range of error scenarios, from wallet-related issues to payment processing problems, user authentication errors, and more. */
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/game/action/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Game Actions
+         * @description Get a list of all game actions of the user.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description The type of the game action to filter by. If not set, all game actions (bet, win, etc.) will be included. */
+                    action_type?: components["schemas"]["ListBetTypeQuery"] | null;
+                    /** @description Game ID to filter the game actions by. If not set, all game actions will be included. */
+                    game_identifier?: components["schemas"]["GameIdentifier"] | null;
+                    limit?: number;
+                    offset?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PaginatorResponse_for_GameActionResponse_and_ListGameActionsQuery"];
+                    };
+                };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *     This enum covers a wide range of error scenarios, from wallet-related issues to payment processing problems, user authentication errors, and more. */
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/game/category/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Available Game Categories
+         * @description Get a list of all game categories available in the casino.
+         *         This can be used to show a list of game categories to the user,
+         *         so that they can choose which category they want to explore.
+         *         There are two major types of categories, staic and dynamic.
+         *         Static categories are predefined by the casino, while dynamic categories
+         *         cover games based on user behavior and other factors.
+         *         Dynamic categories are recalcuated periodically.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description The group of game categories to filter by. If set, only categories in this group are returned. */
+                    group?: components["schemas"]["GameCategoryGroupType"] | null;
+                    /** @description Whether to include the games in the category in the response. If set to `true`, the games in the category are included in the response. */
+                    include_games?: boolean;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["GameCategoryListResponse"][];
+                    };
+                };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *     This enum covers a wide range of error scenarios, from wallet-related issues to payment processing problems, user authentication errors, and more. */
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/game/{provider_slug}/{game_slug}/rating": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Rate Game
+         * @description Rate a game by its ID.
+         *         This can be used to allow users to rate games,
+         *         so that other users can see the rating of the game.
+         *         Sending a rating of null will remove the rating of the user.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    game_slug: string;
+                    provider_slug: string;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["RateGameRequest"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *     This enum covers a wide range of error scenarios, from wallet-related issues to payment processing problems, user authentication errors, and more. */
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/game/{provider_slug}/{game_slug}/ratings": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Game Ratings
+         * @description User ratings split up into likes and dislikes
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    game_slug: string;
+                    provider_slug: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["GameRatingsResponse"];
+                    };
+                };
+                /** @description no content */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *     This enum covers a wide range of error scenarios, from wallet-related issues to payment processing problems, user authentication errors, and more. */
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/game/{provider_slug}/{game_slug}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Game
+         * @description Get a game by its ID. This can be used to show a more detailed view of a game,
+         *         including its name, description,
+         *         and other metadata, that might be required to display the game on the frontend.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    game_slug: string;
+                    provider_slug: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["GameResponse"];
+                    };
+                };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *     This enum covers a wide range of error scenarios, from wallet-related issues to payment processing problems, user authentication errors, and more. */
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/notification/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get All Notifications
+         * @description Get a list of all notifications for the current user.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description The read status of the notifications to filter by. */
+                    read_status?: components["schemas"]["ReadStatus"] | null;
+                    /** @description The types of the notifications to filter by. */
+                    types?: components["schemas"]["NotificationTypeDiscriminants"][] | null;
+                    limit?: number;
+                    offset?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PaginatorResponse_for_NotificationResponse_and_ListNotificationsQuery"];
+                    };
+                };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *     This enum covers a wide range of error scenarios, from wallet-related issues to payment processing problems, user authentication errors, and more. */
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/notification/{notification_id}/read-status": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update Notification Read Status
+         * @description Mark a notification as read.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description The ID of the notification to retrieve. */
+                    notification_id: components["schemas"]["NotificationId"];
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["ReadStatus"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *     This enum covers a wide range of error scenarios, from wallet-related issues to payment processing problems, user authentication errors, and more. */
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/user/profile": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get User Profile
+         * @description Get the user profile of the currently logged in user.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["UserResponse"];
+                    };
+                };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *     This enum covers a wide range of error scenarios, from wallet-related issues to payment processing problems, user authentication errors, and more. */
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/user/balance": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get User Balance
+         * @description Get the balance of the currently logged in user. The wallets are returned in the order of their selection. Frontends mays utilize this order to display the wallets, and to identify the active wallet.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["UserWalletBalanceResponse"][];
+                    };
+                };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *     This enum covers a wide range of error scenarios, from wallet-related issues to payment processing problems, user authentication errors, and more. */
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/user/settings": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get User Settings
+         * @description Get the settings of the currently logged in user.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PatchUserSettingsRequest"];
+                    };
+                };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *     This enum covers a wide range of error scenarios, from wallet-related issues to payment processing problems, user authentication errors, and more. */
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update User Settings
+         * @description Update the settings of the currently logged in user.
+         *
+         *     This endpoint allows for partial updates of the user settings, by
+         *     only updating the fields that are provided in the request.
+         *
+         *     If a field is set to `null`, it will be reset to the default value.
+         *
+         *     If a field is not provided, it will not be updated.
+         *
+         *     Partial updates follow the [RFC 7396](https://datatracker.ietf.org/doc/html/rfc7396) JSON Merge Patch standard.
+         *
+         *     ```json
+         *     // Given the following JSON
+         *     {
+         *     	"title": "Goodbye!",
+         *     	"author" : {
+         *     		"givenName" : "John",
+         *     		"familyName" : "Doe"
+         *     	},
+         *     	"tags":[ "example", "sample" ],
+         *     	"content": "This will be unchanged"
+         *     }
+         *
+         *     // Merged with the following patch
+         *     {
+         *     	"title": "Hello!",
+         *     	"phoneNumber": "+01-123-456-7890",
+         *     	"author": {
+         *     		"familyName": null
+         *     	},
+         *     	"tags": [ "example" ]
+         *     }
+         *
+         *     // Will result in the following JSON
+         *     {
+         *     	"title": "Hello!",
+         *     	"author" : {
+         *     		"givenName" : "John"
+         *     	},
+         *     	"tags": [ "example" ],
+         *     	"content": "This will be unchanged",
+         *     	"phoneNumber": "+01-123-456-7890"
+         *     }
+         *     ```
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["PatchUserSettingsRequest"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *     This enum covers a wide range of error scenarios, from wallet-related issues to payment processing problems, user authentication errors, and more. */
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/user/address": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update User Address
+         * @description Update the address of the currently logged in user. The address is used for shipping and other purposes.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["PatchUserAddressRequest"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *     This enum covers a wide range of error scenarios, from wallet-related issues to payment processing problems, user authentication errors, and more. */
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/user/active-wallet": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update User Active Wallet
+         * @description Update the selected wallet of the user. The user balance endpoint will return the user's wallets in the order of their selection time.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["SelectWalletRequest"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *     This enum covers a wide range of error scenarios, from wallet-related issues to payment processing problems, user authentication errors, and more. */
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/user/password": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update User Password
+         * @description Update the password of the currently logged in user. The current password is required to ensure that the user is authorized to change the password.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["PatchUserPasswordRequest"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *     This enum covers a wide range of error scenarios, from wallet-related issues to payment processing problems, user authentication errors, and more. */
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/user/username": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update Username
+         * @description Update the username of the currently logged in user. The username must be unique.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["PatchUsernameRequest"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *     This enum covers a wide range of error scenarios, from wallet-related issues to payment processing problems, user authentication errors, and more. */
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/user/delete": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Delete User Account
+         * @description Delete the account of the currently logged in user. The user must provide the current password to ensure that they are authorized to delete the account.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["DeleteUserAccountRequest"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *     This enum covers a wide range of error scenarios, from wallet-related issues to payment processing problems, user authentication errors, and more. */
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/kyc/token": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get KYC Access Token
+         * @description This endpoint returns a temporary short-lived token that is bound to the user.
+         *     It can be used in conjunction with a KYC provider's SDK to perform KYC validation in the frontend.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["KycAccessTokenResponse"];
+                    };
+                };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *     This enum covers a wide range of error scenarios, from wallet-related issues to payment processing problems, user authentication errors, and more. */
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/kyc/status": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get KYC Status
+         * @description Returns the current KYC status of the user.
+         *     This endpoint may be used to prevent the user from going through the KYC process again if they have already completed it.
+         *
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["KycStatusResponse"];
+                    };
+                };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *     This enum covers a wide range of error scenarios, from wallet-related issues to payment processing problems, user authentication errors, and more. */
                 "4XX": {
                     headers: {
                         [name: string]: unknown;
@@ -2493,6 +2629,8 @@ export interface components {
         CreateDepositFlowResponse: {
             /** @description Withdrawal payment flow ID */
             flow_id: components["schemas"]["PaymentFlowId"];
+            /** @description Counts of all payment flow statuses for this payment type */
+            status_counts: components["schemas"]["PaymentFlowStatusCountsResponse"];
         } & {
             pix: {
                 /** @description The PIX code used by the user for depositing the amount */
@@ -2512,12 +2650,14 @@ export interface components {
         CreateWithdrawalFlowResponse: {
             /** @description Withdrawal payment flow ID */
             flow_id: components["schemas"]["PaymentFlowId"];
+            /** @description Counts of all payment flow statuses for this payment type */
+            status_counts: components["schemas"]["PaymentFlowStatusCountsResponse"];
         };
         /**
          * @description ISO 4217 3-letter currency code or 3/4-letter crypto currency code
          * @enum {string}
          */
-        Currency: "AED" | "AFN" | "ALL" | "AMD" | "ANG" | "AOA" | "ARS" | "AUD" | "AWG" | "AZN" | "BAM" | "BBD" | "BDT" | "BGN" | "BHD" | "BIF" | "BMD" | "BND" | "BOB" | "BOV" | "BRL" | "BSD" | "BTN" | "BWP" | "BYN" | "BZD" | "CAD" | "CDF" | "CHE" | "CHF" | "CHW" | "CLF" | "CLP" | "CNY" | "COP" | "COU" | "CRC" | "CUC" | "CUP" | "CVE" | "CZK" | "DJF" | "DKK" | "DOP" | "DZD" | "EGP" | "ERN" | "ETB" | "EUR" | "FJD" | "FKP" | "GBP" | "GEL" | "GHS" | "GIP" | "GMD" | "GNF" | "GTQ" | "GYD" | "HKD" | "HNL" | "HRK" | "HTG" | "HUF" | "IDR" | "ILS" | "INR" | "IQD" | "IRR" | "ISK" | "JMD" | "JOD" | "JPY" | "KES" | "KGS" | "KHR" | "KMF" | "KPW" | "KRW" | "KWD" | "KYD" | "KZT" | "LAK" | "LBP" | "LKR" | "LRD" | "LSL" | "LYD" | "MAD" | "MDL" | "MGA" | "MKD" | "MMK" | "MNT" | "MOP" | "MRU" | "MUR" | "MVR" | "MWK" | "MXN" | "MXV" | "MYR" | "MZN" | "NAD" | "NGN" | "NIO" | "NOK" | "NPR" | "NZD" | "OMR" | "PAB" | "PEN" | "PGK" | "PHP" | "PKR" | "PLN" | "PYG" | "QAR" | "RON" | "RSD" | "RUB" | "RWF" | "SAR" | "SBD" | "SCR" | "SDG" | "SEK" | "SGD" | "SHP" | "SLE" | "SLL" | "SOS" | "SRD" | "SSP" | "STN" | "SVC" | "SYP" | "SZL" | "THB" | "TJS" | "TMT" | "TND" | "TOP" | "TRY" | "TTD" | "TWD" | "TZS" | "UAH" | "UGX" | "USD" | "USN" | "UYI" | "UYU" | "UYW" | "UZS" | "VED" | "VES" | "VND" | "VUV" | "WST" | "XAF" | "XAG" | "XAU" | "XBA" | "XBB" | "XBC" | "XBD" | "XCD" | "XDR" | "XOF" | "XPD" | "XPF" | "XPT" | "XSU" | "XTS" | "XUA" | "XXX" | "YER" | "ZAR" | "ZMW" | "ZWL" | "ZWG" | "BTC" | "ETH" | "USDC" | "USDT" | "BCH" | "XRP" | "FUN" | "ADA" | "TRX" | "BSV" | "BNB" | "NEO";
+        Currency: "AED" | "AFN" | "ALL" | "AMD" | "XCG" | "AOA" | "ARS" | "AUD" | "AWG" | "AZN" | "BAM" | "BBD" | "BDT" | "BGN" | "BHD" | "BIF" | "BMD" | "BND" | "BOB" | "BOV" | "BRL" | "BSD" | "BTN" | "BWP" | "BYN" | "BZD" | "CAD" | "CDF" | "CHE" | "CHF" | "CHW" | "CLF" | "CLP" | "CNY" | "COP" | "COU" | "CRC" | "CUC" | "CUP" | "CVE" | "CZK" | "DJF" | "DKK" | "DOP" | "DZD" | "EGP" | "ERN" | "ETB" | "EUR" | "FJD" | "FKP" | "GBP" | "GEL" | "GHS" | "GIP" | "GMD" | "GNF" | "GTQ" | "GYD" | "HKD" | "HNL" | "HRK" | "HTG" | "HUF" | "IDR" | "ILS" | "INR" | "IQD" | "IRR" | "ISK" | "JMD" | "JOD" | "JPY" | "KES" | "KGS" | "KHR" | "KMF" | "KPW" | "KRW" | "KWD" | "KYD" | "KZT" | "LAK" | "LBP" | "LKR" | "LRD" | "LSL" | "LYD" | "MAD" | "MDL" | "MGA" | "MKD" | "MMK" | "MNT" | "MOP" | "MRU" | "MUR" | "MVR" | "MWK" | "MXN" | "MXV" | "MYR" | "MZN" | "NAD" | "NGN" | "NIO" | "NOK" | "NPR" | "NZD" | "OMR" | "PAB" | "PEN" | "PGK" | "PHP" | "PKR" | "PLN" | "PYG" | "QAR" | "RON" | "RSD" | "RUB" | "RWF" | "SAR" | "SBD" | "SCR" | "SDG" | "SEK" | "SGD" | "SHP" | "SLE" | "SLL" | "SOS" | "SRD" | "SSP" | "STN" | "SVC" | "SYP" | "SZL" | "THB" | "TJS" | "TMT" | "TND" | "TOP" | "TRY" | "TTD" | "TWD" | "TZS" | "UAH" | "UGX" | "USD" | "USN" | "UYI" | "UYU" | "UYW" | "UZS" | "VED" | "VES" | "VND" | "VUV" | "WST" | "XAF" | "XAG" | "XAU" | "XBA" | "XBB" | "XBC" | "XBD" | "XCD" | "XDR" | "XOF" | "XPD" | "XPF" | "XPT" | "XSU" | "XTS" | "XUA" | "XXX" | "YER" | "ZAR" | "ZMW" | "ZWL" | "ZWG" | "BTC" | "ETH" | "USDC" | "USDT" | "BCH" | "XRP" | "FUN" | "ADA" | "TRX" | "BSV" | "BNB" | "NEO";
         DeleteUserAccountRequest: {
             /** @description The current password of the user. This is required to ensure that the user is the one making the request. */
             current_password: string;
@@ -2962,6 +3102,66 @@ export interface components {
             /** @description The wallet ID the payment flow is associated with. */
             wallet_id: components["schemas"]["WalletId"];
         };
+        PaymentFlowStatusCounts: {
+            /** Format: int64 */
+            failed: number;
+            /** Format: int64 */
+            initiated: number;
+            /** Format: int64 */
+            processing: number;
+            /** Format: int64 */
+            refunded: number;
+            /** Format: int64 */
+            rejected: number;
+            /** Format: int64 */
+            succeeded: number;
+            /** Format: int64 */
+            total: number;
+            /** Format: int64 */
+            waiting_for_approval: number;
+        };
+        PaymentFlowStatusCountsResponse: {
+            /**
+             * Format: int64
+             * @description Failed payment flows
+             */
+            failed: number;
+            /**
+             * Format: int64
+             * @description Initiated payment flows
+             */
+            initiated: number;
+            /**
+             * Format: int64
+             * @description Processing payment flows
+             */
+            processing: number;
+            /**
+             * Format: int64
+             * @description Refunded payment flows
+             */
+            refunded: number;
+            /**
+             * Format: int64
+             * @description Rejected payment flows
+             */
+            rejected: number;
+            /**
+             * Format: int64
+             * @description Succeeded payment flows
+             */
+            succeeded: number;
+            /**
+             * Format: int64
+             * @description Total payment flows
+             */
+            total: number;
+            /**
+             * Format: int64
+             * @description Waiting for approval payment flows
+             */
+            waiting_for_approval: number;
+        };
         /** @enum {string} */
         PaymentLimitBound: "min" | "max";
         PaymentLimitsQuery: {
@@ -3015,7 +3215,7 @@ export interface components {
         };
         PaymentMethodType: "card" | "bank_transfer" | "direct_debit" | "bank_redirect" | "e_wallet" | "mobile_payment" | "buy_now_pay_later" | "cash_payment" | "cryptocurrency" | "carrier_billing" | "cheque" | "invoice" | "loyalty_points" | "voucher" | "qr_code_payment" | "nfc_payment" | "money_order" | "regional";
         /** @enum {string} */
-        PaymentStatus: "waiting_for_approval" | "approved" | "processing" | "completed" | "failed" | "rejected" | "refunded";
+        PaymentStatus: "initiated" | "waiting_for_approval" | "approved" | "processing" | "succeeded" | "failed" | "rejected" | "refunded";
         PaymentTransactionRequest: {
             /** @description The amount of the payment transaction. */
             amount: components["schemas"]["SystemAmount"];
@@ -3045,7 +3245,7 @@ export interface components {
         PixKeyTypeDiscriminants: "CPF" | "EMAIL" | "PHONE" | "EVP";
         ProtocolType: "welcome" | {
             error: string;
-        } | "login_complete" | "login_failed" | "logout_complete" | {
+        } | "login_complete" | "login_failed" | "unauthorized" | "logout_complete" | {
             channel_entered: {
                 name: components["schemas"]["WebsocketStreamChannel"];
                 /** Format: int64 */
@@ -3053,7 +3253,7 @@ export interface components {
             };
         } | {
             channel_left: components["schemas"]["WebsocketStreamChannel"];
-        };
+        } | "tracker_entered" | "tracker_left";
         RateGameRequest: {
             /** @description The rating to set for the game. If `null` the rating for the current user is removed. */
             rating?: components["schemas"]["GameRating"] | null;
@@ -3413,6 +3613,36 @@ export interface components {
             /** @enum {string} */
             type: "winning_now";
         };
+        TrackerType: {
+            /** @enum {string} */
+            event: "login";
+            event_data: {
+                country?: components["schemas"]["Country"] | null;
+                /** Format: ip */
+                ip_address: string;
+                user_agent?: string | null;
+            };
+        } | {
+            /** @enum {string} */
+            event: "logout";
+            event_data: {
+                country?: components["schemas"]["Country"] | null;
+                /** Format: ip */
+                ip_address: string;
+                user_agent?: string | null;
+            };
+        } | {
+            /** @enum {string} */
+            event: "payment_update";
+            event_data: {
+                amount: components["schemas"]["SystemAmount"];
+                currency: components["schemas"]["Currency"];
+                flow_id: components["schemas"]["PaymentFlowId"];
+                payment_type: components["schemas"]["PaymentType"];
+                status: components["schemas"]["PaymentStatus"];
+                status_counts: components["schemas"]["PaymentFlowStatusCounts"];
+            };
+        };
         /** Format: int64 */
         UserId: number;
         UserPhysicalAddressResponse: {
@@ -3504,8 +3734,19 @@ export interface components {
             data: components["schemas"]["WebsocketStreamChannel"];
             /** @enum {string} */
             type: "channel_leave";
+        } | {
+            /** @enum {string} */
+            type: "tracker_enter";
+        } | {
+            /** @enum {string} */
+            type: "tracker_leave";
         };
         WebsocketServerEvent: {
+            /** Format: uuid */
+            id: string;
+            /** Format: date-time */
+            timestamp: string;
+        } & ({
             data: {
                 id: components["schemas"]["NotificationId"];
             } & ({
@@ -3557,10 +3798,14 @@ export interface components {
             /** @enum {string} */
             type: "ticker";
         } | {
+            data: components["schemas"]["TrackerType"];
+            /** @enum {string} */
+            type: "tracker";
+        } | {
             data: components["schemas"]["ProtocolType"];
             /** @enum {string} */
             type: "protocol";
-        };
+        });
         /** @enum {string} */
         WebsocketStreamChannel: "newest_wins";
         WhoamiResponse: {

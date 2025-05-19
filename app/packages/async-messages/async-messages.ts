@@ -93,11 +93,13 @@ export interface AsyncMessagesTypes {
     code: string;
     amount: number;
     currency: WalletCurrency;
+    sucessfulDeposits: number;
   };
   "girobet:events:payments:withdrawal-flow-created": {
     flowId: number;
     amount: number;
     currency: WalletCurrency;
+    sucessfulWithdrawals: number;
   };
 
   "girobet:events:websockets:connection-state-changed": {
@@ -108,6 +110,7 @@ export interface AsyncMessagesTypes {
    * Events coming from the Backend
    */
   "girobet-backend:events:payments:payment-status-updated": CamelizeKeys<Extract<components["schemas"]["WebsocketServerEvent"]["data"], { type: "payment_status_update" }>>;
+  "girobet-backend:events:tracker:payment-updated": CamelizeKeys<Extract<components["schemas"]["TrackerType"], { event: "payment_update" }>["event_data"]>;
   "girobet-backend:events:kyc:kyc-process-completed": {
     notificationId: number;
   };

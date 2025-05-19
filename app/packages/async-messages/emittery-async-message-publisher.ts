@@ -22,7 +22,8 @@ export class EmitteryAsyncMessagePublisher implements AsyncMessagePublisherI {
     listenerId = Date.now(),
   ): number {
     this.emittery.on(messageName, callback);
-    this.listenersMap.set(listenerId, { callback: callback as (message: object) => void, message: messageName });
+    // @ts-expect-error Can't make the types work, eventhough the code does what it should
+    this.listenersMap.set(listenerId, { callback, message: messageName });
     return listenerId;
   }
 
@@ -33,9 +34,9 @@ export class EmitteryAsyncMessagePublisher implements AsyncMessagePublisherI {
     }
   }
 
-  private readonly emittery: Emittery;
+  private readonly emittery: Emittery<AsyncMessagesTypes>;
   constructor(logger: LoggerI) {
-    this.emittery = new Emittery({ debug: { name: "async-message-publisher", logger: (type, _debugName, eventName, eventData) => {
+    this.emittery = new Emittery<AsyncMessagesTypes>({ debug: { name: "async-message-publisher", logger: (type, _debugName, eventName, eventData) => {
       if (type === "emit" && typeof eventName === "string") {
         logger.debug(`Async message emitted`, {
           messageName: eventName,
@@ -47,6 +48,6 @@ export class EmitteryAsyncMessagePublisher implements AsyncMessagePublisherI {
 
   private listenersMap = new Map<number, {
     callback: (message: object) => void;
-    message: string;
+    message: keyof AsyncMessagesTypes;
   }>();
 }

@@ -8,7 +8,7 @@ export class NotificationToastBuilder {
   public buildFromBackendNotification(notification: NotificationBackend): NotificationToast | null {
     if (notification.type === "payment_status_update") {
       switch (notification.data.status) {
-        case "completed":
+        case "succeeded":
           return {
             id: notification.id,
             createdAt: new Date(notification.createdAt),
@@ -33,6 +33,15 @@ export class NotificationToastBuilder {
             title: this.t("notifications.payment_updated.failed.title"),
             message: this.t("notifications.payment_updated.failed.message"),
             variant: "error",
+          };
+
+        case "waiting_for_approval":
+          return {
+            id: notification.id,
+            createdAt: new Date(notification.createdAt),
+            title: this.t("notifications.payment_updated.waiting_for_approval.title"),
+            message: this.t("notifications.payment_updated.waiting_for_approval.message"),
+            variant: "info",
           };
 
         default:

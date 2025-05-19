@@ -1,3 +1,4 @@
+import { success } from "~/packages/result";
 import type { WebsocketConnectionI } from "~/packages/websocket/domain/websocket-connection";
 
 type WebsocketDepenencies = {
@@ -29,21 +30,40 @@ export default defineNuxtPlugin({
       };
     }
 
+    /**
+     * Tracker channel
+     */
+    const subscribeToTrackerChannelEmittingAsyncMessage = async () => {
+      await $dependencies.websockets.ui.wsChannelManagers.tracker.subscribe(wsConnectionResult.value, (event) => {
+        if (event.data.event === "payment_update") {
+          $dependencies.common.asyncMessagePublisher.emit("girobet-backend:events:tracker:payment-updated", camelizeKeys(event.data.event_data));
+        }
+      });
+      return success();
+    };
+
     $dependencies.common.asyncMessagePublisher.subscribe("girobet:events:websockets:connection-state-changed", async ({ state }) => {
       if (state !== "connected") return;
 
       if (userStore.user) {
         await $dependencies.websockets.ui.wsChannelManagers.user.subscribe(wsConnectionResult.value);
+        await subscribeToTrackerChannelEmittingAsyncMessage();
       }
     });
 
     $dependencies.common.asyncMessagePublisher.subscribe(
       "girobet:events:users:user-logged-in",
-      () => $dependencies.websockets.ui.wsChannelManagers.user.subscribe(wsConnectionResult.value),
+      async () => {
+        await $dependencies.websockets.ui.wsChannelManagers.user.subscribe(wsConnectionResult.value);
+        await subscribeToTrackerChannelEmittingAsyncMessage();
+      },
     );
     $dependencies.common.asyncMessagePublisher.subscribe(
       "girobet:events:signup-flows:signup-flow-submitted",
-      () => $dependencies.websockets.ui.wsChannelManagers.user.subscribe(wsConnectionResult.value),
+      async () => {
+        await $dependencies.websockets.ui.wsChannelManagers.user.subscribe(wsConnectionResult.value);
+        await subscribeToTrackerChannelEmittingAsyncMessage();
+      },
     );
 
     $dependencies.common.asyncMessagePublisher.subscribe(

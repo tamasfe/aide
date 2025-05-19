@@ -305,7 +305,9 @@
         "failed": "Falhou",
         "cancelled": "Cancelado",
         "rejected": "Rejeitado",
-        "refunded": "Reembolsado"
+        "refunded": "Reembolsado",
+        "succeeded": "Sucesso",
+        "initiated": "Iniciado"
       }
     }
   },
@@ -480,6 +482,10 @@
       "failed": {
         "title": "Pagamento falhou",
         "message": "Por favor, tente novamente"
+      },
+      "waiting_for_approval": {
+        "title": "Pagamento pendente",
+        "message": "Seu pagamento está pendente. Por favor, aguarde a aprovação"
       }
     },
     "kyc_completed": {
