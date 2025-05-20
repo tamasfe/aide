@@ -35,7 +35,7 @@ const loadingSubmit = ref(false);
 const onSubmit = handleSubmit(async () => {
   loadingSubmit.value = true;
 
-  const resultSearchParams = $dependencies.searchParamsTracking.repository.searchAttributed();
+  const resultSearchParams = $dependencies.clicksTracking.repository.searchAttributed();
   if (resultSearchParams.isFailure) {
     $dependencies.common.logger.error("Error retrieving the saved marketing queyr parameters. This might affect our attribution", resultSearchParams.error);
   }

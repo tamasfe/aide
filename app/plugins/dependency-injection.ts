@@ -3,12 +3,11 @@ import { createGamesDependencyInjection } from "~/modules/games/infra/GamesDepen
 import { createKycDependencyInjection } from "~/modules/kyc/infra/KycDependencyInjection";
 import { createNotificationDependencyInjection } from "~/modules/notifications/infra/NotificationDependencyInjection";
 import { createProvidersDependencyInjection } from "~/modules/providers/infra/ProvidersDependencyInjection";
-import { MarketingSearchParamsRepoLocalStorage } from "~/modules/search-params-tracking/marketing-search-params-repo-local-storage";
-import { StoreMarketingSearchParams } from "~/modules/search-params-tracking/ui/store-marketing-search-params";
 import { createSignupFlowsDependencyInjection } from "~/modules/signup-flows/infra/SignupFlowsDependencyInjection";
 import { createSitesDependencyInjection } from "~/modules/sites/infra/SitesDependencyInjection";
 import { createUsersDependencyInjection } from "~/modules/users/infra/UsersDependencyInjection";
 import { createWalletsDependencyInjection } from "~/modules/wallet/infra/WalletsDependencyInjection";
+import { createClicksTrackingDependencyInjection } from "~/packages/click-tracking/infra/ClicksTrackingDependencyInjection";
 import { createWebsocketDependencyInjectionI } from "~/packages/websocket/infra/websocket-dependency-injection";
 
 export default defineNuxtPlugin({
@@ -42,10 +41,7 @@ export default defineNuxtPlugin({
           websockets: await createWebsocketDependencyInjectionI(config.public, commonDependencies),
           notifications: await createNotificationDependencyInjection(config.public, commonDependencies, notificationsStore),
           sites: await createSitesDependencyInjection(config.public, commonDependencies),
-          searchParamsTracking: {
-            repository: new MarketingSearchParamsRepoLocalStorage(),
-            storeMarketingSearchParams: new StoreMarketingSearchParams(route, new MarketingSearchParamsRepoLocalStorage()),
-          },
+          clicksTracking: await createClicksTrackingDependencyInjection(route, config.public, commonDependencies),
         },
       },
     };

@@ -145,8 +145,8 @@ importers:
         specifier: ^6.14.0
         version: 6.14.0(magicast@0.3.5)
       '@sumsub/websdk':
-        specifier: ^2.3.13
-        version: 2.3.13
+        specifier: ^2.3.16
+        version: 2.3.16
       '@testing-library/vue':
         specifier: ^8.1.0
         version: 8.1.0(@vue/compiler-sfc@3.5.13)(vue@3.5.13(typescript@5.8.3))
@@ -2429,8 +2429,8 @@ packages:
     peerDependencies:
       eslint: '>=9.0.0'
 
-  '@sumsub/websdk@2.3.13':
-    resolution: {integrity: sha512-3/1hcVcoX1ilta1XYa5FMpDOWidQR+dDGQwcWDJxpkTRTFo1kJGBXKrmcN4IVR8zHpalYBKX4+e/MMgO4b1olw==}
+  '@sumsub/websdk@2.3.16':
+    resolution: {integrity: sha512-frBVGq1BR/dkSQWwjB1gj+j86xvufEDmWIXWvSN/xpL6AdkOuPRCtXj75PwkG1oFryKpcX2fiXVfqXzO8T+AGA==}
 
   '@surma/rollup-plugin-off-main-thread@2.2.3':
     resolution: {integrity: sha512-lR8q/9W7hZpMWweNiAKU7NQerBnzQQLvi8qnTDU/fxItPhtZVMbPV3lbCwjhIlNBe9Bbr5V+KHshvWmVSG9cxQ==}
@@ -10252,7 +10252,7 @@ snapshots:
       - supports-color
       - typescript
 
-  '@sumsub/websdk@2.3.13': {}
+  '@sumsub/websdk@2.3.16': {}
 
   '@surma/rollup-plugin-off-main-thread@2.2.3':
     dependencies:

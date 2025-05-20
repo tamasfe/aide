@@ -31,7 +31,7 @@ const CONTAINER_ID = "sumsub-websdk-container";
 function launchWebSdk(accessToken: string, applicantEmail: string, applicantPhone: string, applicantLanguage: string) {
   const snsWebSdkInstance = snsWebSdk
     .init(
-      accessToken,
+      "",
       // token update callback, must return Promise. Access token expired: get a new one and pass it to the callback to re-initiate the WebSDK
       () => props.renewAccessToken(),
     )
