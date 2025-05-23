@@ -12,32 +12,32 @@ export default defineNuxtPlugin({
      *
      */
     $dependencies.common.asyncMessagePublisher.subscribe(
-      "girobet:events:users:user-logged-in",
+      "frontend:events:users:user-logged-in",
       () => walletStore.refresh(),
     );
     $dependencies.common.asyncMessagePublisher.subscribe(
-      "girobet:events:users:user-logged-out",
+      "frontend:events:users:user-logged-out",
       () => walletStore.refresh(),
     );
     $dependencies.common.asyncMessagePublisher.subscribe(
-      "girobet:events:users:user-closed-account",
+      "frontend:events:users:user-closed-account",
       () => walletStore.refresh(),
     );
     $dependencies.common.asyncMessagePublisher.subscribe(
-      "girobet:events:signup-flows:signup-flow-submitted",
+      "frontend:events:signup-flows:signup-flow-submitted",
       () => walletStore.refresh(),
     );
 
     const currentSessionGameId = useState<null | string>("current-session-game-identifier", () => null);
     $dependencies.common.asyncMessagePublisher.subscribe(
-      "girobet:events:games:game-session-started",
+      "frontend:events:games:game-session-started",
       ({ gameIdentifier }) => {
         walletStore.hideBalance();
         currentSessionGameId.value = gameIdentifier;
       },
     );
     $dependencies.common.asyncMessagePublisher.subscribe(
-      "girobet:events:games:game-session-finished",
+      "frontend:events:games:game-session-finished",
       ({ gameIdentifier }) => {
         if (gameIdentifier === currentSessionGameId.value) {
           walletStore.refresh();

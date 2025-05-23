@@ -15,57 +15,57 @@ export default defineNuxtPlugin({
      *
      */
     $dependencies.common.asyncMessagePublisher.subscribe(
-      "girobet:events:users:user-logged-in",
+      "frontend:events:users:user-logged-in",
       () => userStore.refreshUser(),
     );
     $dependencies.common.asyncMessagePublisher.subscribe(
-      "girobet:events:users:user-logged-in",
+      "frontend:events:users:user-logged-in",
       () => userSettingsStore.refresh(),
     );
 
     $dependencies.common.asyncMessagePublisher.subscribe(
-      "girobet:events:users:user-logged-out",
+      "frontend:events:users:user-logged-out",
       () => userStore.refreshUser(),
     );
     $dependencies.common.asyncMessagePublisher.subscribe(
-      "girobet:events:users:user-logged-out",
+      "frontend:events:users:user-logged-out",
       () => userSettingsStore.refresh(),
     );
 
     $dependencies.common.asyncMessagePublisher.subscribe(
-      "girobet:events:users:user-closed-account",
+      "frontend:events:users:user-closed-account",
       () => userStore.refreshUser(),
     );
     $dependencies.common.asyncMessagePublisher.subscribe(
-      "girobet:events:users:user-closed-account",
+      "frontend:events:users:user-closed-account",
       () => userSettingsStore.refresh(),
     );
 
     $dependencies.common.asyncMessagePublisher.subscribe(
-      "girobet:events:users:user-settings-updated",
+      "frontend:events:users:user-settings-updated",
       () => userStore.refreshUser(),
     );
     $dependencies.common.asyncMessagePublisher.subscribe(
-      "girobet:events:users:user-settings-updated",
+      "frontend:events:users:user-settings-updated",
       () => userSettingsStore.refresh(),
     );
 
     $dependencies.common.asyncMessagePublisher.subscribe(
-      "girobet:events:users:password-recovered",
+      "frontend:events:users:password-recovered",
       () => $dependencies.users.ui.emitCommandOpenUserActionModal.handle("login"),
     );
 
     $dependencies.common.asyncMessagePublisher.subscribe(
-      "girobet:events:signup-flows:signup-flow-submitted",
+      "frontend:events:signup-flows:signup-flow-submitted",
       () => userStore.refreshUser(),
     );
     $dependencies.common.asyncMessagePublisher.subscribe(
-      "girobet:events:signup-flows:signup-flow-submitted",
+      "frontend:events:signup-flows:signup-flow-submitted",
       () => userSettingsStore.refresh(),
     );
 
     $dependencies.common.asyncMessagePublisher.subscribe(
-      "girobet:events:payments:deposit-flow-created",
+      "frontend:events:payments:deposit-flow-created",
       ({ flowId, code, amount, currency, paymentMethodId }) => $dependencies.users.ui.emitCommandOpenUserActionModal.handle({ modal: "deposit_confirm", data: { flowId, paymentCode: code, amount, currency, paymentMethodId } }),
     );
 

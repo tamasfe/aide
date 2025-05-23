@@ -28,7 +28,7 @@ export class WebsocketChannelManagerTracker implements WebsocketChannelI<Websock
 
     await handler(wsConnection, callback);
 
-    this.eventListenerId = this.asyncMessagePublisher.subscribe("girobet:events:websockets:connection-state-changed", async (message) => {
+    this.eventListenerId = this.asyncMessagePublisher.subscribe("frontend:events:websockets:connection-state-changed", async (message) => {
       if (message.state === "connected") {
         await handler(wsConnection, callback);
       }

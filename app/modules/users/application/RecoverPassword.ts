@@ -11,7 +11,7 @@ export class RecoverPassword {
       return result;
     }
 
-    await this.asyncMessagePublisher.emit("girobet:events:users:password-recovered", {});
+    await this.asyncMessagePublisher.emit("frontend:events:users:password-recovered", {});
 
     return success();
   }

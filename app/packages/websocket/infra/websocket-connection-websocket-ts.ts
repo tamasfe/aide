@@ -191,14 +191,14 @@ export class WebsocketConnectionWebsocketTs implements WebsocketConnectionI {
         const message = JSON.parse(event.data) as WebsocketMessagesFromServer;
         if (message.type === "protocol" && message.data === "welcome") {
           if (this.status !== "connected") {
-            this.asyncMessagePublisher.emit("girobet:events:websockets:connection-state-changed", { state: "connected" });
+            this.asyncMessagePublisher.emit("frontend:events:websockets:connection-state-changed", { state: "connected" });
           }
           this.status = "connected";
         }
       })
       .onClose((websocket, event) => {
         if (this.status !== "disconnected") {
-          this.asyncMessagePublisher.emit("girobet:events:websockets:connection-state-changed", { state: "disconnected" });
+          this.asyncMessagePublisher.emit("frontend:events:websockets:connection-state-changed", { state: "disconnected" });
         }
         this.status = "disconnected";
         this.logger.debug("WS - Connection closed", { websocket, event });

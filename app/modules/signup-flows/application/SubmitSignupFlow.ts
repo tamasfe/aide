@@ -25,7 +25,7 @@ export class SubmitSignupFlow {
       return result;
     }
 
-    this.asyncMessagePublisher.emit("girobet:events:signup-flows:signup-flow-submitted", {
+    this.asyncMessagePublisher.emit("frontend:events:signup-flows:signup-flow-submitted", {
       id: flowId,
     });
 

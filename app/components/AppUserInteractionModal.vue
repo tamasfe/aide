@@ -13,7 +13,7 @@ const modalIsJurisdictionModal = (modal: UserInteractionModalState["modal"] | nu
 };
 
 $dependencies.common.asyncMessagePublisher.subscribe(
-  "girobet:commands:modals:open-user-interaction-modal",
+  "frontend:commands:modals:open-user-interaction-modal",
   (event) => {
     if (modalIsJurisdictionModal(state.value.modal) && !modalIsJurisdictionModal(event.modal)) {
       return;
@@ -25,7 +25,7 @@ $dependencies.common.asyncMessagePublisher.subscribe(
 );
 
 $dependencies.common.asyncMessagePublisher.subscribe(
-  "girobet:commands:modals:close-user-interaction-modal",
+  "frontend:commands:modals:close-user-interaction-modal",
   () => {
     if (modalIsJurisdictionModal(state.value.modal)) {
       return;

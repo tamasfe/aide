@@ -15,7 +15,7 @@ export class CreateDepositFlow {
       return result;
     }
 
-    await this.asyncMessagePublisher.emit("girobet:events:payments:deposit-flow-created", {
+    await this.asyncMessagePublisher.emit("frontend:events:payments:deposit-flow-created", {
       paymentMethodId,
       flowId: Number(result.value.flowId),
       code: result.value.pix.code,

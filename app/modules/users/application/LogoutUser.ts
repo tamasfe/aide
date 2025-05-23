@@ -15,7 +15,7 @@ export class LogoutUser {
       return result;
     }
 
-    this.asyncMessagePublisher.emit("girobet:events:users:user-logged-out", {});
+    this.asyncMessagePublisher.emit("frontend:events:users:user-logged-out", {});
 
     return success();
   }

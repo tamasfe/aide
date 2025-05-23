@@ -106,7 +106,7 @@ const links = [
   {
     title: t("side_nav.live_support"),
     icon: "emojione-v1:speech-balloon",
-    onClick: () => $dependencies.common.asyncMessagePublisher.emit("girobet:commands:modals:open-live-chat", {}),
+    onClick: () => $dependencies.common.asyncMessagePublisher.emit("frontend:commands:modals:open-live-chat", {}),
   },
   {
     title: t("side_nav.download_app"),
@@ -143,7 +143,7 @@ const emptyQuery = ref("");
           <SearchBar
             v-model="emptyQuery"
             input-size="md"
-            @click="$dependencies.common.asyncMessagePublisher.emit('girobet:commands:modals:open-user-interaction-modal', { modal: 'search' })"
+            @click="$dependencies.common.asyncMessagePublisher.emit('frontend:commands:modals:open-user-interaction-modal', { modal: 'search' })"
           />
         </div>
 

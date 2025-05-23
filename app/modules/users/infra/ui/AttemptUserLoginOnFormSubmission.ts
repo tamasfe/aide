@@ -23,7 +23,7 @@ export class AttemptUserLoginOnFormSubmission {
       return this.translateFunction("modal_login.error_unknown");
     }
 
-    this.asyncMessagePublisher.emit("girobet:commands:modals:close-user-interaction-modal", {});
+    this.asyncMessagePublisher.emit("frontend:commands:modals:close-user-interaction-modal", {});
 
     return null;
   }

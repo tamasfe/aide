@@ -42,7 +42,7 @@ export default defineNuxtPlugin({
       return success();
     };
 
-    $dependencies.common.asyncMessagePublisher.subscribe("girobet:events:websockets:connection-state-changed", async ({ state }) => {
+    $dependencies.common.asyncMessagePublisher.subscribe("frontend:events:websockets:connection-state-changed", async ({ state }) => {
       if (state !== "connected") return;
 
       if (userStore.user) {
@@ -52,14 +52,14 @@ export default defineNuxtPlugin({
     });
 
     $dependencies.common.asyncMessagePublisher.subscribe(
-      "girobet:events:users:user-logged-in",
+      "frontend:events:users:user-logged-in",
       async () => {
         await $dependencies.websockets.ui.wsChannelManagers.user.subscribe(wsConnectionResult.value);
         await subscribeToTrackerChannelEmittingAsyncMessage();
       },
     );
     $dependencies.common.asyncMessagePublisher.subscribe(
-      "girobet:events:signup-flows:signup-flow-submitted",
+      "frontend:events:signup-flows:signup-flow-submitted",
       async () => {
         await $dependencies.websockets.ui.wsChannelManagers.user.subscribe(wsConnectionResult.value);
         await subscribeToTrackerChannelEmittingAsyncMessage();
@@ -67,11 +67,11 @@ export default defineNuxtPlugin({
     );
 
     $dependencies.common.asyncMessagePublisher.subscribe(
-      "girobet:events:users:user-logged-out",
+      "frontend:events:users:user-logged-out",
       () => $dependencies.websockets.ui.wsChannelManagers.user.unsubscribe(wsConnectionResult.value),
     );
     $dependencies.common.asyncMessagePublisher.subscribe(
-      "girobet:events:users:user-closed-account",
+      "frontend:events:users:user-closed-account",
       () => $dependencies.websockets.ui.wsChannelManagers.user.unsubscribe(wsConnectionResult.value),
     );
 

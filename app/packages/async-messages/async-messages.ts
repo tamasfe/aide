@@ -44,17 +44,17 @@ export type UserInteractionModalState =
   };
 
 export interface AsyncMessagesTypes {
-  "girobet:commands:modals:open-user-interaction-modal": UserInteractionModalState;
-  "girobet:commands:modals:close-user-interaction-modal": object;
+  "frontend:commands:modals:open-user-interaction-modal": UserInteractionModalState;
+  "frontend:commands:modals:close-user-interaction-modal": object;
 
-  "girobet:commands:modals:open-live-chat": object;
-  "girobet:commands:modals:close-live-chat": object;
+  "frontend:commands:modals:open-live-chat": object;
+  "frontend:commands:modals:close-live-chat": object;
 
-  "girobet:events:users:user-logged-in": object;
-  "girobet:events:users:user-logged-out": object;
-  "girobet:events:users:user-closed-account": object;
-  "girobet:events:users:password-recovered": object;
-  "girobet:events:users:user-settings-updated": {
+  "frontend:events:users:user-logged-in": object;
+  "frontend:events:users:user-logged-out": object;
+  "frontend:events:users:user-closed-account": object;
+  "frontend:events:users:password-recovered": object;
+  "frontend:events:users:user-settings-updated": {
     settings: {
       locale?: SupportedLocale;
       password: boolean;
@@ -76,18 +76,18 @@ export interface AsyncMessagesTypes {
     };
   };
 
-  "girobet:events:signup-flows:signup-flow-submitted": {
+  "frontend:events:signup-flows:signup-flow-submitted": {
     id: string;
   };
 
-  "girobet:events:games:game-session-started": {
+  "frontend:events:games:game-session-started": {
     gameIdentifier: string;
   };
-  "girobet:events:games:game-session-finished": {
+  "frontend:events:games:game-session-finished": {
     gameIdentifier: string;
   };
 
-  "girobet:events:payments:deposit-flow-created": {
+  "frontend:events:payments:deposit-flow-created": {
     paymentMethodId: number;
     flowId: number;
     code: string;
@@ -95,14 +95,14 @@ export interface AsyncMessagesTypes {
     currency: WalletCurrency;
     totalDeposits: number;
   };
-  "girobet:events:payments:withdrawal-flow-created": {
+  "frontend:events:payments:withdrawal-flow-created": {
     flowId: number;
     amount: number;
     currency: WalletCurrency;
     totalWithdrawals: number;
   };
 
-  "girobet:events:websockets:connection-state-changed": {
+  "frontend:events:websockets:connection-state-changed": {
     state: "connected" | "disconnected";
   };
 

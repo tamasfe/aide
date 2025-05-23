@@ -26,7 +26,7 @@ export class UpdateUsernameOnFormSubmission {
       return this.t("modal_user_settings.username.error_unknown");
     }
 
-    await this.asyncMessagePublisher.emit("girobet:commands:modals:close-user-interaction-modal", {});
+    await this.asyncMessagePublisher.emit("frontend:commands:modals:close-user-interaction-modal", {});
 
     return "";
   }

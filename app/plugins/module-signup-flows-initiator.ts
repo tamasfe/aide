@@ -11,7 +11,7 @@ export default defineNuxtPlugin({
      *
      */
     $dependencies.common.asyncMessagePublisher.subscribe(
-      "girobet:events:signup-flows:signup-flow-submitted",
+      "frontend:events:signup-flows:signup-flow-submitted",
       () => $dependencies.signupFlows.ui.deleteCurrentSignupFlowIdOnSignupFlowSubmitted.handle(),
     );
 

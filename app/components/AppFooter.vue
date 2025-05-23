@@ -65,7 +65,7 @@ const scrollToTop = () => {
         :links="[
           // { title: $t('page.affiliate_program'), to: { name: 'affiliate-program' } },
           { title: $t('page.faq'), to: { name: 'faq' } },
-          { title: $t('page.support'), onClick: () => $dependencies.common.asyncMessagePublisher.emit('girobet:commands:modals:open-live-chat', {}) },
+          { title: $t('page.support'), onClick: () => $dependencies.common.asyncMessagePublisher.emit('frontend:commands:modals:open-live-chat', {}) },
           // { title: $t('page.telegram'), to: { name: 'todo' } },
         ]"
       />

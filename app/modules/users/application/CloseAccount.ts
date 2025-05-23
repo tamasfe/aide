@@ -11,7 +11,7 @@ export class CloseAccount {
       return result;
     }
 
-    await this.asyncMessagePublisher.emit("girobet:events:users:user-closed-account", {});
+    await this.asyncMessagePublisher.emit("frontend:events:users:user-closed-account", {});
 
     return success();
   }

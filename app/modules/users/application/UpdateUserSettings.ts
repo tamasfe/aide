@@ -66,7 +66,7 @@ export class UpdateUserSettings {
       }
     }
 
-    await this.asyncMessagePublisher.emit("girobet:events:users:user-settings-updated", {
+    await this.asyncMessagePublisher.emit("frontend:events:users:user-settings-updated", {
       settings: {
         locale: settings.locale,
         password: settings.password ? true : false,

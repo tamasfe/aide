@@ -17,7 +17,7 @@ export class LoginUser {
       return result;
     }
 
-    this.asyncMessagePublisher.emit("girobet:events:users:user-logged-in", {});
+    this.asyncMessagePublisher.emit("frontend:events:users:user-logged-in", {});
     return success();
   }
 }

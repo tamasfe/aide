@@ -28,7 +28,7 @@ export class UpdateUserSettingsChangedConsents {
       return result;
     }
 
-    await this.asyncMessagePublisher.emit("girobet:events:users:user-settings-updated", {
+    await this.asyncMessagePublisher.emit("frontend:events:users:user-settings-updated", {
       settings: {
         locale: undefined,
         password: false,

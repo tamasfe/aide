@@ -32,7 +32,7 @@ export class SubmitSignupFlowOnFormSubmission {
       return this.translateFunction("modal_session.error_submitting_flow");
     }
 
-    this.asyncMessagePublisher.emit("girobet:commands:modals:close-user-interaction-modal", {});
+    this.asyncMessagePublisher.emit("frontend:commands:modals:close-user-interaction-modal", {});
 
     return null;
   }

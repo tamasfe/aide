@@ -17,12 +17,12 @@ const emit = defineEmits<{
 }>();
 
 $dependencies.common.asyncMessagePublisher.subscribe(
-  "girobet:commands:modals:open-live-chat",
+  "frontend:commands:modals:open-live-chat",
   () => visibility.value = "maximized",
 );
 
 $dependencies.common.asyncMessagePublisher.subscribe(
-  "girobet:commands:modals:close-live-chat",
+  "frontend:commands:modals:close-live-chat",
   () => visibility.value = "hidden",
 );
 

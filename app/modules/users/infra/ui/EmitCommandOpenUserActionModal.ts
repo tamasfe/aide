@@ -9,7 +9,7 @@ export class EmitCommandOpenUserActionModalModal {
 
   public async handle(modalOrData: UserInteractionModalState | NoDataRequiredModal): Promise<EmptySuccessResult> {
     const modalState = typeof modalOrData === "string" ? { modal: modalOrData } : modalOrData;
-    await this.asyncMessagePublisher.emit("girobet:commands:modals:open-user-interaction-modal", modalState);
+    await this.asyncMessagePublisher.emit("frontend:commands:modals:open-user-interaction-modal", modalState);
     return success();
   }
 }

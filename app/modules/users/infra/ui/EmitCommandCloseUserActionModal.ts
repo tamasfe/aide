@@ -7,7 +7,7 @@ export class EmitCommandCloseUserActionModal {
   }
 
   public async handle(): Promise<EmptySuccessResult> {
-    await this.asyncMessagePublisher.emit("girobet:commands:modals:close-user-interaction-modal", {});
+    await this.asyncMessagePublisher.emit("frontend:commands:modals:close-user-interaction-modal", {});
     return success();
   }
 }

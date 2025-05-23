@@ -53,7 +53,7 @@ export default defineNuxtPlugin({
       }
     });
 
-    $dependencies.common.asyncMessagePublisher.subscribe("girobet:events:signup-flows:signup-flow-submitted", async () => {
+    $dependencies.common.asyncMessagePublisher.subscribe("frontend:events:signup-flows:signup-flow-submitted", async () => {
       const gtm = useGtm();
       if (!gtm) {
         return;
@@ -61,7 +61,7 @@ export default defineNuxtPlugin({
       fireGtmEvent(gtm, "SIGNUP", { user_id: String(userStore.user?.id || "") });
     });
 
-    $dependencies.common.asyncMessagePublisher.subscribe("girobet:events:payments:deposit-flow-created", async ({ amount, currency, totalDeposits }) => {
+    $dependencies.common.asyncMessagePublisher.subscribe("frontend:events:payments:deposit-flow-created", async ({ amount, currency, totalDeposits }) => {
       const gtm = useGtm();
       if (!gtm) {
         return;
@@ -69,7 +69,7 @@ export default defineNuxtPlugin({
       fireGtmEvent(gtm, "DEPOSIT_INITIATED", { amount_decimal: amount, deposit_count: totalDeposits, currency, user_id: String(userStore.user?.id || "") });
     });
 
-    $dependencies.common.asyncMessagePublisher.subscribe("girobet:events:payments:withdrawal-flow-created", async ({ amount, currency, totalWithdrawals }) => {
+    $dependencies.common.asyncMessagePublisher.subscribe("frontend:events:payments:withdrawal-flow-created", async ({ amount, currency, totalWithdrawals }) => {
       const gtm = useGtm();
       if (!gtm) {
         return;

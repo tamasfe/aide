@@ -13,13 +13,13 @@ const props = defineProps({
 });
 
 onMounted(() => {
-  $dependencies.common.asyncMessagePublisher.emit("girobet:events:games:game-session-started", {
+  $dependencies.common.asyncMessagePublisher.emit("frontend:events:games:game-session-started", {
     gameIdentifier: props.gameIdentifier,
   });
 });
 
 onUnmounted(() => {
-  $dependencies.common.asyncMessagePublisher.emit("girobet:events:games:game-session-finished", {
+  $dependencies.common.asyncMessagePublisher.emit("frontend:events:games:game-session-finished", {
     gameIdentifier: props.gameIdentifier,
   });
 });
