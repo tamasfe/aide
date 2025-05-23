@@ -19,7 +19,6 @@ export default defineNuxtPlugin({
     const { hostname } = useRequestURL();
     const requestHeaders = useRequestHeaders();
     const notificationsStore = useNotificationsStore();
-    const route = useRoute();
 
     const commonDependencies = await loadDependencies(config.public, $i18n, {
       currentHost: hostname,
@@ -41,7 +40,9 @@ export default defineNuxtPlugin({
           websockets: await createWebsocketDependencyInjectionI(config.public, commonDependencies),
           notifications: await createNotificationDependencyInjection(config.public, commonDependencies, notificationsStore),
           sites: await createSitesDependencyInjection(config.public, commonDependencies),
-          clicksTracking: await createClicksTrackingDependencyInjection(route, config.public, commonDependencies),
+          clicks: await createClicksTrackingDependencyInjection(
+            config.public, commonDependencies,
+          ),
         },
       },
     };

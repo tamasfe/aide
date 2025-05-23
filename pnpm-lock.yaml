@@ -114,6 +114,9 @@ importers:
         specifier: ^3.24.3
         version: 3.24.3
     devDependencies:
+      '@fingerprintjs/fingerprintjs-pro':
+        specifier: ^3.11.9
+        version: 3.11.9
       '@iconify-json/emojione-v1':
         specifier: ^1.2.1
         version: 1.2.1
@@ -1127,6 +1130,9 @@ packages:
 
   '@fastify/busboy@3.1.1':
     resolution: {integrity: sha512-5DGmA8FTdB2XbDeEwc/5ZXBl6UbBAyBOOLlPuBnZ/N1SwdH9Ii+cOX3tBROlDgcTXxjOYnLMVoKk9+FXAw0CJw==}
+
+  '@fingerprintjs/fingerprintjs-pro@3.11.9':
+    resolution: {integrity: sha512-GTow49I86tBlV/U+edBTLA2dPCDXrfHVsNuTV7a5nZjWFV3Q44Tj6yb5O0GcGT/EHwbSy3UmCO9+PS1ERR+b2g==}
 
   '@floating-ui/core@1.6.9':
     resolution: {integrity: sha512-uMXCuQ3BItDUbAMhIXw7UPXRfAlOAvZzdK9BWpE60MCn+Svt3aLn9jsPTi/WNGlRUu2uI0v5S7JiIUsbsvh3fw==}
@@ -8479,6 +8485,10 @@ snapshots:
     optional: true
 
   '@fastify/busboy@3.1.1': {}
+
+  '@fingerprintjs/fingerprintjs-pro@3.11.9':
+    dependencies:
+      tslib: 2.8.1
 
   '@floating-ui/core@1.6.9':
     dependencies:

@@ -76,6 +76,9 @@ export default defineNuxtConfig({
         apiBaseUrlClient: process.env.NUXT_PUBLIC_KYC_API_BASE_URL_CLIENT,
         apiBaseUrlServer: process.env.NUXT_PUBLIC_KYC_API_BASE_URL_SERVER,
       },
+      tracking: {
+        apiBaseUrl: process.env.NUXT_PUBLIC_TRACKING_API_BASE_URL,
+      },
     },
   },
   build: {

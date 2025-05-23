@@ -37,6 +37,8 @@ data:
   NUXT_PUBLIC_KYC_API_BASE_URL_CLIENT: "https://{{ .Values.config.public_api_domain }}"
   NUXT_PUBLIC_KYC_API_BASE_URL_SERVER: "http://{{ .Values.config.internal_api_domain }}"
 
+  NUXT_PUBLIC_TRACKING_API_BASE_URL: "https://{{ .Values.config.public_tracking_domain }}"
+
   # OTEL configuration
   OTEL_EXPORTER_OTLP_ENDPOINT: "http://k8s-monitoring-alloy.monitoring.svc.cluster.local:4317"
   OTEL_BSP_SCHEDULE_DELAY: "2000"
