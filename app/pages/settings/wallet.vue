@@ -7,7 +7,7 @@ useHead({
   title: t("page.dashboard_settings"),
 });
 
-const ENABLE_SERVER_SIDE_RENDERING = false;
+const ENABLE_SERVER_SIDE_RENDERING = true;
 const DEFER_CLIENT_SIDE_LOADING = true;
 const NUMBER_OF_PAYMENTS_TO_SHOW = 10;
 

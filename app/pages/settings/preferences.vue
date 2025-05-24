@@ -15,7 +15,7 @@ const promotionsPreferences = ref<null | {
   browser: boolean;
 }>(null);
 
-const ENABLE_SERVER_SIDE_RENDERING = false;
+const ENABLE_SERVER_SIDE_RENDERING = true;
 const DEFER_CLIENT_SIDE_LOADING = true;
 
 const { data: errorLoading } = await useAsyncData(`settings-preferences-user-settings`,

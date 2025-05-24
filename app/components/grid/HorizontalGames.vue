@@ -42,7 +42,7 @@ const onLoadData = async () => {
   loading.value = false;
 };
 
-const ENABLE_SERVER_SIDE_RENDERING = false;
+const ENABLE_SERVER_SIDE_RENDERING = true;
 const DEFER_CLIENT_SIDE_LOADING = true;
 if (!props.initialGames) {
   await useAsyncData(`load-games-for-${props.categoryIdentifier}`,

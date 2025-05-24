@@ -20,7 +20,7 @@ afterEach(() => {
   }
 });
 
-const ENABLE_SERVER_SIDE_RENDERING = false;
+const ENABLE_SERVER_SIDE_RENDERING = true;
 const DEFER_CLIENT_SIDE_LOADING = true;
 const { data: categoriesData } = await useAsyncData("sidebar-category-identifiers", async () => {
   return $dependencies.games.ui.searchGameCategoriesByGroup.handle("sidebar_menu", false);

@@ -8,7 +8,7 @@ const onClickBalance = async () => {
   await navigateTo(localePath("/settings/wallet"));
 };
 
-const ENABLE_SERVER_SIDE_RENDERING = false;
+const ENABLE_SERVER_SIDE_RENDERING = true;
 const DEFER_CLIENT_SIDE_LOADING = true;
 
 const { data } = await useAsyncData("nav-wallet-balance-wallet", async () => {

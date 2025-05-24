@@ -7,7 +7,7 @@ useHead({
   title: t("page.dashboard_history"),
 });
 
-const ENABLE_SERVER_SIDE_RENDERING = false;
+const ENABLE_SERVER_SIDE_RENDERING = true;
 const DEFER_CLIENT_SIDE_LOADING = true;
 
 const loading = useState(`history-page-deposits-loading`, () => true);
