@@ -19,7 +19,7 @@ const fallbackAltText = computed(() => {
   });
 });
 
-const fallbackImgSrc = ref(siteStore.getCdnGameImageUrl(props.identifier, { size: "100w", quality: "50" }));
+const fallbackImgSrc = ref(siteStore.getCdnGameImageUrl(props.identifier, { size: "100w", quality: "50", format: "webp" }));
 const imageExists = ref<boolean | null>(null);
 const onImageError = () => {
   imageExists.value = false;
@@ -32,28 +32,43 @@ const onImageLoad = () => {
 
 <template>
   <picture :class="cn('block w-full h-full object-cover hide-text', props.class)">
-    <template v-if="imageExists">
-      <template
-        v-for="size in [
-          { imageSize: '200w' as const, screenSize: '400px' },
-          { imageSize: '300w' as const, screenSize: '900px' },
-          { imageSize: '600w' as const, screenSize: null },
-        ]"
-        :key="size.imageSize"
+    <!-- Only show sources if image exists or hasn't been tested yet -->
+    <template v-if="imageExists !== false">
+      <!-- Mobile: up to 400px -->
+      <source
+        media="(max-width: 400px)"
+        type="image/webp"
+        :srcset="siteStore.getCdnGameImageUrl(props.identifier, { format: 'webp', size: '200w' })"
       >
-        <template v-for="format in ['webp' as const, 'jpeg' as const]" :key="format">
-          <source
-            :type="`image/${format}`"
-            :alt="altText || fallbackAltText"
-            :placeholder="fallbackImgSrc"
-            :media="size.screenSize ? `(max-width: ${size.screenSize})` : ''"
-            :srcset="
-              `${siteStore.getCdnGameImageUrl(props.identifier, { format, size: size.imageSize })}`"
-            @error="onImageError"
-          >
-        </template>
-      </template>
+      <source
+        media="(max-width: 400px)"
+        type="image/jpeg"
+        :srcset="siteStore.getCdnGameImageUrl(props.identifier, { format: 'jpeg', size: '200w' })"
+      >
+
+      <!-- Tablet: 401px to 900px -->
+      <source
+        media="(max-width: 900px)"
+        type="image/webp"
+        :srcset="siteStore.getCdnGameImageUrl(props.identifier, { format: 'webp', size: '300w' })"
+      >
+      <source
+        media="(max-width: 900px)"
+        type="image/jpeg"
+        :srcset="siteStore.getCdnGameImageUrl(props.identifier, { format: 'jpeg', size: '300w' })"
+      >
+
+      <!-- Desktop: above 900px -->
+      <source
+        type="image/webp"
+        :srcset="siteStore.getCdnGameImageUrl(props.identifier, { format: 'webp', size: '600w' })"
+      >
+      <source
+        type="image/jpeg"
+        :srcset="siteStore.getCdnGameImageUrl(props.identifier, { format: 'jpeg', size: '600w' })"
+      >
     </template>
+
     <NuxtImg
       :class="cn('block w-full h-full', imageExists ? '' : props.fallbackImageClass)"
       :src="fallbackImgSrc"
