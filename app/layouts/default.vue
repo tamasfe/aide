@@ -30,13 +30,13 @@ const onLiveChatVisibilityChanged = (visibility: "minimized" | "maximized" | "hi
 
     <NavSidebar v-model:open="sidebarIsOpen" />
 
-    <AppHeader @click:menu="sidebarIsOpen = !sidebarIsOpen" />
+    <AppHeader class="mb-6" @click:menu="sidebarIsOpen = !sidebarIsOpen" />
 
     <div>
       <slot />
     </div>
 
-    <AppFooter class="pb-14 sm:pb-0" />
+    <AppFooter class="mt-8 pb-14 sm:pb-0" />
 
     <NavMobile @click:menu="sidebarIsOpen = !sidebarIsOpen" />
 

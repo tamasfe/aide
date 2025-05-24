@@ -34,7 +34,7 @@ const scrollToTop = () => {
 </script>
 
 <template>
-  <footer class="mt-8 pt-6 md:py-12 bg-subtle flex flex-col space-y-10 print:hidden">
+  <footer class="pt-6 md:py-12 bg-subtle flex flex-col space-y-10 print:hidden">
     <!-- main -->
     <section class="giro__container flex flex-col md:flex-row md:justify-between sm:space-x-8 md:space-x-12 text-subtle">
       <div class="flex-1 md:max-w-xs lg:max-w-sm flex flex-col items-center md:items-start space-y-6 md:space-y-8">
