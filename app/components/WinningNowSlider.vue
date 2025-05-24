@@ -93,7 +93,6 @@ useCreateSubscriptionToWebsocket(
               <GameImage
                 :identifier="item.game.identifier"
                 class="block object-cover h-full w-full transition-transform transform hover:scale-105 cursor-pointer"
-                fallback-image-class="px-2"
               />
             </div>
             <div class="font-medium leading-tight space-y-1 min-w-0 flex-1">

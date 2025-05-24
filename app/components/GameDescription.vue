@@ -43,7 +43,6 @@ const emit = defineEmits<{
             v-if="!isMobile"
             :identifier="game.identifier"
             class="block w-full max-w-48 object-cover aspect-[3/4] transition-transform transform hover:scale-105 cursor-pointer"
-            fallback-image-class="px-4"
           />
         </div>
       </div>

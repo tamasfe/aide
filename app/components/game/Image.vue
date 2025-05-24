@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from "vue";
-import { destructureGameIdentifier } from "~/modules/games/domain/Game";
 
-const { t } = useI18n();
 const siteStore = useSiteStore();
 const props = defineProps<{
   identifier: string;
@@ -11,71 +9,56 @@ const props = defineProps<{
   fallbackImageClass?: HTMLAttributes["class"];
 }>();
 
-const fallbackAltText = computed(() => {
-  const { gameSlug, providerSlug } = destructureGameIdentifier(props.identifier);
-  return t("game.game_image_alt", {
-    game: toSentenceCase(gameSlug),
-    provider: toSentenceCase(providerSlug),
-  });
-});
-
 const fallbackImgSrc = ref(siteStore.getCdnGameImageUrl(props.identifier, { size: "100w", quality: "50", format: "webp" }));
-const imageExists = ref<boolean | null>(null);
-const onImageError = () => {
-  imageExists.value = false;
-  fallbackImgSrc.value = siteStore.getAssetPath("images/logos/logo-sm.svg");
-};
-const onImageLoad = () => {
-  imageExists.value = true;
-};
 </script>
 
 <template>
   <picture :class="cn('block w-full h-full object-cover hide-text', props.class)">
     <!-- Only show sources if image exists or hasn't been tested yet -->
-    <template v-if="imageExists !== false">
-      <!-- Mobile: up to 400px -->
-      <source
-        media="(max-width: 400px)"
-        type="image/webp"
-        :srcset="siteStore.getCdnGameImageUrl(props.identifier, { format: 'webp', size: '200w' })"
-      >
-      <source
-        media="(max-width: 400px)"
-        type="image/jpeg"
-        :srcset="siteStore.getCdnGameImageUrl(props.identifier, { format: 'jpeg', size: '200w' })"
-      >
+    <!-- Mobile: up to 400px -->
+    <source
+      media="(max-width: 400px)"
+      type="image/webp"
+      :srcset="siteStore.getCdnGameImageUrl(props.identifier, { format: 'webp', size: '200w' })"
+    >
+    <source
+      media="(max-width: 400px)"
+      type="image/jpeg"
+      :srcset="siteStore.getCdnGameImageUrl(props.identifier, { format: 'jpeg', size: '200w' })"
+    >
 
-      <!-- Tablet: 401px to 900px -->
-      <source
-        media="(max-width: 900px)"
-        type="image/webp"
-        :srcset="siteStore.getCdnGameImageUrl(props.identifier, { format: 'webp', size: '300w' })"
-      >
-      <source
-        media="(max-width: 900px)"
-        type="image/jpeg"
-        :srcset="siteStore.getCdnGameImageUrl(props.identifier, { format: 'jpeg', size: '300w' })"
-      >
+    <!-- Tablet: 401px to 900px -->
+    <source
+      media="(max-width: 900px)"
+      type="image/webp"
+      :srcset="siteStore.getCdnGameImageUrl(props.identifier, { format: 'webp', size: '300w' })"
+    >
+    <source
+      media="(max-width: 900px)"
+      type="image/jpeg"
+      :srcset="siteStore.getCdnGameImageUrl(props.identifier, { format: 'jpeg', size: '300w' })"
+    >
 
-      <!-- Desktop: above 900px -->
-      <source
-        type="image/webp"
-        :srcset="siteStore.getCdnGameImageUrl(props.identifier, { format: 'webp', size: '600w' })"
-      >
-      <source
-        type="image/jpeg"
-        :srcset="siteStore.getCdnGameImageUrl(props.identifier, { format: 'jpeg', size: '600w' })"
-      >
-    </template>
+    <!-- Desktop: above 900px -->
+    <source
+      type="image/webp"
+      :srcset="siteStore.getCdnGameImageUrl(props.identifier, { format: 'webp', size: '600w' })"
+    >
+    <source
+      type="image/jpeg"
+      :srcset="siteStore.getCdnGameImageUrl(props.identifier, { format: 'jpeg', size: '600w' })"
+    >
 
+    <!-- alt has to be empty on fallback, to prevent the "broken image" icon from showing -->
     <NuxtImg
-      :class="cn('block w-full h-full', imageExists ? '' : props.fallbackImageClass)"
+      :class="cn('block w-full h-full')"
+      :style="{ 'background-image': 'url(' + siteStore.getAssetPath('images/logos/logo-sm.svg') + ')',
+                'background-size': '60%',
+                'background-repeat': 'no-repeat',
+                'background-position': 'center',
+      }"
       :src="fallbackImgSrc"
-      :placeholder="siteStore.getAssetPath('images/logos/logo-sm.svg')"
-      :alt="altText || fallbackAltText"
-      @error="onImageError"
-      @load="onImageLoad"
+      :alt="altText || ''"
     />
   </picture>
 </template>

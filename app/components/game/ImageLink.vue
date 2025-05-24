@@ -7,7 +7,6 @@ const props = defineProps<{
   altText?: string;
   animationOnHover?: "vertical-translate" | "zoom-in" | null;
   class?: HTMLAttributes["class"];
-  fallbackImageClass?: HTMLAttributes["class"];
 }>();
 
 const animationClasses = computed(() => {
@@ -41,7 +40,6 @@ const animationClasses = computed(() => {
     :class="cn('block bg-subtle rounded w-full h-full overflow-hidden border border-emphasis/50', animationClasses.link, props.class)"
   >
     <GameImage
-      :fallback-image-class="fallbackImageClass"
       :identifier="identifier"
       :alt="altText || ''"
       :class="cn('block w-full h-full object-cover cursor-pointer', animationClasses.img)"
