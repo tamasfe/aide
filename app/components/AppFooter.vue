@@ -81,7 +81,8 @@ const scrollToTop = () => {
       <FooterColumnSocialMedia class="hidden lg:flex" />
     </section>
 
-    <section class="giro__container">
+    <section class="giro__container flex items-center justify-center space-x-4">
+      <LicenseAnjouan class="w-16" />
       <GridHorizontal
         class="w-full"
         :data="logos"
@@ -137,6 +138,8 @@ const scrollToTop = () => {
           :size="20"
         />
       </BaseButton>
+
+      <section class="!mt-8 giro__container flex items-center justify-center" />
     </section>
   </footer>
 </template>

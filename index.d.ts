@@ -59,5 +59,14 @@ declare module "@tanstack/vue-table" {
   }
 }
 
+declare global {
+  interface Window {
+    // Anjouan license script loads the following in the window object. More info in the Anjouan vue component:
+    anj_baee18f7_63ae_4aa0_b5d7_8160149e921b?: {
+      init: () => void;
+    };
+  }
+}
+
 // It is always important to ensure you import/export something when augmenting a type
 export {};

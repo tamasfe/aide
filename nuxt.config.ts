@@ -29,6 +29,15 @@ export default defineNuxtConfig({
         { rel: "preconnect", href: "https://fonts.gstatic.com", crossorigin: "" },
         { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" },
       ],
+      script: [
+        /**
+         * Anjouan Licensing Services Inc. logo
+         */
+        {
+          src: "https://baee18f7-63ae-4aa0-b5d7-8160149e921b.snippet.anjouangaming.org/anj-seal.js",
+          defer: true,
+        },
+      ],
     },
     rootId: "app",
   },

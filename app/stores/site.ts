@@ -1,5 +1,7 @@
 import type { Site } from "~/modules/sites/domain/Site";
 import type { License } from "~/modules/sites/domain/License";
+import { ErrorAnjouanLicenseScriptWasNotFound } from "~/packages/licenses/ErrorAnjouanLicenseScriptWasNotFound";
+import { ErrorInitiatingAnjouanLicenseScript } from "~/packages/licenses/ErrorInitiatingAnjouanLicenseScript";
 
 type SiteDomain = Site["domains"][number];
 const defaultDomain: SiteDomain = { api: "https://api-staging.girobet.vip", email: "support@girobet.vip", frontend: "https://staging.girobet.vip", cdn: "cdn.girobet.vip" };
@@ -68,6 +70,30 @@ export const useSiteStore = defineStore("siteStore", {
         throw new Error("No active license found. This should never happen as the site should either have a valid license or have thrown an invalid jurisdiction error");
       }
       return activeLicense;
+    },
+
+    activateAnjouanLicenseIfAvailable(): "active" | "inactive" {
+      const { $dependencies } = useNuxtApp();
+      switch (this.site.identifier) {
+        case "zambabet":
+          if (!window.anj_baee18f7_63ae_4aa0_b5d7_8160149e921b) {
+            $dependencies.common.logger.error("Anjouan script not loaded properly.", new ErrorAnjouanLicenseScriptWasNotFound("The Anjouan license script was not found on the window object."));
+            return "active";
+          }
+
+          try {
+            window.anj_baee18f7_63ae_4aa0_b5d7_8160149e921b.init();
+          }
+          catch (error) {
+            $dependencies.common.logger.error("Anjouan script could not be initialized.", new ErrorInitiatingAnjouanLicenseScript("The Anjouan license script ", {}, ErrorInitiatingAnjouanLicenseScript.parseCause(error)));
+          }
+          return "active";
+
+        case "girobet":
+        default:
+          // Not implemented yet
+          return "inactive";
+      }
     },
 
     /**
