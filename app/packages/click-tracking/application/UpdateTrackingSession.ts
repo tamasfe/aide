@@ -11,7 +11,10 @@ export class UpdateTrackingSession {
     userId: number,
   ) {
     if (!this.fingerprintService.isInitialized()) {
-      await this.fingerprintService.initLibrary();
+      const resultInitingLibrary = await this.fingerprintService.initLibrary();
+      if (resultInitingLibrary.isFailure) {
+        return resultInitingLibrary;
+      }
     }
     const fingerPrintResult = await this.fingerprintService.getFingerprint();
     if (fingerPrintResult.isFailure) {

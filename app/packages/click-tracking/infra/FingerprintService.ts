@@ -36,7 +36,7 @@ export class FingerprintService {
    * More info @https://dev.fingerprint.com/docs/install-the-javascript-agent#configuring-the-agent
    */
   public async initLibrary() {
-    this.fingreprintPublicAgent = await loadFingerprintAgent({
+    const result = await loadFingerprintAgent({
       apiKey: FINGERPRINT_JS_PUBLIC_API_KEY,
       region: "us",
       // endpoint: [
@@ -47,7 +47,16 @@ export class FingerprintService {
       // // "https://metrics.yourwebsite.com/web/v<version>/<apiKey>/loader_v<loaderVersion>.js",
       //   FingerprintJS.defaultScriptUrlPattern,
       // ],
-    });
+    })
+      .then(agent => success(agent))
+      .catch(error => fail(ExceptionGettingUserFingerprint.newFromUnknownError({ }, error)));
+
+    if (result.isFailure) {
+      return result;
+    }
+
+    this.fingreprintPublicAgent = result.value;
+    return success();
   }
 
   private fingreprintPublicAgent: Awaited<ReturnType<typeof loadFingerprintAgent>> | undefined = undefined;

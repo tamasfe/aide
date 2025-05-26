@@ -9,7 +9,10 @@ export class CreateTrackingClick {
 
   public async handle(userId: number | null, path: string, queryParams: URLSearchParams) {
     if (!this.fingerprintService.isInitialized()) {
-      await this.fingerprintService.initLibrary();
+      const resultInitingLibrary = await this.fingerprintService.initLibrary();
+      if (resultInitingLibrary.isFailure) {
+        return resultInitingLibrary;
+      }
     }
 
     const fingerPrintResult = await this.fingerprintService.getFingerprint();
