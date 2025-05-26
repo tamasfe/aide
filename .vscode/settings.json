@@ -5,7 +5,8 @@
     "**/node_modules": true,
     "**/bower_components": true,
     "**/*.code-search": true,
-    ".nuxt/**": true
+    ".nuxt/**": true,
+    ".output/**": true
   },
   "[vue]": {
     "editor.defaultFormatter": "dbaeumer.vscode-eslint"

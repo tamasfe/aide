@@ -19,7 +19,7 @@ export class FingerprintService {
 
     return this.fingreprintPublicAgent.get()
       .then((fingerPrint) => {
-        this.logger.debug("Returned fingerprint value", { ...fingerPrint });
+        // this.logger.debug("Returned fingerprint value", { ...fingerPrint });
         return success(fingerPrint);
       })
       .catch(error => fail(
