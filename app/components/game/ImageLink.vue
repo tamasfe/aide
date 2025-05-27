@@ -4,7 +4,7 @@ import type { HTMLAttributes } from "vue";
 const props = defineProps<{
   identifier: string;
   slug?: string;
-  altText?: string;
+  // altText?: string;
   animationOnHover?: "vertical-translate" | "zoom-in" | null;
   class?: HTMLAttributes["class"];
 }>();
@@ -41,7 +41,6 @@ const animationClasses = computed(() => {
   >
     <GameImage
       :identifier="identifier"
-      :alt="altText || ''"
       :class="cn('block w-full h-full object-cover cursor-pointer', animationClasses.img)"
     />
   </GamePageLink>

@@ -4,7 +4,7 @@ import type { HTMLAttributes } from "vue";
 const siteStore = useSiteStore();
 const props = defineProps<{
   identifier: string;
-  altText?: string;
+  // altText?: string;
   class?: HTMLAttributes["class"];
   fallbackImageClass?: HTMLAttributes["class"];
 }>();
@@ -58,7 +58,7 @@ const fallbackImgSrc = ref(siteStore.getCdnGameImageUrl(props.identifier, { size
                 'background-position': 'center',
       }"
       :src="fallbackImgSrc"
-      :alt="altText || ''"
+      alt=""
     />
   </picture>
 </template>
