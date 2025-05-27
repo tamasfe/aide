@@ -1,4 +1,3 @@
-import type { RouteLocationNormalizedLoadedGeneric } from "vue-router";
 import type { PublicRuntimeConfig } from "nuxt/schema";
 import type { ClickTrackingRepositoryI } from "../domain/ClickTrackingRepository";
 import { CreateTrackingClick } from "../application/CreateTrackingClick";

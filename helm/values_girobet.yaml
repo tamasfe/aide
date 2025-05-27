@@ -2,4 +2,4 @@ config:
   public_domain: "girobet.vip"
   public_api_domain: "api.girobet.vip"
   internal_api_domain: "api.default.svc.cluster.local"
-  public_tracking_domain: "tracking.girobet.vip"
+  public_tracking_domain: "t.girobet.vip"
