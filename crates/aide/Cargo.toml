@@ -36,14 +36,7 @@ scalar = []
 skip_serializing_defaults = []
 serde_qs = ["dep:serde_qs"]
 
-axum = [
-	"dep:axum",
-	"bytes",
-	"http",
-	"dep:tower-layer",
-	"dep:tower-service",
-	"serde_qs?/axum",
-]
+axum = ["dep:axum", "bytes", "http", "dep:tower-layer", "dep:tower-service", "serde_qs?/axum"]
 axum-form = ["axum", "axum/form"]
 axum-json = ["axum", "axum/json"]
 axum-matched-path = ["axum", "axum/matched-path"]
