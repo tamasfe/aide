@@ -200,23 +200,23 @@ pub enum ParamLocation {
 #[tracing::instrument(skip_all)]
 pub fn parameters_from_schema(
     ctx: &mut GenContext,
-    mut schema: Schema,
+    schema: Schema,
     location: ParamLocation,
 ) -> Vec<Parameter> {
-    let schema = ctx.resolve_schema(&mut schema);
+    let schema = ctx.resolve_schema(&schema);
 
     let mut params = Vec::new();
 
     if let Some(obj) = schema.as_object() {
         for (name, schema) in obj {
-            let s: Schema = schema.clone().try_into().expect("Failed to convert schema");
+            let json_schema: Schema = schema.clone().try_into().expect("Failed to convert schema");
 
             match location {
                 ParamLocation::Query => {
                     params.push(Parameter::Query {
                         parameter_data: ParameterData {
                             name: name.clone(),
-                            description: s
+                            description: json_schema
                                 .get("metadata")
                                 .and_then(|m| m.get("description"))
                                 .and_then(|d| d.as_str())
@@ -224,11 +224,10 @@ pub fn parameters_from_schema(
                             required: obj
                                 .get("required")
                                 .and_then(|r| r.as_array())
-                                .map(|r| r.contains(&name.as_str().into()))
-                                .unwrap_or(false),
+                                .is_some_and(|r| r.contains(&name.as_str().into())),
                             format: crate::openapi::ParameterSchemaOrContent::Schema(
                                 openapi::SchemaObject {
-                                    json_schema: s.into(),
+                                    json_schema,
                                     example: None,
                                     external_docs: None,
                                 },
@@ -248,7 +247,7 @@ pub fn parameters_from_schema(
                     params.push(Parameter::Path {
                         parameter_data: ParameterData {
                             name: name.clone(),
-                            description: s
+                            description: json_schema
                                 .get("metadata")
                                 .and_then(|m| m.get("description"))
                                 .and_then(|d| d.as_str())
@@ -256,11 +255,10 @@ pub fn parameters_from_schema(
                             required: obj
                                 .get("required")
                                 .and_then(|r| r.as_array())
-                                .map(|r| r.contains(&name.as_str().into()))
-                                .unwrap_or(false),
+                                .is_some_and(|r| r.contains(&name.as_str().into())),
                             format: crate::openapi::ParameterSchemaOrContent::Schema(
                                 openapi::SchemaObject {
-                                    json_schema: s.into(),
+                                    json_schema,
                                     example: None,
                                     external_docs: None,
                                 },
@@ -278,7 +276,7 @@ pub fn parameters_from_schema(
                     params.push(Parameter::Header {
                         parameter_data: ParameterData {
                             name: name.clone(),
-                            description: s
+                            description: json_schema
                                 .get("metadata")
                                 .and_then(|m| m.get("description"))
                                 .and_then(|d| d.as_str())
@@ -286,11 +284,10 @@ pub fn parameters_from_schema(
                             required: obj
                                 .get("required")
                                 .and_then(|r| r.as_array())
-                                .map(|r| r.contains(&name.as_str().into()))
-                                .unwrap_or(false),
+                                .is_some_and(|r| r.contains(&name.as_str().into())),
                             format: crate::openapi::ParameterSchemaOrContent::Schema(
                                 openapi::SchemaObject {
-                                    json_schema: s.into(),
+                                    json_schema,
                                     example: None,
                                     external_docs: None,
                                 },
@@ -308,7 +305,7 @@ pub fn parameters_from_schema(
                     params.push(Parameter::Cookie {
                         parameter_data: ParameterData {
                             name: name.clone(),
-                            description: s
+                            description: json_schema
                                 .get("metadata")
                                 .and_then(|m| m.get("description"))
                                 .and_then(|d| d.as_str())
@@ -316,11 +313,10 @@ pub fn parameters_from_schema(
                             required: obj
                                 .get("required")
                                 .and_then(|r| r.as_array())
-                                .map(|r| r.contains(&name.as_str().into()))
-                                .unwrap_or(false),
+                                .is_some_and(|r| r.contains(&name.as_str().into())),
                             format: crate::openapi::ParameterSchemaOrContent::Schema(
                                 openapi::SchemaObject {
-                                    json_schema: s.into(),
+                                    json_schema,
                                     example: None,
                                     external_docs: None,
                                 },

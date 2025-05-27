@@ -39,8 +39,8 @@ where
     type Inner = T;
 
     fn operation_response(ctx: &mut GenContext, _operation: &mut Operation) -> Option<Response> {
-        let mut schema = ctx.schema.subschema_for::<T>();
-        let resolved_schema = ctx.resolve_schema(&mut schema);
+        let json_schema = ctx.schema.subschema_for::<T>();
+        let resolved_schema = ctx.resolve_schema(&json_schema);
 
         Some(Response {
             description: resolved_schema
@@ -53,7 +53,7 @@ where
                 "application/json".into(),
                 MediaType {
                     schema: Some(SchemaObject {
-                        json_schema: schema.into(),
+                        json_schema,
                         example: None,
                         external_docs: None,
                     }),

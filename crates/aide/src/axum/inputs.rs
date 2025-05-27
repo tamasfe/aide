@@ -72,8 +72,8 @@ fn operation_input_json<T: JsonSchema>(
     ctx: &mut crate::generate::GenContext,
     operation: &mut Operation,
 ) {
-    let mut schema = ctx.schema.subschema_for::<T>();
-    let resolved_schema = ctx.resolve_schema(&mut schema);
+    let json_schema = ctx.schema.subschema_for::<T>();
+    let resolved_schema = ctx.resolve_schema(&json_schema);
 
     set_body(
         ctx,
@@ -88,7 +88,7 @@ fn operation_input_json<T: JsonSchema>(
                 "application/json".into(),
                 MediaType {
                     schema: Some(SchemaObject {
-                        json_schema: schema.into(),
+                        json_schema,
                         example: None,
                         external_docs: None,
                     }),

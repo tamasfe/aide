@@ -3,10 +3,10 @@
 use std::cell::RefCell;
 
 use cfg_if::cfg_if;
-use schemars::{generate::SchemaSettings, json_schema, Schema, SchemaGenerator};
+use schemars::{generate::SchemaSettings, Schema, SchemaGenerator};
 use serde_json::Value;
 
-use crate::{error::Error, openapi::SchemaObject};
+use crate::error::Error;
 
 thread_local! {
     static GEN_CTX: RefCell<GenContext> = RefCell::new(GenContext::new());

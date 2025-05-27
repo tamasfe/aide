@@ -189,7 +189,6 @@ use axum::{
 };
 use indexmap::map::Entry;
 use indexmap::IndexMap;
-use schemars::json_schema;
 use tower_layer::Layer;
 use tower_service::Service;
 
