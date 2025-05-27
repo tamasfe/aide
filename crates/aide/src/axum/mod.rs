@@ -189,6 +189,7 @@ use axum::{
 };
 use indexmap::map::Entry;
 use indexmap::IndexMap;
+use schemars::json_schema;
 use tower_layer::Layer;
 use tower_service::Service;
 
@@ -439,30 +440,29 @@ where
 
         let _ = transform(TransformOpenApi::new(api));
 
-        let needs_reset =
-            in_context(|ctx| {
-                if !ctx.extract_schemas {
-                    return false;
-                }
+        let needs_reset = in_context(|ctx| {
+            if !ctx.extract_schemas {
+                return false;
+            }
 
-                let components = api.components.get_or_insert_with(Default::default);
-                components
-                    .schemas
-                    .extend(ctx.schema.take_definitions().into_iter().map(
-                        |(name, json_schema)| {
-                            (
-                                name,
-                                SchemaObject {
-                                    json_schema,
-                                    example: None,
-                                    external_docs: None,
-                                },
-                            )
-                        },
-                    ));
+            let components = api.components.get_or_insert_with(Default::default);
+            components
+                .schemas
+                .extend(ctx.schema.take_definitions(true).into_iter().map(
+                    |(name, json_schema)| {
+                        (
+                            name,
+                            SchemaObject {
+                                json_schema: json_schema.try_into().expect("Invalid schema"),
+                                example: None,
+                                external_docs: None,
+                            },
+                        )
+                    },
+                ));
 
-                true
-            });
+            true
+        });
         if needs_reset {
             generate::reset_context();
         }

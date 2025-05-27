@@ -12,10 +12,7 @@ use axum::{
 };
 
 use indexmap::IndexMap;
-use schemars::{
-    schema::{ArrayValidation, InstanceType, Schema, SingleOrVec},
-    JsonSchema,
-};
+use schemars::{JsonSchema, Schema};
 use serde_json::json;
 
 use crate::{
@@ -75,17 +72,18 @@ fn operation_input_json<T: JsonSchema>(
     ctx: &mut crate::generate::GenContext,
     operation: &mut Operation,
 ) {
-    let schema = ctx.schema.subschema_for::<T>().into_object();
-    let resolved_schema = ctx.resolve_schema(&schema);
+    let mut schema = ctx.schema.subschema_for::<T>();
+    let resolved_schema = ctx.resolve_schema(&mut schema);
 
     set_body(
         ctx,
         operation,
         RequestBody {
             description: resolved_schema
-                .metadata
-                .as_ref()
-                .and_then(|m| m.description.clone()),
+                .get("metadata")
+                .and_then(|m| m.get("description"))
+                .and_then(|d| d.as_str())
+                .map(String::from),
             content: IndexMap::from_iter([(
                 "application/json".into(),
                 MediaType {
@@ -163,7 +161,7 @@ where
     T: JsonSchema,
 {
     fn operation_input(ctx: &mut crate::generate::GenContext, operation: &mut Operation) {
-        let schema = ctx.schema.subschema_for::<T>().into_object();
+        let schema = ctx.schema.subschema_for::<T>();
         let params = parameters_from_schema(ctx, schema, ParamLocation::Path);
         add_parameters(ctx, operation, params);
     }

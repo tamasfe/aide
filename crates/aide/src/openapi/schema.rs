@@ -1,11 +1,12 @@
 #![allow(clippy::large_enum_variant)]
 use crate::openapi::*;
+use schemars::Schema;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, schemars::JsonSchema)]
 pub struct SchemaObject {
     #[serde(flatten)]
-    pub json_schema: schemars::schema::Schema,
+    pub json_schema: Schema,
     /// Additional external documentation for this schema.
     #[serde(rename = "externalDocs")]
     #[serde(skip_serializing_if = "Option::is_none")]
