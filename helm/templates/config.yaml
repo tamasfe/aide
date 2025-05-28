@@ -39,6 +39,7 @@ data:
   NUXT_PUBLIC_KYC_API_BASE_URL_SERVER: "http://{{ .Values.config.internal_api_domain }}"
 
   NUXT_PUBLIC_TRACKING_API_BASE_URL: "https://{{ .Values.config.public_tracking_domain }}"
+  NUXT_PUBLIC_TRACKING_FINGERPRINT_JS_PUBLIC_API_KEY: "ovcHpM99bHR6cWYgKHlA" # From the FingerprintJS "production" environment
 
   # OTEL configuration
   OTEL_EXPORTER_OTLP_ENDPOINT: "http://k8s-monitoring-alloy.monitoring.svc.cluster.local:4317"

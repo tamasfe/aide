@@ -88,6 +88,7 @@ export default defineNuxtConfig({
       },
       tracking: {
         apiBaseUrl: process.env.NUXT_PUBLIC_TRACKING_API_BASE_URL,
+        fingerprintJsPublicApiKey: process.env.NUXT_PUBLIC_TRACKING_FINGERPRINT_JS_PUBLIC_API_KEY,
       },
     },
   },

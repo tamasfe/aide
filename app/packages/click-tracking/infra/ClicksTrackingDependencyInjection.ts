@@ -33,7 +33,7 @@ export const createClicksTrackingDependencyInjection = async (config: PublicRunt
     return new ClicksTrackingRepoDumb();
   })();
 
-  const fingerprintService = new FingerprintService(commonDependencies.logger);
+  const fingerprintService = new FingerprintService(commonDependencies.logger, config.tracking.fingerprintJsPublicApiKey);
 
   return {
     repositories: {

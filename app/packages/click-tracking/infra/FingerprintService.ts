@@ -4,11 +4,8 @@ import { ExceptionGettingUserFingerprint } from "../domain/ExceptionGettingUserF
 import type { LoggerI } from "~/packages/logger/Logger";
 import { fail, success, type Result } from "~/packages/result";
 
-// This is a public key so no need to obfuscate it, but we could move it to an env variable in the future if needed
-const FINGERPRINT_JS_PUBLIC_API_KEY = "SsQ1phX9xutSdbMWd5AS";
-
 export class FingerprintService {
-  constructor(private logger: LoggerI) {}
+  constructor(private logger: LoggerI, private publicApiKey: string) {}
 
   public async getFingerprint(): Promise<Result<GetResult, ExceptionGettingUserFingerprint>> {
     if (!this.fingreprintPublicAgent) {
@@ -37,7 +34,7 @@ export class FingerprintService {
    */
   public async initLibrary() {
     const result = await loadFingerprintAgent({
-      apiKey: FINGERPRINT_JS_PUBLIC_API_KEY,
+      apiKey: this.publicApiKey,
       region: "us",
       // endpoint: [
       // // "https://metrics.yourwebsite.com",
