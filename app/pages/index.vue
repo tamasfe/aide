@@ -40,12 +40,8 @@ const menuTabs = ref([
         </TabsList>
 
         <TabsContent value="lobby" class="giro__sections">
-          <Suspense>
-            <GridHorizontalGamesWrapper />
-          </Suspense>
-          <Suspense>
-            <GridHorizontalProviders />
-          </Suspense>
+          <GridHorizontalGamesWrapper />
+          <GridHorizontalProviders />
         </TabsContent>
 
         <TabsContent
