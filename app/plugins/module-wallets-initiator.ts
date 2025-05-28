@@ -38,9 +38,9 @@ export default defineNuxtPlugin({
     );
     $dependencies.common.asyncMessagePublisher.subscribe(
       "frontend:events:games:game-session-finished",
-      ({ gameIdentifier }) => {
+      async ({ gameIdentifier }) => {
         if (gameIdentifier === currentSessionGameId.value) {
-          walletStore.refresh();
+          await walletStore.refresh();
         }
       },
     );
@@ -66,7 +66,7 @@ export default defineNuxtPlugin({
      */
     const ENABLE_SERVER_SIDE_RENDERING = true;
     const DEFER_CLIENT_SIDE_LOADING = true;
-    await useAsyncData("wallet-store-initiation", () => walletStore.refresh().then(() => true),
+    await useAsyncData("wallet-store-initiation", () => callOnce(() => walletStore.refresh()).then(() => true),
       { lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING },
     );
 
