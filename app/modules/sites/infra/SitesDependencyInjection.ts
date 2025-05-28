@@ -15,7 +15,7 @@ export interface SitesDependencyInjectionI {
 
 export const createSitesDependencyInjection = async (config: PublicRuntimeConfig, commonDependencies: CommonDependenciesI): Promise<SitesDependencyInjectionI> => {
   const isServer = import.meta.server;
-  const apiBaseUrl = isServer ? config.apiBaseUrlClient : config.apiBaseUrlServer;
+  const apiBaseUrl = isServer ? config.apiBaseUrlServer : config.apiBaseUrlClient;
 
   const sitesRepo: SitesRepositoryI = (() => {
     if (apiBaseUrl) {
