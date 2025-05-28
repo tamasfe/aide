@@ -18,13 +18,12 @@ import { constructGameIdentifier } from "~/modules/games/domain/Game";
 //   Personally approach 1 seems perfectly fine now as i dont want edge cases with moving iframes in old browsers etc.
 // TRANSLATION STATUS:  ✅
 
-const { isMobile } = useDevice();
-const currentDevice = isMobile ? "mobile" : "desktop";
 const { params } = useRoute();
 const { $dependencies } = useNuxtApp();
-const walletStore = useWalletStore();
 const { t } = useI18n();
-const fullscreen = ref(false);
+const { isMobile } = useDevice();
+
+const currentDevice = isMobile ? "mobile" : "desktop";
 
 const providerSlug = params.provider;
 const gameSlug = params.game;
@@ -40,106 +39,21 @@ useHead({
   title: t("page.game", { game: toSentenceCase(gameIdentifier) }),
 });
 
-const ENABLE_SERVER_SIDE_RENDERING_FOR_GAME = true;
-const DEFER_CLIENT_SIDE_LOADING_FOR_GAME = true;
-const { data: game, status: statusLoadingGame } = await useAsyncData(`game-${gameIdentifier}`, async () => {
-  return $dependencies.games.ui.findGameCompatibilityByIdentifierOnGamePage.handle(gameIdentifier, currentDevice);
-}, { lazy: DEFER_CLIENT_SIDE_LOADING_FOR_GAME, server: ENABLE_SERVER_SIDE_RENDERING_FOR_GAME });
-
-/* Redirect if the game is successfully searched, but server returns no results (404) */
-watch([() => game.value, () => statusLoadingGame.value], async ([game, statusLoadingGame]) => {
-  if (game === null && statusLoadingGame === "success") {
-    await navigateTo("/");
-  }
-});
-
-const ENABLE_SERVER_SIDE_RENDERING_FOR_CATEGORIES = false;
-const DEFER_CLIENT_SIDE_LOADING_FOR_CATEGORIES = true;
-const { data: pageCategories } = await useAsyncData(`game-${gameIdentifier}-categories`, async () => {
-  return $dependencies.games.ui.searchGameCategoriesByGroup.handle("game_page", false);
-}, { lazy: DEFER_CLIENT_SIDE_LOADING_FOR_CATEGORIES, server: ENABLE_SERVER_SIDE_RENDERING_FOR_CATEGORIES });
-
-const iframeUrl = computed(() => {
-  if (walletStore.isInit) {
-    return $dependencies.games.ui.buildGameSessionIFrameUrl.handle(gameIdentifier, currentDevice, walletStore.wallet.currency);
-  }
-  return undefined;
-});
-
-const userStore = useUserStore();
-
-const authenticated = computed(() => {
-  return userStore.isAuthenticated;
-});
-
-watch(() => game.value, (game) => {
-  if (game) {
-    useHead({
-      title: t("page.game", { game: game.name }),
-    });
-  }
-});
+const queryGameCategories = async () => $dependencies.games.ui.searchGameCategoriesByGroup.handle("game_page", false);
 </script>
 
 <template>
-  <div v-if="currentDevice === 'mobile'">
-    <div v-if="game" class="h-full">
-      <GameFrameMobile
-        v-if="game.isCompatibleWithDevice"
-        :game-title="game.name"
-        :game-identifier="game.identifier"
-        :fullscreen="fullscreen"
-        :authenticated="authenticated ?? false"
-        :iframe-url="iframeUrl"
-      />
-      <GameFloatTextNotSupportedOnDevice
-        v-else-if="!game.isCompatibleWithDevice"
-        class="px-6 h-96"
-        :current-device="currentDevice"
-      />
-    </div>
-    <div v-else class="h-[25vh] w-full">
-      <BaseSkeleton class="w-full h-full" :loading="true" />
-    </div>
-  </div>
-
-  <div
-    v-else-if="currentDevice === 'desktop'"
-    class="pt-4 pb-12 giro__container giro__sections"
-  >
-    <div v-if="game" class="bg-subtle rounded-lg border border-muted/5 overflow-hidden">
-      <GameFrameDesktop
-        v-if="!isMobile && game.isCompatibleWithDevice"
-        :game-title="game.name"
-        :game-identifier="game.identifier"
-        :fullscreen="fullscreen"
-        :authenticated="authenticated ?? false"
-        :iframe-url="iframeUrl"
-      />
-
-      <GameFloatTextNotSupportedOnDevice
-        v-else-if="!isMobile && !game.isCompatibleWithDevice"
-        class="px-6 h-96"
-        :current-device="currentDevice"
-      />
-
-      <GameDescription
-        :game="game"
-        class="bg-subtle"
-        :authenticated="authenticated ?? false"
-        :description="game.description"
-        :categories="['card', 'table', 'poker']"
-        @maximize="() => { fullscreen = true }"
-      />
-    </div>
-    <div v-else class="h-[60vh] w-full rounded-lg border border-muted/5 overflow-hidden relative">
-      <BaseSkeleton class="absolute inset-0" :loading="true" />
-    </div>
-
-    <GridHorizontalGames
-      v-for="category in pageCategories"
-      :key="category.identifier"
-      :category-identifier="category.identifier"
-    />
+  <div>
+    <GameFrameWrapper :game-identifier="gameIdentifier" />
+    <LoadItemsWrapper v-if="currentDevice" id="game-page-categories" :fetch-items="queryGameCategories">
+      <template #default="{ items }">
+        <GridHorizontalGames
+          v-for="category in items"
+          :key="category.identifier"
+          :category-identifier="category.identifier"
+          :initial-games="category.games || undefined"
+        />
+      </template>
+    </LoadItemsWrapper>
   </div>
 </template>
