@@ -56,7 +56,7 @@ if (recoverPasswordToken.value) {
   $dependencies.users.ui.emitCommandOpenUserActionModal.handle({ modal: "recover_password", data: { token: recoverPasswordToken.value } });
 }
 
-const ENABLE_SERVER_SIDE_RENDERING = true;
+const ENABLE_SERVER_SIDE_RENDERING = false;
 const DEFER_CLIENT_SIDE_LOADING = true;
 const { data: paymentMethodData } = await useAsyncData("user-modals-payment-method", async () => {
   if (!walletStore.wallet) {

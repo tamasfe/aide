@@ -51,7 +51,7 @@ useCreateSubscriptionToWebsocket(
   },
 );
 
-const ENABLE_SERVER_SIDE_RENDERING = true;
+const ENABLE_SERVER_SIDE_RENDERING = false;
 const DEFER_CLIENT_SIDE_LOADING = true;
 const { data: myBetsData } = await useAsyncData(`winning-now-my-bets-table`, async () => {
   if (!userStore.isAuthenticated) {
