@@ -10,7 +10,7 @@ defineProps<{
 const siteStore = useSiteStore();
 const { $dependencies } = useNuxtApp();
 
-const ENABLE_SERVER_SIDE_RENDERING = true;
+const ENABLE_SERVER_SIDE_RENDERING = false;
 const DEFER_CLIENT_SIDE_LOADING = true;
 const { data: currentStartedSignupFlow } = await useAsyncData(`current-signup-flow`, async () => {
   return $dependencies.signupFlows.ui.searchCurrentSignupFlowOnModal.handle();
