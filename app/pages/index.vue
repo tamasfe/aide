@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const { t } = useI18n();
 const siteStore = useSiteStore();
+const { $dependencies } = useNuxtApp();
 
 useHead({
   title: t("page.home", { siteName: siteStore.site.name }),
@@ -14,6 +15,8 @@ const menuTabs = ref([
   { value: "table", iconName: "lucide:files", label: t(`category.table`) },
   { value: "live", iconName: "lucide:users", label: t(`category.live`) },
 ]);
+
+const queryGameCategories = async () => $dependencies.games.ui.searchGameCategoriesByGroup.handle("home", true);
 </script>
 
 <template>
@@ -40,7 +43,17 @@ const menuTabs = ref([
         </TabsList>
 
         <TabsContent value="lobby" class="giro__sections">
-          <GridVerticalGameCategories />
+          <LoadItemsWrapper id="home-page-game-categories" :fetch-items="queryGameCategories">
+            <template #default="{ items }">
+              <GridHorizontalGames
+                v-for="category in items"
+                :key="category.identifier"
+                :category-identifier="category.identifier"
+                :initial-games="category.games ?? undefined"
+              />
+            </template>
+          </LoadItemsWrapper>
+
           <GridHorizontalProviders />
         </TabsContent>
 
