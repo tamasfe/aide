@@ -13,7 +13,7 @@ const onSlideClick = () => {
 </script>
 
 <template>
-  <Button
+  <button
     type="button"
     @click="() => onSlideClick()"
   >
@@ -22,5 +22,5 @@ const onSlideClick = () => {
       alt=""
       class="rounded-sm md:rounded-lg object-cover object-center w-full h-full"
     />
-  </Button>
+  </button>
 </template>
