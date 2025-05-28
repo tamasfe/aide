@@ -40,7 +40,7 @@ const menuTabs = ref([
         </TabsList>
 
         <TabsContent value="lobby" class="giro__sections">
-          <GridHorizontalGameCategories />
+          <GridVerticalGameCategories />
           <GridHorizontalProviders />
         </TabsContent>
 
