@@ -1,5 +1,4 @@
 <script setup lang="ts">
-const { $dependencies } = useNuxtApp();
 const { t } = useI18n();
 const siteStore = useSiteStore();
 
@@ -15,17 +14,6 @@ const menuTabs = ref([
   { value: "table", iconName: "lucide:files", label: t(`category.table`) },
   { value: "live", iconName: "lucide:users", label: t(`category.live`) },
 ]);
-
-/**
- * "Lobby" tab contents
- */
-const ENABLE_SERVER_SIDE_RENDERING = true;
-const DEFER_CLIENT_SIDE_LOADING = true;
-const { data: categories } = await useAsyncData("home-category-identifiers", async () => {
-  return $dependencies.games.ui.searchGameCategoriesByGroup.handle("home", true);
-},
-{ lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING },
-);
 </script>
 
 <template>
@@ -52,14 +40,12 @@ const { data: categories } = await useAsyncData("home-category-identifiers", asy
         </TabsList>
 
         <TabsContent value="lobby" class="giro__sections">
-          <GridHorizontalGames
-            v-for="category in categories"
-            :key="category.identifier"
-            :category-identifier="category.identifier"
-            :initial-games="category.games ?? undefined"
-          />
-
-          <GridHorizontalProviders />
+          <Suspense>
+            <GridHorizontalGamesWrapper />
+          </Suspense>
+          <Suspense>
+            <GridHorizontalProviders />
+          </Suspense>
         </TabsContent>
 
         <TabsContent
