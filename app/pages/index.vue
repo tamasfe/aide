@@ -43,7 +43,7 @@ const queryGameCategories = async () => $dependencies.games.ui.searchGameCategor
         </TabsList>
 
         <TabsContent value="lobby" class="giro__sections">
-          <LoadItemsWrapper id="home-page-game-categories" :fetch-items="queryGameCategories">
+          <UseAsyncData id="home-page-game-categories" :fetch-items="queryGameCategories">
             <template #default="{ items }">
               <GridHorizontalGames
                 v-for="category in items"
@@ -52,7 +52,7 @@ const queryGameCategories = async () => $dependencies.games.ui.searchGameCategor
                 :initial-games="category.games ?? undefined"
               />
             </template>
-          </LoadItemsWrapper>
+          </UseAsyncData>
 
           <GridHorizontalProviders />
         </TabsContent>

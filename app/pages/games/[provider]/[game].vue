@@ -45,7 +45,7 @@ const queryGameCategories = async () => $dependencies.games.ui.searchGameCategor
 <template>
   <div>
     <GameFrameWrapper :game-identifier="gameIdentifier" />
-    <LoadItemsWrapper v-if="currentDevice" id="game-page-categories" :fetch-items="queryGameCategories">
+    <UseAsyncData v-if="currentDevice" id="game-page-categories" :fetch-items="queryGameCategories">
       <template #default="{ items }">
         <GridHorizontalGames
           v-for="category in items"
@@ -54,6 +54,6 @@ const queryGameCategories = async () => $dependencies.games.ui.searchGameCategor
           :initial-games="category.games || undefined"
         />
       </template>
-    </LoadItemsWrapper>
+    </UseAsyncData>
   </div>
 </template>
