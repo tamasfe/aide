@@ -50,6 +50,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       apiBaseUrlClient: process.env.NUXT_PUBLIC_API_BASE_URL_CLIENT,
+      apiBaseUrlServer: process.env.NUXT_PUBLIC_API_BASE_URL_SERVER,
       websocketApiBaseUrl: process.env.NUXT_PUBLIC_WEBSOCKET_API_BASE_URL,
       genericFixedUserJurisdiction: process.env.NUXT_PUBLIC_GENERIC_API_CLIENT_FIXED_USER_JURISDICTION,
       errorCapturingEnabled: process.env.NUXT_PUBLIC_ERROR_CAPTURING_ENABLED === "true",
