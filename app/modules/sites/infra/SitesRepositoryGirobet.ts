@@ -13,38 +13,48 @@ export class SitesRepositoryGirobet implements SitesRepositoryI {
   }
 
   public async findCurrentMatched(): Promise<Result<Site, InfrastructureError>> {
-    const { data, error, response } = await this.apiClient.GET("/system/site");
+    try {
+      const { data, error, response } = await this.apiClient.GET("/system/site");
 
-    if (error) {
-      const httpError = HttpBackendApiError.newFromBackendError(error, response);
-      return fail(InfrastructureError.newFromError({}, httpError));
+      if (error) {
+        const httpError = HttpBackendApiError.newFromBackendError(error, response);
+        return fail(InfrastructureError.newFromError({}, httpError));
+      }
+
+      if (data) {
+        return success({
+          servable: data.servable,
+          name: data.name,
+          identifier: data.identifier,
+          domains: data.domains,
+        });
+      }
+
+      return fail(InfrastructureError.newFromError({ data, error, response }, new Error("Unexpected scenario: library did not return data nor error. This should never happen")));
     }
-
-    if (data) {
-      return success({
-        servable: data.servable,
-        name: data.name,
-        identifier: data.identifier,
-        domains: data.domains,
-      });
+    catch (error) {
+      return fail(InfrastructureError.newFromUnknownError({}, error));
     }
-
-    return fail(InfrastructureError.newFromError({ data, error, response }, new Error("Unexpected scenario: library did not return data nor error. This should never happen")));
   }
 
   public async findMatchedLicenses(): Promise<Result<License[], InfrastructureError>> {
-    const { data, error, response } = await this.apiClient.GET("/system/licenses");
+    try {
+      const { data, error, response } = await this.apiClient.GET("/system/licenses");
 
-    if (error) {
-      const httpError = HttpBackendApiError.newFromBackendError(error, response);
-      return fail(InfrastructureError.newFromError({}, httpError));
+      if (error) {
+        const httpError = HttpBackendApiError.newFromBackendError(error, response);
+        return fail(InfrastructureError.newFromError({}, httpError));
+      }
+
+      if (data) {
+        return success(data.map(license => (camelizeKeys(license))));
+      }
+
+      return fail(InfrastructureError.newFromError({ data, error, response }, new Error("Unexpected scenario: library did not return data nor error. This should never happen")));
     }
-
-    if (data) {
-      return success(data.map(license => (camelizeKeys(license))));
+    catch (error) {
+      return fail(InfrastructureError.newFromUnknownError({}, error));
     }
-
-    return fail(InfrastructureError.newFromError({ data, error, response }, new Error("Unexpected scenario: library did not return data nor error. This should never happen")));
   }
 
   private apiClient: ReturnType<typeof createBackendOpenApiClient>;
