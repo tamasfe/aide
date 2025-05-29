@@ -15,7 +15,5 @@ const { data: items } = await useAsyncData(`loading-wrapper-${props.id}`, async 
 </script>
 
 <template>
-  <div>
-    <slot :items />
-  </div>
+  <slot :items />
 </template>
