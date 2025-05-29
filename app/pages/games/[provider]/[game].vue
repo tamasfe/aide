@@ -45,7 +45,12 @@ const queryGameCategories = async () => $dependencies.games.ui.searchGameCategor
 <template>
   <div>
     <GameFrameWrapper :game-identifier="gameIdentifier" />
-    <UseAsyncData v-if="currentDevice === 'desktop'" id="game-page-categories" :fetch-items="queryGameCategories">
+    <UseAsyncData
+      v-if="currentDevice === 'desktop'"
+      id="game-page-categories"
+      :fetch-items="queryGameCategories"
+      class="giro__container"
+    >
       <template #default="{ items }">
         <GridHorizontalGames
           v-for="category in items"
