@@ -3,3 +3,4 @@ config:
   public_api_domain: "api.zamba.bet"
   internal_api_domain: "api.default.svc.cluster.local"
   public_tracking_domain: "t.zamba.bet"
+  public_fingerprint_js_script_domain: "fp.zamba.bet"

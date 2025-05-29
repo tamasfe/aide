@@ -4,7 +4,8 @@ import { CreateTrackingClick } from "../application/CreateTrackingClick";
 import { UpdateTrackingSession } from "../application/UpdateTrackingSession";
 import { ClicksTrackingRepoAPI } from "./ClicksTrackingRepoAPI";
 import { ClicksTrackingRepoDumb } from "./ClicksTrackingRepoDumb";
-import { FingerprintService } from "./FingerprintService";
+import { FingerprintService, type FingerprintServiceI } from "./FingerprintService";
+import { FingerprintServiceDumb } from "./FingerprintServiceDumb";
 import type { CommonDependenciesI } from "~/dependency-injection/load-di";
 import { MarketingSearchParamsRepoLocalStorage } from "~/modules/search-params-tracking/marketing-search-params-repo-local-storage";
 import { StoreMarketingSearchParams } from "~/modules/search-params-tracking/ui/store-marketing-search-params";
@@ -33,7 +34,13 @@ export const createClicksTrackingDependencyInjection = async (config: PublicRunt
     return new ClicksTrackingRepoDumb();
   })();
 
-  const fingerprintService = new FingerprintService(commonDependencies.logger, config.tracking.fingerprintJsPublicApiKey);
+  const fingerprintService: FingerprintServiceI = (() => {
+    if (apiBaseUrl) {
+      return new FingerprintService(commonDependencies.logger, config.tracking.fingerprintJsPublicApiKey, config.tracking.fingerprintJsScriptUrl);
+    }
+
+    return new FingerprintServiceDumb();
+  })();
 
   return {
     repositories: {
