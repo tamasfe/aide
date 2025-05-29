@@ -3,4 +3,4 @@ config:
   public_api_domain: "api.girobet.vip"
   internal_api_domain: "api.default.svc.cluster.local"
   public_tracking_domain: "t.girobet.vip"
-  public_fingerprint_js_script_domain: "fp.girobet.vip"
+  public_fingerprint_js_script_domain: "fin.girobet.vip"
