@@ -1,9 +1,9 @@
 import type { ClickTrackingRepositoryI } from "../domain/ClickTrackingRepository";
-import type { FingerprintServiceI } from "../infra/FingerprintService";
+import type { FingerprintService } from "../infra/FingerprintService";
 
 export class UpdateTrackingSession {
   constructor(
-    private readonly fingerprintService: FingerprintServiceI,
+    private readonly fingerprintService: FingerprintService,
     private readonly repository: ClickTrackingRepositoryI,
   ) {}
 

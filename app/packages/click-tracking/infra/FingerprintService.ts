@@ -1,18 +1,9 @@
-import type { GetResult } from "@fingerprintjs/fingerprintjs-pro";
-import { load as loadFingerprintAgent, defaultEndpoint, defaultScriptUrlPattern } from "@fingerprintjs/fingerprintjs-pro";
+import type { GetResult } from "@fingerprintjs/fingerprintjs";
+import FingerprintJS from "@fingerprintjs/fingerprintjs";
 import { ExceptionGettingUserFingerprint } from "../domain/ExceptionGettingUserFingerprint";
-import type { LoggerI } from "~/packages/logger/Logger";
-import { fail, success, type EmptyResult, type Result } from "~/packages/result";
+import { fail, success, type Result } from "~/packages/result";
 
-export interface FingerprintServiceI {
-  getFingerprint(): Promise<Result<GetResult, ExceptionGettingUserFingerprint>>;
-  isInitialized(): boolean;
-  initLibrary(): Promise<EmptyResult<ExceptionGettingUserFingerprint>>;
-}
-
-export class FingerprintService implements FingerprintServiceI {
-  constructor(private logger: LoggerI, private publicApiKey: string, private scriptEndpoint: string) {}
-
+export class FingerprintService {
   public async getFingerprint(): Promise<Result<GetResult, ExceptionGettingUserFingerprint>> {
     if (!this.fingreprintPublicAgent) {
       return fail(
@@ -36,23 +27,11 @@ export class FingerprintService implements FingerprintServiceI {
 
   /**
    * Beware of awaiting this function, as it loads a whole library with it.
-   * More info @https://dev.fingerprint.com/docs/install-the-javascript-agent#configuring-the-agent
+   * More information @https://github.com/fingerprintjs/fingerprintjs/blob/master/docs/api.md#webpackrollupnpmyarn
+   * And more info on the PRO version @https://dev.fingerprint.com/docs/install-the-javascript-agent#configuring-the-agent
    */
   public async initLibrary() {
-    const result = await loadFingerprintAgent({
-      apiKey: this.publicApiKey,
-      region: "us",
-      endpoint: [
-        this.scriptEndpoint,
-        "https://summitcoreapi.com/EkkWvBzKSGMIQZw4/1qDponqL8OE8LDgt",
-        defaultEndpoint,
-      ],
-      scriptUrlPattern: [
-        `${this.scriptEndpoint}?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>`,
-        "https://summitcoreapi.com/EkkWvBzKSGMIQZw4/gX1mE3XcxvYXpG9I?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>",
-        defaultScriptUrlPattern,
-      ],
-    })
+    const result = await FingerprintJS.load({})
       .then(agent => success(agent))
       .catch(error => fail(ExceptionGettingUserFingerprint.newFromUnknownError({ }, error)));
 
@@ -64,5 +43,5 @@ export class FingerprintService implements FingerprintServiceI {
     return success();
   }
 
-  private fingreprintPublicAgent: Awaited<ReturnType<typeof loadFingerprintAgent>> | undefined = undefined;
+  private fingreprintPublicAgent: Awaited<ReturnType<typeof FingerprintJS.load>> | undefined = undefined;
 }
