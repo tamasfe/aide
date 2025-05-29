@@ -189,6 +189,7 @@ use axum::{
 };
 use indexmap::map::Entry;
 use indexmap::IndexMap;
+use schemars::schema::Schema;
 use tower_layer::Layer;
 use tower_service::Service;
 
@@ -453,7 +454,7 @@ where
                             (
                                 name,
                                 SchemaObject {
-                                    json_schema,
+                                    json_schema: Schema::Object(json_schema.into_object()),
                                     example: None,
                                     external_docs: None,
                                 },
