@@ -12,7 +12,7 @@ where
     T: JsonSchema,
 {
     fn operation_input(ctx: &mut crate::generate::GenContext, operation: &mut Operation) {
-        let schema = ctx.schema.subschema_for::<T>().into_object();
+        let schema = ctx.schema.subschema_for::<T>();
         let params = parameters_from_schema(ctx, schema, ParamLocation::Query);
         add_parameters(ctx, operation, params);
     }
@@ -24,7 +24,7 @@ where
     T: JsonSchema,
 {
     fn operation_input(ctx: &mut crate::generate::GenContext, operation: &mut Operation) {
-        let schema = ctx.schema.subschema_for::<T>().into_object();
+        let schema = ctx.schema.subschema_for::<T>();
         let params = parameters_from_schema(ctx, schema, ParamLocation::Query);
         add_parameters(ctx, operation, params);
     }

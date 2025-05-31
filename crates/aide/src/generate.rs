@@ -3,10 +3,8 @@
 use std::cell::RefCell;
 
 use cfg_if::cfg_if;
-use schemars::{
-    gen::{SchemaGenerator, SchemaSettings},
-    schema::SchemaObject,
-};
+use schemars::{generate::SchemaSettings, Schema, SchemaGenerator};
+use serde_json::Value;
 
 use crate::error::Error;
 
@@ -186,18 +184,15 @@ impl GenContext {
     /// if [`extract_schemas`] is enabled, in which case most generated
     /// schema objects are references.
     #[must_use]
-    pub fn resolve_schema<'s>(&'s self, schema_or_ref: &'s SchemaObject) -> &'s SchemaObject {
-        match &schema_or_ref.reference {
-            Some(r) => self
+    pub fn resolve_schema<'s>(&'s self, schema_or_ref: &'s Schema) -> &'s Schema {
+        match &schema_or_ref.as_object().and_then(|o| o.get("$ref")) {
+            Some(Value::String(r)) => self
                 .schema
                 .definitions()
                 .get(r.strip_prefix("#/components/schemas/").unwrap_or(r))
-                .and_then(|s| match s {
-                    schemars::schema::Schema::Bool(_) => None,
-                    schemars::schema::Schema::Object(o) => Some(o),
-                })
+                .and_then(|s| Into::<serde_json::Result<&Schema>>::into(s.try_into()).ok())
                 .unwrap_or(schema_or_ref),
-            None => schema_or_ref,
+            _ => schema_or_ref,
         }
     }
 }
