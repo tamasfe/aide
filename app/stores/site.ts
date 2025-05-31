@@ -4,7 +4,7 @@ import { ErrorAnjouanLicenseScriptWasNotFound } from "~/packages/licenses/ErrorA
 import { ErrorInitiatingAnjouanLicenseScript } from "~/packages/licenses/ErrorInitiatingAnjouanLicenseScript";
 
 type SiteDomain = Site["domains"][number];
-const defaultDomain: SiteDomain = { api: "https://api-staging.girobet.vip", email: "support@girobet.vip", frontend: "https://staging.girobet.vip", cdn: "cdn.girobet.vip" };
+const defaultDomain: SiteDomain = { api: "api-staging.girobet.vip", email: "girobet.vip", frontend: "staging.girobet.vip", cdn: "cdn.girobet.vip", tracking: "tracking.girobet.vip" };
 
 const defaultSite: Site = {
   identifier: "girobet",
