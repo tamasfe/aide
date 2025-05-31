@@ -44,8 +44,7 @@ where
 
         Some(Response {
             description: resolved_schema
-                .get("metadata")
-                .and_then(|m| m.get("description"))
+                .get("description")
                 .and_then(|d| d.as_str())
                 .map(String::from)
                 .unwrap_or_default(),
@@ -99,8 +98,7 @@ where
 
         Some(Response {
             description: resolved_schema
-                .get("metadata")
-                .and_then(|m| m.get("description"))
+                .get("description")
                 .and_then(|d| d.as_str())
                 .map(String::from)
                 .unwrap_or_default(),

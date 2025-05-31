@@ -147,8 +147,7 @@ where
         // `subschema_for` `description` is none, while `root_schema_for` is some
         let schema = ctx.schema.root_schema_for::<T>();
         operation.description = schema
-            .get("metadata")
-            .and_then(|m| m.get("description"))
+            .get("description")
             .and_then(|d| d.as_str())
             .map(String::from);
         let params = parameters_from_schema(ctx, schema, ParamLocation::Path);

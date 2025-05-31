@@ -208,8 +208,16 @@ pub fn parameters_from_schema(
     let mut params = Vec::new();
 
     if let Some(obj) = schema.as_object() {
-        for (name, schema) in obj {
-            let json_schema: Schema = schema.clone().try_into().expect("Failed to convert schema");
+        for (name, schema) in obj
+            .get("properties")
+            .and_then(|p| p.as_object())
+            .into_iter()
+            .flatten()
+        {
+            let json_schema: Schema = schema
+                .clone()
+                .try_into()
+                .unwrap_or_else(|err| panic!("Failed to convert schema {schema}: {err:?}"));
 
             match location {
                 ParamLocation::Query => {
@@ -217,8 +225,7 @@ pub fn parameters_from_schema(
                         parameter_data: ParameterData {
                             name: name.clone(),
                             description: json_schema
-                                .get("metadata")
-                                .and_then(|m| m.get("description"))
+                                .get("description")
                                 .and_then(|d| d.as_str())
                                 .map(String::from),
                             required: obj
@@ -248,8 +255,7 @@ pub fn parameters_from_schema(
                         parameter_data: ParameterData {
                             name: name.clone(),
                             description: json_schema
-                                .get("metadata")
-                                .and_then(|m| m.get("description"))
+                                .get("description")
                                 .and_then(|d| d.as_str())
                                 .map(String::from),
                             required: obj
@@ -277,8 +283,7 @@ pub fn parameters_from_schema(
                         parameter_data: ParameterData {
                             name: name.clone(),
                             description: json_schema
-                                .get("metadata")
-                                .and_then(|m| m.get("description"))
+                                .get("description")
                                 .and_then(|d| d.as_str())
                                 .map(String::from),
                             required: obj
@@ -306,8 +311,7 @@ pub fn parameters_from_schema(
                         parameter_data: ParameterData {
                             name: name.clone(),
                             description: json_schema
-                                .get("metadata")
-                                .and_then(|m| m.get("description"))
+                                .get("description")
                                 .and_then(|d| d.as_str())
                                 .map(String::from),
                             required: obj

@@ -80,8 +80,7 @@ fn operation_input_json<T: JsonSchema>(
         operation,
         RequestBody {
             description: resolved_schema
-                .get("metadata")
-                .and_then(|m| m.get("description"))
+                .get("description")
                 .and_then(|d| d.as_str())
                 .map(String::from),
             content: IndexMap::from_iter([(
@@ -135,8 +134,7 @@ where
             operation,
             RequestBody {
                 description: resolved_schema
-                    .get("metadata")
-                    .and_then(|m| m.get("description"))
+                    .get("description")
                     .and_then(|d| d.as_str())
                     .map(String::from),
                 content: IndexMap::from_iter([(
@@ -376,8 +374,7 @@ mod extra {
                 operation,
                 RequestBody {
                     description: resolved_schema
-                        .get("metadata")
-                        .and_then(|m| m.get("description"))
+                        .get("description")
                         .and_then(|d| d.as_str())
                         .map(String::from),
                     content: IndexMap::from_iter([(
