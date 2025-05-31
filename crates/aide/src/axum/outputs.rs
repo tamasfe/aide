@@ -94,21 +94,21 @@ where
     type Inner = T;
 
     fn operation_response(ctx: &mut GenContext, _operation: &mut Operation) -> Option<Response> {
-        let schema = ctx.schema.subschema_for::<T>().into_object();
+        let json_schema = ctx.schema.subschema_for::<T>();
+        let resolved_schema = ctx.resolve_schema(&json_schema);
 
         Some(Response {
-            description: ctx
-                .resolve_schema(&schema)
-                .metadata
-                .as_ref()
-                .and_then(|metadata| metadata.description.as_ref())
-                .cloned()
+            description: resolved_schema
+                .get("metadata")
+                .and_then(|m| m.get("description"))
+                .and_then(|d| d.as_str())
+                .map(String::from)
                 .unwrap_or_default(),
             content: IndexMap::from_iter([(
                 "application/x-www-form-urlencoded".into(),
                 MediaType {
                     schema: Some(SchemaObject {
-                        json_schema: schema.into(),
+                        json_schema: json_schema.into(),
                         example: None,
                         external_docs: None,
                     }),
