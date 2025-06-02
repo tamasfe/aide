@@ -1,6 +1,6 @@
 [package]
 name = "aide"
-version = "0.14.2"
+version = "0.15.0"
 authors = ["tamasfe"]
 edition = "2021"
 keywords = ["generate", "api", "openapi", "documentation", "specification"]
@@ -11,7 +11,7 @@ readme = "README.md"
 
 [dependencies]
 indexmap = { version = "2.1", features = ["serde"] }
-schemars = { version = "0.8.16", features = ["impl_json_schema", "indexmap2"] }
+schemars = { version = "0.9.0", features = ["indexmap2"] }
 serde = { version = "1.0.144", features = ["derive"] }
 serde_json = "1"
 thiserror = "2.0"

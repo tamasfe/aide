@@ -145,8 +145,11 @@ where
 {
     fn operation_input(ctx: &mut crate::generate::GenContext, operation: &mut Operation) {
         // `subschema_for` `description` is none, while `root_schema_for` is some
-        let schema = ctx.schema.root_schema_for::<T>().schema;
-        operation.description = schema.metadata.as_ref().and_then(|x| x.description.clone());
+        let schema = ctx.schema.root_schema_for::<T>();
+        operation.description = schema
+            .get("description")
+            .and_then(|d| d.as_str())
+            .map(String::from);
         let params = parameters_from_schema(ctx, schema, ParamLocation::Path);
         add_parameters(ctx, operation, params);
     }
