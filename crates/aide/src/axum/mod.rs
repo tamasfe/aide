@@ -283,7 +283,7 @@ where
     /// This method accepts a transform function to edit each [`PathItem`] provided by this router.
     pub fn with_path_items(
         mut self,
-        mut transform: impl FnMut(TransformPathItem) -> TransformPathItem,
+        mut transform: impl FnMut(TransformPathItem<'_>) -> TransformPathItem<'_>,
     ) -> Self {
         for (_, item) in &mut self.paths {
             let _ = transform(TransformPathItem::new(item));
@@ -348,7 +348,7 @@ where
         mut self,
         path: &str,
         mut method_router: ApiMethodRouter<S>,
-        transform: impl FnOnce(TransformPathItem) -> TransformPathItem,
+        transform: impl FnOnce(TransformPathItem<'_>) -> TransformPathItem<'_>,
     ) -> Self {
         in_context(|ctx| {
             let mut p = method_router.take_path_item();
@@ -380,7 +380,7 @@ where
         mut self,
         path: &str,
         mut method_router: ApiMethodRouter<S>,
-        transform: impl FnOnce(TransformPathItem) -> TransformPathItem,
+        transform: impl FnOnce(TransformPathItem<'_>) -> TransformPathItem<'_>,
     ) -> Self {
         in_context(|ctx| {
             let mut p = method_router.take_path_item();
@@ -415,7 +415,7 @@ where
     #[tracing::instrument(skip_all)]
     pub fn finish_api_with<F>(mut self, api: &mut OpenApi, transform: F) -> Router<S>
     where
-        F: FnOnce(TransformOpenApi) -> TransformOpenApi,
+        F: FnOnce(TransformOpenApi<'_>) -> TransformOpenApi<'_>,
     {
         self.merge_api_with(api, transform);
         self.router
@@ -427,7 +427,7 @@ where
 
     fn merge_api_with<F>(&mut self, api: &mut OpenApi, transform: F)
     where
-        F: FnOnce(TransformOpenApi) -> TransformOpenApi,
+        F: FnOnce(TransformOpenApi<'_>) -> TransformOpenApi<'_>,
     {
         if api.paths.is_none() {
             api.paths = Some(Default::default());
@@ -498,7 +498,7 @@ where
         mut self,
         path: &str,
         docs: routing::ApiMethodDocs,
-        transform: impl FnOnce(TransformPathItem) -> TransformPathItem,
+        transform: impl FnOnce(TransformPathItem<'_>) -> TransformPathItem<'_>,
     ) -> Self {
         in_context(|ctx| {
             let mut path_item = if let Some(existing) = self.paths.get_mut(path) {

@@ -136,7 +136,7 @@ macro_rules! method_router_chain_method {
             I: OperationInput,
             O: OperationOutput,
             T: 'static,
-            F: FnOnce(TransformOperation) -> TransformOperation,
+            F: FnOnce(TransformOperation<'_>) -> TransformOperation<'_>,
         {
             let mut operation = Operation::default();
             in_context(|ctx| {
@@ -199,7 +199,7 @@ macro_rules! method_router_top_level {
             O: OperationOutput,
             S: Clone + Send + Sync + 'static,
             T: 'static,
-            F: FnOnce(TransformOperation) -> TransformOperation,
+            F: FnOnce(TransformOperation<'_>) -> TransformOperation<'_>,
         {
             let mut router = ApiMethodRouter::from(routing::$name(handler));
             let mut operation = Operation::default();

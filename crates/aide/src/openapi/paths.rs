@@ -164,7 +164,7 @@ pub struct Paths {
 
 impl Paths {
     /// Iterate over path items.
-    pub fn iter(&self) -> indexmap::map::Iter<String, ReferenceOr<PathItem>> {
+    pub fn iter(&self) -> indexmap::map::Iter<'_, String, ReferenceOr<PathItem>> {
         self.paths.iter()
     }
 }
