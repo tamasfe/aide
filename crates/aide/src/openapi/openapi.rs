@@ -102,11 +102,16 @@ mod serde_version {
 
     use serde::{Deserialize, Deserializer, Serialize, Serializer};
 
-    pub fn serialize<S: Serializer>(_: &Cow<'static, str>, ser: S) -> Result<S::Ok, S::Error> {
+    pub(super) fn serialize<S: Serializer>(
+        _: &Cow<'static, str>,
+        ser: S,
+    ) -> Result<S::Ok, S::Error> {
         Cow::Borrowed("3.1.0").serialize(ser)
     }
 
-    pub fn deserialize<'de, D: Deserializer<'de>>(de: D) -> Result<Cow<'static, str>, D::Error> {
+    pub(super) fn deserialize<'de, D: Deserializer<'de>>(
+        de: D,
+    ) -> Result<Cow<'static, str>, D::Error> {
         <&'de str>::deserialize(de).and_then(|s| match s == "3.1.0" {
             true => Ok(Cow::Owned("3.1.0".to_owned())),
             false => Err(serde::de::Error::custom("expected 3.1.0")),

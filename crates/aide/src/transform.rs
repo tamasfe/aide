@@ -175,7 +175,7 @@ impl<'t> TransformOpenApi<'t> {
     pub fn default_response_with<R, F>(self, transform: F) -> Self
     where
         R: OperationOutput,
-        F: Fn(TransformResponse<R::Inner>) -> TransformResponse<R::Inner> + Clone,
+        F: Fn(TransformResponse<'_, R::Inner>) -> TransformResponse<'_, R::Inner> + Clone,
     {
         if let Some(p) = &mut self.api.paths {
             for (_, p) in &mut p.paths {
@@ -393,7 +393,7 @@ impl<'t> TransformPathItem<'t> {
     pub fn default_response_with<R, F>(self, transform: F) -> Self
     where
         R: OperationOutput,
-        F: Fn(TransformResponse<R::Inner>) -> TransformResponse<R::Inner> + Clone,
+        F: Fn(TransformResponse<'_, R::Inner>) -> TransformResponse<'_, R::Inner> + Clone,
     {
         in_context(|ctx| ctx.show_error = filter_no_duplicate_response);
 
@@ -558,7 +558,7 @@ impl<'t> TransformOperation<'t> {
     pub fn parameter<T, F>(self, name: &str, transform: F) -> Self
     where
         T: Serialize,
-        F: FnOnce(TransformParameter<T>) -> TransformParameter<T>,
+        F: FnOnce(TransformParameter<'_, T>) -> TransformParameter<'_, T>,
     {
         let (idx, param) = match self
             .operation
@@ -601,7 +601,7 @@ impl<'t> TransformOperation<'t> {
     #[tracing::instrument(skip_all, fields(operation_id = self.operation.operation_id))]
     pub fn parameter_untyped<F>(self, name: &str, transform: F) -> Self
     where
-        F: FnOnce(TransformParameter<()>) -> TransformParameter<()>,
+        F: FnOnce(TransformParameter<'_, ()>) -> TransformParameter<'_, ()>,
     {
         self.parameter(name, transform)
     }
@@ -644,7 +644,7 @@ impl<'t> TransformOperation<'t> {
     pub fn default_response_with<R, F>(self, transform: F) -> Self
     where
         R: OperationOutput,
-        F: FnOnce(TransformResponse<R::Inner>) -> TransformResponse<R::Inner>,
+        F: FnOnce(TransformResponse<'_, R::Inner>) -> TransformResponse<'_, R::Inner>,
     {
         in_context(|ctx| {
             if let Some(mut res) = R::operation_response(ctx, self.operation) {
@@ -707,7 +707,7 @@ impl<'t> TransformOperation<'t> {
     pub fn response_with<const N: u16, R, F>(self, transform: F) -> Self
     where
         R: OperationOutput,
-        F: FnOnce(TransformResponse<R::Inner>) -> TransformResponse<R::Inner>,
+        F: FnOnce(TransformResponse<'_, R::Inner>) -> TransformResponse<'_, R::Inner>,
     {
         if self.operation.responses.is_none() {
             self.operation.responses = Some(Default::default());
@@ -777,7 +777,7 @@ impl<'t> TransformOperation<'t> {
     pub fn response_range_with<const N: u16, R, F>(self, transform: F) -> Self
     where
         R: OperationOutput,
-        F: FnOnce(TransformResponse<R::Inner>) -> TransformResponse<R::Inner>,
+        F: FnOnce(TransformResponse<'_, R::Inner>) -> TransformResponse<'_, R::Inner>,
     {
         if self.operation.responses.is_none() {
             self.operation.responses = Some(Default::default());
@@ -812,7 +812,7 @@ impl<'t> TransformOperation<'t> {
         self,
         callback_name: &str,
         callback_url: &str,
-        callback_transform: impl FnOnce(TransformCallback) -> TransformCallback,
+        callback_transform: impl FnOnce(TransformCallback<'_>) -> TransformCallback<'_>,
     ) -> Self {
         let callbacks = self
             .operation
@@ -1115,7 +1115,10 @@ impl<'t> TransformCallback<'t> {
 
     /// Add a "delete" callback operation.
     #[allow(clippy::missing_panics_doc)]
-    pub fn delete(self, operation: impl FnOnce(TransformOperation) -> TransformOperation) -> Self {
+    pub fn delete(
+        self,
+        operation: impl FnOnce(TransformOperation<'_>) -> TransformOperation<'_>,
+    ) -> Self {
         let op = match &mut self.path.delete {
             Some(op) => op,
             None => {
@@ -1135,7 +1138,10 @@ impl<'t> TransformCallback<'t> {
 
     /// Add a "get" callback operation.
     #[allow(clippy::missing_panics_doc)]
-    pub fn get(self, operation: impl FnOnce(TransformOperation) -> TransformOperation) -> Self {
+    pub fn get(
+        self,
+        operation: impl FnOnce(TransformOperation<'_>) -> TransformOperation<'_>,
+    ) -> Self {
         let op = match &mut self.path.get {
             Some(op) => op,
             None => {
@@ -1155,7 +1161,10 @@ impl<'t> TransformCallback<'t> {
 
     /// Add a "head" callback operation.
     #[allow(clippy::missing_panics_doc)]
-    pub fn head(self, operation: impl FnOnce(TransformOperation) -> TransformOperation) -> Self {
+    pub fn head(
+        self,
+        operation: impl FnOnce(TransformOperation<'_>) -> TransformOperation<'_>,
+    ) -> Self {
         let op = match &mut self.path.head {
             Some(op) => op,
             None => {
@@ -1175,7 +1184,10 @@ impl<'t> TransformCallback<'t> {
 
     /// Add a "options" callback operation.
     #[allow(clippy::missing_panics_doc)]
-    pub fn options(self, operation: impl FnOnce(TransformOperation) -> TransformOperation) -> Self {
+    pub fn options(
+        self,
+        operation: impl FnOnce(TransformOperation<'_>) -> TransformOperation<'_>,
+    ) -> Self {
         let op = match &mut self.path.options {
             Some(op) => op,
             None => {
@@ -1195,7 +1207,10 @@ impl<'t> TransformCallback<'t> {
 
     /// Add a "patch" callback operation.
     #[allow(clippy::missing_panics_doc)]
-    pub fn patch(self, operation: impl FnOnce(TransformOperation) -> TransformOperation) -> Self {
+    pub fn patch(
+        self,
+        operation: impl FnOnce(TransformOperation<'_>) -> TransformOperation<'_>,
+    ) -> Self {
         let op = match &mut self.path.patch {
             Some(op) => op,
             None => {
@@ -1215,7 +1230,10 @@ impl<'t> TransformCallback<'t> {
 
     /// Add a "post" callback operation.
     #[allow(clippy::missing_panics_doc)]
-    pub fn post(self, operation: impl FnOnce(TransformOperation) -> TransformOperation) -> Self {
+    pub fn post(
+        self,
+        operation: impl FnOnce(TransformOperation<'_>) -> TransformOperation<'_>,
+    ) -> Self {
         let op = match &mut self.path.post {
             Some(op) => op,
             None => {
@@ -1235,7 +1253,10 @@ impl<'t> TransformCallback<'t> {
 
     /// Add a "put" callback operation.
     #[allow(clippy::missing_panics_doc)]
-    pub fn put(self, operation: impl FnOnce(TransformOperation) -> TransformOperation) -> Self {
+    pub fn put(
+        self,
+        operation: impl FnOnce(TransformOperation<'_>) -> TransformOperation<'_>,
+    ) -> Self {
         let op = match &mut self.path.put {
             Some(op) => op,
             None => {
@@ -1255,7 +1276,10 @@ impl<'t> TransformCallback<'t> {
 
     /// Add a "trace" callback operation.
     #[allow(clippy::missing_panics_doc)]
-    pub fn trace(self, operation: impl FnOnce(TransformOperation) -> TransformOperation) -> Self {
+    pub fn trace(
+        self,
+        operation: impl FnOnce(TransformOperation<'_>) -> TransformOperation<'_>,
+    ) -> Self {
         let op = match &mut self.path.trace {
             Some(op) => op,
             None => {
@@ -1274,7 +1298,10 @@ impl<'t> TransformCallback<'t> {
     }
 
     /// Apply an another transform function.
-    pub fn path(mut self, transform: impl FnOnce(TransformPathItem) -> TransformPathItem) -> Self {
+    pub fn path(
+        mut self,
+        transform: impl FnOnce(TransformPathItem<'_>) -> TransformPathItem<'_>,
+    ) -> Self {
         let t = transform(TransformPathItem::new(self.path));
 
         if t.hidden {

@@ -28,7 +28,7 @@ impl<'de> Deserialize<'de> for StatusCode {
         impl<'de> Visitor<'de> for StatusCodeVisitor {
             type Value = StatusCode;
 
-            fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+            fn expecting(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
                 formatter.write_str("number between 100 and 999 (as string or integer) or a string that matches `\\dXX`")
             }
 
