@@ -159,6 +159,8 @@
     "make_withdrawal_subtitle": "Retire fundos da sua conta",
     "available_withdraw": "Disponível para saque",
     "limits": "limites",
+    "error_creating_flow_pending_kyc": "Você precisa verificar sua identidade antes de fazer um depósito. Por favor, envie seu documento de identidade",
+    "error_creating_flow_pending_kyc_cta_label": "Enviar documento",
     "error_creating_flow_pending_deposit": "Você tem um depósito em andamento. Aguarde a conclusão ou cancele antes de tentar novamente",
     "error_creating_flow_pending_withdrawal": "Você tem um saque em andamento. Aguarde a conclusão ou cancele antes de tentar novamente",
     "error_creating_deposit_flow_amount_exceeds_timeframe_limits": "O valor que você está tentando depositar excede os limites para o período selecionado. Aguarde e tente novamente",

@@ -70,6 +70,7 @@ export const createWalletsDependencyInjection = (publicConfig: PublicRuntimeConf
       ),
       createWithdrawalFlowOnForm: new CreateWithdrawalFlowOnForm(
         new CreateWithdrawalFlow(paymentsRepository, commonDependencies.asyncMessagePublisher),
+        commonDependencies.asyncMessagePublisher,
         commonDependencies.logger,
         commonDependencies.translateFunction,
         commonDependencies.dateTimeFormatter,

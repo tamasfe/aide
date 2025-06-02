@@ -160,6 +160,8 @@
     "make_withdrawal_subtitle": "Withdraw funds from your account",
     "available_withdraw": "Available to withdraw",
     "limits": "limits",
+    "error_creating_flow_pending_kyc": "You need to complete your identity verification before you can withdraw from your wallet",
+    "error_creating_flow_pending_kyc_cta_label": "Complete now",
     "error_creating_flow_pending_deposit": "You have an existing deposit in progress. Please wait for it to complete or cancel before trying again",
     "error_creating_flow_pending_withdrawal": "You have an existing withdrawal in progress. Please wait for it to complete or cancel before trying again",
     "error_creating_deposit_flow_amount_exceeds_timeframe_limits": "The amount you are trying to deposit exceeds the limits for the selected timeframe. Please wait and try again",

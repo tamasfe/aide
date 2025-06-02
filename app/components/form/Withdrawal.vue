@@ -53,25 +53,30 @@ const validationSchema = toTypedSchema(
 );
 
 const { handleSubmit, errors: formErrors, defineField, meta } = useForm({ validationSchema });
-const formErrorMessage = ref("");
+const formError = ref<null | { message: string; cta?: { label: string; action: () => void } }>(null);
 const loading = ref(false);
 const [amount, amountAttrs] = defineField("amount");
 amount.value = undefined;
 
 const onSubmit = handleSubmit(async (formData) => {
   loading.value = true;
-  formErrorMessage.value = "";
+  formError.value = null;
 
-  formErrorMessage.value = await $dependencies.wallets.ui.createWithdrawalFlowOnForm.handle(
+  const { cta, message } = await $dependencies.wallets.ui.createWithdrawalFlowOnForm.handle(
     formData.amount,
     props.currency.code,
     props.paymentMethodId,
   );
 
   loading.value = false;
-  if (!formErrorMessage.value) {
+  if (!message) {
     $dependencies.users.ui.emitCommandCloseUserActionModal.handle();
   }
+
+  formError.value = {
+    message,
+    cta,
+  };
 }, ({ results }) => {
   $dependencies.common.logger.warn("Validation failed", { validationResults: results });
 });
@@ -81,11 +86,21 @@ const onSubmit = handleSubmit(async (formData) => {
   <BaseForm @submit="onSubmit">
     <template v-if="!showLimits">
       <BaseAlert
-        v-if="formErrorMessage"
-        class="mb-0.5"
+        v-if="formError"
+        class="mb-0.5 block h-auto"
         level="error"
-        :message="formErrorMessage"
-      />
+        :message="formError.message"
+      >
+        <BaseButton
+          v-if="formError.cta"
+          variant="ghost"
+          size="sm"
+          class="underline"
+          @click="formError.cta.action"
+        >
+          {{ formError.cta.label }}
+        </BaseButton>
+      </BaseAlert>
 
       <BaseInputGroup
         v-bind="amountAttrs"

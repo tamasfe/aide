@@ -11,10 +11,10 @@ const alertVariants = cva(
   {
     variants: {
       level: {
-        success: "bg-alert-success text-alert-success",
-        error: "bg-alert-error text-alert-error",
-        warning: "bg-alert-warning text-alert-warning",
-        info: "bg-alert-info text-alert-info",
+        success: "px-1 py-2 bg-alert-success text-alert-success",
+        error: "px-1 py-2 bg-alert-error text-alert-error",
+        warning: "px-1 py-2 bg-alert-warning text-alert-warning",
+        info: "px-1 py-2 bg-alert-info text-alert-info",
       },
       size: {
         md: "h-[var(--giro-field-height)] text-base",
@@ -45,5 +45,6 @@ const props = defineProps<{
     )"
   >
     <div class="whitespace-pre-wrap">{{ message }}</div>
+    <slot />
   </div>
 </template>

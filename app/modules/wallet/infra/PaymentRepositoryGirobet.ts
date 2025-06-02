@@ -1,5 +1,6 @@
 import { type PaymentType, Payment } from "../domain/Payment";
 import type { PaymentRepositoryI } from "../domain/PaymentRepository";
+import { ErrorPendingIdentityCheck } from "../domain/ErrorPendingIdentityCheck";
 import { ErrorPendingPaymentFlow } from "../domain/ErrorPendingPaymentFlow";
 import { ErrorInsufficientFunds } from "../domain/ErrorInsufficientFunds";
 import { ErrorWalletHasInsufficientWagers } from "../domain/ErrorWalletHasInsufficientWagers";
@@ -159,6 +160,9 @@ export class PaymentRepositoryGirobet implements PaymentRepositoryI {
       }
 
       if (error) {
+        if (error.code === "USER_KYC_REQUIRED") {
+          return fail(new ErrorPendingIdentityCheck());
+        }
         if (error.code === "WALLET_PENDING_FLOW") {
           return fail(new ErrorPendingPaymentFlow("deposit"));
         }
