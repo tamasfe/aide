@@ -203,6 +203,9 @@ mod outputs;
 
 pub mod routing;
 
+#[cfg(all(feature = "macros", feature = "axum-extra-typed-routing"))]
+pub use aide_macros::axum_typed_path as typed_path;
+
 /// A wrapper over [`axum::Router`] that adds
 /// API documentation-specific features.
 #[must_use]
