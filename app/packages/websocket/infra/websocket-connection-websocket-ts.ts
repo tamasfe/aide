@@ -70,7 +70,10 @@ export class WebsocketConnectionWebsocketTs implements WebsocketConnectionI {
         }
       };
       this.addListener(listenerToConfirmChannelEntering, listenerId);
-      this.emit({ data: payload.channel, type: "channel_enter" });
+      this.emit({ data: {
+        channel: payload.channel,
+        entrypoint: "all", // This controls from which point on messages should be received.
+      }, type: "channel_enter" });
     }).then((result) => {
       this.removeListener(listenerId);
       if (!result.isFailure) {

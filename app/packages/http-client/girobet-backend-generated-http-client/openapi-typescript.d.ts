@@ -2418,6 +2418,127 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/ticker/{channel}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Ticker Channel Events
+         * @description Get Ticker Channel Events
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description The ticker channel */
+                    channel: components["schemas"]["WebsocketStreamChannel"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["WebsocketServerEvent"][];
+                    };
+                };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *      This enum covers a wide range of error scenarios, from wallet-related issues
+                 *      to payment processing problems, user authentication errors, and more. */
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/docs/private/api.json": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * OpenAPI Spec
+         * @description Returns the OpenAPI spec to this API
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: never;
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/docs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * API Docs
+         * @description This documentation page
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description HTML content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/html": string;
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/admin/user/list": {
         parameters: {
             query?: never;
@@ -3061,74 +3182,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/docs/private/api.json": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * OpenAPI Spec
-         * @description Returns the OpenAPI spec to this API
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: never;
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/docs": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * API Docs
-         * @description This documentation page
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description HTML content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "text/html": string;
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/ws/access-token": {
         parameters: {
             query?: never;
@@ -3496,6 +3549,17 @@ export interface components {
              *      category might show different content based on the user's playing
              *      history. */
             user_specific: boolean;
+        };
+        ChannelEnterPayload: {
+            /** @description The channel to enter. This is a string that identifies the channel. */
+            channel: components["schemas"]["WebsocketStreamChannel"];
+            /**
+             * @description The entrypoint for the channel. This determines whether the user will
+             *      receive all messages from the channel or only those that are sent after
+             *      they entered the channel.
+             * @default all
+             */
+            entrypoint: components["schemas"]["WebsocketStreamChannelEntrypoint"];
         };
         /**
          * @description A country represented by its ISO 3166-1 alpha-2 code.
@@ -4483,6 +4547,9 @@ export interface components {
             code: "GAME_URL_INVALID";
         } | {
             /** @constant */
+            code: "CHANNEL_NOT_FOUND";
+        } | {
+            /** @constant */
             code: "SIGNUP_FLOW_NOT_FOUND";
         } | {
             /** @constant */
@@ -4634,6 +4701,10 @@ export interface components {
         SystemValidationErrorsKind: components["schemas"]["SystemValidationErrors"] | {
             [key: string]: components["schemas"]["SystemValidationErrors"];
         } | components["schemas"]["SystemValidationError"][];
+        TickerChannelParams: {
+            /** @description The ticker channel */
+            channel: components["schemas"]["WebsocketStreamChannel"];
+        };
         TickerGame: {
             /** @description The identifier of the game. This is a unique string that identifies the
              *      game across all jurisdictions. */
@@ -4785,7 +4856,7 @@ export interface components {
         } | {
             /** @constant */
             type: "channel_enter";
-            data: components["schemas"]["WebsocketStreamChannel"];
+            data: components["schemas"]["ChannelEnterPayload"];
         } | {
             /** @constant */
             type: "channel_leave";
@@ -4864,6 +4935,7 @@ export interface components {
         });
         /** @enum {string} */
         WebsocketStreamChannel: "newest_wins";
+        WebsocketStreamChannelEntrypoint: "all" | "new";
         WhoamiResponse: {
             /** @description The email address of the currently authenticated user. */
             email: string;
