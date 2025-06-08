@@ -21,7 +21,7 @@ defineOptions({
 const props = withDefaults(
   defineProps<{
     id?: string;
-    fieldType?: "input" | "textarea" ;
+    fieldType?: "input" | "textarea";
     required?: boolean;
     placeholder?: string;
     placeholderPlacement?: "floating" | "default";

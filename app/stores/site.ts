@@ -1,35 +1,33 @@
-import type { Site } from "~/modules/sites/domain/Site";
+import type { SiteResponse } from "~/modules/sites/domain/Site";
 import type { License } from "~/modules/sites/domain/License";
 import { ErrorAnjouanLicenseScriptWasNotFound } from "~/packages/licenses/ErrorAnjouanLicenseScriptWasNotFound";
 import { ErrorInitiatingAnjouanLicenseScript } from "~/packages/licenses/ErrorInitiatingAnjouanLicenseScript";
 
-type SiteDomain = Site["domains"][number];
+type SiteDomain = SiteResponse["domain"];
 const defaultDomain: SiteDomain = { api: "api-staging.girobet.vip", email: "girobet.vip", frontend: "staging.girobet.vip", cdn: "cdn.girobet.vip", tracking: "tracking.girobet.vip" };
 
-const defaultSite: Site = {
-  identifier: "girobet",
-  name: "GiroBet",
-  servable: true,
-  domains: [defaultDomain],
+const defaultSite: SiteResponse = {
+  site: {
+    identifier: "girobet",
+    name: "GiroBet",
+    servable: true,
+  },
+  domain: defaultDomain,
 };
 
 export const useSiteStore = defineStore("siteStore", {
-  state: (): { site: Site; licenses: License[] } => ({
-    site: { ...defaultSite },
+  state: (): { siteResponse: SiteResponse; licenses: License[] } => ({
+    siteResponse: { ...defaultSite },
     licenses: [],
   }),
 
   getters: {
     currentDomain: (state): SiteDomain => {
-      return state.site.domains.find((domain: SiteDomain) => useRequestURL().href.startsWith(domain.frontend)) || state.site.domains[0] || defaultDomain;
+      return state.siteResponse.domain || defaultDomain;
     },
 
-    supportEmail: (): string => {
-      /**
-       * TODO: remove this hotfix when the backend returns a correct email for support
-       */
-      const url = useRequestURL();
-      return `support@${url.host}`;
+    supportEmail: (state): string => {
+      return `support@${state.siteResponse.domain.email}`;
     },
   },
 
@@ -42,26 +40,26 @@ export const useSiteStore = defineStore("siteStore", {
       ]);
       if (resultFindingSite.isFailure) {
         $dependencies.common.logger.error("Error searching for current site, loading default Girobet one in order to not break the site", resultFindingSite.error);
-        this.$state = { site: { ...defaultSite }, licenses: [] };
+        this.$state = { siteResponse: { ...defaultSite }, licenses: [] };
         return;
       }
 
       if (resultFindingLicenses.isFailure) {
         $dependencies.common.logger.error("Error searching for licenses, loading default Girobet one in order to not break the site", resultFindingLicenses.error);
-        this.$state = { site: { ...resultFindingSite.value }, licenses: [] };
+        this.$state = { siteResponse: { ...resultFindingSite.value }, licenses: [] };
         return;
       }
 
-      if (resultFindingSite.value.name.toLowerCase() === "localhost") {
-        this.$state = { site: { ...defaultSite }, licenses: resultFindingLicenses.value };
+      if (resultFindingSite.value.site.name.toLowerCase() === "localhost") {
+        this.$state = { siteResponse: { ...defaultSite }, licenses: resultFindingLicenses.value };
         return;
       }
 
-      this.$state = { site: { ...resultFindingSite.value }, licenses: resultFindingLicenses.value };
+      this.$state = { siteResponse: { ...resultFindingSite.value }, licenses: resultFindingLicenses.value };
     },
 
     getAssetPath(path: string) {
-      return `/assets/${this.site.identifier}/${path.startsWith("/") ? path.slice(1) : path}`;
+      return `/assets/${this.siteResponse.site.identifier}/${path.startsWith("/") ? path.slice(1) : path}`;
     },
 
     getActiveLicense(): License {
@@ -74,7 +72,7 @@ export const useSiteStore = defineStore("siteStore", {
 
     activateAnjouanLicenseIfAvailable(): "active" | "inactive" {
       const { $dependencies } = useNuxtApp();
-      switch (this.site.identifier) {
+      switch (this.siteResponse.site.identifier) {
         case "zambabet":
           if (!window.anj_baee18f7_63ae_4aa0_b5d7_8160149e921b) {
             $dependencies.common.logger.error("Anjouan script not loaded properly.", new ErrorAnjouanLicenseScriptWasNotFound("The Anjouan license script was not found on the window object."));

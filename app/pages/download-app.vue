@@ -53,7 +53,7 @@ const onClickRefreshPWA = async () => {
       <span v-else>an unknown browser</span>
     </p>
 
-    <p v-if="$pwa === undefined || siteStore.site.identifier !== 'girobet'">
+    <p v-if="$pwa === undefined || siteStore.siteResponse.site.identifier !== 'girobet'">
       {{ $t("download_app_page.download_not_available") }}
     </p>
     <div v-else>

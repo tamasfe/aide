@@ -34,7 +34,7 @@ const createMiddlewareJurisdictionErrorHandler: (commonDependencies: CommonDepen
             return;
 
           case "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE": {
-            const allowedUrl = jsonResponse.metadata.alternative_site.domains[0]?.frontend ? `https://${jsonResponse.metadata.alternative_site.domains[0].frontend}` : null;
+            const allowedUrl = jsonResponse.metadata.alternative_site.domain.frontend ? `https://${jsonResponse.metadata.alternative_site.domain.frontend}` : null;
             if (!allowedUrl) {
               await emitOpenUserModal.handle({ modal: "restrict_license_no_alternative", data: {
                 jurisdiction: jsonResponse.metadata.jurisdiction,

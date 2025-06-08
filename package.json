@@ -18,6 +18,7 @@
     "postinstall": "nuxt prepare",
     "preview": "nuxt preview",
     "analyze": "nuxt analyze",
+    "check": "nuxt typecheck",
     "test": "vitest",
     "test:integration": "vitest --dir ./test/integration",
     "test:unit": "vitest --dir ./test/unit"

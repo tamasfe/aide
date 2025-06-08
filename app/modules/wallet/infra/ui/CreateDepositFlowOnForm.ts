@@ -13,7 +13,7 @@ export class CreateDepositFlowOnForm {
     private readonly n: NumberFormatterFunctionType,
   ) {}
 
-  public async handle(amount: number, currency: WalletCurrency, paymentMethodId: number): Promise<SubmitErrorMessage > {
+  public async handle(amount: number, currency: WalletCurrency, paymentMethodId: number): Promise<SubmitErrorMessage> {
     const result = await this.createDepositFlow.handle(amount, currency, paymentMethodId);
     if (result.isFailure) {
       if (result.error.name === "ErrorPendingPaymentFlow") {

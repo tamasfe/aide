@@ -4,7 +4,7 @@ const siteStore = useSiteStore();
 const { $dependencies } = useNuxtApp();
 
 useHead({
-  title: t("page.home", { siteName: siteStore.site.name }),
+  title: t("page.home", { siteName: siteStore.siteResponse.site.name }),
 });
 
 const currentTab = ref("lobby");

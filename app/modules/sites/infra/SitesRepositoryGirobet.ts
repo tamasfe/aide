@@ -1,5 +1,5 @@
 import type { SitesRepositoryI } from "../domain/SitesRepository";
-import type { Site } from "../domain/Site";
+import type { SiteResponse } from "../domain/Site";
 import type { License } from "../domain/License";
 import { InfrastructureError } from "~/packages/result/infrastructure-error";
 import { fail, success, type Result } from "~/packages/result";
@@ -12,9 +12,9 @@ export class SitesRepositoryGirobet implements SitesRepositoryI {
     this.apiClient = createBackendOpenApiClient(clientOptions, commonDependencies);
   }
 
-  public async findCurrentMatched(): Promise<Result<Site, InfrastructureError>> {
+  public async findCurrentMatched(): Promise<Result<SiteResponse, InfrastructureError>> {
     try {
-      const { data, error, response } = await this.apiClient.GET("/system/site");
+      const { data, error, response } = await this.apiClient.GET("/system/site-setup");
 
       if (error) {
         const httpError = HttpBackendApiError.newFromBackendError(error, response);
@@ -23,10 +23,7 @@ export class SitesRepositoryGirobet implements SitesRepositoryI {
 
       if (data) {
         return success({
-          servable: data.servable,
-          name: data.name,
-          identifier: data.identifier,
-          domains: data.domains,
+          ...data,
         });
       }
 
