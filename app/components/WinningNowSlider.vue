@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { Keyified } from "~/types/utils";
 import type { Win } from "~/types/wins";
 
 // DESIGN STATUS:       ✅
@@ -28,39 +29,31 @@ const slidesToScroll = {
   xl: 1,
 };
 
-const buffer = ref<Array<Win | undefined>>([
-  undefined,
-  undefined,
-  undefined,
-  undefined,
-]);
-const loading = ref(true);
+const buffer = ref<Keyified<Win>[]>([]);
 
-let increment = 0;
+const ENABLE_SERVER_SIDE_RENDERING = true;
+const DEFER_CLIENT_SIDE_LOADING = false;
+await useAsyncData("winning-now-slider-ticker-events", async () => {
+  const wins = await $dependencies.tickers.ui.searchTickerEventsFromWinningNow.handle();
+  buffer.value.unshift(...wins.map(tickerEvent => useAddKeyFromIdentifier(tickerEvent)));
+},
+{ lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING },
+);
 
 useCreateSubscriptionToWebsocket(
   $dependencies.websockets.ui.wsChannelManagers.newestWins,
   (message) => {
-    buffer.value.unshift(({
-      key: increment.toString(),
-      amount: message.data.data.amount,
-      currency: message.data.data.currency,
-      userNickname: message.data.data.user_nickname,
-      game: {
-        identifier: message.data.data.game.identifier,
-        name: message.data.data.game.name,
-      },
-    }));
-
-    increment += 1;
+    const win = useAddKeyFromIdentifier(camelizeKeys(message));
+    if (buffer.value.some(item => item.key === win.key)) {
+      return; // Prevent duplicates
+    }
+    buffer.value.unshift(win);
 
     if (buffer.value.length > WINS_BUFFER_SIZE) {
       buffer.value.pop();
     }
 
     slider.value?.emblaApi?.scrollTo(0);
-
-    loading.value = false;
   },
 );
 </script>
@@ -76,7 +69,6 @@ useCreateSubscriptionToWebsocket(
     <BaseSlider
       ref="slider"
       class="w-full"
-      :loading="loading"
       :data="buffer"
       :slides="slides"
       :slides-to-scroll="slidesToScroll"
@@ -87,21 +79,21 @@ useCreateSubscriptionToWebsocket(
       }"
     >
       <template #default="{ item }">
-        <GamePageLink v-if="item?.game" :identifier="item.game.identifier">
+        <GamePageLink v-if="item.data" :identifier="item.data.data.game.identifier">
           <div class="relative group flex items-center space-x-3 bg-subtle p-2 rounded-lg outline-none border border-muted/5 h-24">
             <div class="self-strech relative aspect-[3/4] h-full rounded overflow-hidden border border-muted/5">
               <GameImage
-                :identifier="item.game.identifier"
+                :identifier="item.data.data.game.identifier"
                 class="block object-cover h-full w-full transition-transform transform hover:scale-105 cursor-pointer"
               />
             </div>
             <div class="font-medium leading-tight space-y-1 min-w-0 flex-1">
-              <div class="truncate">{{ item.userNickname }}</div>
-              <div class="text-subtle text-sm truncate min-w-0">{{ item.game.name }}</div>
+              <div class="truncate">{{ item.data.data.userNickname }}</div>
+              <div class="text-subtle text-sm truncate min-w-0">{{ item.data.data.game.name }}</div>
               <div class="sm:text-lg font-semibold bg-button-primary text-transparent bg-clip-text">
                 <BaseCurrency
-                  :currency="item.currency"
-                  :value="item.amount"
+                  :currency="item.data.data.currency"
+                  :value="item.data.data.amount"
                   variant="ghost"
                   class="truncate"
                 />
@@ -109,14 +101,6 @@ useCreateSubscriptionToWebsocket(
             </div>
           </div>
         </GamePageLink>
-        <div v-else class="relative group flex items-center space-x-3 bg-subtle p-2 rounded-lg outline-none h-24">
-          <BaseSkeleton :loading="true" class="self-strech relative aspect-[3/4] h-full rounded overflow-hidden" />
-          <div class="font-medium leading-tight space-y-1 min-w-0 flex-1">
-            <BaseSkeleton :loading="true" class="truncate h-4 w-1/3 rounded" />
-            <BaseSkeleton :loading="true" class="truncate h-3 w-1/2 rounded" />
-            <BaseSkeleton :loading="true" class="truncate h-6 w-1/5 rounded" />
-          </div>
-        </div>
       </template>
     </BaseSlider>
   </div>

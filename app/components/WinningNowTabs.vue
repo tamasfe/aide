@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { Keyified } from "~/types/utils";
 import type { Win } from "~/types/wins";
 
 const { $dependencies } = useNuxtApp();
@@ -10,49 +11,46 @@ const increment = ref(0);
 
 const WINNING_NOW_TABS = ["my_bets", "latest_bets", "high_rollers"] as const;
 const currentTab = ref<typeof WINNING_NOW_TABS[number]>("latest_bets");
-const latestWinsBuffer = ref<Array<Win>>([]);
-const highestWinsBuffer = ref<Array<Win>>([]);
+const latestWinsBuffer = ref<Array<Keyified<Win>>>([]);
+const highestWinsBuffer = ref<Array<Keyified<Win>>>([]);
+
+const WINS_ENABLE_SERVER_SIDE_RENDERING = false;
+const WINS_DEFER_CLIENT_SIDE_LOADING = true;
+await useAsyncData("winning-now-tabs-ticker-events", async () => {
+  const wins = await $dependencies.tickers.ui.searchTickerEventsFromWinningNow.handle();
+  latestWinsBuffer.value.push(...wins.map(win => useAddKeyFromIdentifier(win)));
+  highestWinsBuffer.value.push(...wins.map(win => useAddKeyFromIdentifier(win)));
+},
+{ lazy: WINS_DEFER_CLIENT_SIDE_LOADING, server: WINS_ENABLE_SERVER_SIDE_RENDERING },
+);
 
 useCreateSubscriptionToWebsocket(
   $dependencies.websockets.ui.wsChannelManagers.newestWins,
   (message) => {
-    latestWinsBuffer.value.unshift(({
-      key: increment.value.toString(),
-      amount: message.data.data.amount,
-      currency: message.data.data.currency,
-      userNickname: message.data.data.user_nickname,
-      game: {
-        identifier: message.data.data.game.identifier,
-        name: message.data.data.game.name,
-      },
-    }));
-    if (latestWinsBuffer.value.length > winsBufferSize.value) {
-      latestWinsBuffer.value.pop();
+    const win = useAddKeyFromIdentifier(camelizeKeys(message));
+
+    if (!latestWinsBuffer.value.some(item => item.key === win.key)) {
+      latestWinsBuffer.value.unshift(useAddKeyFromIdentifier(camelizeKeys(message)));
+      if (latestWinsBuffer.value.length > winsBufferSize.value) {
+        latestWinsBuffer.value.pop();
+      }
     }
 
-    // add win to the highestWinsBuffer array if the amount is higher than the last win in the array
-    highestWinsBuffer.value.unshift(({
-      key: increment.value.toString(),
-      amount: message.data.data.amount,
-      currency: message.data.data.currency,
-      userNickname: message.data.data.user_nickname,
-      game: {
-        identifier: message.data.data.game.identifier,
-        name: message.data.data.game.name,
-      },
-    }));
-    // sort the array by amount in descending order
-    highestWinsBuffer.value.sort((a, b) => b.amount - a.amount);
-    if (highestWinsBuffer.value.length > winsBufferSize.value) {
-      highestWinsBuffer.value.pop();
+    if (!highestWinsBuffer.value.some(item => item.key === win.key)) {
+      highestWinsBuffer.value.unshift(useAddKeyFromIdentifier(camelizeKeys(message)));
+      // sort the array by amount in descending order
+      highestWinsBuffer.value.sort((a, b) => b.data.data.amount - a.data.data.amount);
+      if (highestWinsBuffer.value.length > winsBufferSize.value) {
+        highestWinsBuffer.value.pop();
+      }
     }
 
     increment.value += 1;
   },
 );
 
-const ENABLE_SERVER_SIDE_RENDERING = false;
-const DEFER_CLIENT_SIDE_LOADING = true;
+const MY_BETS_ENABLE_SERVER_SIDE_RENDERING = false;
+const MY_BETS_DEFER_CLIENT_SIDE_LOADING = true;
 const { data: myBetsData } = await useAsyncData(`winning-now-my-bets-table`, async () => {
   if (!userStore.isAuthenticated) {
     return;
@@ -64,7 +62,7 @@ const { data: myBetsData } = await useAsyncData(`winning-now-my-bets-table`, asy
 
   return result;
 },
-{ watch: [() => userStore.isAuthenticated], lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING },
+{ watch: [() => userStore.isAuthenticated], lazy: MY_BETS_DEFER_CLIENT_SIDE_LOADING, server: MY_BETS_ENABLE_SERVER_SIDE_RENDERING },
 );
 </script>
 

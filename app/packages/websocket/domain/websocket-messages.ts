@@ -4,10 +4,7 @@ export type WebsocketMessagesToServer = components["schemas"]["WebsocketClientEv
 export type WebsocketMessagesFromServer = components["schemas"]["WebsocketServerEvent"];
 
 export type WebsocketMessagesByType = {
-  winning_now: {
-    type: "ticker";
-    data: Extract<components["schemas"]["TickerType"], { type: "winning_now" }>;
-  };
+  winning_now: Extract<components["schemas"]["WebsocketServerEvent"], { type: "ticker" }>;
   payment_status_update: {
     type: "notification";
     data: Extract<components["schemas"]["WebsocketServerEvent"]["data"], { type: "payment_status_update" }>;

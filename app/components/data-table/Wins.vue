@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { createColumnHelper, type ColumnDef } from "@tanstack/vue-table";
 import { BaseCurrency, GameImage, GamePageLink } from "#components";
-import type { Win } from "~/types/wins";
+import type { Win, WinData } from "~/types/wins";
 
 const { t } = useI18n();
 
@@ -10,9 +10,9 @@ defineProps<{
   loading: boolean;
 }>();
 
-const column = createColumnHelper<Win>();
+const column = createColumnHelper<WinData>();
 
-const columns: ColumnDef<Win>[] = [
+const columns: ColumnDef<WinData>[] = [
   column.accessor("userNickname", {
     header: t("winning_now.table.header_user_nickname"),
   }),
@@ -28,12 +28,12 @@ const columns: ColumnDef<Win>[] = [
     meta: { align: "right" },
     cell: ({ getValue, row }) => h(BaseCurrency, { class: "flex justify-end", value: getValue(), currency: row.original.currency, variant: "primary" }),
   }),
-] as ColumnDef<Win>[];
+] as ColumnDef<WinData>[];
 </script>
 
 <template>
   <DataTable
-    :data="data"
+    :data="data.map(win => win.data.data)"
     :loading="loading"
     :columns="columns"
   >

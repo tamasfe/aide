@@ -5,6 +5,7 @@ import { createNotificationDependencyInjection } from "~/modules/notifications/i
 import { createProvidersDependencyInjection } from "~/modules/providers/infra/ProvidersDependencyInjection";
 import { createSignupFlowsDependencyInjection } from "~/modules/signup-flows/infra/SignupFlowsDependencyInjection";
 import { createSitesDependencyInjection } from "~/modules/sites/infra/SitesDependencyInjection";
+import { createTickersDependencyInjection } from "~/modules/tickers/infra/ticker-dependency-injection";
 import { createUsersDependencyInjection } from "~/modules/users/infra/UsersDependencyInjection";
 import { createWalletsDependencyInjection } from "~/modules/wallet/infra/WalletsDependencyInjection";
 import { createClicksTrackingDependencyInjection } from "~/packages/click-tracking/infra/ClicksTrackingDependencyInjection";
@@ -43,6 +44,7 @@ export default defineNuxtPlugin({
           clicks: await createClicksTrackingDependencyInjection(
             config.public, commonDependencies,
           ),
+          tickers: await createTickersDependencyInjection(config.public, commonDependencies),
         },
       },
     };
