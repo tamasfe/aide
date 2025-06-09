@@ -29,13 +29,14 @@ const slidesToScroll = {
   xl: 1,
 };
 
-const buffer = ref<Keyified<Win>[]>([]);
+const buffer = useState<Keyified<Win>[]>("winning-now-slider-buffer", () => []);
 
 const ENABLE_SERVER_SIDE_RENDERING = true;
 const DEFER_CLIENT_SIDE_LOADING = false;
 await useAsyncData("winning-now-slider-ticker-events", async () => {
   const wins = await $dependencies.tickers.ui.searchTickerEventsFromWinningNow.handle();
   buffer.value.unshift(...wins.map(tickerEvent => useAddKeyFromIdentifier(tickerEvent)));
+  return wins;
 },
 { lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING },
 );

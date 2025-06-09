@@ -11,8 +11,8 @@ const increment = ref(0);
 
 const WINNING_NOW_TABS = ["my_bets", "latest_bets", "high_rollers"] as const;
 const currentTab = ref<typeof WINNING_NOW_TABS[number]>("latest_bets");
-const latestWinsBuffer = ref<Array<Keyified<Win>>>([]);
-const highestWinsBuffer = ref<Array<Keyified<Win>>>([]);
+const latestWinsBuffer = useState<Array<Keyified<Win>>>("winning-now-tabs-latestWinsBuffer", () => []);
+const highestWinsBuffer = useState<Array<Keyified<Win>>>("winning-now-tabs-highestWinsBuffer", () => []);
 
 const WINS_ENABLE_SERVER_SIDE_RENDERING = false;
 const WINS_DEFER_CLIENT_SIDE_LOADING = true;
@@ -20,6 +20,7 @@ await useAsyncData("winning-now-tabs-ticker-events", async () => {
   const wins = await $dependencies.tickers.ui.searchTickerEventsFromWinningNow.handle();
   latestWinsBuffer.value.push(...wins.map(win => useAddKeyFromIdentifier(win)));
   highestWinsBuffer.value.push(...wins.map(win => useAddKeyFromIdentifier(win)));
+  return wins;
 },
 { lazy: WINS_DEFER_CLIENT_SIDE_LOADING, server: WINS_ENABLE_SERVER_SIDE_RENDERING },
 );
