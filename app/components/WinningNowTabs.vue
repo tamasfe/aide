@@ -11,15 +11,25 @@ const increment = ref(0);
 
 const WINNING_NOW_TABS = ["my_bets", "latest_bets", "high_rollers"] as const;
 const currentTab = ref<typeof WINNING_NOW_TABS[number]>("latest_bets");
-const latestWinsBuffer = useState<Array<Keyified<Win>>>("winning-now-tabs-latestWinsBuffer", () => []);
-const highestWinsBuffer = useState<Array<Keyified<Win>>>("winning-now-tabs-highestWinsBuffer", () => []);
+const uniqueWins = useState<Map<string, Keyified<Win>>>("winning-now-tabs-latestWinsBuffer", () => new Map());
+
+const latestWinsBuffer = computed(() => {
+  return Array.from(uniqueWins.value.values()).slice(0, winsBufferSize.value);
+});
+const highestWinsBuffer = computed(() => {
+  return Array.from(uniqueWins.value.values())
+    .sort((a, b) => b.data.data.amount - a.data.data.amount)
+    .slice(0, winsBufferSize.value);
+});
 
 const WINS_ENABLE_SERVER_SIDE_RENDERING = true;
 const WINS_DEFER_CLIENT_SIDE_LOADING = true;
 await useAsyncData("winning-now-tabs-ticker-events", async () => {
   const wins = await $dependencies.tickers.ui.searchTickerEventsFromWinningNow.handle();
-  latestWinsBuffer.value.push(...wins.map(win => useAddKeyFromIdentifier(win)));
-  highestWinsBuffer.value.push(...wins.map(win => useAddKeyFromIdentifier(win)));
+  for (const win of wins) {
+    const keyifiedWin = useAddKeyFromIdentifier(camelizeKeys(win));
+    uniqueWins.value.set(keyifiedWin.key, keyifiedWin);
+  }
   return wins;
 },
 { lazy: WINS_DEFER_CLIENT_SIDE_LOADING, server: WINS_ENABLE_SERVER_SIDE_RENDERING },
@@ -28,23 +38,8 @@ await useAsyncData("winning-now-tabs-ticker-events", async () => {
 useCreateSubscriptionToWebsocket(
   $dependencies.websockets.ui.wsChannelManagers.newestWins,
   (message) => {
-    const win = useAddKeyFromIdentifier(camelizeKeys(message));
-
-    if (!latestWinsBuffer.value.some(item => item.key === win.key)) {
-      latestWinsBuffer.value.unshift(useAddKeyFromIdentifier(camelizeKeys(message)));
-      if (latestWinsBuffer.value.length > winsBufferSize.value) {
-        latestWinsBuffer.value.pop();
-      }
-    }
-
-    if (!highestWinsBuffer.value.some(item => item.key === win.key)) {
-      highestWinsBuffer.value.unshift(useAddKeyFromIdentifier(camelizeKeys(message)));
-      // sort the array by amount in descending order
-      highestWinsBuffer.value.sort((a, b) => b.data.data.amount - a.data.data.amount);
-      if (highestWinsBuffer.value.length > winsBufferSize.value) {
-        highestWinsBuffer.value.pop();
-      }
-    }
+    const keyifiedWin = useAddKeyFromIdentifier(camelizeKeys(message));
+    uniqueWins.value.set(keyifiedWin.key, keyifiedWin);
 
     increment.value += 1;
   },

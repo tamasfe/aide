@@ -29,13 +29,19 @@ const slidesToScroll = {
   xl: 1,
 };
 
-const buffer = useState<Keyified<Win>[]>("winning-now-slider-buffer", () => []);
+const uniqueWins = useState<Map<string, Keyified<Win>>>("winning-now-slider-buffer", () => new Map());
+const buffer = computed(() => {
+  return Array.from(uniqueWins.value.values()).slice(0, WINS_BUFFER_SIZE);
+});
 
 const ENABLE_SERVER_SIDE_RENDERING = true;
 const DEFER_CLIENT_SIDE_LOADING = false;
 await useAsyncData("winning-now-slider-ticker-events", async () => {
   const wins = await $dependencies.tickers.ui.searchTickerEventsFromWinningNow.handle();
-  buffer.value.unshift(...wins.map(tickerEvent => useAddKeyFromIdentifier(tickerEvent)));
+  for (const win of wins) {
+    const keyifiedWin = useAddKeyFromIdentifier(camelizeKeys(win));
+    uniqueWins.value.set(keyifiedWin.key, keyifiedWin);
+  }
   return wins;
 },
 { lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING },
@@ -45,15 +51,7 @@ useCreateSubscriptionToWebsocket(
   $dependencies.websockets.ui.wsChannelManagers.newestWins,
   (message) => {
     const win = useAddKeyFromIdentifier(camelizeKeys(message));
-    if (buffer.value.some(item => item.key === win.key)) {
-      return; // Prevent duplicates
-    }
-    buffer.value.unshift(win);
-
-    if (buffer.value.length > WINS_BUFFER_SIZE) {
-      buffer.value.pop();
-    }
-
+    uniqueWins.value.set(win.key, win);
     slider.value?.emblaApi?.scrollTo(0);
   },
 );
