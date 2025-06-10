@@ -33,14 +33,14 @@ defineProps({
       <h1 class="text-2xl font-semibold text-center">
         {{ $t("modal_restrict.license_no_alternative_headline", {
           country: blockedCountry,
-          blockedDomain: capitalizeBrandDomain(blockedDomain),
+          blockedDomain: capitalizeBrandDomain(siteStore.site?.name || blockedDomain),
         }) }}
       </h1>
 
       <div class="mb-4 text-emphasis text-center">
         {{ $t("modal_restrict.license_no_alternative_body", {
           country: blockedCountry,
-          blockedDomain: capitalizeBrandDomain(blockedDomain),
+          blockedDomain: capitalizeBrandDomain(siteStore.site?.name || blockedDomain),
         }) }}
       </div>
     </div>

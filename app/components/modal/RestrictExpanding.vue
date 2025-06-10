@@ -43,7 +43,7 @@ const onNotify = () => {
       <h1 class="text-2xl font-semibold text-center">
         {{ $t("modal_restrict.expanding_headline", {
           country: blockedCountry,
-          blockedDomain: capitalizeBrandDomain(blockedDomain),
+          blockedDomain: capitalizeBrandDomain(siteStore.site?.name || blockedDomain),
         }) }}
       </h1>
 
