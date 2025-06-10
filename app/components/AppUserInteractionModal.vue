@@ -56,6 +56,23 @@ if (recoverPasswordToken.value) {
   $dependencies.users.ui.emitCommandOpenUserActionModal.handle({ modal: "recover_password", data: { token: recoverPasswordToken.value } });
 }
 
+const openModalSearchParam = searchParams.get("open-modal") || null;
+if (openModalSearchParam) {
+  switch (openModalSearchParam) {
+    case "login":
+    case "register":
+    case "forgot_password":
+      $dependencies.users.ui.emitCommandOpenUserActionModal.handle({ modal: openModalSearchParam });
+      break;
+
+    case "deposit":
+      if (walletStore.wallet) {
+        $dependencies.users.ui.emitCommandOpenUserActionModal.handle({ modal: openModalSearchParam });
+      }
+      break;
+  }
+}
+
 const ENABLE_SERVER_SIDE_RENDERING = false;
 const DEFER_CLIENT_SIDE_LOADING = true;
 const { data: paymentMethodData } = await useAsyncData("user-modals-payment-method", async () => {
