@@ -74,7 +74,7 @@ export const useSiteStore = defineStore("siteStore", {
         return;
       }
 
-      $dependencies.common.logger.info("Site found", { site: resultFindingSite.value.site, domain: resultFindingSite.value.domain, licenses: resultFindingLicenses.value });
+      // $dependencies.common.logger.info("Site found", { site: resultFindingSite.value.site, domain: resultFindingSite.value.domain, licenses: resultFindingLicenses.value });
       if (resultFindingSite.value.site.name.toLowerCase() === "localhost") {
         this.$state = { domain: girobetDomain, site: girobetSite, licenses: resultFindingLicenses.value };
         return;
