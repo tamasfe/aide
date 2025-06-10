@@ -11,7 +11,7 @@ export default defineNuxtPlugin({
      * More info at https://nuxtseo.com/docs/site-config/nitro-api/update-site-config
      */
     updateSiteConfig({
-      name: siteStore.siteResponse.site.name,
+      name: siteStore.currentSite.name,
     });
 
     if (import.meta.server) {
@@ -20,12 +20,12 @@ export default defineNuxtPlugin({
           {
             rel: "icon",
             type: "image/png",
-            href: `/assets/${siteStore.siteResponse.site.identifier}/favicon.png`,
+            href: `/assets/${siteStore.currentSite.identifier}/favicon.png`,
           },
           {
             rel: "stylesheet",
             type: "text/css",
-            href: `/assets/${siteStore.siteResponse.site.identifier}/variables.css`,
+            href: `/assets/${siteStore.currentSite.identifier}/variables.css`,
           },
         ],
       });

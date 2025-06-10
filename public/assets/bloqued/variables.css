@@ -1,0 +1,62 @@
+:root {
+
+  /* text */
+  --color-text: #ffffff;
+  --color-text-primary: #ffc441;
+  --color-text-primary-hover: #ffe00c;
+  --color-text-subtle: #7b82c0;
+  --color-text-subtle-light: #a2a7db;
+  --color-text-emphasis: #c4c7e2;
+  --color-text-success: #77ff0c;
+
+
+  /* background */
+  --color-bg: 16, 13, 40;
+  --color-bg-subtle: 19, 18, 50;
+  --color-bg-emphasis: 30, 29, 68;
+  --color-bg-warning: 98, 88, 25;
+  --color-bg-success: 44, 98, 25;
+  --color-bg-text-emphasis: 196, 199, 226;
+  --color-bg-text-subtle: 123, 130, 192;
+  --color-bg-muted: 73, 72, 122;
+  --color-bg-active: 51, 50, 92;
+
+
+  /* buttons */
+
+  --color-button-primary: linear-gradient(to bottom, #ffc441, #ffe600);
+  --color-button-primary-hover: #ffe00c;
+  --color-button-text-primary: #000000;
+
+  --color-button-secondary: #272646;
+  --color-button-secondary-hover: #333256;
+  --color-button-text-secondary: #7b82c0;
+
+  --color-button-emphasis: linear-gradient(to bottom, #20cd19, #9bfc33);
+  --color-button-emphasis-hover: #81f22e;
+  --color-button-text-emphasis: #000000;
+
+  --color-button-subtle: #131232;
+  --color-button-subtle-hover: #1f1d47;
+  --color-button-text-subtle: #7b82c0;
+
+  --color-button-danger: #c71010;
+  --color-button-danger-hover: #dc2625;
+  --color-button-text-danger: #ffffff;
+
+
+  /* alerts */
+  --color-alert-success: #2c6219;
+  --color-alert-text-success: #77ff0c;
+  --color-alert-error: #621919;
+  --color-alert-text-error: #ff6969;
+  --color-alert-warning: #625819;
+  --color-alert-text-warning: #ffe00c;
+  --color-alert-info: #3d448b;
+  --color-alert-text-info: #c1c7ff;
+
+
+  /* promo bars */
+  --color-promo-primary: #551a8b;
+  --color-promo-text-primary: #9f6dde;
+}

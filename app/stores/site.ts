@@ -3,31 +3,56 @@ import type { License } from "~/modules/sites/domain/License";
 import { ErrorAnjouanLicenseScriptWasNotFound } from "~/packages/licenses/ErrorAnjouanLicenseScriptWasNotFound";
 import { ErrorInitiatingAnjouanLicenseScript } from "~/packages/licenses/ErrorInitiatingAnjouanLicenseScript";
 
-type SiteDomain = SiteResponse["domain"];
-const defaultDomain: SiteDomain = { api: "api-staging.girobet.vip", email: "girobet.vip", frontend: "staging.girobet.vip", cdn: "cdn.girobet.vip", tracking: "tracking.girobet.vip" };
+type Domain = SiteResponse["domain"];
+const girobetDomain: Domain = { api: "api-staging.girobet.vip", email: "girobet.vip", frontend: "staging.girobet.vip", cdn: "cdn.girobet.vip", tracking: "tracking.girobet.vip" };
 
-const defaultSite: SiteResponse = {
-  site: {
-    identifier: "girobet",
-    name: "GiroBet",
-    servable: true,
-  },
-  domain: defaultDomain,
+type Site = SiteResponse["site"];
+const girobetSite: Site = {
+  identifier: "girobet",
+  name: "GiroBet",
+  servable: true,
 };
 
 export const useSiteStore = defineStore("siteStore", {
-  state: (): { siteResponse: SiteResponse; licenses: License[] } => ({
-    siteResponse: { ...defaultSite },
-    licenses: [],
-  }),
+  state(): {
+    licenses: License[];
+    site: Site | null;
+    domain: Domain | null;
+  } {
+    return {
+      site: null,
+      domain: null,
+      licenses: [],
+    };
+  },
 
   getters: {
-    currentDomain: (state): SiteDomain => {
-      return state.siteResponse.domain || defaultDomain;
+    currentDomain(state): Domain {
+      return state.domain || this.getFallbackDomain;
     },
 
-    supportEmail: (state): string => {
-      return `support@${state.siteResponse.domain.email}`;
+    currentSite(state): Site {
+      return state.site || {
+        identifier: "bloqued",
+        name: "Bloqued",
+        servable: false,
+      };
+    },
+
+    supportEmail(): string {
+      return `support@${this.currentDomain.email}`;
+    },
+
+    getFallbackDomain(): Domain {
+      const url = useRequestURL();
+      const domainWithoutSubdomains = url.hostname.split(".").slice(-2).join(".");
+      return {
+        api: `api.${domainWithoutSubdomains}`,
+        email: domainWithoutSubdomains,
+        frontend: domainWithoutSubdomains,
+        cdn: `cdn.${domainWithoutSubdomains}`,
+        tracking: `4.${domainWithoutSubdomains}`,
+      };
     },
   },
 
@@ -40,26 +65,26 @@ export const useSiteStore = defineStore("siteStore", {
       ]);
       if (resultFindingSite.isFailure) {
         $dependencies.common.logger.error("Error searching for current site, loading default Girobet one in order to not break the site", resultFindingSite.error);
-        this.$state = { siteResponse: { ...defaultSite }, licenses: [] };
         return;
       }
 
       if (resultFindingLicenses.isFailure) {
         $dependencies.common.logger.error("Error searching for licenses, loading default Girobet one in order to not break the site", resultFindingLicenses.error);
-        this.$state = { siteResponse: { ...resultFindingSite.value }, licenses: [] };
+        this.$state = { domain: resultFindingSite.value.domain, site: resultFindingSite.value.site, licenses: [] };
         return;
       }
 
+      $dependencies.common.logger.info("Site found", { site: resultFindingSite.value.site, domain: resultFindingSite.value.domain, licenses: resultFindingLicenses.value });
       if (resultFindingSite.value.site.name.toLowerCase() === "localhost") {
-        this.$state = { siteResponse: { ...defaultSite }, licenses: resultFindingLicenses.value };
+        this.$state = { domain: girobetDomain, site: girobetSite, licenses: resultFindingLicenses.value };
         return;
       }
 
-      this.$state = { siteResponse: { ...resultFindingSite.value }, licenses: resultFindingLicenses.value };
+      this.$state = { domain: resultFindingSite.value.domain, site: resultFindingSite.value.site, licenses: resultFindingLicenses.value };
     },
 
     getAssetPath(path: string) {
-      return `/assets/${this.siteResponse.site.identifier}/${path.startsWith("/") ? path.slice(1) : path}`;
+      return `/assets/${this.currentSite.identifier}/${path.startsWith("/") ? path.slice(1) : path}`;
     },
 
     getActiveLicense(): License {
@@ -72,7 +97,7 @@ export const useSiteStore = defineStore("siteStore", {
 
     activateAnjouanLicenseIfAvailable(): "active" | "inactive" {
       const { $dependencies } = useNuxtApp();
-      switch (this.siteResponse.site.identifier) {
+      switch (this.currentSite.identifier) {
         case "zambabet":
           if (!window.anj_baee18f7_63ae_4aa0_b5d7_8160149e921b) {
             $dependencies.common.logger.error("Anjouan script not loaded properly.", new ErrorAnjouanLicenseScriptWasNotFound("The Anjouan license script was not found on the window object."));

@@ -45,7 +45,7 @@ const scrollToTop = () => {
             class="w-full object-cover"
           />
         </div>
-        <p>{{ $t("footer.summary", { siteName: siteStore.siteResponse.site.name }) }}</p>
+        <p>{{ $t("footer.summary", { siteName: siteStore.currentSite.name }) }}</p>
         <div class="w-full">
           <LocaleSelect class="sm:w-[12rem]" />
         </div>
@@ -61,7 +61,7 @@ const scrollToTop = () => {
         ]"
       />
       <FooterColumn
-        :title="siteStore.siteResponse.site.name"
+        :title="siteStore.currentSite.name"
         :links="[
           // { title: $t('page.affiliate_program'), to: { name: 'affiliate-program' } },
           { title: $t('page.faq'), to: { name: 'faq' } },
@@ -105,11 +105,11 @@ const scrollToTop = () => {
     <section class="giro__container relative flex flex-col text-subtle">
       <div class="flex flex-col items-center space-y-5 md:space-y-8">
         <div class="max-w-[42rem] lg:max-w-[52rem] text-sm sm:text-center">
-          <p v-if="siteStore.siteResponse.site.identifier === 'zambabet'">
+          <p v-if="siteStore.currentSite.identifier === 'zambabet'">
             This website {{ url.host }} is owned and operated by ORBIT Interactive Tech LTD. registration number: 27465, registered address: 9 Barrack Road, Belize City, Belize..
             Contact us at {{ siteStore.supportEmail }}. {{ url.host }} is licensed and regulated by the Government of the Autonomous Island of Anjouan, Union of Comoros and operates under License No. {{ LICENSE_NUMBER }}. {{ url.host }} has passed all regulatory compliance and is legally authorized to conduct gaming operations for any and all games of chance and wagering.
           </p>
-          <p v-else-if="siteStore.siteResponse.site.identifier === 'girobet'">
+          <p v-else-if="siteStore.currentSite.identifier === 'girobet'">
             This website {{ url.host }} is owned and operated by Hyperion Holdings Ltd. registration number: 46242,
             registered address: 9 Barrack Road, Belize City, Belize. Contact us {{ siteStore.supportEmail }}. Hyperion Holdings Ltd.
             is licensed and regulated by the Government of the Autonomous Island of Anjouan, Union of Comoros and
@@ -124,7 +124,7 @@ const scrollToTop = () => {
           {{ $t("footer.legal_notice") }}
         </div>
         <div class="text-center text-sm">
-          {{ $t("footer.copyright", { year, siteName: siteStore.siteResponse.site.name }) }}
+          {{ $t("footer.copyright", { year, siteName: siteStore.currentSite.name }) }}
         </div>
       </div>
       <BaseButton

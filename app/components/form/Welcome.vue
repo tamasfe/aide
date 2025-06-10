@@ -5,7 +5,7 @@ const siteStore = useSiteStore();
 
 <template>
   <div class="flex flex-col items-center justify-center gap-y-3 text-center">
-    <h1 class="text-2xl md:text-3xl font-semibold text-white">{{ $t("welcome_form.title", { siteName: siteStore.siteResponse.site.name }) }}</h1>
+    <h1 class="text-2xl md:text-3xl font-semibold text-white">{{ $t("welcome_form.title", { siteName: siteStore.currentSite.name }) }}</h1>
 
     <BaseButton
       variant="primary"
