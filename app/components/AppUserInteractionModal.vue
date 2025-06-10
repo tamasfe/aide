@@ -4,6 +4,7 @@ import type { UserInteractionModalState } from "~/packages/async-messages/async-
 const { $dependencies } = useNuxtApp();
 const { searchParams } = useRequestURL();
 const walletStore = useWalletStore();
+const userStore = useUserStore();
 
 const state = useState<UserInteractionModalState | { modal: null }>("user-modal-state", () => ({ modal: null }));
 const isOpen = defineModel<boolean>("open", { type: Boolean, required: true });
@@ -62,13 +63,17 @@ if (openModalSearchParam) {
     case "login":
     case "register":
     case "forgot_password":
+      if (userStore.isAuthenticated) {
+        break;
+      }
       $dependencies.users.ui.emitCommandOpenUserActionModal.handle({ modal: openModalSearchParam });
       break;
 
     case "deposit":
-      if (walletStore.wallet) {
-        $dependencies.users.ui.emitCommandOpenUserActionModal.handle({ modal: openModalSearchParam });
+      if (!walletStore.wallet) {
+        break;
       }
+      $dependencies.users.ui.emitCommandOpenUserActionModal.handle({ modal: openModalSearchParam });
       break;
   }
 }
