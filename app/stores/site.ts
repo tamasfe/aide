@@ -129,7 +129,7 @@ export const useSiteStore = defineStore("siteStore", {
       quality?: "100" | "85" | "75" | "50";
     }): string {
       const cdnDomain = this.currentDomain.cdn;
-      const baseImagePath = `/games/${gameIdentifier}.webp`;
+      const baseImagePath = `/games/${gameIdentifier}.jpg`;
 
       if (!options) {
         return `https://${cdnDomain}${baseImagePath}`;
