@@ -9,7 +9,7 @@ useHead({
 
 const ENABLE_SERVER_SIDE_RENDERING = true;
 const DEFER_CLIENT_SIDE_LOADING = true;
-const NUMBER_OF_PAYMENTS_TO_SHOW = 10;
+const NUMBER_OF_PAYMENTS_TO_SHOW = 25;
 
 const loading = useState(`wallet-page-payments-loading`, () => true);
 
@@ -35,17 +35,15 @@ const { data: paymentsData } = await useAsyncData("wallet-page-payments-data", a
     section="settings"
   >
     <div>
-      <ClientOnly>
-        <DashboardSettingsWalletBalance
-          v-if="walletStore.wallet"
-          :balance="walletStore.balance"
-          :payment-method="walletStore.wallet.paymentMethod ?? undefined"
-          :currency="walletStore.wallet.currency"
-          :wallet-id="walletStore.wallet.walletId"
-          :on-click-deposit="() => $dependencies.users.ui.emitCommandOpenUserActionModal.handle('deposit').then(() => {})"
-          :on-click-withdraw="() => $dependencies.users.ui.emitCommandOpenUserActionModal.handle('withdrawal').then(() => {})"
-        />
-      </ClientOnly>
+      <DashboardSettingsWalletBalance
+        v-if="walletStore.wallet"
+        :balance="walletStore.balance"
+        :payment-method="walletStore.wallet.paymentMethod ?? undefined"
+        :currency="walletStore.wallet.currency"
+        :wallet-id="walletStore.wallet.walletId"
+        :on-click-deposit="() => $dependencies.users.ui.emitCommandOpenUserActionModal.handle('deposit').then(() => {})"
+        :on-click-withdraw="() => $dependencies.users.ui.emitCommandOpenUserActionModal.handle('withdrawal').then(() => {})"
+      />
 
       <div class="mt-8">
         <h2 class="mb-8 text-center text-lg font-medium">{{ $t('dashboard.settings.wallet.transactions_title') }}</h2>
