@@ -8,7 +8,7 @@ import type {
 declare module "@nuxt/schema" {
   interface PublicRuntimeConfig {
     apiBaseUrlClient: string;
-    websocketApiBaseUrl: string;
+    apiBaseUrlServer: string;
     genericFixedUserJurisdiction: string | undefined;
     errorCapturingEnabled: boolean;
     release: string;
@@ -16,30 +16,34 @@ declare module "@nuxt/schema" {
       level: "debug" | "info" | "warn" | "error";
     };
     serviceName: string;
+
+    apiMode: "dumb" | "api";
     games: {
-      apiBaseUrlClient: string | undefined;
-      apiBaseUrlServer: string | undefined;
+      apiMode: "dumb" | "api";
     };
     signupFlows: {
       idsClientRepo: "mock" | "local_storage";
-      apiBaseUrlClient: string | undefined;
-      apiBaseUrlServer: string | undefined;
+      apiMode: "dumb" | "api";
     };
     users: {
-      authenticatedRepositoryBaseUrlClient: string | undefined;
-      authenticatedRepositoryBaseUrlServer: string | undefined;
+      apiMode: "dumb" | "api";
+    };
+    sites: {
+      apiMode: "dumb" | "api";
     };
     wallets: {
-      apiBaseUrlClient: string;
-      apiBaseUrlServer: string;
+      apiMode: "dumb" | "api";
     };
     providers: {
-      apiBaseUrlClient: string;
-      apiBaseUrlServer: string;
+      apiMode: "dumb" | "api";
     };
     kyc: {
-      apiBaseUrlClient: string;
-      apiBaseUrlServer: string;
+      apiMode: "dumb" | "api";
+    };
+    tracking: {
+      apiMode: "dumb" | "api";
+      fingerprintJsPublicApiKey: string | undefined;
+      fingerprintJsScriptUrl: string | undefined;
     };
   }
 }

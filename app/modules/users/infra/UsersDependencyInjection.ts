@@ -48,19 +48,19 @@ export interface UsersDependencyInjectionI {
   };
 }
 export const createUsersDependencyInjection = async (config: PublicRuntimeConfig, commonDependencies: CommonDependenciesI): Promise<UsersDependencyInjectionI> => {
-  const isServer = import.meta.server;
-  const authenticatedRepositoryBaseUrl = isServer ? config.users.authenticatedRepositoryBaseUrlServer : config.users.authenticatedRepositoryBaseUrlClient;
+  const apiBaseUrl = useCasinoApiOrigin("api");
+  const mode = config.users.apiMode;
 
   const authenticatedUserRepo: AuthenticatedUserRepositoryI = (() => {
-    if (authenticatedRepositoryBaseUrl) {
-      return new AuthenticatedUserSearcherGirobet({ baseUrl: authenticatedRepositoryBaseUrl }, commonDependencies);
+    if (mode === "api") {
+      return new AuthenticatedUserSearcherGirobet({ baseUrl: apiBaseUrl }, commonDependencies);
     }
     return new AuthenticatedUserRepositoryDumb(commonDependencies.logger);
   })();
 
   const authenticationRepo: AuthenticationRepositoryI = (() => {
-    if (authenticatedRepositoryBaseUrl) {
-      return new AuthenticationRepositoryGirobet({ baseUrl: authenticatedRepositoryBaseUrl }, commonDependencies);
+    if (mode === "api") {
+      return new AuthenticationRepositoryGirobet({ baseUrl: apiBaseUrl }, commonDependencies);
     }
     return new AuthenticationRepositoryDumb(commonDependencies.logger);
   })();

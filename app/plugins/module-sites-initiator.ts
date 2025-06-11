@@ -5,8 +5,6 @@ export default defineNuxtPlugin({
   async setup(_nuxtApp) {
     const siteStore = useSiteStore();
 
-    await callOnce("site-store-init", async () => siteStore.refresh());
-
     /**
      * More info at https://nuxtseo.com/docs/site-config/nitro-api/update-site-config
      */

@@ -24,14 +24,15 @@ export interface NotificationDependencyInjectionI {
 }
 
 export const createNotificationDependencyInjection: (config: PublicRuntimeConfig, commonDependencies: CommonDependenciesI, notificationsStore: PiniaStore<typeof useNotificationsStore>) => Promise<NotificationDependencyInjectionI> = async (config: PublicRuntimeConfig, commonDependencies: CommonDependenciesI, notificationsStore: PiniaStore<typeof useNotificationsStore>) => {
-  const apiBaseUrl = config.apiBaseUrlClient;
+  const apiBaseUrl = useCasinoApiOrigin("api");
+  const mode = config.apiMode;
 
   const notificationBannerRepo: NotificationBannerRepositoryI = new NotificationBannerRepositoryCookie(
     commonDependencies.translateFunction,
   );
 
   const notificationToastRepo: NotificationBackendRepositoryI = (() => {
-    if (!apiBaseUrl) {
+    if (mode === "dumb") {
       return new NotificationBackendRepositoryDumb();
     }
     return new NotificationBackendRepositoryGirobet({ baseUrl: apiBaseUrl }, commonDependencies);

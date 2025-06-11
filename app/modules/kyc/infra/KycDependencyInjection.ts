@@ -14,11 +14,11 @@ export interface KycDependencyInjectionI {
 }
 
 export const createKycDependencyInjection = async (publicConfig: PublicRuntimeConfig, commonDependencies: CommonDependenciesI): Promise<KycDependencyInjectionI> => {
-  const isServer = import.meta.server;
-  const apiBaseUrl = isServer ? publicConfig.kyc.apiBaseUrlServer : publicConfig.kyc.apiBaseUrlClient;
+  const apiBaseUrl = useCasinoApiOrigin("api");
+  const mode = publicConfig.kyc.apiMode;
 
   const kycApiRepository: KycApiRepositoryI = (() => {
-    if (!apiBaseUrl || apiBaseUrl === "") {
+    if (mode === "dumb") {
       return new KycApiRepositoryDumb();
     }
     return new KycApiRepositoryGirobet({ baseUrl: apiBaseUrl }, commonDependencies);

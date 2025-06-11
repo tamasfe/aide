@@ -22,12 +22,13 @@ export interface ClicksTrackingDependencyInjectionI {
 }
 
 export const createClicksTrackingDependencyInjection = async (config: PublicRuntimeConfig, _commonDependencies: CommonDependenciesI): Promise<ClicksTrackingDependencyInjectionI> => {
-  const apiBaseUrl = config.tracking.apiBaseUrl;
+  const apiBaseUrl = useCasinoApiOrigin("tracking");
+  const mode = config.tracking.apiMode;
 
   const marketingSearchParamsRepo = new MarketingSearchParamsRepoLocalStorage();
 
   const clicksTrackingRepo: ClickTrackingRepositoryI = (() => {
-    if (apiBaseUrl) {
+    if (mode === "api") {
       return new ClicksTrackingRepoAPI(apiBaseUrl);
     }
     return new ClicksTrackingRepoDumb();

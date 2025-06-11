@@ -19,11 +19,12 @@ export interface WebsocketDependencyInjectionI {
 }
 
 export const createWebsocketDependencyInjectionI: (config: PublicRuntimeConfig, commonDependencies: CommonDependenciesI) => Promise<WebsocketDependencyInjectionI> = async (config: PublicRuntimeConfig, commonDependencies: CommonDependenciesI) => {
-  const websocketLeaseRepository: WebsocketAccessTokenRepositoryI = new WebsocketLeaseRepositoryGirobet({ baseUrl: config.apiBaseUrlClient }, commonDependencies);
+  const apiBaseUrl = useCasinoApiOrigin("api");
+  const websocketLeaseRepository: WebsocketAccessTokenRepositoryI = new WebsocketLeaseRepositoryGirobet({ baseUrl: apiBaseUrl }, commonDependencies);
 
   return {
     ui: {
-      createWebsocketConnection: new CreateWebsocketConnection(config.websocketApiBaseUrl, commonDependencies.logger, commonDependencies.asyncMessagePublisher),
+      createWebsocketConnection: new CreateWebsocketConnection(apiBaseUrl, commonDependencies.logger, commonDependencies.asyncMessagePublisher),
       wsChannelManagers: {
         user: new WebsocketChannelManagerUser(websocketLeaseRepository, commonDependencies.asyncMessagePublisher, commonDependencies.logger),
         newestWins: new WebsocketChannelManagerNewWins(commonDependencies.logger, commonDependencies.asyncMessagePublisher),

@@ -2,12 +2,15 @@ import type { SiteResponse } from "~/modules/sites/domain/Site";
 import type { License } from "~/modules/sites/domain/License";
 import { ErrorAnjouanLicenseScriptWasNotFound } from "~/packages/licenses/ErrorAnjouanLicenseScriptWasNotFound";
 import { ErrorInitiatingAnjouanLicenseScript } from "~/packages/licenses/ErrorInitiatingAnjouanLicenseScript";
+import type { LoggerI } from "~/packages/logger/Logger";
+import type { Result } from "~/packages/result";
+import type { InfrastructureError } from "~/packages/result/infrastructure-error";
 
 type Domain = SiteResponse["domain"];
-const girobetDomain: Domain = { api: "api-staging.girobet.vip", email: "girobet.vip", frontend: "staging.girobet.vip", cdn: "cdn.girobet.vip", tracking: "tracking.girobet.vip" };
-
 type Site = SiteResponse["site"];
-const girobetSite: Site = {
+
+const domainForLocalDevelopment: Domain = { api: "localhost:3050", email: "girobet.vip", frontend: "localhost:3001", cdn: "cdn.girobet.vip", tracking: "localhost:3335" };
+const siteForLocalDevelopment: Site = {
   identifier: "girobet",
   name: "GiroBet",
   servable: true,
@@ -57,26 +60,31 @@ export const useSiteStore = defineStore("siteStore", {
   },
 
   actions: {
-    async refresh() {
-      const { $dependencies } = useNuxtApp();
+    async setup(
+      dependencies: {
+        logger: LoggerI;
+        findMatchedSite: () => Promise<Result<SiteResponse, InfrastructureError>>;
+        findMatchedLicenses: () => Promise<Result<License[], InfrastructureError>>;
+      },
+    ) {
       const [resultFindingSite, resultFindingLicenses] = await Promise.all([
-        $dependencies.sites.ui.findMatchedSite.handle(),
-        $dependencies.sites.ui.findMatchedLicenses.handle(),
+        dependencies.findMatchedSite(),
+        dependencies.findMatchedLicenses(),
       ]);
       if (resultFindingSite.isFailure) {
-        $dependencies.common.logger.error("Error searching for current site, loading default Girobet one in order to not break the site", resultFindingSite.error);
+        dependencies.logger.error("Error searching for current site, loading default Girobet one in order to not break the site", resultFindingSite.error);
         return;
       }
 
       if (resultFindingLicenses.isFailure) {
-        $dependencies.common.logger.error("Error searching for licenses, loading default Girobet one in order to not break the site", resultFindingLicenses.error);
+        dependencies.logger.error("Error searching for licenses, loading default Girobet one in order to not break the site", resultFindingLicenses.error);
         this.$state = { domain: resultFindingSite.value.domain, site: resultFindingSite.value.site, licenses: [] };
         return;
       }
 
-      // $dependencies.common.logger.info("Site found", { site: resultFindingSite.value.site, domain: resultFindingSite.value.domain, licenses: resultFindingLicenses.value });
-      if (resultFindingSite.value.site.name.toLowerCase() === "localhost") {
-        this.$state = { domain: girobetDomain, site: girobetSite, licenses: resultFindingLicenses.value };
+      // dependencies.logger.info("Site found", { site: resultFindingSite.value.site, domain: resultFindingSite.value.domain, licenses: resultFindingLicenses.value });
+      if (resultFindingSite.value.site.identifier.toLowerCase() === "localhost") {
+        this.$state = { domain: { ...domainForLocalDevelopment }, site: siteForLocalDevelopment, licenses: resultFindingLicenses.value };
         return;
       }
 

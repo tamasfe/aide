@@ -38,11 +38,11 @@ export interface GamesDependencyInjectionI {
 }
 
 export const createGamesDependencyInjection = async (publicConfig: PublicRuntimeConfig, commonDependencies: CommonDependenciesI): Promise<GamesDependencyInjectionI> => {
-  const isServer = import.meta.server;
-  const apiBaseUrl = isServer ? publicConfig.games.apiBaseUrlServer : publicConfig.games.apiBaseUrlClient;
+  const apiBaseUrl = useCasinoApiOrigin("api");
+  const mode = publicConfig.games.apiMode;
 
   const gamesApiRepository: GamesApiRepositoryI = (() => {
-    if (!apiBaseUrl || apiBaseUrl === "") {
+    if (mode === "dumb") {
       return new GamesApiRepositoryDumb(commonDependencies.logger);
     }
 
@@ -50,7 +50,7 @@ export const createGamesDependencyInjection = async (publicConfig: PublicRuntime
   })();
 
   const gameRatingsRepository: GameRatingsRepositoryI = (() => {
-    if (!apiBaseUrl || apiBaseUrl === "") {
+    if (mode === "dumb") {
       return new GameRatingsRepositoryDumb(commonDependencies.logger);
     }
 
@@ -58,7 +58,7 @@ export const createGamesDependencyInjection = async (publicConfig: PublicRuntime
   })();
 
   const gameCategoriesRepositoryDumb: GameCategoriesRepositoryDumb = (() => {
-    if (!apiBaseUrl || apiBaseUrl === "") {
+    if (mode === "dumb") {
       return new GameCategoriesRepositoryDumb();
     }
 
@@ -66,7 +66,7 @@ export const createGamesDependencyInjection = async (publicConfig: PublicRuntime
   })();
 
   const gameActionsRepository: GameActionsRepositoryI = (() => {
-    if (!apiBaseUrl || apiBaseUrl === "") {
+    if (mode === "dumb") {
       return new GameActionsRepositoryDumb(commonDependencies.logger);
     }
 
@@ -77,7 +77,7 @@ export const createGamesDependencyInjection = async (publicConfig: PublicRuntime
 
   return {
     ui: {
-      buildGameSessionIFrameUrl: new BuildGameSessionIFrameUrl(publicConfig.games.apiBaseUrlClient || ""),
+      buildGameSessionIFrameUrl: new BuildGameSessionIFrameUrl(useCasinoApiOrigin("api", "client")), // Force to client API origin because the iframe will never need the private server one.
       findGameCompatibilityByIdentifierOnGamePage: new FindGameCompatibilityByIdentifierOnGamePage(new FindGameCompatibilityByIdentifier(gamesApiRepository), commonDependencies.logger),
       searchGamesPaginatingOnGrid: new SearchGamesPaginatingOnGrid(searchGamesPaginatingQuery, commonDependencies.logger),
       searchGamesByQueryPaginatingOnSearchBar: new SearchGamesByQueryPaginatingOnSearchBar(searchGamesPaginatingQuery, commonDependencies.logger),

@@ -40,11 +40,11 @@ export interface SignupFlowsDependencyInjectionI {
 }
 
 export const createSignupFlowsDependencyInjection = (publicConfig: PublicRuntimeConfig, commonDependencies: CommonDependenciesI): SignupFlowsDependencyInjectionI => {
-  const isServer = import.meta.server;
-  const apiBaseUrl = isServer ? publicConfig.signupFlows.apiBaseUrlServer : publicConfig.signupFlows.apiBaseUrlClient;
+  const apiBaseUrl = useCasinoApiOrigin("api");
+  const mode = publicConfig.signupFlows.apiMode;
 
   const signupFlowApiRepository: SignupFlowApiRepositoryI = (() => {
-    if (!apiBaseUrl) {
+    if (mode === "dumb") {
       return new SignupFlowApiRepositoryDumb();
     }
 

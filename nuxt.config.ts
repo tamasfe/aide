@@ -51,7 +51,6 @@ export default defineNuxtConfig({
     public: {
       apiBaseUrlClient: process.env.NUXT_PUBLIC_API_BASE_URL_CLIENT,
       apiBaseUrlServer: process.env.NUXT_PUBLIC_API_BASE_URL_SERVER,
-      websocketApiBaseUrl: process.env.NUXT_PUBLIC_WEBSOCKET_API_BASE_URL,
       genericFixedUserJurisdiction: process.env.NUXT_PUBLIC_GENERIC_API_CLIENT_FIXED_USER_JURISDICTION,
       errorCapturingEnabled: process.env.NUXT_PUBLIC_ERROR_CAPTURING_ENABLED === "true",
       release: process.env.NUXT_PUBLIC_RELEASE || "development",
@@ -59,35 +58,34 @@ export default defineNuxtConfig({
         level: process.env.NUXT_PUBLIC_LOG_LEVEL as "warn" | "error" | "debug" | "info",
       },
       serviceName: process.env.NUXT_PUBLIC_SERVICE_NAME || "girobet-frontend",
+
+      apiMode: process.env.NUXT_PUBLIC_API_MODE as "dumb" | "api",
       games: {
-        apiBaseUrlClient: process.env.NUXT_PUBLIC_GAMES_API_BASE_URL_CLIENT,
-        apiBaseUrlServer: process.env.NUXT_PUBLIC_GAMES_API_BASE_URL_SERVER,
+        apiMode: process.env.NUXT_PUBLIC_GAMES_API_MODE as "dumb" | "api",
       },
       signupFlows: {
         idsClientRepo: process.env.NUXT_PUBLIC_SIGNUP_FLOWS_IDS_CLIENT_REPO as
         | "mock"
         | "local_storage",
-        apiBaseUrlClient: process.env.NUXT_PUBLIC_SIGNUP_FLOWS_API_BASE_URL_CLIENT,
-        apiBaseUrlServer: process.env.NUXT_PUBLIC_SIGNUP_FLOWS_API_BASE_URL_SERVER,
+        apiMode: process.env.NUXT_PUBLIC_SIGNUP_FLOWS_API_MODE as "dumb" | "api",
       },
       users: {
-        authenticatedRepositoryBaseUrlClient: process.env.NUXT_PUBLIC_USERS_AUTHENTICATED_REPOSITORY_BASE_URL_CLIENT,
-        authenticatedRepositoryBaseUrlServer: process.env.NUXT_PUBLIC_USERS_AUTHENTICATED_REPOSITORY_BASE_URL_SERVER,
+        apiMode: process.env.NUXT_PUBLIC_USERS_API_MODE as "dumb" | "api",
+      },
+      sites: {
+        apiMode: process.env.NUXT_PUBLIC_SITES_API_MODE as "dumb" | "api",
       },
       wallets: {
-        apiBaseUrlClient: process.env.NUXT_PUBLIC_WALLETS_API_BASE_URL_CLIENT,
-        apiBaseUrlServer: process.env.NUXT_PUBLIC_WALLETS_API_BASE_URL_SERVER,
+        apiMode: process.env.NUXT_PUBLIC_WALLETS_API_MODE as "dumb" | "api",
       },
       providers: {
-        apiBaseUrlClient: process.env.NUXT_PUBLIC_PROVIDERS_API_BASE_URL_CLIENT,
-        apiBaseUrlServer: process.env.NUXT_PUBLIC_PROVIDERS_API_BASE_URL_SERVER,
+        apiMode: process.env.NUXT_PUBLIC_PROVIDERS_API_MODE as "dumb" | "api",
       },
       kyc: {
-        apiBaseUrlClient: process.env.NUXT_PUBLIC_KYC_API_BASE_URL_CLIENT,
-        apiBaseUrlServer: process.env.NUXT_PUBLIC_KYC_API_BASE_URL_SERVER,
+        apiMode: process.env.NUXT_PUBLIC_KYC_API_MODE as "dumb" | "api",
       },
       tracking: {
-        apiBaseUrl: process.env.NUXT_PUBLIC_TRACKING_API_BASE_URL,
+        apiMode: process.env.NUXT_PUBLIC_TRACKING_API_MODE as "dumb" | "api",
         fingerprintJsPublicApiKey: process.env.NUXT_PUBLIC_TRACKING_FINGERPRINT_JS_PUBLIC_API_KEY,
         fingerprintJsScriptUrl: process.env.NUXT_PUBLIC_TRACKING_FINGERPRINT_JS_SCRIPT_URL,
       },

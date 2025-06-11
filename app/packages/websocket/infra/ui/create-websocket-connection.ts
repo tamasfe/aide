@@ -5,14 +5,17 @@ import { InfrastructureError } from "~/packages/result/infrastructure-error";
 import type { LoggerI } from "~/packages/logger/Logger";
 import type { AsyncMessagePublisherI } from "~/packages/async-messages/async-message-publisher";
 
+const WS_CONNECT_PATH = "/ws/connect";
+
 export class CreateWebsocketConnection {
-  constructor(private websocketConnectUrl: string, private logger: LoggerI, private asyncMessagePublisher: AsyncMessagePublisherI) { }
+  constructor(private websocketConnectBaseUrl: string, private logger: LoggerI, private asyncMessagePublisher: AsyncMessagePublisherI) { }
 
   public async handle(): Promise<Result<WebsocketConnectionI, InfrastructureError>> {
     try {
+      const websocketConnectUrl = new URL(WS_CONNECT_PATH, this.websocketConnectBaseUrl).toString();
       return success(
         WebsocketConnectionWebsocketTs.create(
-          this.websocketConnectUrl,
+          websocketConnectUrl,
           this.logger,
           this.asyncMessagePublisher,
         ),

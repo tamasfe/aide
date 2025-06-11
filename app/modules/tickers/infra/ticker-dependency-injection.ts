@@ -6,11 +6,11 @@ import { SearchTickerEventsFromWinningNow } from "./ui/search-ticker-events-from
 import type { CommonDependenciesI } from "~/dependency-injection/load-di";
 
 export const createTickersDependencyInjection = async (publicConfig: PublicRuntimeConfig, commonDependencies: CommonDependenciesI) => {
-  const isServer = import.meta.server;
-  const apiBaseUrl = isServer ? publicConfig.apiBaseUrlServer : publicConfig.apiBaseUrlClient;
+  const apiBaseUrl = useCasinoApiOrigin("api");
+  const mode = publicConfig.apiMode;
 
   const tickersRepository: TickerChannelEventsRepository = (() => {
-    if (!apiBaseUrl || apiBaseUrl === "") {
+    if (mode === "dumb") {
       return new TickerChannelEventsRepositoryDumb();
     }
 

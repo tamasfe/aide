@@ -31,27 +31,26 @@ export interface WalletsDependencyInjectionI {
 }
 
 export const createWalletsDependencyInjection = (publicConfig: PublicRuntimeConfig, commonDependencies: CommonDependenciesI): WalletsDependencyInjectionI => {
-  const isServer = import.meta.server;
+  const apiBaseUrl = useCasinoApiOrigin("api");
+  const mode = publicConfig.wallets.apiMode;
 
-  const walletApiBaseUrl = isServer ? publicConfig.wallets.apiBaseUrlServer : publicConfig.wallets.apiBaseUrlClient;
   const walletsRepository: WalletRepositoryI = (() => {
-    if (walletApiBaseUrl) {
-      return new WalletsRepositoryGirobet({ baseUrl: walletApiBaseUrl }, commonDependencies);
+    if (mode === "api") {
+      return new WalletsRepositoryGirobet({ baseUrl: apiBaseUrl }, commonDependencies);
     }
     return new WalletsRepositoryDumb();
   })();
 
-  const paymentApiBaseUrl = isServer ? publicConfig.wallets.apiBaseUrlServer : publicConfig.wallets.apiBaseUrlClient;
   const paymentsRepository: PaymentRepositoryI = (() => {
-    if (paymentApiBaseUrl) {
-      return new PaymentRepositoryGirobet({ baseUrl: paymentApiBaseUrl }, commonDependencies);
+    if (mode === "api") {
+      return new PaymentRepositoryGirobet({ baseUrl: apiBaseUrl }, commonDependencies);
     }
     return new PaymentRepositoryDumb();
   })();
 
   const paymentMethodsRepository: PaymentMethodRepositoryI = (() => {
-    if (paymentApiBaseUrl) {
-      return new PaymentMethodRepositoryGirobet({ baseUrl: paymentApiBaseUrl }, commonDependencies);
+    if (mode === "api") {
+      return new PaymentMethodRepositoryGirobet({ baseUrl: apiBaseUrl }, commonDependencies);
     }
     return new PaymentMethodRepositoryDumb();
   })();

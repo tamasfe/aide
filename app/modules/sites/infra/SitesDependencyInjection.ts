@@ -1,4 +1,3 @@
-import type { PublicRuntimeConfig } from "nuxt/schema";
 import type { SitesRepositoryI } from "../domain/SitesRepository";
 import { FindMatchedSite } from "./ui/FindMatchedSite";
 import { SitesRepositoryGirobet } from "./SitesRepositoryGirobet";
@@ -13,13 +12,10 @@ export interface SitesDependencyInjectionI {
   };
 }
 
-export const createSitesDependencyInjection = async (config: PublicRuntimeConfig, commonDependencies: CommonDependenciesI): Promise<SitesDependencyInjectionI> => {
-  const isServer = import.meta.server;
-  const apiBaseUrl = isServer ? config.apiBaseUrlServer : config.apiBaseUrlClient;
-
+export const createSitesDependencyInjection = async (config: { apiBaseUrl: string; mode: "dumb" | "api" }, commonDependencies: CommonDependenciesI): Promise<SitesDependencyInjectionI> => {
   const sitesRepo: SitesRepositoryI = (() => {
-    if (apiBaseUrl) {
-      return new SitesRepositoryGirobet({ baseUrl: apiBaseUrl }, commonDependencies);
+    if (config.mode === "api") {
+      return new SitesRepositoryGirobet({ baseUrl: config.apiBaseUrl }, commonDependencies);
     }
     return new SitesRepositoryDumb(commonDependencies.logger);
   })();
