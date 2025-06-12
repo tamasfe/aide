@@ -9,41 +9,28 @@ useHead({
   title: t("page.dashboard_settings"),
 });
 
-const promotionsPreferences = ref<null | {
+await callOnce("settings-preferences-refresh-user-settings", async () => {
+  if (userSettingsStore.status === "unititialized") {
+    await userSettingsStore.refresh();
+  }
+});
+
+const promotionsPreferences = ref<{
   email: boolean;
   phone: boolean;
   browser: boolean;
-}>(null);
-
-const ENABLE_SERVER_SIDE_RENDERING = true;
-const DEFER_CLIENT_SIDE_LOADING = true;
-
-const { data: errorLoading } = await useAsyncData(`settings-preferences-user-settings`,
-  async () => {
-    if (!userSettingsStore.settings) {
-      await userSettingsStore.refresh();
-    }
-
-    if (userSettingsStore.settings) {
-      promotionsPreferences.value = {
-        email: userSettingsStore.settings.simplifiedConsents.email ?? false,
-        phone: userSettingsStore.settings.simplifiedConsents.phone ?? false,
-        browser: userSettingsStore.settings.simplifiedConsents.browser ?? false,
-      };
-      return "";
-    }
-
-    promotionsPreferences.value = null;
-    return t("dashboard.settings.preferences.error_loading_settings");
-  },
-  { lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING },
-);
+}>({
+  email: userSettingsStore.settings?.simplifiedConsents.email ?? false,
+  phone: userSettingsStore.settings?.simplifiedConsents.phone ?? false,
+  browser: userSettingsStore.settings?.simplifiedConsents.browser ?? false,
+});
+const errorUpdating = ref<string | null>(null);
 
 watchDeep(() => promotionsPreferences.value,
   useThrottleFn(
     async () => {
       if (!promotionsPreferences.value || !userSettingsStore.settings) return;
-      await $dependencies.users.ui.userSettings.updateConsentsOnPreferencesPage.handle(userSettingsStore.settings.simplifiedConsents, promotionsPreferences.value);
+      errorUpdating.value = await $dependencies.users.ui.userSettings.updateConsentsOnPreferencesPage.handle(userSettingsStore.settings.simplifiedConsents, promotionsPreferences.value);
     },
     150, true, true, true), { immediate: false },
 );
@@ -62,18 +49,12 @@ watchDeep(() => promotionsPreferences.value,
         {{ $t("dashboard.settings.preferences.bonuses_description") }}
       </template>
       <BaseAlert
-        v-if="errorLoading"
-        :message="errorLoading"
+        v-if="errorUpdating"
+        :message="errorUpdating"
         level="error"
         class="mb-2"
       />
-      <div v-if="!errorLoading" class="w-full lg:max-w-72">
-        <div v-if="!promotionsPreferences" class="w-full flex items-center justify-center">
-          <BaseSpinner
-            class="text-subtle"
-            :size="32"
-          />
-        </div>
+      <div class="w-full lg:max-w-72">
         <div v-if="promotionsPreferences" class="space-y-8">
           <BaseToggle v-model="promotionsPreferences.email">
             <p>{{ $t("dashboard.settings.preferences.bonuses_by_email") }}</p>

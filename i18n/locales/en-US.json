@@ -408,7 +408,8 @@
         "bonuses_by_browser": "By Browser",
         "communication": "Communication",
         "communications_allow_deposit": "Receive deposit notifications",
-        "error_loading_settings": "An error occurred while loading your settings. Please refresh the page and try again."
+        "error_loading_settings": "An error occurred while loading your settings. Please refresh the page and try again.",
+        "error_updating_settings": "An error occurred while updating your settings. Please try again in some minutes."
       },
       "verification": {
         "identity": "Identity",

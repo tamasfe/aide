@@ -407,7 +407,8 @@
         "bonuses_by_browser": "Por Navegador",
         "communication": "Comunicação",
         "communications_allow_deposit": "Receber notificações de depósito",
-        "error_loading_settings": "Ocorreu um erro ao carregar suas configurações. Por favor, atualize a página e tente novamente."
+        "error_loading_settings": "Ocorreu um erro ao carregar suas configurações. Por favor, atualize a página e tente novamente.",
+        "error_updating_settings": "Ocorreu um erro ao atualizar suas configurações. Por favor, tente novamente em alguns minutos."
       },
       "verification": {
         "identity": "Identidade",

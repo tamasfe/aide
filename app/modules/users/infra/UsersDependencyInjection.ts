@@ -81,6 +81,7 @@ export const createUsersDependencyInjection = async (config: PublicRuntimeConfig
         updateConsentsOnPreferencesPage: new UpdateConsentsOnPreferencesPage(
           new UpdateUserSettingsChangedConsents(authenticatedUserRepo, commonDependencies.asyncMessagePublisher),
           commonDependencies.logger,
+          commonDependencies.translateFunction,
         ),
         updateSettingsOnForm: new UpdateSettingsOnForm(updateUserSettingsCommand, commonDependencies.logger, commonDependencies.translateFunction, commonDependencies.asyncMessagePublisher),
         updateUsernameOnForm: new UpdateUsernameOnFormSubmission(
