@@ -62,11 +62,14 @@ if (openModalSearchParam) {
   switch (openModalSearchParam) {
     case "login":
     case "register":
-    case "forgot_password":
       if (userStore.isAuthenticated) {
         break;
       }
       $dependencies.users.ui.emitCommandOpenUserActionModal.handle({ modal: openModalSearchParam });
+      break;
+
+    case "forgot-password":
+      $dependencies.users.ui.emitCommandOpenUserActionModal.handle({ modal: "forgot_password" });
       break;
 
     case "deposit":
