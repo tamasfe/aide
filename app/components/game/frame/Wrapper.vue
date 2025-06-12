@@ -15,7 +15,7 @@ const props = defineProps<{
 }>();
 
 const ENABLE_SERVER_SIDE_RENDERING_FOR_GAME = true;
-const DEFER_CLIENT_SIDE_LOADING_FOR_GAME = true;
+const DEFER_CLIENT_SIDE_LOADING_FOR_GAME = false;
 const { data: game, status: statusLoadingGame } = await useAsyncData(`game-${props.gameIdentifier}`, async () => {
   return $dependencies.games.ui.findGameCompatibilityByIdentifierOnGamePage.handle(props.gameIdentifier, currentDevice);
 }, { lazy: DEFER_CLIENT_SIDE_LOADING_FOR_GAME, server: ENABLE_SERVER_SIDE_RENDERING_FOR_GAME });
