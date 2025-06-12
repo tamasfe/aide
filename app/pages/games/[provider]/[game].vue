@@ -51,7 +51,7 @@ const queryGameCategories = async () => $dependencies.games.ui.searchGameCategor
       :fetch-items="queryGameCategories"
     >
       <template #default="{ items }">
-        <div class="giro__container">
+        <div class="giro__container space-y-[var(--giro-section-gap-sm)] md:space-y-[var(--giro-section-gap-lg)]">
           <GridHorizontalGames
             v-for="category in items"
             :key="category.identifier"
