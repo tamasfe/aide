@@ -49,6 +49,8 @@ const queryGameCategories = async () => $dependencies.games.ui.searchGameCategor
       v-if="currentDevice === 'desktop'"
       id="game-page-categories"
       :fetch-items="queryGameCategories"
+      :defer-client-side-loading="true"
+      :wait-for-server-side-rendering="true"
     >
       <template #default="{ items }">
         <div class="giro__container space-y-[var(--giro-section-gap-sm)] md:space-y-[var(--giro-section-gap-lg)]">
