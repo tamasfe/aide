@@ -35,7 +35,7 @@ const buffer = computed(() => {
 });
 
 const ENABLE_SERVER_SIDE_RENDERING = true;
-const DEFER_CLIENT_SIDE_LOADING = false;
+const DEFER_CLIENT_SIDE_LOADING = true;
 await useAsyncData("winning-now-slider-ticker-events", async () => {
   const wins = await $dependencies.tickers.ui.searchTickerEventsFromWinningNow.handle();
   for (const win of wins) {
