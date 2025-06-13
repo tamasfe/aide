@@ -12,6 +12,13 @@ useHead({
 await callOnce("settings-preferences-refresh-user-settings", async () => {
   if (userSettingsStore.status === "unititialized") {
     await userSettingsStore.refresh();
+    if (userSettingsStore.settings) {
+      promotionsPreferences.value = {
+        email: userSettingsStore.settings.simplifiedConsents.email ?? false,
+        phone: userSettingsStore.settings.simplifiedConsents.phone ?? false,
+        browser: userSettingsStore.settings.simplifiedConsents.browser ?? false,
+      };
+    }
   }
 });
 
