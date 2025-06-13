@@ -13,6 +13,11 @@ export class FindGameCompatibilityByIdentifierOnGamePage {
         return null;
       }
 
+      if (gameResult.error.name === "ErrorInvalidGameIdentifier") {
+        this.logger.error("An invalid game identifier was attempted, this should not happen", gameResult.error, { userDevice });
+        return null;
+      }
+
       this.logger.error("Unexpected error while trying to find a game by its id in the game/:game_id page", gameResult.error, { gameIdentifier, userDevice });
       return null;
     }

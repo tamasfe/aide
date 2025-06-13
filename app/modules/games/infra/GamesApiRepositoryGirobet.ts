@@ -1,8 +1,8 @@
-import { destructureGameIdentifier, type Game, type GameSearchResponse } from "../domain/Game";
+import { destructureGameIdentifier } from "../domain/Game";
 import type { GamesApiRepositoryI } from "../domain/GamesApiRepository";
 import { ErrorGameNotFound } from "../domain/ErrorGameNotFound";
 import { ErrorSearchIndexNotFound } from "../domain/ErrorSearchIndexNotFound";
-import { fail, success, type Result } from "~/packages/result";
+import { fail, success } from "~/packages/result";
 import { InfrastructureError } from "~/packages/result/infrastructure-error";
 import { createBackendOpenApiClient } from "~/packages/http-client/create-backend-open-api-client";
 import { HttpBackendApiError } from "~/packages/http-client/http-client-error";
@@ -13,7 +13,7 @@ export class GamesApiRepositoryGirobet implements GamesApiRepositoryI {
     this.apiClient = createBackendOpenApiClient(clientOptions, commonDependencies);
   }
 
-  public async searchPaginating(searchParams: { category: string | null; query: string | null; providerIdentifier: string | null }, limit: number, offset: number): Promise<Result<{ games: GameSearchResponse[]; pagination: { limit: number; offset: number; totalItems: number } }, ErrorSearchIndexNotFound | InfrastructureError>> {
+  public async searchPaginating(searchParams: { category: string | null; query: string | null; providerIdentifier: string | null }, limit: number, offset: number) {
     try {
       const { data, error, response } = await this.apiClient.GET("/game/search", {
         params: {
@@ -67,14 +67,17 @@ export class GamesApiRepositoryGirobet implements GamesApiRepositoryI {
     }
   }
 
-  public async findByIdentifier(gameIdentifier: string): Promise<Result<Game, ErrorGameNotFound | InfrastructureError>> {
+  public async findByIdentifier(gameIdentifier: string) {
     try {
-      const { gameSlug, providerSlug } = destructureGameIdentifier(gameIdentifier);
+      const result = destructureGameIdentifier(gameIdentifier);
+      if (result.isFailure) {
+        return result;
+      }
       const { data, error, response } = await this.apiClient.GET("/game/{provider_slug}/{game_slug}", {
         params: {
           path: {
-            game_slug: gameSlug,
-            provider_slug: providerSlug,
+            game_slug: result.value.gameSlug,
+            provider_slug: result.value.providerSlug,
           },
         },
       });
