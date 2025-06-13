@@ -28,17 +28,6 @@ export default defineNuxtPlugin({
       userJurisdiction: config.public.genericFixedUserJurisdiction,
     });
 
-    const sitesDependencies = await createSitesDependencyInjection({ mode: config.public.sites.apiMode, apiBaseUrl: config.public.apiBaseUrlServer }, commonDependencies);
-
-    const siteStore = useSiteStore();
-    await callOnce("site-store-init", () => siteStore.setup(
-      {
-        logger: commonDependencies.logger,
-        findMatchedSite: () => sitesDependencies.ui.findMatchedSite.handle(),
-        findMatchedLicenses: () => sitesDependencies.ui.findMatchedLicenses.handle(),
-      },
-    ));
-
     return {
       provide: {
         dependencies: {
@@ -51,7 +40,7 @@ export default defineNuxtPlugin({
           kyc: await createKycDependencyInjection(config.public, commonDependencies),
           websockets: await createWebsocketDependencyInjectionI(config.public, commonDependencies),
           notifications: await createNotificationDependencyInjection(config.public, commonDependencies, notificationsStore),
-          sites: sitesDependencies,
+          sites: await createSitesDependencyInjection({ mode: config.public.sites.apiMode, apiBaseUrl: config.public.apiBaseUrlServer }, commonDependencies),
           clicks: await createClicksTrackingDependencyInjection(
             config.public, commonDependencies,
           ),
