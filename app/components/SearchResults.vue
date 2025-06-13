@@ -25,7 +25,6 @@ const games = useState<Keyified<GameSearchResponse>[]>(() => []);
 const gamesTotalItems = useState(() => 0);
 const gamesLoading = useState(() => false);
 const gamesOnLoadMore = async (actionOnItemsArray: "append" | "replace") => {
-  gamesLoading.value = true;
   const result = await $dependencies.games.ui.searchGamesByQueryPaginatingOnSearchBar.handle(query, gamesCurrentPage.value);
 
   gamesTotalItems.value = result.totalGames;
@@ -48,7 +47,6 @@ const providers = useState<Keyified<Provider>[]>(() => []);
 const providersTotalItems = useState(() => 0);
 const providersLoading = useState(() => false);
 const providersOnLoadMore = async (actionOnItemsArray: "append" | "replace") => {
-  providersLoading.value = true;
   const result = await $dependencies.providers.ui.searchProvidersOnGrid.handle(query, providersCurrentPage.value);
 
   providersTotalItems.value = result.totalProviders;
@@ -64,6 +62,9 @@ const providersOnLoadMore = async (actionOnItemsArray: "append" | "replace") => 
 };
 
 const onQueryChange = async () => {
+  gamesLoading.value = true;
+  providersLoading.value = true;
+
   games.value = [];
   providers.value = [];
   gamesCurrentPage.value = 0;
