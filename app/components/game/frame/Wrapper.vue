@@ -82,7 +82,7 @@ const iframeUrl = computed(() => {
         class="bg-subtle"
         :authenticated="authenticated ?? false"
         :description="game.description"
-        :categories="['card', 'table', 'poker']"
+        :categories="[]"
         @maximize="() => { fullscreen = true }"
       />
     </div>
