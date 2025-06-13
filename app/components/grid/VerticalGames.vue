@@ -12,7 +12,7 @@ const props = defineProps<{
 const { $dependencies } = useNuxtApp();
 const { navigateBackOrHome } = useNavigateBackOrHome();
 
-const loading = useState(`grid-vertical-games-loading-for-${props.categoryIdentifier}-${props.providerIdentifier}`, () => true);
+const loading = useState(`grid-vertical-games-loading-for-${props.categoryIdentifier}-${props.providerIdentifier}`, () => false);
 const totalGamesOfCategory = useState(`grid-vertical-games-total-for-${props.categoryIdentifier}-${props.providerIdentifier}`, () => 0);
 const nextGamesPageToSearch = useState(`grid-vertical-games-next-page-for-${props.categoryIdentifier}-${props.providerIdentifier}`, () => 0);
 const gameIds = useState<Keyified <GameSearchResponse>[]>(`grid-vertical-games-ids-for-${props.categoryIdentifier}-${props.providerIdentifier}`, () => []);
