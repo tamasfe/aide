@@ -15,7 +15,7 @@ const { navigateBackOrHome } = useNavigateBackOrHome();
 const loading = useState(`grid-vertical-games-loading-for-${props.categoryIdentifier}-${props.providerIdentifier}`, () => false);
 const totalGamesOfCategory = useState(`grid-vertical-games-total-for-${props.categoryIdentifier}-${props.providerIdentifier}`, () => 0);
 const nextGamesPageToSearch = useState(`grid-vertical-games-next-page-for-${props.categoryIdentifier}-${props.providerIdentifier}`, () => 0);
-const gameIds = useState<Keyified <GameSearchResponse>[]>(`grid-vertical-games-ids-for-${props.categoryIdentifier}-${props.providerIdentifier}`, () => []);
+const games = useState<Keyified<GameSearchResponse>[]>(`grid-vertical-games-ids-for-${props.categoryIdentifier}-${props.providerIdentifier}`, () => []);
 const canLoadMore = useState(`grid-vertical-games-can-load-more-for-${props.categoryIdentifier}-${props.providerIdentifier}`, () => true);
 
 const onLoadData = async () => {
@@ -23,7 +23,7 @@ const onLoadData = async () => {
   loading.value = true;
 
   const { games: foundGames, canLoadMore: updatedCanLoadMore, totalGames } = await $dependencies.games.ui.searchGamesPaginatingOnGrid.handle(props.categoryIdentifier, props.providerIdentifier, nextGamesPageToSearch.value);
-  gameIds.value.push(...foundGames.map(game => useAddKeyFromIdentifier(game)));
+  games.value.push(...foundGames.map(game => useAddKeyFromIdentifier(game)));
   canLoadMore.value = updatedCanLoadMore;
   nextGamesPageToSearch.value += 1;
   totalGamesOfCategory.value = totalGames;
@@ -33,7 +33,8 @@ const onLoadData = async () => {
 
 const ENABLE_SERVER_SIDE_RENDERING = true;
 const DEFER_CLIENT_SIDE_LOADING = true;
-await useAsyncData(`load-games-for-${props.categoryIdentifier}`, () => onLoadData().then(() => true),
+await useAsyncData(`load-games-for-vertical-${props.categoryIdentifier}`,
+  () => onLoadData().then(() => true),
   { lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING },
 );
 </script>
@@ -76,7 +77,7 @@ await useAsyncData(`load-games-for-${props.categoryIdentifier}`, () => onLoadDat
     <GridVertical
       aspect-ratio="3/4"
       :columns="{ sm: 3, md: 4, lg: 6, xl: 8 }"
-      :data="gameIds"
+      :data="games"
       :loading="loading"
       :total-count="totalGamesOfCategory"
       pagination
@@ -91,7 +92,7 @@ await useAsyncData(`load-games-for-${props.categoryIdentifier}`, () => onLoadDat
     </GridVertical>
 
     <BaseEmpty
-      v-if="!loading && gameIds && gameIds.length === 0"
+      v-if="!loading && games && games.length === 0"
       :title="$t('search.no_games')"
       icon="lucide:search-x"
       :size="32"
