@@ -15,6 +15,10 @@ const props = defineProps<{
   };
 }>();
 
+const onClosed = () => {
+  $dependencies.users.ui.emitCommandCloseUserActionModal.handle();
+};
+
 // DESIGN STATUS:       ✅
 // ARCHITECTURE STATUS: ✴️
 //   - currently this is hardcoded for pix... eventually this needs to be generalized and refactored to support multiple payment methods/currencies/providers/jurisdictions
@@ -34,6 +38,7 @@ const createNewDeposit = async () => {
     :logo="false"
     banner="top"
     :banner-top="siteStore.getAssetPath('images/banners/deposit_horizontal.jpg')"
+    @close="onClosed"
   >
     <FormDepositConfirm
       v-if="payment"
