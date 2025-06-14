@@ -135,6 +135,7 @@ const { data: paymentMethodData } = await useAsyncData("user-modals-payment-meth
     <ModalKycFlow
       :open="isOpen && state.modal === 'kyc'"
       :applicant-data="state.modal === 'kyc' ? state.data.applicantData : undefined"
+      :initial-access-token="state.modal === 'kyc' ? state.data.accessToken : undefined"
     />
     <ModalCloseAccount
       :open="isOpen && state.modal === 'close_account'"
