@@ -65,15 +65,15 @@ export class WebsocketConnectionWebsocketTs implements WebsocketConnectionI {
 
       const listenerToConfirmChannelEntering = (_i: Websocket, event: MessageEvent<string>) => {
         const message = JSON.parse(event.data) as WebsocketMessagesFromServer;
-        if (message.type === "protocol" && typeof message.data === "object" && "channel_entered" in message.data && message.data.channel_entered.name === payload.channel) {
+        if (message.type === "protocol" && typeof message.data === "object" && "ticker_entered" in message.data && message.data.ticker_entered.name === payload.channel) {
           return resolve(success());
         }
       };
       this.addListener(listenerToConfirmChannelEntering, listenerId);
       this.emit({
-        type: "channel_enter",
+        type: "ticker_enter",
         data: {
-          channel: payload.channel,
+          ticker_channel: payload.channel,
           replay_policy: "new", // This controls from which point on messages should be received. The handlers that subscribe to the channel should take into consideration if they are receiving all messages or only new ones.
         },
       });
@@ -96,7 +96,7 @@ export class WebsocketConnectionWebsocketTs implements WebsocketConnectionI {
         return success();
 
       case "newest_wins":
-        this.emit({ data: "newest_wins", type: "channel_leave" });
+        this.emit({ data: "newest_wins", type: "ticker_leave" });
         this.logger.debug("WS - Left channel", { channel });
         return success();
 
@@ -121,8 +121,8 @@ export class WebsocketConnectionWebsocketTs implements WebsocketConnectionI {
             }
             return;
 
-          case "channel_entered":
-            if (typeof message.data === "object" && "channel_entered" in message.data) {
+          case "ticker_entered":
+            if (typeof message.data === "object" && "ticker_entered" in message.data) {
               listener(message as WebsocketMessagesByType[T]);
             }
             return;

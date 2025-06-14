@@ -141,899 +141,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/ws/access-token": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Issue WebSocket Access Token
-         * @description This endpoint is used to generate authentication tokens (access tokens) for WebSocket connections in our system.
-         *
-         *     ## Access Token Generation
-         *
-         *     1. Send a POST request to the access token issuer endpoint.
-         *     2. The endpoint will return an access token.
-         *
-         *     ## Access Token Properties
-         *
-         *     - Access tokens are short-lived tokens, valid for 60 seconds from the time of generation.
-         *     - Each access token, once used, is tied to a specific websocket connection and is immediately invalidated.
-         *
-         *     ## Usage
-         *
-         *     - Use the generated access token when establishing a WebSocket connection.
-         *     - For detailed information on how to use the access token in a WebSocket connection, refer to the documentation found [here](#tag/websocket/GET/ws/connect).
-         *
-         *     ## Important Notes
-         *
-         *     - Always generate a new access token before attempting to log in to the user event stream.
-         *     - Ensure your client handles access token expiration and reconnection scenarios.
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["AccessTokenTokenResponse"];
-                    };
-                };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/ws/connect": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Establish WebSocket Connection
-         * @description This route is the entry point for WebSocket connections in our system.
-         *
-         *     ## Connection Process
-         *
-         *     1. Connect to this endpoint using the WebSocket protocol.
-         *     2. Once connected, send a login message with your access token:
-         *
-         *        ```json
-         *        {
-         *          "type": "user_login",
-         *          "data": "<access-token>"
-         *        }
-         *        ```
-         *
-         *     ## Example (JavaScript)
-         *
-         *     ```javascript
-         *     const socket = new WebSocket("wss://your-domain.com/ws/connect");
-         *
-         *     // After connection is established, send login message
-         *     socket.onopen = () => {
-         *       const loginMessage = {
-         *         type: "user_login",
-         *         data: "your-access-token"
-         *       };
-         *       socket.send(JSON.stringify(loginMessage));
-         *     };
-         *     ```
-         *
-         *     ## Message Format
-         *
-         *     All WebSocket messages follow a JSON format. The message structure for client events matches the request body specifications in this OpenAPI documentation, while server events follow the HTTP response specifications.
-         *
-         *     ### Client Events (Sending)
-         *     Messages sent from the client should follow this format:
-         *     ```json
-         *     {
-         *       "type": "event_name",
-         *       "data": {}  // Data structure as specified in OpenAPI request bodies
-         *     }
-         *     ```
-         *
-         *     ### Server Events (Receiving)
-         *     Messages received from the server will follow this format:
-         *     ```json
-         *     {
-         *       "type": "event_name",
-         *       "data": {}  // Data structure as specified in OpenAPI responses
-         *     }
-         *     ```
-         *
-         *     ## Important Notes
-         *
-         *     - Access tokens are valid for 60 seconds.
-         *     - Ensure your client can handle reconnection if the access token expires.
-         *     - The server will emit an error event if authentication fails.
-         *     - After a successful login, you'll be subscribed to your respective channel.
-         *
-         *     For detailed information on access token generation and management, refer to the main WebSocket authentication documentation found [here](#tag/websocket/POST/ws/access-token).
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["WebsocketClientEvent"];
-                };
-            };
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["WebsocketServerEvent"];
-                    };
-                };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/docs/private/api.json": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * OpenAPI Spec
-         * @description Returns the OpenAPI spec to this API
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: never;
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/docs": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * API Docs
-         * @description This documentation page
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description HTML content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "text/html": string;
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/admin/user/list": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * List Users
-         * @description Fetch a paginated list of users in the system.
-         */
-        get: {
-            parameters: {
-                query?: {
-                    filters?: string;
-                    limit?: number;
-                    offset?: number;
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["PaginatorResponse_for_AdminUserResponse_and_ActiveFilters"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/admin/user/{user_id}/block": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Block User
-         * @description Block the user until the specified date. If date is not set, the user will be blocked indefinitely.
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    user_id: components["schemas"]["UserId"];
-                };
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["BlockUserBody"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/admin/user/{user_id}/unblock": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Unblock User
-         * @description Unblock the user.
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    user_id: components["schemas"]["UserId"];
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/admin/user/{user_id}/exclude": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Exclude User
-         * @description Exclude the user until the specified date.
-         *         If date is not set, the user will be excluded indefinitely.
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    user_id: components["schemas"]["UserId"];
-                };
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["BlockUserBody"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/admin/user/{user_id}/include": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Include User
-         * @description Include the user.
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    user_id: components["schemas"]["UserId"];
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/admin/session/list": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * List Sessions
-         * @description Fetch sessions
-         */
-        get: {
-            parameters: {
-                query?: {
-                    filters?: string;
-                    limit?: number;
-                    offset?: number;
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["PaginatorResponse_for_SessionResponse_and_ActiveFilters"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/admin/payment/list": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * List Payments
-         * @description This endpoint returns a list of payments and payment flows in chronological order with the newest items first.
-         *     You may filter payments via the following sample filter:
-         *
-         *     ```json
-         *     {
-         *     	"payment_flow_id": {"$eq": "1"},
-         *     	"payment_id": {"$eq": "1"},
-         *     	"wallet_id": {"$eq": "1"},
-         *     	"user_id": {"$eq": "1"},
-         *     	"payment_flow_status": {"$eq": "pending"},
-         *     	"payment_type": {"$eq": "deposit"},
-         *     	"payment_flow_amount": {"$eq": "100"},
-         *     	"payment_amount": {"$eq": "100"},
-         *     	"curency": {"$eq": "USD"},
-         *     	"payment_is_adjustment": {"$eq": "true"},
-         *     	"user_name": {"$contains": "john"},
-         *     	"user_email": {"$contains": "john"},
-         *     	"integration_id": {"$eq": "1"},
-         *     	"payment_provider_name": {"$contains": "star"},
-         *     	"payment_method_id": {"$eq": "1"},
-         *     	"payment_method_name": {"$contains": "pix"},
-         *     	"payment_flow_created_at": {"$eq": "2021-01-01T00:00:00Z"},
-         *     	"payment_created_at": {"$eq": "2021-01-01T00:00:00Z"},
-         *     	"payment_flow_status_created_at": {"$eq": "2021-01-01T00:00:00Z"}
-         *     }
-         *     ```
-         */
-        get: {
-            parameters: {
-                query?: {
-                    filters?: string;
-                    limit?: number;
-                    offset?: number;
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["PaginatorResponse_for_AdminPaymentListResponse_and_ActiveFilters"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/admin/payment/flow/{flow_id}/approve": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Approve Payment Flow
-         * @description Approve the specified payment flow.
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    flow_id: components["schemas"]["PaymentFlowId"];
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/admin/payment/flow/{flow_id}/reject": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Reject Payment Flow
-         * @description Reject the specified payment flow.
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    flow_id: components["schemas"]["PaymentFlowId"];
-                };
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["RejectPaymentFlowBody"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/admin/payment/limits/{currency}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Update Payment Limits
-         * @description Update the limits for the specified currency.
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    currency: components["schemas"]["Currency"];
-                };
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["LimitOverridesPrototype"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/admin/payment/balance/adjust": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Update User Balance
-         * @description Adjust the balance for the specified user and currency.
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["AdjustUserBalanceBody"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/admin/wallet/{wallet_id}/limits": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Update Wallet Limits
-         * @description Patch the wallet limits.
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    wallet_id: components["schemas"]["WalletId"];
-                };
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["LimitOverridesPrototype"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/admin/game/rounds": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Read Game Rounds
-         * @description Fetch game rounds
-         */
-        get: {
-            parameters: {
-                query?: {
-                    filters?: string;
-                    limit?: number;
-                    offset?: number;
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["PaginatorResponse_for_AdminBetResponse_and_ActiveFilters"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/admin/category/list": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Read Game Categories
-         * @description Fetch game categories
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["CategoryResponse"][];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/admin/category/group/list": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Read Category Groups
-         * @description Fetch category groups
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["CategoryGroupResponse"][];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/auth/whoami": {
         parameters: {
             query?: never;
@@ -1932,59 +1039,6 @@ export interface paths {
                     };
                     content: {
                         "application/json": components["schemas"]["LicenseResponse"][];
-                    };
-                };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/system/site-setup": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get Matched Site
-         * @description The the matched site based on the host header.
-         *             Use this to differentiate between different sites in a multi-site setup,
-         *             allowing for different configurations, themes, etc.
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Site setup response, used for dymainc frontend branding and configuration. */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["SiteResponse"];
                     };
                 };
                 /** @description Represents various errors that can occur during server operations.
@@ -3329,7 +2383,7 @@ export interface paths {
                 header?: never;
                 path: {
                     /** @description The ticker channel */
-                    channel: components["schemas"]["WebsocketStreamChannel"];
+                    channel: components["schemas"]["WebsocketTickerChannel"];
                 };
                 cookie?: never;
             };
@@ -3353,6 +2407,952 @@ export interface paths {
                     };
                     content: {
                         "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/system/site-setup": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Matched Site
+         * @description The the matched site based on the host header.
+         *             Use this to differentiate between different sites in a multi-site setup,
+         *             allowing for different configurations, themes, etc.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Site setup response, used for dymainc frontend branding and configuration. */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["SiteResponse"];
+                    };
+                };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *      This enum covers a wide range of error scenarios, from wallet-related issues
+                 *      to payment processing problems, user authentication errors, and more. */
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/ws/access-token": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Issue WebSocket Access Token
+         * @description This endpoint is used to generate authentication tokens (access tokens) for WebSocket connections in our system.
+         *
+         *     ## Access Token Generation
+         *
+         *     1. Send a POST request to the access token issuer endpoint.
+         *     2. The endpoint will return an access token.
+         *
+         *     ## Access Token Properties
+         *
+         *     - Access tokens are short-lived tokens, valid for 60 seconds from the time of generation.
+         *     - Each access token, once used, is tied to a specific websocket connection and is immediately invalidated.
+         *
+         *     ## Usage
+         *
+         *     - Use the generated access token when establishing a WebSocket connection.
+         *     - For detailed information on how to use the access token in a WebSocket connection, refer to the documentation found [here](#tag/websocket/GET/ws/connect).
+         *
+         *     ## Important Notes
+         *
+         *     - Always generate a new access token before attempting to log in to the user event stream.
+         *     - Ensure your client handles access token expiration and reconnection scenarios.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AccessTokenTokenResponse"];
+                    };
+                };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *      This enum covers a wide range of error scenarios, from wallet-related issues
+                 *      to payment processing problems, user authentication errors, and more. */
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/ws/connect": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Establish WebSocket Connection
+         * @description This route is the entry point for WebSocket connections in our system.
+         *
+         *     ## Connection Process
+         *
+         *     1. Connect to this endpoint using the WebSocket protocol.
+         *     2. Once connected, send a login message with your access token:
+         *
+         *        ```json
+         *        {
+         *          "type": "user_login",
+         *          "data": "<access-token>"
+         *        }
+         *        ```
+         *
+         *     ## Example (JavaScript)
+         *
+         *     ```javascript
+         *     const socket = new WebSocket("wss://your-domain.com/ws/connect");
+         *
+         *     // After connection is established, send login message
+         *     socket.onopen = () => {
+         *       const loginMessage = {
+         *         type: "user_login",
+         *         data: "your-access-token"
+         *       };
+         *       socket.send(JSON.stringify(loginMessage));
+         *     };
+         *     ```
+         *
+         *     ## Message Format
+         *
+         *     All WebSocket messages follow a JSON format. The message structure for client events matches the request body specifications in this OpenAPI documentation, while server events follow the HTTP response specifications.
+         *
+         *     ### Client Events (Sending)
+         *     Messages sent from the client should follow this format:
+         *     ```json
+         *     {
+         *       "type": "event_name",
+         *       "data": {}  // Data structure as specified in OpenAPI request bodies
+         *     }
+         *     ```
+         *
+         *     ### Server Events (Receiving)
+         *     Messages received from the server will follow this format:
+         *     ```json
+         *     {
+         *       "type": "event_name",
+         *       "data": {}  // Data structure as specified in OpenAPI responses
+         *     }
+         *     ```
+         *
+         *     ## Important Notes
+         *
+         *     - Access tokens are valid for 60 seconds.
+         *     - Ensure your client can handle reconnection if the access token expires.
+         *     - The server will emit an error event if authentication fails.
+         *     - After a successful login, you'll be subscribed to your respective channel.
+         *
+         *     For detailed information on access token generation and management, refer to the main WebSocket authentication documentation found [here](#tag/websocket/POST/ws/access-token).
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["WebsocketClientEvent"];
+                };
+            };
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["WebsocketServerEvent"];
+                    };
+                };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *      This enum covers a wide range of error scenarios, from wallet-related issues
+                 *      to payment processing problems, user authentication errors, and more. */
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/docs/private/api.json": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * OpenAPI Spec
+         * @description Returns the OpenAPI spec to this API
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: never;
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/docs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * API Docs
+         * @description This documentation page
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description HTML content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/html": string;
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/user/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Users
+         * @description Fetch a paginated list of users in the system.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    filters?: string;
+                    limit?: number;
+                    offset?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PaginatorResponse_for_AdminUserResponse_and_ActiveFilters"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/user/{user_id}/block": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Block User
+         * @description Block the user until the specified date. If date is not set, the user will be blocked indefinitely.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    user_id: components["schemas"]["UserId"];
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["BlockUserBody"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/admin/user/{user_id}/unblock": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Unblock User
+         * @description Unblock the user.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    user_id: components["schemas"]["UserId"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/admin/user/{user_id}/exclude": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Exclude User
+         * @description Exclude the user until the specified date.
+         *         If date is not set, the user will be excluded indefinitely.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    user_id: components["schemas"]["UserId"];
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["BlockUserBody"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/admin/user/{user_id}/include": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Include User
+         * @description Include the user.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    user_id: components["schemas"]["UserId"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/admin/session/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Sessions
+         * @description Fetch sessions
+         */
+        get: {
+            parameters: {
+                query?: {
+                    filters?: string;
+                    limit?: number;
+                    offset?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PaginatorResponse_for_SessionResponse_and_ActiveFilters"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/payment/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Payments
+         * @description This endpoint returns a list of payments and payment flows in chronological order with the newest items first.
+         *     You may filter payments via the following sample filter:
+         *
+         *     ```json
+         *     {
+         *     	"payment_flow_id": {"$eq": "1"},
+         *     	"payment_id": {"$eq": "1"},
+         *     	"wallet_id": {"$eq": "1"},
+         *     	"user_id": {"$eq": "1"},
+         *     	"payment_flow_status": {"$eq": "pending"},
+         *     	"payment_type": {"$eq": "deposit"},
+         *     	"payment_flow_amount": {"$eq": "100"},
+         *     	"payment_amount": {"$eq": "100"},
+         *     	"curency": {"$eq": "USD"},
+         *     	"payment_is_adjustment": {"$eq": "true"},
+         *     	"user_name": {"$contains": "john"},
+         *     	"user_email": {"$contains": "john"},
+         *     	"integration_id": {"$eq": "1"},
+         *     	"payment_provider_name": {"$contains": "star"},
+         *     	"payment_method_id": {"$eq": "1"},
+         *     	"payment_method_name": {"$contains": "pix"},
+         *     	"payment_flow_created_at": {"$eq": "2021-01-01T00:00:00Z"},
+         *     	"payment_created_at": {"$eq": "2021-01-01T00:00:00Z"},
+         *     	"payment_flow_status_created_at": {"$eq": "2021-01-01T00:00:00Z"}
+         *     }
+         *     ```
+         */
+        get: {
+            parameters: {
+                query?: {
+                    filters?: string;
+                    limit?: number;
+                    offset?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PaginatorResponse_for_AdminPaymentListResponse_and_ActiveFilters"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/payment/flow/{flow_id}/approve": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Approve Payment Flow
+         * @description Approve the specified payment flow.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    flow_id: components["schemas"]["PaymentFlowId"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/admin/payment/flow/{flow_id}/reject": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Reject Payment Flow
+         * @description Reject the specified payment flow.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    flow_id: components["schemas"]["PaymentFlowId"];
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["RejectPaymentFlowBody"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/admin/payment/limits/{currency}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update Payment Limits
+         * @description Update the limits for the specified currency.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    currency: components["schemas"]["Currency"];
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["LimitOverridesPrototype"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/admin/payment/balance/adjust": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update User Balance
+         * @description Adjust the balance for the specified user and currency.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["AdjustUserBalanceBody"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/admin/wallet/{wallet_id}/limits": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update Wallet Limits
+         * @description Patch the wallet limits.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    wallet_id: components["schemas"]["WalletId"];
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["LimitOverridesPrototype"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/admin/game/rounds": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Read Game Rounds
+         * @description Fetch game rounds
+         */
+        get: {
+            parameters: {
+                query?: {
+                    filters?: string;
+                    limit?: number;
+                    offset?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PaginatorResponse_for_AdminBetResponse_and_ActiveFilters"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/category/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Read Game Categories
+         * @description Fetch game categories
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CategoryResponse"][];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/category/group/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Read Category Groups
+         * @description Fetch category groups
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CategoryGroupResponse"][];
                     };
                 };
             };
@@ -3550,17 +3550,6 @@ export interface components {
              *      category might show different content based on the user's playing
              *      history. */
             user_specific: boolean;
-        };
-        ChannelEnterPayload: {
-            /** @description The channel to enter. This is a string that identifies the channel. */
-            channel: components["schemas"]["WebsocketStreamChannel"];
-            /**
-             * @description The replay policy for the channel. This determines whether the user will
-             *      receive all messages from the channel or only those that are sent after
-             *      they entered the channel.
-             * @default all
-             */
-            replay_policy: components["schemas"]["WebsocketStreamChannelReplayPolicy"];
         };
         /**
          * @description A country represented by its ISO 3166-1 alpha-2 code.
@@ -4302,13 +4291,13 @@ export interface components {
         ProtocolType: "welcome" | {
             error: string;
         } | "login_complete" | "login_failed" | "unauthorized" | "logout_complete" | {
-            channel_entered: {
-                name: components["schemas"]["WebsocketStreamChannel"];
+            ticker_entered: {
+                name: components["schemas"]["WebsocketTickerChannel"];
                 /** Format: int64 */
                 retention: number;
             };
         } | {
-            channel_left: components["schemas"]["WebsocketStreamChannel"];
+            ticker_left: components["schemas"]["WebsocketTickerChannel"];
         } | "tracker_entered" | "tracker_left";
         RateGameRequest: {
             /** @description The rating to set for the game. If `null` the rating for the current
@@ -4712,7 +4701,18 @@ export interface components {
         } | components["schemas"]["SystemValidationError"][];
         TickerChannelParams: {
             /** @description The ticker channel */
-            channel: components["schemas"]["WebsocketStreamChannel"];
+            channel: components["schemas"]["WebsocketTickerChannel"];
+        };
+        TickerEnterPayload: {
+            /**
+             * @description The replay policy for the channel. This determines whether the user will
+             *      receive all messages from the channel or only those that are sent after
+             *      they entered the channel.
+             * @default all
+             */
+            replay_policy: components["schemas"]["WebsocketStreamChannelReplayPolicy"];
+            /** @description The ticker channel to enter. This is a string that identifies the channel. */
+            ticker_channel: components["schemas"]["WebsocketTickerChannel"];
         };
         TickerGame: {
             /** @description The identifier of the game. This is a unique string that identifies the
@@ -4864,12 +4864,12 @@ export interface components {
             type: "user_logout";
         } | {
             /** @constant */
-            type: "channel_enter";
-            data: components["schemas"]["ChannelEnterPayload"];
+            type: "ticker_enter";
+            data: components["schemas"]["TickerEnterPayload"];
         } | {
             /** @constant */
-            type: "channel_leave";
-            data: components["schemas"]["WebsocketStreamChannel"];
+            type: "ticker_leave";
+            data: components["schemas"]["WebsocketTickerChannel"];
         } | {
             /** @constant */
             type: "tracker_enter";
@@ -4942,9 +4942,9 @@ export interface components {
             type: "protocol";
             data: components["schemas"]["ProtocolType"];
         });
-        /** @enum {string} */
-        WebsocketStreamChannel: "newest_wins";
         WebsocketStreamChannelReplayPolicy: "all" | "new";
+        /** @enum {string} */
+        WebsocketTickerChannel: "newest_wins";
         WhoamiResponse: {
             /** @description The email address of the currently authenticated user. */
             email: string;

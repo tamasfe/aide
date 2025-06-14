@@ -10,6 +10,6 @@ export type WebsocketMessagesByType = {
     data: Extract<components["schemas"]["WebsocketServerEvent"]["data"], { type: "payment_status_update" }>;
   };
   balance_update: Extract<components["schemas"]["WebsocketServerEvent"], { type: "balance_update" }>;
-  channel_entered: Extract<components["schemas"]["WebsocketServerEvent"], { type: "ticker"; data: { type: "winning_now" } }>;
+  ticker_entered: Extract<components["schemas"]["WebsocketServerEvent"], { type: "ticker"; data: { type: "winning_now" } }>;
   tracker: Extract<components["schemas"]["WebsocketServerEvent"], { type: "tracker" }>;
 };
