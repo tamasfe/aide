@@ -4,7 +4,6 @@ import snsWebSdk from "@sumsub/websdk";
 const loading = ref(true);
 
 const props = defineProps<{
-  initialAccessToken: string;
   applicant: {
     email: string;
     phone: string;
