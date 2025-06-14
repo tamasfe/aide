@@ -28,7 +28,7 @@ const CONTAINER_ID = "sumsub-websdk-container";
  * @param applicantPhone - applicant phone (not required)
  * @param customI18nMessages - customized locale messages for current session (not required)
  */
-function launchWebSdk(accessToken: string, applicantEmail: string, applicantPhone: string, applicantLanguage: string) {
+function launchWebSdk(accessToken: string, _applicantEmail: string, _applicantPhone: string, _applicantLanguage: string) {
   const snsWebSdkInstance = snsWebSdk
     .init(
       accessToken,
@@ -36,9 +36,6 @@ function launchWebSdk(accessToken: string, applicantEmail: string, applicantPhon
       () => props.renewAccessToken(),
     )
     .withConf({
-      lang: applicantLanguage, // language of WebSDK texts and comments (ISO 639-1 format)
-      email: applicantEmail,
-      phone: applicantPhone,
       theme: "dark", // "dark" | "light",
     })
     .withOptions({ addViewportTag: false, adaptIframeHeight: true })
@@ -56,12 +53,9 @@ function launchWebSdk(accessToken: string, applicantEmail: string, applicantPhon
   snsWebSdkInstance.launch(`#${CONTAINER_ID}`);
 }
 
-const isServer = import.meta.server;
-if (!isServer) {
-  onMounted(() => {
-    launchWebSdk(props.initialAccessToken, props.applicant.email, props.applicant.phone, props.applicant.language);
-  });
-}
+onMounted(() => {
+  launchWebSdk(props.initialAccessToken, props.applicant.email, props.applicant.phone, props.applicant.language);
+});
 </script>
 
 <template>
