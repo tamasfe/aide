@@ -17,12 +17,12 @@ const year = ref(new Date().getFullYear());
 
 const logos = [
   {
-    src: siteStore.getFrontendAssetPath("images/logos/play-responsibly.svg"),
+    src: siteStore.getFrontendAssetPath("logos/play-responsibly.svg"),
     alt: "footer.play_responsibly",
     key: "play-responsibly",
   },
   {
-    src: siteStore.getFrontendAssetPath("images/logos/responsible-gaming.svg"),
+    src: siteStore.getFrontendAssetPath("logos/responsible-gaming.svg"),
     alt: "footer.responsible_gaming",
     key: "responsible-gaming",
   },
