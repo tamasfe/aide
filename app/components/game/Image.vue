@@ -52,7 +52,7 @@ const fallbackImgSrc = ref(siteStore.getCdnGameImageUrl(props.identifier, { size
     <!-- alt has to be empty on fallback, to prevent the "broken image" icon from showing -->
     <NuxtImg
       :class="cn('block w-full h-full')"
-      :style="{ 'background-image': 'url(' + siteStore.getAssetPath('images/logos/logo-sm.svg') + ')',
+      :style="{ 'background-image': 'url(' + siteStore.getAssetPath('logos/logo-sm.svg') + ')',
                 'background-size': '60%',
                 'background-repeat': 'no-repeat',
                 'background-position': 'center',

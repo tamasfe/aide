@@ -40,7 +40,7 @@ const scrollToTop = () => {
       <div class="flex-1 md:max-w-xs lg:max-w-sm flex flex-col items-center md:items-start space-y-6 md:space-y-8">
         <div class="w-40">
           <NuxtImg
-            :src="siteStore.getAssetPath('images/logos/logo-unsaturated.svg')"
+            :src="siteStore.getAssetPath('logos/logo-unsaturated.svg')"
             alt="Logo"
             class="w-full object-cover"
           />

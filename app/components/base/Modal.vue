@@ -42,10 +42,12 @@ const open = computed({
 const preloadBannerLinks = (() => {
   const links = [];
   if (props.bannerLeft) {
-    links.push({ rel: "preload", fetchPriority: "low", href: getImageSrc(props.bannerLeft), src: getImageSrc(props.bannerLeft), as: "image" as const, crossOrigin: "anonymous" });
+    const bannerLeftSrc = props.bannerLeft.includes("http") ? props.bannerLeft : getImageSrc(props.bannerLeft);
+    links.push({ rel: "preload", fetchPriority: "low", href: bannerLeftSrc, src: bannerLeftSrc, as: "image" as const, crossOrigin: "anonymous" });
   }
   if (props.bannerTop) {
-    links.push({ rel: "preload", fetchPriority: "low", href: getImageSrc(props.bannerTop), src: getImageSrc(props.bannerTop), as: "image" as const, crossOrigin: "anonymous" });
+    const bannerTopSrc = props.bannerTop.includes("http") ? props.bannerTop : getImageSrc(props.bannerTop);
+    links.push({ rel: "preload", fetchPriority: "low", href: bannerTopSrc, src: bannerTopSrc, as: "image" as const, crossOrigin: "anonymous" });
   }
   return links;
 })();

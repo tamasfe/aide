@@ -42,7 +42,7 @@ const allowedDomain = (() => {
     :unclosable="true"
     :logo="false"
     banner="top"
-    :banner-top="siteStore.getAssetPath('images/banners/jurisdiction_horizontal.jpg')"
+    :banner-top="siteStore.getCdnAssetPath('banners/jurisdiction_horizontal.jpg')"
   >
     <div class="flex flex-col items-center gap-4">
       <h1 class="text-2xl font-semibold text-center">

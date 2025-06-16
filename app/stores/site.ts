@@ -95,6 +95,10 @@ export const useSiteStore = defineStore("siteStore", {
       return `/assets/${this.currentSite.identifier}/${path.startsWith("/") ? path.slice(1) : path}`;
     },
 
+    getCdnAssetPath(path: string) {
+      return `https://${this.currentDomain.cdn}/assets/${this.currentSite.identifier}/${path.startsWith("/") ? path.slice(1) : path}`;
+    },
+
     getActiveLicense(): License {
       const activeLicense = this.licenses[0]; // We return the first one as the backend returns them in order of priority
       if (!activeLicense) {

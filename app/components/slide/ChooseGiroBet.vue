@@ -18,7 +18,7 @@ const onSlideClick = () => {
     @click="() => onSlideClick()"
   >
     <NuxtImg
-      :src="siteStore.getAssetPath('images/slides/choose-us.jpg')"
+      :src="siteStore.getCdnAssetPath('slides/choose-us.jpg')"
       alt=""
       class="rounded-sm md:rounded-lg object-cover object-center w-full h-full"
     />

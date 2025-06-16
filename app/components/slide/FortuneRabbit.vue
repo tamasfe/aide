@@ -9,7 +9,7 @@ const siteStore = useSiteStore();
     }"
   >
     <NuxtImg
-      :src="siteStore.getAssetPath('images/slides/fortune-rabbit.jpg')"
+      :src="siteStore.getCdnAssetPath('slides/fortune-rabbit.jpg')"
       alt=""
       class="rounded-sm md:rounded-lg object-cover object-center w-full h-full"
     />

@@ -9,7 +9,7 @@ const siteStore = useSiteStore();
     }"
   >
     <NuxtImg
-      :src="siteStore.getAssetPath('images/slides/jet-x.jpg')"
+      :src="siteStore.getCdnAssetPath('slides/jet-x.jpg')"
       alt=""
       class="rounded-sm md:rounded-lg object-cover object-center w-full h-full"
     />

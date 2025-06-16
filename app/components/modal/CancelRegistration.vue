@@ -20,7 +20,7 @@ const onClosed = () => {
     :open="open"
     :logo="false"
     banner="top"
-    :banner-top="siteStore.getAssetPath('images/banners/cancel_registration.jpg')"
+    :banner-top="siteStore.getCdnAssetPath('banners/cancel_registration.jpg')"
     @close="onClosed"
   >
     <template #title>
