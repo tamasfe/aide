@@ -42,17 +42,7 @@ const games = ref(Array.from({ length: size }, (_, i) => ({ key: String(i) })));
     <template #options />
 
     <template #default>
-      <div class="flex items-center justify-center w-full h-full bg-subtle rounded">
-        <BaseSkeleton
-          :loading="true"
-        />
-      </div>
-    </template>
-
-    <template
-      #loading
-    >
-      <div class="flex items-center justify-center w-full h-full bg-subtle rounded">
+      <div class="mt-2 flex items-center justify-center w-full h-full bg-subtle rounded">
         <BaseSkeleton
           :loading="true"
         />
