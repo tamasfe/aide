@@ -91,7 +91,7 @@ export const useSiteStore = defineStore("siteStore", {
       this.$state = { domain: resultFindingSite.value.domain, site: resultFindingSite.value.site, licenses: resultFindingLicenses.value };
     },
 
-    getAssetPath(path: string) {
+    getFrontendAssetPath(path: string) {
       return `/assets/${this.currentSite.identifier}/${path.startsWith("/") ? path.slice(1) : path}`;
     },
 

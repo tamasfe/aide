@@ -127,7 +127,7 @@ const emptyQuery = ref("");
         <div class="flex-1">
           <NuxtImg
             class="object-cover h-6"
-            :src="siteStore.getAssetPath('logos/logo.svg')"
+            :src="siteStore.getFrontendAssetPath('logos/logo.svg')"
             alt="Logo"
           />
         </div>
