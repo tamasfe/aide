@@ -72,7 +72,7 @@
     "@nuxtjs/i18n": "^9.5.3",
     "@nuxtjs/seo": "3.0.3",
     "@nuxtjs/tailwindcss": "^6.14.0",
-    "@sumsub/websdk": "^2.3.16",
+    "@sumsub/websdk": "^2.3.18",
     "@testing-library/vue": "^8.1.0",
     "@types/node": "^22.15.3",
     "@vue/test-utils": "^2.4.6",
