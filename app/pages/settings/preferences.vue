@@ -9,6 +9,17 @@ useHead({
   title: t("page.dashboard_settings"),
 });
 
+const promotionsPreferences = ref<{
+  email: boolean;
+  phone: boolean;
+  browser: boolean;
+}>({
+  email: userSettingsStore.settings?.simplifiedConsents.email ?? false,
+  phone: userSettingsStore.settings?.simplifiedConsents.phone ?? false,
+  browser: userSettingsStore.settings?.simplifiedConsents.browser ?? false,
+});
+const errorUpdating = ref<string | null>(null);
+
 await callOnce("settings-preferences-refresh-user-settings", async () => {
   if (userSettingsStore.status === "unititialized") {
     await userSettingsStore.refresh();
@@ -21,17 +32,6 @@ await callOnce("settings-preferences-refresh-user-settings", async () => {
     }
   }
 });
-
-const promotionsPreferences = ref<{
-  email: boolean;
-  phone: boolean;
-  browser: boolean;
-}>({
-  email: userSettingsStore.settings?.simplifiedConsents.email ?? false,
-  phone: userSettingsStore.settings?.simplifiedConsents.phone ?? false,
-  browser: userSettingsStore.settings?.simplifiedConsents.browser ?? false,
-});
-const errorUpdating = ref<string | null>(null);
 
 watchDeep(() => promotionsPreferences.value,
   useThrottleFn(
