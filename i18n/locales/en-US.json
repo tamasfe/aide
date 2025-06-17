@@ -414,7 +414,7 @@
       "verification": {
         "identity": "Identity",
         "address": "Address",
-        "kyc_missing": "You need to upload your identity document",
+        "kyc_missing": "Upload your identity document and verify your account",
         "kyc_active": "You already successfully uploaded your identity document"
       },
       "limits": {
