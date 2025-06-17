@@ -39,6 +39,7 @@ const onSubmitted = () => {
   >
     <KycIFrameSumsub
       v-if="props.applicantData && props.initialAccessToken"
+      class="-mt-5"
       :initial-access-token="props.initialAccessToken"
       :applicant="props.applicantData"
       :renew-access-token="() => $dependencies.kyc.ui.renewAccessToken.handle()"
