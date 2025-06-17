@@ -176,6 +176,14 @@ export default defineNuxtConfig({
       },
     ],
   },
+  image: {
+    providers: {
+      custom_cloudflare: {
+        name: "custom_cloudflare",
+        provider: "~/providers/multi-site-custom-cloudflare-image-provider.ts",
+      },
+    },
+  },
   // @pinia/nuxt
   pinia: {},
   pwa: {
