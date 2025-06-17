@@ -3,6 +3,7 @@ import snsWebSdk from "@sumsub/websdk";
 
 const loading = ref(true);
 const { $dependencies } = useNuxtApp();
+const siteStore = useSiteStore();
 
 const props = defineProps<{
   initialAccessToken: string;
@@ -37,6 +38,7 @@ function launchWebSdk(accessToken: string, applicantEmail: string, applicantPhon
       () => props.renewAccessToken(),
     )
     .withConf({
+      customizationName: siteStore.currentSite.identifier, // customization name, which should be equivalet to site identifier
       lang: applicantLanguage, // language of WebSDK texts and comments (ISO 639-1 format)
       email: applicantEmail,
       phone: applicantPhone,
