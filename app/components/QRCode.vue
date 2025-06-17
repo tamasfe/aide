@@ -31,7 +31,7 @@ const props = defineProps({
 const siteStore = useSiteStore();
 
 const imageSettings = {
-  src: siteStore.getFrontendAssetPath("logos/logo-g-black-bg.png"),
+  src: siteStore.getRelativeAssetPath("logos/logo-g-black-bg.png"),
   height: Math.abs(props.size / 5),
   width: Math.abs(props.size / 5),
   excavate: true,

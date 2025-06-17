@@ -6,7 +6,7 @@ const siteStore = useSiteStore();
   <div class="relative w-full pb-[20.41%] select-none">
     <NuxtImg
       class="w-full absolute left-0 top-0 object-cover"
-      :src="siteStore.getFrontendAssetPath('logos/logo.svg')"
+      :src="siteStore.getRelativeAssetPath('logos/logo.svg')"
       alt="Logo"
     />
   </div>

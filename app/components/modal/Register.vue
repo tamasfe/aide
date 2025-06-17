@@ -26,8 +26,8 @@ const onClosed = () => {
     :open="open"
     :close-on-click-outside="false"
     banner="left"
-    :banner-left="siteStore.getCdnAssetPath('banners/register_vertical.jpg')"
-    :banner-top="siteStore.getCdnAssetPath('banners/register_horizontal.jpg')"
+    :banner-left="siteStore.getRelativeAssetPath('banners/register_vertical.jpg')"
+    :banner-top="siteStore.getRelativeAssetPath('banners/register_horizontal.jpg')"
     @close="onClosed"
   >
     <FormRegister

@@ -11,7 +11,7 @@ const siteStore = useSiteStore();
     <NuxtImg
       provider="custom_cloudflare"
       sizes="800px sm:1000px md:1500px lg:2000px"
-      :src="siteStore.getCdnAssetPath('slides/aviator.jpg')"
+      :src="siteStore.getRelativeAssetPath('slides/aviator.jpg')"
       alt=""
       class="rounded-sm md:rounded-lg object-cover object-center w-full h-full"
     />

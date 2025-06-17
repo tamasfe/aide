@@ -20,8 +20,8 @@ const onClosed = () => {
     :open="open"
     :disabled="loading"
     banner="left"
-    :banner-left="siteStore.getCdnAssetPath('banners/login_vertical.jpg')"
-    :banner-top="siteStore.getCdnAssetPath('banners/login_horizontal.jpg')"
+    :banner-left="siteStore.getRelativeAssetPath('banners/login_vertical.jpg')"
+    :banner-top="siteStore.getRelativeAssetPath('banners/login_horizontal.jpg')"
     @close="onClosed"
   >
     <FormLogin />

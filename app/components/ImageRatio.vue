@@ -13,7 +13,7 @@ const props = withDefaults(defineProps<{
 
 <template>
   <NuxtImg
-    :src="siteStore.getFrontendAssetPath('games/2.png')"
+    :src="siteStore.getRelativeAssetPath('games/2.png')"
     alt=""
     :class="cn(
       'block w-full h-auto flex-shrink-0 object-cover object-center',
