@@ -87,6 +87,6 @@ if (!isServer) {
       />
     </div>
 
-    <div :id="CONTAINER_ID" />
+    <div :id="CONTAINER_ID" class="rounded-lg overflow-hidden" />
   </div>
 </template>
