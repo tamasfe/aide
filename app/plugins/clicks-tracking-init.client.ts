@@ -1,8 +1,10 @@
+const OPEN_MODAL_SEARCH_PARAM = "open";
+
 export default defineNuxtPlugin({
   name: "search-params-tracking",
   dependsOn: ["dependency-injection"],
   parallel: true,
-  async setup(_nuxtApp) {
+  async setup(nuxtApp) {
     const { $dependencies } = useNuxtApp();
     const { searchParams } = useRequestURL();
     const userStore = useUserStore();
@@ -38,10 +40,20 @@ export default defineNuxtPlugin({
       }
     });
 
+    nuxtApp.hook("page:finish", async () => {
+      await callOnce("handle-open-modal-search-param", async () => {
+        const openModalSearchParam = searchParams.get(OPEN_MODAL_SEARCH_PARAM) || null;
+        await $dependencies.clicks.ui.handleOpenModalSearchParam.handle(openModalSearchParam, userStore.isAuthenticated ?? false);
+      });
+    });
+
     /*
     *  Once we have done everything we want to with them, we remove search params from the URL without navigating for aesthetic reasons
     */
     for (const [key] of searchParams.entries()) {
+      if (key === OPEN_MODAL_SEARCH_PARAM) {
+        continue; // We want to keep this one as it is used to open modals.
+      }
       // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
       delete route.query[key];
     }

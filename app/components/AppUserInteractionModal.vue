@@ -4,7 +4,6 @@ import type { UserInteractionModalState } from "~/packages/async-messages/async-
 const { $dependencies } = useNuxtApp();
 const { searchParams } = useRequestURL();
 const walletStore = useWalletStore();
-const userStore = useUserStore();
 
 const state = useState<UserInteractionModalState | { modal: null }>("user-modal-state", () => ({ modal: null }));
 const isOpen = defineModel<boolean>("open", { type: Boolean, required: true });
@@ -55,30 +54,6 @@ $dependencies.common.asyncMessagePublisher.subscribe(
 const recoverPasswordToken = useState("user-modal-recover-password-token", () => searchParams.get("recovery-token") || "");
 if (recoverPasswordToken.value) {
   $dependencies.users.ui.emitCommandOpenUserActionModal.handle({ modal: "recover_password", data: { token: recoverPasswordToken.value } });
-}
-
-const openModalSearchParam = searchParams.get("open-modal") || null;
-if (openModalSearchParam) {
-  switch (openModalSearchParam) {
-    case "login":
-    case "register":
-      if (userStore.isAuthenticated) {
-        break;
-      }
-      $dependencies.users.ui.emitCommandOpenUserActionModal.handle({ modal: openModalSearchParam });
-      break;
-
-    case "forgot-password":
-      $dependencies.users.ui.emitCommandOpenUserActionModal.handle({ modal: "forgot_password" });
-      break;
-
-    case "deposit":
-      if (!walletStore.wallet) {
-        break;
-      }
-      $dependencies.users.ui.emitCommandOpenUserActionModal.handle({ modal: openModalSearchParam });
-      break;
-  }
 }
 
 const ENABLE_SERVER_SIDE_RENDERING = false;

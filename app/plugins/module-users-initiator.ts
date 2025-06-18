@@ -22,6 +22,10 @@ export default defineNuxtPlugin({
       "frontend:events:users:user-logged-in",
       () => userSettingsStore.refresh(),
     );
+    $dependencies.common.asyncMessagePublisher.subscribe(
+      "frontend:events:users:user-logged-in",
+      () => $dependencies.clicks.ui.setUsersPreviousActivity(new Date().toISOString()),
+    );
 
     $dependencies.common.asyncMessagePublisher.subscribe(
       "frontend:events:users:user-logged-out",
@@ -74,9 +78,14 @@ export default defineNuxtPlugin({
      * Init user pinia store
      *
      */
-    await callOnce("user-store-init", () =>
-      userStore.refreshUser()
-        .catch(error => $dependencies.common.logger.error("Error refreshing user store", InfrastructureError.newFromUnknownError({}, error))),
+    await callOnce("user-store-init", async () => {
+      await userStore.refreshUser()
+        .catch(error => $dependencies.common.logger.error("Error refreshing user store", InfrastructureError.newFromUnknownError({}, error)));
+
+      if (userStore.isAuthenticated && import.meta.server) {
+        $dependencies.clicks.ui.setUsersPreviousActivity(new Date().toISOString());
+      }
+    },
     );
 
     return {};

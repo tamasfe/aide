@@ -8,6 +8,8 @@ import { FingerprintService } from "./FingerprintService";
 import type { CommonDependenciesI } from "~/dependency-injection/load-di";
 import { MarketingSearchParamsRepoLocalStorage } from "~/modules/search-params-tracking/marketing-search-params-repo-local-storage";
 import { StoreMarketingSearchParams } from "~/modules/search-params-tracking/ui/store-marketing-search-params";
+import { HandleOpenModalSearchParam } from "~/modules/search-params-tracking/ui/handle-open-modal-search-param";
+import { UsersPreviousActivityCookieRepo } from "~/modules/search-params-tracking/users-previous-activity-cookie-repo";
 
 export interface ClicksTrackingDependencyInjectionI {
   repositories: {
@@ -18,10 +20,13 @@ export interface ClicksTrackingDependencyInjectionI {
     createTrackingClick: CreateTrackingClick;
     storeMarketingSearchParams: StoreMarketingSearchParams;
     updateTrackingSession: UpdateTrackingSession;
+    handleOpenModalSearchParam: HandleOpenModalSearchParam;
+    setUsersPreviousActivity: (value: string) => Promise<void>;
   };
 }
 
-export const createClicksTrackingDependencyInjection = async (config: PublicRuntimeConfig, _commonDependencies: CommonDependenciesI): Promise<ClicksTrackingDependencyInjectionI> => {
+export const createClicksTrackingDependencyInjection = async (config: PublicRuntimeConfig, commonDependencies: CommonDependenciesI): Promise<ClicksTrackingDependencyInjectionI> => {
+  const router = useRouter();
   const apiBaseUrl = useCasinoApiOrigin("tracking");
   const mode = config.tracking.apiMode;
 
@@ -36,6 +41,8 @@ export const createClicksTrackingDependencyInjection = async (config: PublicRunt
 
   const fingerprintService = new FingerprintService();
 
+  const usersPreviousActivityCookieRepo = new UsersPreviousActivityCookieRepo(import.meta.server);
+
   return {
     repositories: {
       clicksTrackingRepo,
@@ -45,6 +52,18 @@ export const createClicksTrackingDependencyInjection = async (config: PublicRunt
       createTrackingClick: new CreateTrackingClick(fingerprintService, clicksTrackingRepo),
       storeMarketingSearchParams: new StoreMarketingSearchParams(marketingSearchParamsRepo),
       updateTrackingSession: new UpdateTrackingSession(fingerprintService, clicksTrackingRepo),
+      handleOpenModalSearchParam: new HandleOpenModalSearchParam(
+        usersPreviousActivityCookieRepo,
+        commonDependencies.logger,
+        commonDependencies.asyncMessagePublisher,
+        () => router.push({ path: "/settings/account" }).then(() => {}),
+      ),
+      setUsersPreviousActivity: async (value: string): Promise<void> => {
+        const result = await usersPreviousActivityCookieRepo.set(value);
+        if (result.isFailure) {
+          commonDependencies.logger.error("Error setting users previous activity cookie. Tolerating as this is only used for better modal behaviour", result.error);
+        }
+      },
     },
   };
 };
