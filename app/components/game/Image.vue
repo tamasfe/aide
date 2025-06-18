@@ -17,7 +17,6 @@ const props = defineProps<{
     :class="cn('block w-full h-full')"
     placeholder="/assets/logos/logo-sm.svg"
     :src="'/games/' + props.identifier + '.jpg'"
-    preload
   />
 </template>
 
