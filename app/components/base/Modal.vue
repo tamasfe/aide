@@ -9,7 +9,7 @@ import { DialogTitle } from "@headlessui/vue";
 //   * I want banner/bannerLeft/bannerTop to be properly validated by typescript
 // TRANSLATION STATUS:  ✅
 
-const getImageSrc = useImage(); // More info @https://image.nuxt.com/usage/use-image
+const siteStore = useSiteStore();
 
 const props = withDefaults(
   defineProps<{
@@ -42,11 +42,11 @@ const open = computed({
 const preloadBannerLinks = (() => {
   const links = [];
   if (props.bannerLeft) {
-    const bannerLeftSrc = props.bannerLeft.includes("http") ? props.bannerLeft : getImageSrc(props.bannerLeft);
+    const bannerLeftSrc = props.bannerLeft.startsWith("http") ? props.bannerLeft : siteStore.getCdnPath(props.bannerLeft);
     links.push({ rel: "preload", fetchPriority: "low", href: bannerLeftSrc, src: bannerLeftSrc, as: "image" as const, crossOrigin: "anonymous" });
   }
   if (props.bannerTop) {
-    const bannerTopSrc = props.bannerTop.includes("http") ? props.bannerTop : getImageSrc(props.bannerTop);
+    const bannerTopSrc = props.bannerTop.startsWith("http") ? props.bannerTop : siteStore.getCdnPath(props.bannerTop);
     links.push({ rel: "preload", fetchPriority: "low", href: bannerTopSrc, src: bannerTopSrc, as: "image" as const, crossOrigin: "anonymous" });
   }
   return links;

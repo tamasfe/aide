@@ -94,6 +94,9 @@ export const useSiteStore = defineStore("siteStore", {
     getRelativeAssetPath(path: string) {
       return `/assets/${this.currentSite.identifier}/${path.startsWith("/") ? path.slice(1) : path}`;
     },
+    getCdnPath(path: string) {
+      return `https://${this.currentDomain.cdn}${path.startsWith("/") ? path : `/${path}`}`;
+    },
 
     getActiveLicense(): License {
       const activeLicense = this.licenses[0]; // We return the first one as the backend returns them in order of priority
