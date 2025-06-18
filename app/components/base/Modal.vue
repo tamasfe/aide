@@ -115,7 +115,7 @@ if (preloadBannerLinks.length > 0) {
           :src="bannerTop"
           class="banner-top"
           provider="custom_cloudflare"
-          sizes="800px sm:1000px md:1500px lg:2000px"
+          sizes="640px sm:480px"
           :class="{ 'mb-8': logo }"
         />
 
@@ -150,7 +150,7 @@ if (preloadBannerLinks.length > 0) {
           <NuxtImg
             v-if="bannerLeft"
             provider="custom_cloudflare"
-            sizes="800px sm:1000px md:1500px lg:2000px"
+            sizes="300px"
             :src="bannerLeft"
             class="h-full object-cover"
           />
@@ -161,7 +161,7 @@ if (preloadBannerLinks.length > 0) {
             v-if="bannerTop"
             :src="bannerTop"
             provider="custom_cloudflare"
-            sizes="800px sm:1000px md:1500px lg:2000px"
+            sizes="640px sm:480px"
             :class="cn(
               'banner-top lg:hidden',
               { 'mb-2': logo },
