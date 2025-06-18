@@ -11,12 +11,11 @@ const props = defineProps<{
 
 <template>
   <NuxtPicture
-    :class="cn('block w-full h-full')"
     provider="custom_cloudflare"
-    placeholder="/assets/logos/logo-sm.svg"
     sizes="xs:220px sm:200px md:160px lg:145px"
-    densities="x1 x2"
     format="webp"
+    :class="cn('block w-full h-full')"
+    placeholder="/assets/logos/logo-sm.svg"
     :src="'/games/' + props.identifier + '.jpg'"
     preload
   />

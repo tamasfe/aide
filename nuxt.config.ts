@@ -192,6 +192,23 @@ export default defineNuxtConfig({
       xl: 1280,
       "2xl": 1536,
     },
+    presets: {
+      slide: {
+        provider: "custom_cloudflare",
+        modifiers: {
+          sizes: "sm:600px md:400px lg:410px",
+          format: "webp",
+        },
+
+      },
+      game: {
+        provider: "custom_cloudflare",
+        modifiers: {
+          format: "webp",
+        },
+        sizes: "xs:220px sm:200px md:160px lg:145px",
+      },
+    },
   },
   // @pinia/nuxt
   pinia: {},
