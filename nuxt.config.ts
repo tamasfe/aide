@@ -183,6 +183,15 @@ export default defineNuxtConfig({
         provider: "~/providers/multi-site-custom-cloudflare-image-provider.ts",
       },
     },
+    // These are the tailwind breakpoints
+    screens: {
+      xs: 400,
+      sm: 640,
+      md: 768,
+      lg: 1024,
+      xl: 1280,
+      "2xl": 1536,
+    },
   },
   // @pinia/nuxt
   pinia: {},
