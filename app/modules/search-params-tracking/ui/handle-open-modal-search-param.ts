@@ -15,8 +15,6 @@ export class HandleOpenModalSearchParam {
       return;
     }
 
-    this.logger.info("Handling open modal search param", { openModalSearchParam, userIsCurrentlyLoggedIn });
-
     const userHasPreviouslyLoggedIn = this.userHasPreviouslyLoggedIn();
 
     switch (openModalSearchParam) {
@@ -34,17 +32,14 @@ export class HandleOpenModalSearchParam {
         return;
 
       case "forgot":
-        this.logger.info("forgot password modal requested", { userIsCurrentlyLoggedIn, userHasPreviouslyLoggedIn });
         if (userIsCurrentlyLoggedIn) {
           return this.redirectToPasswordSettingsPage();
         }
-        this.logger.info("Forgot password modal opening", { userIsCurrentlyLoggedIn, userHasPreviouslyLoggedIn });
         await this.asyncMessagePublisher.emit("frontend:commands:modals:open-user-interaction-modal", { modal: "forgot_password" });
         return;
 
       case "deposit":
         if (userIsCurrentlyLoggedIn) {
-          this.logger.info("Deposit modal requested while user is logged in", { userIsCurrentlyLoggedIn, userHasPreviouslyLoggedIn });
           await this.asyncMessagePublisher.emit("frontend:commands:modals:open-user-interaction-modal", { modal: "deposit" });
           return;
         }
