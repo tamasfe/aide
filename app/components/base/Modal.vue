@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { DialogTitle } from "@headlessui/vue";
+import { getImage as getCloudflareImageSrc } from "~/providers/multi-site-custom-cloudflare-image-provider";
 
 // DESIGN STATUS: ✴️
 //   * close button ideally should float and not scroll
@@ -9,7 +10,8 @@ import { DialogTitle } from "@headlessui/vue";
 //   * I want banner/bannerLeft/bannerTop to be properly validated by typescript
 // TRANSLATION STATUS:  ✅
 
-const siteStore = useSiteStore();
+const DEFAULT_PX_WIDTH_LEFT_BANNER = 300;
+const DEFAULT_PX_WIDTH_TOP_BANNER = 640;
 
 const props = withDefaults(
   defineProps<{
@@ -42,11 +44,25 @@ const open = computed({
 const preloadBannerLinks = (() => {
   const links = [];
   if (props.bannerLeft) {
-    const bannerLeftSrc = props.bannerLeft.startsWith("http") ? props.bannerLeft : siteStore.getCdnPath(props.bannerLeft);
+    const bannerLeftSrc = props.bannerLeft.startsWith("http")
+      ? props.bannerLeft
+      : getCloudflareImageSrc(
+        props.bannerLeft,
+        { modifiers: { width: DEFAULT_PX_WIDTH_LEFT_BANNER } },
+        // @ts-expect-error: no need to pass the img ctx here. Not used
+        {},
+      ).url;
     links.push({ rel: "preload", fetchPriority: "low", href: bannerLeftSrc, src: bannerLeftSrc, as: "image" as const });
   }
   if (props.bannerTop) {
-    const bannerTopSrc = props.bannerTop.startsWith("http") ? props.bannerTop : siteStore.getCdnPath(props.bannerTop);
+    const bannerTopSrc = props.bannerTop.startsWith("http")
+      ? props.bannerTop
+      : getCloudflareImageSrc(
+        props.bannerTop,
+        { modifiers: { width: DEFAULT_PX_WIDTH_TOP_BANNER } },
+        // @ts-expect-error: no need to pass the img ctx here. Not used
+        {},
+      ).url;
     links.push({ rel: "preload", fetchPriority: "low", href: bannerTopSrc, src: bannerTopSrc, as: "image" as const });
   }
   return links;
@@ -115,7 +131,7 @@ if (preloadBannerLinks.length > 0) {
           :src="bannerTop"
           class="banner-top"
           provider="custom_cloudflare"
-          sizes="640px sm:480px"
+          :sizes="`${DEFAULT_PX_WIDTH_TOP_BANNER}px sm:480px`"
           :class="{ 'mb-8': logo }"
         />
 
@@ -150,7 +166,7 @@ if (preloadBannerLinks.length > 0) {
           <NuxtImg
             v-if="bannerLeft"
             provider="custom_cloudflare"
-            sizes="300px"
+            :sizes="`${DEFAULT_PX_WIDTH_LEFT_BANNER}px`"
             :src="bannerLeft"
             class="h-full object-cover"
           />
