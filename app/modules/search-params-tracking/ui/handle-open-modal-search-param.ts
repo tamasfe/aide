@@ -20,7 +20,6 @@ export class HandleOpenModalSearchParam {
     switch (openModalSearchParam) {
       // Same behaviour
       case "login":
-      case "register":
         if (userIsCurrentlyLoggedIn) {
           return;
         }
