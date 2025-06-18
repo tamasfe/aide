@@ -1,4 +1,4 @@
-const OPEN_MODAL_SEARCH_PARAM = "open";
+const OPEN_MODAL_SEARCH_PARAM = "o";
 
 export default defineNuxtPlugin({
   name: "search-params-tracking",
