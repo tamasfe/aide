@@ -43,11 +43,11 @@ const preloadBannerLinks = (() => {
   const links = [];
   if (props.bannerLeft) {
     const bannerLeftSrc = props.bannerLeft.startsWith("http") ? props.bannerLeft : siteStore.getCdnPath(props.bannerLeft);
-    links.push({ rel: "preload", fetchPriority: "low", href: bannerLeftSrc, src: bannerLeftSrc, as: "image" as const, crossOrigin: "anonymous" });
+    links.push({ rel: "preload", fetchPriority: "low", href: bannerLeftSrc, src: bannerLeftSrc, as: "image" as const });
   }
   if (props.bannerTop) {
     const bannerTopSrc = props.bannerTop.startsWith("http") ? props.bannerTop : siteStore.getCdnPath(props.bannerTop);
-    links.push({ rel: "preload", fetchPriority: "low", href: bannerTopSrc, src: bannerTopSrc, as: "image" as const, crossOrigin: "anonymous" });
+    links.push({ rel: "preload", fetchPriority: "low", href: bannerTopSrc, src: bannerTopSrc, as: "image" as const });
   }
   return links;
 })();
