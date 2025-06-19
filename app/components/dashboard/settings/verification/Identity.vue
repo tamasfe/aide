@@ -41,7 +41,7 @@ const onClickUpload = (responseData: Exclude<FindUserKycStatusResponseI["data"],
             name="lucide:upload"
             :size="18"
           />
-          {{ $t('button.upload') }}
+          {{ $t('button.verify') }}
         </BaseButton>
       </div>
     </ClientOnly>
