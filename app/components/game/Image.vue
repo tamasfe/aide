@@ -25,7 +25,6 @@ const props = defineProps<{
       backgroundPosition: 'center',
       backgroundSize: '35%',
     }"
-    preload
   />
 </template>
 
