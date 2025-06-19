@@ -25,6 +25,7 @@ const props = defineProps<{
       backgroundPosition: 'center',
       backgroundSize: '35%',
     }"
+    preload
   />
 </template>
 
@@ -33,5 +34,11 @@ const props = defineProps<{
     text-indent: 100%;
     white-space: nowrap;
     overflow: hidden;
+}
+</style>
+
+<style>
+img[data-error="1"] {
+  display: none;
 }
 </style>
