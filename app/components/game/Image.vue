@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from "vue";
 
+const siteStore = useSiteStore();
+
 const props = defineProps<{
   identifier: string;
   // altText?: string;
@@ -14,9 +16,15 @@ const props = defineProps<{
     provider="custom_cloudflare"
     sizes="xs:220px sm:200px md:160px lg:145px"
     format="webp"
-    :class="cn('block w-full h-full')"
-    placeholder="/assets/logos/logo-sm.svg"
-    :src="'/games/' + props.identifier + '.jpg'"
+    :class="cn('w-full h-full', props.class)"
+    :placeholder="siteStore.getRelativeAssetPath('logos/logo-sm.svg')"
+    :src="`/games/${props.identifier}.jpg`"
+    :style="{
+      backgroundImage: `url(${siteStore.getRelativeAssetPath('logos/logo-sm.svg')})`,
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: 'center',
+      backgroundSize: '35%',
+    }"
   />
 </template>
 

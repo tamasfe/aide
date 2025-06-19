@@ -18,8 +18,8 @@ const columns: ColumnDef<WinData>[] = [
   }),
   column.accessor("game.name", {
     header: t("winning_now.table.header_game"),
-    cell: ({ row }) => h(GamePageLink, { identifier: row.original.game.identifier, class: "flex items-center space-x-2 hover:underline" }, () => [
-      h(GameImage, { identifier: row.original.game.identifier, class: "w-8 h-8" }),
+    cell: ({ row }) => h(GamePageLink, { identifier: row.original.game.identifier, class: "flex items-center gap-x-4 hover:underline" }, () => [
+      h(GameImage, { identifier: row.original.game.identifier, class: "w-6 h-6 h-full block" }),
       h("span", row.original.game.name),
     ]),
   }),
