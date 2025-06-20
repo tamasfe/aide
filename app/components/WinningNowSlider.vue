@@ -31,7 +31,9 @@ const slidesToScroll = {
 
 const uniqueWins = useState<Map<string, Keyified<Win>>>("winning-now-slider-buffer", () => new Map());
 const buffer = computed(() => {
-  return Array.from(uniqueWins.value.values()).slice(0, WINS_BUFFER_SIZE);
+  return Array.from(uniqueWins.value.values()).sort(
+    (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
+  ).slice(0, WINS_BUFFER_SIZE);
 });
 
 const ENABLE_SERVER_SIDE_RENDERING = true;
