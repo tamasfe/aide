@@ -1,7 +1,7 @@
 import type { TickerChannelEventsRepository } from "../domain/ticker-channel-events-repository";
 import type { CommonDependenciesI } from "~/dependency-injection/load-di";
 import { createBackendOpenApiClient } from "~/packages/http-client/create-backend-open-api-client";
-import { HttpBackendApiError } from "~/packages/http-client/http-client-error";
+import { HttpBackendApiError } from "~/packages/http-client/http-backend-api-error";
 import { fail, success } from "~/packages/result";
 import { InfrastructureError } from "~/packages/result/infrastructure-error";
 

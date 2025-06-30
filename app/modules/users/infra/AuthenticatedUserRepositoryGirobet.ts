@@ -6,7 +6,7 @@ import { ErrorUsernameCannotBeExplicit } from "../domain/errors/ErrorUsernameCan
 import { createBackendOpenApiClient } from "~/packages/http-client/create-backend-open-api-client";
 import { fail, success, type EmptyResult } from "~/packages/result";
 import { InfrastructureError } from "~/packages/result/infrastructure-error";
-import { HttpBackendApiError } from "~/packages/http-client/http-client-error";
+import { HttpBackendApiError } from "~/packages/http-client/http-backend-api-error";
 import type { SupportedLocale } from "~/packages/translation";
 import { searchSimilarLocale } from "~/packages/translation/utils";
 import type { CommonDependenciesI } from "~/dependency-injection/load-di";

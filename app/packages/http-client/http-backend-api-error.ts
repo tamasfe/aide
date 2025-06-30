@@ -23,7 +23,7 @@ export class HttpBackendApiError extends CustomError {
   override name = "HttpBackendApiError" as const;
 
   constructor(public readonly code: ServerErrorCode, errorMetadata: Record<string, unknown> | string | undefined, response: Response) {
-    super(`Backend API returned an error`, {
+    super(`Backend API returned error code "${code}"`, {
       code,
       metadataFromBackend: errorMetadata,
       response: {

@@ -5,7 +5,7 @@ import type { UserEmail } from "../domain/UserEmail";
 import { createBackendOpenApiClient } from "~/packages/http-client/create-backend-open-api-client";
 import { fail, success, type EmptyResult } from "~/packages/result";
 import { InfrastructureError } from "~/packages/result/infrastructure-error";
-import { HttpBackendApiError } from "~/packages/http-client/http-client-error";
+import { HttpBackendApiError } from "~/packages/http-client/http-backend-api-error";
 import type { CommonDependenciesI } from "~/dependency-injection/load-di";
 import type { LoggerI } from "~/packages/logger/Logger";
 

@@ -4,7 +4,7 @@ import { ErrorRetrievingNotifications } from "../domain/ErrorRetrievingNotificat
 import type { ErrorNotificationNotFound } from "../domain/ErrorNotificationNotFound";
 import { ErrorSavingNotification } from "../domain/ErrorSavingNotification";
 import { createBackendOpenApiClient } from "~/packages/http-client/create-backend-open-api-client";
-import { HttpBackendApiError } from "~/packages/http-client/http-client-error";
+import { HttpBackendApiError } from "~/packages/http-client/http-backend-api-error";
 import { fail, success, type EmptyResult, type Result } from "~/packages/result";
 import type { CommonDependenciesI } from "~/dependency-injection/load-di";
 

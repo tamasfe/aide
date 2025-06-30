@@ -1,6 +1,6 @@
 import type { captureException } from "@sentry/nuxt";
 import type { CustomError } from "../result";
-import { HttpBackendApiError } from "../http-client/http-client-error";
+import { HttpBackendApiError } from "../http-client/http-backend-api-error";
 import { InfrastructureError } from "../result/infrastructure-error";
 import type { LoggerMiddleware, LogLevel } from "./Logger";
 

@@ -2,7 +2,7 @@ import type { PaymentMethodRepositoryI } from "../domain/PaymentMethodRepository
 import type { PaymentMethodI, PaymentMethodIdentifier } from "../domain/PaymentMethod";
 import { ErrorPaymentMethodNotFound } from "../domain/ErrorPaymentMethodNotFound";
 import { createBackendOpenApiClient } from "~/packages/http-client/create-backend-open-api-client";
-import { HttpBackendApiError } from "~/packages/http-client/http-client-error";
+import { HttpBackendApiError } from "~/packages/http-client/http-backend-api-error";
 import { fail, success, type Result } from "~/packages/result";
 import { InfrastructureError } from "~/packages/result/infrastructure-error";
 import type { CommonDependenciesI } from "~/dependency-injection/load-di";

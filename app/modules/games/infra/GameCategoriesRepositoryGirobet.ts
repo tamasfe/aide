@@ -3,7 +3,7 @@ import { GameCategory } from "../domain/GameCategory";
 import { fail, success, type Result } from "~/packages/result";
 import { InfrastructureError } from "~/packages/result/infrastructure-error";
 import { createBackendOpenApiClient } from "~/packages/http-client/create-backend-open-api-client";
-import { HttpBackendApiError } from "~/packages/http-client/http-client-error";
+import { HttpBackendApiError } from "~/packages/http-client/http-backend-api-error";
 import type { CommonDependenciesI } from "~/dependency-injection/load-di";
 
 export class GameCategoriesRepositoryGirobet implements GameCategoriesRepositoryI {
