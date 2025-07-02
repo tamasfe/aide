@@ -30,7 +30,7 @@ export class ProvidersRepositoryGirobet implements ProvidersRepositoryI {
           pagination: {
             limit: data.metadata.pagination.limit,
             offset: data.metadata.pagination.offset,
-            totalItems: data.metadata.pagination.total_items,
+            totalItems: data.metadata.pagination.total_items ?? NaN,
           },
         });
       }
