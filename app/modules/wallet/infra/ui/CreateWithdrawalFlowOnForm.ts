@@ -34,6 +34,10 @@ export class CreateWithdrawalFlowOnForm {
         }
       }
 
+      if (result.error.name === "ErrorUserSandboxed") {
+        return { message: this.t("modal_payments.error_creating_flow_user_sandboxed") };
+      }
+
       if (result.error.name === "ErrorPendingIdentityCheck") {
         return {
           message: this.t("modal_payments.error_creating_flow_pending_kyc"),

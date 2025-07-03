@@ -165,6 +165,7 @@
     "error_creating_flow_pending_kyc_cta_label": "Complete now",
     "error_creating_flow_pending_deposit": "You have an existing deposit in progress. Please wait for it to complete or cancel before trying again",
     "error_creating_flow_pending_withdrawal": "You have an existing withdrawal in progress. Please wait for it to complete or cancel before trying again",
+    "error_creating_flow_user_sandboxed": "Your user is not allowed to perform payments. If this is an error: please contact us",
     "error_creating_deposit_flow_amount_exceeds_timeframe_limits": "The amount you are trying to deposit exceeds the limits for the selected timeframe. Please wait and try again",
     "error_creating_deposit_flow_amount_below_minimum": "The amount you are trying to deposit is below the minimum allowed {min}. Please try again",
     "error_creating_deposit_flow_amount_above_maximum": "The amount you are trying to deposit is above the maximum allowed {max}. Please try again",

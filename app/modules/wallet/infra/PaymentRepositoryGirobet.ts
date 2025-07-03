@@ -102,7 +102,7 @@ export class PaymentRepositoryGirobet implements PaymentRepositoryI {
 
       if (error) {
         if (error.code === "USER_SANDBOXED") {
-          return fail(new ErrorUserSandboxed());
+          return fail(new ErrorUserSandboxed({ paymentMethodId }));
         }
         if (error.code === "WALLET_PENDING_FLOW") {
           return fail(new ErrorPendingPaymentFlow("deposit"));
@@ -168,7 +168,7 @@ export class PaymentRepositoryGirobet implements PaymentRepositoryI {
           return fail(new ErrorPendingIdentityCheck());
         }
         if (error.code === "USER_SANDBOXED") {
-          return fail(new ErrorUserSandboxed());
+          return fail(new ErrorUserSandboxed({ paymentMethodId }));
         }
         if (error.code === "WALLET_PENDING_FLOW") {
           return fail(new ErrorPendingPaymentFlow("deposit"));

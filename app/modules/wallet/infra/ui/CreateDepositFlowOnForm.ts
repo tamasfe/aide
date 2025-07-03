@@ -25,6 +25,10 @@ export class CreateDepositFlowOnForm {
         }
       }
 
+      if (result.error.name === "ErrorUserSandboxed") {
+        return this.t("modal_payments.error_creating_flow_user_sandboxed");
+      }
+
       if (result.error.name === "ErrorPaymentAmountExceedsTimeframeLimits") {
         // TODO: Use the error days and limit amount to format the message
         return this.t("modal_payments.error_creating_deposit_flow_amount_exceeds_timeframe_limits");
