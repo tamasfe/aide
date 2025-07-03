@@ -141,74 +141,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/docs/private/api.json": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * OpenAPI Spec
-         * @description Returns the OpenAPI spec to this API
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: never;
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/docs": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * API Docs
-         * @description This documentation page
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description HTML content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "text/html": string;
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/auth/whoami": {
         parameters: {
             query?: never;
@@ -2600,6 +2532,74 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/docs/private/api.json": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * OpenAPI Spec
+         * @description Returns the OpenAPI spec to this API
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: never;
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/docs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * API Docs
+         * @description This documentation page
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description HTML content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/html": string;
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/admin/user/list": {
         parameters: {
             query?: never;
@@ -3806,14 +3806,8 @@ export interface components {
          *      information about the game. If more information is needed, the game ID can
          *      be used to fetch the full game details via the "get game" endpoint. */
         GameSearchResponse: {
-            /** @description The identifier of the game. This may be used in URLs and for game
-             *      lookups. */
-            identifier: components["schemas"]["GameIdentifier"];
-            /** @description The name of the game. Do not use this in URLs, as it may contain special
-             *      characters. */
-            name: string;
-            /** @description The provider of the game. */
-            provider: components["schemas"]["SearchGameProviderResponse"];
+            /** @description The search result game. */
+            game: components["schemas"]["GameResponse"];
             /**
              * Format: double
              * @description The search score of the game.
