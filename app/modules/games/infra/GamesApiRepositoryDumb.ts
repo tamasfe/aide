@@ -20,8 +20,6 @@ export class GamesApiRepositoryDumb implements GamesApiRepositoryI {
         },
         isHd: game.isHd,
         devices: game.devices,
-        recalledAt: game.recalledAt,
-        createdAt: game.createdAt,
       })),
       pagination: {
         limit,

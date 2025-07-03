@@ -8,6 +8,7 @@ import { ErrorWalletPaymentCooldownNotFinished } from "../domain/ErrorWalletPaym
 import { ErrorPaymentAmountExceedsTimeframeLimits } from "../domain/ErrorPaymentAmountExceedsTimeframeLimits";
 import { ErrorPaymentAmountOutsideLimits } from "../domain/ErrorPaymentAmountOutsideLimits";
 import { ErrorPaymentMethodNotAllowed } from "../domain/ErrorPaymentMethodNotAllowed";
+import { ErrorUserSandboxed } from "../domain/ErrorUserSandboxed";
 import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
 import { createBackendOpenApiClient } from "~/packages/http-client/create-backend-open-api-client";
 import { HttpBackendApiError } from "~/packages/http-client/http-backend-api-error";
@@ -100,6 +101,9 @@ export class PaymentRepositoryGirobet implements PaymentRepositoryI {
       }
 
       if (error) {
+        if (error.code === "USER_SANDBOXED") {
+          return fail(new ErrorUserSandboxed());
+        }
         if (error.code === "WALLET_PENDING_FLOW") {
           return fail(new ErrorPendingPaymentFlow("deposit"));
         }
@@ -162,6 +166,9 @@ export class PaymentRepositoryGirobet implements PaymentRepositoryI {
       if (error) {
         if (error.code === "USER_KYC_REQUIRED") {
           return fail(new ErrorPendingIdentityCheck());
+        }
+        if (error.code === "USER_SANDBOXED") {
+          return fail(new ErrorUserSandboxed());
         }
         if (error.code === "WALLET_PENDING_FLOW") {
           return fail(new ErrorPendingPaymentFlow("deposit"));
