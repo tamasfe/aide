@@ -1,25 +1,28 @@
 import { ErrorGameNotFound } from "../domain/ErrorGameNotFound";
-import type { Game, GameSearchResponse } from "../domain/Game";
+import type { Game } from "../domain/Game";
 import type { GamesApiRepositoryI } from "../domain/GamesApiRepository";
 import type { LoggerI } from "~/packages/logger/Logger";
 import { fail, success, type Result } from "~/packages/result";
 import type { InfrastructureError } from "~/packages/result/infrastructure-error";
 
 export class GamesApiRepositoryDumb implements GamesApiRepositoryI {
-  public async searchPaginating(searchParams: { category: string | null; query: string | null; providerIdentifier: string | null }, limit: number, offset: number): Promise<Result<{ games: GameSearchResponse[]; pagination: { limit: number; offset: number; totalItems: number } }, InfrastructureError>> {
+  public async searchPaginating(searchParams: { category: string | null; query: string | null; providerIdentifier: string | null }, limit: number, offset: number) {
     this.logger.debug("searchByCategoryPaginating called", { searchParams, limit, offset });
     return success({
-      games: this.games.slice(offset, offset + limit).map(game => ({
-        ...game,
-        identifier: game.identifier,
-        name: game.name,
-        description: game.description,
-        provider: {
-          identifier: "evoplay",
-          name: "Evoplay",
+      searchResults: this.games.slice(offset, offset + limit).map(game => ({
+        game: {
+          ...game,
+          identifier: game.identifier,
+          name: game.name,
+          description: game.description,
+          provider: {
+            identifier: "evoplay",
+            name: "Evoplay",
+          },
+          isHd: game.isHd,
+          devices: game.devices,
         },
-        isHd: game.isHd,
-        devices: game.devices,
+        score: 0.5, // Dummy score for the sake of example
       })),
       pagination: {
         limit,

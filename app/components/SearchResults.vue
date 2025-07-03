@@ -1,7 +1,7 @@
 <script setup lang="ts">
 // 2 alternates if ever needed...
 import { debouncedWatch } from "@vueuse/core";
-import type { GameSearchResponse } from "~/modules/games/domain/Game";
+import type { Game } from "~/modules/games/domain/Game";
 import type { Provider } from "~/modules/providers/domain/Provider";
 import type { Keyified } from "~/types/utils";
 
@@ -21,7 +21,7 @@ const { query } = defineProps({
  * Game search
  */
 const gamesCurrentPage = useState(() => 0);
-const games = useState<Keyified<GameSearchResponse>[]>(() => []);
+const games = useState<Keyified<Game>[]>(() => []);
 const gamesTotalItems = useState(() => 0);
 const gamesLoading = useState(() => false);
 const gamesOnLoadMore = async (actionOnItemsArray: "append" | "replace") => {
@@ -29,10 +29,10 @@ const gamesOnLoadMore = async (actionOnItemsArray: "append" | "replace") => {
 
   gamesTotalItems.value = result.totalGames;
   if (actionOnItemsArray === "append") {
-    games.value.push(...result.games.map(game => useAddKeyFromIdentifier(game)));
+    games.value.push(...result.searchResults.map(searchResult => useAddKeyFromIdentifier(searchResult.game)));
   }
   else if (actionOnItemsArray === "replace") {
-    games.value = result.games.map(game => useAddKeyFromIdentifier(game));
+    games.value = result.searchResults.map(searchResult => useAddKeyFromIdentifier(searchResult.game));
   }
 
   gamesCurrentPage.value++;

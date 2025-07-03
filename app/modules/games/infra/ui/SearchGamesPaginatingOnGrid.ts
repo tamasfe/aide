@@ -12,7 +12,7 @@ export class SearchGamesPaginatingOnGrid {
   public static DEFAULT_PAGINATION_SIZE = 25;
 
   public async handle(categoryIdentifier: string | null, providerIdentifier: string | null, pageToSearch: number, pageSize = SearchGamesPaginatingOnGrid.DEFAULT_PAGINATION_SIZE): Promise<{
-    games: GameSearchResponse[];
+    searchResults: GameSearchResponse[];
     canLoadMore: boolean;
     totalGames: number;
   }> {
@@ -22,7 +22,7 @@ export class SearchGamesPaginatingOnGrid {
       if (result.error instanceof ErrorSearchIndexNotFound) {
         this.logger.warn("The search index was not found", { error: result.error });
         return {
-          games: [],
+          searchResults: [],
           canLoadMore: false,
           totalGames: 0,
         };
@@ -31,16 +31,16 @@ export class SearchGamesPaginatingOnGrid {
       // Optional TODO: alert the customer somehow in case of error
       this.logger.error("SearchGamesPaginatingOnGrid failed", result.error);
       return {
-        games: [],
+        searchResults: [],
         canLoadMore: false,
         totalGames: 0,
       };
     }
 
-    const canLoadMore = result.value.games.length === pageSize;
+    const canLoadMore = result.value.searchResults.length === pageSize;
 
     return {
-      games: result.value.games,
+      searchResults: result.value.searchResults,
       canLoadMore,
       totalGames: result.value.pagination.totalItems,
     };

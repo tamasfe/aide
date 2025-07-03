@@ -13,7 +13,7 @@ export class SearchGamesByQueryPaginatingOnSearchBar {
   public static PAGINATION_SIZE = 25;
 
   public async handle(query: string, pageToSearch: number): Promise<{
-    games: GameSearchResponse[];
+    searchResults: GameSearchResponse[];
     canLoadMore: boolean;
     totalGames: number;
   }> {
@@ -23,16 +23,16 @@ export class SearchGamesByQueryPaginatingOnSearchBar {
       // Optional TODO: alert the customer somehow in case of error
       this.logger.error("SearchGamesByQueryPaginatingOnSearchBar failed: ", result.error, { query });
       return {
-        games: [],
+        searchResults: [],
         canLoadMore: false,
         totalGames: 0,
       };
     }
 
-    const canLoadMore = result.value.games.length === SearchGamesByQueryPaginatingOnSearchBar.PAGINATION_SIZE;
+    const canLoadMore = result.value.searchResults.length === SearchGamesByQueryPaginatingOnSearchBar.PAGINATION_SIZE;
 
     return {
-      games: result.value.games,
+      searchResults: result.value.searchResults,
       canLoadMore,
       totalGames: result.value.pagination.totalItems,
     };

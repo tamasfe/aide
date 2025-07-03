@@ -1,15 +1,10 @@
 <script setup lang="ts">
+import type { Game } from "~/modules/games/domain/Game";
 import type { Keyified } from "~/types/utils";
-
-// Due to a conflict of types where the props received are the `Game` type, but the search API returns a `GameSearchResponse` type that is a bit different,
-// we need to define a reduced version of the game type that has what is needed for this component, and that it is compatible with both types.
-type ReducedGame = {
-  identifier: string;
-};
 
 const props = defineProps<{
   categoryIdentifier: string;
-  initialGames?: ReducedGame[];
+  initialGames?: Game[];
 }>();
 
 const { $dependencies } = useNuxtApp();
@@ -31,7 +26,7 @@ const columns = ref({
 
 const paginationSize = computed(() => props.initialGames ? props.initialGames.length : 25);
 const slidesBeforeLoad = 4; // We aribitrarely set it to +1 the slides to scroll to give time for the loading one scroll ahead
-const games = useState<(Keyified<ReducedGame>)[]>(`grid-horizontal-games-ids-for-${props.categoryIdentifier}`, () => props.initialGames ? props.initialGames.map(game => useAddKeyFromIdentifier(game)) : []);
+const games = useState<(Keyified<Game>)[]>(`grid-horizontal-games-ids-for-${props.categoryIdentifier}`, () => props.initialGames ? props.initialGames.map(game => useAddKeyFromIdentifier(game)) : []);
 const loading = useState(`grid-horizontal-games-loading-for-${props.categoryIdentifier}`, () => false);
 const nextGamesPageToSearch = useState(`grid-horizontal-games-next-page-for-${props.categoryIdentifier}`, () => props.initialGames ? 1 : 0);
 const canLoadMore = useState(`grid-horizontal-games-can-load-more-for-${props.categoryIdentifier}`, () => true);
@@ -40,8 +35,8 @@ const onLoadData = async () => {
   if (!canLoadMore.value) return;
   loading.value = true;
 
-  const { games: foundGames, canLoadMore: updatedCanLoadMore } = await $dependencies.games.ui.searchGamesPaginatingOnGrid.handle(props.categoryIdentifier, null, nextGamesPageToSearch.value, paginationSize.value);
-  games.value.push(...foundGames.map(game => useAddKeyFromIdentifier(game)));
+  const { searchResults, canLoadMore: updatedCanLoadMore } = await $dependencies.games.ui.searchGamesPaginatingOnGrid.handle(props.categoryIdentifier, null, nextGamesPageToSearch.value, paginationSize.value);
+  games.value.push(...searchResults.map(searchResult => useAddKeyFromIdentifier(searchResult.game)));
   canLoadMore.value = updatedCanLoadMore;
   nextGamesPageToSearch.value += 1;
 

@@ -29,7 +29,7 @@ export class GamesApiRepositoryGirobet implements GamesApiRepositoryI {
 
       if (data) {
         return success({
-          games: data.data.map(game => camelizeKeys({ ...game })),
+          searchResults: data.data.map(game => camelizeKeys({ ...game })),
           pagination: {
             limit: data.metadata.pagination.limit,
             offset: data.metadata.pagination.offset,

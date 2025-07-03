@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { GameSearchResponse } from "~/modules/games/domain/Game";
+import type { Game } from "~/modules/games/domain/Game";
 import type { Keyified } from "~/types/utils";
 
 const props = defineProps<{
@@ -15,15 +15,15 @@ const { navigateBackOrHome } = useNavigateBackOrHome();
 const loading = useState(`grid-vertical-games-loading-for-${props.categoryIdentifier}-${props.providerIdentifier}`, () => false);
 const totalGamesOfCategory = useState(`grid-vertical-games-total-for-${props.categoryIdentifier}-${props.providerIdentifier}`, () => 0);
 const nextGamesPageToSearch = useState(`grid-vertical-games-next-page-for-${props.categoryIdentifier}-${props.providerIdentifier}`, () => 0);
-const games = useState<Keyified<GameSearchResponse>[]>(`grid-vertical-games-ids-for-${props.categoryIdentifier}-${props.providerIdentifier}`, () => []);
+const games = useState<Keyified<Game>[]>(`grid-vertical-games-ids-for-${props.categoryIdentifier}-${props.providerIdentifier}`, () => []);
 const canLoadMore = useState(`grid-vertical-games-can-load-more-for-${props.categoryIdentifier}-${props.providerIdentifier}`, () => true);
 
 const onLoadData = async () => {
   if (!canLoadMore.value) return;
   loading.value = true;
 
-  const { games: foundGames, canLoadMore: updatedCanLoadMore, totalGames } = await $dependencies.games.ui.searchGamesPaginatingOnGrid.handle(props.categoryIdentifier, props.providerIdentifier, nextGamesPageToSearch.value);
-  games.value.push(...foundGames.map(game => useAddKeyFromIdentifier(game)));
+  const { searchResults, canLoadMore: updatedCanLoadMore, totalGames } = await $dependencies.games.ui.searchGamesPaginatingOnGrid.handle(props.categoryIdentifier, props.providerIdentifier, nextGamesPageToSearch.value);
+  games.value.push(...searchResults.map(searchResult => useAddKeyFromIdentifier(searchResult.game)));
   canLoadMore.value = updatedCanLoadMore;
   nextGamesPageToSearch.value += 1;
   totalGamesOfCategory.value = totalGames;
