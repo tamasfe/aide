@@ -89,7 +89,7 @@ const emit = defineEmits<{
 
       <p
         v-if="game.description"
-        class="text-subtle col-span-2 order-4 md:order-none"
+        class="text-subtle col-span-2 order-4 md:order-none whitespace-pre"
       >
         {{ game.description }}
       </p>
