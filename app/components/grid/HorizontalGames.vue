@@ -35,8 +35,8 @@ const onLoadData = async () => {
   if (!canLoadMore.value) return;
   loading.value = true;
 
-  const { searchResults, canLoadMore: updatedCanLoadMore } = await $dependencies.games.ui.searchGamesPaginatingOnGrid.handle(props.categoryIdentifier, null, nextGamesPageToSearch.value, paginationSize.value);
-  games.value.push(...searchResults.map(searchResult => useAddKeyFromIdentifier(searchResult.game)));
+  const { games: gamesFound, canLoadMore: updatedCanLoadMore } = await $dependencies.games.ui.listGamesPaginatingOnGrid.handle(props.categoryIdentifier, null, nextGamesPageToSearch.value, paginationSize.value);
+  games.value.push(...gamesFound.map(game => useAddKeyFromIdentifier(game)));
   canLoadMore.value = updatedCanLoadMore;
   nextGamesPageToSearch.value += 1;
 

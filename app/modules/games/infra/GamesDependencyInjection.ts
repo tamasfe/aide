@@ -1,5 +1,4 @@
 import type { PublicRuntimeConfig } from "nuxt/schema";
-import { SearchGamesPaginating } from "../application/SearchGamesPaginating";
 import { SearchGameCategoriesByCategoryGroup } from "../application/SearchGameCategoriesByCategoryGroup";
 import { FindGameCompatibilityByIdentifier } from "../application/FindGameCompatibilityById";
 import type { GamesApiRepositoryI } from "../domain/GamesApiRepository";
@@ -13,7 +12,7 @@ import { GameCategoriesRepositoryGirobet } from "./GameCategoriesRepositoryGirob
 import { FindGameCompatibilityByIdentifierOnGamePage } from "./ui/FindGameCompatibilityByIdOnGamePage";
 import { BuildGameSessionIFrameUrl } from "./ui/BuildGameSessionIFrameUrl";
 import { SearchGamesByQueryPaginatingOnSearchBar } from "./ui/SearchGamesByQueryPaginatingOnSearchBar";
-import { SearchGamesPaginatingOnGrid } from "./ui/SearchGamesPaginatingOnGrid";
+import { ListGamesPaginatingOnGrid } from "./ui/ListGamesPaginatingOnGrid";
 import { GameActionsRepositoryDumb } from "./GameActionsRepositoryDumb";
 import { GameActionsRepositoryGirobet } from "./GameActionsRepositoryGirobet";
 import { SearchGameActionsPaginatingOnCasinoTable } from "./ui/SearchGameActionsPaginatingOnCasinoTable";
@@ -29,7 +28,7 @@ export interface GamesDependencyInjectionI {
     findGameCompatibilityByIdentifierOnGamePage: FindGameCompatibilityByIdentifierOnGamePage;
 
     searchGameRatingFromGameFrameVotes: SearchGameRatingFromGameFrameVotes;
-    searchGamesPaginatingOnGrid: SearchGamesPaginatingOnGrid;
+    listGamesPaginatingOnGrid: ListGamesPaginatingOnGrid;
     searchGamesByQueryPaginatingOnSearchBar: SearchGamesByQueryPaginatingOnSearchBar;
     searchGameCategoriesByGroup: SearchGameCategoriesByGroup;
     searchGameActionsPaginatingOnCasinoTable: SearchGameActionsPaginatingOnCasinoTable;
@@ -57,7 +56,7 @@ export const createGamesDependencyInjection = async (publicConfig: PublicRuntime
     return new GameRatingsRepositoryGirobet({ baseUrl: apiBaseUrl }, commonDependencies);
   })();
 
-  const gameCategoriesRepositoryDumb: GameCategoriesRepositoryDumb = (() => {
+  const gameCategoriesRepository: GameCategoriesRepositoryDumb = (() => {
     if (mode === "dumb") {
       return new GameCategoriesRepositoryDumb();
     }
@@ -73,17 +72,15 @@ export const createGamesDependencyInjection = async (publicConfig: PublicRuntime
     return new GameActionsRepositoryGirobet({ baseUrl: apiBaseUrl }, commonDependencies);
   })();
 
-  const searchGamesPaginatingQuery = new SearchGamesPaginating(gamesApiRepository);
-
   return {
     ui: {
       buildGameSessionIFrameUrl: new BuildGameSessionIFrameUrl(useCasinoApiOrigin("api", "client")), // Force to client API origin because the iframe will never need the private server one.
       findGameCompatibilityByIdentifierOnGamePage: new FindGameCompatibilityByIdentifierOnGamePage(new FindGameCompatibilityByIdentifier(gamesApiRepository), commonDependencies.logger),
-      searchGamesPaginatingOnGrid: new SearchGamesPaginatingOnGrid(searchGamesPaginatingQuery, commonDependencies.logger),
-      searchGamesByQueryPaginatingOnSearchBar: new SearchGamesByQueryPaginatingOnSearchBar(searchGamesPaginatingQuery, commonDependencies.logger),
+      listGamesPaginatingOnGrid: new ListGamesPaginatingOnGrid(gamesApiRepository, commonDependencies.logger),
+      searchGamesByQueryPaginatingOnSearchBar: new SearchGamesByQueryPaginatingOnSearchBar(gamesApiRepository, commonDependencies.logger),
       searchGameCategoriesByGroup: new SearchGameCategoriesByGroup(
         new SearchGameCategoriesByCategoryGroup(
-          gameCategoriesRepositoryDumb,
+          gameCategoriesRepository,
         ),
         commonDependencies.logger,
       ),

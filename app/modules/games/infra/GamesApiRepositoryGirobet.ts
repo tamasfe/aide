@@ -13,23 +13,21 @@ export class GamesApiRepositoryGirobet implements GamesApiRepositoryI {
     this.apiClient = createBackendOpenApiClient(clientOptions, commonDependencies);
   }
 
-  public async searchPaginating(searchParams: { category: string | null; query: string | null; providerIdentifier: string | null }, limit: number, offset: number) {
+  public async searchPaginating(searchParams: { query: string | null }, pagination: { limit: number; offset: number }) {
     try {
       const { data, error, response } = await this.apiClient.GET("/game/search", {
         params: {
           query: {
-            category: searchParams.category,
             query: searchParams.query,
-            provider_identifier: searchParams.providerIdentifier,
-            limit,
-            offset,
+            limit: pagination.limit,
+            offset: pagination.offset,
           },
         },
       });
 
       if (data) {
         return success({
-          searchResults: data.data.map(game => camelizeKeys({ ...game })),
+          searchResults: data.data.map(result => camelizeKeys({ ...result })),
           pagination: {
             limit: data.metadata.pagination.limit,
             offset: data.metadata.pagination.offset,
@@ -47,21 +45,74 @@ export class GamesApiRepositoryGirobet implements GamesApiRepositoryI {
 
         return fail(
           InfrastructureError.newFromError({
-            searchParams, limit, offset,
+            searchParams, pagination,
           }, HttpBackendApiError.newFromBackendError(error, response)),
         );
       }
 
       return fail(
         InfrastructureError.newFromUnknownError({
-          searchParams, limit, offset,
+          searchParams, pagination,
         }, new Error("Unexpected scenario: library did not return data nor error. This should never happen")),
       );
     }
     catch (error: unknown) {
       return fail(
         InfrastructureError.newFromUnknownError({
-          searchParams, limit, offset,
+          searchParams, pagination,
+        }, error),
+      );
+    }
+  }
+
+  public async listPaginating(searchParams: { category: string | null; providerIdentifier: string | null }, pagination: { limit: number; offset: number }) {
+    try {
+      const { data, error, response } = await this.apiClient.GET("/game/list", {
+        params: {
+          query: {
+            category: searchParams.category,
+            provider_identifier: searchParams.providerIdentifier,
+            limit: pagination.limit,
+            offset: pagination.offset,
+          },
+        },
+      });
+
+      if (data) {
+        return success({
+          games: data.data.map(game => camelizeKeys({ ...game })),
+          pagination: {
+            limit: data.metadata.pagination.limit,
+            offset: data.metadata.pagination.offset,
+            totalItems: data.metadata.pagination.total_items ?? NaN,
+          },
+        });
+      }
+
+      if (error) {
+        if (error.code === "SEARCH_INDEX_NOT_FOUND") {
+          return fail(
+            ErrorSearchIndexNotFound.new({ searchParams }),
+          );
+        }
+
+        return fail(
+          InfrastructureError.newFromError({
+            searchParams, pagination,
+          }, HttpBackendApiError.newFromBackendError(error, response)),
+        );
+      }
+
+      return fail(
+        InfrastructureError.newFromUnknownError({
+          searchParams, pagination,
+        }, new Error("Unexpected scenario: library did not return data nor error. This should never happen")),
+      );
+    }
+    catch (error: unknown) {
+      return fail(
+        InfrastructureError.newFromUnknownError({
+          searchParams, pagination,
         }, error),
       );
     }

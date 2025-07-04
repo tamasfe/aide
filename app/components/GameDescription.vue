@@ -21,10 +21,6 @@ defineProps({
     type: Boolean,
     required: true,
   },
-  categories: {
-    type: Array as PropType<string[]>,
-    required: true,
-  },
 });
 
 const emit = defineEmits<{
@@ -48,12 +44,12 @@ const emit = defineEmits<{
         <h2 class="text-2xl mb-2">{{ game.name }}</h2>
         <div class="flex items-center space-x-2">
           <BaseLink
-            v-for="categoryIdentifier in categories"
-            :key="categoryIdentifier"
+            v-for="categoryIdentifier in game.categories"
+            :key="String(categoryIdentifier)"
             :to="{
               name: 'categories-id',
               params: {
-                id: categoryIdentifier,
+                id: String(categoryIdentifier),
               },
             }"
           >
