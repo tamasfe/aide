@@ -825,7 +825,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["PaginatorResponse_for_PaymentFlowResponse_and_ListPaymentFlowsQuery"];
+                        "application/json": components["schemas"]["PaginatorResponse_for_PaymentFlowResponse_and_ListPaymentFlowsQuery_and_int64"];
                     };
                 };
                 /** @description Represents various errors that can occur during server operations.
@@ -1149,7 +1149,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["PaginatorResponse_for_SearchGameProviderResponse_and_SearchGameProviderQuery"];
+                        "application/json": components["schemas"]["PaginatorResponse_for_SearchGameProviderResponse_and_SearchGameProviderQuery_and_Nullable_uint"];
                     };
                 };
                 /** @description Represents various errors that can occur during server operations.
@@ -1334,7 +1334,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["PaginatorResponse_for_GameSearchResponse_and_SearchGameQuery"];
+                        "application/json": components["schemas"]["PaginatorResponse_for_GameSearchResponse_and_SearchGameQuery_and_Nullable_uint"];
                     };
                 };
                 /** @description Represents various errors that can occur during server operations.
@@ -1394,7 +1394,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["PaginatorResponse_for_GameResponse_and_ListGameQuery"];
+                        "application/json": components["schemas"]["PaginatorResponse_for_GameResponse_and_ListGameQuery_and_int64"];
                     };
                 };
                 /** @description Represents various errors that can occur during server operations.
@@ -1453,7 +1453,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["PaginatorResponse_for_GameActionResponse_and_ListGameActionsQuery"];
+                        "application/json": components["schemas"]["PaginatorResponse_for_GameActionResponse_and_ListGameActionsQuery_and_int64"];
                     };
                 };
                 /** @description Represents various errors that can occur during server operations.
@@ -1747,7 +1747,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["PaginatorResponse_for_NotificationResponse_and_ListNotificationsQuery"];
+                        "application/json": components["schemas"]["PaginatorResponse_for_NotificationResponse_and_ListNotificationsQuery_and_int64"];
                     };
                 };
                 /** @description Represents various errors that can occur during server operations.
@@ -2532,47 +2532,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/docs/private/api.json": {
+    "/ws/access-token": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /**
-         * OpenAPI Spec
-         * @description Returns the OpenAPI spec to this API
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: never;
-        };
+        get?: never;
         put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/docs": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
         /**
-         * API Docs
-         * @description This documentation page
+         * Issue WebSocket Access Token
+         * @description This endpoint is used to generate authentication tokens (access tokens) for WebSocket connections in our system.
+         *
+         *     ## Access Token Generation
+         *
+         *     1. Send a POST request to the access token issuer endpoint.
+         *     2. The endpoint will return an access token.
+         *
+         *     ## Access Token Properties
+         *
+         *     - Access tokens are short-lived tokens, valid for 60 seconds from the time of generation.
+         *     - Each access token, once used, is tied to a specific websocket connection and is immediately invalidated.
+         *
+         *     ## Usage
+         *
+         *     - Use the generated access token when establishing a WebSocket connection.
+         *     - For detailed information on how to use the access token in a WebSocket connection, refer to the documentation found [here](#tag/websocket/GET/ws/connect).
+         *
+         *     ## Important Notes
+         *
+         *     - Always generate a new access token before attempting to log in to the user event stream.
+         *     - Ensure your client handles access token expiration and reconnection scenarios.
          */
-        get: {
+        post: {
             parameters: {
                 query?: never;
                 header?: never;
@@ -2581,13 +2574,134 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                /** @description HTML content */
                 200: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content: {
-                        "text/html": string;
+                        "application/json": components["schemas"]["AccessTokenTokenResponse"];
+                    };
+                };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *      This enum covers a wide range of error scenarios, from wallet-related issues
+                 *      to payment processing problems, user authentication errors, and more. */
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/ws/connect": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Establish WebSocket Connection
+         * @description This route is the entry point for WebSocket connections in our system.
+         *
+         *     ## Connection Process
+         *
+         *     1. Connect to this endpoint using the WebSocket protocol.
+         *     2. Once connected, send a login message with your access token:
+         *
+         *        ```json
+         *        {
+         *          "type": "user_login",
+         *          "data": "<access-token>"
+         *        }
+         *        ```
+         *
+         *     ## Example (JavaScript)
+         *
+         *     ```javascript
+         *     const socket = new WebSocket("wss://your-domain.com/ws/connect");
+         *
+         *     // After connection is established, send login message
+         *     socket.onopen = () => {
+         *       const loginMessage = {
+         *         type: "user_login",
+         *         data: "your-access-token"
+         *       };
+         *       socket.send(JSON.stringify(loginMessage));
+         *     };
+         *     ```
+         *
+         *     ## Message Format
+         *
+         *     All WebSocket messages follow a JSON format. The message structure for client events matches the request body specifications in this OpenAPI documentation, while server events follow the HTTP response specifications.
+         *
+         *     ### Client Events (Sending)
+         *     Messages sent from the client should follow this format:
+         *     ```json
+         *     {
+         *       "type": "event_name",
+         *       "data": {}  // Data structure as specified in OpenAPI request bodies
+         *     }
+         *     ```
+         *
+         *     ### Server Events (Receiving)
+         *     Messages received from the server will follow this format:
+         *     ```json
+         *     {
+         *       "type": "event_name",
+         *       "data": {}  // Data structure as specified in OpenAPI responses
+         *     }
+         *     ```
+         *
+         *     ## Important Notes
+         *
+         *     - Access tokens are valid for 60 seconds.
+         *     - Ensure your client can handle reconnection if the access token expires.
+         *     - The server will emit an error event if authentication fails.
+         *     - After a successful login, you'll be subscribed to your respective channel.
+         *
+         *     For detailed information on access token generation and management, refer to the main WebSocket authentication documentation found [here](#tag/websocket/POST/ws/access-token).
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["WebsocketClientEvent"];
+                };
+            };
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["WebsocketServerEvent"];
+                    };
+                };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *      This enum covers a wide range of error scenarios, from wallet-related issues
+                 *      to payment processing problems, user authentication errors, and more. */
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
                     };
                 };
             };
@@ -2629,7 +2743,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["PaginatorResponse_for_AdminUserResponse_and_ActiveFilters"];
+                        "application/json": components["schemas"]["PaginatorResponse_for_AdminUserResponse_and_ActiveFilters_and_int64"];
                     };
                 };
             };
@@ -2836,7 +2950,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["PaginatorResponse_for_SessionResponse_and_ActiveFilters"];
+                        "application/json": components["schemas"]["PaginatorResponse_for_SessionResponse_and_ActiveFilters_and_int64"];
                     };
                 };
             };
@@ -2903,7 +3017,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["PaginatorResponse_for_AdminPaymentListResponse_and_ActiveFilters"];
+                        "application/json": components["schemas"]["PaginatorResponse_for_AdminPaymentListResponse_and_ActiveFilters_and_int64"];
                     };
                 };
             };
@@ -3154,7 +3268,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["PaginatorResponse_for_AdminBetResponse_and_ActiveFilters"];
+                        "application/json": components["schemas"]["PaginatorResponse_for_AdminBetResponse_and_ActiveFilters_and_int64"];
                     };
                 };
             };
@@ -3243,77 +3357,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/ws/access-token": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Issue WebSocket Access Token
-         * @description This endpoint is used to generate authentication tokens (access tokens) for WebSocket connections in our system.
-         *
-         *     ## Access Token Generation
-         *
-         *     1. Send a POST request to the access token issuer endpoint.
-         *     2. The endpoint will return an access token.
-         *
-         *     ## Access Token Properties
-         *
-         *     - Access tokens are short-lived tokens, valid for 60 seconds from the time of generation.
-         *     - Each access token, once used, is tied to a specific websocket connection and is immediately invalidated.
-         *
-         *     ## Usage
-         *
-         *     - Use the generated access token when establishing a WebSocket connection.
-         *     - For detailed information on how to use the access token in a WebSocket connection, refer to the documentation found [here](#tag/websocket/GET/ws/connect).
-         *
-         *     ## Important Notes
-         *
-         *     - Always generate a new access token before attempting to log in to the user event stream.
-         *     - Ensure your client handles access token expiration and reconnection scenarios.
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["AccessTokenTokenResponse"];
-                    };
-                };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/ws/connect": {
+    "/docs/private/api.json": {
         parameters: {
             query?: never;
             header?: never;
@@ -3321,66 +3365,8 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Establish WebSocket Connection
-         * @description This route is the entry point for WebSocket connections in our system.
-         *
-         *     ## Connection Process
-         *
-         *     1. Connect to this endpoint using the WebSocket protocol.
-         *     2. Once connected, send a login message with your access token:
-         *
-         *        ```json
-         *        {
-         *          "type": "user_login",
-         *          "data": "<access-token>"
-         *        }
-         *        ```
-         *
-         *     ## Example (JavaScript)
-         *
-         *     ```javascript
-         *     const socket = new WebSocket("wss://your-domain.com/ws/connect");
-         *
-         *     // After connection is established, send login message
-         *     socket.onopen = () => {
-         *       const loginMessage = {
-         *         type: "user_login",
-         *         data: "your-access-token"
-         *       };
-         *       socket.send(JSON.stringify(loginMessage));
-         *     };
-         *     ```
-         *
-         *     ## Message Format
-         *
-         *     All WebSocket messages follow a JSON format. The message structure for client events matches the request body specifications in this OpenAPI documentation, while server events follow the HTTP response specifications.
-         *
-         *     ### Client Events (Sending)
-         *     Messages sent from the client should follow this format:
-         *     ```json
-         *     {
-         *       "type": "event_name",
-         *       "data": {}  // Data structure as specified in OpenAPI request bodies
-         *     }
-         *     ```
-         *
-         *     ### Server Events (Receiving)
-         *     Messages received from the server will follow this format:
-         *     ```json
-         *     {
-         *       "type": "event_name",
-         *       "data": {}  // Data structure as specified in OpenAPI responses
-         *     }
-         *     ```
-         *
-         *     ## Important Notes
-         *
-         *     - Access tokens are valid for 60 seconds.
-         *     - Ensure your client can handle reconnection if the access token expires.
-         *     - The server will emit an error event if authentication fails.
-         *     - After a successful login, you'll be subscribed to your respective channel.
-         *
-         *     For detailed information on access token generation and management, refer to the main WebSocket authentication documentation found [here](#tag/websocket/POST/ws/access-token).
+         * OpenAPI Spec
+         * @description Returns the OpenAPI spec to this API
          */
         get: {
             parameters: {
@@ -3389,30 +3375,44 @@ export interface paths {
                 path?: never;
                 cookie?: never;
             };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["WebsocketClientEvent"];
-                };
+            requestBody?: never;
+            responses: never;
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/docs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * API Docs
+         * @description This documentation page
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
             };
+            requestBody?: never;
             responses: {
+                /** @description HTML content */
                 200: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["WebsocketServerEvent"];
-                    };
-                };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
+                        "text/html": string;
                     };
                 };
             };
@@ -3736,7 +3736,7 @@ export interface components {
         GameCategoryListResponse: {
             /** @description The games in the category. This field is only populated when the
              *      category is requested with the `include` parameter set to `games`. */
-            games?: components["schemas"]["GameResponse"][] | null;
+            games?: components["schemas"]["PaginatorResponse_for_GameResponse_and_GameCategoryListQuery_and_int64"] | null;
             /** @description The ID of the game category. */
             id: components["schemas"]["GameCategoryId"];
             /** @description The identifier of the game category. This is a unique string that can be
@@ -3992,35 +3992,53 @@ export interface components {
         });
         /** @description Auto-generated discriminant enum variants */
         NotificationTypeDiscriminants: "payment_status_update" | "kyc_completed" | "custom" | "banner" | "popup_modal";
-        PaginatorMetadata_for_ActiveFilters: {
+        PaginatorMetadata_for_ActiveFilters_and_int64: {
             filters?: components["schemas"]["ActiveFilters"] | null;
-            pagination: components["schemas"]["PaginatorPosition"];
+            pagination: components["schemas"]["PaginatorPosition_for_int64"];
         };
-        PaginatorMetadata_for_ListGameActionsQuery: {
+        PaginatorMetadata_for_GameCategoryListQuery_and_int64: {
+            filters?: components["schemas"]["GameCategoryListQuery"] | null;
+            pagination: components["schemas"]["PaginatorPosition_for_int64"];
+        };
+        PaginatorMetadata_for_ListGameActionsQuery_and_int64: {
             filters?: components["schemas"]["ListGameActionsQuery"] | null;
-            pagination: components["schemas"]["PaginatorPosition"];
+            pagination: components["schemas"]["PaginatorPosition_for_int64"];
         };
-        PaginatorMetadata_for_ListGameQuery: {
+        PaginatorMetadata_for_ListGameQuery_and_int64: {
             filters?: components["schemas"]["ListGameQuery"] | null;
-            pagination: components["schemas"]["PaginatorPosition"];
+            pagination: components["schemas"]["PaginatorPosition_for_int64"];
         };
-        PaginatorMetadata_for_ListNotificationsQuery: {
+        PaginatorMetadata_for_ListNotificationsQuery_and_int64: {
             filters?: components["schemas"]["ListNotificationsQuery"] | null;
-            pagination: components["schemas"]["PaginatorPosition"];
+            pagination: components["schemas"]["PaginatorPosition_for_int64"];
         };
-        PaginatorMetadata_for_ListPaymentFlowsQuery: {
+        PaginatorMetadata_for_ListPaymentFlowsQuery_and_int64: {
             filters?: components["schemas"]["ListPaymentFlowsQuery"] | null;
-            pagination: components["schemas"]["PaginatorPosition"];
+            pagination: components["schemas"]["PaginatorPosition_for_int64"];
         };
-        PaginatorMetadata_for_SearchGameProviderQuery: {
+        PaginatorMetadata_for_SearchGameProviderQuery_and_Nullable_uint: {
             filters?: components["schemas"]["SearchGameProviderQuery"] | null;
-            pagination: components["schemas"]["PaginatorPosition"];
+            pagination: components["schemas"]["PaginatorPosition_for_Nullable_uint"];
         };
-        PaginatorMetadata_for_SearchGameQuery: {
+        PaginatorMetadata_for_SearchGameQuery_and_Nullable_uint: {
             filters?: components["schemas"]["SearchGameQuery"] | null;
-            pagination: components["schemas"]["PaginatorPosition"];
+            pagination: components["schemas"]["PaginatorPosition_for_Nullable_uint"];
         };
-        PaginatorPosition: {
+        PaginatorPosition_for_Nullable_uint: {
+            /**
+             * Format: uint64
+             * @default 20
+             */
+            limit: number;
+            /**
+             * Format: uint64
+             * @default 0
+             */
+            offset: number;
+            /** Format: uint */
+            total_items?: number | null;
+        };
+        PaginatorPosition_for_int64: {
             /**
              * Format: uint64
              * @default 20
@@ -4032,47 +4050,51 @@ export interface components {
              */
             offset: number;
             /** Format: int64 */
-            total_items?: number | null;
+            total_items: number;
         };
-        PaginatorResponse_for_AdminBetResponse_and_ActiveFilters: {
+        PaginatorResponse_for_AdminBetResponse_and_ActiveFilters_and_int64: {
             data: components["schemas"]["AdminBetResponse"][];
-            metadata: components["schemas"]["PaginatorMetadata_for_ActiveFilters"];
+            metadata: components["schemas"]["PaginatorMetadata_for_ActiveFilters_and_int64"];
         };
-        PaginatorResponse_for_AdminPaymentListResponse_and_ActiveFilters: {
+        PaginatorResponse_for_AdminPaymentListResponse_and_ActiveFilters_and_int64: {
             data: components["schemas"]["AdminPaymentListResponse"][];
-            metadata: components["schemas"]["PaginatorMetadata_for_ActiveFilters"];
+            metadata: components["schemas"]["PaginatorMetadata_for_ActiveFilters_and_int64"];
         };
-        PaginatorResponse_for_AdminUserResponse_and_ActiveFilters: {
+        PaginatorResponse_for_AdminUserResponse_and_ActiveFilters_and_int64: {
             data: components["schemas"]["AdminUserResponse"][];
-            metadata: components["schemas"]["PaginatorMetadata_for_ActiveFilters"];
+            metadata: components["schemas"]["PaginatorMetadata_for_ActiveFilters_and_int64"];
         };
-        PaginatorResponse_for_GameActionResponse_and_ListGameActionsQuery: {
+        PaginatorResponse_for_GameActionResponse_and_ListGameActionsQuery_and_int64: {
             data: components["schemas"]["GameActionResponse"][];
-            metadata: components["schemas"]["PaginatorMetadata_for_ListGameActionsQuery"];
+            metadata: components["schemas"]["PaginatorMetadata_for_ListGameActionsQuery_and_int64"];
         };
-        PaginatorResponse_for_GameResponse_and_ListGameQuery: {
+        PaginatorResponse_for_GameResponse_and_GameCategoryListQuery_and_int64: {
             data: components["schemas"]["GameResponse"][];
-            metadata: components["schemas"]["PaginatorMetadata_for_ListGameQuery"];
+            metadata: components["schemas"]["PaginatorMetadata_for_GameCategoryListQuery_and_int64"];
         };
-        PaginatorResponse_for_GameSearchResponse_and_SearchGameQuery: {
+        PaginatorResponse_for_GameResponse_and_ListGameQuery_and_int64: {
+            data: components["schemas"]["GameResponse"][];
+            metadata: components["schemas"]["PaginatorMetadata_for_ListGameQuery_and_int64"];
+        };
+        PaginatorResponse_for_GameSearchResponse_and_SearchGameQuery_and_Nullable_uint: {
             data: components["schemas"]["GameSearchResponse"][];
-            metadata: components["schemas"]["PaginatorMetadata_for_SearchGameQuery"];
+            metadata: components["schemas"]["PaginatorMetadata_for_SearchGameQuery_and_Nullable_uint"];
         };
-        PaginatorResponse_for_NotificationResponse_and_ListNotificationsQuery: {
+        PaginatorResponse_for_NotificationResponse_and_ListNotificationsQuery_and_int64: {
             data: components["schemas"]["NotificationResponse"][];
-            metadata: components["schemas"]["PaginatorMetadata_for_ListNotificationsQuery"];
+            metadata: components["schemas"]["PaginatorMetadata_for_ListNotificationsQuery_and_int64"];
         };
-        PaginatorResponse_for_PaymentFlowResponse_and_ListPaymentFlowsQuery: {
+        PaginatorResponse_for_PaymentFlowResponse_and_ListPaymentFlowsQuery_and_int64: {
             data: components["schemas"]["PaymentFlowResponse"][];
-            metadata: components["schemas"]["PaginatorMetadata_for_ListPaymentFlowsQuery"];
+            metadata: components["schemas"]["PaginatorMetadata_for_ListPaymentFlowsQuery_and_int64"];
         };
-        PaginatorResponse_for_SearchGameProviderResponse_and_SearchGameProviderQuery: {
+        PaginatorResponse_for_SearchGameProviderResponse_and_SearchGameProviderQuery_and_Nullable_uint: {
             data: components["schemas"]["SearchGameProviderResponse"][];
-            metadata: components["schemas"]["PaginatorMetadata_for_SearchGameProviderQuery"];
+            metadata: components["schemas"]["PaginatorMetadata_for_SearchGameProviderQuery_and_Nullable_uint"];
         };
-        PaginatorResponse_for_SessionResponse_and_ActiveFilters: {
+        PaginatorResponse_for_SessionResponse_and_ActiveFilters_and_int64: {
             data: components["schemas"]["SessionResponse"][];
-            metadata: components["schemas"]["PaginatorMetadata_for_ActiveFilters"];
+            metadata: components["schemas"]["PaginatorMetadata_for_ActiveFilters_and_int64"];
         };
         PaginatorSelection: {
             /**
@@ -4726,7 +4748,7 @@ export interface components {
             site: components["schemas"]["Site"];
         };
         /** @enum {string} */
-        StaticGameCategory: "slots" | "scratch" | "bingo" | "roulette" | "card" | "table" | "blackjack" | "dice" | "sport" | "keno" | "betting" | "casual" | "lottery" | "instantwin" | "poker" | "craps" | "crash" | "fishing" | "mines" | "video_poker" | "virtual_sports" | "live" | "other";
+        StaticGameCategory: "slots" | "scratch" | "bingo" | "roulette" | "card" | "table" | "blackjack" | "dice" | "sport" | "keno" | "betting" | "casual" | "lottery" | "instantwin" | "poker" | "craps" | "crash" | "fishing" | "mines" | "video_poker" | "virtual_sports" | "live";
         /** Format: float */
         SystemAmount: number;
         SystemValidationError: {
