@@ -19,7 +19,7 @@ tower-service = "0.3.2"
 worker = { version = "0.5.0", features = ["http", "axum"] }
 console_error_panic_hook = "0.1.7"
 axum = { version = "0.8.1", default-features = false, features = ["macros", "form", "matched-path", "query", "original-uri"] }
-schemars = { version = "0.9.0", features = ["uuid1"] }
+schemars = { version = "1.0.4", features = ["uuid1"] }
 serde = { version = "1.0.144", features = ["derive", "rc"] }
 serde_json = "1.0.85"
 uuid = { version = "1.1.2", features = ["serde", "v4"] }
