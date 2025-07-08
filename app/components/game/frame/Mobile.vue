@@ -78,35 +78,32 @@ const onTogglePlaying = async () => {
         </div>
       </template>
 
-      <div class="w-full max-w-lg p-6 flex flex-col justify-between gap-6">
-        <div class="w-full flex flex-row items-center justify-start gap-6">
+      <div class="w-full max-w-sm sm:max-w-lg p-6 flex flex-col justify-between gap-6">
+        <div class="w-full flex flex-col sm:flex-row items-center justify-start gap-6">
           <GameImage
             :identifier="gameIdentifier"
-            class="w-[32%] rounded"
+            class="w-[200px] xs:w-auto sm:max-w-44 rounded overflow-hidden flex-grow-0"
           />
-          <div class="flex flex-col gap-1">
+          <div class="flex-grow flex flex-col gap-1">
             <h2 class="text-2xl font-semibold">{{ gameTitle }}</h2>
-            <GameFrameVotes
-              :authenticated="authenticated"
-              class="mt-4 gap-4 text-subtle-light"
-              :game-identifier="gameIdentifier"
-            />
-          </div>
-        </div>
-        <div class="flex flex-row w-full items-center justify-between">
-          <div class="w-[32%] flex items-center justify-center">
-            <ButtonShare
-              :subject="$t('play.share_subject')"
-              :body="$t('play.share_body', { game: gameTitle })"
-              :url="url.toString()"
-              class="text-subtle-light"
-            />
-          </div>
-          <div class="ml-2 flex-grow">
+            <div class="mt-4 flex items-center gap-3 ">
+              <GameFrameVotes
+                :authenticated="authenticated"
+                class=" gap-4 text-subtle-light"
+                :game-identifier="gameIdentifier"
+              />
+              <ButtonShare
+                :subject="$t('play.share_subject')"
+                :body="$t('play.share_body', { game: gameTitle })"
+                :url="url.toString()"
+                class="text-subtle-light"
+              />
+            </div>
+
             <BaseButton
               variant="primary"
               size="xl"
-              class="w-full gap-2"
+              class="w-full gap-2 mt-4"
               @click="onTogglePlaying"
             >
               <BaseIcon

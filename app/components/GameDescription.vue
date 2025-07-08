@@ -32,7 +32,7 @@ const emit = defineEmits<{
   <div class="p-3 pb-4 md:p-4 lg:p-6 gap-4 md:gap-6 flex flex-row rounded">
     <div class="grid grid-cols-[auto,1fr] md:grid-cols-[auto,1fr,auto] w-full md:grid-rows-[min-content,1fr] gap-x-6 gap-y-8">
       <div class="md:row-span-2 min-w-[100px] order-2 md:order-none">
-        <div class="flex items-center justify-center rounded-lg overflow-hidden border border-muted/5">
+        <div class="flex items-center justify-center rounded overflow-hidden border border-muted/5">
           <GameImage
             v-if="!isMobile"
             :identifier="game.identifier"

@@ -36,10 +36,14 @@ const iframeUrl = computed(() => {
 </script>
 
 <template>
-  <div v-if="currentDevice === 'mobile'">
-    <div v-if="game" class="h-full">
+  <template v-if="currentDevice === 'mobile'">
+    <div
+      v-if="game"
+      class="h-full min-h-full max-h-full"
+    >
       <GameFrameMobile
-        v-if="game.isCompatibleWithDevice"
+        v-if="
+          game.isCompatibleWithDevice"
         :game-title="game.name"
         :game-identifier="game.identifier"
         :fullscreen="fullscreen"
@@ -55,13 +59,13 @@ const iframeUrl = computed(() => {
     <div v-else class="h-[25vh] w-full">
       <BaseSkeleton class="w-full h-full" :loading="true" />
     </div>
-  </div>
+  </template>
 
   <div
     v-else-if="currentDevice === 'desktop'"
     class="pt-4 pb-12 giro__container giro__sections"
   >
-    <div v-if="game" class="bg-subtle rounded-lg border border-muted/5 overflow-hidden">
+    <div v-if="game" class="bg-subtle rounded border border-muted/5 overflow-hidden">
       <GameFrameDesktop
         v-if="!isMobile && game.isCompatibleWithDevice"
         :game-title="game.name"

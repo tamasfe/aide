@@ -22,7 +22,7 @@ const onSlideClick = () => {
       sizes="sm:600px md:400px lg:410px"
       :src="siteStore.getRelativeAssetPath('slides/choose-us.jpg')"
       alt=""
-      class="rounded-sm md:rounded-lg object-cover object-center w-full h-full"
+      class="rounded md:rounded-lg object-cover object-center w-full h-full"
     />
   </button>
 </template>
