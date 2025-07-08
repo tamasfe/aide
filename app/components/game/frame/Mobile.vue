@@ -1,4 +1,6 @@
 <script setup lang="ts">
+const siteStore = useSiteStore();
+
 // DESIGN STATUS:        ✅
 //   * lock scroll when playing: import { useScrollLock } from "@vueuse/core"
 // ARCHITECTURE STATUS:  ✴️
@@ -50,15 +52,23 @@ const onTogglePlaying = async () => {
       <template #authenticated>
         <div
           v-if="playing && iframeUrl"
-          class="fixed top-0 left-0 w-full h-full z-[11] bg-subtle"
+          class="fixed top-0 left-0 bottom-0 right-0  z-[11] bg-subtle flex flex-col"
         >
-          <div class="bg-subtle flex items-center justify-end w-full">
+          <div class="bg-subtle flex items-center justify-between w-full flex-shrink-0 flex-grow-0 pl-4">
+            <NuxtImg
+              class="h-5"
+              :src="siteStore.getRelativeAssetPath('logos/logo.svg')"
+              alt="Logo"
+            />
             <BaseClose
+              size="sm"
               @close="onTogglePlaying"
             />
           </div>
 
-          <GameFrameIframe :game-identifier="gameIdentifier" :i-frame-url="iframeUrl" />
+          <div class="relative flex-grow">
+            <GameFrameIframe :game-identifier="gameIdentifier" :i-frame-url="iframeUrl" />
+          </div>
         </div>
         <div
           v-if="playing && !iframeUrl"

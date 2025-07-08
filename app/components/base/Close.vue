@@ -1,9 +1,29 @@
 <script setup lang="ts">
+import { cva, type VariantProps } from "class-variance-authority";
 import type { HTMLAttributes } from "vue";
+
+const buttonVariants = cva(
+  "aspect-square h-full text-subtle hover:text-emphasis z-[10] rounded-lg transition-colors duration-200",
+  {
+    variants: {
+      size: {
+        sm: "p-2",
+        md: "p-3",
+        lg: "p-4",
+      },
+    },
+    defaultVariants: {
+      size: "md",
+    },
+  },
+);
+
+type ButtonVariants = VariantProps<typeof buttonVariants>;
 
 const props = withDefaults(defineProps<{
   disabled?: boolean;
   class?: HTMLAttributes["class"];
+  size?: ButtonVariants["size"];
 }>(), {
   disabled: false,
 });
@@ -19,7 +39,7 @@ defineEmits<{
     size="ghost"
     :disabled="disabled"
     :class="cn(
-      'aspect-square p-3 h-full text-subtle hover:text-emphasis z-[10] rounded-lg transition-colors duration-200',
+      buttonVariants({ size }),
       props.class,
     )"
     @click="$emit('close')"
