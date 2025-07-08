@@ -5,7 +5,7 @@ const siteStore = useSiteStore();
 <template>
   <BaseLink
     :to="{
-      path: '/games/pgsoft/fortune-rabbit',
+      path: '/games/pgsoft/fortune-tiger',
     }"
   >
     <NuxtImg
