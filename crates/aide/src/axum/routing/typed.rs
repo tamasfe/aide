@@ -33,7 +33,7 @@ where
     /// The path will be inferred from the first argument to the handler function which must
     /// implement [`TypedPath`].
     ///
-    /// This method additionally accepts a transform function, see crate::axum for more details.
+    /// This method additionally accepts a transform function. See [`crate::axum`] for more details.
     pub fn typed_get_with<H, I, O, T, P, F>(self, handler: H, transform: F) -> Self
     where
         H: axum::handler::Handler<T, S> + OperationHandler<I, O>,
@@ -66,7 +66,7 @@ where
     /// The path will be inferred from the first argument to the handler function which must
     /// implement [`TypedPath`].
     ///
-    /// This method additionally accepts a transform function, see crate::axum for more details.
+    /// This method additionally accepts a transform function. See [`crate::axum`] for more details.
     pub fn typed_delete_with<H, I, O, T, P, F>(self, handler: H, transform: F) -> Self
     where
         H: axum::handler::Handler<T, S> + OperationHandler<I, O>,
@@ -102,7 +102,7 @@ where
     /// The path will be inferred from the first argument to the handler function which must
     /// implement [`TypedPath`].
     ///
-    /// This method additionally accepts a transform function, see crate::axum for more details.
+    /// This method additionally accepts a transform function. See [`crate::axum`] for more details.
     pub fn typed_head_with<H, I, O, T, P, F>(self, handler: H, transform: F) -> Self
     where
         H: axum::handler::Handler<T, S> + OperationHandler<I, O>,
@@ -135,7 +135,7 @@ where
     /// The path will be inferred from the first argument to the handler function which must
     /// implement [`TypedPath`].
     ///
-    /// This method additionally accepts a transform function, see crate::axum for more details.
+    /// This method additionally accepts a transform function. See [`crate::axum`] for more details.
     pub fn typed_options_with<H, I, O, T, P, F>(self, handler: H, transform: F) -> Self
     where
         H: axum::handler::Handler<T, S> + OperationHandler<I, O>,
@@ -171,7 +171,7 @@ where
     /// The path will be inferred from the first argument to the handler function which must
     /// implement [`TypedPath`].
     ///
-    /// This method additionally accepts a transform function, see crate::axum for more details.
+    /// This method additionally accepts a transform function. See [`crate::axum`] for more details.
     pub fn typed_patch_with<H, I, O, T, P, F>(self, handler: H, transform: F) -> Self
     where
         H: axum::handler::Handler<T, S> + OperationHandler<I, O>,
@@ -207,7 +207,7 @@ where
     /// The path will be inferred from the first argument to the handler function which must
     /// implement [`TypedPath`].
     ///
-    /// This method additionally accepts a transform function, see crate::axum for more details.
+    /// This method additionally accepts a transform function. See [`crate::axum`] for more details.
     pub fn typed_post_with<H, I, O, T, P, F>(self, handler: H, transform: F) -> Self
     where
         H: axum::handler::Handler<T, S> + OperationHandler<I, O>,
@@ -240,7 +240,7 @@ where
     /// The path will be inferred from the first argument to the handler function which must
     /// implement [`TypedPath`].
     ///
-    /// This method additionally accepts a transform function, see crate::axum for more details.
+    /// This method additionally accepts a transform function. See [`crate::axum`] for more details.
     pub fn typed_put_with<H, I, O, T, P, F>(self, handler: H, transform: F) -> Self
     where
         H: axum::handler::Handler<T, S> + OperationHandler<I, O>,
@@ -273,7 +273,7 @@ where
     /// The path will be inferred from the first argument to the handler function which must
     /// implement [`TypedPath`].
     ///
-    /// This method additionally accepts a transform function, see crate::axum for more details.
+    /// This method additionally accepts a transform function. See [`crate::axum`] for more details.
     pub fn typed_trace_with<H, I, O, T, P, F>(self, handler: H, transform: F) -> Self
     where
         H: axum::handler::Handler<T, S> + OperationHandler<I, O>,
