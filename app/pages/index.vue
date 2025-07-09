@@ -45,12 +45,6 @@ const queryGameCategories = async () => $dependencies.games.ui.searchGameCategor
         </TabsList>
 
         <TabsContent value="lobby" class="giro__sections">
-          <GridVerticalGames
-            :title="$t(`category.${VERTICAL_CATEGORY_FOR_LOBBY}`)"
-            :category-identifier="VERTICAL_CATEGORY_FOR_LOBBY"
-            :provider-identifier="null"
-          />
-
           <UseAsyncData
             id="home-page-game-categories"
             :fetch-items="queryGameCategories"
