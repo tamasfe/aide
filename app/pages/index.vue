@@ -7,6 +7,8 @@ useHead({
   title: t("page.home", { siteName: siteStore.currentSite.name }),
 });
 
+const VERTICAL_CATEGORY_FOR_LOBBY = "top-games";
+
 const currentTab = ref("lobby");
 const menuTabs = ref([
   { value: "lobby", iconName: "lucide:home", label: t(`home_page.category_tabs.lobby`) },
@@ -63,6 +65,12 @@ const queryGameCategories = async () => $dependencies.games.ui.searchGameCategor
               <GridHorizontalGamesLoading />
             </template>
           </UseAsyncData>
+
+          <GridVerticalGames
+            :title="$t(`category.${VERTICAL_CATEGORY_FOR_LOBBY}`)"
+            :category-identifier="VERTICAL_CATEGORY_FOR_LOBBY"
+            :provider-identifier="null"
+          />
 
           <GridHorizontalProviders />
         </TabsContent>
