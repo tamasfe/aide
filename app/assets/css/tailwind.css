@@ -78,7 +78,7 @@
 }
 
 .giro__sections {
-  @apply flex flex-col gap-[var(--giro-section-gap-sm)] md:gap-[var(--giro-section-gap-lg)];
+  @apply flex flex-col gap-[var(--giro-section-gap-lg)] md:gap-[var(--giro-section-gap-lg)];
 }
 
 .giro__select-fade-enter-active,
