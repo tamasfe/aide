@@ -255,11 +255,12 @@
     "username_invalid_characters": "Username can contain letters, numbers, and . {'@'} $ # & _ -"
   },
   "withdrawal_limits": {
-    "summary": "For an easy, secure and simple withdraw process, make sure to follow these guidelines: The minimum withdrawal amount varies by method and is listed above. Withdrawals are always to be processed to the original deposit method unless otherwise specified or if that method doesn't support withdrawals.",
-    "limits_minimum": "Minimum Withdrawal",
-    "limits_maximum": "Maximum Withdrawal",
+    "summary": "For an easy, secure and simple withdraw process, make sure to remember these: \n- The minimum withdrawal amount varies by method and is listed above. \n- The maximum withdrawal amount varies depending on your total unlocked balance, the payment provider's limits, and others. \n- Withdrawals are always to be processed to the original deposit method unless otherwise specified or if that method doesn't support withdrawals.",
+    "limits_minimum": "Minimum",
+    "limits_maximum": "Maximum",
     "limits_amount": "Number of Withdrawals",
-    "limits_bets_to_withdraw": "Bets to Enable Withdrawal"
+    "limits_bets_to_withdraw": "Bets to Enable Withdrawal",
+    "unlocked_balance": "Unlocked Balance"
   },
   "play": {
     "login_to_play": "Please Login to Play",

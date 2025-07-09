@@ -38,6 +38,7 @@ const { data: paymentsData } = await useAsyncData("wallet-page-payments-data", a
       <DashboardSettingsWalletBalance
         v-if="walletStore.wallet"
         :balance="walletStore.balance"
+        :balance-unlocked="walletStore.wallet.balanceUnlocked"
         :payment-method="walletStore.wallet.paymentMethod ?? undefined"
         :currency="walletStore.wallet.currency"
         :wallet-id="walletStore.wallet.walletId"

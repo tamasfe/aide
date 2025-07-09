@@ -26,7 +26,7 @@ export const useWalletStore = defineStore("walletStore", {
       if (!state.wallet) {
         return 0;
       }
-      return state.wallet.balanceLocked + state.wallet.balanceUnlocked;
+      return state.wallet.balanceLocked + state.wallet.balanceUnlocked + state.wallet.balanceBonus;
     },
 
     balanceBonus: (state): number => {

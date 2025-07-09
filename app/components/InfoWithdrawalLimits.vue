@@ -10,6 +10,7 @@ defineProps<{
   max: number | null;
   cooldownSeconds: number | null;
   currency: WalletCurrency;
+  unlockedBalance: number | null;
 }>();
 
 const secondsToDayFrequency = (seconds: number) => {
@@ -34,9 +35,14 @@ const secondsToDayFrequency = (seconds: number) => {
 
     <div>{{ $t("withdrawal_limits.limits_bets_to_withdraw") }}</div>
     <div class="value">1.7x</div>
+
+    <div v-if="unlockedBalance !== null">{{ $t("withdrawal_limits.unlocked_balance") }}</div>
+    <div v-if="unlockedBalance !== null" class="value">
+      <BaseCurrency :value="unlockedBalance" :currency="currency" variant="ghost" />
+    </div>
   </div>
   <div class="flex flex-col">
-    <div class="leading-relaxed text-sm text-subtle-light">{{ $t('withdrawal_limits.summary') }}</div>
+    <div class="leading-relaxed text-sm text-subtle-light whitespace-pre-line">{{ $t('withdrawal_limits.summary') }}</div>
   </div>
 </template>
 

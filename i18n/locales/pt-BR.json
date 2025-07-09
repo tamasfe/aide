@@ -254,11 +254,12 @@
     "username_invalid_characters": "Nome de usuário pode conter letras, números e . {'@'} $ # & _ -"
   },
   "withdrawal_limits": {
-    "summary": "Para um processo de saque fácil, seguro e simples, certifique-se de seguir estas diretrizes: O valor mínimo de saque varia de acordo com o método e está listado acima. Os saques devem ser sempre processados para o método de depósito original, a menos que especificado de outra forma ou se esse método não suportar saques.",
-    "limits_minimum": "Valor Mínimo de Saque",
-    "limits_maximum": "Valor Máximo de Saque",
+    "summary": "Para um processo de saque fácil, seguro e simples, lembre-se destes pontos:\n- O valor mínimo de saque varia conforme o método e está listado acima.\n- O valor máximo de saque depende do seu saldo desbloqueado, dos limites do provedor de pagamento e outros fatores.\n- Os saques sempre serão processados para o método de depósito original, a menos que especificado de outra forma ou se esse método não suportar saques.",
+    "limits_minimum": "Valor Mínimo",
+    "limits_maximum": "Valor Máximo",
     "limits_amount": "Número de Saques",
-    "limits_bets_to_withdraw": "Apostas para Habilitar Saque"
+    "limits_bets_to_withdraw": "Apostas para Habilitar Saque",
+    "unlocked_balance": "Saldo Desbloqueado"
   },
   "play": {
     "login_to_play": "Por favor, Faça Login para Jogar",

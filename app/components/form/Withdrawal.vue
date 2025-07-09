@@ -134,17 +134,16 @@ const onSubmit = handleSubmit(async (formData) => {
         </template>
       </BaseInputGroup>
 
-      <div class="flex justify-between items-center">
+      <div class="flex justify-between items-center cursor-pointer" @click="onToggleLimits">
         <div class="flex justify-between">
           <div
-            class="flex self-start items-center space-x-1.5 cursor-pointer text-primary text-sm hover:text-primary-hover p-4 -m-4"
-            @click="onToggleLimits"
+            class="flex self-start items-center space-x-1.5 text-primary text-sm hover:text-primary-hover p-4 -m-4"
           >
             <BaseIcon
               name="lucide:info"
               :size="15"
             />
-            <div>{{ $t('modal_payments.limits') }}</div>
+            <div class="hover:underline">{{ $t('modal_payments.limits') }}</div>
           </div>
         </div>
         <div v-if="maximumWithdrawal !== null" class="flex space-x-2 font-medium text-sm">
@@ -169,10 +168,11 @@ const onSubmit = handleSubmit(async (formData) => {
     <template v-else>
       <InfoWithdrawalLimits
         :min="paymentMethodLimits.min"
-        :max="paymentMethodLimits.max"
+        :max="maximumWithdrawal"
         :cooldown-seconds="paymentMethodLimits.cooldownSeconds"
         :bets-to-enable-withdrawal="null"
         :currency="currency.code"
+        :unlocked-balance="userUnlockedBalance"
       />
 
       <BaseButton
