@@ -7,13 +7,11 @@ useHead({
   title: t("page.home", { siteName: siteStore.currentSite.name }),
 });
 
-const VERTICAL_CATEGORY_FOR_LOBBY = "top-games";
-
 const currentTab = ref("lobby");
 const menuTabs = ref([
   { value: "lobby", iconName: "lucide:home", label: t(`home_page.category_tabs.lobby`) },
-  { value: "slots", iconName: "lucide:coins", label: t(`category.slots`) },
-  { value: "crash", iconName: "lucide:crosshair", label: t(`category.crash`) },
+  { value: "slots", iconName: "lucide:coins", label: t(`category.top-games`) },
+  // { value: "crash", iconName: "lucide:crosshair", label: t(`category.crash`) },
   { value: "table", iconName: "lucide:files", label: t(`category.table`) },
   { value: "live", iconName: "lucide:users", label: t(`category.live`) },
 ]);
