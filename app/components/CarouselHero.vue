@@ -35,7 +35,7 @@ const slides = computed(() => {
       :gap="isMobile ? 0.35 : 1"
       class="pt-2 md:pt-0 pl-4 md:pl-0 w-full overflow-hidden"
       :class="{ 'sm:col-span-2': showFormWelcome }"
-      slide-ratio="1080/607"
+      slide-ratio="1280/607"
     >
       <SlideAviator />
       <SlideFortuneRabbit />

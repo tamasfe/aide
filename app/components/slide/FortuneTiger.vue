@@ -10,7 +10,7 @@ const siteStore = useSiteStore();
   >
     <NuxtImg
       provider="custom_cloudflare"
-      sizes="sm:600px md:400px lg:410px"
+      sizes="550px md:750px"
       :src="siteStore.getRelativeAssetPath('slides/fortune-tiger.jpg')"
       alt=""
       class="rounded md:rounded-lg object-cover object-center w-full h-full"
