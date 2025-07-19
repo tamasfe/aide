@@ -1,0 +1,30 @@
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: "{{ .Release.Name }}"
+spec:
+  virtualhost:
+    fqdn: "{{ .Values.config.public_domain }}"
+    tls:
+      secretName: "{{ .Release.Name }}-certificate"
+  routes:
+    - timeoutPolicy:
+        response: 30s
+      services:
+        - name: "{{ .Release.Name }}"
+          port: 80
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: "{{ .Release.Name }}"
+spec:
+  commonName: "{{ .Values.config.public_domain }}"
+  dnsNames:
+    - "{{ .Values.config.public_domain }}"
+  duration: 2160h0m0s
+  issuerRef:
+    kind: ClusterIssuer
+    name: prod
+  renewBefore: 360h0m0s
+  secretName: "{{ .Release.Name }}-certificate"
