@@ -27,10 +27,10 @@ spec:
               podAffinityTerm:
                 labelSelector:
                   matchExpressions:
-                  - key: app
-                    operator: In
-                    values:
-                    - api
+                    - key: app
+                      operator: In
+                      values:
+                        - api
                 topologyKey: kubernetes.io/hostname
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
@@ -45,7 +45,7 @@ spec:
                 topologyKey: "kubernetes.io/hostname"
       containers:
         - name: "{{ .Release.Name }}"
-          image: "891377191070.dkr.ecr.sa-east-1.amazonaws.com/girobet-frontend:{{ .Chart.AppVersion }}"
+          image: "050295693931.dkr.ecr.eu-west-1.amazonaws.com/frontend:{{ .Chart.AppVersion }}"
           ports:
             - name: http
               containerPort: 3000

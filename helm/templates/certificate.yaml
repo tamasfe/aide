@@ -9,6 +9,6 @@ spec:
   duration: 2160h0m0s
   issuerRef:
     kind: ClusterIssuer
-    name: girobet
+    name: prod
   renewBefore: 360h0m0s
   secretName: "{{ .Release.Name }}-certificate"

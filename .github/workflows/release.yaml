@@ -23,15 +23,15 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v3
         with:
-          role-to-assume: arn:aws:iam::891377191070:role/github-actions-role
+          role-to-assume: arn:aws:iam::050295693931:role/github-actions-role
           role-session-name: github-actions
-          aws-region: sa-east-1
+          aws-region: eu-west-1
 
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
         with:
-          registries: 891377191070
+          registries: "050295693931"
           mask-password: "true"
 
       - name: Install pnpm
@@ -62,20 +62,20 @@ jobs:
           build-args: |
             VERSION=${{ github.sha }}
           tags: |
-            891377191070.dkr.ecr.sa-east-1.amazonaws.com/girobet-frontend
-            891377191070.dkr.ecr.sa-east-1.amazonaws.com/girobet-frontend:${{ github.sha }}
+            050295693931.dkr.ecr.eu-west-1.amazonaws.com/frontend
+            050295693931.dkr.ecr.eu-west-1.amazonaws.com/frontend:${{ github.sha }}
 
       - name: Get Time
         id: time
         uses: nanzm/get-time-action@master
         with:
-          format: 'YYYYMMDDHHmmss'
+          format: "YYYYMMDDHHmmss"
 
       - name: Helm Package
         run: helm package helm --app-version ${{ github.sha }} --version 1.0.0-${{ steps.time.outputs.time }}
 
       - name: Helm Push
-        run: helm push girobet-frontend-*.tgz oci://891377191070.dkr.ecr.sa-east-1.amazonaws.com/
+        run: helm push frontend-*.tgz oci://050295693931.dkr.ecr.eu-west-1.amazonaws.com/
 
       - name: Tailscale
         uses: tailscale/github-action@v2
@@ -88,7 +88,7 @@ jobs:
         uses: imajeetyadav/argocd-cli@v1
 
       - run: |
-          argocd app sync girobet-frontend
+          argocd app sync frontend
           argocd app sync zambabet-frontend
         env:
           ARGOCD_AUTH_TOKEN: ${{ secrets.ARGOCD_AUTH_TOKEN }}
