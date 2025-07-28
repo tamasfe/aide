@@ -52,7 +52,7 @@ export class SignupFlowApiRepositoryGirobet implements SignupFlowApiRepositoryI 
   }
 
   public async create() {
-    const { data, error, response } = await this.apiClient.GET("/signup/flow", {});
+    const { data, error, response } = await this.apiClient.POST("/signup/flow", {});
 
     if (error) {
       const httpError = HttpBackendApiError.newFromBackendError(error, response);

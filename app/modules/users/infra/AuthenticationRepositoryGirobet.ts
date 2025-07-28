@@ -49,7 +49,7 @@ export class AuthenticationRepositoryGirobet implements AuthenticationRepository
 
   public async logout(): Promise<EmptyResult<InfrastructureError>> {
     try {
-      const { data, error, response } = await this.apiClient.GET("/auth/logout", {
+      const { data, error, response } = await this.apiClient.POST("/auth/logout", {
         redirect: "follow",
       });
 

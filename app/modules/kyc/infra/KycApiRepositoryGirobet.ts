@@ -38,7 +38,7 @@ export class KycApiRepositoryGirobet implements KycApiRepositoryI {
 
   public async findAccessToken() {
     try {
-      const { data, error, response } = await this.apiClient.GET("/kyc/token", {});
+      const { data, error, response } = await this.apiClient.POST("/kyc/token", {});
 
       if (data) {
         return success({

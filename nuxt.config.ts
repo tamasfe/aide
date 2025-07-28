@@ -23,11 +23,19 @@ export default defineNuxtConfig({
   app: {
     head: {
       charset: "utf-8",
-      viewport: "width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, viewport-fit=cover, user-scalable=no, shrink-to-fit=no",
+      viewport:
+        "width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, viewport-fit=cover, user-scalable=no, shrink-to-fit=no",
       link: [
         { rel: "preconnect", href: "https://fonts.googleapis.com" },
-        { rel: "preconnect", href: "https://fonts.gstatic.com", crossorigin: "" },
-        { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" },
+        {
+          rel: "preconnect",
+          href: "https://fonts.gstatic.com",
+          crossorigin: "",
+        },
+        {
+          rel: "stylesheet",
+          href: "https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap",
+        },
       ],
       script: [
         /**
@@ -51,11 +59,17 @@ export default defineNuxtConfig({
     public: {
       apiBaseUrlClient: process.env.NUXT_PUBLIC_API_BASE_URL_CLIENT,
       apiBaseUrlServer: process.env.NUXT_PUBLIC_API_BASE_URL_SERVER,
-      genericFixedUserJurisdiction: process.env.NUXT_PUBLIC_GENERIC_API_CLIENT_FIXED_USER_JURISDICTION,
-      errorCapturingEnabled: process.env.NUXT_PUBLIC_ERROR_CAPTURING_ENABLED === "true",
+      genericFixedUserJurisdiction:
+        process.env.NUXT_PUBLIC_GENERIC_API_CLIENT_FIXED_USER_JURISDICTION,
+      errorCapturingEnabled:
+        process.env.NUXT_PUBLIC_ERROR_CAPTURING_ENABLED === "true",
       release: process.env.NUXT_PUBLIC_RELEASE || "development",
       log: {
-        level: process.env.NUXT_PUBLIC_LOG_LEVEL as "warn" | "error" | "debug" | "info",
+        level: process.env.NUXT_PUBLIC_LOG_LEVEL as
+          | "warn"
+          | "error"
+          | "debug"
+          | "info",
       },
       serviceName: process.env.NUXT_PUBLIC_SERVICE_NAME || "girobet-frontend",
 
@@ -65,9 +79,11 @@ export default defineNuxtConfig({
       },
       signupFlows: {
         idsClientRepo: process.env.NUXT_PUBLIC_SIGNUP_FLOWS_IDS_CLIENT_REPO as
-        | "mock"
-        | "local_storage",
-        apiMode: process.env.NUXT_PUBLIC_SIGNUP_FLOWS_API_MODE as "dumb" | "api",
+          | "mock"
+          | "local_storage",
+        apiMode: process.env.NUXT_PUBLIC_SIGNUP_FLOWS_API_MODE as
+          | "dumb"
+          | "api",
       },
       users: {
         apiMode: process.env.NUXT_PUBLIC_USERS_API_MODE as "dumb" | "api",
@@ -86,8 +102,10 @@ export default defineNuxtConfig({
       },
       tracking: {
         apiMode: process.env.NUXT_PUBLIC_TRACKING_API_MODE as "dumb" | "api",
-        fingerprintJsPublicApiKey: process.env.NUXT_PUBLIC_TRACKING_FINGERPRINT_JS_PUBLIC_API_KEY,
-        fingerprintJsScriptUrl: process.env.NUXT_PUBLIC_TRACKING_FINGERPRINT_JS_SCRIPT_URL,
+        fingerprintJsPublicApiKey:
+          process.env.NUXT_PUBLIC_TRACKING_FINGERPRINT_JS_PUBLIC_API_KEY,
+        fingerprintJsScriptUrl:
+          process.env.NUXT_PUBLIC_TRACKING_FINGERPRINT_JS_SCRIPT_URL,
       },
     },
   },
@@ -144,13 +162,23 @@ export default defineNuxtConfig({
       {
         language: "en-US",
         code: "en-us",
-        files: ["en-US.json", "en-US.kyc_policy.yml", "en-US.responsible_gaming.yml", "en-US.terms_and_conditions.yml"],
+        files: [
+          "en-US.json",
+          "en-US.kyc_policy.yml",
+          "en-US.responsible_gaming.yml",
+          "en-US.terms_and_conditions.yml",
+        ],
         isCatchallLocale: true,
       },
       {
         language: "pt-BR",
         code: "pt-br",
-        files: ["pt-BR.json", "pt-BR.kyc_policy.yml", "pt-BR.responsible_gaming.yml", "pt-BR.terms_and_conditions.yml"],
+        files: [
+          "pt-BR.json",
+          "pt-BR.kyc_policy.yml",
+          "pt-BR.responsible_gaming.yml",
+          "pt-BR.terms_and_conditions.yml",
+        ],
       },
     ],
     detectBrowserLanguage: {
@@ -199,7 +227,6 @@ export default defineNuxtConfig({
           sizes: "sm:600px md:400px lg:410px",
           format: "webp",
         },
-
       },
       game: {
         provider: "custom_cloudflare",
@@ -250,7 +277,8 @@ export default defineNuxtConfig({
       short_name: "GiroBet", // TODO: be able to customise this depending on current site name
       start_url: "https://girobet.vip/redirect",
       scope: "https://girobet.vip", // TODO: be able to customise this depending on current site name
-      description: "Welcome to The GiroBet Experience the ultimate thrill of online gambling with us. Play slots, poker, blackjack, and more. Win big with our bonuses and promotions.",
+      description:
+        "Welcome to The GiroBet Experience the ultimate thrill of online gambling with us. Play slots, poker, blackjack, and more. Win big with our bonuses and promotions.",
       id: "https://girobet.vip", // TODO: be able to customise this depending on current site name
     },
   },
@@ -258,11 +286,13 @@ export default defineNuxtConfig({
     autoInjectServerSentry: "top-level-import",
     // dynamicImportForServerEntry: true,
     sourceMapsUploadOptions: {
-      enabled: process.env.SENTRY_AUTH_TOKEN !== undefined && process.env.SENTRY_AUTH_TOKEN !== "",
+      enabled:
+        process.env.SENTRY_AUTH_TOKEN !== undefined &&
+        process.env.SENTRY_AUTH_TOKEN !== "",
       org: "girobet",
       project: "girobet-frontend",
-      authToken: process.env.SENTRY_AUTH_TOKEN || "placeholder_sentry_auth_token",
+      authToken:
+        process.env.SENTRY_AUTH_TOKEN || "placeholder_sentry_auth_token",
     },
   },
-
 });
