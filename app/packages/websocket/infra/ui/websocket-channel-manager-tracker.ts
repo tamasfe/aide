@@ -18,7 +18,7 @@ export class WebsocketChannelManagerTracker implements WebsocketChannelI<Websock
 
       const resultEnteringChannel = await wsConnection.enterChannel({ channel: "tracker" });
       if (resultEnteringChannel.isFailure) {
-        this.logger.error("Error entering the WS newest wins channel", resultEnteringChannel.error, { connection: wsConnection });
+        this.logger.error("Error entering the WS tracker channel", resultEnteringChannel.error, { connection: wsConnection });
         if (this.listenerId) {
           wsConnection.unsubscribeFromMessage(this.listenerId);
         }
