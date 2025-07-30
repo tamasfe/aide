@@ -10,6 +10,7 @@ import { MarketingSearchParamsRepoLocalStorage } from "~/modules/search-params-t
 import { StoreMarketingSearchParams } from "~/modules/search-params-tracking/ui/store-marketing-search-params";
 import { HandleOpenModalSearchParam } from "~/modules/search-params-tracking/ui/handle-open-modal-search-param";
 import { UsersPreviousActivityCookieRepo } from "~/modules/search-params-tracking/users-previous-activity-cookie-repo";
+import type { useCookie as useCookieType } from "#app";
 
 export interface ClicksTrackingDependencyInjectionI {
   repositories: {
@@ -25,7 +26,7 @@ export interface ClicksTrackingDependencyInjectionI {
   };
 }
 
-export const createClicksTrackingDependencyInjection = async (config: PublicRuntimeConfig, commonDependencies: CommonDependenciesI): Promise<ClicksTrackingDependencyInjectionI> => {
+export const createClicksTrackingDependencyInjection = async (config: PublicRuntimeConfig, commonDependencies: CommonDependenciesI, useCookie: typeof useCookieType): Promise<ClicksTrackingDependencyInjectionI> => {
   const router = useRouter();
   const apiBaseUrl = useCasinoApiOrigin("tracking");
   const mode = config.tracking.apiMode;
@@ -41,7 +42,10 @@ export const createClicksTrackingDependencyInjection = async (config: PublicRunt
 
   const fingerprintService = new FingerprintService();
 
-  const usersPreviousActivityCookieRepo = new UsersPreviousActivityCookieRepo(import.meta.server);
+  const usersPreviousActivityCookieRepo = new UsersPreviousActivityCookieRepo(
+    import.meta.server,
+    useCookie,
+  );
 
   return {
     repositories: {

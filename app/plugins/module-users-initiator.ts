@@ -83,7 +83,7 @@ export default defineNuxtPlugin({
         .catch(error => $dependencies.common.logger.error("Error refreshing user store", InfrastructureError.newFromUnknownError({}, error)));
 
       if (userStore.isAuthenticated && import.meta.server) {
-        $dependencies.clicks.ui.setUsersPreviousActivity(new Date().toISOString());
+        await $dependencies.clicks.ui.setUsersPreviousActivity(new Date().toISOString());
       }
     },
     );

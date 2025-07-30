@@ -42,7 +42,7 @@ export default defineNuxtPlugin({
           notifications: await createNotificationDependencyInjection(config.public, commonDependencies, notificationsStore),
           sites: await createSitesDependencyInjection({ mode: config.public.sites.apiMode, apiBaseUrl: config.public.apiBaseUrlServer }, commonDependencies),
           clicks: await createClicksTrackingDependencyInjection(
-            config.public, commonDependencies,
+            config.public, commonDependencies, useCookie,
           ),
           tickers: await createTickersDependencyInjection(config.public, commonDependencies),
         },
