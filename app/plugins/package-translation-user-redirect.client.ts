@@ -1,3 +1,5 @@
+import { InfrastructureError } from "~/packages/result/infrastructure-error";
+
 export default defineNuxtPlugin({
   name: "package-translation-user-redirect",
   dependsOn: ["module-users-initiator"],
@@ -12,7 +14,16 @@ export default defineNuxtPlugin({
        * does not work as expected (the locale is not changed)
        */
       $dependencies.common.logger.warn("Setting the locale to the user specified one and redirecting them...", { userSelectedLocale });
-      setTimeout(() => $i18n.setLocale(userSelectedLocale), 150);
+      setTimeout(async () => {
+        try {
+          await $i18n.setLocale(userSelectedLocale);
+        }
+        catch (error) {
+          $dependencies.common.logger.error("Error setting the locale to the user specified one",
+            InfrastructureError.newFromUnknownError({ userSelectedLocale }, error),
+          );
+        }
+      }, 150);
     }
 
     return {};
