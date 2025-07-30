@@ -27,7 +27,7 @@ onUnmounted(() => {
 });
 
 /**
- *
+ * Optimistic loading spinner for snappier UX
  */
 const loading = ref(true);
 onBeforeMount(() => {

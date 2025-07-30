@@ -61,11 +61,6 @@ export const useWalletStore = defineStore("walletStore", {
       this.balanceStatus = "ready";
       this.isInit = true;
 
-      // If user is currently in the individual game page: hide the balance
-      const route = useRoute();
-      if (route.name?.toString().startsWith("games-provider-game")) {
-        this.hideBalance();
-      }
       return;
     },
 

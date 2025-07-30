@@ -8,19 +8,8 @@ const onClickBalance = async () => {
   await navigateTo(localePath("/settings/wallet"));
 };
 
-const ENABLE_SERVER_SIDE_RENDERING = true;
-const DEFER_CLIENT_SIDE_LOADING = true;
-
-const { data } = await useAsyncData("nav-wallet-balance-wallet", async () => {
-  return { balanceStatus: walletStore.balanceStatus };
-}, {
-  watch: [() => walletStore.balanceStatus, () => walletStore.balance],
-  lazy: DEFER_CLIENT_SIDE_LOADING,
-  server: ENABLE_SERVER_SIDE_RENDERING,
-});
-
 // Watch for balance changes and trigger animation
-watch(() => data.value?.balanceStatus, () => {
+watch(() => walletStore.balanceStatus, () => {
   flashRef.value?.animate([
     { opacity: 0, offset: 0 },
     { opacity: 1, offset: 0.1 },
@@ -41,18 +30,18 @@ watch(() => data.value?.balanceStatus, () => {
     />
     <BaseButton
       variant="secondary"
-      :disabled="data?.balanceStatus !== 'ready'"
+      :disabled="walletStore.balanceStatus !== 'ready'"
       class="min-w-20"
       @click="onClickBalance"
     >
       <BaseCurrency
-        v-if="walletStore.wallet && data?.balanceStatus === 'ready'"
+        v-if="walletStore.balanceStatus === 'ready'"
         class="text-white"
         :currency="walletStore.wallet.currency"
         :value="walletStore.balance"
       />
       <BaseCurrency
-        v-if="walletStore.wallet && data?.balanceStatus === 'loading'"
+        v-if="walletStore.balanceStatus === 'loading'"
         variant="ghost"
         :currency="walletStore.wallet.currency"
         :value="walletStore.balance"
@@ -68,10 +57,10 @@ watch(() => data.value?.balanceStatus, () => {
         />
       </div>
 
-      <span v-if="data?.balanceStatus === 'hidden'">
+      <span v-if="walletStore.balanceStatus === 'hidden'">
         {{ t("user_nav.balance_hidden_while_playing") }}
       </span>
-      <BaseSkeleton v-if="!data?.balanceStatus" :loading="true" />
+      <BaseSkeleton v-if="!walletStore.balanceStatus" :loading="true" />
     </BaseButton>
   </div>
 </template>
