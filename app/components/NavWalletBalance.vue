@@ -29,6 +29,7 @@ watch(() => walletStore.balanceStatus, () => {
       class="absolute inset-0 rounded bg-white/30 opacity-0 pointer-events-none"
     />
     <BaseButton
+      v-if="walletStore.wallet"
       variant="secondary"
       :disabled="walletStore.balanceStatus !== 'ready'"
       class="min-w-20"
