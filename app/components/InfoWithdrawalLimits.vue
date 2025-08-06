@@ -34,7 +34,7 @@ const secondsToDayFrequency = (seconds: number) => {
     <div v-if="cooldownSeconds" class="value">{{ secondsToDayFrequency(cooldownSeconds) }}/day</div>
 
     <div>{{ $t("withdrawal_limits.limits_bets_to_withdraw") }}</div>
-    <div class="value">1.7x</div>
+    <div class="value">1x</div>
 
     <div v-if="unlockedBalance !== null">{{ $t("withdrawal_limits.unlocked_balance") }}</div>
     <div v-if="unlockedBalance !== null" class="value">
