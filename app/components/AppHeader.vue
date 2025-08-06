@@ -14,7 +14,7 @@ const emit = defineEmits([
 
 <template>
   <nav class="sticky top-0 left-0 right-0 z-[9] print:hidden">
-    <PromoBar />
+    <!-- Reactivate when we want to have the notifications show again for PWA and others: <PromoBar /> -->
 
     <div class="w-full bg-subtle h-14">
       <div class="giro__container h-full">
