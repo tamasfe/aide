@@ -354,6 +354,8 @@ mod extra {
         }
     }
 
+    impl OperationInput for extract::Host {}
+
     #[cfg(feature = "axum-extra-cookie")]
     impl OperationInput for extract::CookieJar {}
 
