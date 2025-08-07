@@ -31,10 +31,10 @@ const props = defineProps({
   },
 });
 
-const presetAmounts = ref([10, 50, 100]);
+const presetAmounts = ref([10, 50, 100, 250, 500, 1000]);
 
 const { $dependencies } = useNuxtApp();
-const { t, locale } = useI18n();
+const { t } = useI18n();
 
 /**
  *
@@ -50,7 +50,7 @@ if (props.amounts.max !== null) {
 }
 const validationSchema = toTypedSchema(
   z.object({
-    amount: schemaForAmount.transform(value => Number(value)),
+    amount: schemaForAmount,
   }),
 );
 
@@ -85,8 +85,10 @@ const onSubmit = handleSubmit(async (formData) => {
       class="mb-0.5"
     />
 
+    <!-- Mask example gotten from the official docs "money simple" example (https://beholdr.github.io/maska/v3/#/) -->
     <BaseInputGroup
       v-bind="amountAttrs"
+      v-model.number="amount"
       :placeholder="$t('placeholder.deposit_amount')"
       autocomplete="text"
       inputmode="decimal"
@@ -94,14 +96,19 @@ const onSubmit = handleSubmit(async (formData) => {
       error-placement="below"
       :error-message="formErrors.amount"
       :mask="{
-        number: {
-          locale,
-          fraction: 2,
-          unsigned: true,
+        mask: '0.99',
+        tokens: {
+          0: {
+            pattern: /\d/,
+            multiple: true,
+          },
+          9: {
+            pattern: /\d/,
+            optional: true,
+          },
+
         },
       }"
-      :model-value="amount"
-      @input="(value) => amount = Number(value.replace(/[^\d.]/g, ''))"
     >
       <template #prefix>
         <!-- TODO in the future: make this part multi-currency friendly -->
@@ -117,7 +124,7 @@ const onSubmit = handleSubmit(async (formData) => {
       </template>
     </BaseInputGroup>
 
-    <div class="flex flex-row gap-2 mb-4">
+    <div class="grid grid-cols-3 gap-2 mb-4">
       <BaseButton
         v-for="(presetAmount, index) in presetAmounts"
         :key="index"
@@ -126,7 +133,12 @@ const onSubmit = handleSubmit(async (formData) => {
         class="w-full bg-subtle hover:bg-subtle/80 text-white font-semibold text-base xs:text-lg"
         @click="amount = presetAmount"
       >
-        <BaseCurrency :currency="currency.code" :value="presetAmount" variant="emphasis" />
+        <BaseCurrency
+          :currency="currency.code"
+          :value="presetAmount"
+          trailing-zero-display="stripIfInteger"
+          variant="emphasis"
+        />
       </BaseButton>
     </div>
 

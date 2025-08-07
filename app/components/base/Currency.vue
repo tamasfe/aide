@@ -51,6 +51,10 @@ defineProps({
     type: String as PropType<CurrencyVariants["variant"]>,
     default: "primary" as const,
   },
+  trailingZeroDisplay: {
+    type: String as PropType<ExtendedNumberFormatOptions["trailingZeroDisplay"]>,
+    default: "auto",
+  },
 });
 </script>
 
@@ -60,7 +64,7 @@ defineProps({
     scope="global"
     tag="span"
     :value="value"
-    :format="{ key: 'currency', currency } as ExtendedNumberFormatOptions"
+    :format="{ key: 'currency', currency, trailingZeroDisplay } as ExtendedNumberFormatOptions"
   >
     <template #currency="slotProps">
       <span :class="currencyVariants({ variant })">{{ slotProps.currency }}</span>
