@@ -77,19 +77,19 @@ jobs:
       - name: Helm Push
         run: helm push frontend-*.tgz oci://050295693931.dkr.ecr.eu-west-1.amazonaws.com/
 
-      - name: Tailscale
-        uses: tailscale/github-action@v2
-        with:
-          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
-          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
-          tags: tag:ci
+      # - name: Tailscale
+      #   uses: tailscale/github-action@v2
+      #   with:
+      #     oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+      #     oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+      #     tags: tag:ci
 
-      - name: Setup ArgoCD CLI
-        uses: imajeetyadav/argocd-cli@v1
+      # - name: Setup ArgoCD CLI
+      #   uses: imajeetyadav/argocd-cli@v1
 
-      - run: |
-          argocd app sync frontend
-          argocd app sync zambabet-frontend
-        env:
-          ARGOCD_AUTH_TOKEN: ${{ secrets.ARGOCD_AUTH_TOKEN }}
-          ARGOCD_SERVER: argocd.taild2b874.ts.net
+      # - run: |
+      #     argocd app sync frontend
+      #     argocd app sync zambabet-frontend
+      #   env:
+      #     ARGOCD_AUTH_TOKEN: ${{ secrets.ARGOCD_AUTH_TOKEN }}
+      #     ARGOCD_SERVER: argocd.taild2b874.ts.net
