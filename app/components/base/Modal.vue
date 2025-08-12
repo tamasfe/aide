@@ -222,7 +222,7 @@ if (preloadBannerLinks.length > 0) {
   @apply mb-3 w-[9rem] lg:w-[10rem] self-center;
 }
 .banner-top {
-  @apply w-full aspect-[16/9] object-cover;
+  @apply w-full aspect-[100/37] object-cover;
 }
 .content-padding {
   @apply p-5;
