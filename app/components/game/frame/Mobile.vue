@@ -39,6 +39,23 @@ const onTogglePlaying = async () => {
   // must check if logged in etc, this is just pseudocode to show UI state
   playing.value = !playing.value;
 };
+
+const listenerId = ref<number | null>(null);
+onMounted(() => {
+  listenerId.value = $dependencies.common.asyncMessagePublisher.subscribe(
+    "frontend:commands:modals:open-user-interaction-modal",
+    () => {
+      playing.value = false;
+    },
+  );
+});
+
+onUnmounted(() => {
+  if (listenerId.value) {
+    $dependencies.common.asyncMessagePublisher.unsubscribe(listenerId.value);
+    listenerId.value = null;
+  }
+});
 </script>
 
 <template>
@@ -60,10 +77,20 @@ const onTogglePlaying = async () => {
               :src="siteStore.getRelativeAssetPath('logos/logo.svg')"
               alt="Logo"
             />
-            <BaseClose
-              size="sm"
-              @close="onTogglePlaying"
-            />
+            <div class="flex items-center gap-4">
+              <BaseButton
+                id="app-header-deposit-button"
+                variant="emphasis"
+                class="my-2"
+                @click="$dependencies.users.ui.emitCommandOpenUserActionModal.handle('deposit')"
+              >
+                {{ $t("button.deposit") }}
+              </BaseButton>
+              <BaseClose
+                size="sm"
+                @close="onTogglePlaying"
+              />
+            </div>
           </div>
 
           <div class="relative flex-grow">
