@@ -26,7 +26,7 @@ Sentry.init({
     Sentry.browserTracingIntegration(),
   ],
 
-  environment: location?.hostname === "localhost" ? "development" : "production",
+  environment: runtimeConfig.public.release === "development" ? "development" : "production",
 
   release: runtimeConfig.public.release,
 

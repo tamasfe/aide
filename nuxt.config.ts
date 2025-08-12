@@ -66,10 +66,10 @@ export default defineNuxtConfig({
       release: process.env.NUXT_PUBLIC_RELEASE || "development",
       log: {
         level: process.env.NUXT_PUBLIC_LOG_LEVEL as
-          | "warn"
-          | "error"
-          | "debug"
-          | "info",
+        | "warn"
+        | "error"
+        | "debug"
+        | "info",
       },
       serviceName: process.env.NUXT_PUBLIC_SERVICE_NAME || "girobet-frontend",
 
@@ -79,11 +79,11 @@ export default defineNuxtConfig({
       },
       signupFlows: {
         idsClientRepo: process.env.NUXT_PUBLIC_SIGNUP_FLOWS_IDS_CLIENT_REPO as
-          | "mock"
-          | "local_storage",
+        | "mock"
+        | "local_storage",
         apiMode: process.env.NUXT_PUBLIC_SIGNUP_FLOWS_API_MODE as
-          | "dumb"
-          | "api",
+        | "dumb"
+        | "api",
       },
       users: {
         apiMode: process.env.NUXT_PUBLIC_USERS_API_MODE as "dumb" | "api",
@@ -287,8 +287,8 @@ export default defineNuxtConfig({
     // dynamicImportForServerEntry: true,
     sourceMapsUploadOptions: {
       enabled:
-        process.env.SENTRY_AUTH_TOKEN !== undefined &&
-        process.env.SENTRY_AUTH_TOKEN !== "",
+        process.env.SENTRY_AUTH_TOKEN !== undefined
+        && process.env.SENTRY_AUTH_TOKEN !== "",
       org: "girobet",
       project: "girobet-frontend",
       authToken:
