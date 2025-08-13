@@ -72,6 +72,831 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/admin/user/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Users
+         * @description Fetch a paginated list of users in the system.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    filters?: string;
+                    limit?: number;
+                    offset?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PaginatorResponse_for_AdminUserResponse_and_ActiveFilters_and_int64"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/user/{user_id}/block": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Block User
+         * @description Block the user until the specified date. If date is not set, the user will be blocked indefinitely.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    user_id: components["schemas"]["UserId"];
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["BlockUserBody"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/admin/user/{user_id}/unblock": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Unblock User
+         * @description Unblock the user.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    user_id: components["schemas"]["UserId"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/admin/user/{user_id}/exclude": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Exclude User
+         * @description Exclude the user until the specified date.
+         *         If date is not set, the user will be excluded indefinitely.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    user_id: components["schemas"]["UserId"];
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["BlockUserBody"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/admin/user/{user_id}/include": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Include User
+         * @description Include the user.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    user_id: components["schemas"]["UserId"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/admin/session/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Sessions
+         * @description Fetch sessions
+         */
+        get: {
+            parameters: {
+                query?: {
+                    filters?: string;
+                    limit?: number;
+                    offset?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PaginatorResponse_for_SessionResponse_and_ActiveFilters_and_int64"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/payment/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Payments
+         * @description This endpoint returns a list of payments and payment flows in chronological order with the newest items first.
+         *     You may filter payments via the following sample filter:
+         *
+         *     ```json
+         *     {
+         *     	"payment_flow_id": {"$eq": "1"},
+         *     	"payment_id": {"$eq": "1"},
+         *     	"wallet_id": {"$eq": "1"},
+         *     	"user_id": {"$eq": "1"},
+         *     	"payment_flow_status": {"$eq": "pending"},
+         *     	"payment_type": {"$eq": "deposit"},
+         *     	"payment_flow_amount": {"$eq": "100"},
+         *     	"payment_amount": {"$eq": "100"},
+         *     	"curency": {"$eq": "USD"},
+         *     	"payment_is_adjustment": {"$eq": "true"},
+         *     	"user_name": {"$contains": "john"},
+         *     	"user_email": {"$contains": "john"},
+         *     	"integration_id": {"$eq": "1"},
+         *     	"payment_provider_name": {"$contains": "star"},
+         *     	"payment_method_id": {"$eq": "1"},
+         *     	"payment_method_name": {"$contains": "pix"},
+         *     	"payment_flow_created_at": {"$eq": "2021-01-01T00:00:00Z"},
+         *     	"payment_created_at": {"$eq": "2021-01-01T00:00:00Z"},
+         *     	"payment_flow_status_created_at": {"$eq": "2021-01-01T00:00:00Z"}
+         *     }
+         *     ```
+         */
+        get: {
+            parameters: {
+                query?: {
+                    filters?: string;
+                    limit?: number;
+                    offset?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PaginatorResponse_for_AdminPaymentListResponse_and_ActiveFilters_and_int64"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/payment/flow/{flow_id}/approve": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Approve Payment Flow
+         * @description Approve the specified payment flow.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    flow_id: components["schemas"]["PaymentFlowId"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/admin/payment/flow/{flow_id}/reject": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Reject Payment Flow
+         * @description Reject the specified payment flow.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    flow_id: components["schemas"]["PaymentFlowId"];
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["RejectPaymentFlowBody"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/admin/payment/limits/{currency}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update Payment Limits
+         * @description Update the limits for the specified currency.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    currency: components["schemas"]["Currency"];
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["LimitOverridesPrototype"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/admin/payment/balance/adjust": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update User Balance
+         * @description Adjust the balance for the specified user and currency.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["AdjustUserBalanceBody"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/admin/wallet/{wallet_id}/limits": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update Wallet Limits
+         * @description Patch the wallet limits.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    wallet_id: components["schemas"]["WalletId"];
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["LimitOverridesPrototype"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/admin/game/rounds": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Read Game Rounds
+         * @description Fetch game rounds
+         */
+        get: {
+            parameters: {
+                query?: {
+                    filters?: string;
+                    limit?: number;
+                    offset?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PaginatorResponse_for_AdminBetResponse_and_ActiveFilters_and_int64"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/category/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Read Game Categories
+         * @description Fetch game categories
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CategoryResponse"][];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/category/group/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Read Category Groups
+         * @description Fetch category groups
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CategoryGroupResponse"][];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/ws/access-token": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Issue WebSocket Access Token
+         * @description This endpoint is used to generate authentication tokens (access tokens) for WebSocket connections in our system.
+         *
+         *     ## Access Token Generation
+         *
+         *     1. Send a POST request to the access token issuer endpoint.
+         *     2. The endpoint will return an access token.
+         *
+         *     ## Access Token Properties
+         *
+         *     - Access tokens are short-lived tokens, valid for 60 seconds from the time of generation.
+         *     - Each access token, once used, is tied to a specific websocket connection and is immediately invalidated.
+         *
+         *     ## Usage
+         *
+         *     - Use the generated access token when establishing a WebSocket connection.
+         *     - For detailed information on how to use the access token in a WebSocket connection, refer to the documentation found [here](#tag/websocket/GET/ws/connect).
+         *
+         *     ## Important Notes
+         *
+         *     - Always generate a new access token before attempting to log in to the user event stream.
+         *     - Ensure your client handles access token expiration and reconnection scenarios.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AccessTokenTokenResponse"];
+                    };
+                };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *      This enum covers a wide range of error scenarios, from wallet-related issues
+                 *      to payment processing problems, user authentication errors, and more. */
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/ws/connect": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Establish WebSocket Connection
+         * @description This route is the entry point for WebSocket connections in our system.
+         *
+         *     ## Connection Process
+         *
+         *     1. Connect to this endpoint using the WebSocket protocol.
+         *     2. Once connected, send a login message with your access token:
+         *
+         *        ```json
+         *        {
+         *          "type": "user_login",
+         *          "data": "<access-token>"
+         *        }
+         *        ```
+         *
+         *     ## Example (JavaScript)
+         *
+         *     ```javascript
+         *     const socket = new WebSocket("wss://your-domain.com/ws/connect");
+         *
+         *     // After connection is established, send login message
+         *     socket.onopen = () => {
+         *       const loginMessage = {
+         *         type: "user_login",
+         *         data: "your-access-token"
+         *       };
+         *       socket.send(JSON.stringify(loginMessage));
+         *     };
+         *     ```
+         *
+         *     ## Message Format
+         *
+         *     All WebSocket messages follow a JSON format. The message structure for client events matches the request body specifications in this OpenAPI documentation, while server events follow the HTTP response specifications.
+         *
+         *     ### Client Events (Sending)
+         *     Messages sent from the client should follow this format:
+         *     ```json
+         *     {
+         *       "type": "event_name",
+         *       "data": {}  // Data structure as specified in OpenAPI request bodies
+         *     }
+         *     ```
+         *
+         *     ### Server Events (Receiving)
+         *     Messages received from the server will follow this format:
+         *     ```json
+         *     {
+         *       "type": "event_name",
+         *       "data": {}  // Data structure as specified in OpenAPI responses
+         *     }
+         *     ```
+         *
+         *     ## Important Notes
+         *
+         *     - Access tokens are valid for 60 seconds.
+         *     - Ensure your client can handle reconnection if the access token expires.
+         *     - The server will emit an error event if authentication fails.
+         *     - After a successful login, you'll be subscribed to your respective channel.
+         *
+         *     For detailed information on access token generation and management, refer to the main WebSocket authentication documentation found [here](#tag/websocket/POST/ws/access-token).
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["WebsocketClientEvent"];
+                };
+            };
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["WebsocketServerEvent"];
+                    };
+                };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *      This enum covers a wide range of error scenarios, from wallet-related issues
+                 *      to payment processing problems, user authentication errors, and more. */
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/auth/whoami": {
         parameters: {
             query?: never;
@@ -1105,6 +1930,59 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/game-provider/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Game Providers
+         * @description List all game providers.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    limit?: number;
+                    offset?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PaginatorResponse_for_GameProviderResponse_and_null_and_int64"];
+                    };
+                };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *      This enum covers a wide range of error scenarios, from wallet-related issues
+                 *      to payment processing problems, user authentication errors, and more. */
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/game-provider/{provider_identifier}": {
         parameters: {
             query?: never;
@@ -1125,7 +2003,7 @@ export interface paths {
                 header?: never;
                 path: {
                     /** @description The ID of the game provider. */
-                    provider_identifier: string;
+                    provider_identifier: components["schemas"]["GameProviderIdentifier"];
                 };
                 cookie?: never;
             };
@@ -1300,7 +2178,7 @@ export interface paths {
                     category?: string | null;
                     /** @description The provider to filter games by. If set, only games by this provider are
                      *      returned. */
-                    provider_identifier?: string | null;
+                    provider_identifier?: components["schemas"]["GameProviderIdentifier"] | null;
                     /** @description An organic search query to find games by. Searched fields include but
                      *      are not limited to: name, description, provider name... */
                     query?: string | null;
@@ -1363,7 +2241,7 @@ export interface paths {
                     category?: string | null;
                     /** @description The provider to filter games by. If set, only games by this provider are
                      *      returned. */
-                    provider_identifier?: string | null;
+                    provider_identifier?: components["schemas"]["GameProviderIdentifier"] | null;
                     limit?: number;
                     offset?: number;
                 };
@@ -2516,831 +3394,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/ws/access-token": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Issue WebSocket Access Token
-         * @description This endpoint is used to generate authentication tokens (access tokens) for WebSocket connections in our system.
-         *
-         *     ## Access Token Generation
-         *
-         *     1. Send a POST request to the access token issuer endpoint.
-         *     2. The endpoint will return an access token.
-         *
-         *     ## Access Token Properties
-         *
-         *     - Access tokens are short-lived tokens, valid for 60 seconds from the time of generation.
-         *     - Each access token, once used, is tied to a specific websocket connection and is immediately invalidated.
-         *
-         *     ## Usage
-         *
-         *     - Use the generated access token when establishing a WebSocket connection.
-         *     - For detailed information on how to use the access token in a WebSocket connection, refer to the documentation found [here](#tag/websocket/GET/ws/connect).
-         *
-         *     ## Important Notes
-         *
-         *     - Always generate a new access token before attempting to log in to the user event stream.
-         *     - Ensure your client handles access token expiration and reconnection scenarios.
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["AccessTokenTokenResponse"];
-                    };
-                };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/ws/connect": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Establish WebSocket Connection
-         * @description This route is the entry point for WebSocket connections in our system.
-         *
-         *     ## Connection Process
-         *
-         *     1. Connect to this endpoint using the WebSocket protocol.
-         *     2. Once connected, send a login message with your access token:
-         *
-         *        ```json
-         *        {
-         *          "type": "user_login",
-         *          "data": "<access-token>"
-         *        }
-         *        ```
-         *
-         *     ## Example (JavaScript)
-         *
-         *     ```javascript
-         *     const socket = new WebSocket("wss://your-domain.com/ws/connect");
-         *
-         *     // After connection is established, send login message
-         *     socket.onopen = () => {
-         *       const loginMessage = {
-         *         type: "user_login",
-         *         data: "your-access-token"
-         *       };
-         *       socket.send(JSON.stringify(loginMessage));
-         *     };
-         *     ```
-         *
-         *     ## Message Format
-         *
-         *     All WebSocket messages follow a JSON format. The message structure for client events matches the request body specifications in this OpenAPI documentation, while server events follow the HTTP response specifications.
-         *
-         *     ### Client Events (Sending)
-         *     Messages sent from the client should follow this format:
-         *     ```json
-         *     {
-         *       "type": "event_name",
-         *       "data": {}  // Data structure as specified in OpenAPI request bodies
-         *     }
-         *     ```
-         *
-         *     ### Server Events (Receiving)
-         *     Messages received from the server will follow this format:
-         *     ```json
-         *     {
-         *       "type": "event_name",
-         *       "data": {}  // Data structure as specified in OpenAPI responses
-         *     }
-         *     ```
-         *
-         *     ## Important Notes
-         *
-         *     - Access tokens are valid for 60 seconds.
-         *     - Ensure your client can handle reconnection if the access token expires.
-         *     - The server will emit an error event if authentication fails.
-         *     - After a successful login, you'll be subscribed to your respective channel.
-         *
-         *     For detailed information on access token generation and management, refer to the main WebSocket authentication documentation found [here](#tag/websocket/POST/ws/access-token).
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["WebsocketClientEvent"];
-                };
-            };
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["WebsocketServerEvent"];
-                    };
-                };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/admin/user/list": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * List Users
-         * @description Fetch a paginated list of users in the system.
-         */
-        get: {
-            parameters: {
-                query?: {
-                    filters?: string;
-                    limit?: number;
-                    offset?: number;
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["PaginatorResponse_for_AdminUserResponse_and_ActiveFilters_and_int64"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/admin/user/{user_id}/block": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Block User
-         * @description Block the user until the specified date. If date is not set, the user will be blocked indefinitely.
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    user_id: components["schemas"]["UserId"];
-                };
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["BlockUserBody"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/admin/user/{user_id}/unblock": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Unblock User
-         * @description Unblock the user.
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    user_id: components["schemas"]["UserId"];
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/admin/user/{user_id}/exclude": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Exclude User
-         * @description Exclude the user until the specified date.
-         *         If date is not set, the user will be excluded indefinitely.
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    user_id: components["schemas"]["UserId"];
-                };
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["BlockUserBody"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/admin/user/{user_id}/include": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Include User
-         * @description Include the user.
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    user_id: components["schemas"]["UserId"];
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/admin/session/list": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * List Sessions
-         * @description Fetch sessions
-         */
-        get: {
-            parameters: {
-                query?: {
-                    filters?: string;
-                    limit?: number;
-                    offset?: number;
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["PaginatorResponse_for_SessionResponse_and_ActiveFilters_and_int64"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/admin/payment/list": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * List Payments
-         * @description This endpoint returns a list of payments and payment flows in chronological order with the newest items first.
-         *     You may filter payments via the following sample filter:
-         *
-         *     ```json
-         *     {
-         *     	"payment_flow_id": {"$eq": "1"},
-         *     	"payment_id": {"$eq": "1"},
-         *     	"wallet_id": {"$eq": "1"},
-         *     	"user_id": {"$eq": "1"},
-         *     	"payment_flow_status": {"$eq": "pending"},
-         *     	"payment_type": {"$eq": "deposit"},
-         *     	"payment_flow_amount": {"$eq": "100"},
-         *     	"payment_amount": {"$eq": "100"},
-         *     	"curency": {"$eq": "USD"},
-         *     	"payment_is_adjustment": {"$eq": "true"},
-         *     	"user_name": {"$contains": "john"},
-         *     	"user_email": {"$contains": "john"},
-         *     	"integration_id": {"$eq": "1"},
-         *     	"payment_provider_name": {"$contains": "star"},
-         *     	"payment_method_id": {"$eq": "1"},
-         *     	"payment_method_name": {"$contains": "pix"},
-         *     	"payment_flow_created_at": {"$eq": "2021-01-01T00:00:00Z"},
-         *     	"payment_created_at": {"$eq": "2021-01-01T00:00:00Z"},
-         *     	"payment_flow_status_created_at": {"$eq": "2021-01-01T00:00:00Z"}
-         *     }
-         *     ```
-         */
-        get: {
-            parameters: {
-                query?: {
-                    filters?: string;
-                    limit?: number;
-                    offset?: number;
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["PaginatorResponse_for_AdminPaymentListResponse_and_ActiveFilters_and_int64"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/admin/payment/flow/{flow_id}/approve": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Approve Payment Flow
-         * @description Approve the specified payment flow.
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    flow_id: components["schemas"]["PaymentFlowId"];
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/admin/payment/flow/{flow_id}/reject": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Reject Payment Flow
-         * @description Reject the specified payment flow.
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    flow_id: components["schemas"]["PaymentFlowId"];
-                };
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["RejectPaymentFlowBody"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/admin/payment/limits/{currency}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Update Payment Limits
-         * @description Update the limits for the specified currency.
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    currency: components["schemas"]["Currency"];
-                };
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["LimitOverridesPrototype"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/admin/payment/balance/adjust": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Update User Balance
-         * @description Adjust the balance for the specified user and currency.
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["AdjustUserBalanceBody"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/admin/wallet/{wallet_id}/limits": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Update Wallet Limits
-         * @description Patch the wallet limits.
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    wallet_id: components["schemas"]["WalletId"];
-                };
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["LimitOverridesPrototype"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/admin/game/rounds": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Read Game Rounds
-         * @description Fetch game rounds
-         */
-        get: {
-            parameters: {
-                query?: {
-                    filters?: string;
-                    limit?: number;
-                    offset?: number;
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["PaginatorResponse_for_AdminBetResponse_and_ActiveFilters_and_int64"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/admin/category/list": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Read Game Categories
-         * @description Fetch game categories
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["CategoryResponse"][];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/admin/category/group/list": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Read Category Groups
-         * @description Fetch category groups
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["CategoryGroupResponse"][];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/": {
         parameters: {
             query?: never;
@@ -3380,7 +3433,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/health": {
+    "/startup": {
         parameters: {
             query?: never;
             header?: never;
@@ -3388,8 +3441,8 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Health Check
-         * @description Check the health of the system
+         * Startup Probe
+         * @description Check if the app has finished booting
          */
         get: {
             parameters: {
@@ -3430,7 +3483,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/liveness": {
+    "/ready": {
         parameters: {
             query?: never;
             header?: never;
@@ -3438,8 +3491,8 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Liveness Check
-         * @description Check the liveness of the system
+         * Readiness Probe
+         * @description Check if the app is ready to serve requests
          */
         get: {
             parameters: {
@@ -3450,12 +3503,63 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                /** @description no content */
                 200: {
                     headers: {
                         [name: string]: unknown;
                     };
-                    content?: never;
+                    content: {
+                        "application/json": components["schemas"]["HealthcheckResponse"];
+                    };
+                };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *      This enum covers a wide range of error scenarios, from wallet-related issues
+                 *      to payment processing problems, user authentication errors, and more. */
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/live": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Liveness Probe
+         * @description Check if the app is running and not deadlocked
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["HealthcheckResponse"];
+                    };
                 };
                 /** @description Represents various errors that can occur during server operations.
                  *
@@ -3813,9 +3917,10 @@ export interface components {
             game_slug: string;
             provider_slug: string;
         };
+        GameProviderIdentifier: string;
         GameProviderParams: {
             /** @description The ID of the game provider. */
-            provider_identifier: string;
+            provider_identifier: components["schemas"]["GameProviderIdentifier"];
         };
         /** @description The response to a game provider request. It contains all available
          *      information about the provider. */
@@ -3824,7 +3929,7 @@ export interface components {
              *      Markdown, so newlines may need to be handled explicitly. */
             description?: string | null;
             /** @description The slug of the game provider. This may be used in URLs. */
-            identifier: string;
+            identifier: components["schemas"]["GameProviderIdentifier"];
             /** @description The name of the game provider. Do not use this in URLs, as it may
              *      contain special characters. */
             name: string;
@@ -3972,7 +4077,7 @@ export interface components {
             category?: string | null;
             /** @description The provider to filter games by. If set, only games by this provider are
              *      returned. */
-            provider_identifier?: string | null;
+            provider_identifier?: components["schemas"]["GameProviderIdentifier"] | null;
         };
         ListNotificationsQuery: {
             /** @description The read status of the notifications to filter by. */
@@ -4056,7 +4161,6 @@ export interface components {
                 message: string;
             };
         });
-        /** @description Auto-generated discriminant enum variants */
         NotificationTypeDiscriminants: "payment_status_update" | "kyc_completed" | "custom" | "banner" | "popup_modal";
         PaginatorMetadata_for_ActiveFilters_and_int64: {
             filters?: components["schemas"]["ActiveFilters"] | null;
@@ -4089,6 +4193,10 @@ export interface components {
         PaginatorMetadata_for_SearchGameQuery_and_Nullable_uint: {
             filters?: components["schemas"]["SearchGameQuery"] | null;
             pagination: components["schemas"]["PaginatorPosition_for_Nullable_uint"];
+        };
+        PaginatorMetadata_for_null_and_int64: {
+            filters?: null;
+            pagination: components["schemas"]["PaginatorPosition_for_int64"];
         };
         PaginatorPosition_for_Nullable_uint: {
             /**
@@ -4133,6 +4241,10 @@ export interface components {
         PaginatorResponse_for_GameActionResponse_and_ListGameActionsQuery_and_int64: {
             data: components["schemas"]["GameActionResponse"][];
             metadata: components["schemas"]["PaginatorMetadata_for_ListGameActionsQuery_and_int64"];
+        };
+        PaginatorResponse_for_GameProviderResponse_and_null_and_int64: {
+            data: components["schemas"]["GameProviderResponse"][];
+            metadata: components["schemas"]["PaginatorMetadata_for_null_and_int64"];
         };
         PaginatorResponse_for_GameResponse_and_GameCategoryListQuery_and_int64: {
             data: components["schemas"]["GameResponse"][];
@@ -4419,10 +4531,7 @@ export interface components {
                 value: number;
             };
         };
-        /**
-         * @description Auto-generated discriminant enum variants
-         * @enum {string}
-         */
+        /** @enum {string} */
         PixKeyTypeDiscriminants: "CPF" | "EMAIL" | "PHONE" | "EVP";
         ProtocolType: "welcome" | {
             error: string;
@@ -4456,7 +4565,7 @@ export interface components {
          *      provider" endpoint. */
         SearchGameProviderResponse: {
             /** @description The slug of the game provider. This may be used in URLs. */
-            identifier: string;
+            identifier: components["schemas"]["GameProviderIdentifier"];
             /** @description The name of the game provider. Do not use this in URLs, as it may
              *      contain special characters. */
             name: string;
@@ -4473,7 +4582,7 @@ export interface components {
             category?: string | null;
             /** @description The provider to filter games by. If set, only games by this provider are
              *      returned. */
-            provider_identifier?: string | null;
+            provider_identifier?: components["schemas"]["GameProviderIdentifier"] | null;
             /** @description An organic search query to find games by. Searched fields include but
              *      are not limited to: name, description, provider name... */
             query?: string | null;

@@ -58,6 +58,51 @@ export class ProvidersRepositoryGirobet implements ProvidersRepositoryI {
     }
   }
 
+  public async listPaginating(pagination: { limit: number; offset: number }) {
+    try {
+      const { data, error, response } = await this.apiClient.GET("/game-provider/list", {
+        params: {
+          query: {
+            limit: pagination.limit,
+            offset: pagination.offset,
+          },
+        },
+      });
+
+      if (data) {
+        return success({
+          game_providers: data.data.map(game_provider => camelizeKeys({ ...game_provider })),
+          pagination: {
+            limit: data.metadata.pagination.limit,
+            offset: data.metadata.pagination.offset,
+            totalItems: data.metadata.pagination.total_items ?? NaN,
+          },
+        });
+      }
+
+      if (error) {
+        return fail(
+          InfrastructureError.newFromError({
+            pagination,
+          }, HttpBackendApiError.newFromBackendError(error, response)),
+        );
+      }
+
+      return fail(
+        InfrastructureError.newFromUnknownError({
+          pagination,
+        }, new Error("Unexpected scenario: library did not return data nor error. This should never happen")),
+      );
+    }
+    catch (error: unknown) {
+      return fail(
+        InfrastructureError.newFromUnknownError({
+          pagination,
+        }, error),
+      );
+    }
+  }
+
   public async findByIdentifier(providerIdentifier: string): Promise<Result<Provider, ErrorProviderNotFound | InfrastructureError>> {
     try {
       const { data, error, response } = await this.apiClient.GET("/game-provider/{provider_identifier}", {

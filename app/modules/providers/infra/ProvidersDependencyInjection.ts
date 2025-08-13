@@ -4,12 +4,14 @@ import { SearchProvidersPaginating } from "../application/SearchProvidersPaginat
 import { ProvidersRepositoryDumb } from "./ProvidersRepositoryDumb";
 import { ProvidersRepositoryGirobet } from "./ProvidersRepositoryGirobet";
 import { SearchProvidersOnGrid } from "./ui/SearchProvidersOnGrid";
+import { ListGameProvidersPaginatingOnGrid } from "./ui/ListGameProvidersPaginatingOnGrid";
 import { FindProviderByIdentifierOnProviderPage } from "./ui/FindProviderByIdOnProviderPage";
 import type { CommonDependenciesI } from "~/dependency-injection/load-di";
 
 export interface ProvidersDependencyInjectionI {
   ui: {
     searchProvidersOnGrid: SearchProvidersOnGrid;
+    listProvidersOnGrid: ListGameProvidersPaginatingOnGrid;
     findProviderByIdentifierOnProviderPage: FindProviderByIdentifierOnProviderPage;
   };
 }
@@ -29,6 +31,10 @@ export const createProvidersDependencyInjection = async (publicConfig: PublicRun
     ui: {
       searchProvidersOnGrid: new SearchProvidersOnGrid(
         new SearchProvidersPaginating(providersApiRepository),
+        commonDependencies.logger,
+      ),
+      listProvidersOnGrid: new ListGameProvidersPaginatingOnGrid(
+        providersApiRepository,
         commonDependencies.logger,
       ),
       findProviderByIdentifierOnProviderPage: new FindProviderByIdentifierOnProviderPage(

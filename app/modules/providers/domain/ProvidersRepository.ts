@@ -13,5 +13,14 @@ export interface ProvidersRepositoryI {
     };
   }, InfrastructureError>>;
 
+  listPaginating(pagination: { limit: number; offset: number }): Promise<Result<{
+    game_providers: Provider[];
+    pagination: {
+      limit: number;
+      offset: number;
+      totalItems: number;
+    };
+  }, InfrastructureError>>;
+
   findByIdentifier(identifier: string): Promise<Result<Provider, ErrorProviderNotFound | InfrastructureError>>;
 }

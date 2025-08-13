@@ -14,7 +14,7 @@ const onLoadData = async () => {
   if (!canLoadMore.value) return;
   loading.value = true;
 
-  const { providers: foundProviders, canLoadMore: updatedCanLoadMore } = await $dependencies.providers.ui.searchProvidersOnGrid.handle(null, nextProvidersPageToSearch.value);
+  const { game_providers: foundProviders, canLoadMore: updatedCanLoadMore } = await $dependencies.providers.ui.listProvidersOnGrid.handle(nextProvidersPageToSearch.value);
   providers.value.push(...foundProviders.map(provider => useAddKeyFromIdentifier(provider)));
   canLoadMore.value = updatedCanLoadMore;
   nextProvidersPageToSearch.value += 1;

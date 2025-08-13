@@ -18,6 +18,18 @@ export class ProvidersRepositoryDumb implements ProvidersRepositoryI {
     });
   }
 
+  public async listPaginating(pagination: { limit: number; offset: number }) {
+    this.logger.debug("listPaginating called", { pagination });
+    return success({
+      game_providers: this.providers.slice(pagination.offset, pagination.offset + pagination.limit),
+      pagination: {
+        limit: pagination.limit,
+        offset: pagination.offset,
+        totalItems: 2,
+      },
+    });
+  }
+
   public async findByIdentifier(identifier: string): Promise<Result<Provider, ErrorProviderNotFound | InfrastructureError>> {
     this.logger.debug("findById called", { providerId: identifier });
     const provider = this.providers.find(provider => provider.identifier === identifier);
