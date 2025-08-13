@@ -84,11 +84,6 @@ await useAsyncData(`load-providers`, () => onLoadData().then(() => true),
             <ProviderImageLoader :provider-identifier="item.identifier" />
           </BaseLink>
         </div>
-
-        <!-- Commenting until the endpoint returns how many games the provider has  -->
-        <!-- <div class="w-full flex justify-center font-medium bg-button-primary text-transparent bg-clip-text">
-          {{ t("grid.game_count", { count: 69 }) }}
-        </div> -->
       </div>
     </template>
   </GridHeaderHorizontal>

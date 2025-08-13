@@ -13,7 +13,7 @@ export class ListGameProvidersPaginatingOnGrid {
   public async handle(page: number, count = ListGameProvidersPaginatingOnGrid.DEFAULT_PAGINATION_SIZE): Promise<{
     game_providers: Provider[];
     canLoadMore: boolean;
-    totalGames: number;
+    totalProviders: number;
   }> {
     const result = await this.apiRepository.listPaginating(
       {
@@ -28,7 +28,7 @@ export class ListGameProvidersPaginatingOnGrid {
       return {
         game_providers: [],
         canLoadMore: false,
-        totalGames: 0,
+        totalProviders: 0,
       };
     }
 
@@ -37,7 +37,7 @@ export class ListGameProvidersPaginatingOnGrid {
     return {
       game_providers: result.value.game_providers,
       canLoadMore,
-      totalGames: result.value.pagination.totalItems,
+      totalProviders: result.value.pagination.totalItems,
     };
   }
 }
