@@ -10,7 +10,7 @@ export class SearchGamesByQueryPaginatingOnSearchBar {
 
   }
 
-  public static PAGINATION_SIZE = 25;
+  public static PAGINATION_SIZE = 24;
 
   public async handle(query: string, pageToSearch: number): Promise<{
     searchResults: GameSearchResponse[];

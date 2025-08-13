@@ -4,7 +4,7 @@ import type { LoggerI } from "~/packages/logger/Logger";
 export class SearchProvidersOnGrid {
   constructor(private readonly query: SearchProvidersPaginating, private logger: LoggerI) {}
 
-  static PAGE_SIZE = 25;
+  static PAGE_SIZE = 24;
 
   public async handle(query: string | null, page: number) {
     const result = await this.query.handle(query, page, SearchProvidersOnGrid.PAGE_SIZE);

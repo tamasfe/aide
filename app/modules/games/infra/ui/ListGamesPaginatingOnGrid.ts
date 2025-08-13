@@ -9,7 +9,7 @@ export class ListGamesPaginatingOnGrid {
     private logger: LoggerI,
   ) {}
 
-  public static DEFAULT_PAGINATION_SIZE = 25;
+  public static DEFAULT_PAGINATION_SIZE = 24;
 
   public async handle(categoryIdentifier: string | null, providerIdentifier: string | null, pageToSearch: number, pageSize = ListGamesPaginatingOnGrid.DEFAULT_PAGINATION_SIZE): Promise<{
     games: Game[];

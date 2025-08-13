@@ -19,7 +19,7 @@ export class SearchPaymentsOnTable {
     private n: NumberFormatterFunctionType,
   ) {}
 
-  public PAGE_SIZE = 25;
+  public PAGE_SIZE = 24;
 
   public async handle(walletId: number | null, type: "deposit" | "withdrawal" | null, pageIndex: number, pageSize: number = this.PAGE_SIZE): Promise<{
     pageIndex: number;

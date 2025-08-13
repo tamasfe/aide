@@ -27,7 +27,7 @@ export class SearchGameActionsPaginatingOnCasinoTable {
     private d: DateTimeFormatterFunctionType,
   ) {}
 
-  public PAGINATION_SIZE = 25;
+  public PAGINATION_SIZE = 24;
 
   public async handle(pageIndex: number): Promise<{
     gameActions: GameActionResponse[];
