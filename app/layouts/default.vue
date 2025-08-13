@@ -36,7 +36,7 @@ const onLiveChatVisibilityChanged = (visibility: "minimized" | "maximized" | "hi
       <slot />
     </div>
 
-    <AppFooter class="pb-14 sm:pb-0" />
+    <AppFooter class="mt-14 pb-14 sm:pb-0" />
 
     <NavMobile @click:menu="sidebarIsOpen = !sidebarIsOpen" />
 
