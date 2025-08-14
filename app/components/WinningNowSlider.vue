@@ -21,14 +21,18 @@ const addNewWin = (win: Keyified<Win>) => {
 
 const ENABLE_SERVER_SIDE_RENDERING = true;
 const DEFER_CLIENT_SIDE_LOADING = true;
-await useAsyncData("winning-now-slider-ticker-events", async () => {
+const { data: initialWins } = await useAsyncData("winning-now-slider-ticker-events", async () => {
   const wins = await $dependencies.tickers.ui.searchTickerEventsFromWinningNow.handle();
-  const keyifiedWins = wins.map(win => useAddKeyFromIdentifier(camelizeKeys(win)));
-  displayedWins.value = keyifiedWins.slice(0, WINS_BUFFER_SIZE);
   return wins;
 },
 { lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING },
 );
+
+// Populate initial wins
+if (initialWins.value) {
+  const keyifiedWins = initialWins.value.map(win => useAddKeyFromIdentifier(camelizeKeys(win)));
+  displayedWins.value = keyifiedWins.slice(0, WINS_BUFFER_SIZE);
+}
 
 useCreateSubscriptionToWebsocket(
   $dependencies.websockets.ui.wsChannelManagers.newestWins,
