@@ -14,25 +14,8 @@ const WINS_BUFFER_SIZE = 6;
 
 const displayedWins = ref<Keyified<Win>[]>([]);
 
-// Preload image function
-const preloadImage = (gameIdentifier: string): Promise<void> => {
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.onload = () => resolve();
-    img.onerror = () => reject(new Error(`Failed to load image for game: ${gameIdentifier}`));
-    img.src = `/games/${gameIdentifier}.jpg`;
-  });
-};
-
 // Add new win to FIFO array
-const addNewWin = async (win: Keyified<Win>) => {
-  try {
-    await preloadImage(win.data.data.game.identifier);
-  }
-  catch (error) {
-    console.warn("Failed to preload image, adding win anyway:", error);
-  }
-
+const addNewWin = (win: Keyified<Win>) => {
   displayedWins.value = [win, ...displayedWins.value].slice(0, WINS_BUFFER_SIZE);
 };
 
