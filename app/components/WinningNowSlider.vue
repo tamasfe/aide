@@ -12,38 +12,36 @@ const { $dependencies } = useNuxtApp();
 
 const WINS_BUFFER_SIZE = 6;
 
-// NOTE: this component is using any for ref template of grid because generic types are not properly supported current version of Vue, so we have to use any type. when https://github.com/vuejs/language-tools/issues/3206 is fixed we SHOULD change this to respective type
-// eslint-disable-next-line
-const slider = ref<any>(null);
+const displayedWins = ref<Keyified<Win>[]>([]);
 
-const slides = {
-  sm: 0.7,
-  md: 2.5,
-  lg: 2.5,
-  xl: 3.5,
-};
-const slidesToScroll = {
-  sm: 1,
-  md: 1,
-  lg: 1,
-  xl: 1,
+// Preload image function
+const preloadImage = (gameIdentifier: string): Promise<void> => {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve();
+    img.onerror = () => reject(new Error(`Failed to load image for game: ${gameIdentifier}`));
+    img.src = `/games/${gameIdentifier}.jpg`;
+  });
 };
 
-const uniqueWins = useState<Map<string, Keyified<Win>>>("winning-now-slider-buffer", () => new Map());
-const buffer = computed(() => {
-  return Array.from(uniqueWins.value.values()).sort(
-    (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
-  ).slice(0, WINS_BUFFER_SIZE);
-});
+// Add new win to FIFO array
+const addNewWin = async (win: Keyified<Win>) => {
+  try {
+    await preloadImage(win.data.data.game.identifier);
+  }
+  catch (error) {
+    console.warn("Failed to preload image, adding win anyway:", error);
+  }
+
+  displayedWins.value = [win, ...displayedWins.value].slice(0, WINS_BUFFER_SIZE);
+};
 
 const ENABLE_SERVER_SIDE_RENDERING = true;
 const DEFER_CLIENT_SIDE_LOADING = true;
 await useAsyncData("winning-now-slider-ticker-events", async () => {
   const wins = await $dependencies.tickers.ui.searchTickerEventsFromWinningNow.handle();
-  for (const win of wins) {
-    const keyifiedWin = useAddKeyFromIdentifier(camelizeKeys(win));
-    uniqueWins.value.set(keyifiedWin.key, keyifiedWin);
-  }
+  const keyifiedWins = wins.map(win => useAddKeyFromIdentifier(camelizeKeys(win)));
+  displayedWins.value = keyifiedWins.slice(0, WINS_BUFFER_SIZE);
   return wins;
 },
 { lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING },
@@ -53,8 +51,7 @@ useCreateSubscriptionToWebsocket(
   $dependencies.websockets.ui.wsChannelManagers.newestWins,
   (message) => {
     const win = useAddKeyFromIdentifier(camelizeKeys(message));
-    uniqueWins.value.set(win.key, win);
-    slider.value?.emblaApi?.scrollTo(0);
+    addNewWin(win);
   },
 );
 </script>
@@ -67,42 +64,73 @@ useCreateSubscriptionToWebsocket(
         {{ $t('winning_now.title') }}
       </div>
     </h3>
-    <BaseSlider
-      ref="slider"
-      class="w-full"
-      :data="buffer"
-      :slides="slides"
-      :slides-to-scroll="slidesToScroll"
-      :gap="1"
-      :options="{
-        align: 'start',
-        loop: false,
-      }"
-    >
-      <template #default="{ item }">
-        <GamePageLink v-if="item.data" :identifier="item.data.data.game.identifier">
-          <div class="relative group flex items-center space-x-3 bg-subtle p-2 rounded-lg outline-none border border-muted/5 h-24">
-            <div class="self-strech relative aspect-[3/4] h-full rounded overflow-hidden border border-muted/5">
-              <GameImage
-                :identifier="item.data.data.game.identifier"
-                class="block object-cover h-full w-full transition-transform transform hover:scale-105 cursor-pointer"
-              />
-            </div>
-            <div class="font-medium leading-tight space-y-1 min-w-0 flex-1">
-              <div class="truncate">{{ item.data.data.userNickname }}</div>
-              <div class="text-subtle text-sm truncate min-w-0">{{ item.data.data.game.name }}</div>
-              <div class="sm:text-lg font-semibold bg-button-primary text-transparent bg-clip-text">
-                <BaseCurrency
-                  :currency="item.data.data.currency"
-                  :value="item.data.data.amount"
-                  variant="ghost"
-                  class="truncate"
-                />
+
+    <div class="w-full overflow-hidden">
+      <div class="flex gap-4 transition-transform duration-500 ease-out">
+        <TransitionGroup
+          name="slide-in"
+          tag="div"
+          class="flex gap-4 min-w-0"
+        >
+          <div
+            v-for="item in displayedWins"
+            :key="item.key"
+            class="flex-shrink-0 w-80"
+          >
+            <GamePageLink v-if="item.data" :identifier="item.data.data.game.identifier">
+              <div class="relative group flex items-center space-x-3 bg-subtle p-2 rounded-lg outline-none border border-muted/5 h-24">
+                <div class="self-stretch relative aspect-[3/4] h-full rounded overflow-hidden border border-muted/5">
+                  <GameImage
+                    :identifier="item.data.data.game.identifier"
+                    class="block object-cover h-full w-full transition-transform transform hover:scale-105 cursor-pointer"
+                  />
+                </div>
+                <div class="font-medium leading-tight space-y-1 min-w-0 flex-1">
+                  <div class="truncate">{{ item.data.data.userNickname }}</div>
+                  <div class="text-subtle text-sm truncate min-w-0">{{ item.data.data.game.name }}</div>
+                  <div class="sm:text-lg font-semibold bg-button-primary text-transparent bg-clip-text">
+                    <BaseCurrency
+                      :currency="item.data.data.currency"
+                      :value="item.data.data.amount"
+                      variant="ghost"
+                      class="truncate"
+                    />
+                  </div>
+                </div>
               </div>
-            </div>
+            </GamePageLink>
           </div>
-        </GamePageLink>
-      </template>
-    </BaseSlider>
+        </TransitionGroup>
+      </div>
+    </div>
   </div>
 </template>
+
+<style scoped>
+.slide-in-enter-active {
+  transition: all 0.4s ease-in-out;
+}
+
+.slide-in-leave-active {
+  transition: all 0.4s ease-in-out;
+}
+
+.slide-in-enter-from {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+.slide-in-leave-to {
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+.slide-in-move {
+  transition: transform 0.4s ease-in-out;
+}
+
+/* Fixed width for consistent sizing */
+.flex-shrink-0 {
+  width: 16rem; /* 320px fixed width */
+}
+</style>
