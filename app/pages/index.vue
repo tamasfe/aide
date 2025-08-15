@@ -22,7 +22,7 @@ const queryGameCategories = async () => $dependencies.games.ui.searchGameCategor
 <template>
   <NuxtLayout name="carousel">
     <div class="giro__container giro__sections">
-      <WinningNowSlider />
+      <WinningNowTicker />
 
       <Tabs v-model="currentTab" class="relative space-y-[var(--giro-section-gap-sm)] md:space-y-[var(--giro-section-gap-lg)]">
         <TabsList :sticky-on-mobile="true">
