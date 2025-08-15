@@ -59,6 +59,7 @@ export class SearchPaymentsOnTable {
             case "failed":
             case "rejected":
             case "refunded":
+            case "expired":
             case "initiated":
               return this.t(`wallet.payment.status.${payment.status}`);
           }

@@ -312,6 +312,7 @@
         "rejected": "Rejeitado",
         "refunded": "Reembolsado",
         "succeeded": "Sucesso",
+        "expired": "Expirado",
         "initiated": "Iniciado"
       }
     }

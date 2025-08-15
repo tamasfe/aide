@@ -313,6 +313,7 @@
         "rejected": "Rejected",
         "refunded": "Refunded",
         "succeeded": "Succeeded",
+        "expired": "Expired",
         "initiated": "Initiated"
       }
     }
@@ -464,7 +465,7 @@
     "video_poker": "Video Poker",
     "virtual_sports": "Virtual Sports",
     "weekly-top-picks": "Weekly Top Picks",
-    "top-games": "Top Games",
+    "top-games": "Top Games"
   },
   "user_settings": {
     "payment": {
