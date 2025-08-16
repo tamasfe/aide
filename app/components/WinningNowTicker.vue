@@ -12,7 +12,7 @@ const { $dependencies } = useNuxtApp();
 
 const WINS_BUFFER_SIZE = 6;
 
-const displayedWins = useState<Keyified<Win>[]>(() => []);
+const displayedWins = useState<Keyified<Win>[]>("winning-now-ticker-displayed-wins", () => []);
 
 // Add new win to FIFO array
 const addNewWin = (win: Keyified<Win>) => {
