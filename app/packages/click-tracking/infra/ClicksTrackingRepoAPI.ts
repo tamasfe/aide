@@ -11,7 +11,7 @@ export class ClicksTrackingRepoAPI implements ClickTrackingRepositoryI {
       fingerprintValue: string;
       path: string;
     },
-    queryParams: URLSearchParams,
+    queryParams: URLSearchParams
   ): Promise<EmptyResult<InfrastructureError>> {
     return fetch(`${this.baseUrl}/sessions?${queryParams.toString()}`, {
       method: "POST",
@@ -23,29 +23,43 @@ export class ClicksTrackingRepoAPI implements ClickTrackingRepositoryI {
         fingerprint_value: params.fingerprintValue,
         path: params.path,
       }),
-    }).then(async (res) => {
-      if (!res.ok) {
-        const response = await res.json();
-        throw response;
-      }
-      return success();
     })
-      .catch(error => fail(InfrastructureError.newFromUnknownError({ inputs: { params, queryParams } }, error)));
+      .then(async (res) => {
+        if (!res.ok) {
+          const response = await res.json();
+          throw response;
+        }
+        return success();
+      })
+      .catch((error) =>
+        fail(
+          InfrastructureError.newFromUnknownError(
+            { inputs: { params, queryParams } },
+            error
+          )
+        )
+      );
   }
 
-  public async update(
-    params: {
-      userId: number;
-      fingerprintValue: string;
-    },
-  ): Promise<EmptyResult<InfrastructureError>> {
+  public async update(params: {
+    userId: number;
+    fingerprintValue: string;
+  }): Promise<EmptyResult<InfrastructureError>> {
     return fetch(`${this.baseUrl}/sessions`, {
       method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({
         user_id: params.userId,
         fingerprint_value: params.fingerprintValue,
       }),
-    }).then(() => success())
-      .catch(error => fail(InfrastructureError.newFromUnknownError({ inputs: { params } }, error)));
+    })
+      .then(() => success())
+      .catch((error) =>
+        fail(
+          InfrastructureError.newFromUnknownError({ inputs: { params } }, error)
+        )
+      );
   }
 }
