@@ -1,5 +1,4 @@
 // https://nuxt.com/docs/api/nuxt-config
-// This is the config
 export default defineNuxtConfig({
   modules: [
     "@nuxt/eslint",
@@ -13,13 +12,13 @@ export default defineNuxtConfig({
     "@pinia/nuxt",
     "@sentry/nuxt/module",
     "@vee-validate/nuxt",
-    "@zadigetvoltaire/nuxt-gtm",
     "@vite-pwa/nuxt",
     "nuxt-gtag",
   ],
   devtools: {
     enabled: true,
   },
+  css: ["~/assets/css/tailwind.css"],
   app: {
     head: {
       charset: "utf-8",
@@ -66,10 +65,10 @@ export default defineNuxtConfig({
       release: process.env.NUXT_PUBLIC_RELEASE || "development",
       log: {
         level: process.env.NUXT_PUBLIC_LOG_LEVEL as
-        | "warn"
-        | "error"
-        | "debug"
-        | "info",
+          | "warn"
+          | "error"
+          | "debug"
+          | "info",
       },
       serviceName: process.env.NUXT_PUBLIC_SERVICE_NAME || "girobet-frontend",
 
@@ -79,11 +78,11 @@ export default defineNuxtConfig({
       },
       signupFlows: {
         idsClientRepo: process.env.NUXT_PUBLIC_SIGNUP_FLOWS_IDS_CLIENT_REPO as
-        | "mock"
-        | "local_storage",
+          | "mock"
+          | "local_storage",
         apiMode: process.env.NUXT_PUBLIC_SIGNUP_FLOWS_API_MODE as
-        | "dumb"
-        | "api",
+          | "dumb"
+          | "api",
       },
       users: {
         apiMode: process.env.NUXT_PUBLIC_USERS_API_MODE as "dumb" | "api",
@@ -106,6 +105,12 @@ export default defineNuxtConfig({
           process.env.NUXT_PUBLIC_TRACKING_FINGERPRINT_JS_PUBLIC_API_KEY,
         fingerprintJsScriptUrl:
           process.env.NUXT_PUBLIC_TRACKING_FINGERPRINT_JS_SCRIPT_URL,
+      },
+
+      gtm: {
+        id: "GTM-MWG96744", // New "Giro" GTM account
+        enabled: process.env.NODE_ENV === "production",
+        debug: process.env.NODE_ENV !== "production", // Whether or not display console logs debugs (optional)
       },
     },
   },
@@ -148,13 +153,6 @@ export default defineNuxtConfig({
     id: "G-7F9NEQ1MND", // New "Giro" GA account
     enabled: process.env.NODE_ENV === "production",
   },
-  // nuxt-gtm: https://nuxt.com/modules/nuxt-gtm
-  gtm: {
-    id: "GTM-MWG96744", // New "Giro" GTM account
-    enabled: process.env.NODE_ENV === "production",
-    debug: process.env.NODE_ENV !== "production", // Whether or not display console logs debugs (optional)
-    devtools: process.env.NODE_ENV !== "production", // (optional)
-  },
   // @nuxtjs/i18n
   i18n: {
     baseUrl: process.env.NUXT_PUBLIC_BASE_URL,
@@ -188,7 +186,6 @@ export default defineNuxtConfig({
       useCookie: true,
     },
     strategy: "prefix_and_default",
-    lazy: true,
     defaultLocale: "en-us",
     vueI18n: "./i18n.config.ts",
   },
@@ -287,8 +284,8 @@ export default defineNuxtConfig({
     // dynamicImportForServerEntry: true,
     sourceMapsUploadOptions: {
       enabled:
-        process.env.SENTRY_AUTH_TOKEN !== undefined
-        && process.env.SENTRY_AUTH_TOKEN !== "",
+        process.env.SENTRY_AUTH_TOKEN !== undefined &&
+        process.env.SENTRY_AUTH_TOKEN !== "",
       org: "girobet",
       project: "girobet-frontend",
       authToken:

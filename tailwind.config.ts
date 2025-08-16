@@ -1,7 +1,7 @@
 import type { Config } from "tailwindcss";
 
 export default <Partial<Config>>{
-  content: ["./pages/**/*.vue", "./components/**/*.vue", "./constants/**/*.ts"],
+  content: ["./app/**/*.vue", "./app/constants/**/*.ts", "./app/assets/**/*.css",],
   theme: {
     fontSize: {
       base: "0.875rem",
