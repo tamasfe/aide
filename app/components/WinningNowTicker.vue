@@ -53,6 +53,7 @@ useCreateSubscriptionToWebsocket(
     <div class="w-full overflow-hidden">
       <div class="flex gap-4 transition-transform duration-500 ease-out">
         <TransitionGroup
+          :appear="false"
           name="slide-in"
           tag="div"
           class="flex gap-4 min-w-0"
