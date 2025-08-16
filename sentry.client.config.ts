@@ -30,4 +30,8 @@ Sentry.init({
 
   release: runtimeConfig.public.release,
 
+  ignoreErrors: [
+    /Page not found/,
+  ]
+
 });
