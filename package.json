@@ -49,6 +49,7 @@
     "import-in-the-middle": "^1.13.1",
     "maska": "^3.1.1",
     "nuxt": "^4.0.3",
+    "nuxt-meta-pixel": "2.0.2",
     "openapi-fetch": "^0.13.5",
     "pinia": "^3.0.3",
     "qrcode.vue": "^3.6.0",

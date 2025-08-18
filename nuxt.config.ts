@@ -14,6 +14,7 @@ export default defineNuxtConfig({
     "@vee-validate/nuxt",
     "@vite-pwa/nuxt",
     "nuxt-gtag",
+    "nuxt-meta-pixel",
   ],
   devtools: {
     enabled: true,
@@ -113,6 +114,13 @@ export default defineNuxtConfig({
         debug: process.env.NODE_ENV !== "production", // Whether or not display console logs debugs (optional)
       },
     },
+  },
+  metapixel: {
+    default: {
+      id: '654657660907404',
+      autoconfig: true,
+      pageView: '**',
+    }
   },
   build: {
     transpile: ["applicationinsights"],
