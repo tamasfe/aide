@@ -21,23 +21,25 @@ const fireGtmEvent = <E extends GtmEvent>(
     ? { user_id: string }
     : E extends "DEPOSIT_INITIATED" | "DEPOSIT_SUCCEEDED"
     ? {
-      amount_decimal: number;
-      currency: string;
-      user_id: string;
-      deposit_count: number;
-    }
+        amount_decimal: number;
+        currency: string;
+        user_id: string;
+        deposit_count: number;
+      }
     : E extends "WITHDRAWAL_INITIATED" | "WITHDRAWAL_SUCCEEDED"
     ? {
-      amount_decimal: number;
-      currency: string;
-      user_id: string;
-      withdrawal_count: number;
-    }
-    : never
+        amount_decimal: number;
+        currency: string;
+        user_id: string;
+        withdrawal_count: number;
+      }
+    : never,
+  siteIdentifier: string
 ) => {
   gtm.push({
     event,
     value: "amount_decimal" in data ? data.amount_decimal : null,
+    brand: siteIdentifier,
     ...data,
     // label: to define
     // action: to define
@@ -53,6 +55,7 @@ export default defineNuxtPlugin({
     const userStore = useUserStore();
     const { $dependencies } = useNuxtApp();
     const publicConfig = useRuntimeConfig().public;
+    const siteStore = useSiteStore();
 
     nuxtApp.vueApp.use(
       createGtm({
@@ -72,11 +75,21 @@ export default defineNuxtPlugin({
           if (!userStore.user) {
             return;
           }
-          fireGtmEvent(gtm, "LOGIN", { user_id: String(userStore.user.id) });
+          fireGtmEvent(
+            gtm,
+            "LOGIN",
+            { user_id: String(userStore.user.id) },
+            siteStore.currentSite.identifier
+          );
         } else if (isAuthenticated === false) {
-          fireGtmEvent(gtm, "LOGOUT", {
-            user_id: String(userStore.user?.id || ""),
-          });
+          fireGtmEvent(
+            gtm,
+            "LOGOUT",
+            {
+              user_id: String(userStore.user?.id || ""),
+            },
+            siteStore.currentSite.identifier
+          );
         }
       }
     );
@@ -88,9 +101,14 @@ export default defineNuxtPlugin({
         if (!gtm) {
           return;
         }
-        fireGtmEvent(gtm, "SIGNUP", {
-          user_id: String(userStore.user?.id || ""),
-        });
+        fireGtmEvent(
+          gtm,
+          "SIGNUP",
+          {
+            user_id: String(userStore.user?.id || ""),
+          },
+          siteStore.currentSite.identifier
+        );
       }
     );
 
@@ -101,12 +119,17 @@ export default defineNuxtPlugin({
         if (!gtm) {
           return;
         }
-        fireGtmEvent(gtm, "DEPOSIT_INITIATED", {
-          amount_decimal: amount,
-          deposit_count: totalDeposits,
-          currency,
-          user_id: String(userStore.user?.id || ""),
-        });
+        fireGtmEvent(
+          gtm,
+          "DEPOSIT_INITIATED",
+          {
+            amount_decimal: amount,
+            deposit_count: totalDeposits,
+            currency,
+            user_id: String(userStore.user?.id || ""),
+          },
+          siteStore.currentSite.identifier
+        );
       }
     );
 
@@ -117,12 +140,17 @@ export default defineNuxtPlugin({
         if (!gtm) {
           return;
         }
-        fireGtmEvent(gtm, "WITHDRAWAL_INITIATED", {
-          amount_decimal: amount,
-          withdrawal_count: totalWithdrawals,
-          currency,
-          user_id: String(userStore.user?.id || ""),
-        });
+        fireGtmEvent(
+          gtm,
+          "WITHDRAWAL_INITIATED",
+          {
+            amount_decimal: amount,
+            withdrawal_count: totalWithdrawals,
+            currency,
+            user_id: String(userStore.user?.id || ""),
+          },
+          siteStore.currentSite.identifier
+        );
       }
     );
 
@@ -136,20 +164,30 @@ export default defineNuxtPlugin({
 
         if (event.status === "succeeded") {
           if (event.paymentType === "deposit") {
-            fireGtmEvent(gtm, "DEPOSIT_SUCCEEDED", {
-              amount_decimal: event.amount,
-              deposit_count: event.statusCounts.succeeded,
-              currency: event.currency,
-              user_id: String(userStore.user?.id || ""),
-            });
+            fireGtmEvent(
+              gtm,
+              "DEPOSIT_SUCCEEDED",
+              {
+                amount_decimal: event.amount,
+                deposit_count: event.statusCounts.succeeded,
+                currency: event.currency,
+                user_id: String(userStore.user?.id || ""),
+              },
+              siteStore.currentSite.identifier
+            );
           }
           if (event.paymentType === "withdrawal") {
-            fireGtmEvent(gtm, "WITHDRAWAL_SUCCEEDED", {
-              amount_decimal: event.amount,
-              withdrawal_count: event.statusCounts.succeeded,
-              currency: event.currency,
-              user_id: String(userStore.user?.id || ""),
-            });
+            fireGtmEvent(
+              gtm,
+              "WITHDRAWAL_SUCCEEDED",
+              {
+                amount_decimal: event.amount,
+                withdrawal_count: event.statusCounts.succeeded,
+                currency: event.currency,
+                user_id: String(userStore.user?.id || ""),
+              },
+              siteStore.currentSite.identifier
+            );
           }
         }
       }
