@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.15.1
+
+- **fixed:** Serialization of SchemaObject with boolean json_schema ([#238])
+- **added:** Typed routing `*_with` ([#232])
+- **added:** Support for `axum_extra::extract::Host` ([#236])
+
+[#232]: https://github.com/tamasfe/aide/pull/232
+[#236]: https://github.com/tamasfe/aide/pull/236
+[#238]: https://github.com/tamasfe/aide/pull/238
+
 ## 0.15.0
 
 - **added:** Basic `axum` `TypedPath` support and `TypedPath<T>` description from `T` doc comment([#212])
