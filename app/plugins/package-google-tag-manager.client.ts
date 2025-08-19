@@ -34,12 +34,12 @@ const fireGtmEvent = <E extends GtmEvent>(
         withdrawal_count: number;
       }
     : never,
-  siteIdentifier: string
+  siteId: number | undefined
 ) => {
   gtm.push({
     event,
     value: "amount_decimal" in data ? data.amount_decimal : null,
-    brand: siteIdentifier,
+    brand_id: siteId ?? null,
     ...data,
     // label: to define
     // action: to define
@@ -79,7 +79,7 @@ export default defineNuxtPlugin({
             gtm,
             "LOGIN",
             { user_id: String(userStore.user.id) },
-            siteStore.currentSite.identifier
+            siteStore.currentSite.id
           );
         } else if (isAuthenticated === false) {
           fireGtmEvent(
@@ -88,7 +88,7 @@ export default defineNuxtPlugin({
             {
               user_id: String(userStore.user?.id || ""),
             },
-            siteStore.currentSite.identifier
+            siteStore.currentSite.id
           );
         }
       }
@@ -107,7 +107,7 @@ export default defineNuxtPlugin({
           {
             user_id: String(userStore.user?.id || ""),
           },
-          siteStore.currentSite.identifier
+          siteStore.currentSite.id
         );
       }
     );
@@ -128,7 +128,7 @@ export default defineNuxtPlugin({
             currency,
             user_id: String(userStore.user?.id || ""),
           },
-          siteStore.currentSite.identifier
+          siteStore.currentSite.id
         );
       }
     );
@@ -149,7 +149,7 @@ export default defineNuxtPlugin({
             currency,
             user_id: String(userStore.user?.id || ""),
           },
-          siteStore.currentSite.identifier
+          siteStore.currentSite.id
         );
       }
     );
@@ -173,7 +173,7 @@ export default defineNuxtPlugin({
                 currency: event.currency,
                 user_id: String(userStore.user?.id || ""),
               },
-              siteStore.currentSite.identifier
+              siteStore.currentSite.id
             );
           }
           if (event.paymentType === "withdrawal") {
@@ -186,7 +186,7 @@ export default defineNuxtPlugin({
                 currency: event.currency,
                 user_id: String(userStore.user?.id || ""),
               },
-              siteStore.currentSite.identifier
+              siteStore.currentSite.id
             );
           }
         }

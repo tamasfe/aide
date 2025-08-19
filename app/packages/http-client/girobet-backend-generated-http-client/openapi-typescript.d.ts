@@ -4884,6 +4884,7 @@ export interface components {
             jurisdiction: components["schemas"]["Country"];
         };
         Site: {
+            id?: number; // Adding it manually until Daniel adds the field to the OpenAPI spec
             /** @description The identifier of the site.
              *      Use this identifier to uniquely and programmatically identify the site. */
             identifier: components["schemas"]["SiteIdentifier"];

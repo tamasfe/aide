@@ -11,6 +11,7 @@ type Site = SiteResponse["site"];
 
 const domainForLocalDevelopment: Domain = { api: "localhost:3050", email: "girobet.vip", frontend: "localhost:3001", cdn: "cdn.girobet.vip", tracking: "localhost:3335" };
 const siteForLocalDevelopment: Site = {
+  id: 1,
   identifier: "girobet",
   name: "GiroBet",
   servable: true,
@@ -36,6 +37,7 @@ export const useSiteStore = defineStore("siteStore", {
 
     currentSite(state): Site {
       return state.site || {
+        id: 0,
         identifier: "bloqued",
         name: "Bloqued",
         servable: false,
