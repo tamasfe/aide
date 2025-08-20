@@ -8,6 +8,10 @@ const props = defineProps({
   },
 });
 
+const emits = defineEmits<{
+  (e: "loading", value: boolean): void;
+}>();
+
 /**
  * Dependency injection
  */
@@ -22,9 +26,11 @@ const { value: cpf, errorMessage: cpfErrorMessage } = useField("cpf", value =>
 );
 
 watch(cpf, async (value) => {
+  emits("loading", true);
   if (true === await $dependencies.signupFlows.ui.validateCpfOnRegisterFormChanged.handle(value)) {
     await $dependencies.signupFlows.ui.upsertSignupFlowOnRegisterFormInputChange.handle({ CPF: value });
   }
+  emits("loading", false);
 },
 );
 </script>

@@ -14,6 +14,10 @@ const props = defineProps({
  */
 const { $dependencies } = useNuxtApp();
 
+const emits = defineEmits<{
+  (e: "loading", value: boolean): void;
+}>();
+
 type UserTelephonePrimitives = {
   value: string;
   prefix: {
@@ -43,6 +47,7 @@ const { value: telephone, errorMessage, validate } = useField<UserTelephonePrimi
 );
 
 watch(telephone.value, async (telephone) => {
+  emits("loading", true);
   const result = await validate();
   if (result.valid) {
     await $dependencies.signupFlows.ui.upsertSignupFlowOnRegisterFormInputChange.handle({
@@ -50,6 +55,7 @@ watch(telephone.value, async (telephone) => {
       telephonePrefix: telephone.prefix.value,
     });
   }
+  emits("loading", false);
 });
 </script>
 

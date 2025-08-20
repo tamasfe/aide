@@ -12,6 +12,9 @@ const props = defineProps({
     default: "",
   },
 });
+const emits = defineEmits<{
+  (e: "loading", value: boolean): void;
+}>();
 
 /**
  * Due to the need of using Zod's "parseAsync" I haven't found a way to concat min and max length validations with the use case
@@ -22,9 +25,11 @@ const { value: email, errorMessage: emailErrorMessage } = useField("email", valu
 );
 
 watch(email, async (value) => {
+  emits("loading", true);
   if (true === await $dependencies.signupFlows.ui.validateEmailOnRegisterFormChanged.handle(value)) {
     await $dependencies.signupFlows.ui.upsertSignupFlowOnRegisterFormInputChange.handle({ email: value });
   }
+  emits("loading", false);
 });
 </script>
 

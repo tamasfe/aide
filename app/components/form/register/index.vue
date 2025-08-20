@@ -31,6 +31,12 @@ const { $dependencies } = useNuxtApp();
 
 const errorMessage = ref<null | string>(null);
 const loadingSubmit = ref(false);
+const loadingFields = ref({
+  email: false,
+  cpf: false,
+  telephone: false,
+  password: false,
+});
 
 const onSubmit = handleSubmit(async () => {
   loadingSubmit.value = true;
@@ -54,7 +60,7 @@ const onSubmit = handleSubmit(async () => {
 });
 
 const loading = computed<boolean>(() => {
-  return meta.value.valid && (loadingSubmit.value);
+  return (loadingSubmit.value || loadingFields.value.email || loadingFields.value.cpf || loadingFields.value.telephone || loadingFields.value.password);
 });
 </script>
 
@@ -66,13 +72,13 @@ const loading = computed<boolean>(() => {
       level="error"
     />
 
-    <FormRegisterEmailBaseInputGroup :initial-value="email" />
+    <FormRegisterEmailBaseInputGroup :initial-value="email" @loading="(value) => loadingFields.email = value" />
 
-    <FormRegisterPasswordBaseInputGroup />
+    <FormRegisterPasswordBaseInputGroup @loading="(value) => loadingFields.password = value" />
 
-    <FormRegisterCpfBaseInputGroup :initial-value="cpf" />
+    <FormRegisterCpfBaseInputGroup :initial-value="cpf" @loading="(value) => loadingFields.cpf = value" />
 
-    <FormRegisterTelephoneBaseInputGroup :initial-value="telephone" />
+    <FormRegisterTelephoneBaseInputGroup :initial-value="telephone" @loading="(value) => loadingFields.telephone = value" />
 
     <div class="my-2 text-sm text-center text-subtle">
       {{ $t("modal_session.accept_terms") }}

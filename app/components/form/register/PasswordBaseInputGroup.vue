@@ -5,6 +5,9 @@ import { useField } from "vee-validate";
  * Dependency injection
  */
 const { $dependencies } = useNuxtApp();
+const emits = defineEmits<{
+  (e: "loading", value: boolean): void;
+}>();
 
 /**
  * Due to the need of using Zod's "parseAsync" I haven't found a way to concat min and max length validations with the use case
@@ -15,9 +18,11 @@ const { value: password, errorMessage: passwordErrorMessage } = useField("passwo
 );
 
 watch(password, async (value) => {
+  emits("loading", true);
   if (true === await $dependencies.signupFlows.ui.validatePasswordOnRegisterFormChanged.handle(value)) {
     await $dependencies.signupFlows.ui.upsertSignupFlowOnRegisterFormInputChange.handle({ password: value });
   }
+  emits("loading", false);
 });
 </script>
 
