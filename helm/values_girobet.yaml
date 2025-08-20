@@ -4,3 +4,4 @@ config:
   internal_api_domain: "api.default.svc.cluster.local"
   public_tracking_domain: "4.girobet.vip"
   public_fingerprint_js_script_domain: "fin.girobet.vip"
+  site_name: "GiroBet"

@@ -14,6 +14,8 @@ data:
 
   NUXT_PUBLIC_SIGNUP_FLOWS_IDS_CLIENT_REPO: "local_storage"
 
+  NUXT_SITE_NAME: "{{ .Values.config.site_name }}"
+
   NUXT_PUBLIC_API_MODE: "api"
   NUXT_PUBLIC_GAMES_API_MODE: "api"
   NUXT_PUBLIC_SIGNUP_FLOWS_API_MODE: "api"

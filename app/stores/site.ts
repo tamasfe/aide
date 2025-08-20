@@ -12,8 +12,8 @@ type Site = SiteResponse["site"];
 const domainForLocalDevelopment: Domain = { api: "localhost:3050", email: "girobet.vip", frontend: "localhost:3001", cdn: "cdn.girobet.vip", tracking: "localhost:3335" };
 const siteForLocalDevelopment: Site = {
   id: 1,
-  identifier: "girobet",
-  name: "GiroBet",
+  identifier: "zambabet",
+  name: "ZambaBet",
   servable: true,
 };
 

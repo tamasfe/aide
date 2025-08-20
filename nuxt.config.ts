@@ -70,7 +70,7 @@ export default defineNuxtConfig({
           | "debug"
           | "info",
       },
-      serviceName: process.env.NUXT_PUBLIC_SERVICE_NAME || "girobet-frontend",
+      serviceName: process.env.NUXT_PUBLIC_SERVICE_NAME || "frontend",
 
       apiMode: process.env.NUXT_PUBLIC_API_MODE as "dumb" | "api",
       games: {

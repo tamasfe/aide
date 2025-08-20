@@ -103,7 +103,6 @@ export const createBackendOpenApiClient = (clientOptions: { baseUrl: string }, c
   const client = createClient<paths>({ baseUrl: clientOptions.baseUrl, credentials: "include", headers: {
     ...(commonDependencies.requestContext.userJurisdiction ? { "CF-IPCountry": commonDependencies.requestContext.userJurisdiction } : {}),
     "Content-Type": "application/json",
-    "User-Agent": "girobet-frontend",
     "X-Forwarded-Host": commonDependencies.requestContext.headers?.host,
     // "x-forwarded-for": commonDependencies.requestContext.headers?.["x-forwarded-for"] || "127.0.0.1",
     ...commonDependencies.requestContext.headers,
