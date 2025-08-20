@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { cva, type VariantProps } from "class-variance-authority";
+import type { HTMLAttributes } from "vue";
 
 /**
  * As of 2024/10/25: The component I18nN seems to have some weird thing going on. We need to use the named slots in order to give the
@@ -18,12 +19,12 @@ interface ExtendedNumberFormatOptions extends Intl.NumberFormatOptions {
 }
 
 const currencyVariants = cva(
-  "mr-2",
+  "",
   {
     variants: {
       variant: {
-        primary: "bg-button-primary text-transparent bg-clip-text",
-        emphasis: "bg-button-emphasis text-transparent bg-clip-text",
+        primary: "mr-2 bg-button-primary text-transparent bg-clip-text",
+        emphasis: "mr-2 bg-button-emphasis text-transparent bg-clip-text",
         ghost: "",
       },
     },
@@ -35,7 +36,7 @@ const currencyVariants = cva(
 
 type CurrencyVariants = VariantProps<typeof currencyVariants>;
 
-defineProps({
+const props = defineProps({
   /**
    * 3 letter currency code
    */
@@ -55,12 +56,16 @@ defineProps({
     type: String as PropType<ExtendedNumberFormatOptions["trailingZeroDisplay"]>,
     default: "auto",
   },
+  class: {
+    type: String as PropType<HTMLAttributes["class"]>,
+    required: false,
+  },
 });
 </script>
 
 <template>
   <I18nN
-    class="flex items-center tabular-nums"
+    :class="cn('flex items-center tabular-nums', props.class)"
     scope="global"
     tag="span"
     :value="value"

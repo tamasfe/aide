@@ -41,7 +41,19 @@ defineProps<{
       {{ $t('modal_payments.make_deposit') }}
     </template>
     <template #subtitle>
-      {{ $t('modal_payments.make_deposit_subtitle') }}
+      <div v-if="limits && limits.min" class="flex items-center justify-between">
+        <span>{{ $t('modal_payments.make_deposit_subtitle') }}</span>
+        <span class="text-right block space-x-2">
+          <span>Minimum:</span>
+          <BaseCurrency
+            class="inline"
+            :value="limits.min"
+            :currency="currency.code"
+            variant="ghost"
+          />
+        </span>
+      </div>
+      <span v-else>{{ $t('modal_payments.make_deposit_subtitle') }}</span>
     </template>
     <FormDeposit
       v-if="limits && paymentMethodId"
