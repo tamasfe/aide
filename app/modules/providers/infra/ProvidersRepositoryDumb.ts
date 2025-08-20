@@ -6,10 +6,10 @@ import { fail, success, type Result } from "~/packages/result";
 import type { InfrastructureError } from "~/packages/result/infrastructure-error";
 
 export class ProvidersRepositoryDumb implements ProvidersRepositoryI {
-  public async searchPaginating(searchParams: { query: string | null }, limit: number, offset: number): Promise<Result<{ providers: Provider[]; pagination: { limit: number; offset: number; totalItems: number } }, InfrastructureError>> {
+  public async searchPaginating(searchParams: { query: string | null }, limit: number, offset: number) {
     this.logger.debug("searchPaginating called", { searchParams, limit, offset });
     return success({
-      providers: this.providers.slice(offset, offset + limit),
+      results: this.providers.map(provider => ({ item: { ...provider } })).slice(offset, offset + limit),
       pagination: {
         limit,
         offset,

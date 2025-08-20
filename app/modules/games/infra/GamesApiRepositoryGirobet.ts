@@ -15,7 +15,7 @@ export class GamesApiRepositoryGirobet implements GamesApiRepositoryI {
 
   public async searchPaginating(searchParams: { query: string | null }, pagination: { limit: number; offset: number }) {
     try {
-      const { data, error, response } = await this.apiClient.GET("/game/search", {
+      const { data, error, response } = await this.apiClient.GET("/search/games", {
         params: {
           query: {
             query: searchParams.query,
@@ -27,11 +27,11 @@ export class GamesApiRepositoryGirobet implements GamesApiRepositoryI {
 
       if (data) {
         return success({
-          searchResults: data.data.map(result => camelizeKeys({ ...result })),
+          results: data.data.map(game => camelizeKeys({ ...game })),
           pagination: {
             limit: data.metadata.pagination.limit,
             offset: data.metadata.pagination.offset,
-            totalItems: data.metadata.pagination.total_items ?? NaN,
+            totalItems: data.metadata.pagination.total_items ?? data.data.length,
           },
         });
       }

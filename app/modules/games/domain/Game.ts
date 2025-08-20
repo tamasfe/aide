@@ -6,7 +6,7 @@ export type GameDevice = components["schemas"]["Device"];
 
 export type Game = CamelizeKeys<components["schemas"]["GameResponse"]>;
 
-export type GameSearchResponse = CamelizeKeys<components["schemas"]["GameSearchResponse"]>;
+export type GameSearchResponse = CamelizeKeys<components["schemas"]["PaginatorResponse_for_ScoredSearchResponseItem_for_SearchGameResponse_and_SearchQuery_and_Nullable_uint"]["data"][number]>;
 
 export const toGameUrlSlug = (id: number, identifier: string): string => {
   if (!identifier) return String(id);

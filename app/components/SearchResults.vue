@@ -1,11 +1,6 @@
 <script setup lang="ts">
-// 2 alternates if ever needed...
 import { debouncedWatch } from "@vueuse/core";
-import type { Game } from "~/modules/games/domain/Game";
-import type { Provider } from "~/modules/providers/domain/Provider";
 import type { Keyified } from "~/types/utils";
-
-// import { debouncedWatch } from "@vueuse/core";
 
 const { $dependencies } = useNuxtApp();
 
@@ -21,18 +16,18 @@ const { query } = defineProps({
  * Game search
  */
 const gamesCurrentPage = useState(() => 0);
-const games = useState<Keyified<Game>[]>(() => []);
+const games = useState<Keyified<{ identifier: string; key: string }>[]>(() => []);
 const gamesTotalItems = useState(() => 0);
 const gamesLoading = useState(() => false);
 const gamesOnLoadMore = async (actionOnItemsArray: "append" | "replace") => {
   const result = await $dependencies.games.ui.searchGamesByQueryPaginatingOnSearchBar.handle(query, gamesCurrentPage.value);
 
-  gamesTotalItems.value = result.totalGames;
+  gamesTotalItems.value = result.pagination.totalItems;
   if (actionOnItemsArray === "append") {
-    games.value.push(...result.searchResults.map(searchResult => useAddKeyFromIdentifier(searchResult.game)));
+    games.value.push(...result.results.map(searchResult => useAddKeyFromIdentifier(searchResult.item)));
   }
   else if (actionOnItemsArray === "replace") {
-    games.value = result.searchResults.map(searchResult => useAddKeyFromIdentifier(searchResult.game));
+    games.value = result.results.map(searchResult => useAddKeyFromIdentifier(searchResult.item));
   }
 
   gamesCurrentPage.value++;
@@ -43,18 +38,18 @@ const gamesOnLoadMore = async (actionOnItemsArray: "append" | "replace") => {
  * Provider search
  */
 const providersCurrentPage = useState(() => 0);
-const providers = useState<Keyified<Provider>[]>(() => []);
+const providers = useState<Keyified<{ identifier: string; key: string }>[]>(() => []);
 const providersTotalItems = useState(() => 0);
 const providersLoading = useState(() => false);
 const providersOnLoadMore = async (actionOnItemsArray: "append" | "replace") => {
   const result = await $dependencies.providers.ui.searchProvidersOnGrid.handle(query, providersCurrentPage.value);
 
-  providersTotalItems.value = result.totalProviders;
+  providersTotalItems.value = result.pagination.totalItems;
   if (actionOnItemsArray === "append") {
-    providers.value.push(...result.providers.map(provider => useAddKeyFromIdentifier(provider)));
+    providers.value.push(...result.results.map(searchResult => useAddKeyFromIdentifier(searchResult.item)));
   }
   else if (actionOnItemsArray === "replace") {
-    providers.value = result.providers.map(provider => useAddKeyFromIdentifier(provider));
+    providers.value = result.results.map(searchResult => useAddKeyFromIdentifier(searchResult.item));
   }
 
   providersCurrentPage.value++;

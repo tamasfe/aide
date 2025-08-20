@@ -20,6 +20,7 @@ export class SitesRepositoryDumb implements SitesRepositoryI {
     // In case we want to see the ZambaBet site:
     return success({
       site: {
+        id: 0,
         servable: true,
         name: "SomeSite",
         identifier: "somesite",

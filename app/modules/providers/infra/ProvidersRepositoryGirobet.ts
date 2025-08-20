@@ -12,9 +12,9 @@ export class ProvidersRepositoryGirobet implements ProvidersRepositoryI {
     this.apiClient = createBackendOpenApiClient(clientOptions, commonDependencies);
   }
 
-  public async searchPaginating(searchParams: { query: string | null }, limit: number, offset: number): Promise<Result<{ providers: Provider[]; pagination: { limit: number; offset: number; totalItems: number } }, InfrastructureError>> {
+  public async searchPaginating(searchParams: { query: string | null }, limit: number, offset: number) {
     try {
-      const { data, error, response } = await this.apiClient.GET("/game-provider/search", {
+      const { data, error, response } = await this.apiClient.GET("/search/game-providers", {
         params: {
           query: {
             query: searchParams.query,
@@ -26,7 +26,7 @@ export class ProvidersRepositoryGirobet implements ProvidersRepositoryI {
 
       if (data) {
         return success({
-          providers: data.data.map(provider => camelizeKeys({ ...provider })),
+          results: data.data.map(provider => camelizeKeys({ ...provider })),
           pagination: {
             limit: data.metadata.pagination.limit,
             offset: data.metadata.pagination.offset,

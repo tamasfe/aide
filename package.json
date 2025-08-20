@@ -12,7 +12,7 @@
     "dev:mock": "nuxt dev --dotenv .env-mock",
     "dev:api": "nuxt dev --dotenv .env-api",
     "generate": "nuxt generate",
-    "generate:open-api-client": "npx openapi-typescript http://localhost:3050/docs/private/api.json -o app/packages/http-client/girobet-backend-generated-http-client/openapi-typescript.d.ts",
+    "generate:open-api-client": "npx openapi-typescript http://localhost:3050/docs/spec.json -o app/packages/http-client/girobet-backend-generated-http-client/openapi-typescript.d.ts",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "postinstall": "nuxt prepare",

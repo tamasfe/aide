@@ -9,8 +9,9 @@ export class GamesApiRepositoryDumb implements GamesApiRepositoryI {
   public async searchPaginating(searchParams: { category: string | null; query: string | null; providerIdentifier: string | null }, pagination: { limit: number; offset: number }) {
     this.logger.debug("searchPaginating called", { searchParams, pagination });
     return success({
-      searchResults: this.games.slice(pagination.offset, pagination.offset + pagination.limit).map(game => ({
-        game: {
+      results: this.games.slice(pagination.offset, pagination.offset + pagination.limit).map(game => ({
+        score: 0.5, // Dummy score for the sake of example
+        item: {
           ...game,
           identifier: game.identifier,
           name: game.name,
@@ -22,7 +23,6 @@ export class GamesApiRepositoryDumb implements GamesApiRepositoryI {
           isHd: game.isHd,
           devices: game.devices,
         },
-        score: 0.5, // Dummy score for the sake of example
       })),
       pagination: {
         limit: pagination.limit,

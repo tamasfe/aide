@@ -7,7 +7,7 @@ import type { InfrastructureError } from "~/packages/result/infrastructure-error
 
 export interface GamesApiRepositoryI {
   searchPaginating(searchParams: { query: string | null }, pagination: { limit: number; offset: number }): Promise<Result<{
-    searchResults: GameSearchResponse[];
+    results: GameSearchResponse[];
     pagination: {
       limit: number;
       offset: number;

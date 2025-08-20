@@ -4,74 +4,6 @@
  */
 
 export interface paths {
-    "/docs/private/api.json": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * OpenAPI Spec
-         * @description Returns the OpenAPI spec to this API
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: never;
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/docs": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * API Docs
-         * @description This documentation page
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description HTML content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "text/html": string;
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/auth/whoami": {
         parameters: {
             query?: never;
@@ -1049,62 +981,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/game-provider/search": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Search Game Providers
-         * @description Search for games providers by providing a search query.
-         */
-        get: {
-            parameters: {
-                query?: {
-                    /** @description An organic search query to find game providers by. Searched fields
-                     *      include but are not limited to: name, description, slug... */
-                    query?: string | null;
-                    limit?: number;
-                    offset?: number;
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["PaginatorResponse_for_SearchGameProviderResponse_and_SearchGameProviderQuery_and_Nullable_uint"];
-                    };
-                };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/game-provider/list": {
         parameters: {
             query?: never;
@@ -1327,69 +1203,6 @@ export interface paths {
                 };
             };
         };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/game/search": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Search Games
-         * @description Search for games by providing a search query.
-         */
-        get: {
-            parameters: {
-                query?: {
-                    /** @description The category identifier to filter games by. If set, only games in this
-                     *      category are returned. Note: this is not the category ID, but the
-                     *      identifier. */
-                    category?: string | null;
-                    /** @description The provider to filter games by. If set, only games by this provider are
-                     *      returned. */
-                    provider_identifier?: components["schemas"]["GameProviderIdentifier"] | null;
-                    /** @description An organic search query to find games by. Searched fields include but
-                     *      are not limited to: name, description, provider name... */
-                    query?: string | null;
-                    limit?: number;
-                    offset?: number;
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["PaginatorResponse_for_GameSearchResponse_and_SearchGameQuery_and_Nullable_uint"];
-                    };
-                };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -2516,6 +2329,116 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/search/games": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Search Games
+         * @description Search for active games by name or other criteria.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description An organic search query to find items by. */
+                    query?: string | null;
+                    limit?: number;
+                    offset?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PaginatorResponse_for_ScoredSearchResponseItem_for_SearchGameResponse_and_SearchQuery_and_Nullable_uint"];
+                    };
+                };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *      This enum covers a wide range of error scenarios, from wallet-related issues
+                 *      to payment processing problems, user authentication errors, and more. */
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/search/game-providers": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Search Game Providers
+         * @description Search for active game providers by name or other criteria.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description An organic search query to find items by. */
+                    query?: string | null;
+                    limit?: number;
+                    offset?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PaginatorResponse_for_ScoredSearchResponseItem_for_SearchGameProviderResponse_and_SearchQuery_and_Nullable_uint"];
+                    };
+                };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *      This enum covers a wide range of error scenarios, from wallet-related issues
+                 *      to payment processing problems, user authentication errors, and more. */
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/system/site-setup": {
         parameters: {
             query?: never;
@@ -2557,6 +2480,74 @@ export interface paths {
                     };
                     content: {
                         "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/docs/spec.json": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * OpenAPI Spec
+         * @description Returns the OpenAPI spec to this API
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: never;
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/docs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * API Docs
+         * @description This documentation page
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description HTML content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/html": string;
                     };
                 };
             };
@@ -2739,649 +2730,6 @@ export interface paths {
                     };
                     content: {
                         "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/admin/user/list": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * List Users
-         * @description Fetch a paginated list of users in the system.
-         */
-        get: {
-            parameters: {
-                query?: {
-                    filters?: string;
-                    limit?: number;
-                    offset?: number;
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["PaginatorResponse_for_AdminUserResponse_and_ActiveFilters_and_int64"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/admin/user/{user_id}/block": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Block User
-         * @description Block the user until the specified date. If date is not set, the user will be blocked indefinitely.
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    user_id: components["schemas"]["UserId"];
-                };
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["BlockUserBody"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/admin/user/{user_id}/unblock": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Unblock User
-         * @description Unblock the user.
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    user_id: components["schemas"]["UserId"];
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/admin/user/{user_id}/exclude": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Exclude User
-         * @description Exclude the user until the specified date.
-         *         If date is not set, the user will be excluded indefinitely.
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    user_id: components["schemas"]["UserId"];
-                };
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["BlockUserBody"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/admin/user/{user_id}/include": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Include User
-         * @description Include the user.
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    user_id: components["schemas"]["UserId"];
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/admin/session/list": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * List Sessions
-         * @description Fetch sessions
-         */
-        get: {
-            parameters: {
-                query?: {
-                    filters?: string;
-                    limit?: number;
-                    offset?: number;
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["PaginatorResponse_for_SessionResponse_and_ActiveFilters_and_int64"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/admin/payment/list": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * List Payments
-         * @description This endpoint returns a list of payments and payment flows in chronological order with the newest items first.
-         *     You may filter payments via the following sample filter:
-         *
-         *     ```json
-         *     {
-         *     	"payment_flow_id": {"$eq": "1"},
-         *     	"payment_id": {"$eq": "1"},
-         *     	"wallet_id": {"$eq": "1"},
-         *     	"user_id": {"$eq": "1"},
-         *     	"payment_flow_status": {"$eq": "pending"},
-         *     	"payment_type": {"$eq": "deposit"},
-         *     	"payment_flow_amount": {"$eq": "100"},
-         *     	"payment_amount": {"$eq": "100"},
-         *     	"curency": {"$eq": "USD"},
-         *     	"payment_is_adjustment": {"$eq": "true"},
-         *     	"user_name": {"$contains": "john"},
-         *     	"user_email": {"$contains": "john"},
-         *     	"integration_id": {"$eq": "1"},
-         *     	"payment_provider_name": {"$contains": "star"},
-         *     	"payment_method_id": {"$eq": "1"},
-         *     	"payment_method_name": {"$contains": "pix"},
-         *     	"payment_flow_created_at": {"$eq": "2021-01-01T00:00:00Z"},
-         *     	"payment_created_at": {"$eq": "2021-01-01T00:00:00Z"},
-         *     	"payment_flow_status_created_at": {"$eq": "2021-01-01T00:00:00Z"}
-         *     }
-         *     ```
-         */
-        get: {
-            parameters: {
-                query?: {
-                    filters?: string;
-                    limit?: number;
-                    offset?: number;
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["PaginatorResponse_for_AdminPaymentListResponse_and_ActiveFilters_and_int64"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/admin/payment/flow/{flow_id}/approve": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Approve Payment Flow
-         * @description Approve the specified payment flow.
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    flow_id: components["schemas"]["PaymentFlowId"];
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/admin/payment/flow/{flow_id}/reject": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Reject Payment Flow
-         * @description Reject the specified payment flow.
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    flow_id: components["schemas"]["PaymentFlowId"];
-                };
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["RejectPaymentFlowBody"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/admin/payment/limits/{currency}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Update Payment Limits
-         * @description Update the limits for the specified currency.
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    currency: components["schemas"]["Currency"];
-                };
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["LimitOverridesPrototype"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/admin/payment/balance/adjust": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Update User Balance
-         * @description Adjust the balance for the specified user and currency.
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["AdjustUserBalanceBody"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/admin/wallet/{wallet_id}/limits": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Update Wallet Limits
-         * @description Patch the wallet limits.
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    wallet_id: components["schemas"]["WalletId"];
-                };
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["LimitOverridesPrototype"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/admin/game/rounds": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Read Game Rounds
-         * @description Fetch game rounds
-         */
-        get: {
-            parameters: {
-                query?: {
-                    filters?: string;
-                    limit?: number;
-                    offset?: number;
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["PaginatorResponse_for_AdminBetResponse_and_ActiveFilters_and_int64"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/admin/category/list": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Read Game Categories
-         * @description Fetch game categories
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["CategoryResponse"][];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/admin/category/group/list": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Read Category Groups
-         * @description Fetch category groups
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["CategoryGroupResponse"][];
                     };
                 };
             };
@@ -3591,184 +2939,10 @@ export interface components {
             /** Format: uuid */
             token: string;
         };
-        ActiveFilters: {
-            [key: string]: components["schemas"]["FilterOperator"];
-        };
-        AdjustUserBalanceBody: {
-            amount: components["schemas"]["SystemAmount"];
-            currency: components["schemas"]["Currency"];
-            note?: string | null;
-            user_id: components["schemas"]["UserId"];
-        };
-        AdminBetResponse: {
-            /** @description The amount of the action */
-            amount_bonus: components["schemas"]["SystemAmount"];
-            /** @description The amount of the action */
-            amount_locked: components["schemas"]["SystemAmount"];
-            /** @description The amount of the action */
-            amount_unlocked: components["schemas"]["SystemAmount"];
-            /** @description The action type */
-            bet_type: components["schemas"]["BetType"];
-            /**
-             * Format: date-time
-             * @description The date and time the action was created
-             */
-            created_at: string;
-            /** @description The currency of the action */
-            currency: components["schemas"]["Currency"];
-            /** @description The external ID of the bet */
-            ext_bet_id: string;
-            /** @description The external ID of the round */
-            ext_round_id: string;
-            /** @description The ID of the game */
-            game_id: components["schemas"]["GameId"];
-            /** @description The ID of the bet */
-            id: components["schemas"]["BetId"];
-            /** @description The ID of the integration that this bet belongs to */
-            integration_id: components["schemas"]["IntegrationId"];
-            /** @description The metadata of the action */
-            metadata?: unknown;
-            /** @description Whether the action was invalidated through a rollback */
-            rolled_back: boolean;
-            /** @description The ID of the user */
-            user_id: components["schemas"]["UserId"];
-            /** @description The ID of the wallet */
-            wallet_id: components["schemas"]["WalletId"];
-        };
-        AdminPaymentListResponse: {
-            /** @description The currency of the payment. */
-            currency: components["schemas"]["Currency"];
-            /** @description The ID of the payment provider. This is optional, as the payment
-             *      may be a balance adjustment, which does not have a payment provider. */
-            integration_id?: components["schemas"]["IntegrationId"] | null;
-            /** @description The amount of the payment. This is optional, as the payment may not
-             *      exist as described above. Note that this value is usually the same as
-             *      the payment flow amount, but it may differ in some rare cases. */
-            payment_amount?: components["schemas"]["SystemAmount"] | null;
-            /**
-             * Format: date-time
-             * @description The creation date of the payment. This is optional, as the payment may
-             *      not exist as described above.
-             */
-            payment_created_at?: string | null;
-            /** @description The amount of the payment flow. This is optional, as the flow may not
-             *      exist as described above. */
-            payment_flow_amount?: components["schemas"]["SystemAmount"] | null;
-            /**
-             * Format: date-time
-             * @description The creation date of the payment flow. This is optional, as the flow may
-             *      not exist as described above.
-             */
-            payment_flow_created_at?: string | null;
-            /** @description The payment flow ID of this payment. This is optional, as there may be
-             *      payments, such as balance adjustments, that do not have an associated
-             *      payment flow. */
-            payment_flow_id?: components["schemas"]["PaymentFlowId"] | null;
-            /** @description The status of the payment flow. This is optional, as the flow may not
-             *      exist as described above, or the flow has been created but not
-             *      initialized yet. */
-            payment_flow_status?: components["schemas"]["PaymentStatus"] | null;
-            /**
-             * Format: date-time
-             * @description The creation date of the payment flow status. This is optional, as the
-             *      flow may not exist as described above, or the flow has been created but
-             *      not initialized yet.
-             */
-            payment_flow_status_created_at?: string | null;
-            /** @description The payment ID of this payment. This is optional, as the associated flow
-             *      may not have been completed yet. */
-            payment_id?: components["schemas"]["PaymentId"] | null;
-            /** @description Whether this payment is an adjustment. This signifies that the payment
-             *      is not a regular payment, but an adjustment to the user's balance. */
-            payment_is_adjustment: boolean;
-            /** @description Metadata associated with the payment entry. This is optional, as the
-             *      payment may not exist as described above, or there is no metadata
-             *      associated with the payment. */
-            payment_metadata?: unknown;
-            /** @description The payment method ID of the payment. This is optional, as the payment
-             *      may be a balance adjustment, which does not have a payment method. */
-            payment_method_id?: components["schemas"]["PaymentMethodId"] | null;
-            /** @description The name of the payment method of the payment. This is optional, as the
-             *      payment may be a balance adjustment, which does not have a payment
-             *      method. */
-            payment_method_name?: string | null;
-            /** @description The name of the payment provider of the payment. This is optional, as
-             *      the payment may be a balance adjustment, which does not have a payment
-             *      provider. */
-            payment_provider_name?: string | null;
-            /** @description The type of payment that this payment is. */
-            payment_type: components["schemas"]["PaymentType"];
-            /** @description The email of the user that this payment is associated with. */
-            user_email: string;
-            /** @description The user ID of the user that this payment is associated with. */
-            user_id: components["schemas"]["UserId"];
-            /** @description The name of the user that this payment is associated with. */
-            user_name: string;
-            /** @description The wallet ID of the wallet that this payment is associated with. */
-            wallet_id: components["schemas"]["WalletId"];
-        };
-        AdminUserResponse: {
-            /** Format: date */
-            birthdate: string;
-            /** Format: date-time */
-            blocked_until?: string | null;
-            /** Format: date-time */
-            created_at: string;
-            /** Format: date-time */
-            deleted_at?: string | null;
-            email: string;
-            email_verified: boolean;
-            /** Format: date-time */
-            excluded_until?: string | null;
-            family_name?: string | null;
-            gender?: components["schemas"]["Gender"] | null;
-            id: components["schemas"]["UserId"];
-            jurisdiction: string;
-            name: string;
-            phone: string;
-            phone_verified: boolean;
-            /** Format: date-time */
-            updated_at: string;
-        };
-        AuthSessionId: string;
         /** Format: int64 */
         BetId: number;
         /** @enum {string} */
         BetType: "wager" | "win";
-        BlockUserBody: {
-            reason?: string | null;
-            /** Format: date-time */
-            until?: string | null;
-        };
-        CategoryGroupResponse: {
-            /**
-             * Format: date-time
-             * @description The time the category group was created
-             */
-            created_at: string;
-            /** @description The category group ID */
-            id: components["schemas"]["GameCategoryGroupId"];
-            /** @description The category group identifier, used for lookups and URLs */
-            identifier: string;
-        };
-        CategoryResponse: {
-            /**
-             * Format: date-time
-             * @description The time the category was created
-             */
-            created_at: string;
-            /** @description Whether the category is hidden from the public */
-            hidden: boolean;
-            /** @description The category ID */
-            id: components["schemas"]["GameCategoryId"];
-            /** @description The category identifier, used for lookups and URLs */
-            identifier: string;
-            /** @description Whether the category is user-specific. User specific categories have
-             *      different content based on the user. For example, a user-specific
-             *      category might show different content based on the user's playing
-             *      history. */
-            user_specific: boolean;
-        };
         /**
          * @description A country represented by its ISO 3166-1 alpha-2 code.
          * @enum {string}
@@ -3827,29 +3001,6 @@ export interface components {
         Device: "mobile" | "desktop";
         /** Format: int64 */
         DurationSeconds: number;
-        FilterOperator: {
-            $eq: unknown;
-        } | {
-            $startsWith: unknown;
-        } | {
-            $contains: unknown;
-        } | {
-            $in: unknown;
-        } | {
-            $between: unknown;
-        } | {
-            $lt: unknown;
-        } | {
-            $lte: unknown;
-        } | {
-            $gt: unknown;
-        } | {
-            $gte: unknown;
-        };
-        FiltersJson: {
-            /** @default {} */
-            filters: string;
-        };
         FinalizePasswordResetRequest: {
             /** @description The new password for the user. */
             password: string;
@@ -3885,8 +3036,6 @@ export interface components {
         };
         GameCategory: components["schemas"]["StaticGameCategory"] | string;
         /** Format: int64 */
-        GameCategoryGroupId: number;
-        /** Format: int64 */
         GameCategoryId: number;
         GameCategoryListQuery: {
             /** @description The group of game categories to filter by. If set, only categories in
@@ -3909,8 +3058,6 @@ export interface components {
              *      used to identify the category in the game search endpoint. */
             identifier: string;
         };
-        /** Format: int64 */
-        GameId: number;
         /** @description Game identifier, in the format <provider>/<game> */
         GameIdentifier: string;
         GameParams: {
@@ -3969,18 +3116,6 @@ export interface components {
              *      characters. */
             name: string;
         };
-        /** @description The response to a game search request. It only contains a limited set of
-         *      information about the game. If more information is needed, the game ID can
-         *      be used to fetch the full game details via the "get game" endpoint. */
-        GameSearchResponse: {
-            /** @description The search result game. */
-            game: components["schemas"]["GameResponse"];
-            /**
-             * Format: double
-             * @description The search score of the game.
-             */
-            score?: number | null;
-        };
         /** @enum {string} */
         Gender: "male" | "female" | "other";
         GetFasttrackTokenResponseBody: {
@@ -4002,8 +3137,6 @@ export interface components {
              */
             email: string;
         };
-        /** Format: int64 */
-        IntegrationId: number;
         /** @enum {string} */
         IntegrationIdentifier: "coinlayer" | "digito" | "fasttrack" | "fixer_io" | "infinigame" | "open_ai" | "sandbox" | "sumsub";
         InternalError: string;
@@ -4047,19 +3180,6 @@ export interface components {
              *      Examples include Curacao, Anjouan, etc. */
             root_jurisdiction: components["schemas"]["Country"];
         };
-        LimitOverridesPrototype: {
-            deposit_cooldown?: components["schemas"]["Maybe_DurationSeconds"];
-            deposit_max?: components["schemas"]["Maybe_Decimal"];
-            deposit_max_first?: components["schemas"]["Maybe_Decimal"];
-            deposit_min?: components["schemas"]["Maybe_Decimal"];
-            deposit_min_first?: components["schemas"]["Maybe_Decimal"];
-            timeframe_limits?: components["schemas"]["Maybe_Array_of_TimeframeLimitPrototype"];
-            withdrawal_cooldown?: components["schemas"]["Maybe_DurationSeconds"];
-            withdrawal_max?: components["schemas"]["Maybe_Decimal"];
-            withdrawal_max_first?: components["schemas"]["Maybe_Decimal"];
-            withdrawal_min?: components["schemas"]["Maybe_Decimal"];
-            withdrawal_min_first?: components["schemas"]["Maybe_Decimal"];
-        };
         /** @enum {string} */
         ListBetTypeQuery: "bet" | "win";
         ListGameActionsQuery: {
@@ -4102,9 +3222,6 @@ export interface components {
              */
             username: string;
         };
-        Maybe_Array_of_TimeframeLimitPrototype: components["schemas"]["TimeframeLimitPrototype"][] | null;
-        Maybe_Decimal: string | number | null;
-        Maybe_DurationSeconds: components["schemas"]["DurationSeconds"] | null;
         Maybe_PixKeyTypeDiscriminants: components["schemas"]["PixKeyTypeDiscriminants"] | null;
         Maybe_boolean: boolean | null;
         Maybe_string: string | null;
@@ -4162,10 +3279,6 @@ export interface components {
             };
         });
         NotificationTypeDiscriminants: "payment_status_update" | "kyc_completed" | "custom" | "banner" | "popup_modal";
-        PaginatorMetadata_for_ActiveFilters_and_int64: {
-            filters?: components["schemas"]["ActiveFilters"] | null;
-            pagination: components["schemas"]["PaginatorPosition_for_int64"];
-        };
         PaginatorMetadata_for_GameCategoryListQuery_and_int64: {
             filters?: components["schemas"]["GameCategoryListQuery"] | null;
             pagination: components["schemas"]["PaginatorPosition_for_int64"];
@@ -4186,12 +3299,8 @@ export interface components {
             filters?: components["schemas"]["ListPaymentFlowsQuery"] | null;
             pagination: components["schemas"]["PaginatorPosition_for_int64"];
         };
-        PaginatorMetadata_for_SearchGameProviderQuery_and_Nullable_uint: {
-            filters?: components["schemas"]["SearchGameProviderQuery"] | null;
-            pagination: components["schemas"]["PaginatorPosition_for_Nullable_uint"];
-        };
-        PaginatorMetadata_for_SearchGameQuery_and_Nullable_uint: {
-            filters?: components["schemas"]["SearchGameQuery"] | null;
+        PaginatorMetadata_for_SearchQuery_and_Nullable_uint: {
+            filters?: components["schemas"]["SearchQuery"] | null;
             pagination: components["schemas"]["PaginatorPosition_for_Nullable_uint"];
         };
         PaginatorMetadata_for_null_and_int64: {
@@ -4226,18 +3335,6 @@ export interface components {
             /** Format: int64 */
             total_items: number;
         };
-        PaginatorResponse_for_AdminBetResponse_and_ActiveFilters_and_int64: {
-            data: components["schemas"]["AdminBetResponse"][];
-            metadata: components["schemas"]["PaginatorMetadata_for_ActiveFilters_and_int64"];
-        };
-        PaginatorResponse_for_AdminPaymentListResponse_and_ActiveFilters_and_int64: {
-            data: components["schemas"]["AdminPaymentListResponse"][];
-            metadata: components["schemas"]["PaginatorMetadata_for_ActiveFilters_and_int64"];
-        };
-        PaginatorResponse_for_AdminUserResponse_and_ActiveFilters_and_int64: {
-            data: components["schemas"]["AdminUserResponse"][];
-            metadata: components["schemas"]["PaginatorMetadata_for_ActiveFilters_and_int64"];
-        };
         PaginatorResponse_for_GameActionResponse_and_ListGameActionsQuery_and_int64: {
             data: components["schemas"]["GameActionResponse"][];
             metadata: components["schemas"]["PaginatorMetadata_for_ListGameActionsQuery_and_int64"];
@@ -4254,10 +3351,6 @@ export interface components {
             data: components["schemas"]["GameResponse"][];
             metadata: components["schemas"]["PaginatorMetadata_for_ListGameQuery_and_int64"];
         };
-        PaginatorResponse_for_GameSearchResponse_and_SearchGameQuery_and_Nullable_uint: {
-            data: components["schemas"]["GameSearchResponse"][];
-            metadata: components["schemas"]["PaginatorMetadata_for_SearchGameQuery_and_Nullable_uint"];
-        };
         PaginatorResponse_for_NotificationResponse_and_ListNotificationsQuery_and_int64: {
             data: components["schemas"]["NotificationResponse"][];
             metadata: components["schemas"]["PaginatorMetadata_for_ListNotificationsQuery_and_int64"];
@@ -4266,13 +3359,13 @@ export interface components {
             data: components["schemas"]["PaymentFlowResponse"][];
             metadata: components["schemas"]["PaginatorMetadata_for_ListPaymentFlowsQuery_and_int64"];
         };
-        PaginatorResponse_for_SearchGameProviderResponse_and_SearchGameProviderQuery_and_Nullable_uint: {
-            data: components["schemas"]["SearchGameProviderResponse"][];
-            metadata: components["schemas"]["PaginatorMetadata_for_SearchGameProviderQuery_and_Nullable_uint"];
+        PaginatorResponse_for_ScoredSearchResponseItem_for_SearchGameProviderResponse_and_SearchQuery_and_Nullable_uint: {
+            data: components["schemas"]["ScoredSearchResponseItem_for_SearchGameProviderResponse"][];
+            metadata: components["schemas"]["PaginatorMetadata_for_SearchQuery_and_Nullable_uint"];
         };
-        PaginatorResponse_for_SessionResponse_and_ActiveFilters_and_int64: {
-            data: components["schemas"]["SessionResponse"][];
-            metadata: components["schemas"]["PaginatorMetadata_for_ActiveFilters_and_int64"];
+        PaginatorResponse_for_ScoredSearchResponseItem_for_SearchGameResponse_and_SearchQuery_and_Nullable_uint: {
+            data: components["schemas"]["ScoredSearchResponseItem_for_SearchGameResponse"][];
+            metadata: components["schemas"]["PaginatorMetadata_for_SearchQuery_and_Nullable_uint"];
         };
         PaginatorSelection: {
             /**
@@ -4285,9 +3378,6 @@ export interface components {
              * @default 0
              */
             offset: number;
-        };
-        PatchPaymentLimitsParams: {
-            currency: components["schemas"]["Currency"];
         };
         PatchSignupFlowRequest: {
             [key: string]: unknown;
@@ -4335,18 +3425,9 @@ export interface components {
             payment: components["schemas"]["PatchUserPaymentSettingsRequest"];
             time_zone?: components["schemas"]["Maybe_string"];
         };
-        PatchUserWalletLimitsParams: {
-            wallet_id: components["schemas"]["WalletId"];
-        };
         PatchUsernameRequest: {
             /** @description The new username of the user. */
             username: string;
-        };
-        PathParams: {
-            user_id: components["schemas"]["UserId"];
-        };
-        PathParams2: {
-            flow_id: components["schemas"]["PaymentFlowId"];
         };
         /** Format: int64 */
         PaymentFlowId: number;
@@ -4441,8 +3522,6 @@ export interface components {
              */
             waiting_for_approval: number;
         };
-        /** Format: int64 */
-        PaymentId: number;
         /** @enum {string} */
         PaymentLimitBound: "min" | "max";
         PaymentLimitsQuery: {
@@ -4551,13 +3630,29 @@ export interface components {
         };
         /** @enum {string} */
         ReadStatus: "read" | "unread";
-        RejectPaymentFlowBody: {
-            reason?: string | null;
+        /** @description The response to a game search request. It only contains a limited set of
+         *      information about the game. If more information is needed, the game ID can
+         *      be used to fetch the full game details via the "get game" endpoint. */
+        ScoredSearchResponseItem_for_SearchGameProviderResponse: {
+            /** @description The search result item. */
+            item: components["schemas"]["SearchGameProviderResponse"];
+            /**
+             * Format: double
+             * @description The search score of the item.
+             */
+            score?: number | null;
         };
-        SearchGameProviderQuery: {
-            /** @description An organic search query to find game providers by. Searched fields
-             *      include but are not limited to: name, description, slug... */
-            query?: string | null;
+        /** @description The response to a game search request. It only contains a limited set of
+         *      information about the game. If more information is needed, the game ID can
+         *      be used to fetch the full game details via the "get game" endpoint. */
+        ScoredSearchResponseItem_for_SearchGameResponse: {
+            /** @description The search result item. */
+            item: components["schemas"]["SearchGameResponse"];
+            /**
+             * Format: double
+             * @description The search score of the item.
+             */
+            score?: number | null;
         };
         /** @description The response to a game provider search request. It only contains a limited
          *      set of information about the provider. If more information is needed, the
@@ -4569,22 +3664,19 @@ export interface components {
             /** @description The name of the game provider. Do not use this in URLs, as it may
              *      contain special characters. */
             name: string;
-            /**
-             * Format: double
-             * @description The search score of the game provider.
-             */
-            score?: number | null;
         };
-        SearchGameQuery: {
-            /** @description The category identifier to filter games by. If set, only games in this
-             *      category are returned. Note: this is not the category ID, but the
-             *      identifier. */
-            category?: string | null;
-            /** @description The provider to filter games by. If set, only games by this provider are
-             *      returned. */
-            provider_identifier?: components["schemas"]["GameProviderIdentifier"] | null;
-            /** @description An organic search query to find games by. Searched fields include but
-             *      are not limited to: name, description, provider name... */
+        /** @description The response to a game provider search request. It only contains a limited
+         *      set of information about the provider. If more information is needed, the
+         *      provider ID can be used to fetch the full provider details via the "get
+         *      provider" endpoint. */
+        SearchGameResponse: {
+            description?: string | null;
+            identifier: components["schemas"]["GameIdentifier"];
+            name: string;
+            provider: components["schemas"]["SearchGameProviderResponse"];
+        };
+        SearchQuery: {
+            /** @description An organic search query to find items by. */
             query?: string | null;
         };
         SelectWalletRequest: {
@@ -4845,21 +3937,6 @@ export interface components {
             code: "INTERNAL";
             metadata: components["schemas"]["InternalError"];
         };
-        SessionResponse: {
-            country?: components["schemas"]["Country"] | null;
-            /** Format: date-time */
-            created_at: string;
-            device?: string | null;
-            /** Format: date-time */
-            expires_at: string;
-            id: components["schemas"]["AuthSessionId"];
-            /** Format: ip */
-            ip_address?: string | null;
-            /** Format: date-time */
-            last_interaction_at: string;
-            user_agent?: string | null;
-            user_id: components["schemas"]["UserId"];
-        };
         SignupFlowParams: {
             /** @description The ID of the signup flow to retrieve. */
             flow_id: string;
@@ -4884,7 +3961,8 @@ export interface components {
             jurisdiction: components["schemas"]["Country"];
         };
         Site: {
-            id?: number; // Adding it manually until Daniel adds the field to the OpenAPI spec
+            /** @description The ID of the site. */
+            id: components["schemas"]["SiteId"];
             /** @description The identifier of the site.
              *      Use this identifier to uniquely and programmatically identify the site. */
             identifier: components["schemas"]["SiteIdentifier"];
@@ -4912,6 +3990,8 @@ export interface components {
             tracking: components["schemas"]["SiteDomainHost"];
         };
         SiteDomainHost: string;
+        /** Format: int64 */
+        SiteId: number;
         SiteIdentifier: string;
         /** @description Site setup response, used for dymainc frontend branding and configuration. */
         SiteResponse: {
@@ -4982,12 +4062,6 @@ export interface components {
                 game: components["schemas"]["TickerGame"];
                 user_nickname: string;
             };
-        };
-        TimeframeLimitPrototype: {
-            /** Format: int64 */
-            days: number;
-            deposit?: components["schemas"]["Maybe_Decimal"];
-            withdrawal?: components["schemas"]["Maybe_Decimal"];
         };
         TrackerType: {
             /** @constant */
