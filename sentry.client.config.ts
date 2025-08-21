@@ -26,7 +26,7 @@ Sentry.init({
     Sentry.browserTracingIntegration(),
   ],
 
-  environment: runtimeConfig.public.release === "development" ? "development" : "production",
+  environment: runtimeConfig.public.release && runtimeConfig.public.release !== "development" ? "production" : "development",
 
   release: runtimeConfig.public.release,
 
