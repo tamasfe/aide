@@ -24,7 +24,7 @@ export class FindPreferredPaymentMethodOnPaymentModal {
 
   public PREFERRED_METHOD = "pix" as const;
 
-  public FALLBACK_FOR_MINIMUM_AMOUNT = 0;
+  public FALLBACK_FOR_MINIMUM_AMOUNT = 2;
   public FALLBACK_FOR_MAX_AMOUNT = null;
   public FALLBACK_FOR_COOLDOWN_SECONDS = null;
 
@@ -37,6 +37,24 @@ export class FindPreferredPaymentMethodOnPaymentModal {
 
     const limitsResult = await this.paymentMethodRepo.findLimits(currency, paymentMethodResult.value.id);
     if (limitsResult.isFailure) {
+      if (limitsResult.error.name === "ErrorWalletNotFound") {
+        this.logger.warn("ErrorWalletNotFound finding payment method limits, returning fallback amounts. In the future we want to handle this case better, as the fallbacks might not be the same for all payment methods, currencies, and users. Probably the backend will have to return the fallback amounts instead of an error.", {err: limitsResult.error});
+        return {
+          id: paymentMethodResult.value.id,
+          identifier: paymentMethodResult.value.identifier,
+          depositAmounts: {
+            min: this.FALLBACK_FOR_MINIMUM_AMOUNT,
+            max: this.FALLBACK_FOR_MAX_AMOUNT,
+            cooldownSeconds: this.FALLBACK_FOR_COOLDOWN_SECONDS,
+          },
+          withdrawalAmounts: {
+            min: this.FALLBACK_FOR_MINIMUM_AMOUNT,
+            max: this.FALLBACK_FOR_MAX_AMOUNT,
+            cooldownSeconds: this.FALLBACK_FOR_COOLDOWN_SECONDS,
+          },
+        };
+      }
+
       this.logger.error("Error finding pix payment limits, returning fallback amounts", limitsResult.error, { paymentMethod: paymentMethodResult.value });
       return {
         id: paymentMethodResult.value.id,
