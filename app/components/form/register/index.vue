@@ -39,6 +39,10 @@ const loadingFields = ref({
 });
 
 const onSubmit = handleSubmit(async () => {
+  if (loading.value || !meta.value.valid) {
+    return;
+  }
+
   loadingSubmit.value = true;
 
   const resultSearchParams = $dependencies.clicks.repositories.marketingSearchParamsRepo.searchAttributed();
