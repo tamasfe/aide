@@ -26,7 +26,7 @@ defineProps({
   },
 });
 
-const { handleSubmit, meta } = useForm();
+const { handleSubmit, meta, values } = useForm();
 const { $dependencies } = useNuxtApp();
 
 const errorMessage = ref<null | string>(null);
@@ -45,18 +45,31 @@ const onSubmit = handleSubmit(async () => {
 
   loadingSubmit.value = true;
 
+  let searchParams: Record<string, string> | undefined = undefined;
   const resultSearchParams = $dependencies.clicks.repositories.marketingSearchParamsRepo.searchAttributed();
   if (resultSearchParams.isFailure) {
-    $dependencies.common.logger.error("Error retrieving the saved marketing queyr parameters. This might affect our attribution", resultSearchParams.error);
+    $dependencies.common.logger.error("Error retrieving the saved marketing query parameters. This might affect our attribution", resultSearchParams.error);
   }
   else {
     if (resultSearchParams.value) {
-      $dependencies.common.logger.debug("Signup params found for user", { params: resultSearchParams.value.params });
-      await $dependencies.signupFlows.ui.upsertSignupFlowOnRegisterFormInputChange.handle({ utmParameters: resultSearchParams.value.params });
+      searchParams = resultSearchParams.value.params;
     }
   }
 
+  /**
+   * We upsert one last time before the submission in case the frontend is out of sync with the backend, which can lead to an incomplete
+   * submission, and thus a backend error.
+   */
+  await $dependencies.signupFlows.ui.upsertSignupFlowOnRegisterFormInputChange.handle({
+    utmParameters: searchParams,
+    email: values.email,
+    CPF: values.cpf,
+    telephone: values.telephone,
+    password: values.password,
+  });
+
   const errorSubmitting = await $dependencies.signupFlows.ui.submitSignupFlowOnFormSubmission.handle();
+
   loadingSubmit.value = false;
   errorMessage.value = errorSubmitting;
 }, ({ results }) => {
