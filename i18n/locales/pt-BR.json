@@ -147,7 +147,8 @@
     "error_validating_field": "Erro ao validar campo. Por favor, atualize e tente novamente",
     "error_submitting_flow_already_taken_cpf": "Este CPF já está em uso",
     "error_submitting_flow_already_taken_email": "Este e-mail já está em uso",
-    "error_submitting_flow_already_taken_telephone": "Este número de telefone já está em uso"
+    "error_submitting_flow_already_taken_telephone": "Este número de telefone já está em uso",
+    "error_submitting_flow_invalid_profile": "Desculpe, você não pode se inscrever neste site."
   },
   "modal_payments": {
     "make_deposit": "Fazer um Depósito",

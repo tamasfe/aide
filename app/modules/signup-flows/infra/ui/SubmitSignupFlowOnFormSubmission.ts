@@ -27,6 +27,9 @@ export class SubmitSignupFlowOnFormSubmission {
       if (result.error.name === "ErrorAlreadyTakenTelephone") {
         return this.translateFunction("modal_session.error_submitting_flow_already_taken_telephone");
       }
+      if (result.error.name === "ErrorInvalidProfile") {
+        return this.translateFunction("modal_session.error_submitting_flow_invalid_profile");
+      }
 
       this.logger.error("Error submitting the signup flow. More info in the cause", result.error);
       return this.translateFunction("modal_session.error_submitting_flow");

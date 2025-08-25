@@ -148,7 +148,8 @@
     "error_validating_field": "Error validating field. Please refresh and try again",
     "error_submitting_flow_already_taken_cpf": "This CPF is already in use",
     "error_submitting_flow_already_taken_email": "This email is already in use",
-    "error_submitting_flow_already_taken_telephone": "This phone number is already in use"
+    "error_submitting_flow_already_taken_telephone": "This phone number is already in use",
+    "error_submitting_flow_invalid_profile": "Sorry, you are not able to sign up to this site."
   },
   "modal_payments": {
     "make_deposit": "Make a Deposit",

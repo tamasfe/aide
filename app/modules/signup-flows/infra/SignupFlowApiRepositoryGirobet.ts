@@ -9,6 +9,7 @@ import { fail, success, unfold, type EmptyResult } from "~/packages/result";
 import { createBackendOpenApiClient } from "~/packages/http-client/create-backend-open-api-client";
 import { HttpBackendApiError } from "~/packages/http-client/http-backend-api-error";
 import type { CommonDependenciesI } from "~/dependency-injection/load-di";
+import { ErrorInvalidProfile } from "../domain/errors/ErrorInvalidProfile";
 
 export class SignupFlowApiRepositoryGirobet implements SignupFlowApiRepositoryI {
   public async getById(
@@ -66,7 +67,7 @@ export class SignupFlowApiRepositoryGirobet implements SignupFlowApiRepositoryI 
     return fail(InfrastructureError.newFromError({ data, error, response }, new Error("Unexpected scenario: library did not return data nor error. This should never happen. Response: ")));
   }
 
-  public async submit(signupFlowId: string): Promise<EmptyResult<InfrastructureError | ErrorAlreadyTakenCpf | ErrorAlreadyTakenTelephone | ErrorAlreadyTakenEmail>> {
+  public async submit(signupFlowId: string): Promise<EmptyResult<InfrastructureError | ErrorInvalidProfile | ErrorAlreadyTakenCpf | ErrorAlreadyTakenTelephone | ErrorAlreadyTakenEmail>> {
     const { data, error, response } = await this.apiClient.POST("/signup/flow/{flow_id}", {
       params: {
         path: {
@@ -76,6 +77,10 @@ export class SignupFlowApiRepositoryGirobet implements SignupFlowApiRepositoryI 
     });
 
     if (error) {
+      if (error.code === "SIGNUP_INVALID_PROFILE") {
+        return fail(new ErrorInvalidProfile({ signupFlowId }));
+      }
+
       if (error.code === "VALIDATION") {
         for (const [field, errors] of Object.entries(error.metadata)) {
           if (Array.isArray(errors)) {
