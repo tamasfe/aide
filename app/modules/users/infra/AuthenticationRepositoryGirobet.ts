@@ -17,7 +17,6 @@ export class AuthenticationRepositoryGirobet implements AuthenticationRepository
   }
 
   public async login(username: string, password: string): Promise<EmptyResult<ErrorInvalidAuthCredentials | InfrastructureError>> {
-    this.logger.debug("Calling login", { username });
     const { data, error, response } = await this.apiClient.POST("/auth/login", {
       body: {
         username,
