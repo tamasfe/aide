@@ -44,7 +44,7 @@ defineProps<{
       <div v-if="limits && limits.min" class="flex items-center justify-between">
         <span>{{ $t('modal_payments.make_deposit_subtitle') }}</span>
         <span class="text-right block space-x-2">
-          <span>Minimum:</span>
+          <span>{{ $t('modal_deposit.minimum') }}:</span>
           <BaseCurrency
             class="inline"
             :value="limits.min"

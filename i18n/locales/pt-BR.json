@@ -180,6 +180,9 @@
     "error_creating_withdrawal_flow_amount_above_maximum": "O valor que você está tentando sacar está acima do máximo permitido {max}. Altere o valor e tente novamente",
     "error_creating_withdrawal_flow_unknown": "Ocorreu um erro ao processar seu saque. Por favor, tente novamente"
   },
+  "modal_deposit": {
+    "minimum": "Mínimo"
+  },
   "modal_user_settings": {
     "error_unknown": "Ocorreu um erro ao salvar suas configurações. Por favor, tente novamente em alguns minutos",
     "language": {

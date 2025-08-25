@@ -181,6 +181,9 @@
     "error_creating_withdrawal_flow_amount_above_maximum": "The amount you are trying to withdraw is above the maximum allowed {max}. Please change the amount and try again",
     "error_creating_withdrawal_flow_unknown": "An error occurred while handling your withdrawal. Please try again"
   },
+  "modal_deposit": {
+    "minimum": "Minimum"
+  },
   "modal_user_settings": {
     "error_unknown": "An error occurred while saving your settings. Please try again in some minutes",
     "language": {
