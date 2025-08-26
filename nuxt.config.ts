@@ -28,7 +28,7 @@ export default defineNuxtConfig({
        * - https://github.com/nuxt/nuxt/issues/29727
        * When the huge build time in CI issue is resolved, we can remove this configuration.
        */
-      legacyExternals: process.env.GITHUB_ACTIONS ? true : false,
+      legacyExternals: false,
     }
   },
   app: {
