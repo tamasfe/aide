@@ -19,6 +19,17 @@ export default defineNuxtConfig({
     enabled: true,
   },
   css: ["~/assets/css/tailwind.css"],
+  nitro: {
+    experimental: {
+      /**
+       * Recommended to reduce the +15min build times we are getting in our GH actions. Mentioned in these issues:
+       * - https://github.com/nitrojs/nitro/issues/2367
+       * - https://github.com/nuxt/nuxt/issues/31836
+       * When the huge build time in CI issue is resolved, we can remove this configuration.
+       */
+      legacyExternals: process.env.GITHUB_ACTIONS ? true : false,
+    }
+  },
   app: {
     head: {
       charset: "utf-8",
