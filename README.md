@@ -30,8 +30,7 @@ Useful documentation links about Nuxt & environment variables:
 
 ### Updating the backend open api spec
 
-1. Replace the `app/packages/http-client/girobet-backend-open-api.json` file with the newer version
-2. (Remember to format it so git picks up the differences more easily)
-3. Run `pnpm generate:open-api-client` (you need to have run `pnpm install` before)
+1. Lift the backend in a separate terminal making sure to expose the /docs
+2. Run `pnpm generate:open-api-client` (you need to have run `pnpm install` before)
 
 That's it! The updated types are picked up automatically.
