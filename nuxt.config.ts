@@ -56,6 +56,14 @@ export default defineNuxtConfig({
           src: "https://baee18f7-63ae-4aa0-b5d7-8160149e921b.snippet.anjouangaming.org/anj-seal.js",
           defer: true,
         },
+        /**
+         * Mouseflow to track user behaviour, heatmaps...
+         * Vue installation guide: https://help.mouseflow.com/en/articles/9358320-install-mouseflow-on-vue-js-web-app
+         */
+        {
+          src: "//cdn.mouseflow.com/projects/f640d54f-db4f-4d06-a9b4-5dd81ae52d26.js",
+          defer: true,
+        }
       ],
     },
     rootId: "app",
