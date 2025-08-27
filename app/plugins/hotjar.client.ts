@@ -9,7 +9,7 @@ class ErrorInitiatingHotjar extends CustomError {
 }
 
 export default defineNuxtPlugin({
-  name: "package-google-tag-manager",
+  name: "hotjar",
   dependsOn: ["dependency-injection"],
   parallel: true,
   async setup(nuxtApp) {
