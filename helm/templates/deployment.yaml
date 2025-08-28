@@ -6,7 +6,7 @@ metadata:
     app: "{{ .Release.Name }}"
 spec:
   revisionHistoryLimit: 3
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: "{{ .Release.Name }}"
@@ -20,6 +20,7 @@ spec:
       labels:
         app: "{{ .Release.Name }}"
     spec:
+      priorityClassName: "{{ .Release.Name }}-high-priority"
       affinity:
         podAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
@@ -50,6 +51,10 @@ spec:
             - name: http
               containerPort: 3000
               protocol: TCP
+          resources:
+            requests:
+              cpu: "1"
+              memory: "256Mi"
           envFrom:
             - configMapRef:
                 name: "{{ .Release.Name }}"
