@@ -74,7 +74,8 @@
     "nevermind": "Nevermind",
     "download_app": "Download App",
     "update_app": "Update App",
-    "print": "Print"
+    "print": "Print",
+    "popular": "Hot"
   },
   "mobile_nav": {
     "menu": "Menu",
@@ -154,6 +155,8 @@
   "modal_payments": {
     "make_deposit": "Make a Deposit",
     "make_deposit_subtitle": "Add funds to your account",
+    "select_payment_method": "Select a payment method",
+    "select_payment_method_subtitle": "Select the payment method you want to use for this deposit.",
     "generate_new_code": "Generate a new code",
     "finalize_deposit": "Finalize Deposit",
     "finalize_deposit_subtitle": "Scan QR or copy code",

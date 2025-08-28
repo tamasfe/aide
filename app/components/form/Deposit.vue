@@ -13,6 +13,8 @@ import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
 // INPUTMODES:          ✅
 // ZOD SCHEMA:          ✅
 
+const siteStore = useSiteStore();
+
 const props = defineProps({
   paymentMethodId: {
     type: Number,
@@ -31,7 +33,33 @@ const props = defineProps({
   },
 });
 
-const presetAmounts = ref([10, 50, 100, 250, 500, 1000]);
+const presetAmounts = ref<{ value: number; hot: boolean }[]>([
+  {
+    value: 10,
+    hot: false,
+  }, {
+    value: 50,
+    hot: true,
+  }, {
+    value: 100,
+    hot: false,
+  }, {
+    value: 250,
+    hot: false,
+  }, {
+    value: 500,
+    hot: false,
+  }, {
+    value: 1000,
+    hot: true,
+  },
+]);
+
+const paymentMethods = ref<{ id: number; logo: string }[]>([
+  {
+    id: 1,
+    logo: "logos/pix.svg" },
+]);
 
 const { $dependencies } = useNuxtApp();
 const { t } = useI18n();
@@ -51,6 +79,7 @@ if (props.amounts.max !== null) {
 const validationSchema = toTypedSchema(
   z.object({
     amount: schemaForAmount,
+    paymentMethod: z.number(),
   }),
 );
 
@@ -58,7 +87,10 @@ const { handleSubmit, errors: formErrors, defineField, meta } = useForm({ valida
 const formErrorMessage = ref("");
 const loading = ref(false);
 const [amount, amountAttrs] = defineField("amount");
-amount.value = undefined;
+amount.value = presetAmounts.value[0]?.value;
+
+const [paymentMethod, _paymentMethodAttrs] = defineField("paymentMethod");
+paymentMethod.value = props.paymentMethodId;
 
 const onSubmit = handleSubmit(async (formData) => {
   loading.value = true;
@@ -67,7 +99,7 @@ const onSubmit = handleSubmit(async (formData) => {
   formErrorMessage.value = await $dependencies.wallets.ui.createDepositFlowOnForm.handle(
     formData.amount,
     props.currency.code,
-    props.paymentMethodId,
+    formData.paymentMethod,
   );
 
   loading.value = false;
@@ -126,11 +158,11 @@ const onSubmit = handleSubmit(async (formData) => {
 
     <div class="grid grid-cols-3 gap-2 mb-4">
       <BaseButton
-        v-for="(presetAmount, index) in presetAmounts"
+        v-for="({ value: presetAmount, hot }, index) in presetAmounts"
         :key="index"
         variant="subtle"
-        size="input"
-        class="w-full bg-subtle hover:bg-subtle/80 text-white font-semibold text-base xs:text-lg"
+        class="overflow-hidden relative w-full text-white font-semibold text-base xs:text-lg"
+        :class="[presetAmount === amount ? 'bg-active' : 'bg-subtle hover:bg-subtle/80']"
         @click="amount = presetAmount"
       >
         <BaseCurrency
@@ -139,6 +171,39 @@ const onSubmit = handleSubmit(async (formData) => {
           trailing-zero-display="stripIfInteger"
           variant="emphasis"
         />
+        <div
+          v-if="hot"
+          class="absolute bg-button-primary top-0 right-0 text-[0.6rem] uppercase rounded-bl px-1 text-button-emphasis font-bold"
+        >
+          {{ $t('button.popular') }}
+        </div>
+      </BaseButton>
+    </div>
+
+    <div class="mb-2">
+      <h3 class="">
+        {{ $t("modal_payments.select_payment_method") }}
+      </h3>
+      <p class="text-subtle text-sm">
+        {{ $t("modal_payments.select_payment_method_subtitle") }}
+      </p>
+    </div>
+
+    <div class="grid grid-cols-3 gap-2 mb-4">
+      <BaseButton
+        v-for="{ id, logo } in paymentMethods"
+        :key="id"
+        variant="subtle"
+        class="overflow-hidden relative w-full text-white font-semibold text-base xs:text-lg"
+        :class="[paymentMethod === id ? 'bg-active' : 'bg-subtle hover:bg-subtle/80']"
+        @click="paymentMethod = id"
+      >
+        <div class="py-2">
+          <NuxtImg
+            :src="siteStore.getRelativeAssetPath(logo)"
+            alt="Pix"
+          />
+        </div>
       </BaseButton>
     </div>
 

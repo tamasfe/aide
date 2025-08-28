@@ -23,8 +23,8 @@ const currencyVariants = cva(
   {
     variants: {
       variant: {
-        primary: "mr-2 bg-button-primary text-transparent bg-clip-text",
-        emphasis: "mr-2 bg-button-emphasis text-transparent bg-clip-text",
+        primary: "mr-1 bg-button-primary text-transparent bg-clip-text",
+        emphasis: "mr-1 bg-button-emphasis text-transparent bg-clip-text",
         ghost: "",
       },
     },

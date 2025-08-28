@@ -73,11 +73,12 @@
     "nevermind": "Não importa",
     "download_app": "Baixar Aplicativo",
     "update_app": "Atualizar Aplicativo",
-    "print": "Imprimir"
+    "print": "Imprimir",
+    "popular": "Top"
   },
   "mobile_nav": {
     "menu": "Menu",
-    "hot": "Quente",
+    "hot": "Top",
     "search": "Buscar",
     "support": "Suporte",
     "promos": "Promoções"
@@ -153,6 +154,8 @@
   "modal_payments": {
     "make_deposit": "Fazer um Depósito",
     "make_deposit_subtitle": "Adicione fundos à sua conta",
+    "select_payment_method": "Selecione um método de pagamento",
+    "select_payment_method_subtitle": "Selecione o método de pagamento que deseja usar para este depósito.",
     "generate_new_code": "Gerar um novo código",
     "finalize_deposit": "Finalizar Depósito",
     "finalize_deposit_subtitle": "Escaneie QR ou copie o código",
