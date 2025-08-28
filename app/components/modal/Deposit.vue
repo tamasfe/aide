@@ -6,6 +6,22 @@ import type { SupportedCountryFlagCode } from "~/types/constants";
 // ARCHITECTURE STATUS: ✅
 // TRANSLATION STATUS:  ✅
 
+const walletStore = useWalletStore();
+
+const ENABLE_SERVER_SIDE_RENDERING = true;
+const DEFER_CLIENT_SIDE_LOADING = true;
+
+const { data: paymentMethodData } = await useAsyncData("user-modals-payment-method", async () => {
+  if (!walletStore.wallet) {
+    return null;
+  }
+  return await $dependencies.wallets.ui.findPreferredPaymentMethodOnPaymentModal.handle(walletStore.wallet.currency);
+}, {
+  watch: [() => walletStore.wallet?.currency],
+  lazy: DEFER_CLIENT_SIDE_LOADING,
+  server: ENABLE_SERVER_SIDE_RENDERING,
+});
+
 const { $dependencies } = useNuxtApp();
 const siteStore = useSiteStore();
 
@@ -22,8 +38,6 @@ const currency = ref<{
 });
 
 defineProps<{
-  limits: null | { min: number | null; max: number | null };
-  paymentMethodId: null | number;
   open: boolean;
 }>();
 </script>
@@ -41,13 +55,13 @@ defineProps<{
       {{ $t('modal_payments.make_deposit') }}
     </template>
     <template #subtitle>
-      <div v-if="limits && limits.min" class="flex items-center justify-between">
+      <div v-if="paymentMethodData?.depositAmounts && paymentMethodData?.depositAmounts.min" class="flex items-center justify-between">
         <span>{{ $t('modal_payments.make_deposit_subtitle') }}</span>
         <span class="text-right block space-x-2">
           <span>{{ $t('modal_deposit.minimum') }}:</span>
           <BaseCurrency
             class="inline"
-            :value="limits.min"
+            :value="paymentMethodData?.depositAmounts.min"
             :currency="currency.code"
             variant="ghost"
           />
@@ -56,10 +70,10 @@ defineProps<{
       <span v-else>{{ $t('modal_payments.make_deposit_subtitle') }}</span>
     </template>
     <FormDeposit
-      v-if="limits && paymentMethodId"
-      :amounts="{ min: limits.min, max: limits.max }"
+      v-if="paymentMethodData?.depositAmounts && paymentMethodData.id"
+      :amounts="{ min: paymentMethodData?.depositAmounts.min, max: paymentMethodData?.depositAmounts.max }"
       :currency="currency"
-      :payment-method-id="paymentMethodId"
+      :payment-method-id="paymentMethodData.id"
     />
   </BaseModal>
 </template>

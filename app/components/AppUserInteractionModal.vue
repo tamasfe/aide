@@ -3,7 +3,6 @@ import type { UserInteractionModalState } from "~/packages/async-messages/async-
 
 const { $dependencies } = useNuxtApp();
 const { searchParams } = useRequestURL();
-const walletStore = useWalletStore();
 
 const state = useState<UserInteractionModalState | { modal: null }>("user-modal-state", () => ({ modal: null }));
 const isOpen = defineModel<boolean>("open", { type: Boolean, required: true });
@@ -55,19 +54,6 @@ const recoverPasswordToken = useState("user-modal-recover-password-token", () =>
 if (recoverPasswordToken.value) {
   $dependencies.users.ui.emitCommandOpenUserActionModal.handle({ modal: "recover_password", data: { token: recoverPasswordToken.value } });
 }
-
-const ENABLE_SERVER_SIDE_RENDERING = true;
-const DEFER_CLIENT_SIDE_LOADING = true;
-const { data: paymentMethodData } = await useAsyncData("user-modals-payment-method", async () => {
-  if (!walletStore.wallet) {
-    return null;
-  }
-  return await $dependencies.wallets.ui.findPreferredPaymentMethodOnPaymentModal.handle(walletStore.wallet.currency);
-}, {
-  watch: [() => walletStore.wallet?.currency],
-  lazy: DEFER_CLIENT_SIDE_LOADING,
-  server: ENABLE_SERVER_SIDE_RENDERING,
-});
 </script>
 
 <template>
@@ -90,8 +76,6 @@ const { data: paymentMethodData } = await useAsyncData("user-modals-payment-meth
     />
     <ModalDeposit
       :open="isOpen && state.modal === 'deposit'"
-      :limits="paymentMethodData?.depositAmounts ?? null"
-      :payment-method-id="paymentMethodData?.id ?? null"
     />
     <ModalDepositConfirm
       :open="isOpen && state.modal === 'deposit_confirm'"
@@ -99,8 +83,6 @@ const { data: paymentMethodData } = await useAsyncData("user-modals-payment-meth
     />
     <ModalWithdrawal
       :open="isOpen && state.modal === 'withdrawal'"
-      :limits="paymentMethodData?.withdrawalAmounts ?? null"
-      :payment-method-id="paymentMethodData?.id ?? null"
     />
     <ModalSearch :open="isOpen && state.modal === 'search'" />
     <ModalUpdateSettings

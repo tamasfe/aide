@@ -9,12 +9,26 @@ const { $dependencies } = useNuxtApp();
 const siteStore = useSiteStore();
 const userUnlockedBalance = useWalletStore().wallet?.balanceUnlocked ?? null;
 
+const walletStore = useWalletStore();
+
+const ENABLE_SERVER_SIDE_RENDERING = true;
+const DEFER_CLIENT_SIDE_LOADING = true;
+
+const { data: paymentMethodData } = await useAsyncData("user-modals-payment-method", async () => {
+  if (!walletStore.wallet) {
+    return null;
+  }
+  return await $dependencies.wallets.ui.findPreferredPaymentMethodOnPaymentModal.handle(walletStore.wallet.currency);
+}, {
+  watch: [() => walletStore.wallet?.currency],
+  lazy: DEFER_CLIENT_SIDE_LOADING,
+  server: ENABLE_SERVER_SIDE_RENDERING,
+});
+
 const onClosed = () => {
   $dependencies.users.ui.emitCommandCloseUserActionModal.handle();
 };
 defineProps<{
-  limits: null | { min: number | null; max: number | null; cooldownSeconds: number | null };
-  paymentMethodId: null | number;
   open: boolean;
 }>();
 const currency = ref<{
@@ -42,9 +56,9 @@ const currency = ref<{
     </template>
 
     <FormWithdrawal
-      v-if="limits && paymentMethodId"
-      :payment-method-limits="limits"
-      :payment-method-id="paymentMethodId"
+      v-if="paymentMethodData?.withdrawalAmounts && paymentMethodData?.withdrawalAmounts"
+      :payment-method-limits="paymentMethodData?.withdrawalAmounts"
+      :payment-method-id="paymentMethodData?.id"
       :currency="currency"
       :user-unlocked-balance="userUnlockedBalance"
     />
