@@ -29,17 +29,34 @@ class ErrorSharing extends AbstractExtendedError {
   override name = "ErrorSharing" as const;
 
   // Possible share error types and their descriptions: @https://developer.mozilla.org/en-US/docs/Web/API/Navigator/share
-  public get type() {
-    if (this.cause.name === "InvalidStateError") return "InvalidStateError";
-    if (this.cause.name === "NotAllowedError") return "NotAllowedError";
-    if (this.cause.name === "TypeError") return "TypeError";
-    if (this.cause.name === "AbortError") return "AbortError";
-    if (this.cause.name === "DataError") return "DataError";
-    return "UnknownError";
-  }
+  public type: string
 
   constructor(metadata: Record<string, unknown>, error: unknown) {
     super("Error sharing the content", metadata, AbstractExtendedError.parseCause(error));
+
+    switch (this.cause.name) {
+      case "InvalidStateError":
+        if (this.cause.message.includes("Failed to execute 'share' on 'Navigator': An earlier share has not yet completed")) {
+          this.type = "InvalidStateError.ShareInProgress";
+          break
+        }
+        this.type = "InvalidStateError";
+        break;
+      case "NotAllowedError":
+        this.type = "NotAllowedError";
+        break;
+      case "TypeError":
+        this.type = "TypeError";
+        break;
+      case "AbortError":
+        this.type = "AbortError";
+        break;
+      case "DataError":
+        this.type = "DataError";
+        break;
+      default:
+        this.type = "UnknownError";
+    }
   }
 }
 
@@ -53,7 +70,12 @@ const onShare = async () => {
     switch (errorSharing.type) {
       case "AbortError":
         // The user canceled the share, no need to log in error level
-        $dependencies.common.logger.warn("Share was aborted", { shareData: shareData.value });
+        $dependencies.common.logger.warn("Share was aborted. Tolerating...", { shareData: shareData.value });
+        return;
+
+      case "InvalidStateError.ShareInProgress":
+        // The user is already seeing the share, no need to log in error level
+        $dependencies.common.logger.warn("Share already in progress. Tolerating...", { shareData: shareData.value });
         return;
 
       default:
