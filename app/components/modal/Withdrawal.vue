@@ -23,6 +23,7 @@ const { data: paymentMethodData } = await useAsyncData("user-modals-payment-meth
   watch: [() => walletStore.wallet?.currency],
   lazy: DEFER_CLIENT_SIDE_LOADING,
   server: ENABLE_SERVER_SIDE_RENDERING,
+  dedupe: "defer",
 });
 
 const onClosed = () => {
