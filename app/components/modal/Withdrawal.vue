@@ -11,7 +11,7 @@ const userUnlockedBalance = useWalletStore().wallet?.balanceUnlocked ?? null;
 
 const walletStore = useWalletStore();
 
-const ENABLE_SERVER_SIDE_RENDERING = true;
+const ENABLE_SERVER_SIDE_RENDERING = false;
 const DEFER_CLIENT_SIDE_LOADING = true;
 
 const { data: paymentMethodData } = await useAsyncData("user-modals-payment-method", async () => {
