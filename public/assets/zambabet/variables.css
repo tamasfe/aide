@@ -24,7 +24,7 @@
 
   /* buttons */
 
-  --color-button-primary: linear-gradient(to bottom, #ffc441, #ffe600);
+  --color-button-primary: linear-gradient(to bottom, oklch(85% 0.22 85), oklch(92% 0.23 100));
   --color-button-primary-hover: #ffe00c;
   --color-button-text-primary: #000000;
 
@@ -32,7 +32,7 @@
   --color-button-secondary-hover: #333256;
   --color-button-text-secondary: #7b82c0;
 
-  --color-button-emphasis: linear-gradient(to bottom, #20cd19, #9bfc33);
+  --color-button-emphasis: linear-gradient(to bottom, oklch(73% 0.35 136), oklch(90% 0.35 128));
   --color-button-emphasis-hover: #81f22e;
   --color-button-text-emphasis: #000000;
 

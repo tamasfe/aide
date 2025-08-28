@@ -221,7 +221,7 @@ const onSubmit = handleSubmit(async (formData) => {
       </div>
       <template v-else>
         <BaseButton
-          v-for="{ id, identifier, logo, title } in paymentMethods"
+          v-for="{ id, logo, title } in paymentMethods"
           :key="id"
           variant="ghost"
 
@@ -229,18 +229,16 @@ const onSubmit = handleSubmit(async (formData) => {
           :class="[paymentMethod === id ? 'bg-active ring-1 ring-success' : 'bg-subtle hover:bg-subtle/80']"
           @click="paymentMethod = id"
         >
-          <div class="py-2">
-            <NuxtImg
-              v-if="logo"
-              :src="siteStore.getRelativeAssetPath(logo)"
-              :alt="identifier"
-            />
-            <div
-              v-else
-              class="capitalize"
-            >
-              {{ title }}
-            </div>
+          <NuxtImg
+            v-if="logo"
+            :src="siteStore.getRelativeAssetPath(logo)"
+            :alt="title"
+          />
+          <div
+            v-else
+            class="capitalize"
+          >
+            {{ title }}
           </div>
           <div
             class="absolute bg-button-emphasis bottom-0 right-0 text-[0.5rem] uppercase rounded-tl px-1 text-button-emphasis font-bold transition-opacity duration-100"
