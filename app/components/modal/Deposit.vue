@@ -9,19 +9,32 @@ import type { SupportedCountryFlagCode } from "~/types/constants";
 const walletStore = useWalletStore();
 
 const ENABLE_SERVER_SIDE_RENDERING = false;
-const DEFER_CLIENT_SIDE_LOADING = true;
+const DEFER_CLIENT_SIDE_LOADING = false;
 
-const { data: paymentMethodData } = await useAsyncData("user-modals-payment-method", async () => {
-  if (!walletStore.wallet) {
-    return null;
-  }
-  return await $dependencies.wallets.ui.findPreferredPaymentMethodOnPaymentModal.handle(walletStore.wallet.currency);
-}, {
-  watch: [() => walletStore.wallet?.currency],
-  lazy: DEFER_CLIENT_SIDE_LOADING,
-  server: ENABLE_SERVER_SIDE_RENDERING,
-  dedupe: "defer",
-});
+const [{ data: paymentMethodData }, { data: paymentMethods }] = await Promise.all([
+  useAsyncData("user-modals-payment-method", async () => {
+    if (!walletStore.wallet) {
+      return null;
+    }
+    return await $dependencies.wallets.ui.findPreferredPaymentMethodOnPaymentModal.handle(walletStore.wallet.currency);
+  }, {
+    watch: [() => walletStore.wallet?.currency],
+    lazy: DEFER_CLIENT_SIDE_LOADING,
+    server: ENABLE_SERVER_SIDE_RENDERING,
+    dedupe: "defer",
+  }),
+  useAsyncData("user-modals-payment-methods", async () => {
+    if (!walletStore.wallet) {
+      return null;
+    }
+    return await $dependencies.wallets.ui.searchPaymentMethodsOnDepositForm.handle(walletStore.wallet.currency);
+  }, {
+    watch: [() => walletStore.wallet?.currency],
+    lazy: DEFER_CLIENT_SIDE_LOADING,
+    server: ENABLE_SERVER_SIDE_RENDERING,
+    dedupe: "defer",
+  }),
+]);
 
 const { $dependencies } = useNuxtApp();
 const siteStore = useSiteStore();
@@ -74,6 +87,7 @@ defineProps<{
       v-if="paymentMethodData?.depositAmounts && paymentMethodData.id"
       :amounts="{ min: paymentMethodData?.depositAmounts.min, max: paymentMethodData?.depositAmounts.max }"
       :currency="currency"
+      :payment-methods="paymentMethods || []"
       :payment-method-id="paymentMethodData.id"
     />
   </BaseModal>

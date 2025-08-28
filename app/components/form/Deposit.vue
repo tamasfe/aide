@@ -25,6 +25,11 @@ const props = defineProps({
     type: Object as PropType<{ min: number | null; max: number | null }>,
     required: true,
   },
+  paymentMethods: {
+    type: Array as PropType<{ id: number; identifier: string; logo: string | null; title: string }[]>,
+    required: false,
+    default: () => [],
+  },
   currency: {
     type: Object as PropType<{
       code: WalletCurrency;
@@ -56,30 +61,8 @@ const presetAmounts = ref<{ value: number; hot: boolean }[]>([
   },
 ]);
 
-const paymentMethods = ref<{ id: number; identifier: string; logo: string | null; title: string }[]>([]);
-const loadingPaymentMethods = ref(true);
-
 const { $dependencies } = useNuxtApp();
 const { t } = useI18n();
-
-/**
- * Load payment methods on component mount
- */
-onMounted(async () => {
-  loadingPaymentMethods.value = true;
-  const methods = await $dependencies.wallets.ui.searchPaymentMethodsOnDepositForm.handle(props.currency.code);
-  paymentMethods.value = methods;
-
-  // Set the first available payment method as default, or fallback to the prop
-  if (methods.length > 0) {
-    paymentMethod.value = methods[0]!.id;
-  }
-  else {
-    paymentMethod.value = props.paymentMethodId;
-  }
-
-  loadingPaymentMethods.value = false;
-});
 
 /**
  *
@@ -107,6 +90,7 @@ const [amount, amountAttrs] = defineField("amount");
 amount.value = presetAmounts.value[0]?.value;
 
 const [paymentMethod, _paymentMethodAttrs] = defineField("paymentMethod");
+paymentMethod.value = props.paymentMethods[0]?.id;
 
 const onSubmit = handleSubmit(async (formData) => {
   loading.value = true;
@@ -216,42 +200,37 @@ const onSubmit = handleSubmit(async (formData) => {
     </div>
 
     <div class="grid grid-cols-3 gap-2 mb-4">
-      <div v-if="loadingPaymentMethods" class="col-span-3 text-center py-4">
-        <BaseSpinner />
-      </div>
-      <template v-else>
-        <BaseButton
-          v-for="{ id, logo, title } in paymentMethods"
-          :key="id"
-          variant="ghost"
+      <BaseButton
+        v-for="{ id, logo, title } in paymentMethods"
+        :key="id"
+        variant="ghost"
 
-          class="overflow-hidden relative w-full text-white font-semibold text-base xs:text-lg"
-          :class="[paymentMethod === id ? 'bg-active ring-1 ring-success' : 'bg-subtle hover:bg-subtle/80']"
-          @click="paymentMethod = id"
+        class="overflow-hidden relative w-full text-white font-semibold text-base xs:text-lg"
+        :class="[paymentMethod === id ? 'bg-active ring-1 ring-success' : 'bg-subtle hover:bg-subtle/80']"
+        @click="paymentMethod = id"
+      >
+        <NuxtImg
+          v-if="logo"
+          :src="siteStore.getRelativeAssetPath(logo)"
+          :alt="title"
+        />
+        <div
+          v-else
+          class="capitalize"
         >
-          <NuxtImg
-            v-if="logo"
-            :src="siteStore.getRelativeAssetPath(logo)"
-            :alt="title"
+          {{ title }}
+        </div>
+        <div
+          class="absolute bg-button-emphasis bottom-0 right-0 text-[0.5rem] uppercase rounded-tl px-1 text-button-emphasis font-bold transition-opacity duration-100"
+          :class="[paymentMethod === id ? 'opacity-100' : 'opacity-0']"
+        >
+          <BaseIcon
+            name="lucide:check"
+            :size="12"
+            class="text-inherit"
           />
-          <div
-            v-else
-            class="capitalize"
-          >
-            {{ title }}
-          </div>
-          <div
-            class="absolute bg-button-emphasis bottom-0 right-0 text-[0.5rem] uppercase rounded-tl px-1 text-button-emphasis font-bold transition-opacity duration-100"
-            :class="[paymentMethod === id ? 'opacity-100' : 'opacity-0']"
-          >
-            <BaseIcon
-              name="lucide:check"
-              :size="12"
-              class="text-inherit"
-            />
-          </div>
-        </BaseButton>
-      </template>
+        </div>
+      </BaseButton>
     </div>
 
     <BaseButton
