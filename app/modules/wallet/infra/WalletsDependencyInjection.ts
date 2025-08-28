@@ -16,6 +16,7 @@ import { FindPreferredPaymentMethodOnPaymentModal } from "./ui/FindPreferredPaym
 import { PaymentMethodRepositoryGirobet } from "./PaymentMethodRepositoryGirobet";
 import { PaymentMethodRepositoryDumb } from "./PaymentMethodRepositoryDumb";
 import { CreateWithdrawalFlowOnForm } from "./ui/CreateWithdrawalFlowOnForm";
+import { SearchPaymentMethodsOnDepositForm } from "./ui/SearchPaymentMethodsOnDepositForm";
 import type { CommonDependenciesI } from "~/dependency-injection/load-di";
 
 export interface WalletsDependencyInjectionI {
@@ -27,6 +28,7 @@ export interface WalletsDependencyInjectionI {
     createDepositFlowOnForm: CreateDepositFlowOnForm;
     createWithdrawalFlowOnForm: CreateWithdrawalFlowOnForm;
     searchPaymentsOnTable: SearchPaymentsOnTable;
+    searchPaymentMethodsOnDepositForm: SearchPaymentMethodsOnDepositForm;
   };
 }
 
@@ -82,6 +84,7 @@ export const createWalletsDependencyInjection = (publicConfig: PublicRuntimeConf
         commonDependencies.dateTimeFormatter,
         commonDependencies.numberFormatter,
       ),
+      searchPaymentMethodsOnDepositForm: new SearchPaymentMethodsOnDepositForm(paymentMethodsRepository, commonDependencies.logger),
     },
   };
 };

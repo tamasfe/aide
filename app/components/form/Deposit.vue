@@ -6,8 +6,9 @@ import type { SupportedCountryFlagCode } from "@/types/constants";
 import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
 
 // DESIGN STATUS:       ✅
-// ARCHITECTURE STATUS: ✴️
+// ARCHITECTURE STATUS: ✅
 //   * ✅ dynamic server validations for limits with zod (talk to Daniel)
+//   * ✅ dynamic payment methods from repository
 // TRANSLATION STATUS:  ✅
 // AUTOCOMPLETES:       ✅
 // INPUTMODES:          ✅
@@ -55,14 +56,30 @@ const presetAmounts = ref<{ value: number; hot: boolean }[]>([
   },
 ]);
 
-const paymentMethods = ref<{ id: number; logo: string }[]>([
-  {
-    id: 1,
-    logo: "logos/pix.svg" },
-]);
+const paymentMethods = ref<{ id: number; identifier: string; logo: string | null; title: string }[]>([]);
+const loadingPaymentMethods = ref(true);
 
 const { $dependencies } = useNuxtApp();
 const { t } = useI18n();
+
+/**
+ * Load payment methods on component mount
+ */
+onMounted(async () => {
+  loadingPaymentMethods.value = true;
+  const methods = await $dependencies.wallets.ui.searchPaymentMethodsOnDepositForm.handle(props.currency.code);
+  paymentMethods.value = methods;
+
+  // Set the first available payment method as default, or fallback to the prop
+  if (methods.length > 0) {
+    paymentMethod.value = methods[0]!.id;
+  }
+  else {
+    paymentMethod.value = props.paymentMethodId;
+  }
+
+  loadingPaymentMethods.value = false;
+});
 
 /**
  *
@@ -90,7 +107,6 @@ const [amount, amountAttrs] = defineField("amount");
 amount.value = presetAmounts.value[0]?.value;
 
 const [paymentMethod, _paymentMethodAttrs] = defineField("paymentMethod");
-paymentMethod.value = props.paymentMethodId;
 
 const onSubmit = handleSubmit(async (formData) => {
   loading.value = true;
@@ -190,21 +206,33 @@ const onSubmit = handleSubmit(async (formData) => {
     </div>
 
     <div class="grid grid-cols-3 gap-2 mb-4">
-      <BaseButton
-        v-for="{ id, logo } in paymentMethods"
-        :key="id"
-        variant="subtle"
-        class="overflow-hidden relative w-full text-white font-semibold text-base xs:text-lg"
-        :class="[paymentMethod === id ? 'bg-active' : 'bg-subtle hover:bg-subtle/80']"
-        @click="paymentMethod = id"
-      >
-        <div class="py-2">
-          <NuxtImg
-            :src="siteStore.getRelativeAssetPath(logo)"
-            alt="Pix"
-          />
-        </div>
-      </BaseButton>
+      <div v-if="loadingPaymentMethods" class="col-span-3 text-center py-4">
+        <BaseSpinner />
+      </div>
+      <template v-else>
+        <BaseButton
+          v-for="{ id, identifier, logo, title } in paymentMethods"
+          :key="id"
+          variant="subtle"
+          class="overflow-hidden relative w-full text-white font-semibold text-base xs:text-lg"
+          :class="[paymentMethod === id ? 'bg-active' : 'bg-subtle hover:bg-subtle/80']"
+          @click="paymentMethod = id"
+        >
+          <div class="py-2">
+            <NuxtImg
+              v-if="logo"
+              :src="siteStore.getRelativeAssetPath(logo)"
+              :alt="identifier"
+            />
+            <div
+              v-else
+              class="capitalize"
+            >
+              {{ title }}
+            </div>
+          </div>
+        </BaseButton>
+      </template>
     </div>
 
     <BaseButton
