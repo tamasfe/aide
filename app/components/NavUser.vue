@@ -12,7 +12,7 @@ import {
 const { t } = useI18n();
 const { $dependencies } = useNuxtApp();
 
-const onClickLogout = async () => $dependencies.users.ui.logoutCurrentUserFromButtonClick.handle();
+const loadingLogout = ref(false);
 
 const links = [
   {
@@ -52,7 +52,11 @@ const links = [
     title: t("user_nav.logout"),
     icon: "lucide:log-out",
     action: {
-      buttonOnClick: onClickLogout,
+      buttonOnClick: async () => {
+        loadingLogout.value = true;
+        await $dependencies.users.ui.logoutCurrentUserFromButtonClick.handle();
+        loadingLogout.value = false;
+      },
     },
   },
 ];
@@ -111,6 +115,7 @@ const links = [
               </BaseLink>
               <BaseButton
                 v-if="item.action.buttonOnClick"
+                :loading="item.key === 'logout' ? loadingLogout : false"
                 variant="ghost"
                 type="button"
                 class="border-emphasis px-5 h-10 flex items-center justify-start whitespace-nowrap font-normal w-full"

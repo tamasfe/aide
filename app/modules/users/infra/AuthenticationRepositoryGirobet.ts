@@ -8,6 +8,7 @@ import { InfrastructureError } from "~/packages/result/infrastructure-error";
 import { HttpBackendApiError } from "~/packages/http-client/http-backend-api-error";
 import type { CommonDependenciesI } from "~/dependency-injection/load-di";
 import type { LoggerI } from "~/packages/logger/Logger";
+import { ErrorUnauthorized } from "../domain/errors/ErrorUnauthorized";
 
 export class AuthenticationRepositoryGirobet implements AuthenticationRepositoryI {
   private logger: LoggerI;
@@ -46,11 +47,9 @@ export class AuthenticationRepositoryGirobet implements AuthenticationRepository
     return fail(InfrastructureError.newFromError({ data, error, response }, new Error("Unexpected scenario: library did not return data nor error. This should never happen")));
   }
 
-  public async logout(): Promise<EmptyResult<InfrastructureError>> {
+  public async logout(): Promise<EmptyResult<ErrorUnauthorized | InfrastructureError>> {
     try {
-      const { data, error, response } = await this.apiClient.POST("/auth/logout", {
-        redirect: "follow",
-      });
+      const { data, error, response } = await this.apiClient.POST("/auth/logout");
 
       if (data || response.ok) {
         return success();
@@ -58,6 +57,9 @@ export class AuthenticationRepositoryGirobet implements AuthenticationRepository
 
       if (error) {
         const httpError = HttpBackendApiError.newFromBackendError(error, response);
+        if (httpError.code === "UNAUTHORIZED") {
+          return fail(new ErrorUnauthorized("logout"));
+        }
         return fail(
           InfrastructureError.newFromError({}, httpError),
         );
