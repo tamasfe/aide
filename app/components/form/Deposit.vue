@@ -176,9 +176,9 @@ const onSubmit = handleSubmit(async (formData) => {
       <BaseButton
         v-for="({ value: presetAmount, hot }, index) in presetAmounts"
         :key="index"
-        variant="subtle"
+        variant="ghost"
         class="overflow-hidden relative w-full text-white font-semibold text-base xs:text-lg"
-        :class="[presetAmount === amount ? 'bg-active' : 'bg-subtle hover:bg-subtle/80']"
+        :class="[presetAmount === amount ? 'bg-active ring-1 ring-success' : 'bg-subtle hover:bg-subtle/80']"
         @click="amount = presetAmount"
       >
         <BaseCurrency
@@ -189,9 +189,19 @@ const onSubmit = handleSubmit(async (formData) => {
         />
         <div
           v-if="hot"
-          class="absolute bg-button-primary top-0 right-0 text-[0.6rem] uppercase rounded-bl px-1 text-button-emphasis font-bold"
+          class="absolute bg-button-primary top-0 right-0 text-[0.5rem] uppercase rounded-bl px-1 text-button-emphasis font-bold"
         >
           {{ $t('button.popular') }}
+        </div>
+        <div
+          class="absolute bg-button-emphasis bottom-0 right-0 text-[0.5rem] uppercase rounded-tl px-1 text-button-emphasis font-bold transition-opacity duration-100"
+          :class="[presetAmount === amount ? 'opacity-100' : 'opacity-0']"
+        >
+          <BaseIcon
+            name="lucide:check"
+            :size="12"
+            class="text-inherit"
+          />
         </div>
       </BaseButton>
     </div>
@@ -213,9 +223,10 @@ const onSubmit = handleSubmit(async (formData) => {
         <BaseButton
           v-for="{ id, identifier, logo, title } in paymentMethods"
           :key="id"
-          variant="subtle"
+          variant="ghost"
+
           class="overflow-hidden relative w-full text-white font-semibold text-base xs:text-lg"
-          :class="[paymentMethod === id ? 'bg-active' : 'bg-subtle hover:bg-subtle/80']"
+          :class="[paymentMethod === id ? 'bg-active ring-1 ring-success' : 'bg-subtle hover:bg-subtle/80']"
           @click="paymentMethod = id"
         >
           <div class="py-2">
@@ -230,6 +241,16 @@ const onSubmit = handleSubmit(async (formData) => {
             >
               {{ title }}
             </div>
+          </div>
+          <div
+            class="absolute bg-button-emphasis bottom-0 right-0 text-[0.5rem] uppercase rounded-tl px-1 text-button-emphasis font-bold transition-opacity duration-100"
+            :class="[paymentMethod === id ? 'opacity-100' : 'opacity-0']"
+          >
+            <BaseIcon
+              name="lucide:check"
+              :size="12"
+              class="text-inherit"
+            />
           </div>
         </BaseButton>
       </template>
