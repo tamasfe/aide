@@ -67,6 +67,7 @@
     "@hotjar/browser": "^1.0.9",
     "@iconify-json/emojione-v1": "^1.2.3",
     "@iconify-json/lucide": "^1.2.64",
+    "@microsoft/clarity": "^1.0.0",
     "@nuxt/eslint": "^1.9.0",
     "@nuxt/icon": "^1.15.0",
     "@nuxt/image": "^1.11.0",
