@@ -28,6 +28,9 @@ export class HandleOpenModalSearchParam {
           return;
         }
         await this.asyncMessagePublisher.emit("frontend:commands:modals:open-user-interaction-modal", { modal: "register" });
+        this.asyncMessagePublisher.once("frontend:events:signup-flows:signup-flow-submitted", () =>
+          this.asyncMessagePublisher.emit("frontend:commands:modals:open-user-interaction-modal", { modal: "deposit" }),
+        );
         return;
 
       case "forgot":
@@ -45,14 +48,15 @@ export class HandleOpenModalSearchParam {
 
         if (userHasPreviouslyLoggedIn) {
           await this.asyncMessagePublisher.emit("frontend:commands:modals:open-user-interaction-modal", { modal: "login" });
-          this.asyncMessagePublisher.subscribe("frontend:events:users:user-logged-in", () =>
-            callOnce("open-deposit-modal-after-login",
-              () => this.asyncMessagePublisher.emit("frontend:commands:modals:open-user-interaction-modal", { modal: "deposit" }),
-            ),
+          this.asyncMessagePublisher.once("frontend:events:users:user-logged-in", () =>
+            this.asyncMessagePublisher.emit("frontend:commands:modals:open-user-interaction-modal", { modal: "deposit" }),
           );
           return;
         }
         await this.asyncMessagePublisher.emit("frontend:commands:modals:open-user-interaction-modal", { modal: "register" });
+        this.asyncMessagePublisher.once("frontend:events:signup-flows:signup-flow-submitted", () =>
+          this.asyncMessagePublisher.emit("frontend:commands:modals:open-user-interaction-modal", { modal: "deposit" }),
+        );
         return;
     }
   }
