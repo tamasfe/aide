@@ -126,9 +126,6 @@ importers:
       '@gtm-support/vue-gtm':
         specifier: ^3.1.0
         version: 3.1.0(vue@3.5.20(typescript@5.8.3))
-      '@hotjar/browser':
-        specifier: ^1.0.9
-        version: 1.0.9
       '@iconify-json/emojione-v1':
         specifier: ^1.2.3
         version: 1.2.3
@@ -1204,9 +1201,6 @@ packages:
     engines: {node: '>=10'}
     peerDependencies:
       vue: ^3.2.0
-
-  '@hotjar/browser@1.0.9':
-    resolution: {integrity: sha512-n9akDMod8BLGpYEQCrHwlYWWd63c1HlhUSXNIDfClZtKYXbUjIUOFlNZNNcUxgHTCsi4l2i+SWKsGsO0t93S8w==}
 
   '@humanfs/core@0.19.1':
     resolution: {integrity: sha512-5DyQ4+1JEUzejeK1JGICcideyfUbGixgS9jNgex5nqkW+cY7WZhxBigmieN5Qnw9ZosSNVC9KQKyb+GUaGyKUA==}
@@ -8992,8 +8986,6 @@ snapshots:
     dependencies:
       '@tanstack/vue-virtual': 3.13.12(vue@3.5.20(typescript@5.8.3))
       vue: 3.5.20(typescript@5.8.3)
-
-  '@hotjar/browser@1.0.9': {}
 
   '@humanfs/core@0.19.1': {}
 

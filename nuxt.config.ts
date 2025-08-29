@@ -18,19 +18,6 @@ export default defineNuxtConfig({
   devtools: {
     enabled: true,
   },
-  css: ["~/assets/css/tailwind.css"],
-  nitro: {
-    experimental: {
-      /**
-       * Recommended to reduce the +15min build times we are getting in our GH actions. Mentioned in these issues:
-       * - https://github.com/nitrojs/nitro/issues/2367
-       * - https://github.com/nuxt/nuxt/issues/31836
-       * - https://github.com/nuxt/nuxt/issues/29727
-       * When the huge build time in CI issue is resolved, we can remove this configuration.
-       */
-      legacyExternals: false,
-    }
-  },
   app: {
     head: {
       charset: "utf-8",
@@ -56,18 +43,11 @@ export default defineNuxtConfig({
           src: "https://baee18f7-63ae-4aa0-b5d7-8160149e921b.snippet.anjouangaming.org/anj-seal.js",
           defer: true,
         },
-        /**
-         * Mouseflow to track user behaviour, heatmaps...
-         * Vue installation guide: https://help.mouseflow.com/en/articles/9358320-install-mouseflow-on-vue-js-web-app
-         */
-        {
-          src: "//cdn.mouseflow.com/projects/f640d54f-db4f-4d06-a9b4-5dd81ae52d26.js",
-          defer: true,
-        }
       ],
     },
     rootId: "app",
   },
+  css: ["~/assets/css/tailwind.css"],
   site: {
     url: process.env.NUXT_PUBLIC_BASE_URL,
     // description: "Welcome to my awesome site!", // TODO
@@ -85,10 +65,10 @@ export default defineNuxtConfig({
       release: process.env.NUXT_PUBLIC_RELEASE || "development",
       log: {
         level: process.env.NUXT_PUBLIC_LOG_LEVEL as
-          | "warn"
-          | "error"
-          | "debug"
-          | "info",
+        | "warn"
+        | "error"
+        | "debug"
+        | "info",
       },
       serviceName: process.env.NUXT_PUBLIC_SERVICE_NAME || "frontend",
 
@@ -98,11 +78,11 @@ export default defineNuxtConfig({
       },
       signupFlows: {
         idsClientRepo: process.env.NUXT_PUBLIC_SIGNUP_FLOWS_IDS_CLIENT_REPO as
-          | "mock"
-          | "local_storage",
+        | "mock"
+        | "local_storage",
         apiMode: process.env.NUXT_PUBLIC_SIGNUP_FLOWS_API_MODE as
-          | "dumb"
-          | "api",
+        | "dumb"
+        | "api",
       },
       users: {
         apiMode: process.env.NUXT_PUBLIC_USERS_API_MODE as "dumb" | "api",
@@ -145,6 +125,18 @@ export default defineNuxtConfig({
     compatibilityVersion: 4,
   },
   compatibilityDate: "2024-07-03",
+  nitro: {
+    experimental: {
+      /**
+       * Recommended to reduce the +15min build times we are getting in our GH actions. Mentioned in these issues:
+       * - https://github.com/nitrojs/nitro/issues/2367
+       * - https://github.com/nuxt/nuxt/issues/31836
+       * - https://github.com/nuxt/nuxt/issues/29727
+       * When the huge build time in CI issue is resolved, we can remove this configuration.
+       */
+      legacyExternals: false,
+    },
+  },
   typescript: {
     strict: true,
     typeCheck: true,
@@ -304,8 +296,8 @@ export default defineNuxtConfig({
     // dynamicImportForServerEntry: true,
     sourceMapsUploadOptions: {
       enabled:
-        process.env.SENTRY_AUTH_TOKEN !== undefined &&
-        process.env.SENTRY_AUTH_TOKEN !== "",
+        process.env.SENTRY_AUTH_TOKEN !== undefined
+        && process.env.SENTRY_AUTH_TOKEN !== "",
       org: "girobet",
       project: "girobet-frontend",
       authToken:

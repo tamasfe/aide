@@ -64,7 +64,6 @@
   "devDependencies": {
     "@fingerprintjs/fingerprintjs": "^4.6.2",
     "@gtm-support/vue-gtm": "^3.1.0",
-    "@hotjar/browser": "^1.0.9",
     "@iconify-json/emojione-v1": "^1.2.3",
     "@iconify-json/lucide": "^1.2.64",
     "@microsoft/clarity": "^1.0.0",
