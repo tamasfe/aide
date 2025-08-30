@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { toGameUrlSlug } from "~/modules/games/domain/Game";
+import { constructGameIdentifier, toGameUrlSlug } from "~/modules/games/domain/Game";
 
 // DESIGN STATUS:       ✴️
 //   * hide the scrollbar like on bet7k
@@ -83,14 +83,16 @@ const links = [
         title: "Aviator",
         icon: "emojione-v1:airplane",
         to: {
-          name: "todo",
+          name: "games-slug",
+          params: { slug: constructGameIdentifier("spribe", "aviator") },
         },
       },
       {
         title: "Fortune Tiger",
         icon: "emojione-v1:tiger",
         to: {
-          name: "todo",
+          name: "games-slug",
+          params: { slug: constructGameIdentifier("pgsoft", "fortune-tiger") },
         },
       },
       {
@@ -98,7 +100,7 @@ const links = [
         icon: "emojione-v1:rocket",
         to: {
           name: "games-slug",
-          params: { slug: toGameUrlSlug(29773842, "JetX") },
+          params: { slug: constructGameIdentifier("smartsoft", "jetx") },
         },
       },
     ],
@@ -108,13 +110,13 @@ const links = [
     icon: "emojione-v1:speech-balloon",
     onClick: () => $dependencies.common.asyncMessagePublisher.emit("frontend:commands:modals:open-live-chat", {}),
   },
-  {
-    title: t("side_nav.download_app"),
-    icon: "emojione-v1:mobile-phone",
-    to: {
-      name: "download-app",
-    },
-  },
+  // {
+  //   title: t("side_nav.download_app"),
+  //   icon: "emojione-v1:mobile-phone",
+  //   to: {
+  //     name: "download-app",
+  //   },
+  // },
 ];
 
 const emptyQuery = ref("");
@@ -179,12 +181,12 @@ const emptyQuery = ref("");
               v-else
               :key="`link-${index}`"
             >
-              <NavSidebarLink
+              <!-- <NavSidebarLink
                 v-if="link.to"
                 :title="link.title"
                 :to="link.to"
                 :icon="link.icon"
-              />
+              /> -->
               <BaseButton
                 v-if="link.onClick"
                 class="py-2 flex items-center text-emphasis hover:text-white"

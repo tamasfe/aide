@@ -17,7 +17,7 @@ defineProps<{
   children: Link[];
 }>();
 
-const open = ref(false);
+const open = ref(true);
 
 const onToggle = () => {
   open.value = !open.value;
