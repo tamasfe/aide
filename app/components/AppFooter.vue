@@ -49,9 +49,9 @@ const scrollToTop = () => {
         <div class="w-full">
           <LocaleSelect class="sm:w-[12rem]" />
         </div>
-        <FooterColumnSocialMedia class="hidden md:flex lg:hidden" />
+        <!-- <FooterColumnSocialMedia class="hidden md:flex lg:hidden" /> -->
       </div>
-      <FooterColumnSocialMedia class="md:hidden" />
+      <!-- <FooterColumnSocialMedia class="md:hidden" /> -->
       <FooterColumn
         :title="$t('footer.popular')"
         :links="[
@@ -78,7 +78,7 @@ const scrollToTop = () => {
           { title: $t('page.responsible_gaming'), to: { name: 'responsible-gaming' } },
         ]"
       />
-      <FooterColumnSocialMedia class="hidden lg:flex" />
+      <!-- <FooterColumnSocialMedia class="hidden lg:flex" /> -->
     </section>
 
     <section class="giro__container flex items-center justify-center space-x-4">
