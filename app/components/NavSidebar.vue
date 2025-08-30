@@ -83,24 +83,33 @@ const links = [
         title: "Aviator",
         icon: "emojione-v1:airplane",
         to: {
-          name: "games-slug",
-          params: { slug: constructGameIdentifier("spribe", "aviator") },
+          name: "games-provider-game",
+          params: {
+            provider: "spribe",
+            game: "aviator",
+          },
         },
       },
       {
         title: "Fortune Tiger",
         icon: "emojione-v1:tiger",
         to: {
-          name: "games-slug",
-          params: { slug: constructGameIdentifier("pgsoft", "fortune-tiger") },
+          name: "games-provider-game",
+          params: {
+            provider: "pgsoft",
+            game: "fortune-tiger",
+          },
         },
       },
       {
         title: "JetX",
         icon: "emojione-v1:rocket",
         to: {
-          name: "games-slug",
-          params: { slug: constructGameIdentifier("smartsoft", "jetx") },
+          name: "games-provider-game",
+          params: {
+            provider: "smartsoft",
+            game: "jetx",
+          },
         },
       },
     ],
