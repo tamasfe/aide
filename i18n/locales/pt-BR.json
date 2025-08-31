@@ -471,7 +471,9 @@
     "video_poker": "Vídeo Poker",
     "virtual_sports": "Esportes Virtuais",
     "weekly-top-picks": "Melhores da Semana",
-    "top-games": "Jogos Populares"
+    "top-games": "Jogos Populares",
+    "hot": "Top",
+    "latest-releases": "Lançamentos Recentes"
   },
   "user_settings": {
     "payment": {
