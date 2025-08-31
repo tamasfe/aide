@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { constructGameIdentifier, toGameUrlSlug } from "~/modules/games/domain/Game";
-
 // DESIGN STATUS:       ✴️
 //   * hide the scrollbar like on bet7k
 // ARCHITECTURE STATUS: ✴️
@@ -165,7 +163,7 @@ const emptyQuery = ref("");
             :key="category.identifier"
             :title="toSentenceCase(category.identifier)"
             :to="{
-              name: 'categories',
+              name: 'categories-id',
               params: {
                 id: category.identifier,
               },
