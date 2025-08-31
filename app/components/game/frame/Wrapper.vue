@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { DEFAULT_CURRENCY_WHILE_USER_HAS_NO_WALLET } from "~/modules/wallet/domain/Wallet";
+
 const { isMobile } = useDevice();
 const currentDevice = isMobile ? "mobile" : "desktop";
 const { $dependencies } = useNuxtApp();
@@ -28,7 +30,7 @@ const { data: iframeUrl } = await useAsyncData(`game-frame-url-${props.gameIdent
     }
   }
 
-  return $dependencies.games.ui.buildGameSessionIFrameUrl.handle(props.gameIdentifier, currentDevice, walletStore.wallet.currency);
+  return $dependencies.games.ui.buildGameSessionIFrameUrl.handle(props.gameIdentifier, currentDevice, walletStore.wallet?.currency ?? DEFAULT_CURRENCY_WHILE_USER_HAS_NO_WALLET);
 }, {
   lazy: DEFER_CLIENT_SIDE_LOADING_FOR_GAME,
   server: ENABLE_SERVER_SIDE_RENDERING_FOR_GAME,
