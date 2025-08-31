@@ -10,12 +10,21 @@ const emit = defineEmits([
   "click:menu",
 ]);
 
+const localePath = useLocalePath();
+
 const items = [
   { icon: "lucide:menu", text: "mobile_nav.menu", onClick: () => emit("click:menu") },
-  { icon: "lucide:flame", text: "mobile_nav.hot", onClick: () => {} },
+  {
+    icon: "lucide:flame", text: "mobile_nav.hot", onClick: async () => {
+      await navigateTo(localePath({
+        name: "categories-id",
+        params: { id: "hot" },
+      }))
+    },
+  },
   { icon: "lucide:search", text: "mobile_nav.search", onClick: () => $dependencies.users.ui.emitCommandOpenUserActionModal.handle("search") },
   { icon: "lucide:message-circle-question", text: "mobile_nav.support", onClick: () => $dependencies.common.asyncMessagePublisher.emit("frontend:commands:modals:open-live-chat", {}) },
-  { icon: "lucide:trophy", text: "mobile_nav.promos", onClick: () => {} },
+  // { icon: "lucide:trophy", text: "mobile_nav.promos", onClick: () => {} },
 ];
 </script>
 
