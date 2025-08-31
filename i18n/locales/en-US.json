@@ -78,6 +78,7 @@
     "popular": "Hot"
   },
   "mobile_nav": {
+    "home": "Home",
     "menu": "Menu",
     "hot": "Hot",
     "search": "Search",

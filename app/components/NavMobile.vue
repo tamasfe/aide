@@ -15,6 +15,13 @@ const localePath = useLocalePath();
 const items = [
   { icon: "lucide:menu", text: "mobile_nav.menu", onClick: () => emit("click:menu") },
   {
+    icon: "lucide:home", text: "mobile_nav.home", onClick: async () => {
+      await navigateTo(localePath({
+        name: "index",
+      }))
+    },
+  },
+  {
     icon: "lucide:flame", text: "mobile_nav.hot", onClick: async () => {
       await navigateTo(localePath({
         name: "categories-id",
