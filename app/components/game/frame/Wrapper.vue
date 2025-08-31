@@ -23,7 +23,9 @@ const { data: game, status: statusLoadingGame } = await useAsyncData(`game-${pro
 
 const { data: iframeUrl } = await useAsyncData(`game-frame-url-${props.gameIdentifier}`, async () => {
   if (!walletStore.wallet) {
-    await $dependencies.users.ui.emitCommandOpenUserActionModal.handle({ modal: "deposit" });
+    if (authenticated.value) {
+      await $dependencies.users.ui.emitCommandOpenUserActionModal.handle({ modal: "deposit" });
+    }
     return "";
   }
 
@@ -31,7 +33,7 @@ const { data: iframeUrl } = await useAsyncData(`game-frame-url-${props.gameIdent
 }, {
   lazy: DEFER_CLIENT_SIDE_LOADING_FOR_GAME,
   server: ENABLE_SERVER_SIDE_RENDERING_FOR_GAME,
-  watch: [() => game.value, () => walletStore.wallet],
+  watch: [() => game.value, () => walletStore.wallet, () => authenticated.value],
 });
 
 /* Redirect if the game is successfully searched, but server returns no results (404) */
