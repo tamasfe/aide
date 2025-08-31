@@ -28,23 +28,6 @@ export default defineNuxtPlugin({
       () => walletStore.refresh(),
     );
 
-    const currentSessionGameId = useState<null | string>("current-session-game-identifier", () => null);
-    $dependencies.common.asyncMessagePublisher.subscribe(
-      "frontend:events:games:game-session-started",
-      ({ gameIdentifier }) => {
-        walletStore.hideBalance();
-        currentSessionGameId.value = gameIdentifier;
-      },
-    );
-    $dependencies.common.asyncMessagePublisher.subscribe(
-      "frontend:events:games:game-session-finished",
-      async ({ gameIdentifier }) => {
-        if (gameIdentifier === currentSessionGameId.value) {
-          await walletStore.refresh();
-        }
-      },
-    );
-
     $dependencies.common.asyncMessagePublisher.subscribe(
       "girobet-backend:events:payments:payment-status-updated",
       () => walletStore.refresh(),

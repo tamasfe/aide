@@ -15,7 +15,7 @@ const totalItems = useState(`history-page-casino-total-items`, () => $dependenci
 const pageSize = ref($dependencies.games.ui.searchGameActionsPaginatingOnCasinoTable.PAGINATION_SIZE);
 
 const { data } = await useAsyncData(`dashboard-history-casino-table`, async () => {
-  if (!walletStore.isInit) {
+  if (!walletStore.wallet) {
     return;
   }
 

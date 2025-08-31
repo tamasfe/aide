@@ -59,7 +59,7 @@ const onToggleFullScreen = () => {
               />
             </div>
           </div>
-          <GameFrameIframe :game-identifier="gameIdentifier" :i-frame-url="iframeUrl" />
+          <GameFrameIframe :game-identifier="gameIdentifier" :src="iframeUrl" />
         </div>
         <div
           v-else

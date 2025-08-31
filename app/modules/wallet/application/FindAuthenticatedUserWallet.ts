@@ -1,5 +1,4 @@
 import type { WalletRepositoryI } from "../domain/WalletRepository";
-import { newEmptyWallet } from "../domain/Wallet";
 import { success } from "~/packages/result";
 
 export class FindAuthenticatedUserWallet {
@@ -14,7 +13,7 @@ export class FindAuthenticatedUserWallet {
     const selectedWallet = walletsResult.value[0];
 
     if (!selectedWallet) {
-      return success(newEmptyWallet());
+      return success(null);
     }
 
     return success(selectedWallet);

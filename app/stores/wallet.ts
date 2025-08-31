@@ -2,23 +2,23 @@ import { ErrorUserNotAuthorized } from "~/modules/wallet/domain/ErrorUserNotAuth
 import type { Wallet } from "~/modules/wallet/domain/Wallet";
 import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
 
-type WalletBalanceStatus = "ready" | "loading" | "hidden";
+type WalletBalanceStatus = "ready" | "loading";
 
+/**
+ * Meaning of the different wallet states:
+ * - wallet === undefined => not init or error loading it ("not defined")
+ * - wallet === null => loaded correctly but user does not have a wallet yet. This is the case for new users before their first deposit.
+ * - wallet === truthy => wallet loaded correctly
+ */
 type WalletStoreI = {
-  isInit: false | null; // null is used to indicate that the store is not initialized yet. false is used to indicate that the store is initialized but the user is not authenticated.
-  balanceStatus: null;
-  wallet: null;
-} | {
-  isInit: true;
   balanceStatus: WalletBalanceStatus;
-  wallet: Wallet;
+  wallet: undefined | null | Wallet;
 };
 
 export const useWalletStore = defineStore("walletStore", {
   state: (): WalletStoreI => ({
-    balanceStatus: null,
-    isInit: null,
-    wallet: null,
+    balanceStatus: "loading",
+    wallet: undefined,
   }),
 
   getters: {
@@ -49,23 +49,24 @@ export const useWalletStore = defineStore("walletStore", {
       }
 
       // Remove previous wallet
-      if (result.isFailure || result.value === null) {
-        this.isInit = false;
+      if (result.isFailure) {
+        this.wallet = undefined;
+        this.balanceStatus = "ready";
+        return;
+      }
+
+      // New user without payments: no wallet yet
+      if (result.value === null) {
         this.wallet = null;
-        this.balanceStatus = null;
+        this.balanceStatus = "ready";
         return;
       }
 
       // Save wallet
       this.wallet = result.value;
       this.balanceStatus = "ready";
-      this.isInit = true;
 
       return;
-    },
-
-    async hideBalance() {
-      this.balanceStatus = "hidden";
     },
 
     updateBalance(balances: {
@@ -73,7 +74,7 @@ export const useWalletStore = defineStore("walletStore", {
       unlocked: number;
       bonus: number;
     }, currency: WalletCurrency) {
-      if (this.wallet === null) {
+      if (!this.wallet) {
         return;
       }
 

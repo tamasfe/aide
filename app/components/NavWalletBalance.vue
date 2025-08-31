@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const walletStore = useWalletStore();
+const gameSessionStore = useGameSessionStore();
 const { t } = useI18n();
 const localePath = useLocalePath();
 const flashRef = ref<HTMLDivElement | null>(null);
@@ -29,7 +30,24 @@ watch(() => walletStore.balanceStatus, () => {
       class="absolute inset-0 rounded bg-white/30 opacity-0 pointer-events-none"
     />
     <BaseButton
-      v-if="walletStore.wallet"
+      v-if="!gameSessionStore.isPlaying && walletStore.wallet === undefined"
+      variant="secondary"
+      :disabled="true"
+      class="min-w-20"
+      @click="onClickBalance"
+    >
+      <BaseSkeleton
+        class="w-6 rounded"
+        :loading="true"
+      />
+      <BaseSkeleton
+        class="w-12 rounded"
+        :loading="true"
+      />
+    </BaseButton>
+
+    <BaseButton
+      v-if="!gameSessionStore.isPlaying &&walletStore.wallet"
       variant="secondary"
       :disabled="walletStore.balanceStatus !== 'ready'"
       class="min-w-20"
@@ -47,21 +65,16 @@ watch(() => walletStore.balanceStatus, () => {
         :currency="walletStore.wallet.currency"
         :value="walletStore.balance"
       />
-      <div v-if="!walletStore?.wallet" class="flex gap-1 h-6">
-        <BaseSkeleton
-          class="w-6 rounded"
-          :loading="true"
-        />
-        <BaseSkeleton
-          class="w-12 rounded"
-          :loading="true"
-        />
-      </div>
+    </BaseButton>
 
-      <span v-if="walletStore.balanceStatus === 'hidden'">
-        {{ t("user_nav.balance_hidden_while_playing") }}
-      </span>
-      <BaseSkeleton v-if="!walletStore.balanceStatus" :loading="true" />
+    <BaseButton
+      v-if="gameSessionStore.isPlaying"
+      variant="secondary"
+      :disabled="true"
+      class="min-w-20"
+      @click="onClickBalance"
+    >
+      {{ t("user_nav.balance_hidden_while_playing") }}
     </BaseButton>
   </div>
 </template>

@@ -16,7 +16,7 @@ const totalItems = useState(`history-page-deposits-total-items`, () => $dependen
 const pageSize = ref($dependencies.wallets.ui.searchPaymentsOnTable.PAGE_SIZE);
 
 const { data } = await useAsyncData("history-page-deposits-data", async () => {
-  if (!walletStore.isInit) return;
+  if (!walletStore.wallet) return;
 
   loading.value = true;
   const data = await $dependencies.wallets.ui.searchPaymentsOnTable.handle(walletStore.wallet.walletId, "deposit", pageIndex.value);

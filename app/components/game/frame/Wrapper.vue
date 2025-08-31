@@ -16,22 +16,29 @@ const props = defineProps<{
 
 const ENABLE_SERVER_SIDE_RENDERING_FOR_GAME = true;
 const DEFER_CLIENT_SIDE_LOADING_FOR_GAME = true;
+
 const { data: game, status: statusLoadingGame } = await useAsyncData(`game-${props.gameIdentifier}`, async () => {
   return $dependencies.games.ui.findGameCompatibilityByIdentifierOnGamePage.handle(props.gameIdentifier, currentDevice);
 }, { lazy: DEFER_CLIENT_SIDE_LOADING_FOR_GAME, server: ENABLE_SERVER_SIDE_RENDERING_FOR_GAME });
+
+const { data: iframeUrl } = await useAsyncData(`game-frame-url-${props.gameIdentifier}`, async () => {
+  if (!walletStore.wallet) {
+    await $dependencies.users.ui.emitCommandOpenUserActionModal.handle({ modal: "deposit" });
+    return "";
+  }
+
+  return $dependencies.games.ui.buildGameSessionIFrameUrl.handle(props.gameIdentifier, currentDevice, walletStore.wallet.currency);
+}, {
+  lazy: DEFER_CLIENT_SIDE_LOADING_FOR_GAME,
+  server: ENABLE_SERVER_SIDE_RENDERING_FOR_GAME,
+  watch: [() => game.value, () => walletStore.wallet],
+});
 
 /* Redirect if the game is successfully searched, but server returns no results (404) */
 watch([() => game.value, () => statusLoadingGame.value], async ([game, statusLoadingGame]) => {
   if (game === null && statusLoadingGame === "success") {
     await navigateTo("/");
   }
-});
-
-const iframeUrl = computed(() => {
-  if (walletStore.isInit) {
-    return $dependencies.games.ui.buildGameSessionIFrameUrl.handle(props.gameIdentifier, currentDevice, walletStore.wallet.currency);
-  }
-  return undefined;
 });
 </script>
 
@@ -48,7 +55,7 @@ const iframeUrl = computed(() => {
         :game-identifier="game.identifier"
         :fullscreen="fullscreen"
         :authenticated="authenticated ?? false"
-        :iframe-url="iframeUrl"
+        :iframe-url="iframeUrl || ''"
       />
       <GameFloatTextNotSupportedOnDevice
         v-else-if="!game.isCompatibleWithDevice"

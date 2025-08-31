@@ -94,7 +94,7 @@ onUnmounted(() => {
           </div>
 
           <div class="relative flex-grow">
-            <GameFrameIframe :game-identifier="gameIdentifier" :i-frame-url="iframeUrl" />
+            <GameFrameIframe :game-identifier="gameIdentifier" :src="iframeUrl" />
           </div>
         </div>
         <div
