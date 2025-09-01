@@ -28,12 +28,14 @@ const alertVariants = cva(
 
 type AlertVariants = VariantProps<typeof alertVariants>;
 
-const props = defineProps<{
+export type AlertProps = {
   level: AlertVariants["level"];
   message: string;
   size?: AlertVariants["size"];
   class?: HTMLAttributes["class"];
-}>();
+};
+
+const props = defineProps<AlertProps>();
 </script>
 
 <template>

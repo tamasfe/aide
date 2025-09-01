@@ -25,7 +25,7 @@ const { data: game, status: statusLoadingGame } = await useAsyncData(`game-${pro
 
 const { data: iframeUrl } = await useAsyncData(`game-frame-url-${props.gameIdentifier}`, async () => {
   if (!walletStore.wallet && authenticated.value) {
-    await $dependencies.users.ui.emitCommandOpenUserActionModal.handle({ modal: "deposit" });
+    await $dependencies.users.ui.emitCommandOpenUserActionModal.handle({ modal: "deposit" }, { level: "warning", message: $t("modal_payments.alert_deposit_before_playing_game") });
   }
 
   return $dependencies.games.ui.buildGameSessionIFrameUrl.handle(props.gameIdentifier, currentDevice, walletStore.wallet?.currency ?? DEFAULT_CURRENCY_WHILE_USER_HAS_NO_WALLET);

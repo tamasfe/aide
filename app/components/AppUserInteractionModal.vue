@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import type { UserInteractionModalState } from "~/packages/async-messages/async-messages";
+import type { AlertProps } from "./base/Alert.vue";
 
 const { $dependencies } = useNuxtApp();
 const { searchParams } = useRequestURL();
 
-const state = useState<UserInteractionModalState | { modal: null }>("user-modal-state", () => ({ modal: null }));
+const state = useState<(UserInteractionModalState | { modal: null }) & { alert?: AlertProps }>("user-modal-state", () => ({ modal: null }));
 const isOpen = defineModel<boolean>("open", { type: Boolean, required: true });
 
 const modalIsJurisdictionModal = (modal: UserInteractionModalState["modal"] | null): boolean => {
@@ -76,6 +77,7 @@ if (recoverPasswordToken.value) {
     />
     <ModalDeposit
       :open="isOpen && state.modal === 'deposit'"
+      :alert="state.alert"
     />
     <ModalDepositConfirm
       :open="isOpen && state.modal === 'deposit_confirm'"

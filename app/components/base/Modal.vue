@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { DialogTitle } from "@headlessui/vue";
 import { getImage as getCloudflareImageSrc } from "~/providers/multi-site-custom-cloudflare-image-provider";
+import type { AlertProps } from "./Alert.vue";
 
 // DESIGN STATUS: ✴️
 //   * close button ideally should float and not scroll
@@ -22,6 +23,7 @@ const props = withDefaults(
     banner?: "none" | "top" | "left";
     bannerLeft?: string;
     bannerTop?: string;
+    alert?: AlertProps;
   }>(),
   {
     loading: false,
@@ -143,6 +145,12 @@ if (preloadBannerLinks.length > 0) {
         </div>
 
         <div class="content-padding">
+          <BaseAlert
+            v-if="alert"
+            class="mb-4"
+            v-bind="alert"
+          />
+
           <DialogTitle is="h2" v-if="$slots.title" class="text-xl leading-snug">
             <slot name="title" />
           </DialogTitle>
@@ -182,6 +190,12 @@ if (preloadBannerLinks.length > 0) {
               'banner-top lg:hidden',
               { 'mb-2': logo },
             )"
+          />
+
+          <BaseAlert
+            v-if="alert"
+            class="my-4"
+            v-bind="alert"
           />
 
           <div

@@ -165,6 +165,7 @@
     "make_withdrawal_subtitle": "Retire fundos da sua conta",
     "available_withdraw": "Disponível para saque",
     "limits": "limites",
+    "alert_deposit_before_playing_game": "Você precisa depositar fundos antes de começar a jogar.",
     "error_creating_flow_pending_kyc": "Você precisa verificar sua identidade antes de fazer um depósito. Por favor, envie seu documento de identidade",
     "error_creating_flow_pending_kyc_cta_label": "Enviar documento",
     "error_creating_flow_pending_deposit": "Você tem um depósito em andamento. Aguarde a conclusão ou cancele antes de tentar novamente",

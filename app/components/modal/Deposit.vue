@@ -2,6 +2,7 @@
 import { DEFAULT_CURRENCY_WHILE_USER_HAS_NO_WALLET } from "~/modules/wallet/domain/Wallet";
 import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
 import type { SupportedCountryFlagCode } from "~/types/constants";
+import type { AlertProps } from "../base/Alert.vue";
 
 // DESIGN STATUS:       ✅
 // ARCHITECTURE STATUS: ✅
@@ -56,6 +57,7 @@ const currency = ref<{
 
 defineProps<{
   open: boolean;
+  alert?: AlertProps;
 }>();
 </script>
 
@@ -66,6 +68,7 @@ defineProps<{
     :logo="false"
     banner="top"
     :banner-top="siteStore.getRelativeAssetPath('banners/deposit_horizontal.jpg')"
+    :alert="alert"
     @close="onClosed"
   >
     <template #title>
