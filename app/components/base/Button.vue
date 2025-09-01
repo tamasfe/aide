@@ -40,14 +40,16 @@ const buttonVariants = cva(
 
 type ButtonVariants = VariantProps<typeof buttonVariants>;
 
-const props = withDefaults(defineProps<{
+export type BaseButtonProps = {
   variant?: ButtonVariants["variant"];
   size?: ButtonVariants["size"];
   loading?: boolean;
   disabled?: boolean;
   type?: ButtonHTMLAttributes["type"];
   class?: HTMLAttributes["class"];
-}>(), {
+};
+
+const props = withDefaults(defineProps<BaseButtonProps>(), {
   loading: false,
   disabled: false,
   type: "button",

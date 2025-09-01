@@ -40,6 +40,13 @@ function onVisibilityChanged(event: EventHandlerPayload<"onVisibilityChanged">) 
   }
 }
 
+function onWidgetIsReady() {
+  $dependencies.common.asyncMessagePublisher.emit(
+    "frontend:commands:modals:live-chat-is-ready",
+    {},
+  );
+}
+
 const sessionVariables = computed(() => {
   if (!userStore.user) return {};
   return {
@@ -60,6 +67,7 @@ const sessionVariables = computed(() => {
       :customer-email="userStore.user?.email"
       :customer-name="userStore.user?.name"
       :session-variables="sessionVariables"
+      @ready="onWidgetIsReady"
       @visibility-changed="onVisibilityChanged"
     />
   </ClientOnly>

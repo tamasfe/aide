@@ -42,6 +42,6 @@ const onLiveChatVisibilityChanged = (visibility: "minimized" | "maximized" | "hi
 
     <AppNotificationToastContainer />
 
-    <LazyLiveChat @visibility-changed="onLiveChatVisibilityChanged" />
+    <LiveChat @visibility-changed="onLiveChatVisibilityChanged" />
   </div>
 </template>
