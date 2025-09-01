@@ -10,17 +10,18 @@ const siteStore = useSiteStore();
 const userUnlockedBalance = useWalletStore().wallet?.balanceUnlocked ?? null;
 
 const walletStore = useWalletStore();
+const userStore = useUserStore();
 
 const ENABLE_SERVER_SIDE_RENDERING = false;
 const DEFER_CLIENT_SIDE_LOADING = true;
 
 const { data: paymentMethodData } = await useAsyncData("user-modals-payment-method", async () => {
-  if (!walletStore.wallet) {
+  if (!walletStore.wallet || !userStore.isAuthenticated) {
     return null;
   }
   return await $dependencies.wallets.ui.findPreferredPaymentMethodOnPaymentModal.handle(walletStore.wallet.currency);
 }, {
-  watch: [() => walletStore.wallet?.currency],
+  watch: [() => walletStore.wallet?.currency, () => userStore.isAuthenticated],
   lazy: DEFER_CLIENT_SIDE_LOADING,
   server: ENABLE_SERVER_SIDE_RENDERING,
   dedupe: "defer",

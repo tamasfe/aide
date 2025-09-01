@@ -8,24 +8,31 @@ import type { SupportedCountryFlagCode } from "~/types/constants";
 // TRANSLATION STATUS:  ✅
 
 const walletStore = useWalletStore();
+const userStore = useUserStore();
 
 const ENABLE_SERVER_SIDE_RENDERING = false;
 const DEFER_CLIENT_SIDE_LOADING = false;
 
 const [{ data: paymentMethodData }, { data: paymentMethods }] = await Promise.all([
   useAsyncData("user-modals-payment-method", async () => {
+    if (!userStore.isAuthenticated) {
+      return null;
+    }
     return await $dependencies.wallets.ui.findPreferredPaymentMethodOnPaymentModal.handle(walletStore.wallet?.currency ?? DEFAULT_CURRENCY_WHILE_USER_HAS_NO_WALLET);
   }, {
-    watch: [() => walletStore.wallet?.currency],
+    watch: [() => walletStore.wallet?.currency, () => userStore.isAuthenticated],
     lazy: DEFER_CLIENT_SIDE_LOADING,
     server: ENABLE_SERVER_SIDE_RENDERING,
     dedupe: "defer",
   }),
 
   useAsyncData("user-modals-payment-methods", async () => {
+    if (!userStore.isAuthenticated) {
+      return null;
+    }
     return await $dependencies.wallets.ui.searchPaymentMethodsOnDepositForm.handle(walletStore.wallet?.currency ?? DEFAULT_CURRENCY_WHILE_USER_HAS_NO_WALLET);
   }, {
-    watch: [() => walletStore.wallet?.currency],
+    watch: [() => walletStore.wallet?.currency, () => userStore.isAuthenticated],
     lazy: DEFER_CLIENT_SIDE_LOADING,
     server: ENABLE_SERVER_SIDE_RENDERING,
     dedupe: "defer",
