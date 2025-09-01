@@ -15,7 +15,7 @@ const ENABLE_SERVER_SIDE_RENDERING = false;
 const DEFER_CLIENT_SIDE_LOADING = false;
 
 const [{ data: paymentMethodData }, { data: paymentMethods }] = await Promise.all([
-  useAsyncData("user-modals-deposit-preferred-payment-method", async () => {
+  useAsyncData("user-modals-preferred-payment-method", async () => {
     if (!userStore.isAuthenticated) {
       return null;
     }

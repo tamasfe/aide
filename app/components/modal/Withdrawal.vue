@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { DEFAULT_CURRENCY_WHILE_USER_HAS_NO_WALLET } from "~/modules/wallet/domain/Wallet";
 import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
 import type { SupportedCountryFlagCode } from "~/types/constants";
 
@@ -15,11 +16,11 @@ const userStore = useUserStore();
 const ENABLE_SERVER_SIDE_RENDERING = false;
 const DEFER_CLIENT_SIDE_LOADING = true;
 
-const { data: paymentMethodData } = await useAsyncData("user-modals-withdrawal-preferred-payment-method", async () => {
-  if (!walletStore.wallet || !userStore.isAuthenticated) {
+const { data: paymentMethodData } = await useAsyncData("user-modals-preferred-payment-method", async () => {
+  if (!userStore.isAuthenticated) {
     return null;
   }
-  return await $dependencies.wallets.ui.findPreferredPaymentMethodOnPaymentModal.handle(walletStore.wallet.currency);
+  return await $dependencies.wallets.ui.findPreferredPaymentMethodOnPaymentModal.handle(walletStore.wallet?.currency ?? DEFAULT_CURRENCY_WHILE_USER_HAS_NO_WALLET);
 }, {
   watch: [() => walletStore.wallet?.currency, () => userStore.isAuthenticated],
   lazy: DEFER_CLIENT_SIDE_LOADING,
