@@ -14,7 +14,7 @@ const ENABLE_SERVER_SIDE_RENDERING = false;
 const DEFER_CLIENT_SIDE_LOADING = false;
 
 const [{ data: paymentMethodData }, { data: paymentMethods }] = await Promise.all([
-  useAsyncData("user-modals-payment-method", async () => {
+  useAsyncData("user-modals-deposit-preferred-payment-method", async () => {
     if (!userStore.isAuthenticated) {
       return null;
     }
@@ -26,7 +26,7 @@ const [{ data: paymentMethodData }, { data: paymentMethods }] = await Promise.al
     dedupe: "defer",
   }),
 
-  useAsyncData("user-modals-payment-methods", async () => {
+  useAsyncData("user-modals-deposit-payment-methods", async () => {
     if (!userStore.isAuthenticated) {
       return null;
     }
