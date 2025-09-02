@@ -17,8 +17,8 @@ const onClosed = () => {
     id="base-modal-recover-password"
     :open="open"
     banner="left"
-    :banner-left="siteStore.getRelativeAssetPath('banners/login_vertical.jpg')"
-    :banner-top="siteStore.getRelativeAssetPath('banners/login_horizontal.jpg')"
+    :banner-left="siteStore.getRelativeAssetPath('banners/login_vertical.png')"
+    :banner-top="siteStore.getRelativeAssetPath('banners/login_horizontal.png')"
     @close="onClosed"
   >
     <FormRecoverPassword :token="token" />

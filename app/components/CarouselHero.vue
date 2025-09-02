@@ -38,12 +38,11 @@ const slides = computed(() => {
       slide-ratio="1280/607"
     >
       <SlideAviator />
-      <SlideFortuneRabbit />
-      <SlideJetX />
-
-      <SlideFortuneTiger />
+      <SlideMultiplyYourWinnings />
+      <SlidePgSoft />
+      <SlideUnlimitedWithdrawals />
       <SlideWin10K />
-      <SlideChooseGiroBet />
+      <SlideWhyChooseUs />
     </BaseCarousel>
     <FormWelcome v-if="showFormWelcome" />
   </div>

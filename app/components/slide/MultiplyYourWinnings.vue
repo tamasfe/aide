@@ -20,7 +20,7 @@ const onSlideClick = () => {
     <NuxtImg
       provider="custom_cloudflare"
       sizes="550px md:750px"
-      :src="siteStore.getRelativeAssetPath('slides/choose-us.jpg')"
+      :src="siteStore.getRelativeAssetPath('slides/2.png')"
       alt=""
       class="rounded md:rounded-lg object-cover object-center w-full h-full"
     />
