@@ -90,7 +90,7 @@ const createMiddlewareCorsErrorHandler: () => Middleware = () => {
   return {
     onError({ error, request, id, params }) {
       if (error instanceof Error) {
-        if (error.message === "Failed to fetch") {
+        if (error.message.includes("Failed to fetch")) {
           return ErrorFailedToFetch.new(request.url, { request: { id, params } });
         }
       }
