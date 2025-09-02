@@ -7,9 +7,11 @@ Sentry.init({
   // for finer control
   tracesSampleRate: 1.0,
 
+  environment: process.env.NODE_ENV || "development",
+
   // Setting this option to true will print useful information to the console while you're setting up Sentry.
   debug: false,
   ignoreErrors: [
     /Page not found/,
-  ]
+  ],
 });
