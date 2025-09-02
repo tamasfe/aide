@@ -85,16 +85,17 @@ export class SignupFlowApiRepositoryGirobet implements SignupFlowApiRepositoryI 
         for (const [field, errors] of Object.entries(error.metadata)) {
           if (Array.isArray(errors)) {
             for (const validationError of errors) {
-              // TODO: verify this error code means what it means!!
-              if (validationError.code === "data_error") {
+              if (validationError.code === "taken") {
                 switch (field) {
                   case "CPF":
+                  case "cpf":
                     return fail(new ErrorAlreadyTakenCpf({ signupFlowId, validationError }));
 
                   case "email":
                     return fail(new ErrorAlreadyTakenEmail({ signupFlowId, validationError }));
 
                   case "telephone":
+                  case "phone":
                     return fail(new ErrorAlreadyTakenTelephone({ signupFlowId, validationError }));
                 }
               }

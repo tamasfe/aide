@@ -4,6 +4,188 @@
  */
 
 export interface paths {
+    "/ws/access-token": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Issue WebSocket Access Token
+         * @description This endpoint is used to generate authentication tokens (access tokens) for WebSocket connections in our system.
+         *
+         *     ## Access Token Generation
+         *
+         *     1. Send a POST request to the access token issuer endpoint.
+         *     2. The endpoint will return an access token.
+         *
+         *     ## Access Token Properties
+         *
+         *     - Access tokens are short-lived tokens, valid for 60 seconds from the time of generation.
+         *     - Each access token, once used, is tied to a specific websocket connection and is immediately invalidated.
+         *
+         *     ## Usage
+         *
+         *     - Use the generated access token when establishing a WebSocket connection.
+         *     - For detailed information on how to use the access token in a WebSocket connection, refer to the documentation found [here](#tag/websocket/GET/ws/connect).
+         *
+         *     ## Important Notes
+         *
+         *     - Always generate a new access token before attempting to log in to the user event stream.
+         *     - Ensure your client handles access token expiration and reconnection scenarios.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AccessTokenTokenResponse"];
+                    };
+                };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *      This enum covers a wide range of error scenarios, from wallet-related issues
+                 *      to payment processing problems, user authentication errors, and more. */
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/ws/connect": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Establish WebSocket Connection
+         * @description This route is the entry point for WebSocket connections in our system.
+         *
+         *     ## Connection Process
+         *
+         *     1. Connect to this endpoint using the WebSocket protocol.
+         *     2. Once connected, send a login message with your access token:
+         *
+         *        ```json
+         *        {
+         *          "type": "user_login",
+         *          "data": "<access-token>"
+         *        }
+         *        ```
+         *
+         *     ## Example (JavaScript)
+         *
+         *     ```javascript
+         *     const socket = new WebSocket("wss://your-domain.com/ws/connect");
+         *
+         *     // After connection is established, send login message
+         *     socket.onopen = () => {
+         *       const loginMessage = {
+         *         type: "user_login",
+         *         data: "your-access-token"
+         *       };
+         *       socket.send(JSON.stringify(loginMessage));
+         *     };
+         *     ```
+         *
+         *     ## Message Format
+         *
+         *     All WebSocket messages follow a JSON format. The message structure for client events matches the request body specifications in this OpenAPI documentation, while server events follow the HTTP response specifications.
+         *
+         *     ### Client Events (Sending)
+         *     Messages sent from the client should follow this format:
+         *     ```json
+         *     {
+         *       "type": "event_name",
+         *       "data": {}  // Data structure as specified in OpenAPI request bodies
+         *     }
+         *     ```
+         *
+         *     ### Server Events (Receiving)
+         *     Messages received from the server will follow this format:
+         *     ```json
+         *     {
+         *       "type": "event_name",
+         *       "data": {}  // Data structure as specified in OpenAPI responses
+         *     }
+         *     ```
+         *
+         *     ## Important Notes
+         *
+         *     - Access tokens are valid for 60 seconds.
+         *     - Ensure your client can handle reconnection if the access token expires.
+         *     - The server will emit an error event if authentication fails.
+         *     - After a successful login, you'll be subscribed to your respective channel.
+         *
+         *     For detailed information on access token generation and management, refer to the main WebSocket authentication documentation found [here](#tag/websocket/POST/ws/access-token).
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["WebsocketClientEvent"];
+                };
+            };
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["WebsocketServerEvent"];
+                    };
+                };
+                /** @description Represents various errors that can occur during server operations.
+                 *
+                 *      This enum covers a wide range of error scenarios, from wallet-related issues
+                 *      to payment processing problems, user authentication errors, and more. */
+                "4XX": {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServerError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/auth/whoami": {
         parameters: {
             query?: never;
@@ -2492,6 +2674,649 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/admin/user/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Users
+         * @description Fetch a paginated list of users in the system.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    filters?: string;
+                    limit?: number;
+                    offset?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PaginatorResponse_for_AdminUserResponse_and_ActiveFilters_and_int64"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/user/{user_id}/block": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Block User
+         * @description Block the user until the specified date. If date is not set, the user will be blocked indefinitely.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    user_id: components["schemas"]["UserId"];
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["BlockUserBody"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/admin/user/{user_id}/unblock": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Unblock User
+         * @description Unblock the user.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    user_id: components["schemas"]["UserId"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/admin/user/{user_id}/exclude": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Exclude User
+         * @description Exclude the user until the specified date.
+         *         If date is not set, the user will be excluded indefinitely.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    user_id: components["schemas"]["UserId"];
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["BlockUserBody"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/admin/user/{user_id}/include": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Include User
+         * @description Include the user.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    user_id: components["schemas"]["UserId"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/admin/session/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Sessions
+         * @description Fetch sessions
+         */
+        get: {
+            parameters: {
+                query?: {
+                    filters?: string;
+                    limit?: number;
+                    offset?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PaginatorResponse_for_SessionResponse_and_ActiveFilters_and_int64"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/payment/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Payments
+         * @description This endpoint returns a list of payments and payment flows in chronological order with the newest items first.
+         *     You may filter payments via the following sample filter:
+         *
+         *     ```json
+         *     {
+         *     	"payment_flow_id": {"$eq": "1"},
+         *     	"payment_id": {"$eq": "1"},
+         *     	"wallet_id": {"$eq": "1"},
+         *     	"user_id": {"$eq": "1"},
+         *     	"payment_flow_status": {"$eq": "pending"},
+         *     	"payment_type": {"$eq": "deposit"},
+         *     	"payment_flow_amount": {"$eq": "100"},
+         *     	"payment_amount": {"$eq": "100"},
+         *     	"curency": {"$eq": "USD"},
+         *     	"payment_is_adjustment": {"$eq": "true"},
+         *     	"user_name": {"$contains": "john"},
+         *     	"user_email": {"$contains": "john"},
+         *     	"integration_id": {"$eq": "1"},
+         *     	"payment_provider_name": {"$contains": "star"},
+         *     	"payment_method_id": {"$eq": "1"},
+         *     	"payment_method_name": {"$contains": "pix"},
+         *     	"payment_flow_created_at": {"$eq": "2021-01-01T00:00:00Z"},
+         *     	"payment_created_at": {"$eq": "2021-01-01T00:00:00Z"},
+         *     	"payment_flow_status_created_at": {"$eq": "2021-01-01T00:00:00Z"}
+         *     }
+         *     ```
+         */
+        get: {
+            parameters: {
+                query?: {
+                    filters?: string;
+                    limit?: number;
+                    offset?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PaginatorResponse_for_AdminPaymentListResponse_and_ActiveFilters_and_int64"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/payment/flow/{flow_id}/approve": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Approve Payment Flow
+         * @description Approve the specified payment flow.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    flow_id: components["schemas"]["PaymentFlowId"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/admin/payment/flow/{flow_id}/reject": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Reject Payment Flow
+         * @description Reject the specified payment flow.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    flow_id: components["schemas"]["PaymentFlowId"];
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["RejectPaymentFlowBody"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/admin/payment/limits/{currency}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update Payment Limits
+         * @description Update the limits for the specified currency.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    currency: components["schemas"]["Currency"];
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["LimitOverridesPrototype"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/admin/payment/balance/adjust": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update User Balance
+         * @description Adjust the balance for the specified user and currency.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["AdjustUserBalanceBody"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/admin/wallet/{wallet_id}/limits": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update Wallet Limits
+         * @description Patch the wallet limits.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    wallet_id: components["schemas"]["WalletId"];
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["LimitOverridesPrototype"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/admin/game/rounds": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Read Game Rounds
+         * @description Fetch game rounds
+         */
+        get: {
+            parameters: {
+                query?: {
+                    filters?: string;
+                    limit?: number;
+                    offset?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PaginatorResponse_for_AdminBetResponse_and_ActiveFilters_and_int64"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/category/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Read Game Categories
+         * @description Fetch game categories
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CategoryResponse"][];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/category/group/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Read Category Groups
+         * @description Fetch category groups
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CategoryGroupResponse"][];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/docs/spec.json": {
         parameters: {
             query?: never;
@@ -2548,188 +3373,6 @@ export interface paths {
                     };
                     content: {
                         "text/html": string;
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/ws/access-token": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Issue WebSocket Access Token
-         * @description This endpoint is used to generate authentication tokens (access tokens) for WebSocket connections in our system.
-         *
-         *     ## Access Token Generation
-         *
-         *     1. Send a POST request to the access token issuer endpoint.
-         *     2. The endpoint will return an access token.
-         *
-         *     ## Access Token Properties
-         *
-         *     - Access tokens are short-lived tokens, valid for 60 seconds from the time of generation.
-         *     - Each access token, once used, is tied to a specific websocket connection and is immediately invalidated.
-         *
-         *     ## Usage
-         *
-         *     - Use the generated access token when establishing a WebSocket connection.
-         *     - For detailed information on how to use the access token in a WebSocket connection, refer to the documentation found [here](#tag/websocket/GET/ws/connect).
-         *
-         *     ## Important Notes
-         *
-         *     - Always generate a new access token before attempting to log in to the user event stream.
-         *     - Ensure your client handles access token expiration and reconnection scenarios.
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["AccessTokenTokenResponse"];
-                    };
-                };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/ws/connect": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Establish WebSocket Connection
-         * @description This route is the entry point for WebSocket connections in our system.
-         *
-         *     ## Connection Process
-         *
-         *     1. Connect to this endpoint using the WebSocket protocol.
-         *     2. Once connected, send a login message with your access token:
-         *
-         *        ```json
-         *        {
-         *          "type": "user_login",
-         *          "data": "<access-token>"
-         *        }
-         *        ```
-         *
-         *     ## Example (JavaScript)
-         *
-         *     ```javascript
-         *     const socket = new WebSocket("wss://your-domain.com/ws/connect");
-         *
-         *     // After connection is established, send login message
-         *     socket.onopen = () => {
-         *       const loginMessage = {
-         *         type: "user_login",
-         *         data: "your-access-token"
-         *       };
-         *       socket.send(JSON.stringify(loginMessage));
-         *     };
-         *     ```
-         *
-         *     ## Message Format
-         *
-         *     All WebSocket messages follow a JSON format. The message structure for client events matches the request body specifications in this OpenAPI documentation, while server events follow the HTTP response specifications.
-         *
-         *     ### Client Events (Sending)
-         *     Messages sent from the client should follow this format:
-         *     ```json
-         *     {
-         *       "type": "event_name",
-         *       "data": {}  // Data structure as specified in OpenAPI request bodies
-         *     }
-         *     ```
-         *
-         *     ### Server Events (Receiving)
-         *     Messages received from the server will follow this format:
-         *     ```json
-         *     {
-         *       "type": "event_name",
-         *       "data": {}  // Data structure as specified in OpenAPI responses
-         *     }
-         *     ```
-         *
-         *     ## Important Notes
-         *
-         *     - Access tokens are valid for 60 seconds.
-         *     - Ensure your client can handle reconnection if the access token expires.
-         *     - The server will emit an error event if authentication fails.
-         *     - After a successful login, you'll be subscribed to your respective channel.
-         *
-         *     For detailed information on access token generation and management, refer to the main WebSocket authentication documentation found [here](#tag/websocket/POST/ws/access-token).
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["WebsocketClientEvent"];
-                };
-            };
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["WebsocketServerEvent"];
-                    };
-                };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
                     };
                 };
             };
@@ -2939,12 +3582,193 @@ export interface components {
             /** Format: uuid */
             token: string;
         };
-        /** Format: int64 */
+        ActiveFilters: {
+            [key: string]: components["schemas"]["FilterOperator"];
+        };
+        AdjustUserBalanceBody: {
+            amount: components["schemas"]["SystemAmount"];
+            currency: components["schemas"]["Currency"];
+            note?: string | null;
+            user_id: components["schemas"]["UserId"];
+        };
+        AdminBetResponse: {
+            /** @description The amount of the action */
+            amount_bonus: components["schemas"]["SystemAmount"];
+            /** @description The amount of the action */
+            amount_locked: components["schemas"]["SystemAmount"];
+            /** @description The amount of the action */
+            amount_unlocked: components["schemas"]["SystemAmount"];
+            /** @description The action type */
+            bet_type: components["schemas"]["BetType"];
+            /**
+             * Format: date-time
+             * @description The date and time the action was created
+             */
+            created_at: string;
+            /** @description The currency of the action */
+            currency: components["schemas"]["Currency"];
+            /** @description The external ID of the bet */
+            ext_bet_id: string;
+            /** @description The external ID of the round */
+            ext_round_id: string;
+            /** @description The ID of the game */
+            game_id: components["schemas"]["GameId"];
+            /** @description The ID of the bet */
+            id: components["schemas"]["BetId"];
+            /** @description The ID of the integration that this bet belongs to */
+            integration_id: components["schemas"]["IntegrationId"];
+            /** @description The metadata of the action */
+            metadata?: unknown;
+            /** @description Whether the action was invalidated through a rollback */
+            rolled_back: boolean;
+            /** @description The ID of the user */
+            user_id: components["schemas"]["UserId"];
+            /** @description The ID of the wallet */
+            wallet_id: components["schemas"]["WalletId"];
+        };
+        AdminPaymentListResponse: {
+            /** @description The currency of the payment. */
+            currency: components["schemas"]["Currency"];
+            /** @description The ID of the payment provider. This is optional, as the payment
+             *      may be a balance adjustment, which does not have a payment provider. */
+            integration_id?: components["schemas"]["IntegrationId"] | null;
+            /** @description The amount of the payment. This is optional, as the payment may not
+             *      exist as described above. Note that this value is usually the same as
+             *      the payment flow amount, but it may differ in some rare cases. */
+            payment_amount?: components["schemas"]["SystemAmount"] | null;
+            /**
+             * Format: date-time
+             * @description The creation date of the payment. This is optional, as the payment may
+             *      not exist as described above.
+             */
+            payment_created_at?: string | null;
+            /** @description The amount of the payment flow. This is optional, as the flow may not
+             *      exist as described above. */
+            payment_flow_amount?: components["schemas"]["SystemAmount"] | null;
+            /**
+             * Format: date-time
+             * @description The creation date of the payment flow. This is optional, as the flow may
+             *      not exist as described above.
+             */
+            payment_flow_created_at?: string | null;
+            /** @description The payment flow ID of this payment. This is optional, as there may be
+             *      payments, such as balance adjustments, that do not have an associated
+             *      payment flow. */
+            payment_flow_id?: components["schemas"]["PaymentFlowId"] | null;
+            /** @description The status of the payment flow. This is optional, as the flow may not
+             *      exist as described above, or the flow has been created but not
+             *      initialized yet. */
+            payment_flow_status?: components["schemas"]["PaymentStatus"] | null;
+            /**
+             * Format: date-time
+             * @description The creation date of the payment flow status. This is optional, as the
+             *      flow may not exist as described above, or the flow has been created but
+             *      not initialized yet.
+             */
+            payment_flow_status_created_at?: string | null;
+            /** @description The payment ID of this payment. This is optional, as the associated flow
+             *      may not have been completed yet. */
+            payment_id?: components["schemas"]["PaymentId"] | null;
+            /** @description Whether this payment is an adjustment. This signifies that the payment
+             *      is not a regular payment, but an adjustment to the user's balance. */
+            payment_is_adjustment: boolean;
+            /** @description Metadata associated with the payment entry. This is optional, as the
+             *      payment may not exist as described above, or there is no metadata
+             *      associated with the payment. */
+            payment_metadata?: unknown;
+            /** @description The payment method ID of the payment. This is optional, as the payment
+             *      may be a balance adjustment, which does not have a payment method. */
+            payment_method_id?: components["schemas"]["PaymentMethodId"] | null;
+            /** @description The name of the payment method of the payment. This is optional, as the
+             *      payment may be a balance adjustment, which does not have a payment
+             *      method. */
+            payment_method_name?: string | null;
+            /** @description The name of the payment provider of the payment. This is optional, as
+             *      the payment may be a balance adjustment, which does not have a payment
+             *      provider. */
+            payment_provider_name?: string | null;
+            /** @description The type of payment that this payment is. */
+            payment_type: components["schemas"]["PaymentType"];
+            /** @description The email of the user that this payment is associated with. */
+            user_email: string;
+            /** @description The user ID of the user that this payment is associated with. */
+            user_id: components["schemas"]["UserId"];
+            /** @description The name of the user that this payment is associated with. */
+            user_name: string;
+            /** @description The wallet ID of the wallet that this payment is associated with. */
+            wallet_id: components["schemas"]["WalletId"];
+        };
+        AdminUserResponse: {
+            /** Format: date */
+            birthdate: string;
+            /** Format: date-time */
+            blocked_until?: string | null;
+            /** Format: date-time */
+            created_at: string;
+            /** Format: date-time */
+            deleted_at?: string | null;
+            email: string;
+            email_verified: boolean;
+            /** Format: date-time */
+            excluded_until?: string | null;
+            family_name?: string | null;
+            gender?: components["schemas"]["Gender"] | null;
+            id: components["schemas"]["UserId"];
+            jurisdiction: string;
+            name: string;
+            phone: string;
+            phone_verified: boolean;
+            /** Format: date-time */
+            updated_at: string;
+        };
+        /** @example auth_session_id_1234 */
+        AuthSessionId: string;
+        /**
+         * Format: int64
+         * @example 1
+         */
         BetId: number;
         /** @enum {string} */
         BetType: "wager" | "win";
+        BlockUserBody: {
+            reason?: string | null;
+            /** Format: date-time */
+            until?: string | null;
+        };
+        CategoryGroupResponse: {
+            /**
+             * Format: date-time
+             * @description The time the category group was created
+             */
+            created_at: string;
+            /** @description The category group ID */
+            id: components["schemas"]["GameCategoryGroupId"];
+            /** @description The category group identifier, used for lookups and URLs */
+            identifier: string;
+        };
+        CategoryResponse: {
+            /**
+             * Format: date-time
+             * @description The time the category was created
+             */
+            created_at: string;
+            /** @description Whether the category is hidden from the public */
+            hidden: boolean;
+            /** @description The category ID */
+            id: components["schemas"]["GameCategoryId"];
+            /** @description The category identifier, used for lookups and URLs */
+            identifier: string;
+            /** @description Whether the category is user-specific. User specific categories have
+             *      different content based on the user. For example, a user-specific
+             *      category might show different content based on the user's playing
+             *      history. */
+            user_specific: boolean;
+        };
         /**
          * @description A country represented by its ISO 3166-1 alpha-2 code.
+         * @example US
+         * @example DE
+         * @example BR
          * @enum {string}
          */
         Country: "AF" | "AX" | "AL" | "DZ" | "AS" | "AD" | "AO" | "AI" | "AQ" | "AG" | "AR" | "AM" | "AW" | "AU" | "AT" | "AZ" | "BS" | "BH" | "BD" | "BB" | "BY" | "BE" | "BZ" | "BJ" | "BM" | "BT" | "BO" | "BQ" | "BA" | "BW" | "BV" | "BR" | "IO" | "BN" | "BG" | "BF" | "BI" | "CV" | "KH" | "CM" | "CA" | "KY" | "CF" | "TD" | "CL" | "CN" | "CX" | "CC" | "CO" | "KM" | "CG" | "CD" | "CK" | "CR" | "CI" | "HR" | "CU" | "CW" | "CY" | "CZ" | "DK" | "DJ" | "DM" | "DO" | "EC" | "EG" | "SV" | "GQ" | "ER" | "EE" | "SZ" | "ET" | "FK" | "FO" | "FJ" | "FI" | "FR" | "GF" | "PF" | "TF" | "GA" | "GM" | "GE" | "DE" | "GH" | "GI" | "GR" | "GL" | "GD" | "GP" | "GU" | "GT" | "GG" | "GN" | "GW" | "GY" | "HT" | "HM" | "VA" | "HN" | "HK" | "HU" | "IS" | "IN" | "ID" | "IR" | "IQ" | "IE" | "IM" | "IL" | "IT" | "JM" | "JP" | "JE" | "JO" | "KZ" | "KE" | "KI" | "KP" | "KR" | "KW" | "KG" | "LA" | "LV" | "LB" | "LS" | "LR" | "LY" | "LI" | "LT" | "LU" | "MO" | "MG" | "MW" | "MY" | "MV" | "ML" | "MT" | "MH" | "MQ" | "MR" | "MU" | "YT" | "MX" | "FM" | "MD" | "MC" | "MN" | "ME" | "MS" | "MA" | "MZ" | "MM" | "NA" | "NR" | "NP" | "NL" | "NC" | "NZ" | "NI" | "NE" | "NG" | "NU" | "NF" | "MK" | "MP" | "NO" | "OM" | "PK" | "PW" | "PS" | "PA" | "PG" | "PY" | "PE" | "PH" | "PN" | "PL" | "PT" | "PR" | "QA" | "RE" | "RO" | "RU" | "RW" | "BL" | "SH" | "KN" | "LC" | "MF" | "PM" | "VC" | "WS" | "SM" | "ST" | "SA" | "SN" | "RS" | "SC" | "SL" | "SG" | "SX" | "SK" | "SI" | "SB" | "SO" | "ZA" | "GS" | "SS" | "ES" | "LK" | "SD" | "SR" | "SJ" | "SE" | "CH" | "SY" | "TW" | "TJ" | "TZ" | "TH" | "TL" | "TG" | "TK" | "TO" | "TT" | "TN" | "TR" | "TM" | "TC" | "TV" | "UG" | "UA" | "AE" | "GB" | "US" | "UM" | "UY" | "UZ" | "VU" | "VE" | "VN" | "VG" | "VI" | "WF" | "EH" | "YE" | "ZM" | "ZW";
@@ -2987,6 +3811,11 @@ export interface components {
         };
         /**
          * @description ISO 4217 3-letter currency code or 3/4-letter crypto currency code
+         * @example USD
+         * @example EUR
+         * @example BRL
+         * @example BTC
+         * @example USDT
          * @enum {string}
          */
         Currency: "AED" | "AFN" | "ALL" | "AMD" | "XCG" | "AOA" | "ARS" | "AUD" | "AWG" | "AZN" | "BAM" | "BBD" | "BDT" | "BGN" | "BHD" | "BIF" | "BMD" | "BND" | "BOB" | "BOV" | "BRL" | "BSD" | "BTN" | "BWP" | "BYN" | "BZD" | "CAD" | "CDF" | "CHE" | "CHF" | "CHW" | "CLF" | "CLP" | "CNY" | "COP" | "COU" | "CRC" | "CUC" | "CUP" | "CVE" | "CZK" | "DJF" | "DKK" | "DOP" | "DZD" | "EGP" | "ERN" | "ETB" | "EUR" | "FJD" | "FKP" | "GBP" | "GEL" | "GHS" | "GIP" | "GMD" | "GNF" | "GTQ" | "GYD" | "HKD" | "HNL" | "HRK" | "HTG" | "HUF" | "IDR" | "ILS" | "INR" | "IQD" | "IRR" | "ISK" | "JMD" | "JOD" | "JPY" | "KES" | "KGS" | "KHR" | "KMF" | "KPW" | "KRW" | "KWD" | "KYD" | "KZT" | "LAK" | "LBP" | "LKR" | "LRD" | "LSL" | "LYD" | "MAD" | "MDL" | "MGA" | "MKD" | "MMK" | "MNT" | "MOP" | "MRU" | "MUR" | "MVR" | "MWK" | "MXN" | "MXV" | "MYR" | "MZN" | "NAD" | "NGN" | "NIO" | "NOK" | "NPR" | "NZD" | "OMR" | "PAB" | "PEN" | "PGK" | "PHP" | "PKR" | "PLN" | "PYG" | "QAR" | "RON" | "RSD" | "RUB" | "RWF" | "SAR" | "SBD" | "SCR" | "SDG" | "SEK" | "SGD" | "SHP" | "SLE" | "SLL" | "SOS" | "SRD" | "SSP" | "STN" | "SVC" | "SYP" | "SZL" | "THB" | "TJS" | "TMT" | "TND" | "TOP" | "TRY" | "TTD" | "TWD" | "TZS" | "UAH" | "UGX" | "USD" | "USN" | "UYI" | "UYU" | "UYW" | "UZS" | "VED" | "VES" | "VND" | "VUV" | "WST" | "XAF" | "XAG" | "XAU" | "XBA" | "XBB" | "XBC" | "XBD" | "XCD" | "XDR" | "XOF" | "XPD" | "XPF" | "XPT" | "XSU" | "XTS" | "XUA" | "XXX" | "YER" | "ZAR" | "ZMW" | "ZWL" | "ZWG" | "BTC" | "ETH" | "USDC" | "USDT" | "BCH" | "XRP" | "FUN" | "ADA" | "TRX" | "BSV" | "BNB" | "NEO";
@@ -3001,6 +3830,29 @@ export interface components {
         Device: "mobile" | "desktop";
         /** Format: int64 */
         DurationSeconds: number;
+        FilterOperator: {
+            $eq: unknown;
+        } | {
+            $startsWith: unknown;
+        } | {
+            $contains: unknown;
+        } | {
+            $in: unknown;
+        } | {
+            $between: unknown;
+        } | {
+            $lt: unknown;
+        } | {
+            $lte: unknown;
+        } | {
+            $gt: unknown;
+        } | {
+            $gte: unknown;
+        };
+        FiltersJson: {
+            /** @default {} */
+            filters: string;
+        };
         FinalizePasswordResetRequest: {
             /** @description The new password for the user. */
             password: string;
@@ -3035,7 +3887,15 @@ export interface components {
             id: components["schemas"]["BetId"];
         };
         GameCategory: components["schemas"]["StaticGameCategory"] | string;
-        /** Format: int64 */
+        /**
+         * Format: int64
+         * @example 1
+         */
+        GameCategoryGroupId: number;
+        /**
+         * Format: int64
+         * @example 1
+         */
         GameCategoryId: number;
         GameCategoryListQuery: {
             /** @description The group of game categories to filter by. If set, only categories in
@@ -3058,12 +3918,21 @@ export interface components {
              *      used to identify the category in the game search endpoint. */
             identifier: string;
         };
-        /** @description Game identifier, in the format <provider>/<game> */
+        /**
+         * Format: int64
+         * @example 1
+         */
+        GameId: number;
+        /**
+         * @description Game identifier, in the format <provider>/<game>
+         * @example spribe/aviator
+         */
         GameIdentifier: string;
         GameParams: {
             game_slug: string;
             provider_slug: string;
         };
+        /** @example game_provider_1234 */
         GameProviderIdentifier: string;
         GameProviderParams: {
             /** @description The ID of the game provider. */
@@ -3134,9 +4003,15 @@ export interface components {
             /**
              * Format: email
              * @description The email address of the user to reset the password for.
+             * @example john@doe.com
              */
             email: string;
         };
+        /**
+         * Format: int64
+         * @example 1
+         */
+        IntegrationId: number;
         /** @enum {string} */
         IntegrationIdentifier: "coinlayer" | "digito" | "fasttrack" | "fixer_io" | "infinigame" | "open_ai" | "sandbox" | "sumsub";
         InternalError: string;
@@ -3168,7 +4043,10 @@ export interface components {
              *      the KYC process again. */
             has_active_kyc: boolean;
         };
-        /** Format: int64 */
+        /**
+         * Format: int64
+         * @example 1
+         */
         LicenseId: number;
         LicenseResponse: {
             /** @description The ID of the license. */
@@ -3179,6 +4057,19 @@ export interface components {
              *      jurisdictions, this is the jurisdiction that the license is rooted in.
              *      Examples include Curacao, Anjouan, etc. */
             root_jurisdiction: components["schemas"]["Country"];
+        };
+        LimitOverridesPrototype: {
+            deposit_cooldown?: components["schemas"]["Maybe_DurationSeconds"];
+            deposit_max?: components["schemas"]["Maybe_Decimal"];
+            deposit_max_first?: components["schemas"]["Maybe_Decimal"];
+            deposit_min?: components["schemas"]["Maybe_Decimal"];
+            deposit_min_first?: components["schemas"]["Maybe_Decimal"];
+            timeframe_limits?: components["schemas"]["Maybe_Array_of_TimeframeLimitPrototype"];
+            withdrawal_cooldown?: components["schemas"]["Maybe_DurationSeconds"];
+            withdrawal_max?: components["schemas"]["Maybe_Decimal"];
+            withdrawal_max_first?: components["schemas"]["Maybe_Decimal"];
+            withdrawal_min?: components["schemas"]["Maybe_Decimal"];
+            withdrawal_min_first?: components["schemas"]["Maybe_Decimal"];
         };
         /** @enum {string} */
         ListBetTypeQuery: "bet" | "win";
@@ -3214,18 +4105,28 @@ export interface components {
             wallet_id?: components["schemas"]["WalletId"] | null;
         };
         LoginRequest: {
-            /** @description The password of the user. */
+            /**
+             * @description The password of the user.
+             * @example test
+             */
             password: string;
             /**
              * Format: email
              * @description The email address of the user.
+             * @example john@doe.com
              */
             username: string;
         };
+        Maybe_Array_of_TimeframeLimitPrototype: components["schemas"]["TimeframeLimitPrototype"][] | null;
+        Maybe_Decimal: string | number | null;
+        Maybe_DurationSeconds: components["schemas"]["DurationSeconds"] | null;
         Maybe_PixKeyTypeDiscriminants: components["schemas"]["PixKeyTypeDiscriminants"] | null;
         Maybe_boolean: boolean | null;
         Maybe_string: string | null;
-        /** Format: int64 */
+        /**
+         * Format: int64
+         * @example 1
+         */
         NotificationId: number;
         NotificationParams: {
             /** @description The ID of the notification to retrieve. */
@@ -3279,6 +4180,10 @@ export interface components {
             };
         });
         NotificationTypeDiscriminants: "payment_status_update" | "kyc_completed" | "custom" | "banner" | "popup_modal";
+        PaginatorMetadata_for_ActiveFilters_and_int64: {
+            filters?: components["schemas"]["ActiveFilters"] | null;
+            pagination: components["schemas"]["PaginatorPosition_for_int64"];
+        };
         PaginatorMetadata_for_GameCategoryListQuery_and_int64: {
             filters?: components["schemas"]["GameCategoryListQuery"] | null;
             pagination: components["schemas"]["PaginatorPosition_for_int64"];
@@ -3335,6 +4240,18 @@ export interface components {
             /** Format: int64 */
             total_items: number;
         };
+        PaginatorResponse_for_AdminBetResponse_and_ActiveFilters_and_int64: {
+            data: components["schemas"]["AdminBetResponse"][];
+            metadata: components["schemas"]["PaginatorMetadata_for_ActiveFilters_and_int64"];
+        };
+        PaginatorResponse_for_AdminPaymentListResponse_and_ActiveFilters_and_int64: {
+            data: components["schemas"]["AdminPaymentListResponse"][];
+            metadata: components["schemas"]["PaginatorMetadata_for_ActiveFilters_and_int64"];
+        };
+        PaginatorResponse_for_AdminUserResponse_and_ActiveFilters_and_int64: {
+            data: components["schemas"]["AdminUserResponse"][];
+            metadata: components["schemas"]["PaginatorMetadata_for_ActiveFilters_and_int64"];
+        };
         PaginatorResponse_for_GameActionResponse_and_ListGameActionsQuery_and_int64: {
             data: components["schemas"]["GameActionResponse"][];
             metadata: components["schemas"]["PaginatorMetadata_for_ListGameActionsQuery_and_int64"];
@@ -3367,6 +4284,10 @@ export interface components {
             data: components["schemas"]["ScoredSearchResponseItem_for_SearchGameResponse"][];
             metadata: components["schemas"]["PaginatorMetadata_for_SearchQuery_and_Nullable_uint"];
         };
+        PaginatorResponse_for_SessionResponse_and_ActiveFilters_and_int64: {
+            data: components["schemas"]["SessionResponse"][];
+            metadata: components["schemas"]["PaginatorMetadata_for_ActiveFilters_and_int64"];
+        };
         PaginatorSelection: {
             /**
              * Format: uint64
@@ -3378,6 +4299,9 @@ export interface components {
              * @default 0
              */
             offset: number;
+        };
+        PatchPaymentLimitsParams: {
+            currency: components["schemas"]["Currency"];
         };
         PatchSignupFlowRequest: {
             [key: string]: unknown;
@@ -3425,11 +4349,23 @@ export interface components {
             payment: components["schemas"]["PatchUserPaymentSettingsRequest"];
             time_zone?: components["schemas"]["Maybe_string"];
         };
+        PatchUserWalletLimitsParams: {
+            wallet_id: components["schemas"]["WalletId"];
+        };
         PatchUsernameRequest: {
             /** @description The new username of the user. */
             username: string;
         };
-        /** Format: int64 */
+        PathParams: {
+            user_id: components["schemas"]["UserId"];
+        };
+        PathParams2: {
+            flow_id: components["schemas"]["PaymentFlowId"];
+        };
+        /**
+         * Format: int64
+         * @example 1
+         */
         PaymentFlowId: number;
         PaymentFlowParams: {
             /** @description The ID of the payment flow. */
@@ -3522,6 +4458,11 @@ export interface components {
              */
             waiting_for_approval: number;
         };
+        /**
+         * Format: int64
+         * @example 1
+         */
+        PaymentId: number;
         /** @enum {string} */
         PaymentLimitBound: "min" | "max";
         PaymentLimitsQuery: {
@@ -3563,7 +4504,10 @@ export interface components {
             /** @description The withdrawal limit for the timeframe. */
             withdrawal?: components["schemas"]["SystemAmount"] | null;
         };
-        /** Format: int64 */
+        /**
+         * Format: int64
+         * @example 1
+         */
         PaymentMethodId: number;
         /** @enum {string} */
         PaymentMethodIdentifier: "pix";
@@ -3630,6 +4574,9 @@ export interface components {
         };
         /** @enum {string} */
         ReadStatus: "read" | "unread";
+        RejectPaymentFlowBody: {
+            reason?: string | null;
+        };
         /** @description The response to a game search request. It only contains a limited set of
          *      information about the game. If more information is needed, the game ID can
          *      be used to fetch the full game details via the "get game" endpoint. */
@@ -3937,6 +4884,21 @@ export interface components {
             code: "INTERNAL";
             metadata: components["schemas"]["InternalError"];
         };
+        SessionResponse: {
+            country?: components["schemas"]["Country"] | null;
+            /** Format: date-time */
+            created_at: string;
+            device?: string | null;
+            /** Format: date-time */
+            expires_at: string;
+            id: components["schemas"]["AuthSessionId"];
+            /** Format: ip */
+            ip_address?: string | null;
+            /** Format: date-time */
+            last_interaction_at: string;
+            user_agent?: string | null;
+            user_id: components["schemas"]["UserId"];
+        };
         SignupFlowParams: {
             /** @description The ID of the signup flow to retrieve. */
             flow_id: string;
@@ -3989,9 +4951,14 @@ export interface components {
             /** @description The domain of the tracking service for the site. */
             tracking: components["schemas"]["SiteDomainHost"];
         };
+        /** @example example.com */
         SiteDomainHost: string;
-        /** Format: int64 */
+        /**
+         * Format: int64
+         * @example 1
+         */
         SiteId: number;
+        /** @example site_1234 */
         SiteIdentifier: string;
         /** @description Site setup response, used for dymainc frontend branding and configuration. */
         SiteResponse: {
@@ -4021,7 +4988,7 @@ export interface components {
                 [key: string]: unknown;
             };
         };
-        SystemValidationErrorCode: "data_error" | "syntax_error" | "io_error" | "malformed" | "credit_card" | "contains" | "does_not_contain" | "email" | "ip" | "length" | "must_match" | "non_control_character" | "range" | "regex" | "required" | "url" | {
+        SystemValidationErrorCode: "data_error" | "syntax_error" | "io_error" | "malformed" | "credit_card" | "contains" | "does_not_contain" | "email" | "ip" | "length" | "must_match" | "non_control_character" | "range" | "regex" | "required" | "url" | "taken" | {
             custom: string;
         };
         SystemValidationErrors: {
@@ -4063,6 +5030,12 @@ export interface components {
                 user_nickname: string;
             };
         };
+        TimeframeLimitPrototype: {
+            /** Format: int64 */
+            days: number;
+            deposit?: components["schemas"]["Maybe_Decimal"];
+            withdrawal?: components["schemas"]["Maybe_Decimal"];
+        };
         TrackerType: {
             /** @constant */
             event: "login";
@@ -4093,7 +5066,10 @@ export interface components {
                 status_counts: components["schemas"]["PaymentFlowStatusCounts"];
             };
         };
-        /** Format: int64 */
+        /**
+         * Format: int64
+         * @example 1
+         */
         UserId: number;
         UserPhysicalAddressResponse: {
             /** @description The address lines, usually containing the street address. */
@@ -4177,7 +5153,10 @@ export interface components {
             /** @description The type of the payment method. */
             payment_method_type: components["schemas"]["PaymentMethodType"];
         };
-        /** Format: int64 */
+        /**
+         * Format: int64
+         * @example 1
+         */
         WalletId: number;
         WebsocketClientEvent: {
             /** @constant */

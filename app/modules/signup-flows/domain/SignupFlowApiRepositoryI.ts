@@ -12,6 +12,6 @@ export interface SignupFlowApiRepositoryI {
     id: string,
   ): Promise<Result<SignupFlow, SignupFlowNotFound | InfrastructureError>>;
   create(): Promise<Result<string, InfrastructureError>>;
-  submit(flowId: string): Promise<EmptyResult<InfrastructureError | ErrorInvalidProfile |  ErrorAlreadyTakenCpf | ErrorAlreadyTakenTelephone | ErrorAlreadyTakenEmail>>;
+  submit(flowId: string): Promise<EmptyResult<InfrastructureError | ErrorInvalidProfile | ErrorAlreadyTakenCpf | ErrorAlreadyTakenTelephone | ErrorAlreadyTakenEmail>>;
   update(signupFlow: SignupFlow): Promise<EmptyResult<InfrastructureError>>;
 }
