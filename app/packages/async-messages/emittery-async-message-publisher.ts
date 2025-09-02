@@ -44,13 +44,15 @@ export class EmitteryAsyncMessagePublisher implements AsyncMessagePublisherI {
   }
 
   private readonly emittery: Emittery<AsyncMessagesTypes>;
-  constructor(logger: LoggerI) {
+  constructor(logger: LoggerI, env: string) {
     this.emittery = new Emittery<AsyncMessagesTypes>({ debug: { name: "async-message-publisher", logger: (type, _debugName, eventName, eventData) => {
-      if (type === "emit" && typeof eventName === "string") {
-        logger.debug(`Async message emitted`, {
-          messageName: eventName,
-          messagePayload: eventData,
-        });
+      if (env !== "production") {
+        if (type === "emit" && typeof eventName === "string") {
+          logger.debug(`Async message emitted`, {
+            messageName: eventName,
+            messagePayload: eventData,
+          });
+        }
       }
     } } });
   }

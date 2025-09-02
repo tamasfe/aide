@@ -64,7 +64,7 @@ export async function loadDependencies(
 
   const logger = new LoggerConsole(logFormat, config.log.level as "debug" | "info" | "warn" | "error", { name: config.serviceName, release: config.release }, loggerMiddlewares);
 
-  const asyncMessagePublisher = new EmitteryAsyncMessagePublisher(logger);
+  const asyncMessagePublisher = new EmitteryAsyncMessagePublisher(logger, config.env);
 
   const localeSelectionRepository = new LocaleSelectionRepositoryCookie();
   const findLocaleForUser = new FindLocaleForUser(localeSelectionRepository, i18n.getBrowserLocale);

@@ -56,6 +56,7 @@ export default defineNuxtConfig({
   // More info about runtime config & environment variables @ https://nuxt.com/docs/guide/going-further/runtime-config
   runtimeConfig: {
     public: {
+      env: process.env.NODE_ENV as "development" | "production" | "test",
       apiBaseUrlClient: process.env.NUXT_PUBLIC_API_BASE_URL_CLIENT,
       apiBaseUrlServer: process.env.NUXT_PUBLIC_API_BASE_URL_SERVER,
       genericFixedUserJurisdiction:
