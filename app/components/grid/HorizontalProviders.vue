@@ -77,8 +77,8 @@ await useAsyncData(`load-providers`, () => onLoadData().then(() => true),
         <div class="flex-1 rounded-lg overflow-hidden">
           <BaseLink
             :to="{
-              name: 'providers-identifier',
-              params: { identifier: item.identifier },
+              name: 'games-provider',
+              params: { provider: item.identifier },
             }"
           >
             <ProviderImageLoader :provider-identifier="item.identifier" />

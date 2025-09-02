@@ -72,9 +72,9 @@ await useAsyncData(`load-vertical-providers`, () => onLoadData().then(() => true
       <template #default="{ data: item }">
         <BaseLink
           :to="{
-            name: 'providers-identifier',
+            name: 'games-provider',
             params: {
-              identifier: item.identifier,
+              provider: item.identifier,
             },
           }"
           class="flex-1 rounded-lg overflow-hidden"
