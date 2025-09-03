@@ -111,7 +111,7 @@ const onSubmit = handleSubmit(async (data) => {
 </script>
 
 <template>
-  <BaseForm class="space-y-4" @submit="onSubmit">
+  <BaseForm class="space-y-2" @submit="onSubmit">
     <template #default="{ loading }">
       <BaseSelect
         :model-value="selectedKeyType"
@@ -119,7 +119,11 @@ const onSubmit = handleSubmit(async (data) => {
         size="md"
         variant="subtle"
         v-bind="keyTypeAttrs"
-        @change="selected => keyType = selected.value"
+        @update:model-value="(selected) => {
+          if (selected) {
+            keyType = selected.value
+          }
+        }"
       />
 
       <div v-if="selectedKeyType && selectedKeyType.value">

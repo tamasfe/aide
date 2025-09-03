@@ -60,20 +60,6 @@ await useAsyncData(`load-games-for-vertical-${props.categoryIdentifier}`,
       </div>
     </template>
 
-    <!--
-    (Extract from from Slack 16/10/2024) TODO in the future:
-    The base select here will allow, eventually, people to be able to sort games by:
-    - most popular
-    - name
-    - if they click a category like "blackjack" which includes multiple providers: it will also allow filtering by provider name
-
-    <template #options>
-      <div class="w-full max-w-[12rem]">
-        <BaseSelect size="sm" />
-      </div>
-    </template>
-    -->
-
     <GridVertical
       aspect-ratio="3/4"
       :columns="{ sm: 3, md: 4, lg: 6, xl: 8 }"

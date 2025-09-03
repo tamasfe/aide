@@ -10,7 +10,7 @@ defineProps({
   },
 });
 
-const onClose = () => {
+const onClosed = () => {
   $dependencies.users.ui.emitCommandCloseUserActionModal.handle();
 };
 </script>
@@ -22,14 +22,14 @@ const onClose = () => {
     :close-on-click-outside="true"
     banner="none"
     class="sm:max-w-screen-lg sm:mx-4 sm:h-[80vh]"
-    @close="onClose"
+    @update:open="v => !v && onClosed()"
   >
     <SearchBar
       v-model="query"
       :open="open"
       :loading="loading"
       input-size="lg"
-      @close="onClose"
+      @close="onClosed"
     />
 
     <transition

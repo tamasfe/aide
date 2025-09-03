@@ -28,6 +28,10 @@ const onSubmitted = () => {
   // const DELAY_TO_ALLOW_USER_TO_READ = 3000;
   // setTimeout(() => router.go(0), DELAY_TO_ALLOW_USER_TO_READ);
 };
+
+const onClosed = () => {
+  $dependencies.users.ui.emitCommandCloseUserActionModal.handle();
+};
 </script>
 
 <template>
@@ -35,7 +39,7 @@ const onSubmitted = () => {
     :disabled="false"
     :open="open"
     :logo="false"
-    @close="() => $dependencies.users.ui.emitCommandCloseUserActionModal.handle()"
+    @update:open="v => !v && onClosed()"
   >
     <KycIFrameSumsub
       v-if="props.applicantData && props.initialAccessToken"

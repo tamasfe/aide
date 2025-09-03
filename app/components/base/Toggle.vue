@@ -1,40 +1,47 @@
 <script setup lang="ts">
-import { Switch, SwitchGroup, SwitchLabel } from "@headlessui/vue";
+import { Label, SwitchRoot, SwitchThumb } from "reka-ui";
 
-const emits = defineEmits<{
-  (e: "changed", value: boolean): void;
+// Don't inherit attributes by default
+defineOptions({
+  inheritAttrs: false,
+});
+
+const props = defineProps<{
+  disabled?: boolean;
+  // Class extracts out class from $attrs which allows us the apply the class to the wrapper
+  // while still binding $attrs to the SwitchRoot component
+  class?: string;
 }>();
 
-defineProps({
-  disabled: {
-    type: Boolean,
-    required: false,
-    default: false,
-  },
-});
-
-const enabled = defineModel({
-  type: Boolean,
-  required: true,
-});
+const switchId = useId();
 </script>
 
 <template>
-  <SwitchGroup as="div" class="flex items-center justify-between">
-    <SwitchLabel
-      :class="{ 'cursor-not-allowed': disabled, 'cursor-pointer': !disabled }"
+  <div class="flex items-center justify-between" :class="props.class">
+    <Label
       class="mr-4"
+      :class="props.disabled ? 'cursor-not-allowed' : 'cursor-pointer'"
+      :for="switchId"
     >
       <slot />
-    </SwitchLabel>
-    <Switch
-      v-model="enabled"
-      :class="[enabled ? 'bg-button-emphasis' : 'bg-white/20', disabled ? 'cursor-not-allowed' : 'cursor-pointer']"
-      class="relative inline-flex h-6 w-11 shrink-0 rounded-full p-[2px] transition-colors duration-200 ease-in-out focus:outline-none focus:ring focus:ring-primary focus:ring-offset"
-      :disabled="disabled"
-      @changed="emits('changed', enabled)"
+    </Label>
+
+    <SwitchRoot
+      v-bind="$attrs"
+      :id="switchId"
+      class="relative inline-flex h-6 w-11 shrink-0 rounded-full p-[2px]
+             transition-colors duration-200 ease-in-out focus:outline-none
+             focus:ring focus:ring-primary focus:ring-offset-2
+             data-[state=checked]:bg-button-emphasis
+             data-[state=unchecked]:bg-white/20"
+      :class="props.disabled ? 'cursor-not-allowed' : 'cursor-pointer'"
     >
-      <span aria-hidden="true" :class="[enabled ? 'translate-x-5 bg-white' : 'translate-x-0 bg-white/60', 'pointer-events-none inline-block size-5 transform rounded-full  shadow ring-0 transition duration-200 ease-in-out']" />
-    </Switch>
-  </SwitchGroup>
+      <SwitchThumb
+        class="pointer-events-none inline-block size-5 transform rounded-full shadow ring-0
+               transition duration-200 ease-in-out
+               data-[state=checked]:translate-x-5 data-[state=checked]:bg-white
+               data-[state=unchecked]:translate-x-0 data-[state=unchecked]:bg-white/60"
+      />
+    </SwitchRoot>
+  </div>
 </template>

@@ -18,7 +18,7 @@ const onClosed = () => {
     id="base-modal-close-account"
     :open="open"
     :logo="false"
-    @close="onClosed"
+    @update:open="v => !v && onClosed()"
   >
     <template #title>
       {{ $t("modal_close_account.title") }}

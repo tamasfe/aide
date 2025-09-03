@@ -40,7 +40,7 @@ const onSubmit = handleSubmit(async (formData) => {
 </script>
 
 <template>
-  <BaseForm v-slot="{ loading }" class="space-y-4" @submit="onSubmit">
+  <BaseForm v-slot="{ loading }" class="space-y-2" @submit="onSubmit">
     <BaseAlert
       v-if="formErrorMessage"
       :message="formErrorMessage"

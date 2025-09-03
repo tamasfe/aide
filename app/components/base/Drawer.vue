@@ -1,129 +1,113 @@
 <script setup lang="ts">
-import {
-  Dialog,
-  DialogPanel,
-  TransitionRoot,
-  TransitionChild,
-} from "@headlessui/vue";
+import { computed } from "vue";
 import type { HTMLAttributes } from "vue";
-import { type VariantProps, cva } from "class-variance-authority";
+import { cva, type VariantProps } from "class-variance-authority";
+import {
+  DialogRoot,
+  DialogPortal,
+  DialogOverlay,
+  DialogContent,
+} from "reka-ui";
 
 // DESIGN STATUS:       ✴️
-//   * are translations actually working? there was a typo in the original code so we should test to make sure its actually correct. i see it animated but it might be sub-optimal
-//   * also check the animation for the overlay, it appears instantly, i may have broken it
-// ARCHITECTURE STATUS: ✅
-// TRANSLATION STATUS:  ✅
+//   * overlay + panel now animate properly (enter+leave) via Vue <Transition>
+// ARCHITECTURE STATUS: ✅ (no Headless UI; portal to <body>; controlled v-model)
+// TRANSLATION STATUS:  ✅ (typo-proofed transitions)
 
 const drawerVariants = cva(
-  "fixed top-0 bottom-0 h-full w-full sm:w-[300px] min-h-0",
+  "z-20 fixed inset-0 sm:w-[300px] min-h-0",
   {
     variants: {
       position: {
-        left: "left-0",
-        right: "right-0",
+        left: "sm:right-auto",
+        right: "sm:left-auto",
       },
+    },
+    defaultVariants: {
+      position: "left",
     },
   },
 );
-
 type DrawerVariants = VariantProps<typeof drawerVariants>;
 
-const positionTransitions = computed(() => ({
-  left: {
-    enter: "duration-150 ease-out",
-    enterFrom: "transform -translate-x-full",
-    enterTo: "transform translate-x-0",
-    leave: "duration-150 ease-in",
-    leaveFrom: "transform translate-x-0",
-    leaveTo: "transform -translate-x-full",
-  },
-  right: {
-    enter: "duration-150 ease-out",
-    enterFrom: "transform translate-x-full",
-    enterTo: "transform translate-x-0",
-    leave: "duration-150 ease-in",
-    leaveFrom: "transform translate-x-0",
-    leaveTo: "transform translate-x-full",
-  },
-}));
+defineOptions({ inheritAttrs: false });
 
-defineOptions({
-  inheritAttrs: false,
-});
-
-const props = withDefaults(defineProps<{
-  open: boolean;
-  position?: DrawerVariants["position"];
-  class?: HTMLAttributes["class"];
-}>(), {
-  position: "left",
-});
+const props = withDefaults(
+  defineProps<{
+    open: boolean;
+    position?: DrawerVariants["position"];
+    class?: HTMLAttributes["class"];
+  }>(),
+  { position: "left" },
+);
 
 const emit = defineEmits<{
   (e: "update:open", value: boolean): void;
 }>();
 
-const positionTransition = computed(() => {
-  const position = props.position as keyof typeof positionTransitions.value;
-  return positionTransitions.value[position];
+const open = computed({
+  get: () => props.open,
+  set: (value: boolean) => emit("update:open", value),
 });
 
 const onClose = () => {
   open.value = false;
 };
-
-const open = computed({
-  get: () => props.open,
-  set: (value) => {
-    emit("update:open", value);
-  },
-});
 </script>
 
 <template>
-  <Teleport to="body">
-    <TransitionRoot
-      appear
-      :show="open"
-      as="template"
-    >
-      <Dialog
-        open
-        as="div"
-        class="relative z-[9]"
-        @close="onClose"
-      >
-        <TransitionChild
-          as="template"
-          enter="duration-350 ease-out"
-          enter-from="opacity-0"
-          enter-to="opacity-100"
-          leave="duration-350 ease-in"
-          leave-from="opacity-100"
-          leave-to="opacity-0"
+  <DialogRoot v-model:open="open" :modal="true">
+    <DialogPortal>
+      <Transition name="overlay-fade" appear>
+        <DialogOverlay
+          class="fixed inset-0 z-20 sm:bg-black/40 sm:backdrop-blur-sm"
         >
-          <BaseOverlay />
-        </TransitionChild>
-
-        <div
-          :class="cn(
-            drawerVariants({ position }),
-            props.class,
-          )"
-        >
-          <TransitionChild
-            as="template"
-            v-bind="positionTransition"
-          >
-            <DialogPanel
-              class="bg-emphasis/85 backdrop-blur-2xl flex flex-col gap-4 h-full"
+          <Transition :name="props.position === 'left' ? 'drawer-left' : 'drawer-right'" appear>
+            <DialogContent
               v-bind="$attrs"
+              :class="cn(
+                drawerVariants({ position: props.position }),
+                'bg-emphasis flex flex-col gap-4',
+                props.class,
+              )"
             >
               <slot :close="onClose" />
-            </DialogPanel>
-          </TransitionChild>
-        </div>
-      </Dialog>
-    </TransitionRoot>
-  </Teleport>
+            </DialogContent>
+          </Transition>
+        </DialogOverlay>
+      </Transition>
+    </DialogPortal>
+  </DialogRoot>
 </template>
+
+<style>
+/* Overlay fade */
+.overlay-fade-enter-active,
+.overlay-fade-leave-active {
+  transition: opacity .35s ease;
+}
+.overlay-fade-enter-from,
+.overlay-fade-leave-to {
+  opacity: 0;
+}
+
+/* Drawer: left */
+.drawer-left-enter-active,
+.drawer-left-leave-active {
+  transition: transform .15s ease, opacity .15s ease;
+}
+.drawer-left-enter-from,
+.drawer-left-leave-to {
+  transform: translateX(-100%);
+}
+
+/* Drawer: right */
+.drawer-right-enter-active,
+.drawer-right-leave-active {
+  transition: transform .15s ease, opacity .15s ease;
+}
+.drawer-right-enter-from,
+.drawer-right-leave-to {
+  transform: translateX(100%);
+}
+</style>

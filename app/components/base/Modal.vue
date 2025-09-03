@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { DialogTitle } from "@headlessui/vue";
+import { DialogClose, DialogDescription, DialogTitle } from "reka-ui";
 import { getImage as getCloudflareImageSrc } from "~/providers/multi-site-custom-cloudflare-image-provider";
 import type { AlertProps } from "./Alert.vue";
 
@@ -35,7 +35,6 @@ const props = withDefaults(
 
 const emit = defineEmits<{
   (e: "update:open", value: boolean): void;
-  (e: "close"): void;
 }>();
 
 const open = computed({
@@ -84,7 +83,6 @@ if (preloadBannerLinks.length > 0) {
       'p-0',
       { 'lg:max-w-max': banner === 'left' }, // for lg screensize with left banner, let content size handle the width
     )"
-    @close="emit('close')"
   >
     <template #default="{ close }">
       <div
@@ -98,14 +96,19 @@ if (preloadBannerLinks.length > 0) {
           <DialogTitle is="h2" v-if="$slots.title" class="text-xl leading-snug">
             <slot name="title" />
           </DialogTitle>
-          <h3 v-if="$slots.subtitle" class="text-subtle text-sm leading-snug"><slot name="subtitle" /></h3>
+          <DialogDescription v-if="$slots.subtitle" class="text-subtle text-sm leading-snug">
+            <slot name="subtitle" />
+          </DialogDescription>
         </div>
-        <BaseClose
-          v-if="!unclosable"
-          class="-mr-5"
-          :disabled="disabled"
-          @close="() => close(true)"
-        />
+        <DialogClose v-if="!unclosable" class="-mr-5 p-3 aspect-square h-full text-subtle hover:text-emphasis z-[10] rounded-lg transition-colors duration-200 focus:outline-none">
+          <span class="sr-only">{{ $t('i18n.close') }}</span>
+          <div class="aspect-square bg-subtle/80 rounded backdrop-blur h-full flex items-center justify-center">
+            <BaseIcon
+              name="lucide:x"
+              :size="20"
+            />
+          </div>
+        </DialogClose>
       </div>
 
       <div
@@ -155,13 +158,13 @@ if (preloadBannerLinks.length > 0) {
             <slot name="title" />
           </DialogTitle>
           <h3 v-if="$slots.subtitle" class="text-subtle text-sm leading-snug"><slot name="subtitle" /></h3>
-          <section
+          <DialogDescription
             :class="{
               'pt-4': $slots.title || $slots.subtitle,
             }"
           >
             <slot />
-          </section>
+          </DialogDescription>
         </div>
       </div>
 

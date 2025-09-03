@@ -69,7 +69,7 @@ defineProps<{
     banner="top"
     :banner-top="siteStore.getRelativeAssetPath('banners/deposit_horizontal.jpg')"
     :alert="alert"
-    @close="onClosed"
+    @update:open="v => !v && onClosed()"
   >
     <template #title>
       {{ $t('modal_payments.make_deposit') }}

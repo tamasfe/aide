@@ -1,7 +1,11 @@
 import type { Config } from "tailwindcss";
 
 export default <Partial<Config>>{
-  content: ["./app/**/*.vue", "./app/constants/**/*.ts", "./app/assets/**/*.css",],
+  content: [
+    "./app/**/*.vue",
+    "./app/constants/**/*.ts",
+    "./app/assets/**/*.css",
+  ],
   theme: {
     fontSize: {
       base: "0.875rem",
@@ -105,10 +109,30 @@ export default <Partial<Config>>{
       screens: {
         xs: "400px",
       },
+      keyframes: {
+        dialogOverlayShow: {
+          from: { opacity: "0" },
+          to: { opacity: "1" },
+        },
+        dialogOverlayHide: {
+          from: { opacity: "1" },
+          to: { opacity: "0" },
+        },
+        dialogContentShow: {
+          from: { opacity: "0", transform: "translateY(-4rem) scale(0.96)" },
+          to: { opacity: "1", transform: "translateY(0rem) scale(1)" },
+        },
+        dialogContentHide: {
+          from: { opacity: "1", transform: "translateY(0rem) scale(1)" },
+          to: { opacity: "0", transform: "translateY(-4rem) scale(0.96)" },
+        },
+      },
+      animation: {
+        dialogOverlayShow: "dialogOverlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1)",
+        dialogOverlayHide: "dialogOverlayHide 150ms cubic-bezier(0.16, 1, 0.3, 1)",
+        dialogContentShow: "dialogContentShow 150ms cubic-bezier(0.16, 1, 0.3, 1)",
+        dialogContentHide: "dialogContentHide 150ms cubic-bezier(0.16, 1, 0.3, 1)",
+      },
     },
   },
-  variants: {
-    extend: {},
-  },
-  plugins: [],
 };

@@ -10,8 +10,7 @@ useHead({
 const currentTab = ref("lobby");
 const menuTabs = ref([
   { value: "lobby", iconName: "lucide:home", label: t(`home_page.category_tabs.lobby`) },
-  { value: "hot", iconName: "lucide:flame", label: t(`category.hot`) },
-  // { value: "crash", iconName: "lucide:crosshair", label: t(`category.crash`) },
+  { value: "featured", iconName: "lucide:coins", label: t(`category.featured`) },
   { value: "table", iconName: "lucide:files", label: t(`category.table`) },
   { value: "live", iconName: "lucide:users", label: t(`category.live`) },
 ]);
@@ -25,7 +24,7 @@ const queryGameCategories = async () => $dependencies.games.ui.searchGameCategor
       <WinningNowTicker />
 
       <Tabs v-model="currentTab" class="relative space-y-[var(--giro-section-gap-sm)] md:space-y-[var(--giro-section-gap-lg)]">
-        <TabsList :sticky-on-mobile="true">
+        <TabsList :sticky-on-mobile="true" class="md:hidden">
           <TabsTrigger
             v-for="tab in menuTabs"
             :key="tab.value"
@@ -36,11 +35,24 @@ const queryGameCategories = async () => $dependencies.games.ui.searchGameCategor
             <BaseIcon :name="tab.iconName" :size="14" />
             <span>{{ toSentenceCase(tab.label) }}</span>
           </TabsTrigger>
-
-          <template #suffix>
-            <SearchPopover class="hidden md:block w-full" />
-          </template>
         </TabsList>
+
+        <SearchPopover class="hidden md:flex items-stretch w-full">
+          <template #prefix>
+            <TabsList :sticky-on-mobile="true">
+              <TabsTrigger
+                v-for="tab in menuTabs"
+                :key="tab.value"
+                :is-active="tab.value === currentTab"
+                :value="tab.value"
+                class="space-x-2"
+              >
+                <BaseIcon :name="tab.iconName" :size="14" />
+                <span>{{ toSentenceCase(tab.label) }}</span>
+              </TabsTrigger>
+            </TabsList>
+          </template>
+        </SearchPopover>
 
         <TabsContent value="lobby" class="giro__sections">
           <UseAsyncData

@@ -9,6 +9,7 @@ defineProps<{
 const loading = ref(false);
 const siteStore = useSiteStore();
 const { $dependencies } = useNuxtApp();
+
 const onClosed = () => {
   $dependencies.users.ui.emitCommandCloseUserActionModal.handle();
 };
@@ -22,7 +23,7 @@ const onClosed = () => {
     banner="left"
     :banner-left="siteStore.getRelativeAssetPath('banners/login_vertical.png')"
     :banner-top="siteStore.getRelativeAssetPath('banners/login_horizontal.png')"
-    @close="onClosed"
+    @update:open="v => !v && onClosed()"
   >
     <FormLogin />
   </BaseModal>

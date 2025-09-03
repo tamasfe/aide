@@ -179,15 +179,6 @@ const [value, modifiers] = defineModel<number | string>({
           @input="(event) => emits('input', event)"
           @change="(event) => emits('change', event)"
         />
-        <!-- <BaseSelect
-          v-else-if="fieldType === 'select'"
-          v-model="value"
-          v-bind="$attrs"
-          :required="required"
-          :placeholder="fieldPlaceholder"
-          :class="fieldClass"
-          @change="(event) => { $emit('change', event.value); $emit('input', event.value); }"
-        /> -->
 
         <div
           v-if="errorPlacement === 'floating' && errorMessage"

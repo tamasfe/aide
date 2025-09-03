@@ -1,65 +1,30 @@
 <script setup lang="ts">
-import {
-  Dialog,
-  DialogPanel,
-  TransitionRoot,
-  TransitionChild,
-} from "@headlessui/vue";
+import { computed } from "vue";
 import type { HTMLAttributes } from "vue";
-import { type VariantProps, cva } from "class-variance-authority";
-
-// DESIGN STATUS:       ✅
-// ARCHITECTURE STATUS: ✴️
-//   * refactor out the 'frosted' background to tailwind so our drawer (and anywhere else its used) can also use it
-//   * i dont think the "leave" animations are working properly. i dont WANT animation on close (i like instant) but the component should work still properly
-//   * make sure we are doing everything top notch according to docs.. i notice some components are not structured like the examples https://headlessui.com/v1/vue/dialog
-//   * TODO: make sure "close" is actually emitted by headliess UI so we arent emitting things we dont 100% expect to be true
-//   * TODO: make teleport to body work
-// TRANSLATION STATUS:  ✅
+import { cva, type VariantProps } from "class-variance-authority";
+import {
+  DialogRoot,
+  DialogPortal,
+  DialogOverlay,
+  DialogContent,
+} from "reka-ui";
 
 const dialogVariants = cva(
-  [
-    "z-[10] overflow-y-scroll no-scrollbar outline outline-emphasis/50",
-  ],
+  ["z-20 fixed sm:block inset-0 sm:inset-auto sm:max-h-[calc(100vh-2rem)] overflow-y-scroll no-scrollbar outline outline-emphasis/50 relative"],
   {
     variants: {
-      variant: {
-        frosted: "bg-emphasis/85 backdrop-blur-2xl",
-      },
+      variant: { default: "bg-emphasis" },
       size: {
-        md: "p-5 w-full h-full sm:max-w-[var(--giro-modal-default-max-width)] sm:h-auto sm:max-h-[95vh] sm:rounded-lg",
+        md: "p-5 w-full sm:max-w-[var(--giro-modal-default-max-width)] sm:rounded-lg",
       },
     },
-    defaultVariants: {
-      variant: "frosted",
-      size: "md",
-    },
+    defaultVariants: { variant: "default", size: "md" },
   },
 );
 
 type DialogVariants = VariantProps<typeof dialogVariants>;
 
-const overlayTransition = ref({
-  enter: "duration-150 ease-out",
-  enterFrom: "opacity-0",
-  enterTo: "opacity-100",
-  leave: "duration-[50ms] ease-in",
-  leaveFrom: "opacity-100",
-  leaveTo: "opacity-0",
-});
-
-const panelTransition = ref({
-  enter: "duration-150 ease-out",
-  enterFrom: "opacity-0 scale-95",
-  enterTo: "opacity-100 scale-100",
-  leave: "duration-[75ms] ease-in",
-  leaveFrom: "opacity-100 scale-100",
-  leaveTo: "opacity-0 scale-95",
-});
-
-defineOptions({
-  inheritAttrs: false,
-});
+defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(
   defineProps<{
@@ -70,65 +35,63 @@ const props = withDefaults(
     closeOnClickOutside?: boolean;
     class?: HTMLAttributes["class"];
   }>(),
-  {
-    disabled: false,
-    closeOnClickOutside: true,
-  },
+  { disabled: false, closeOnClickOutside: true },
 );
 
-const emit = defineEmits<{
-  (e: "update:open", value: boolean): void;
-  (e: "close"): void;
-}>();
+const emit = defineEmits<{ (e: "update:open", value: boolean): void }>();
 
 const open = computed({
   get: () => props.open,
-  set: (value) => {
-    emit("update:open", value);
-  },
+  set: (v: boolean) => emit("update:open", v),
 });
 
-const onClose = (force: boolean) => {
-  if (props.disabled) {
-    return;
-  }
-  if (props.closeOnClickOutside || force) {
-    open.value = false;
-    emit("close");
-  }
+const onClose = (force = false) => {
+  if (props.disabled) return;
+  if (props.closeOnClickOutside || force) open.value = false;
 };
 </script>
 
 <template>
-  <TransitionRoot
-    appear
-    :show="open"
-    as="template"
-  >
-    <Dialog
-      open
-      as="div"
-      class="fixed inset-0 z-[10] flex items-center justify-center w-full h-full"
-      @close="() => onClose(false)"
-    >
-      <TransitionChild
-        as="template"
-        v-bind="overlayTransition"
-      >
-        <BaseOverlay />
-      </TransitionChild>
-
-      <TransitionChild
-        as="template"
-        v-bind="panelTransition"
-      >
-        <DialogPanel
-          v-bind="$attrs"
-          :class="cn(dialogVariants({ variant, size }), props.class)"
+  <DialogRoot v-model:open="open" :modal="true">
+    <DialogPortal>
+      <Transition name="overlay-fade" appear>
+        <DialogOverlay
+          class="fixed inset-0 z-20 sm:bg-black/40 sm:backdrop-blur-sm flex items-center justify-center sm:p-6"
         >
-          <slot :close="onClose" />
-        </DialogPanel>
-      </TransitionChild>
-    </Dialog>
-  </TransitionRoot>
+          <Transition name="content-pop" appear>
+            <DialogContent
+              :class="cn(dialogVariants({ variant, size }), props.class)"
+            >
+              <slot :close="onClose" />
+            </DialogContent>
+          </Transition>
+        </DialogOverlay>
+      </Transition>
+    </DialogPortal>
+  </DialogRoot>
 </template>
+
+<style>
+/* Overlay fade in/out */
+.overlay-fade-enter-active,
+.overlay-fade-leave-active {
+  transition: opacity .18s ease;
+}
+.overlay-fade-enter-from,
+.overlay-fade-leave-to {
+  opacity: 0;
+}
+
+/* Content scale+fade in/out */
+.content-pop-enter-active,
+.content-pop-leave-active {
+  transition:
+    opacity .20s cubic-bezier(.16,1,.3,1),
+    transform .20s cubic-bezier(.16,1,.3,1);
+}
+.content-pop-enter-from,
+.content-pop-leave-to {
+  opacity: 0;
+  transform: translateY(-6rem) scale(0.98);
+}
+</style>

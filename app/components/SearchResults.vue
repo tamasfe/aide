@@ -76,7 +76,7 @@ const noResults = computed(() => games.value.length === 0 && providers.value.len
 
 // 2 alternate methods if ever needed
 // watch(() => query, useThrottleFn(onQueryChange, 150, true, true, true), { immediate: true });
-debouncedWatch(() => query, onQueryChange, { debounce: 150, immediate: true });
+debouncedWatch(() => query, onQueryChange, { debounce: 200, immediate: true });
 
 const onClickLink = () => {
   $dependencies.users.ui.emitCommandCloseUserActionModal.handle();
@@ -91,7 +91,6 @@ const onClickLink = () => {
       :items="games"
       :total-results="gamesTotalItems"
       :on-load-more="() => gamesOnLoadMore('append')"
-      :loading="gamesLoading"
     >
       <template #default="{ item: game }">
         <GameImageLink
@@ -109,7 +108,6 @@ const onClickLink = () => {
       :items="providers"
       :total-results="providersTotalItems"
       :on-load-more="() => providersOnLoadMore('append')"
-      :loading="providersLoading"
     >
       <template #default="{ item: item }">
         <GamePageLink

@@ -39,14 +39,13 @@ const onSubmit = async () => {
 </script>
 
 <template>
-  <BaseForm v-if="userSettings.settings" class="space-y-4" @submit="onSubmit">
+  <BaseForm v-if="userSettings.settings" class="space-y-2" @submit="onSubmit">
     <template #default="{ loading }">
       <BaseSelect
         v-model="selectedLanguage"
         :options="SUPPORTED_LANGUAGES_OPTIONS"
         size="md"
         variant="subtle"
-        @change="value => selectedLanguage = value"
       >
         <template #selected="{ selected }">
           <BaseFlag

@@ -36,7 +36,7 @@ const items = [
 
 <template>
   <div
-    class="h-14 fixed z-[10] sm:hidden bottom-0 left-0 right-0 bg-subtle/95 text-subtle pb-[env(safe-area-inset-bottom)] backdrop-blur-2xl"
+    class="h-14 fixed z-10 sm:hidden bottom-0 left-0 right-0 bg-subtle text-subtle pb-[env(safe-area-inset-bottom)]"
   >
     <div class="w-full grid items-center h-full" :style="{ gridTemplateColumns: 'repeat(' + (items.length + 1) + ', 1fr)' }">
       <BaseButton

@@ -53,12 +53,7 @@ await useAsyncData(`load-vertical-providers`, () => onLoadData().then(() => true
       </div>
     </template>
 
-    <template #options>
-      <!-- TODO: allow options for search
-      <div class="w-full max-w-[12rem]">
-        <BaseSelect size="sm" />
-      </div> -->
-    </template>
+    <template #options />
     <GridVertical
       aspect-ratio="8/3"
       :columns="{ sm: 2, md: 2, lg: 3, xl: 4 }"

@@ -1,27 +1,29 @@
 <script setup lang="ts" generic="T extends {
-  id?: string;
-  value: string;
-  title: string;
-  disabled?: boolean;
+  id?: string
+  value: string
+  title: string
+  disabled?: boolean
 }"
 >
+import { ref } from "vue";
 import type { HTMLAttributes } from "vue";
-import { type VariantProps, cva } from "class-variance-authority";
+import { cva, type VariantProps } from "class-variance-authority";
 import {
-  Listbox,
-  ListboxButton,
-  ListboxOptions,
-  ListboxOption,
-} from "@headlessui/vue";
-
-// DESIGN STATUS: ✴️
-//   * dropdown width must match input width - currently AppFooter has to put a wrapper around the select to define the input widths... this is very ugly and it would be nice of the width specified on the container worked to the options. not sure which way is cleanest though. i think a width prop is kind of ugly, but i also think using JS to detect the size of the input is way uglier. and a wrapper is also ugly. wrapper seems LEAST ugly for now
-//   * md must handle floating labels and all the other stuff
-//   * needs to handle :disabled (and also logic) disabled:opacity-70 (THIS MUTCH MATCH md:baseInput in forms)
-//   * needs to handle placeholder (THIS MUTCH MATCH md:baseInput in forms)
+  SelectRoot,
+  SelectTrigger,
+  SelectContent,
+  SelectViewport,
+  SelectItem,
+  SelectItemText,
+  SelectItemIndicator,
+  SelectIcon,
+  SelectValue,
+  SelectPortal,
+  SelectScrollDownButton,
+} from "reka-ui";
 
 const selectVariants = cva(
-  "flex flex-row items-center justify-start relative w-full cursor-pointer focus-visible:outline-none",
+  "flex flex-row items-center justify-start relative w-full",
   {
     variants: {
       variant: {
@@ -34,140 +36,139 @@ const selectVariants = cva(
         md: "h-[var(--giro-field-height)] px-4 text-base rounded",
       },
     },
-    defaultVariants: {
-      variant: "primary",
-      size: "md",
-    },
+    defaultVariants: { variant: "primary", size: "md" },
   },
 );
 type SelectVariants = VariantProps<typeof selectVariants>;
-type OptionsOffset = {
-  right?: number;
-  left?: number;
-  top?: number;
-  bottom?: number;
-};
 
-const emit = defineEmits<{
-  (e: "change", value: T): void;
-}>();
+type OptionsOffset = { right?: number; left?: number; top?: number; bottom?: number };
 
-const props = withDefaults(
-  defineProps<{
-    options: T[];
-    // initialSelectedOption?: T;
-    variant?: SelectVariants["variant"];
-    size?: SelectVariants["size"];
-    optionsOffset?: OptionsOffset;
-    required?: boolean;
-    disabled?: boolean;
-    class?: HTMLAttributes["class"];
-    containerClass?: HTMLAttributes["class"];
-  }>(), {
-    variant: "primary",
-    size: "md",
-    required: false,
-    disabled: false,
-  },
-);
+const emit = defineEmits<{ (e: "change", value: T): void }>();
+
+const props = withDefaults(defineProps<{
+  options: T[];
+  variant?: SelectVariants["variant"];
+  size?: SelectVariants["size"];
+  optionsOffset?: OptionsOffset;
+  required?: boolean;
+  disabled?: boolean;
+  class?: HTMLAttributes["class"];
+  containerClass?: HTMLAttributes["class"];
+  placeholder?: string;
+}>(), {
+  variant: "primary",
+  size: "md",
+  required: false,
+  disabled: false,
+  placeholder: "",
+});
 
 const selectedOption = defineModel<T | undefined>();
 
-const optionsOffset = computed(() => {
-  if (!props.optionsOffset) return {};
-  return Object.entries(props.optionsOffset).reduce((acc, [key, value]) => {
-    return {
-      ...acc,
-      [key]: `${value}px`,
-    };
-  }, {} as OptionsOffset);
-});
+// Reka Select supports object values; compare by "value" field so v-model works with T
+const by = "value" as const; // or (a,b)=>a?.value===b?.value
 
-const onUpdateModelValue = (event: T) => {
-  if (selectedOption.value?.value !== event.value) {
-    selectedOption.value = event;
-    emit("change", event);
+// Open state to flip the chevron
+const open = ref(false);
+
+const onUpdateModelValue = (value: T | undefined) => {
+  if (!value) return;
+  if (selectedOption.value?.value !== value.value) {
+    selectedOption.value = value;
+    emit("change", value);
   }
 };
 </script>
 
 <template>
-  <Listbox
-    v-slot="{ open }"
-    :model-value="selectedOption"
-    :class="cn(
-      'w-full',
-      containerClass,
-    )"
-    @update:model-value="(event) => onUpdateModelValue(event)"
-  >
-    <div class="relative">
-      <ListboxButton
+  <div>
+    <SelectRoot
+      v-model="selectedOption"
+      v-model:open="open"
+      :by="by"
+      :required="required"
+      :disabled="disabled"
+      @update:model-value="onUpdateModelValue"
+    >
+      <SelectTrigger
+        :disabled="disabled"
         :class="cn(
           selectVariants({ variant, size }),
+          disabled ? 'opacity-70 cursor-not-allowed' : 'cursor-pointer',
+          'gap-2 relative',
           props.class,
-          'flex items-center gap-2',
+          open ? 'rounded-b-none' : 'rounded-b',
         )"
       >
-        <slot
-          v-if="$slots.selected"
-          name="selected"
-          v-bind="{ selected: selectedOption }"
-        />
-        <span
-          v-else
-          class="min-w-3 block whitespace-nowrap truncate font-medium text-left"
-        >
-          {{ selectedOption?.title || '' }}
-        </span>
-        <span class="pointer-events-none flex items-center ml-auto">
+        <template v-if="$slots.selected">
+          <slot name="selected" :selected="selectedOption" />
+        </template>
+
+        <SelectValue v-else class="min-w-3 block whitespace-nowrap truncate font-medium text-left" />
+
+        <SelectIcon as-child>
           <BaseIcon
             :name="open ? 'lucide:chevron-up' : 'lucide:chevron-down'"
-            :size="20"
-            class="text-subtle"
+            :size="18"
+            class="text-subtle ml-auto"
           />
-        </span>
-      </ListboxButton>
+        </SelectIcon>
+      </SelectTrigger>
 
-      <Transition
-        :duration="50"
-        leave-active-class="transition ease-in"
-        leave-from-class="opacity-100"
-        leave-to-class="opacity-0"
-      >
-        <ListboxOptions
-          class="absolute z-[1] mt-1 min-w-full w-max text-sm text-subtle overflow-auto bg-emphasis rounded focus-visible:outline-none"
-          :style="optionsOffset"
+      <SelectPortal>
+        <SelectContent
+          position="popper"
+          position-strategy="absolute"
+          class="rounded-b bg-emphasis text-sm text-subtle w-[var(--reka-popper-anchor-width)]
+                   focus-visible:outline-none overflow-hidden border border-muted/5 shadow-xl z-30"
         >
-          <ListboxOption
-            v-for="option in options"
-            v-slot="{ active, selected }"
-            :key="option.id || option.title"
-            :value="option"
-            as="template"
-          >
-            <li
-              :class="cn(
-                'cursor-pointer select-none h-8 px-3 flex items-center w-full',
-                active && 'bg-button-secondary-hover text-subtle-light',
-                selected && 'bg-button-secondary-hover font-semibold text-emphasis',
-              )"
+          <SelectViewport class="asdfasdf">
+            <SelectItem
+              v-for="option in options"
+              :key="option.id ?? option.value"
+              :value="option"
+              :text-value="option.title"
+              :disabled="!!option.disabled"
+              class="cursor-pointer select-none h-8 px-3 flex items-center gap-3 w-full
+                       data-[highlighted]:outline-none
+                       data-[highlighted]:bg-button-secondary-hover
+                       data-[highlighted]:text-subtle-light
+                       data-[state=checked]:bg-button-secondary-hover
+                       data-[state=checked]:font-semibold
+                       data-[state=checked]:text-emphasis"
             >
-              <slot
-                v-if="$slots.option"
-                name="option"
-                v-bind="{ option }"
-              />
-              <span
-                v-else
-                class="block font-medium truncate"
-              >
+              <SelectItemText v-if="$slots.option">
+                <slot name="option" :option="option" />
+              </SelectItemText>
+              <SelectItemText v-else class="block font-medium truncate">
                 {{ option.title }}
-              </span>
-            </li>
-          </ListboxOption>
-        </ListboxOptions>
-      </Transition>
-    </div>
-  </Listbox>
+              </SelectItemText>
+              <SelectItemIndicator class="ml-auto">
+                <BaseIcon
+                  name="lucide:check"
+                  :size="14"
+                  class="text-inherit"
+                />
+              </SelectItemIndicator>
+            </SelectItem>
+          </SelectViewport>
+          <SelectScrollDownButton class="flex items-center justify-center h-[25px] bg-white text-violet11 cursor-default">
+            <BaseIcon name="lucide:chevron-down" :size="14" />
+          </SelectScrollDownButton>
+        </SelectContent>
+      </SelectPortal>
+    </SelectRoot>
+  </div>
 </template>
+
+<style>
+/* Simple appear/leave animation via Vue <Transition> (works per Reka guide) */
+.select-fade-enter-active,
+.select-fade-leave-active {
+  transition: opacity .16s ease;
+}
+.select-fade-enter-from,
+.select-fade-leave-to {
+  opacity: 0;
+}
+</style>

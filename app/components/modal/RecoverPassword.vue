@@ -19,7 +19,7 @@ const onClosed = () => {
     banner="left"
     :banner-left="siteStore.getRelativeAssetPath('banners/login_vertical.png')"
     :banner-top="siteStore.getRelativeAssetPath('banners/login_horizontal.png')"
-    @close="onClosed"
+    @update:open="v => !v && onClosed()"
   >
     <FormRecoverPassword :token="token" />
   </BaseModal>

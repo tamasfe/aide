@@ -49,7 +49,7 @@ const currency = ref<{
     :logo="false"
     banner="top"
     :banner-top="siteStore.getRelativeAssetPath('banners/withdrawal_horizontal.jpg')"
-    @close="onClosed"
+    @update:open="v => !v && onClosed()"
   >
     <template #title>
       {{ $t('modal_payments.make_withdrawal') }}

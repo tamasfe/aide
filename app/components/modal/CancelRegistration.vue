@@ -21,7 +21,7 @@ const onClosed = () => {
     :logo="false"
     banner="top"
     :banner-top="siteStore.getRelativeAssetPath('banners/cancel_registration.jpg')"
-    @close="onClosed"
+    @update:open="v => !v && onClosed()"
   >
     <template #title>
       {{ $t("modal_cancel_registration.title") }}

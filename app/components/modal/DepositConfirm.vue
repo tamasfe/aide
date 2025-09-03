@@ -38,7 +38,7 @@ const createNewDeposit = async () => {
     :logo="false"
     banner="top"
     :banner-top="siteStore.getRelativeAssetPath('banners/deposit_horizontal.jpg')"
-    @close="onClosed"
+    @update:open="v => !v && onClosed()"
   >
     <FormDepositConfirm
       v-if="payment"

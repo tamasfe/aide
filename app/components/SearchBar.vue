@@ -6,10 +6,15 @@ withDefaults(defineProps<{
   loading?: boolean;
   open?: boolean;
   inputSize?: "md" | "lg" | "ghost";
+  onClear?: () => void;
 }>(), {
   loading: false,
   open: false,
 });
+
+const emit = defineEmits<{
+  (e: "clear"): void;
+}>();
 
 // this needs to hide/show close button
 const query = defineModel({
@@ -17,13 +22,9 @@ const query = defineModel({
   required: true,
 });
 
-const emit = defineEmits<{
-  (e: "focus" | "close"): void;
-}>();
-
-const onClickCloseButton = () => {
-  emit("close");
+const onClickClearButton = () => {
   query.value = "";
+  emit("clear");
 };
 </script>
 
@@ -37,7 +38,6 @@ const onClickCloseButton = () => {
     placeholder-placement="default"
     error-placement="below"
     :input-size="inputSize"
-    @focus="emit('focus')"
   >
     <template #prefix>
       <div class="mr-4 flex justify-center items-center">
@@ -62,7 +62,7 @@ const onClickCloseButton = () => {
           variant="ghost"
           size="ghost"
           class="p-1"
-          @click="onClickCloseButton"
+          @click="onClickClearButton"
         >
           <BaseIcon
             name="lucide:x"

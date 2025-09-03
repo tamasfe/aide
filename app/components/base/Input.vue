@@ -59,6 +59,7 @@ const [value, modifiers] = defineModel<string | number>({
 
 <template>
   <input
+    v-bind="$attrs"
     v-model="value"
     v-maska="mask"
     :data-maska-eager="maskBehaviourEager ?? false"

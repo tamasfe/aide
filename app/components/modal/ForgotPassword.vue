@@ -20,7 +20,7 @@ const onClosed = () => {
     :open="open"
     :disabled="loading"
     banner="none"
-    @close="onClosed"
+    @update:open="v => !v && onClosed()"
   >
     <FormForgotPassword />
   </BaseModal>

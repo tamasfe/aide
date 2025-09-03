@@ -6,7 +6,8 @@ const supportedTimeZoneOptions = Intl.supportedValuesOf("timeZone").map(timeZone
   value: timeZone,
   title: timeZone,
 }));
-const selectedTimezone = ref(supportedTimeZoneOptions.find(supportedTimeZone => supportedTimeZone.value === userSettings.settings?.timeZone));
+
+const selectedTimezone = ref(supportedTimeZoneOptions.find(supportedTimeZone => supportedTimeZone.value === userSettings.settings?.timeZone)?.value);
 
 const onSubmit = async () => {
   if (!selectedTimezone.value || !userSettings.settings) {
@@ -17,8 +18,8 @@ const onSubmit = async () => {
    * if there an error: we will be notified with the error logger.
    * This way the user can see the changes immediately.
    */
-  userSettings.settings.timeZone = selectedTimezone.value.value;
-  $dependencies.users.ui.userSettings.updateSettingsOnForm.handle({ timeZone: selectedTimezone.value.value });
+  userSettings.settings.timeZone = selectedTimezone.value;
+  $dependencies.users.ui.userSettings.updateSettingsOnForm.handle({ timeZone: selectedTimezone.value });
   $dependencies.users.ui.emitCommandCloseUserActionModal.handle();
 };
 
@@ -27,21 +28,16 @@ const onSubmit = async () => {
  * Combobox
  *
  */
-const query = ref("");
 const filteredOptions = computed(() => {
-  if (query.value === "") {
-    return supportedTimeZoneOptions;
-  }
-  return supportedTimeZoneOptions.filter(option => option.value.toLowerCase().includes(query.value.toLowerCase()));
+  return supportedTimeZoneOptions;
 });
 </script>
 
 <template>
-  <BaseForm v-if="userSettings.settings" class="space-y-4" @submit="onSubmit">
+  <BaseForm v-if="userSettings.settings" @submit="onSubmit">
     <template #default="{ loading }">
       <BaseCombobox
-        v-model:selected="selectedTimezone"
-        v-model:query="query"
+        v-model="selectedTimezone"
         :options="filteredOptions"
       />
 

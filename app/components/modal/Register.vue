@@ -24,11 +24,10 @@ const onClosed = () => {
 <template>
   <BaseModal
     :open="open"
-    :close-on-click-outside="false"
     banner="left"
     :banner-left="siteStore.getRelativeAssetPath('banners/register_vertical.png')"
     :banner-top="siteStore.getRelativeAssetPath('banners/register_horizontal.png')"
-    @close="onClosed"
+    @update:open="v => !v && onClosed()"
   >
     <FormRegister
       :email="currentStartedSignupFlow?.email || ''"

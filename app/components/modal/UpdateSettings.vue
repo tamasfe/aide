@@ -18,7 +18,9 @@ defineProps({
 const { $dependencies } = useNuxtApp();
 const userSettingsStore = useUserSettingsStore();
 const userStore = useUserStore();
-const onClosed = () => $dependencies.users.ui.emitCommandCloseUserActionModal.handle();
+const onClosed = () => {
+  $dependencies.users.ui.emitCommandCloseUserActionModal.handle();
+};
 </script>
 
 <template>
@@ -26,7 +28,7 @@ const onClosed = () => $dependencies.users.ui.emitCommandCloseUserActionModal.ha
     id="base-modal-update-settings"
     :open="open"
     :logo="false"
-    @close="onClosed"
+    @update:open="v => !v && onClosed()"
   >
     <template #title>
       <span v-if="setting === 'username'">

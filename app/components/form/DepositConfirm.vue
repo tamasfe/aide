@@ -39,7 +39,7 @@ const onClickGenerateNewCode = async () => {
 </script>
 
 <template>
-  <BaseForm class="gap-4 items-center">
+  <BaseForm class="space-y-2">
     <div class="w-full flex gap-4 flex-row items-center justify-between mb-4">
       <BaseButton type="button" variant="subtle" @click="$dependencies.users.ui.emitCommandOpenUserActionModal.handle('deposit')">
         <BaseIcon

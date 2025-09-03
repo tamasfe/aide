@@ -62,7 +62,7 @@ watchDeep(() => promotionsPreferences.value,
         class="mb-2"
       />
       <div class="w-full lg:max-w-72">
-        <div v-if="promotionsPreferences" class="space-y-8">
+        <div v-if="promotionsPreferences" class="space-y-4">
           <BaseToggle v-model="promotionsPreferences.email">
             <p>{{ $t("dashboard.settings.preferences.bonuses_by_email") }}</p>
           </BaseToggle>

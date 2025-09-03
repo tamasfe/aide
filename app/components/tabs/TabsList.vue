@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { type HTMLAttributes, computed } from "vue";
-import { TabsList, type TabsListProps } from "radix-vue";
+import { TabsList, type TabsListProps } from "reka-ui";
 
 const props = defineProps<TabsListProps & {
   class?: HTMLAttributes["class"];
@@ -18,16 +18,16 @@ const delegatedProps = computed(() => {
   <TabsList
     :class="cn(
       'w-full flex items-center space-x-6',
-      stickyOnMobile === true ? 'sticky md:static z-[8] top-[60px]' : 'static',
+      stickyOnMobile === true ? 'sticky md:static z-[5] top-[60px]' : 'static',
     )"
   >
     <div
-      class="w-full px-1.5 flex rounded bg-button-secondary"
+      class="w-full h-full px-1.5 flex rounded bg-button-secondary"
     >
       <div
         v-bind="delegatedProps"
         :class="cn(
-          'py-1.5 w-full flex items-center justify-between justify space-x-2 overflow-x-auto md:overflow-x-hidden',
+          'py-1.5 w-full h-full flex items-center justify-between justify space-x-2 overflow-x-auto md:overflow-x-hidden',
           props.class,
         )"
       >
