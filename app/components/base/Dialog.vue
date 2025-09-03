@@ -10,7 +10,7 @@ import {
 } from "reka-ui";
 
 const dialogVariants = cva(
-  ["z-20 fixed sm:block inset-0 sm:inset-auto sm:max-h-[calc(100vh-2rem)] overflow-y-scroll no-scrollbar outline outline-emphasis/50 relative"],
+  ["z-20 h-full sm:h-auto absolute sm:block inset-0 sm:inset-auto sm:max-h-[calc(100vh-2rem)] overflow-y-scroll no-scrollbar outline outline-emphasis/50 relative"],
   {
     variants: {
       variant: { default: "bg-emphasis" },
