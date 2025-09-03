@@ -29,16 +29,16 @@ class ErrorSharing extends AbstractExtendedError {
   override name = "ErrorSharing" as const;
 
   // Possible share error types and their descriptions: @https://developer.mozilla.org/en-US/docs/Web/API/Navigator/share
-  public type: string
+  public type: string;
 
   constructor(metadata: Record<string, unknown>, error: unknown) {
     super("Error sharing the content", metadata, AbstractExtendedError.parseCause(error));
 
     switch (this.cause.name) {
       case "InvalidStateError":
-        if (this.cause.message.includes("Failed to execute 'share' on 'Navigator': An earlier share has not yet completed")) {
+        if (this.cause.message.includes("Failed to execute 'share' on 'Navigator': An earlier share has not yet completed") || this.cause.message.includes("Other sharing operations are in progress")) {
           this.type = "InvalidStateError.ShareInProgress";
-          break
+          break;
         }
         this.type = "InvalidStateError";
         break;
