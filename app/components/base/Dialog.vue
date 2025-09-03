@@ -60,7 +60,17 @@ const onClose = (force = false) => {
         >
           <Transition name="content-pop" appear>
             <DialogContent
+              v-if="closeOnClickOutside"
               :class="cn(dialogVariants({ variant, size }), props.class)"
+            >
+              <slot :close="onClose" />
+            </DialogContent>
+            <DialogContent
+              v-else
+              :disable-outside-pointer-events="true"
+              :class="cn(dialogVariants({ variant, size }), props.class)"
+              @pointer-down-outside.prevent=""
+              @escape-key-down.prevent=""
             >
               <slot :close="onClose" />
             </DialogContent>
