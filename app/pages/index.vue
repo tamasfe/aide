@@ -10,7 +10,7 @@ useHead({
 const currentTab = ref("lobby");
 const menuTabs = ref([
   { value: "lobby", iconName: "lucide:home", label: t(`home_page.category_tabs.lobby`) },
-  { value: "top-games", iconName: "lucide:coins", label: t(`category.top-games`) },
+  { value: "hot", iconName: "lucide:flame", label: t(`category.hot`) },
   // { value: "crash", iconName: "lucide:crosshair", label: t(`category.crash`) },
   { value: "table", iconName: "lucide:files", label: t(`category.table`) },
   { value: "live", iconName: "lucide:users", label: t(`category.live`) },
