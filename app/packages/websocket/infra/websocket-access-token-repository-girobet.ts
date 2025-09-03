@@ -7,7 +7,7 @@ import { createBackendOpenApiClient } from "~/packages/http-client/create-backen
 import { HttpBackendApiError } from "~/packages/http-client/http-backend-api-error";
 import type { CommonDependenciesI } from "~/dependency-injection/load-di";
 
-export class WebsocketLeaseRepositoryGirobet implements WebsocketAccessTokenRepositoryI {
+export class WebsocketAccessTokensRepositoryGirobet implements WebsocketAccessTokenRepositoryI {
   constructor(clientOptions: { baseUrl: string }, commonDependencies: CommonDependenciesI) {
     this.apiClient = createBackendOpenApiClient(clientOptions, commonDependencies);
   }

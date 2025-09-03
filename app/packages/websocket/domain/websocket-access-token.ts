@@ -1,8 +1,8 @@
-import type { WebsocketChannel } from "./websocket-channel";
+import type { WebsocketUserChannel } from "./websocket-channel";
 
 type WebsocketAccessTokenProps = {
   token: string;
-  channel: WebsocketChannel;
+  channel: WebsocketUserChannel;
 };
 
 export class WebsocketAccessToken {
@@ -19,6 +19,6 @@ export class WebsocketAccessToken {
 
   private constructor(
     public readonly token: string,
-    public readonly channel: WebsocketChannel,
+    public readonly channel: WebsocketUserChannel,
   ) {}
 }

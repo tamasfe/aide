@@ -1,6 +1,6 @@
 import { ExponentialBackoff, RingQueue, WebsocketBuilder, WebsocketEvent } from "websocket-ts";
 import type { Websocket } from "websocket-ts";
-import type { WebsocketChannel } from "../domain/websocket-channel";
+import type { WebsocketChannel, WebsocketOpenChannel } from "../domain/websocket-channel";
 import type { WebsocketConnectionI } from "../domain/websocket-connection";
 import type { WebsocketMessagesByType, WebsocketMessagesFromServer, WebsocketMessagesToServer } from "../domain/websocket-messages";
 import { ErrorEnteringWebsocketChannel } from "../domain/error-entering-websocket-channel";
@@ -9,13 +9,13 @@ import { InfrastructureError } from "~/packages/result/infrastructure-error";
 import type { LoggerI } from "~/packages/logger/Logger";
 import type { AsyncMessagePublisherI } from "~/packages/async-messages/async-message-publisher";
 
-export class WebsocketConnectionWebsocketTs implements WebsocketConnectionI {
+export class WebsocketConnectionTs implements WebsocketConnectionI {
   public static create(
     websocketConnectUrl: string,
     logger: LoggerI,
     asyncMessagePublisher: AsyncMessagePublisherI,
-  ): WebsocketConnectionWebsocketTs {
-    return new WebsocketConnectionWebsocketTs(websocketConnectUrl, logger, asyncMessagePublisher);
+  ): WebsocketConnectionTs {
+    return new WebsocketConnectionTs(websocketConnectUrl, logger, asyncMessagePublisher);
   }
 
   /**
@@ -24,9 +24,11 @@ export class WebsocketConnectionWebsocketTs implements WebsocketConnectionI {
   public async enterChannel(
     payload:
       | { channel: "user"; accessToken: string }
-      | { channel: Exclude<WebsocketChannel, "user"> },
+      | {
+        channel: WebsocketOpenChannel | "tracker";
+      },
   ): Promise<EmptyResult<ErrorEnteringWebsocketChannel>> {
-    const listenerId = Date.now();
+    const listenerId = String(Date.now());
     const MAX_WAIT_MS = 1500;
 
     /**
@@ -92,44 +94,39 @@ export class WebsocketConnectionWebsocketTs implements WebsocketConnectionI {
     switch (channel) {
       case "user":
         this.emit({ type: "user_logout" });
-        this.logger.debug("WS - Left channel", { channel });
-        return success();
+        break;
 
       case "newest_wins":
         this.emit({ data: "newest_wins", type: "ticker_leave" });
-        this.logger.debug("WS - Left channel", { channel });
-        return success();
+        break;
 
       case "tracker":
-        this.logger.warn("WS - Attempted to leave the tracker channel. But as of now the only way to do is to leave the 'user' channel.", { channel });
-        return success();
+        this.emit({ type: "tracker_leave" });
+        break;
     }
+    this.logger.debug("WS - Left channel", { channel });
+    return success();
   }
 
   public subscribeToMessage<T extends keyof WebsocketMessagesByType>(
     type: T,
     listener: (data: WebsocketMessagesByType[T]) => void,
+    listenerId: string,
   ) {
     const listenerWrapper = (_i: Websocket, event: MessageEvent<string>) => {
       try {
         const message = JSON.parse(event.data) as WebsocketMessagesFromServer;
         switch (type) {
           case "winning_now":
-          case "payment_status_update":
             if (typeof message.data === "object" && "type" in message.data && message.data.type === type) {
               listener(message as WebsocketMessagesByType[T]);
             }
             return;
 
-          case "ticker_entered":
-            if (typeof message.data === "object" && "ticker_entered" in message.data) {
-              listener(message as WebsocketMessagesByType[T]);
-            }
-            return;
-
+          case "notification":
           case "balance_update":
           case "tracker":
-            if (typeof message.data === "object" && "type" in message && message.type === "tracker") {
+            if (typeof message.data === "object" && "type" in message && message.type === type) {
               listener(message as WebsocketMessagesByType[T]);
             }
             return;
@@ -146,36 +143,15 @@ export class WebsocketConnectionWebsocketTs implements WebsocketConnectionI {
       }
     };
 
-    const listenerId = this.addListener(listenerWrapper);
+    this.addListener(listenerWrapper, listenerId);
     this.logger.debug("WS - Subscribed to message", {
       message: type,
       listenerId,
     });
-    return success(listenerId);
+    return success();
   }
 
-  public subscribe(listener: (data: WebsocketMessagesFromServer) => void) {
-    const listenerWrapper = (_i: Websocket, event: MessageEvent<string>) => {
-      try {
-        listener(JSON.parse(event.data) as WebsocketMessagesFromServer);
-      }
-      catch (error) {
-        this.logger.error(
-          "WS - Failed to handle websocket message. This probably means the received message does not have the expected format and structure.",
-          InfrastructureError.newFromUnknownError({ wsEvent: event }, error),
-        );
-      }
-    };
-
-    const listenerId = this.addListener(listenerWrapper);
-    this.logger.debug("WS - Subscribed to message", {
-      message: "any",
-      listenerId,
-    });
-    return success(listenerId);
-  }
-
-  public unsubscribeFromMessage(listenerId: number) {
+  public unsubscribeFromMessage(listenerId: string) {
     this.removeListener(listenerId);
     this.logger.debug("WS - Unsubscribed from message", { listenerId });
     return success();
@@ -225,21 +201,21 @@ export class WebsocketConnectionWebsocketTs implements WebsocketConnectionI {
 
   private ws: Websocket;
 
-  private addListener(listener: (_i: Websocket, event: MessageEvent<string>) => void, listenerId = Date.now()): number {
+  private addListener(listener: (_i: Websocket, event: MessageEvent<string>) => void, listenerId: string) {
     this.messageListeners.set(listenerId, listener);
     this.ws.addEventListener(WebsocketEvent.message, listener);
-    return listenerId;
   }
 
-  private removeListener(listenerId: number) {
+  private removeListener(listenerId: string) {
     const listenerToRemove = this.messageListeners.get(listenerId);
     if (listenerToRemove) {
       this.ws.removeEventListener(WebsocketEvent.message, listenerToRemove);
+      this.messageListeners.delete(listenerId);
     }
   }
 
   private messageListeners: Map<
-    number,
+    string,
     (_i: Websocket, event: MessageEvent<string>) => void
   > = new Map();
 }

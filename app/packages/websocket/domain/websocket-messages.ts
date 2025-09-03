@@ -3,13 +3,20 @@ import type { components } from "~/packages/http-client/girobet-backend-generate
 export type WebsocketMessagesToServer = components["schemas"]["WebsocketClientEvent"];
 export type WebsocketMessagesFromServer = components["schemas"]["WebsocketServerEvent"];
 
-export type WebsocketMessagesByType = {
-  winning_now: Extract<components["schemas"]["WebsocketServerEvent"], { type: "ticker" }>;
-  payment_status_update: {
-    type: "notification";
-    data: Extract<components["schemas"]["WebsocketServerEvent"]["data"], { type: "payment_status_update" }>;
-  };
-  balance_update: Extract<components["schemas"]["WebsocketServerEvent"], { type: "balance_update" }>;
-  ticker_entered: Extract<components["schemas"]["WebsocketServerEvent"], { type: "ticker"; data: { type: "winning_now" } }>;
-  tracker: Extract<components["schemas"]["WebsocketServerEvent"], { type: "tracker" }>;
+/**
+ * Messages sent through a user-related channel. Only for logged in users.
+ */
+export type WebsocketUserMessagesByType = {
+  notification: Extract<WebsocketMessagesFromServer, { type: "notification" }>;
+  balance_update: Extract<WebsocketMessagesFromServer, { type: "balance_update" }>;
+  tracker: Extract<WebsocketMessagesFromServer, { type: "tracker" }>;
 };
+
+/**
+ * Sent through an open channel
+ */
+export type WebsocketTickerMessagesByType = {
+  winning_now: Extract<WebsocketMessagesFromServer, { type: "ticker" }>;
+};
+
+export type WebsocketMessagesByType = WebsocketUserMessagesByType & WebsocketTickerMessagesByType;

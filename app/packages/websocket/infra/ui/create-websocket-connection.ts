@@ -1,5 +1,5 @@
 import type { WebsocketConnectionI } from "../../domain/websocket-connection";
-import { WebsocketConnectionWebsocketTs } from "../websocket-connection-websocket-ts";
+import { WebsocketConnectionTs } from "../websocket-connection-websocket-ts";
 import { fail, success, type Result } from "~/packages/result";
 import { InfrastructureError } from "~/packages/result/infrastructure-error";
 import type { LoggerI } from "~/packages/logger/Logger";
@@ -14,7 +14,7 @@ export class CreateWebsocketConnection {
     try {
       const websocketConnectUrl = new URL(WS_CONNECT_PATH, this.websocketConnectBaseUrl).toString();
       return success(
-        WebsocketConnectionWebsocketTs.create(
+        WebsocketConnectionTs.create(
           websocketConnectUrl,
           this.logger,
           this.asyncMessagePublisher,

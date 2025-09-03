@@ -1,34 +1,31 @@
 import type { PublicRuntimeConfig } from "nuxt/schema";
 import type { WebsocketAccessTokenRepositoryI } from "../domain/websocket-access-token-repository";
-import { WebsocketLeaseRepositoryGirobet } from "./websocket-lease-repository-girobet";
+import { WebsocketAccessTokensRepositoryGirobet } from "./websocket-access-token-repository-girobet";
 import { CreateWebsocketConnection } from "./ui/create-websocket-connection";
-import { WebsocketChannelManagerUser } from "./ui/websocket-channel-manager-user";
-import { WebsocketChannelManagerNewWins } from "./ui/websocket-channel-manager-new-wins";
-import { WebsocketChannelManagerTracker } from "./ui/websocket-channel-manager-tracker";
 import type { CommonDependenciesI } from "~/dependency-injection/load-di";
+import { WebsocketTickerChannelManagerNewWins } from "./ui/websocket-ticker-channel-manager-new-wins";
+import { WebsocketUserChannelsManager } from "./ui/websocket-user-channels-manager-user";
 
 export interface WebsocketDependencyInjectionI {
   ui: {
     createWebsocketConnection: CreateWebsocketConnection;
     wsChannelManagers: {
-      user: WebsocketChannelManagerUser;
-      newestWins: WebsocketChannelManagerNewWins;
-      tracker: WebsocketChannelManagerTracker;
+      user: WebsocketUserChannelsManager;
+      ticker: WebsocketTickerChannelManagerNewWins;
     };
   };
 }
 
 export const createWebsocketDependencyInjectionI: (config: PublicRuntimeConfig, commonDependencies: CommonDependenciesI) => Promise<WebsocketDependencyInjectionI> = async (config: PublicRuntimeConfig, commonDependencies: CommonDependenciesI) => {
   const apiBaseUrl = useCasinoApiOrigin("api");
-  const websocketLeaseRepository: WebsocketAccessTokenRepositoryI = new WebsocketLeaseRepositoryGirobet({ baseUrl: apiBaseUrl }, commonDependencies);
+  const websocketAccessTokenRepository: WebsocketAccessTokenRepositoryI = new WebsocketAccessTokensRepositoryGirobet({ baseUrl: apiBaseUrl }, commonDependencies);
 
   return {
     ui: {
       createWebsocketConnection: new CreateWebsocketConnection(apiBaseUrl, commonDependencies.logger, commonDependencies.asyncMessagePublisher),
       wsChannelManagers: {
-        user: new WebsocketChannelManagerUser(websocketLeaseRepository, commonDependencies.asyncMessagePublisher, commonDependencies.logger),
-        newestWins: new WebsocketChannelManagerNewWins(commonDependencies.logger, commonDependencies.asyncMessagePublisher),
-        tracker: new WebsocketChannelManagerTracker(commonDependencies.logger, commonDependencies.asyncMessagePublisher),
+        user: new WebsocketUserChannelsManager(websocketAccessTokenRepository, commonDependencies.asyncMessagePublisher, commonDependencies.logger),
+        ticker: new WebsocketTickerChannelManagerNewWins(commonDependencies.logger, commonDependencies.asyncMessagePublisher),
       },
     },
   };

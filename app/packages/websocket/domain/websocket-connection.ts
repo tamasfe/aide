@@ -1,7 +1,7 @@
 import type { ErrorEnteringWebsocketChannel } from "./error-entering-websocket-channel";
-import type { WebsocketChannel } from "./websocket-channel";
-import type { WebsocketMessagesByType, WebsocketMessagesFromServer, WebsocketMessagesToServer } from "./websocket-messages";
-import type { EmptyResult, Result } from "~/packages/result";
+import type { WebsocketChannel, WebsocketOpenChannel } from "./websocket-channel";
+import type { WebsocketMessagesByType, WebsocketMessagesToServer } from "./websocket-messages";
+import type { EmptyResult } from "~/packages/result";
 import type { InfrastructureError } from "~/packages/result/infrastructure-error";
 
 export interface WebsocketConnectionI {
@@ -9,13 +9,12 @@ export interface WebsocketConnectionI {
     channel: "user";
     accessToken: string;
   } | {
-    channel: Exclude<WebsocketChannel, "user">;
+    channel: WebsocketOpenChannel | "tracker";
   }): Promise<EmptyResult<ErrorEnteringWebsocketChannel>>;
   leaveChannel(channel: WebsocketChannel): Promise<EmptyResult<InfrastructureError>>;
 
-  subscribeToMessage<T extends keyof WebsocketMessagesByType>(type: T, handler: (data: WebsocketMessagesByType[T]) => void): Result<number, InfrastructureError>;
-  subscribe(handler: (data: WebsocketMessagesFromServer) => void): Result<number, InfrastructureError>;
-  unsubscribeFromMessage(handlerId: number): EmptyResult<InfrastructureError>;
+  subscribeToMessage<T extends keyof WebsocketMessagesByType>(type: T, handler: (data: WebsocketMessagesByType[T]) => void, subscriberId: string): EmptyResult<InfrastructureError>;
+  unsubscribeFromMessage(subscriberId: string): EmptyResult<InfrastructureError>;
 
   emit(message: WebsocketMessagesToServer): EmptyResult<InfrastructureError>;
 

@@ -35,13 +35,17 @@ await useAsyncData("winning-now-tabs-ticker-events", async () => {
 { lazy: WINS_DEFER_CLIENT_SIDE_LOADING, server: WINS_ENABLE_SERVER_SIDE_RENDERING },
 );
 
-useCreateSubscriptionToWebsocket(
-  $dependencies.websockets.ui.wsChannelManagers.newestWins,
-  (message) => {
-    const keyifiedWin = useAddKeyFromIdentifier(camelizeKeys(message));
-    uniqueWins.value.set(keyifiedWin.key, keyifiedWin);
+useCreateSubscriptionToWebsocketTickerChannel(
+  $dependencies.websockets.ui.wsChannelManagers.ticker,
+  {
+    id: `winning-now-tabs-${Date.now()}`,
+    message: "winning_now",
+    callback: (message) => {
+      const keyifiedWin = useAddKeyFromIdentifier(camelizeKeys(message));
+      uniqueWins.value.set(keyifiedWin.key, keyifiedWin);
 
-    increment.value += 1;
+      increment.value += 1;
+    },
   },
 );
 

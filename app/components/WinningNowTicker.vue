@@ -32,11 +32,15 @@ await useAsyncData("winning-now-slider-ticker-events", async () => {
 { lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING },
 );
 
-useCreateSubscriptionToWebsocket(
-  $dependencies.websockets.ui.wsChannelManagers.newestWins,
-  (message) => {
-    const win = useAddKeyFromIdentifier(camelizeKeys(message));
-    addNewWin(win);
+useCreateSubscriptionToWebsocketTickerChannel(
+  $dependencies.websockets.ui.wsChannelManagers.ticker,
+  {
+    id: `winning-now-ticker-${Date.now()}`,
+    message: "winning_now",
+    callback: (message) => {
+      const win = useAddKeyFromIdentifier(camelizeKeys(message));
+      addNewWin(win);
+    },
   },
 );
 </script>
