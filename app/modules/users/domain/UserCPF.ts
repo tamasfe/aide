@@ -19,7 +19,9 @@ export class UserCPF {
       throw new InvalidCPF(value, "The CPF was empty");
     }
 
-    if (!this.isValidCPF(value)) {
+    const elevenDigitCpfForModulo11Validation = value.replace(/\D/g, "").padStart(11, "0");
+
+    if (!this.isValidCPF(elevenDigitCpfForModulo11Validation)) {
       throw new InvalidCPF(value, "The CPF format is not valid");
     }
   }
