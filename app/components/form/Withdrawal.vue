@@ -111,10 +111,17 @@ const onSubmit = handleSubmit(async (formData) => {
         error-placement="below"
         :error-message="formErrors.amount"
         :mask="{
-          number: {
-            locale,
-            fraction: 2,
-            unsigned: true,
+          mask: '0.99',
+          tokens: {
+            0: {
+              pattern: /\d/,
+              multiple: true,
+            },
+            9: {
+              pattern: /\d/,
+              optional: true,
+            },
+
           },
         }"
         :model-value="amount"
