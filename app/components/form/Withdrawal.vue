@@ -110,20 +110,7 @@ const onSubmit = handleSubmit(async (formData) => {
         placeholder-placement="default"
         error-placement="below"
         :error-message="formErrors.amount"
-        :mask="{
-          mask: '0.99',
-          tokens: {
-            0: {
-              pattern: /\d/,
-              multiple: true,
-            },
-            9: {
-              pattern: /\d/,
-              optional: true,
-            },
-
-          },
-        }"
+        :mask="{ type: 'money' }"
         :model-value="amount"
         @input="(value) => amount = Number(value.replace(/[^\d.]/g, ''))"
       >

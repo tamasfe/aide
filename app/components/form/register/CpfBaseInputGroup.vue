@@ -39,7 +39,7 @@ watch(cpf, async (value) => {
   <BaseInputGroup
     name="cpf"
     :placeholder="$t('field.cpf')"
-    mask="###.###.###-##"
+    :mask="{ type: 'cpf' }"
     inputmode="numeric"
     :error-message="cpfErrorMessage"
     :model-value="cpf"

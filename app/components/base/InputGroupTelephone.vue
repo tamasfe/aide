@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { DEFAULT_PREFIX, type UserTelephonePrefix } from "~/modules/users/domain/UserTelephone";
-import { UserTelephoneMask } from "~/modules/users/infra/ui/UserTelephoneMask";
 
 defineProps<{
   errorMessage: string | undefined;
@@ -42,8 +41,6 @@ const selectedPrefix = computed({
     };
   },
 });
-
-const mask = computed(() => UserTelephoneMask.new(prefix.value?.countryCode ?? DEFAULT_PREFIX.countryCode, telephone.value || "").value());
 </script>
 
 <template>
@@ -53,7 +50,7 @@ const mask = computed(() => UserTelephoneMask.new(prefix.value?.countryCode ?? D
     :placeholder="$t('field.telephone')"
     inputmode="numeric"
     name="telephone"
-    :mask="mask"
+    :mask="{ type: 'telephone', countryCode: selectedPrefix.countryCode, telephone: telephone || '' }"
     :mask-behaviour-eager="true"
     :error-message="errorMessage"
   >

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from "vue";
 import type { MaskInputOptions } from "maska";
+import { UserTelephoneMask } from "~/modules/users/infra/ui/UserTelephoneMask";
 
 // DESIGN TODO:
 // ✴️  this component doesnt handle other variants, but the hard thing about that is CVA() doesnt let you do multiple classes for a SINGLE variant i think. so we might need to use computed properties to build other things like (input size, icon size etc). we can also do them as props like inputClass, iconClass, etc... but i usually find that very nasty
@@ -27,7 +28,7 @@ const props = withDefaults(
     placeholderPlacement?: "floating" | "default";
     errorPlacement?: "floating" | "below";
     errorMessage?: string;
-    mask?: string | MaskInputOptions;
+    mask?: { type: "cpf" } | { type: "money" } | { type: "telephone"; countryCode: string; telephone: string };
     maskBehaviourEager?: boolean;
     class?: HTMLAttributes["class"];
     inputSize?: "ghost" | "md" | "lg";
@@ -40,6 +41,32 @@ const props = withDefaults(
     inputSize: "ghost",
   },
 );
+
+const mask: undefined | string | MaskInputOptions = ((mask) => {
+  if (!mask) return undefined;
+
+  switch (mask.type) {
+    case "cpf":
+      return "###.###.###-##";
+    case "money":
+      return {
+        mask: "0.99",
+        tokens: {
+          0: {
+            pattern: /\d/,
+            multiple: true,
+          },
+          9: {
+            pattern: /\d/,
+            optional: true,
+          },
+        },
+      };
+
+    case "telephone":
+      return UserTelephoneMask.new(mask.countryCode, mask.telephone).value();
+  }
+})(props.mask);
 
 const inputGroupContainer = ref<HTMLElement | null>(null);
 const floatingLabel = ref<HTMLElement | null>(null);
