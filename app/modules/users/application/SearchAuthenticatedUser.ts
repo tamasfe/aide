@@ -23,12 +23,14 @@ export class SearchAuthenticatedUser {
     const userTelephoneResult = UserTelephone.new(String(authenticatedUserResult.value.phone.national.value), `+${authenticatedUserResult.value.phone.code.value}`);
 
     if (userTelephoneResult.isFailure) {
+      userTelephoneResult.error.addMetadata({ user: authenticatedUserResult.value });
       return userTelephoneResult;
     }
 
     const extendedUserResult = newExtendedUser(authenticatedUserResult.value);
     if (extendedUserResult.isFailure) {
       this.logger.warn("Error building extended user. Tolerating it but returning limited user information", { error: extendedUserResult.error, user: authenticatedUserResult.value });
+      extendedUserResult.error.addMetadata({ user: authenticatedUserResult.value });
       return success(newLimitedExtendedUser(authenticatedUserResult.value));
     }
 

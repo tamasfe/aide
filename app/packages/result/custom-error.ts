@@ -22,6 +22,10 @@ export abstract class CustomError extends Error {
     return this.callToJSONOrReturnObject(this as Record<string, unknown>);
   }
 
+  public addMetadata(moreMetadata: Record<string, unknown>): void {
+    Object.assign(this.metadata, { ...moreMetadata });
+  }
+
   private callToJSONOrReturnObject(
     someObject: Record<string, unknown>,
   ): Record<string, unknown> {
