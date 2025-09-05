@@ -119,10 +119,11 @@ const onUpdateModelValue = (value: T | undefined) => {
         <SelectContent
           position="popper"
           position-strategy="absolute"
-          class="rounded-b bg-emphasis text-sm text-subtle w-[var(--reka-popper-anchor-width)]
+          align="end"
+          class="rounded-b bg-emphasis text-sm text-subtle
                    focus-visible:outline-none overflow-hidden border border-muted/5 shadow-xl z-30"
         >
-          <SelectViewport class="asdfasdf">
+          <SelectViewport :class="containerClass">
             <SelectItem
               v-for="option in options"
               :key="option.id ?? option.value"
