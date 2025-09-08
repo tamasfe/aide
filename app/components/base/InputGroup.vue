@@ -73,7 +73,7 @@ const mask: ComputedRef<undefined | string | MaskInputOptions> = computed(() => 
 const inputGroupContainer = ref<HTMLElement | null>(null);
 const floatingLabel = ref<HTMLElement | null>(null);
 const isInputFocused = ref(false);
-const id = ref(props.id ?? `giro-input-group-${useId()}`);
+const id = computed(() => props.id ?? `giro-input-group-${useId()}`);
 
 const fieldPlaceholder = computed(() => {
   if (props.placeholderPlacement === "floating") return undefined;
@@ -180,6 +180,7 @@ const [value, modifiers] = defineModel<number | string>({
           variant="ghost"
           :input-size="inputSize"
           autocorrect="off"
+          :aria-describedby="`error-${id}`"
           :class="cn(
             fieldClass,
             value !== '' && value !== undefined ? 'h-[var(--giro-input-group-hidden-field-height)]' : 'h-full',
@@ -199,6 +200,7 @@ const [value, modifiers] = defineModel<number | string>({
           :placeholder="fieldPlaceholder"
           variant="ghost"
           :input-size="inputSize"
+          :aria-describedby="`error-${id}`"
           autocorrect="off"
           :class="cn(
             fieldClass,
@@ -211,7 +213,8 @@ const [value, modifiers] = defineModel<number | string>({
 
         <div
           v-if="errorPlacement === 'floating' && errorMessage"
-          class="px-1 error absolute bottom-1 right-0 bg-subtle"
+          :id="`error-${id}`"
+          class="px-1 error absolute bottom-1 right-0 bg-subtle pointer-events-none"
         >
           {{ errorMessage }}
         </div>
@@ -225,6 +228,7 @@ const [value, modifiers] = defineModel<number | string>({
 
     <div
       v-if="errorPlacement === 'below' && errorMessage"
+      :id="`error-${id}`"
       class="error"
     >
       {{ errorMessage }}
