@@ -39,7 +39,11 @@ const loadingFields = ref({
 });
 
 const onSubmit = handleSubmit(async () => {
-  if (loading.value || !meta.value.valid) {
+  if (loading.value) {
+    return;
+  }
+
+  if (!meta.value.valid) {
     return;
   }
 
@@ -73,7 +77,7 @@ const onSubmit = handleSubmit(async () => {
   loadingSubmit.value = false;
   errorMessage.value = errorSubmitting;
 }, ({ results }) => {
-  console.warn("Validation failed", results);
+  $dependencies.common.logger.warn("Register form validation failed", { results });
 });
 
 const loading = computed<boolean>(() => {
@@ -114,7 +118,6 @@ const loading = computed<boolean>(() => {
       size="xl"
       class="w-full gap-1.5"
       type="submit"
-      :disabled="!meta.valid"
       @click="onSubmit"
     >
       <span>{{ $t("button.create_account") }}</span>
