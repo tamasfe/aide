@@ -10,8 +10,16 @@ export class UserTelephoneMask {
         const BRAZIL_MASK_MOBILE = "(##) # ####-####";
         const BRAZIL_MASK_FIXED = "(##) ####-####";
 
-        const thirdDigitOfUnmaskedTelephone = this.telephoneValue.replace(/\D/g, "").slice(2, 3);
+        const cleanTelephone = this.telephoneValue.replace(/\D/g, "");
+
+        const thirdDigitOfUnmaskedTelephone = cleanTelephone.slice(2, 3);
+        if (!thirdDigitOfUnmaskedTelephone) {
+          // Makes it easier and more fluid to paste or auto-fill a brazilian telephone number (longer). If the user wants to paste or autofill a landline one, being shorter it also works good.
+          return BRAZIL_MASK_MOBILE;
+        }
+
         const isBrazilianMobileTelephone = thirdDigitOfUnmaskedTelephone === "9";
+
         return isBrazilianMobileTelephone ? BRAZIL_MASK_MOBILE : BRAZIL_MASK_FIXED;
       }
       case "US":
