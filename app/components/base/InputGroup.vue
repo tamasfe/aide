@@ -42,10 +42,10 @@ const props = withDefaults(
   },
 );
 
-const mask: undefined | string | MaskInputOptions = ((mask) => {
-  if (!mask) return undefined;
+const mask: ComputedRef<undefined | string | MaskInputOptions> = computed(() => {
+  if (!props.mask) return undefined;
 
-  switch (mask.type) {
+  switch (props.mask.type) {
     case "cpf":
       return "###.###.###-##";
     case "money":
@@ -64,9 +64,11 @@ const mask: undefined | string | MaskInputOptions = ((mask) => {
       };
 
     case "telephone":
-      return UserTelephoneMask.new(mask.countryCode, mask.telephone).value();
+      return UserTelephoneMask.new(props.mask.countryCode, props.mask.telephone).value();
   }
-})(props.mask);
+
+  return undefined;
+});
 
 const inputGroupContainer = ref<HTMLElement | null>(null);
 const floatingLabel = ref<HTMLElement | null>(null);

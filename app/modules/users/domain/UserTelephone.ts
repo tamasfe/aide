@@ -3,12 +3,6 @@ import { CustomError, fail, success } from "~/packages/result";
 
 export const DEFAULT_PREFIX = { value: "+55", countryCode: "BR" };
 
-/**
- * Source: https://worldpopulationreview.com/country-rankings/phone-number-length-by-country
- */
-const MIN_TELEPHONE_LENGTH = 4;
-const MAX_TELEPHONE_LENGTH = 15;
-
 export class UserTelephone {
   public get value() {
     return this.prefix.value + this.telephone;
@@ -16,6 +10,12 @@ export class UserTelephone {
 
   public readonly telephone: string;
   public readonly prefix: UserTelephonePrefix;
+
+  /**
+ * Source: https://worldpopulationreview.com/country-rankings/phone-number-length-by-country
+ */
+  public static MIN_TELEPHONE_LENGTH = 4;
+  public static MAX_TELEPHONE_LENGTH = 15;
 
   /**
    *
@@ -61,11 +61,11 @@ export class UserTelephone {
     if (!cleanTelephoneValue) {
       throw ErrorInvalidUserTelephone.newFromMissingTelephone(telephone);
     }
-    if (cleanTelephoneValue.length > MAX_TELEPHONE_LENGTH) {
-      throw ErrorInvalidUserTelephone.newFromTelephoneTooLong(telephone, MAX_TELEPHONE_LENGTH);
+    if (cleanTelephoneValue.length > UserTelephone.MAX_TELEPHONE_LENGTH) {
+      throw ErrorInvalidUserTelephone.newFromTelephoneTooLong(cleanTelephoneValue, UserTelephone.MAX_TELEPHONE_LENGTH);
     }
-    if (cleanTelephoneValue.length < MIN_TELEPHONE_LENGTH) {
-      throw ErrorInvalidUserTelephone.newFromTelephoneTooShort(telephone, MIN_TELEPHONE_LENGTH);
+    if (cleanTelephoneValue.length < UserTelephone.MIN_TELEPHONE_LENGTH) {
+      throw ErrorInvalidUserTelephone.newFromTelephoneTooShort(cleanTelephoneValue, UserTelephone.MIN_TELEPHONE_LENGTH);
     }
     this.telephone = cleanTelephoneValue;
 
@@ -93,44 +93,77 @@ export class UserTelephone {
       throw ErrorInvalidUserTelephone.newFromInvalidPrefix(prefix);
     }
     this.prefix = recognizedPrefix;
+
+    // Country specific rules
+    if (this.prefix.countryCode === "BR") {
+      const thirdDigit = cleanTelephoneValue[2];
+      const isBrazilianMobileTelephone = thirdDigit === "9";
+
+      if (isBrazilianMobileTelephone) {
+        const EXACT_BRAZILIAN_MOBILE_LENGTH = 11;
+        if (cleanTelephoneValue.length > EXACT_BRAZILIAN_MOBILE_LENGTH) {
+          throw ErrorInvalidUserTelephone.newFromTelephoneTooLong(cleanTelephoneValue, EXACT_BRAZILIAN_MOBILE_LENGTH);
+        }
+        if (cleanTelephoneValue.length < EXACT_BRAZILIAN_MOBILE_LENGTH) {
+          throw ErrorInvalidUserTelephone.newFromTelephoneTooShort(cleanTelephoneValue, EXACT_BRAZILIAN_MOBILE_LENGTH);
+        }
+      }
+      if (!isBrazilianMobileTelephone) {
+        const EXACT_BRAZILIAN_LANDLINE_LENGTH = 10;
+        if (cleanTelephoneValue.length > EXACT_BRAZILIAN_LANDLINE_LENGTH) {
+          throw ErrorInvalidUserTelephone.newFromTelephoneTooLong(cleanTelephoneValue, EXACT_BRAZILIAN_LANDLINE_LENGTH);
+        }
+        if (cleanTelephoneValue.length < EXACT_BRAZILIAN_LANDLINE_LENGTH) {
+          throw ErrorInvalidUserTelephone.newFromTelephoneTooShort(cleanTelephoneValue, EXACT_BRAZILIAN_LANDLINE_LENGTH);
+        }
+      }
+    }
   }
 }
 
-type ErrorInvalidUserTelephoneReason = "telephone_empty" | "telephone_too_long" | "telephone_too_short" | "prefix_empty" | "prefix_invalid" | "prefix_missing_plus_sign" | "prefix_unrecognized";
-
 export class ErrorInvalidUserTelephone extends CustomError {
   override name = "ErrorInvalidUserTelephone" as const;
-  public readonly reason: ErrorInvalidUserTelephoneReason;
+  public readonly reason: {
+    value: "telephone_empty" | "prefix_empty" | "prefix_invalid" | "prefix_missing_plus_sign" | "prefix_unrecognized";
+  } | {
+    value: "telephone_too_long";
+    max: number;
+    diff: number;
+  } | {
+    value: "telephone_too_short";
+    min: number;
+    diff: number;
+  };
 
   public static newFromMissingTelephone(telephone: string) {
-    return new ErrorInvalidUserTelephone("The telephone value is mandatory", "telephone_empty", { telephone });
+    return new ErrorInvalidUserTelephone("The telephone value is mandatory", { value: "telephone_empty" }, { telephone });
   }
 
   public static newFromEmptyPrefix(prefix: string) {
-    return new ErrorInvalidUserTelephone("The telephone prefix is mandatory", "prefix_empty", { prefix });
+    return new ErrorInvalidUserTelephone("The telephone prefix is mandatory", { value: "prefix_empty" }, { prefix });
   }
 
   public static newFromInvalidPrefix(prefix: string) {
-    return new ErrorInvalidUserTelephone("Invalid prefix, should appear in the allowed prefix options", "prefix_invalid", { prefix });
+    return new ErrorInvalidUserTelephone("Invalid prefix, should appear in the allowed prefix options", { value: "prefix_invalid" }, { prefix });
   }
 
   public static newFromMissingPlusInPrefix(prefix: string) {
-    return new ErrorInvalidUserTelephone("Invalid prefix, it should start with '+'", "prefix_missing_plus_sign", { prefix });
+    return new ErrorInvalidUserTelephone("Invalid prefix, it should start with '+'", { value: "prefix_missing_plus_sign" }, { prefix });
   }
 
   public static newFromUnrecognizedPrefix(value: string) {
-    return new ErrorInvalidUserTelephone("Could not recognize a valid prefix from the telephone value", "prefix_unrecognized", { value });
+    return new ErrorInvalidUserTelephone("Could not recognize a valid prefix from the telephone value", { value: "prefix_unrecognized" }, { value });
   }
 
   public static newFromTelephoneTooLong(telephone: string, maxLength: number) {
-    return new ErrorInvalidUserTelephone("The telephone number length is too long", "telephone_too_long", { telephone, maxLength });
+    return new ErrorInvalidUserTelephone("The telephone number length is too long", { value: "telephone_too_long", max: maxLength, diff: Math.abs(telephone.length - maxLength) }, { telephone });
   }
 
   public static newFromTelephoneTooShort(telephone: string, minLength: number) {
-    return new ErrorInvalidUserTelephone("The telephone number length is too short", "telephone_too_short", { telephone, minLength });
+    return new ErrorInvalidUserTelephone("The telephone number length is too short", { value: "telephone_too_short", min: minLength, diff: Math.abs(telephone.length - minLength) }, { telephone });
   }
 
-  private constructor(message: string, reason: ErrorInvalidUserTelephoneReason, metadata: Record<string, unknown> = {}) {
+  private constructor(message: string, reason: ErrorInvalidUserTelephone["reason"], metadata: Record<string, unknown> = {}) {
     super(message, metadata);
     this.reason = reason;
   }

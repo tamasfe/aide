@@ -7,7 +7,7 @@ export class UserTelephoneMask {
     switch (this.countryCode) {
       case "BR":
       {
-        const BRAZIL_MASK_MOBILE = "(##) #####-####";
+        const BRAZIL_MASK_MOBILE = "(##) # ####-####";
         const BRAZIL_MASK_FIXED = "(##) ####-####";
 
         const thirdDigitOfUnmaskedTelephone = this.telephoneValue.replace(/\D/g, "").slice(2, 3);
