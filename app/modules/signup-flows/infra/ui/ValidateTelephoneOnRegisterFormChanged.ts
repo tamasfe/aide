@@ -16,12 +16,10 @@ export class ValidateTelephoneOnRegisterFormChanged {
 
     if (resultValidating.error.name === "ErrorInvalidUserTelephone") {
       if (resultValidating.error.reason.value === "telephone_too_long") {
-        console.log({ err: resultValidating.error }, "Invalid telephone too long");
         return this.translateFunction("validation.telephone_invalid_too_long", { num: String(resultValidating.error.reason.diff) });
       }
 
       if (resultValidating.error.reason.value === "telephone_too_short") {
-        console.log({ err: resultValidating.error }, "Invalid telephone too short");
         return this.translateFunction("validation.telephone_invalid_too_short", { num: String(resultValidating.error.reason.diff) });
       }
 

@@ -11,6 +11,8 @@
 // Submitting to backend:       ✅
 // Integration testing:         ❌
 
+import { provideRegisterFormErrorPulse } from "~/components/form/register/formErrorPulse";
+
 defineProps({
   email: {
     type: String,
@@ -28,6 +30,7 @@ defineProps({
 
 const { handleSubmit, meta, values } = useForm();
 const { $dependencies } = useNuxtApp();
+const { pulse: pulseFormErrors } = provideRegisterFormErrorPulse();
 
 const errorMessage = ref<null | string>(null);
 const loadingSubmit = ref(false);
@@ -48,6 +51,7 @@ const onSubmit = handleSubmit(async () => {
   }
 
   loadingSubmit.value = true;
+  errorMessage.value = "";
 
   let searchParams: Record<string, string> | undefined = undefined;
   const resultSearchParams = $dependencies.clicks.repositories.marketingSearchParamsRepo.searchAttributed();
@@ -78,6 +82,10 @@ const onSubmit = handleSubmit(async () => {
   errorMessage.value = errorSubmitting;
 }, ({ results }) => {
   $dependencies.common.logger.warn("Register form validation failed", { results });
+  errorMessage.value = "";
+
+  // Trigger a reactive pulse for descendants to animate their error messages
+  pulseFormErrors();
 });
 
 const loading = computed<boolean>(() => {
@@ -87,11 +95,20 @@ const loading = computed<boolean>(() => {
 
 <template>
   <BaseForm :on-submit="onSubmit">
-    <BaseAlert
-      v-if="errorMessage"
-      :message="errorMessage"
-      level="error"
-    />
+    <Transition
+      enter-active-class="transition ease-out duration-300"
+      enter-from-class="-translate-y-4 opacity-0"
+      enter-to-class="translate-y-0 opacity-100"
+      leave-active-class="transition ease-in duration-200"
+      leave-from-class="translate-y-0 opacity-100"
+      leave-to-class="-translate-y-4 opacity-0"
+    >
+      <BaseAlert
+        v-if="errorMessage"
+        :message="errorMessage"
+        level="error"
+      />
+    </Transition>
 
     <FormRegisterEmailBaseInputGroup :initial-value="email" @loading="(value) => loadingFields.email = value" />
 

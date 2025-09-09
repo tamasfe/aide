@@ -2,6 +2,7 @@
 import type { HTMLAttributes } from "vue";
 import type { MaskInputOptions } from "maska";
 import { UserTelephoneMask } from "~/modules/users/infra/ui/UserTelephoneMask";
+import { useRegisterFormErrorIsPulsing } from "~/components/form/register/formErrorPulse";
 
 // DESIGN TODO:
 // ✴️  this component doesnt handle other variants, but the hard thing about that is CVA() doesnt let you do multiple classes for a SINGLE variant i think. so we might need to use computed properties to build other things like (input size, icon size etc). we can also do them as props like inputClass, iconClass, etc... but i usually find that very nasty
@@ -132,14 +133,21 @@ const [value, modifiers] = defineModel<number | string>({
     return value;
   },
 });
+
+// Emphasize current field's error when a parent form pulses errors
+// TODO: if we like the idea and animation: re-work it so only the register form BaseInputGroup pulses are triggered
+const errorIsPulsing = useRegisterFormErrorIsPulsing();
 </script>
 
 <template>
   <div class="w-full flex flex-col gap-0.5">
     <div
       :class="cn(
-        'flex flex-row px-5 relative h-[var(--giro-field-height)] rounded bg-subtle text-subtle',
+        'flex flex-row px-5 relative h-[var(--giro-field-height)] rounded bg-subtle text-subtle transition-all duration-700',
         props.class,
+        {
+          'bg-alert-error': props.errorMessage && errorIsPulsing,
+        },
       )"
     >
       <slot
@@ -214,7 +222,7 @@ const [value, modifiers] = defineModel<number | string>({
         <div
           v-if="errorPlacement === 'floating' && errorMessage"
           :id="`error-${id}`"
-          class="px-1 error absolute bottom-1 right-0 bg-subtle pointer-events-none"
+          class="px-1 error absolute bottom-1 right-0 bg-inherit pointer-events-none"
         >
           {{ errorMessage }}
         </div>
