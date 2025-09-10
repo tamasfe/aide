@@ -120,7 +120,7 @@ const onUpdateModelValue = (value: T | undefined) => {
           position="popper"
           position-strategy="absolute"
           align="end"
-          class="rounded-b bg-emphasis text-sm text-subtle
+          class="rounded-b bg-emphasis text-sm text-subtle w-[var(--reka-popper-anchor-width)]
                    focus-visible:outline-none overflow-hidden border border-muted/5 shadow-xl z-30"
         >
           <SelectViewport :class="containerClass">
