@@ -15,13 +15,18 @@ export class WebsocketTickerChannelManagerNewWins implements WebsocketTickerChan
 
   /**
    * If no subscribers exist for this channel, first enters the channel.
-   * Then subscribes the handler to the specific message
+   * Then subscribes the handler to the specific message.
+   * This method is idempotent. If already subscribed: does nothing.
    */
   public async subscribe<T extends keyof WebsocketTickerMessagesByType>(wsConnection: WebsocketConnectionI, subscriber: {
     message: T;
     callback: (message: WebsocketTickerMessagesByType[T]) => void;
     id: string;
   }) {
+    if (this.subscriberIds.has(subscriber.id)) {
+      return success();
+    }
+
     const resultEnteringChannel = await this.enterChannel(wsConnection);
     if (resultEnteringChannel.isFailure) {
       return resultEnteringChannel;
@@ -45,8 +50,13 @@ export class WebsocketTickerChannelManagerNewWins implements WebsocketTickerChan
   /**
    * Unsubscribes the subscriber
    * If no subscribers remain for this channel, then leaves the channel.
+   * This method is idempotent. If already unsubscribed: does nothing.
    */
   public async unsubscribe(wsConnection: WebsocketConnectionI, subscriberId: string) {
+    if (!this.subscriberIds.has(subscriberId)) {
+      return success();
+    }
+
     const resultUnsubcribing = wsConnection.unsubscribeFromMessage(subscriberId);
     if (resultUnsubcribing.isFailure) {
       return resultUnsubcribing;
