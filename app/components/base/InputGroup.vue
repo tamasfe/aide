@@ -74,7 +74,9 @@ const mask: ComputedRef<undefined | string | MaskInputOptions> = computed(() => 
 const inputGroupContainer = ref<HTMLElement | null>(null);
 const floatingLabel = ref<HTMLElement | null>(null);
 const isInputFocused = ref(false);
-const id = computed(() => props.id ?? `giro-input-group-${useId()}`);
+
+const randomlyGeneratedId = useId();
+const id = props.id ? props.id : randomlyGeneratedId;
 
 const fieldPlaceholder = computed(() => {
   if (props.placeholderPlacement === "floating") return undefined;
