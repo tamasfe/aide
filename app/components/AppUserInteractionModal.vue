@@ -55,6 +55,32 @@ const recoverPasswordToken = useState("user-modal-recover-password-token", () =>
 if (recoverPasswordToken.value) {
   $dependencies.users.ui.emitCommandOpenUserActionModal.handle({ modal: "recover_password", data: { token: recoverPasswordToken.value } });
 }
+
+/**
+ * If the modal is open and user clicks back button: modal closes without navigation.
+ * The previous URL is stored to prevent navigation to it using the back button, but not prevent the user from navigating forward to other pages from inside a modal.
+ * The watch seems to be necessary to keep updating the previous URL, but at the same time it needs to be out of the beforeResolve hook to ensure we save the previousRoute before resolving the next one.
+ */
+const router = useRouter();
+const previousUrl = ref(router.options.history.state.back);
+watch(() => router.currentRoute.value, () => {
+  previousUrl.value = router.options.history.state.back;
+});
+router.beforeResolve((to, from, next) => {
+  if (isOpen.value === false) {
+    next();
+    return;
+  }
+
+  isOpen.value = false;
+  if (to.path === previousUrl.value?.toString()) {
+    next(false);
+    return;
+  }
+
+  next();
+  return;
+});
 </script>
 
 <template>
