@@ -24,14 +24,16 @@ Sentry.init({
   integrations: [
     Sentry.replayIntegration(),
     Sentry.browserTracingIntegration(),
+    Sentry.piniaIntegration(usePinia()),
   ],
 
-  environment: runtimeConfig.public.release && runtimeConfig.public.release !== "development" ? "production" : "development",
+  normalizeDepth: 5, // Or however deep you want your state context to be.
 
+  environment: runtimeConfig.public.release && runtimeConfig.public.release !== "development" ? "production" : "development",
   release: runtimeConfig.public.release,
 
   ignoreErrors: [
     /Page not found/,
-  ]
+  ],
 
 });
