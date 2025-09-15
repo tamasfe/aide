@@ -108,27 +108,70 @@ export const useSiteStore = defineStore("siteStore", {
       return activeLicense;
     },
 
-    activateAnjouanLicenseIfAvailable(): "active" | "inactive" {
+    activateAnjouanLicenseIfAvailable() {
       const { $dependencies } = useNuxtApp();
       switch (this.currentSite.identifier) {
-        case "zambabet":
+        case "zambabet": {
+          const ZAMBABET_SEAL_ID = "baee18f7-63ae-4aa0-b5d7-8160149e921b";
           if (!window.anj_baee18f7_63ae_4aa0_b5d7_8160149e921b) {
             $dependencies.common.logger.error("Anjouan script not loaded properly.", new ErrorAnjouanLicenseScriptWasNotFound("The Anjouan license script was not found on the window object."));
-            return "active";
+            return {
+              status: "active" as const,
+              divData: {
+                id: `anj-${ZAMBABET_SEAL_ID}`,
+                anjSealId: ZAMBABET_SEAL_ID,
+              },
+            };
           }
 
           try {
             window.anj_baee18f7_63ae_4aa0_b5d7_8160149e921b.init();
           }
           catch (error) {
-            $dependencies.common.logger.error("Anjouan script could not be initialized.", new ErrorInitiatingAnjouanLicenseScript("The Anjouan license script ", {}, ErrorInitiatingAnjouanLicenseScript.parseCause(error)));
+            $dependencies.common.logger.error("Anjouan script could not be initialized.", new ErrorInitiatingAnjouanLicenseScript("The Anjouan license script returned an error", { ZAMBABET_SEAL_ID }, ErrorInitiatingAnjouanLicenseScript.parseCause(error)));
           }
-          return "active";
+          return {
+            status: "active" as const,
+            divData: {
+              id: `anj-${ZAMBABET_SEAL_ID}`,
+              anjSealId: ZAMBABET_SEAL_ID,
+            },
+          };
+        }
 
-        case "girobet":
+        case "girobet": {
+          const GIROBET_SEAL_ID = "950afe10-5e7e-4fa8-9bef-21380e8558b3";
+          if (!window.anj_950afe10_5e7e_4fa8_9bef_21380e8558b3) {
+            $dependencies.common.logger.error("Anjouan script not loaded properly.", new ErrorAnjouanLicenseScriptWasNotFound("The Anjouan license script was not found on the window object."));
+            return {
+              status: "active" as const,
+              divData: {
+                id: `anj-${GIROBET_SEAL_ID}`,
+                anjSealId: GIROBET_SEAL_ID,
+              },
+            };
+          }
+
+          try {
+            window.anj_950afe10_5e7e_4fa8_9bef_21380e8558b3.init();
+          }
+          catch (error) {
+            $dependencies.common.logger.error("Anjouan script could not be initialized.", new ErrorInitiatingAnjouanLicenseScript("The Anjouan license script returned an error", { GIROBET_SEAL_ID }, ErrorInitiatingAnjouanLicenseScript.parseCause(error)));
+          }
+          return {
+            status: "active" as const,
+            divData: {
+              id: `anj-${GIROBET_SEAL_ID}`,
+              anjSealId: GIROBET_SEAL_ID,
+            },
+          };
+        }
+
         default:
-          // Not implemented yet
-          return "inactive";
+          return {
+            status: "inactive" as const,
+            divData: null,
+          };
       }
     },
 

@@ -37,10 +37,14 @@ export default defineNuxtConfig({
       ],
       script: [
         /**
-         * Anjouan Licensing Services Inc. logo
+         * Anjouan Licensing Services Inc. logo. Refer to the Anjouan.vue component for more info.
          */
         {
           src: "https://baee18f7-63ae-4aa0-b5d7-8160149e921b.snippet.anjouangaming.org/anj-seal.js",
+          defer: true,
+        },
+        {
+          src: "https://950afe10-5e7e-4fa8-9bef-21380e8558b3.snippet.anjcdn.org/anj-seal.js",
           defer: true,
         },
       ],

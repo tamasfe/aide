@@ -69,6 +69,9 @@ declare global {
     anj_baee18f7_63ae_4aa0_b5d7_8160149e921b?: {
       init: () => void;
     };
+    anj_950afe10_5e7e_4fa8_9bef_21380e8558b3?: {
+      init: () => void;
+    };
   }
 }
 

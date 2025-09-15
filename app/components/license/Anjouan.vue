@@ -32,18 +32,24 @@
 <script setup lang="ts">
 const store = useSiteStore();
 
-const licenseStatus = ref<"active" | "inactive">("inactive");
+const licenseStatus = ref<null | {
+  status: "active" | "inactive";
+  divData: null | {
+    id: string;
+    anjSealId: string;
+  };
+}>(null);
 
-onMounted(() =>
-  licenseStatus.value = store.activateAnjouanLicenseIfAvailable(),
-);
+onMounted(() => {
+  licenseStatus.value = store.activateAnjouanLicenseIfAvailable();
+});
 </script>
 
 <template>
   <div
-    v-show="licenseStatus !== 'inactive'"
-    id="anj-baee18f7-63ae-4aa0-b5d7-8160149e921b"
-    data-anj-seal-id="baee18f7-63ae-4aa0-b5d7-8160149e921b"
+    v-show="licenseStatus?.status !== 'inactive'"
+    :id="licenseStatus?.divData?.id"
+    :data-anj-seal-id="licenseStatus?.divData?.anjSealId"
     data-anj-image-size="128"
     data-anj-image-type="basic-small"
     class="flex items-center justify-center"
