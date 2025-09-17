@@ -64,11 +64,19 @@ where
     T: OperationInput,
 {
     fn operation_input(ctx: &mut crate::generate::GenContext, operation: &mut Operation) {
-        // Make parameters proudced by T optional if T is wrapped in an Option.
-        // TODO: we should probably do this for the body as well.
+        // Make parameters & request body proudced by T optional if T is wrapped in an Option.
         let mut temp_op = Operation::default();
         T::operation_input(ctx, &mut temp_op);
         T::operation_input(ctx, operation);
+
+        if let (Some(request_body), Some(_)) = (&mut operation.request_body, temp_op.request_body) {
+            request_body
+                .as_item_mut()
+                .iter_mut()
+                .for_each(|request_body| {
+                    request_body.required = false;
+                });
+        }
 
         if temp_op.parameters.is_empty() {
             return;
