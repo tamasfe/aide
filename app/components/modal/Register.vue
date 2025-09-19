@@ -3,7 +3,7 @@
 // ARCHITECTURE STATUS: ✅
 // TRANSLATION STATUS:  ✅
 
-defineProps<{
+const props = defineProps<{
   open: boolean;
 }>();
 
@@ -12,9 +12,16 @@ const { $dependencies } = useNuxtApp();
 
 const ENABLE_SERVER_SIDE_RENDERING = false;
 const DEFER_CLIENT_SIDE_LOADING = true;
-const { data: currentStartedSignupFlow } = await useAsyncData(`current-signup-flow`, async () => {
-  return $dependencies.signupFlows.ui.searchCurrentSignupFlowOnModal.handle();
+const { data: currentStartedSignupFlow, refresh } = await useAsyncData(`current-signup-flow`, async () => {
+  return $dependencies.signupFlows.ui.searchCurrentSignupFlowOnModalInit.handle();
 }, { lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING });
+
+// Refresh the signup flow initial data when modal closes, for next time it opens
+watch(() => props.open, async (isOpen) => {
+  if (!isOpen) {
+    await refresh();
+  }
+});
 
 const onClosed = () => {
   $dependencies.users.ui.emitCommandCloseUserActionModal.handle();

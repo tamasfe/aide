@@ -12,6 +12,7 @@
 // Integration testing:         ❌
 
 import { provideRegisterFormErrorPulse } from "~/components/form/register/formErrorPulse";
+import type { UserTelephonePrimitives } from "./TelephoneBaseInputGroup.vue";
 
 defineProps({
   email: {
@@ -68,11 +69,12 @@ const onSubmit = handleSubmit(async () => {
    * We upsert one last time before the submission in case the frontend is out of sync with the backend, which can lead to an incomplete
    * submission, and thus a backend error.
    */
+  const telephone: UserTelephonePrimitives = values.telephone;
   await $dependencies.signupFlows.ui.upsertSignupFlowOnRegisterFormInputChange.handle({
     utmParameters: searchParams,
     email: values.email,
-    CPF: values.cpf,
-    telephone: values.telephone,
+    cpf: values.cpf,
+    telephone: telephone.prefix.value + telephone.value,
     password: values.password,
   });
 

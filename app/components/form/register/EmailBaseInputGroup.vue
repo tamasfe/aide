@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { debouncedWatch } from "@vueuse/core";
 import { useField } from "vee-validate";
 
 /**
@@ -24,13 +25,14 @@ const { value: email, errorMessage: emailErrorMessage } = useField("email", valu
 { initialValue: props.initialValue },
 );
 
-watch(email, async (value) => {
+// We use debounced for this field as every keystroke might be a valid value (unlike telephone or cpf that are only valid at the last one), thus we need to implement some debounce to reduce server load
+debouncedWatch(() => email.value, async (value) => {
   emits("loading", true);
   if (true === await $dependencies.signupFlows.ui.validateEmailOnRegisterFormChanged.handle(value)) {
     await $dependencies.signupFlows.ui.upsertSignupFlowOnRegisterFormInputChange.handle({ email: value });
   }
   emits("loading", false);
-});
+}, { debounce: 300 });
 </script>
 
 <template>

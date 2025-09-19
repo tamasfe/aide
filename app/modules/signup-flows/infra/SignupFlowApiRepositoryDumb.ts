@@ -1,14 +1,14 @@
 import { SignupFlow } from "../domain/SignupFlow";
 import type { SignupFlowApiRepositoryI } from "../domain/SignupFlowApiRepositoryI";
 import type { InfrastructureError } from "~/packages/result/infrastructure-error";
-import { success, unfold, type EmptyResult } from "~/packages/result";
+import { success, type EmptyResult } from "~/packages/result";
 
 export class SignupFlowApiRepositoryDumb implements SignupFlowApiRepositoryI {
   public async getById(
     id: string,
   ) {
     console.debug("SignupFlowApiRepositoryDumb.getById called with...", id);
-    return success(unfold(SignupFlow.newFromProps({
+    return success(SignupFlow.newFromProps({
       id,
       email: null,
       password: null,
@@ -17,8 +17,7 @@ export class SignupFlowApiRepositoryDumb implements SignupFlowApiRepositoryI {
       timeZone: null,
       locale: null,
       utmParameters: null,
-    },
-    )));
+    }));
   }
 
   public async create() {

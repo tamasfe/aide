@@ -1,21 +1,13 @@
+import type { DeepNonNullable } from "~/types/utils";
+import { SignupFlow, type SignupFlowPropsI } from "../domain/SignupFlow";
 import type { SignupFlowApiRepositoryI } from "../domain/SignupFlowApiRepositoryI";
 import type { SignupFlowIdClientRepositoryI } from "../domain/SignupFlowIdClientRepositoryI";
 import type { UserLanguageRetrieverI } from "../domain/UserLanguageRetriever";
 import type { UserTimeZoneRetrieverI } from "../domain/UserTimeZoneRetriever";
-import { UserTelephone } from "~/modules/users/domain/UserTelephone";
-import { UserCPF } from "~/modules/users/domain/UserCPF";
-import { UserEmail } from "~/modules/users/domain/UserEmail";
-import { UserPassword } from "~/modules/users/domain/UserPassword";
 import { success } from "~/packages/result";
 
-type Payload = {
-  email: string | null;
-  password: string | null;
-  telephone: string | null;
-  telephonePrefix: string | null;
-  CPF: string | null;
-  utmParameters: Record<string, string> | null;
-};
+export type UpsertSignupFlowPayload = Partial<DeepNonNullable<Omit<SignupFlowPropsI, "id">>>;
+
 export class UpsertSignupFlow {
   constructor(
     private readonly clientSignupFlowIdRepository: SignupFlowIdClientRepositoryI,
@@ -24,49 +16,17 @@ export class UpsertSignupFlow {
     private readonly userLanguageRetriever: UserLanguageRetrieverI,
   ) {}
 
-  public async handle(signupFlowPayload: Payload) {
-    const userEmailResult = signupFlowPayload.email
-      ? UserEmail.new(signupFlowPayload.email)
-      : success(null);
-    if (userEmailResult.isFailure) {
-      return userEmailResult;
+  public async handle(signupFlowPayload: UpsertSignupFlowPayload) {
+    if (Object.keys(signupFlowPayload).length === 0) {
+      return success();
     }
 
-    const userCPFResult = signupFlowPayload.CPF
-      ? UserCPF.new(signupFlowPayload.CPF)
-      : success(null);
-    if (userCPFResult.isFailure) {
-      return userCPFResult;
+    const signupFlowIdResult = await this.getCurrentOrCreateSignupFlowId();
+    if (signupFlowIdResult.isFailure) {
+      return signupFlowIdResult;
     }
 
-    const userPasswordResult = signupFlowPayload.password
-      ? UserPassword.new(signupFlowPayload.password)
-      : success(null);
-    if (userPasswordResult.isFailure) {
-      return userPasswordResult;
-    }
-
-    const userTelephoneResult = signupFlowPayload.telephone !== null && signupFlowPayload.telephonePrefix !== null
-      ? UserTelephone.new(signupFlowPayload.telephone, signupFlowPayload.telephonePrefix)
-      : success(null);
-    if (userTelephoneResult.isFailure) {
-      return userTelephoneResult;
-    }
-
-    const currentSignupFlowIdResult
-      = await this.clientSignupFlowIdRepository.searchCurrent();
-    if (currentSignupFlowIdResult.isFailure) {
-      return currentSignupFlowIdResult;
-    }
-
-    const currentSignupFlowResult = await this.getCurrentSignupFlowOrCreateNew(
-      currentSignupFlowIdResult.value,
-    );
-    if (currentSignupFlowResult.isFailure) {
-      return currentSignupFlowResult;
-    }
-
-    const errorSavingCurrentFlowIdResult = await this.clientSignupFlowIdRepository.saveCurrent(currentSignupFlowResult.value.id);
+    const errorSavingCurrentFlowIdResult = await this.clientSignupFlowIdRepository.saveCurrent(signupFlowIdResult.value);
     if (errorSavingCurrentFlowIdResult.isFailure) {
       return errorSavingCurrentFlowIdResult;
     }
@@ -81,47 +41,34 @@ export class UpsertSignupFlow {
       return userTimeZoneResult;
     }
 
-    const updatedSignupFlowResult = currentSignupFlowResult.value.newUpdatingProps(
+    const updatedSignupFlowResult = SignupFlow.newFromProps(
       {
-        email: userEmailResult.value?.value,
-        cpf: userCPFResult.value?.value,
-        password: userPasswordResult.value?.value,
-        telephone: userTelephoneResult.value?.value,
+        id: signupFlowIdResult.value,
         locale: userLocaleResult.value,
         timeZone: userTimeZoneResult.value,
-        utmParameters: signupFlowPayload.utmParameters,
+        cpf: signupFlowPayload.cpf || null,
+        email: signupFlowPayload.email || null,
+        password: signupFlowPayload.password || null,
+        telephone: signupFlowPayload.telephone || null,
+        utmParameters: signupFlowPayload.utmParameters || null,
       },
     );
 
-    if (updatedSignupFlowResult.isFailure) {
-      return updatedSignupFlowResult;
-    }
-
-    return this.signupFlowApiRepositoryI.update(updatedSignupFlowResult.value);
+    return this.signupFlowApiRepositoryI.update(updatedSignupFlowResult);
   }
 
-  private async getCurrentSignupFlowOrCreateNew(
-    signupFlowIdOrEmpty: string | null,
-  ) {
-    if (signupFlowIdOrEmpty === null) {
-      const signupFlowIdResult = await this.signupFlowApiRepositoryI.create();
-      if (signupFlowIdResult.isFailure) {
-        return signupFlowIdResult;
-      }
-      return this.signupFlowApiRepositoryI.getById(signupFlowIdResult.value);
+  private async getCurrentOrCreateSignupFlowId() {
+    const currentSignupFlowIdResult
+      = await this.clientSignupFlowIdRepository.searchCurrent();
+    if (currentSignupFlowIdResult.isFailure) {
+      return currentSignupFlowIdResult;
     }
 
-    const signupFlowResult
-      = await this.signupFlowApiRepositoryI.getById(signupFlowIdOrEmpty);
-    if (signupFlowResult.isFailure) {
-      if (signupFlowResult.error.name === "SignupFlowNotFound") {
-        const signupFlowIdResult = await this.signupFlowApiRepositoryI.create();
-        if (signupFlowIdResult.isFailure) {
-          return signupFlowIdResult;
-        }
-        return this.signupFlowApiRepositoryI.getById(signupFlowIdResult.value);
-      }
+    if (currentSignupFlowIdResult.value) {
+      return success(currentSignupFlowIdResult.value);
     }
-    return signupFlowResult;
+
+    const signupFlowIdResult = await this.signupFlowApiRepositoryI.create();
+    return signupFlowIdResult;
   }
 }

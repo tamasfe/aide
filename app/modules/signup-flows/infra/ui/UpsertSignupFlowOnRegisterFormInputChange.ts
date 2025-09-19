@@ -1,4 +1,4 @@
-import type { UpsertSignupFlow } from "../../application/UpsertSignupFlow";
+import type { UpsertSignupFlow, UpsertSignupFlowPayload } from "../../application/UpsertSignupFlow";
 import type { LoggerI } from "~/packages/logger/Logger";
 
 export class UpsertSignupFlowOnRegisterFormInputChange {
@@ -7,27 +7,10 @@ export class UpsertSignupFlowOnRegisterFormInputChange {
     private logger: LoggerI,
   ) {}
 
-  public async handle(payload: {
-    email?: string;
-    password?: string;
-    telephone?: string;
-    telephonePrefix?: string;
-    CPF?: string;
-    utmParameters?: Record<string, string>;
-  }) {
-    const resultUpsertingSignupFlow = await this.upsertSignupFlow.handle({
-      CPF: payload.CPF ?? null,
-      email: payload.email ?? null,
-      password: payload.password ?? null,
-      telephone: payload.telephone ?? null,
-      telephonePrefix: payload.telephonePrefix ?? null,
-      utmParameters: payload.utmParameters ?? null,
-    });
+  public async handle(payload: UpsertSignupFlowPayload) {
+    const resultUpsertingSignupFlow = await this.upsertSignupFlow.handle(payload);
 
     if (resultUpsertingSignupFlow.isFailure) {
-      if (resultUpsertingSignupFlow.error.name === "ErrorInvalidUserTelephone" || resultUpsertingSignupFlow.error.name === "InvalidCPF" || resultUpsertingSignupFlow.error.name === "InvalidUserEmail" || resultUpsertingSignupFlow.error.name === "InvalidUserPassword") {
-        return;
-      }
       this.logger.error("Error while upserting the signup flow", resultUpsertingSignupFlow.error);
     }
 

@@ -3,7 +3,7 @@ import type { SignupFlowIdClientRepositoryI } from "../domain/SignupFlowIdClient
 export class DeleteCurrentSignupFlowId {
   constructor(private signupFlowIdsRepo: SignupFlowIdClientRepositoryI) {}
 
-  public handle() {
+  public async handle() {
     return this.signupFlowIdsRepo.deleteCurrent();
   }
 }

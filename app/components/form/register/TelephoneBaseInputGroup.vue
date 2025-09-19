@@ -18,7 +18,7 @@ const emits = defineEmits<{
   (e: "loading", value: boolean): void;
 }>();
 
-type UserTelephonePrimitives = {
+export type UserTelephonePrimitives = {
   value: string;
   prefix: {
     value: string;
@@ -50,9 +50,16 @@ watch(telephone.value, async (telephone) => {
   emits("loading", true);
   const result = await validate();
   if (result.valid) {
+    const userTelephone = UserTelephone.new(telephone.value, telephone.prefix.value);
+
+    if (userTelephone.isFailure) {
+      $dependencies.common.logger.error("Telephone was just validated but failed instantiating a UserTelephone, this should never happen", userTelephone.error);
+      emits("loading", false);
+      return;
+    }
+
     await $dependencies.signupFlows.ui.upsertSignupFlowOnRegisterFormInputChange.handle({
-      telephone: telephone.value,
-      telephonePrefix: telephone.prefix.value,
+      telephone: userTelephone.value.value,
     });
   }
   emits("loading", false);

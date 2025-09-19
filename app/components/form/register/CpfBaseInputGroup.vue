@@ -28,7 +28,7 @@ const { value: cpf, errorMessage: cpfErrorMessage } = useField("cpf", value =>
 watch(cpf, async (value) => {
   emits("loading", true);
   if (true === await $dependencies.signupFlows.ui.validateCpfOnRegisterFormChanged.handle(value)) {
-    await $dependencies.signupFlows.ui.upsertSignupFlowOnRegisterFormInputChange.handle({ CPF: value });
+    await $dependencies.signupFlows.ui.upsertSignupFlowOnRegisterFormInputChange.handle({ cpf: value });
   }
   emits("loading", false);
 },

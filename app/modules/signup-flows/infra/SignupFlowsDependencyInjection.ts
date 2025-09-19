@@ -2,6 +2,7 @@ import type { PublicRuntimeConfig } from "nuxt/schema";
 import type { SignupFlowIdClientRepositoryI } from "../domain/SignupFlowIdClientRepositoryI";
 import type { SignupFlowApiRepositoryI } from "../domain/SignupFlowApiRepositoryI";
 import { UpsertSignupFlow } from "../application/UpsertSignupFlow";
+import { CreateSignupFlow } from "../application/CreateSignupFlow";
 import { SearchCurrentSignupFlow } from "../application/SearchCurrentSignupFlow";
 import { DeleteCurrentSignupFlowId } from "../application/DeleteCurrentSignupFlowId";
 import { SignupFlowIdClientRepositoryDumb } from "./SignupFlowIdClientRepositoryDumb";
@@ -15,7 +16,7 @@ import { ValidateEmailOnRegisterFormChanged } from "./ui/ValidateEmailOnRegister
 import { ValidateCpfOnRegisterFormChanged } from "./ui/ValidateCpfOnRegisterFormChanged";
 import { ValidatePasswordOnRegisterFormChanged } from "./ui/ValidatePasswordOnRegisterFormChanged";
 import { ValidateTelephoneOnRegisterFormChanged } from "./ui/ValidateTelephoneOnRegisterFormChanged";
-import { SearchCurrentSignupFlowOnModal } from "./ui/SearchCurrentSignupFlowOnModal";
+import { SearchCurrentSignupFlowOnModalInit } from "./ui/SearchCurrentSignupFlowOnModal";
 import { DeleteCurrentSignupFlowIdOnSignupFlowSubmitted } from "./ui/DeleteCurrentSignupFlowIdOnSignupFlowSubmitted";
 import { UpsertSignupFlowOnRegisterFormInputChange } from "./ui/UpsertSignupFlowOnRegisterFormInputChange";
 import type { CommonDependenciesI } from "~/dependency-injection/load-di";
@@ -23,13 +24,16 @@ import { ValidateUserCpf } from "~/modules/users/application/ValidateUserCpf";
 import { ValidateUserPassword } from "~/modules/users/application/ValidateUserPassword";
 import { ValidateUserTelephone } from "~/modules/users/application/ValidateUserTelephone";
 import { ValidateUserEmail } from "~/modules/users/application/ValidateUserEmail";
+import { StartSignupFlowOnInitAnonymousUser } from "./ui/StartSignupFlowOnInitAnonymousUser";
+import { MutexWebLocksNavigator } from "~/packages/mutex-and-locks/mutex-web-locks-navigator";
 
 export interface SignupFlowsDependencyInjectionI {
   signupFlowApiRepository: SignupFlowApiRepositoryI;
   clientSignupFlowIdRepository: SignupFlowIdClientRepositoryI;
   ui: {
     deleteCurrentSignupFlowIdOnSignupFlowSubmitted: DeleteCurrentSignupFlowIdOnSignupFlowSubmitted;
-    searchCurrentSignupFlowOnModal: SearchCurrentSignupFlowOnModal;
+    searchCurrentSignupFlowOnModalInit: SearchCurrentSignupFlowOnModalInit;
+    startSignupFlowOnInitAnonymousUser: StartSignupFlowOnInitAnonymousUser;
     submitSignupFlowOnFormSubmission: SubmitSignupFlowOnFormSubmission;
     upsertSignupFlowOnRegisterFormInputChange: UpsertSignupFlowOnRegisterFormInputChange;
     validateEmailOnRegisterFormChanged: ValidateEmailOnRegisterFormChanged;
@@ -76,11 +80,17 @@ export const createSignupFlowsDependencyInjection = (publicConfig: PublicRuntime
     clientSignupFlowIdRepository,
 
     ui: {
+      startSignupFlowOnInitAnonymousUser: new StartSignupFlowOnInitAnonymousUser(
+        new CreateSignupFlow(signupFlowApiRepository, clientSignupFlowIdRepository),
+        clientSignupFlowIdRepository,
+        signupFlowApiRepository,
+        commonDependencies.logger,
+      ),
       deleteCurrentSignupFlowIdOnSignupFlowSubmitted: new DeleteCurrentSignupFlowIdOnSignupFlowSubmitted(
         new DeleteCurrentSignupFlowId(clientSignupFlowIdRepository),
         commonDependencies.logger,
       ),
-      searchCurrentSignupFlowOnModal: new SearchCurrentSignupFlowOnModal(
+      searchCurrentSignupFlowOnModalInit: new SearchCurrentSignupFlowOnModalInit(
         new SearchCurrentSignupFlow(
           clientSignupFlowIdRepository,
           signupFlowApiRepository,

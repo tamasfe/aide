@@ -1,7 +1,7 @@
 import type { SearchCurrentSignupFlow } from "../../application/SearchCurrentSignupFlow";
 import type { LoggerI } from "~/packages/logger/Logger";
 
-export class SearchCurrentSignupFlowOnModal {
+export class SearchCurrentSignupFlowOnModalInit {
   constructor(
     private query: SearchCurrentSignupFlow,
     private logger: LoggerI,

@@ -5,7 +5,7 @@ import { ErrorAlreadyTakenCpf } from "../domain/errors/ErrorAlreadyTakenCpf";
 import { ErrorAlreadyTakenTelephone } from "../domain/errors/ErrorAlreadyTakenTelephone";
 import { ErrorAlreadyTakenEmail } from "../domain/errors/ErrorAlreadyTakenEmail";
 import { InfrastructureError } from "~/packages/result/infrastructure-error";
-import { fail, success, unfold, type EmptyResult } from "~/packages/result";
+import { fail, success, type EmptyResult } from "~/packages/result";
 import { createBackendOpenApiClient } from "~/packages/http-client/create-backend-open-api-client";
 import { HttpBackendApiError } from "~/packages/http-client/http-backend-api-error";
 import type { CommonDependenciesI } from "~/dependency-injection/load-di";
@@ -32,7 +32,7 @@ export class SignupFlowApiRepositoryGirobet implements SignupFlowApiRepositoryI 
     }
 
     if (data) {
-      return success(unfold(SignupFlow.newFromProps({
+      return success(SignupFlow.newFromProps({
         id,
         email: (data.fields.email || null) as string | null,
         password: (data.fields.password || null) as string | null,
@@ -40,9 +40,8 @@ export class SignupFlowApiRepositoryGirobet implements SignupFlowApiRepositoryI 
         telephone: (data.fields.phone || null) as string | null,
         locale: (data.fields.locale || null) as string | null,
         timeZone: (data.fields.time_zone || null) as string | null,
-        utmParameters: null,
-      },
-      )));
+        utmParameters: (data.fields.signup_params || null) as Record<string, string> | null,
+      }));
     }
 
     if (data === null) {
@@ -120,25 +119,25 @@ export class SignupFlowApiRepositoryGirobet implements SignupFlowApiRepositoryI 
     signupFlow: SignupFlow,
   ) {
     const requestBody: Record<string, string> = {};
-    if (signupFlow.email !== null) {
-      requestBody.email = signupFlow.email.value;
+    if (signupFlow.email) {
+      requestBody.email = signupFlow.email;
     }
-    if (signupFlow.password !== null) {
-      requestBody.password = signupFlow.password.value;
+    if (signupFlow.password) {
+      requestBody.password = signupFlow.password;
     }
-    if (signupFlow.cpf !== null) {
-      requestBody.CPF = signupFlow.cpf.value;
+    if (signupFlow.cpf) {
+      requestBody.CPF = signupFlow.cpf;
     }
-    if (signupFlow.telephone !== null) {
-      requestBody.phone = signupFlow.telephone.value;
+    if (signupFlow.telephone) {
+      requestBody.phone = signupFlow.telephone;
     }
-    if (signupFlow.timeZone !== null) {
+    if (signupFlow.timeZone) {
       requestBody.time_zone = signupFlow.timeZone;
     }
-    if (signupFlow.locale !== null) {
+    if (signupFlow.locale) {
       requestBody.locale = signupFlow.locale;
     }
-    if (signupFlow.utmParameters !== null) {
+    if (signupFlow.utmParameters) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       requestBody.signup_params = signupFlow.utmParameters as any; // Because the type is not correctly auto generated
     }
