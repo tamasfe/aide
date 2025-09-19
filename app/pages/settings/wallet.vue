@@ -14,9 +14,13 @@ const NUMBER_OF_PAYMENTS_TO_SHOW = 25;
 const loading = useState(`wallet-page-payments-loading`, () => true);
 
 const { data: paymentsData } = await useAsyncData("wallet-page-payments-data", async () => {
-  if (!walletStore.wallet) return;
-
   loading.value = true;
+
+  if (!walletStore.wallet) {
+    loading.value = false;
+    return;
+  }
+
   const data = await $dependencies.wallets.ui.searchPaymentsOnTable.handle(walletStore.wallet.walletId, null, 0, NUMBER_OF_PAYMENTS_TO_SHOW);
 
   loading.value = false;
