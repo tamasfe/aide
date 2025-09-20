@@ -14,6 +14,7 @@ export default defineNuxtConfig({
     "@vee-validate/nuxt",
     "@vite-pwa/nuxt",
     "nuxt-gtag",
+    "@nuxt/fonts",
   ],
   devtools: {
     enabled: true,
@@ -23,18 +24,6 @@ export default defineNuxtConfig({
       charset: "utf-8",
       viewport:
         "width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, viewport-fit=cover, user-scalable=no, shrink-to-fit=no",
-      link: [
-        { rel: "preconnect", href: "https://fonts.googleapis.com" },
-        {
-          rel: "preconnect",
-          href: "https://fonts.gstatic.com",
-          crossorigin: "",
-        },
-        {
-          rel: "stylesheet",
-          href: "https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap",
-        },
-      ],
       script: [
         /**
          * Anjouan Licensing Services Inc. logo. Refer to the Anjouan.vue component for more info.
@@ -164,6 +153,11 @@ export default defineNuxtConfig({
         semi: true,
       },
     },
+  },
+  fonts: {
+    families: [
+      { name: "Montserrat", provider: "google", weights: ["400", "500", "600", "700"] },
+    ],
   },
   // https://nuxt.com/modules/gtag
   gtag: {

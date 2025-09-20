@@ -9,6 +9,8 @@ const siteStore = useSiteStore();
     }"
   >
     <NuxtImg
+      fetchpriority="high"
+      preload
       provider="custom_cloudflare"
       sizes="550px md:750px"
       :src="siteStore.getRelativeAssetPath('slides/1.png')"
