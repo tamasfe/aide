@@ -35,6 +35,7 @@ export class WebsocketUserChannelsManager implements WebsocketUserChannelsManage
         this.logger.error("Error leaving the WS channel", resultLeavingChannel.error, { channel: "user", connection: wsConnection });
         return resultLeavingChannel;
       }
+      this.channelsEntered.user = false;
     }
 
     if (this.channelsEntered.tracker) {
@@ -43,6 +44,7 @@ export class WebsocketUserChannelsManager implements WebsocketUserChannelsManage
         this.logger.error("Error leaving the WS channel", resultLeavingChannel.error, { channel: "tracker", connection: wsConnection });
         return resultLeavingChannel;
       }
+      this.channelsEntered.tracker = false;
     }
 
     return success();

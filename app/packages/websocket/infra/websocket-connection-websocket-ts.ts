@@ -202,8 +202,8 @@ export class WebsocketConnectionTs implements WebsocketConnectionI {
   private ws: Websocket;
 
   private addListener(listener: (_i: Websocket, event: MessageEvent<string>) => void, listenerId: string) {
-    this.messageListeners.set(listenerId, listener);
     this.ws.addEventListener(WebsocketEvent.message, listener);
+    this.messageListeners.set(listenerId, listener);
   }
 
   private removeListener(listenerId: string) {
