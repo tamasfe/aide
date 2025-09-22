@@ -69,7 +69,7 @@ export default defineNuxtPlugin({
         Clarity.event("deposit-created");
       });
 
-      $dependencies.common.asyncMessagePublisher.subscribe("girobet-backend:events:payments:payment-status-updated", (event) => {
+      $dependencies.common.asyncMessagePublisher.subscribe("backend:events:payments:payment-status-updated", (event) => {
         if (event.data.status === "succeeded") {
           Clarity.upgrade("deposit-succeeded");
           Clarity.event("deposit-succeeded");

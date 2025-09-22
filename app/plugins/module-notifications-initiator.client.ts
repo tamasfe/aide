@@ -28,7 +28,7 @@ export default defineNuxtPlugin({
      *
      */
     $dependencies.common.asyncMessagePublisher.subscribe(
-      "girobet-backend:events:backend-notification-received",
+      "backend:events:backend-notification-received",
       ({ notification }) => $dependencies.notifications.ui.showNotificationToastToStoreFromWebsocketBackendNotification.handle(notification),
     );
 

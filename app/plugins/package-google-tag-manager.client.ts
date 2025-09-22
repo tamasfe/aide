@@ -1,13 +1,14 @@
-import { createGtm, GtmSupport, useGtm } from "@gtm-support/vue-gtm";
+import type { GtmSupport } from "@gtm-support/vue-gtm";
+import { createGtm, useGtm } from "@gtm-support/vue-gtm";
 
-type GtmEvent =
-  | "LOGIN"
-  | "LOGOUT"
-  | "SIGNUP"
-  | "DEPOSIT_INITIATED"
-  | "WITHDRAWAL_INITIATED"
-  | "DEPOSIT_SUCCEEDED"
-  | "WITHDRAWAL_SUCCEEDED";
+type GtmEvent
+  = | "LOGIN"
+    | "LOGOUT"
+    | "SIGNUP"
+    | "DEPOSIT_INITIATED"
+    | "WITHDRAWAL_INITIATED"
+    | "DEPOSIT_SUCCEEDED"
+    | "WITHDRAWAL_SUCCEEDED";
 
 /**
  * Safely-typed util function to fire our GiroBet GTM events.
@@ -20,21 +21,21 @@ const fireGtmEvent = <E extends GtmEvent>(
   data: E extends "LOGIN" | "LOGOUT" | "SIGNUP"
     ? { user_id: string }
     : E extends "DEPOSIT_INITIATED" | "DEPOSIT_SUCCEEDED"
-    ? {
-        amount_decimal: number;
-        currency: string;
-        user_id: string;
-        deposit_count: number;
-      }
-    : E extends "WITHDRAWAL_INITIATED" | "WITHDRAWAL_SUCCEEDED"
-    ? {
-        amount_decimal: number;
-        currency: string;
-        user_id: string;
-        withdrawal_count: number;
-      }
-    : never,
-  siteId: number | undefined
+      ? {
+          amount_decimal: number;
+          currency: string;
+          user_id: string;
+          deposit_count: number;
+        }
+      : E extends "WITHDRAWAL_INITIATED" | "WITHDRAWAL_SUCCEEDED"
+        ? {
+            amount_decimal: number;
+            currency: string;
+            user_id: string;
+            withdrawal_count: number;
+          }
+        : never,
+  siteId: number | undefined,
 ) => {
   gtm.push({
     event,
@@ -60,7 +61,7 @@ export default defineNuxtPlugin({
     nuxtApp.vueApp.use(
       createGtm({
         ...publicConfig.gtm,
-      })
+      }),
     );
 
     watch(
@@ -79,19 +80,20 @@ export default defineNuxtPlugin({
             gtm,
             "LOGIN",
             { user_id: String(userStore.user.id) },
-            siteStore.currentSite.id
+            siteStore.currentSite.id,
           );
-        } else if (isAuthenticated === false) {
+        }
+        else if (isAuthenticated === false) {
           fireGtmEvent(
             gtm,
             "LOGOUT",
             {
               user_id: String(userStore.user?.id || ""),
             },
-            siteStore.currentSite.id
+            siteStore.currentSite.id,
           );
         }
-      }
+      },
     );
 
     $dependencies.common.asyncMessagePublisher.subscribe(
@@ -107,9 +109,9 @@ export default defineNuxtPlugin({
           {
             user_id: String(userStore.user?.id || ""),
           },
-          siteStore.currentSite.id
+          siteStore.currentSite.id,
         );
-      }
+      },
     );
 
     $dependencies.common.asyncMessagePublisher.subscribe(
@@ -128,9 +130,9 @@ export default defineNuxtPlugin({
             currency,
             user_id: String(userStore.user?.id || ""),
           },
-          siteStore.currentSite.id
+          siteStore.currentSite.id,
         );
-      }
+      },
     );
 
     $dependencies.common.asyncMessagePublisher.subscribe(
@@ -149,13 +151,13 @@ export default defineNuxtPlugin({
             currency,
             user_id: String(userStore.user?.id || ""),
           },
-          siteStore.currentSite.id
+          siteStore.currentSite.id,
         );
-      }
+      },
     );
 
     $dependencies.common.asyncMessagePublisher.subscribe(
-      "girobet-backend:events:tracker:payment-updated",
+      "backend:events:tracker:payment-updated",
       async (event) => {
         const gtm = useGtm();
         if (!gtm) {
@@ -173,7 +175,7 @@ export default defineNuxtPlugin({
                 currency: event.currency,
                 user_id: String(userStore.user?.id || ""),
               },
-              siteStore.currentSite.id
+              siteStore.currentSite.id,
             );
           }
           if (event.paymentType === "withdrawal") {
@@ -186,11 +188,11 @@ export default defineNuxtPlugin({
                 currency: event.currency,
                 user_id: String(userStore.user?.id || ""),
               },
-              siteStore.currentSite.id
+              siteStore.currentSite.id,
             );
           }
         }
-      }
+      },
     );
   },
 });

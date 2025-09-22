@@ -56,7 +56,7 @@ export default defineNuxtPlugin({
               id: "balance_update_ws_to_async_message_subscriber",
               message: "balance_update",
               callback: (eventData) => {
-                $dependencies.common.asyncMessagePublisher.emit("girobet-backend:events:wallets:wallet-balance-updated", camelizeKeys(eventData.data));
+                $dependencies.common.asyncMessagePublisher.emit("backend:events:wallets:wallet-balance-updated", camelizeKeys(eventData.data));
               },
             }),
           $dependencies.websockets.ui.wsChannelManagers.user.subscribe(wsConnectionResult.value,
@@ -65,10 +65,10 @@ export default defineNuxtPlugin({
               message: "notification",
               callback: (eventData) => {
                 if (eventData.data.type === "payment_status_update") {
-                  $dependencies.common.asyncMessagePublisher.emit("girobet-backend:events:payments:payment-status-updated", camelizeKeys(eventData.data));
+                  $dependencies.common.asyncMessagePublisher.emit("backend:events:payments:payment-status-updated", camelizeKeys(eventData.data));
                 }
 
-                $dependencies.common.asyncMessagePublisher.emit("girobet-backend:events:backend-notification-received", { notification: {
+                $dependencies.common.asyncMessagePublisher.emit("backend:events:backend-notification-received", { notification: {
                   ...camelizeKeys(eventData).data,
                   createdAt: new Date().toISOString(), // It would be better if this came from the Backend
                 } });
@@ -79,7 +79,7 @@ export default defineNuxtPlugin({
             message: "tracker",
             callback: (event) => {
               if (event.data.event === "payment_update") {
-                $dependencies.common.asyncMessagePublisher.emit("girobet-backend:events:tracker:payment-updated", camelizeKeys(event.data.event_data));
+                $dependencies.common.asyncMessagePublisher.emit("backend:events:tracker:payment-updated", camelizeKeys(event.data.event_data));
               }
             },
           }),

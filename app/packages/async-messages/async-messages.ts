@@ -110,13 +110,13 @@ export interface AsyncMessagesTypes {
   /**
    * Events coming from the Backend
    */
-  "girobet-backend:events:payments:payment-status-updated": CamelizeKeys<Extract<components["schemas"]["WebsocketServerEvent"]["data"], { type: "payment_status_update" }>>;
-  "girobet-backend:events:tracker:payment-updated": CamelizeKeys<Extract<components["schemas"]["TrackerType"], { event: "payment_update" }>["event_data"]>;
-  "girobet-backend:events:kyc:kyc-process-completed": {
+  "backend:events:payments:payment-status-updated": CamelizeKeys<Extract<components["schemas"]["WebsocketServerEvent"]["data"], { type: "payment_status_update" }>>;
+  "backend:events:tracker:payment-updated": CamelizeKeys<Extract<components["schemas"]["TrackerType"], { event: "payment_update" }>["event_data"]>;
+  "backend:events:kyc:kyc-process-completed": {
     notificationId: number;
   };
-  "girobet-backend:events:wallets:wallet-balance-updated": CamelizeKeys<Extract<components["schemas"]["WebsocketServerEvent"], { type: "balance_update" }>["data"]>;
-  "girobet-backend:events:backend-notification-received": {
+  "backend:events:wallets:wallet-balance-updated": CamelizeKeys<Extract<components["schemas"]["WebsocketServerEvent"], { type: "balance_update" }>["data"]>;
+  "backend:events:backend-notification-received": {
     notification: NotificationBackend;
   };
 }

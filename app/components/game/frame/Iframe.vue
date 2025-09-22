@@ -21,7 +21,7 @@ const paymentListenerId = ref<number | null>(null);
 const iframeKey = ref(Date.now());
 onMounted(() => {
   paymentListenerId.value = $dependencies.common.asyncMessagePublisher.subscribe(
-    "girobet-backend:events:payments:payment-status-updated",
+    "backend:events:payments:payment-status-updated",
     async (event) => {
       if (event.data.status === "succeeded") {
         iframeKey.value = Date.now();
