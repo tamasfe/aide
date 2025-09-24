@@ -102,6 +102,7 @@ const createMiddlewareCorsErrorHandler: () => Middleware = () => {
 export const createBackendOpenApiClient = (clientOptions: { baseUrl: string }, commonDependencies: CommonDependenciesI) => {
   const client = createClient<paths>({ baseUrl: clientOptions.baseUrl, credentials: "include", headers: {
     "Content-Type": "application/json",
+    "X-Forwarded-Host": commonDependencies.requestContext.headers?.host,
     ...commonDependencies.requestContext.headers,
   } });
   client.use(
