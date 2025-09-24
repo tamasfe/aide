@@ -19,6 +19,9 @@ export class AuthenticationRepositoryGirobet implements AuthenticationRepository
 
   public async login(username: string, password: string): Promise<EmptyResult<ErrorInvalidAuthCredentials | InfrastructureError>> {
     const { data, error, response } = await this.apiClient.POST("/auth/login", {
+      params: {
+
+      },
       body: {
         username,
         password,
@@ -30,7 +33,7 @@ export class AuthenticationRepositoryGirobet implements AuthenticationRepository
     }
 
     if (error) {
-      if (error.code === "UNAUTHORIZED") {
+      if (error.code === "INVALID_CREDENTIALS") {
         return fail(
           ErrorInvalidAuthCredentials.new(username),
         );
@@ -112,7 +115,7 @@ export class AuthenticationRepositoryGirobet implements AuthenticationRepository
       }
 
       if (error) {
-        if (response.status === 422 || error.code === "UNAUTHORIZED") {
+        if (response.status === 422 || error.code === "INVALID_TOKEN") {
           return fail(
             ErrorInvalidPasswordRecoveryToken.new(token),
           );

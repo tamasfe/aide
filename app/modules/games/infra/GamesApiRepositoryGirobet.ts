@@ -1,7 +1,6 @@
 import { destructureGameIdentifier } from "../domain/Game";
 import type { GamesApiRepositoryI } from "../domain/GamesApiRepository";
 import { ErrorGameNotFound } from "../domain/ErrorGameNotFound";
-import { ErrorSearchIndexNotFound } from "../domain/ErrorSearchIndexNotFound";
 import { fail, success } from "~/packages/result";
 import { InfrastructureError } from "~/packages/result/infrastructure-error";
 import { createBackendOpenApiClient } from "~/packages/http-client/create-backend-open-api-client";
@@ -37,12 +36,6 @@ export class GamesApiRepositoryGirobet implements GamesApiRepositoryI {
       }
 
       if (error) {
-        if (error.code === "SEARCH_INDEX_NOT_FOUND") {
-          return fail(
-            ErrorSearchIndexNotFound.new({ searchParams }),
-          );
-        }
-
         return fail(
           InfrastructureError.newFromError({
             searchParams, pagination,
@@ -90,12 +83,6 @@ export class GamesApiRepositoryGirobet implements GamesApiRepositoryI {
       }
 
       if (error) {
-        if (error.code === "SEARCH_INDEX_NOT_FOUND") {
-          return fail(
-            ErrorSearchIndexNotFound.new({ searchParams }),
-          );
-        }
-
         return fail(
           InfrastructureError.newFromError({
             searchParams, pagination,

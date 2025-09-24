@@ -54,16 +54,77 @@ export interface paths {
                         "application/json": components["schemas"]["AccessTokenTokenResponse"];
                     };
                 };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
+                /** @description Unauthorized */
+                401: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["ServerError"];
+                        "application/json": {
+                            /** @constant */
+                            code: "UNAUTHORIZED";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Jurisdiction Not Supported but Alternative Site Available, Jurisdiction Not Supported, Host Not Supported, Jurisdiction Supported but Not Enabled, User Account Jurisdiction Mismatch */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
                     };
                 };
             };
@@ -164,3149 +225,6 @@ export interface paths {
                         "application/json": components["schemas"]["WebsocketServerEvent"];
                     };
                 };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/auth/whoami": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Whoami
-         * @description The whoami endpoint returns some basic information about the currently logged in user.
-         *     This is primarily used for verifying that the user is logged in.
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["WhoamiResponse"];
-                    };
-                };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/auth/fasttrack-token": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Fasttrack token
-         * @description This endpoint returns a JWT token, to be used by the Fasttrack frontend SDK for user verification
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["GetFasttrackTokenResponseBody"];
-                    };
-                };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/auth/login": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Login
-         * @description Authenticates a user and sets the session cookie
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["LoginRequest"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/auth/logout": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Logout
-         * @description User logout, which will forcefully expire the current session cookie.
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/auth/forgot-password": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Password reset request
-         * @description This endpoint will take a user email and send out a password reset email to the user.
-         *     The email will contain a link that the user can click on to reset their password. The link will be valid for 60 minutes.
-         *     Note that this endpoint will always return a 200 status code, even if the email does not exist in the database.
-         *     This is to prevent attackers from using this endpoint to determine if an email exists in the database.
-         *     The endpoint will also always take the same amount of time to respond, regardless of whether the email exists in the database or not.
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["InitializePasswordResetRequest"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/auth/reset-password": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Password reset
-         * @description This endpoint takes a password reset token and the newly chosen password from the user.
-         *     The token is sent to the user's email when they request a password reset.
-         *     If the token is valid, the user's password will be updated to the new password.
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["FinalizePasswordResetRequest"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/signup/flow": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Create Signup Flow
-         * @description Create a new signup flow that can be incrementally patched and the submitted for completion.
-         *     This endpoint requires the `CF-IPCountry` header to be set and to be a valid jurisdiction.
-         *     This header is normally set by Cloudflare and is used to determine the jurisdiction of the user,
-         *     buy you may also set it manually during development.
-         *     Note that you may need to configure the CORS settings to allow the `CF-IPCountry` header to be sent.
-         *
-         *     The ID returned by the signup flow can be stored in the frontend URL or other storage
-         *     to recover the signup flow if the user reloads the page or does other destructive actions.
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["CreateSignupFlowResponse"];
-                    };
-                };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/signup/flow/{flow_id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get Signup Flow
-         * @description Get the specified signup flow and all the fields that have been added to it.
-         *     Use this for recovering form data if the user reloads the page or does other destructive actions.
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    /** @description The ID of the signup flow to retrieve. */
-                    flow_id: string;
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["SignupFlowResponse"];
-                    };
-                };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        /**
-         * Submit Signup Flow
-         * @description Submit the specified signup flow and create the user entry.
-         *     This can fail if certain validation of fields and jurisdiction dependent information is unsuccessful.
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    /** @description The ID of the signup flow to retrieve. */
-                    flow_id: string;
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Update Signup Flow
-         * @description
-         *     Patch the specified signup flow with additional information.
-         *
-         *     Example request body for brazilian users:
-         *     ```
-         *      {
-         *     	"first_name": "John",
-         *     	"last_name": "Doe",
-         *     	"email": "john@doe.com",
-         *     	"password": "test",
-         *     	"CPF": "549.448.010-09",
-         *     	"signup_params": {           // optional
-         *     		"utm_source": "google",
-         *     		"utm_medium": "cpc",
-         *     		"utm_campaign": "test",
-         *     		"utm_term": "test",
-         *     		"utm_content": "test",
-         *     		"utm_referrer": "test",
-         *     		"utm_adgroup": "test",
-         *     		"utm_ad": "test",
-         *     		"utm_creative": "test",
-         *     		"utm_matchtype": "test",
-         *     		"utm_network": "test",
-         *     		"utm_device": "test"
-         *     	}
-         *     }
-         *     ```
-         *
-         *     #### Testing CPFs that you can use to create a user
-         *
-         *     - 549.448.010-09
-         *     - 653.358.910-50
-         *     - 715.176.900-80
-         *     - 395.677.760-32
-         *     - 993.093.100-73
-         *
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    /** @description The ID of the signup flow to retrieve. */
-                    flow_id: string;
-                };
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["PatchSignupFlowRequest"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/payment/deposit": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Create Deposit Flow
-         * @description Create a new deposit flow.
-         *         This flow will be active as long as we don't receive a
-         *         confirmation from our payment providers, that a deposit has been completed.
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["PaymentTransactionRequest"];
-                };
-            };
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["CreateDepositFlowResponse"];
-                    };
-                };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/payment/withdraw": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Create Withdrawal Flow
-         * @description Create a withdrawal flow.
-         *         This flow will be active as long as we don't receive a confirmation from our payment provider,
-         *         that they have successfully withdrawn the desired amount into the user's bank account.
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["PaymentTransactionRequest"];
-                };
-            };
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["CreateWithdrawalFlowResponse"];
-                    };
-                };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/payment/list": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * List Payment Flows
-         * @description List all payment flows for the currently logged in user.
-         */
-        get: {
-            parameters: {
-                query?: {
-                    /** @description The payment type to filter the payment flows by. If not set, all payment
-                     *      types will be included. */
-                    payment_type?: components["schemas"]["PaymentType"] | null;
-                    /** @description The wallet ID to filter the payment flows by. If not set, all wallets of
-                     *      the user will be included. */
-                    wallet_id?: components["schemas"]["WalletId"] | null;
-                    limit?: number;
-                    offset?: number;
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["PaginatorResponse_for_PaymentFlowResponse_and_ListPaymentFlowsQuery_and_int64"];
-                    };
-                };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/payment/limits": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get Payment Limits
-         * @description Get the payment limits for the currently logged in user.
-         */
-        get: {
-            parameters: {
-                query: {
-                    /** @description The currency to get the payment limits for. */
-                    currency: components["schemas"]["Currency"];
-                    /** @description The payment method to get the payment limits for. */
-                    payment_method_id: components["schemas"]["PaymentMethodId"];
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["PaymentLimitsResponse"];
-                    };
-                };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/payment/methods": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get Payment Methods
-         * @description Get all payment methods that can be used by the user for the given currency.
-         */
-        get: {
-            parameters: {
-                query: {
-                    /** @description The currency to get the payment methods for. */
-                    currency: components["schemas"]["Currency"];
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["PaymentMethodResponse"][];
-                    };
-                };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/payment/{flow_id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get Payment Flow
-         * @description Get a payment flow by its ID.
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    /** @description The ID of the payment flow. */
-                    flow_id: components["schemas"]["PaymentFlowId"];
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["PaymentFlowResponse"];
-                    };
-                };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/system/licenses": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get Matched Licenses
-         * @description Get the available system licenses for the requested jurisdiction/site header combination.
-         *             The licenses are ordered in their priority order,
-         *             and thus the first license in the list is the most preferred one.
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["LicenseResponse"][];
-                    };
-                };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/system/preflight": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Preflight Check
-         * @description This preflight endpoint should be the first endpoint
-         *             to be called by the client or the SSR implementation.
-         *             It is used to check if the user is able to access the
-         *             host + jurisdiction combination. Should they not be allowed to access
-         *             the site, the endpoint will return a `JURISDICTION_NOT_SUPPORTED` error,
-         *             possibly containing a list of alternative sites that the user can access.
-         *
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/game-provider/list": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * List Game Providers
-         * @description List all game providers.
-         */
-        get: {
-            parameters: {
-                query?: {
-                    limit?: number;
-                    offset?: number;
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["PaginatorResponse_for_GameProviderResponse_and_null_and_int64"];
-                    };
-                };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/game-provider/{provider_identifier}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get Game Provider
-         * @description Get a game provider by its ID.
-         *             This can be used to show a more detailed view of of the
-         *             provider profile in the frontend, which may require more data than
-         *             the search endpoint provides.
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    /** @description The ID of the game provider. */
-                    provider_identifier: components["schemas"]["GameProviderIdentifier"];
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description The response to a game provider request. It contains all available
-                 *      information about the provider. */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["GameProviderResponse"];
-                    };
-                };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/game/{provider_slug}/{game_slug}/session": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Create Game Session
-         * @description Create a new game session by providing the game ID,
-         *         as well as the currency with which the game should be played with,
-         *         and the client type of the user.
-         *         The response will redirect the user to the third party URL of the game provider.
-         *         Please note that this request should be used in conjunction with an iframe,
-         *         so that the user does not get redirected from the casino website.
-         */
-        get: {
-            parameters: {
-                query: {
-                    /** @description The device type the game session is started on. Some games may only be
-                     *      available on certain devices. */
-                    client_type: components["schemas"]["Device"];
-                    /** @description The currency (wallet) to use for the game session. It can not be changed
-                     *      during the session. */
-                    currency: components["schemas"]["Currency"];
-                };
-                header?: never;
-                path: {
-                    game_slug: string;
-                    provider_slug: string;
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description no content */
-                307: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        /**
-         * Create Game Session
-         * @description Create a new game session by providing the game ID,
-         *         as well as the currency with which the game should be played with,
-         *         and the client type of the user.
-         */
-        post: {
-            parameters: {
-                query: {
-                    /** @description The device type the game session is started on. Some games may only be
-                     *      available on certain devices. */
-                    client_type: components["schemas"]["Device"];
-                    /** @description The currency (wallet) to use for the game session. It can not be changed
-                     *      during the session. */
-                    currency: components["schemas"]["Currency"];
-                };
-                header?: never;
-                path: {
-                    game_slug: string;
-                    provider_slug: string;
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["CreateGameSessionPostResponse"];
-                    };
-                };
-                /** @description no content */
-                307: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/game/list": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * List Games
-         * @description List all games or games of a specific category.
-         */
-        get: {
-            parameters: {
-                query?: {
-                    /** @description The category identifier to filter games by. If set, only games in this
-                     *      category are returned. Note: this is not the category ID, but the
-                     *      identifier. */
-                    category?: string | null;
-                    /** @description The provider to filter games by. If set, only games by this provider are
-                     *      returned. */
-                    provider_identifier?: components["schemas"]["GameProviderIdentifier"] | null;
-                    limit?: number;
-                    offset?: number;
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["PaginatorResponse_for_GameResponse_and_ListGameQuery_and_int64"];
-                    };
-                };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/game/action/list": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * List Game Actions
-         * @description Get a list of all game actions of the user.
-         */
-        get: {
-            parameters: {
-                query?: {
-                    /** @description The type of the game action to filter by. If not set, all game actions
-                     *      (bet, win, etc.) will be included. */
-                    action_type?: components["schemas"]["ListBetTypeQuery"] | null;
-                    /** @description Game ID to filter the game actions by. If not set, all game actions will
-                     *      be included. */
-                    game_identifier?: components["schemas"]["GameIdentifier"] | null;
-                    limit?: number;
-                    offset?: number;
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["PaginatorResponse_for_GameActionResponse_and_ListGameActionsQuery_and_int64"];
-                    };
-                };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/game/category/list": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get Available Game Categories
-         * @description Get a list of all game categories available in the casino.
-         *         This can be used to show a list of game categories to the user,
-         *         so that they can choose which category they want to explore.
-         *         There are two major types of categories, staic and dynamic.
-         *         Static categories are predefined by the casino, while dynamic categories
-         *         cover games based on user behavior and other factors.
-         *         Dynamic categories are recalcuated periodically.
-         */
-        get: {
-            parameters: {
-                query?: {
-                    /** @description The group of game categories to filter by. If set, only categories in
-                     *      this group are returned. */
-                    group?: string | null;
-                    /** @description Whether to include the games in the category in the response. If set to
-                     *      `true`, the games in the category are included in the response. */
-                    include_games?: boolean;
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["GameCategoryListResponse"][];
-                    };
-                };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/game/{provider_slug}/{game_slug}/rating": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Rate Game
-         * @description Rate a game by its ID.
-         *         This can be used to allow users to rate games,
-         *         so that other users can see the rating of the game.
-         *         Sending a rating of null will remove the rating of the user.
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    game_slug: string;
-                    provider_slug: string;
-                };
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["RateGameRequest"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                204: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/game/{provider_slug}/{game_slug}/ratings": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get Game Ratings
-         * @description User ratings split up into likes and dislikes
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    game_slug: string;
-                    provider_slug: string;
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["GameRatingsResponse"];
-                    };
-                };
-                /** @description no content */
-                204: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/game/{provider_slug}/{game_slug}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get Game
-         * @description Get a game by its ID. This can be used to show a more detailed view of a game,
-         *         including its name, description,
-         *         and other metadata, that might be required to display the game on the frontend.
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    game_slug: string;
-                    provider_slug: string;
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["GameResponse"];
-                    };
-                };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/notification/list": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get All Notifications
-         * @description Get a list of all notifications for the current user.
-         */
-        get: {
-            parameters: {
-                query?: {
-                    /** @description The read status of the notifications to filter by. */
-                    read_status?: components["schemas"]["ReadStatus"] | null;
-                    /** @description The types of the notifications to filter by. */
-                    types?: components["schemas"]["NotificationTypeDiscriminants"][] | null;
-                    limit?: number;
-                    offset?: number;
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["PaginatorResponse_for_NotificationResponse_and_ListNotificationsQuery_and_int64"];
-                    };
-                };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/notification/{notification_id}/read-status": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Update Notification Read Status
-         * @description Mark a notification as read.
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    /** @description The ID of the notification to retrieve. */
-                    notification_id: components["schemas"]["NotificationId"];
-                };
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["ReadStatus"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/user/profile": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get User Profile
-         * @description Get the user profile of the currently logged in user.
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["UserResponse"];
-                    };
-                };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/user/balance": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get User Balance
-         * @description Get the balance of the currently logged in user. The wallets are returned in the order of their selection. Frontends mays utilize this order to display the wallets, and to identify the active wallet.
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["UserWalletBalanceResponse"][];
-                    };
-                };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/user/settings": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get User Settings
-         * @description Get the settings of the currently logged in user.
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["PatchUserSettingsRequest"];
-                    };
-                };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Update User Settings
-         * @description Update the settings of the currently logged in user.
-         *
-         *     This endpoint allows for partial updates of the user settings, by
-         *     only updating the fields that are provided in the request.
-         *
-         *     If a field is set to `null`, it will be reset to the default value.
-         *
-         *     If a field is not provided, it will not be updated.
-         *
-         *     Partial updates follow the [RFC 7396](https://datatracker.ietf.org/doc/html/rfc7396) JSON Merge Patch standard.
-         *
-         *     ```json
-         *     // Given the following JSON
-         *     {
-         *     	"title": "Goodbye!",
-         *     	"author" : {
-         *     		"givenName" : "John",
-         *     		"familyName" : "Doe"
-         *     	},
-         *     	"tags":[ "example", "sample" ],
-         *     	"content": "This will be unchanged"
-         *     }
-         *
-         *     // Merged with the following patch
-         *     {
-         *     	"title": "Hello!",
-         *     	"phoneNumber": "+01-123-456-7890",
-         *     	"author": {
-         *     		"familyName": null
-         *     	},
-         *     	"tags": [ "example" ]
-         *     }
-         *
-         *     // Will result in the following JSON
-         *     {
-         *     	"title": "Hello!",
-         *     	"author" : {
-         *     		"givenName" : "John"
-         *     	},
-         *     	"tags": [ "example" ],
-         *     	"content": "This will be unchanged",
-         *     	"phoneNumber": "+01-123-456-7890"
-         *     }
-         *     ```
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["PatchUserSettingsRequest"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/user/address": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Update User Address
-         * @description Update the address of the currently logged in user. The address is used for shipping and other purposes.
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["PatchUserAddressRequest"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/user/active-wallet": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Update User Active Wallet
-         * @description Update the selected wallet of the user. The user balance endpoint will return the user's wallets in the order of their selection time.
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["SelectWalletRequest"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/user/password": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Update User Password
-         * @description Update the password of the currently logged in user. The current password is required to ensure that the user is authorized to change the password.
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["PatchUserPasswordRequest"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/user/username": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Update Username
-         * @description Update the username of the currently logged in user. The username must be unique.
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["PatchUsernameRequest"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/user/delete": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Delete User Account
-         * @description Delete the account of the currently logged in user. The user must provide the current password to ensure that they are authorized to delete the account.
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["DeleteUserAccountRequest"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/kyc/token": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Get KYC Access Token
-         * @description This endpoint returns a temporary short-lived token that is bound to the user.
-         *     It can be used in conjunction with a KYC provider's SDK to perform KYC validation in the frontend.
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["KycAccessTokenResponse"];
-                    };
-                };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/kyc/status": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get KYC Status
-         * @description Returns the current KYC status of the user.
-         *     This endpoint may be used to prevent the user from going through the KYC process again if they have already completed it.
-         *
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["KycStatusResponse"];
-                    };
-                };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/ticker/{channel}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get Ticker Channel Events
-         * @description Get pre-buffered events for a specific ticker channel. This should be used in conjunction with SSR and the WebSocket connection to pre-fill tickers on SSR and to make them live-update on client side.
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    /** @description The ticker channel */
-                    channel: components["schemas"]["WebsocketTickerChannel"];
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["WebsocketServerEvent"][];
-                    };
-                };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/search/games": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Search Games
-         * @description Search for active games by name or other criteria.
-         */
-        get: {
-            parameters: {
-                query?: {
-                    /** @description An organic search query to find items by. */
-                    query?: string | null;
-                    limit?: number;
-                    offset?: number;
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["PaginatorResponse_for_ScoredSearchResponseItem_for_SearchGameResponse_and_SearchQuery_and_Nullable_uint"];
-                    };
-                };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/search/game-providers": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Search Game Providers
-         * @description Search for active game providers by name or other criteria.
-         */
-        get: {
-            parameters: {
-                query?: {
-                    /** @description An organic search query to find items by. */
-                    query?: string | null;
-                    limit?: number;
-                    offset?: number;
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["PaginatorResponse_for_ScoredSearchResponseItem_for_SearchGameProviderResponse_and_SearchQuery_and_Nullable_uint"];
-                    };
-                };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/system/site-setup": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get Matched Site
-         * @description The the matched site based on the host header.
-         *             Use this to differentiate between different sites in a multi-site setup,
-         *             allowing for different configurations, themes, etc.
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Site setup response, used for dymainc frontend branding and configuration. */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["SiteResponse"];
-                    };
-                };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ServerError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/admin/user/list": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * List Users
-         * @description Fetch a paginated list of users in the system.
-         */
-        get: {
-            parameters: {
-                query?: {
-                    filters?: string;
-                    limit?: number;
-                    offset?: number;
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["PaginatorResponse_for_AdminUserResponse_and_ActiveFilters_and_int64"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/admin/user/{user_id}/block": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Block User
-         * @description Block the user until the specified date. If date is not set, the user will be blocked indefinitely.
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    user_id: components["schemas"]["UserId"];
-                };
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["BlockUserBody"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/admin/user/{user_id}/unblock": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Unblock User
-         * @description Unblock the user.
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    user_id: components["schemas"]["UserId"];
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/admin/user/{user_id}/exclude": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Exclude User
-         * @description Exclude the user until the specified date.
-         *         If date is not set, the user will be excluded indefinitely.
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    user_id: components["schemas"]["UserId"];
-                };
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["BlockUserBody"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/admin/user/{user_id}/include": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Include User
-         * @description Include the user.
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    user_id: components["schemas"]["UserId"];
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/admin/session/list": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * List Sessions
-         * @description Fetch sessions
-         */
-        get: {
-            parameters: {
-                query?: {
-                    filters?: string;
-                    limit?: number;
-                    offset?: number;
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["PaginatorResponse_for_SessionResponse_and_ActiveFilters_and_int64"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/admin/payment/list": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * List Payments
-         * @description This endpoint returns a list of payments and payment flows in chronological order with the newest items first.
-         *     You may filter payments via the following sample filter:
-         *
-         *     ```json
-         *     {
-         *     	"payment_flow_id": {"$eq": "1"},
-         *     	"payment_id": {"$eq": "1"},
-         *     	"wallet_id": {"$eq": "1"},
-         *     	"user_id": {"$eq": "1"},
-         *     	"payment_flow_status": {"$eq": "pending"},
-         *     	"payment_type": {"$eq": "deposit"},
-         *     	"payment_flow_amount": {"$eq": "100"},
-         *     	"payment_amount": {"$eq": "100"},
-         *     	"curency": {"$eq": "USD"},
-         *     	"payment_is_adjustment": {"$eq": "true"},
-         *     	"user_name": {"$contains": "john"},
-         *     	"user_email": {"$contains": "john"},
-         *     	"integration_id": {"$eq": "1"},
-         *     	"payment_provider_name": {"$contains": "star"},
-         *     	"payment_method_id": {"$eq": "1"},
-         *     	"payment_method_name": {"$contains": "pix"},
-         *     	"payment_flow_created_at": {"$eq": "2021-01-01T00:00:00Z"},
-         *     	"payment_created_at": {"$eq": "2021-01-01T00:00:00Z"},
-         *     	"payment_flow_status_created_at": {"$eq": "2021-01-01T00:00:00Z"}
-         *     }
-         *     ```
-         */
-        get: {
-            parameters: {
-                query?: {
-                    filters?: string;
-                    limit?: number;
-                    offset?: number;
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["PaginatorResponse_for_AdminPaymentListResponse_and_ActiveFilters_and_int64"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/admin/payment/flow/{flow_id}/approve": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Approve Payment Flow
-         * @description Approve the specified payment flow.
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    flow_id: components["schemas"]["PaymentFlowId"];
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/admin/payment/flow/{flow_id}/reject": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Reject Payment Flow
-         * @description Reject the specified payment flow.
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    flow_id: components["schemas"]["PaymentFlowId"];
-                };
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["RejectPaymentFlowBody"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/admin/payment/limits/{currency}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Update Payment Limits
-         * @description Update the limits for the specified currency.
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    currency: components["schemas"]["Currency"];
-                };
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["LimitOverridesPrototype"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/admin/payment/balance/adjust": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Update User Balance
-         * @description Adjust the balance for the specified user and currency.
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["AdjustUserBalanceBody"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/admin/wallet/{wallet_id}/limits": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Update Wallet Limits
-         * @description Patch the wallet limits.
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    wallet_id: components["schemas"]["WalletId"];
-                };
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["LimitOverridesPrototype"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/admin/game/rounds": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Read Game Rounds
-         * @description Fetch game rounds
-         */
-        get: {
-            parameters: {
-                query?: {
-                    filters?: string;
-                    limit?: number;
-                    offset?: number;
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["PaginatorResponse_for_AdminBetResponse_and_ActiveFilters_and_int64"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/admin/category/list": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Read Game Categories
-         * @description Fetch game categories
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["CategoryResponse"][];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/admin/category/group/list": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Read Category Groups
-         * @description Fetch category groups
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["CategoryGroupResponse"][];
-                    };
-                };
             };
         };
         put?: never;
@@ -3385,6 +303,6237 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/auth/whoami": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Whoami
+         * @description The whoami endpoint returns some basic information about the currently logged in user.
+         *     This is primarily used for verifying that the user is logged in.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["WhoamiResponse"];
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "UNAUTHORIZED";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Jurisdiction Supported but Not Enabled, Jurisdiction Not Supported, User Account Jurisdiction Mismatch, Jurisdiction Not Supported but Alternative Site Available, Host Not Supported */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/fasttrack-token": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Fasttrack token
+         * @description This endpoint returns a JWT token, to be used by the Fasttrack frontend SDK for user verification
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["GetFasttrackTokenResponseBody"];
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "UNAUTHORIZED";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description User Account Jurisdiction Mismatch, Host Not Supported, Jurisdiction Not Supported, Jurisdiction Supported but Not Enabled, Jurisdiction Not Supported but Alternative Site Available */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/login": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Login
+         * @description Authenticates a user and sets the session cookie
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description User Agent */
+                    "User-Agent"?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["LoginRequest"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Invalid Credentials */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INVALID_CREDENTIALS";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Validation Failed */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "VALIDATION_FAILED";
+                            message?: string;
+                            metadata: components["schemas"]["SystemValidationErrors"];
+                        };
+                    };
+                };
+                /** @description Host Not Supported, Jurisdiction Not Supported, Jurisdiction Not Supported but Alternative Site Available, User Account Jurisdiction Mismatch, Jurisdiction Supported but Not Enabled */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/logout": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Logout
+         * @description User logout, which will forcefully expire the current session cookie.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description User Agent */
+                    "User-Agent"?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "UNAUTHORIZED";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Jurisdiction Not Supported but Alternative Site Available, Jurisdiction Supported but Not Enabled, Host Not Supported, Jurisdiction Not Supported, User Account Jurisdiction Mismatch */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/forgot-password": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Password reset request
+         * @description This endpoint will take a user email and send out a password reset email to the user.
+         *     The email will contain a link that the user can click on to reset their password. The link will be valid for 60 minutes.
+         *     Note that this endpoint will always return a 200 status code, even if the email does not exist in the database.
+         *     This is to prevent attackers from using this endpoint to determine if an email exists in the database.
+         *     The endpoint will also always take the same amount of time to respond, regardless of whether the email exists in the database or not.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["InitializePasswordResetRequest"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Validation Failed */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "VALIDATION_FAILED";
+                            message?: string;
+                            metadata: components["schemas"]["SystemValidationErrors"];
+                        };
+                    };
+                };
+                /** @description User Account Jurisdiction Mismatch, Host Not Supported, Jurisdiction Not Supported, Jurisdiction Not Supported but Alternative Site Available, Jurisdiction Supported but Not Enabled */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/reset-password": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Password reset
+         * @description This endpoint takes a password reset token and the newly chosen password from the user.
+         *     The token is sent to the user's email when they request a password reset.
+         *     If the token is valid, the user's password will be updated to the new password.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["FinalizePasswordResetRequest"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Invalid or Expired Token */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INVALID_TOKEN";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Validation Failed */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "VALIDATION_FAILED";
+                            message?: string;
+                            metadata: components["schemas"]["SystemValidationErrors"];
+                        };
+                    };
+                };
+                /** @description User Account Jurisdiction Mismatch, Jurisdiction Supported but Not Enabled, Jurisdiction Not Supported but Alternative Site Available, Jurisdiction Not Supported, Host Not Supported */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/signup/flow": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create Signup Flow
+         * @description Create a new signup flow that can be incrementally patched and the submitted for completion.
+         *
+         *     The ID returned by the signup flow can be stored in the frontend URL or other storage
+         *     to recover the signup flow if the user reloads the page or does other destructive actions.
+         *
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CreateSignupFlowResponse"];
+                    };
+                };
+                /** @description Jurisdiction Supported but Not Enabled, Host Not Supported, Jurisdiction Not Supported, User Account Jurisdiction Mismatch, Jurisdiction Not Supported but Alternative Site Available */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/signup/flow/{flow_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Signup Flow
+         * @description Get the specified signup flow and all the fields that have been added to it.
+         *     Use this for recovering form data if the user reloads the page or does other destructive actions.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description The ID of the signup flow to retrieve. */
+                    flow_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["SignupFlowResponse"];
+                    };
+                };
+                /** @description Signup Flow Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "SIGNUP_FLOW_NOT_FOUND";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Host Not Supported, Jurisdiction Not Supported, User Account Jurisdiction Mismatch, Jurisdiction Supported but Not Enabled, Jurisdiction Not Supported but Alternative Site Available */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        /**
+         * Submit Signup Flow
+         * @description Submit the specified signup flow and create the user entry.
+         *     This can fail if certain validation of fields and jurisdiction dependent information is unsuccessful.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description User Agent */
+                    "User-Agent"?: string;
+                };
+                path: {
+                    /** @description The ID of the signup flow to retrieve. */
+                    flow_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Invalid Registration Data */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INVALID_DATA";
+                            message?: string;
+                            metadata: components["schemas"]["SystemValidationErrors"];
+                        };
+                    };
+                };
+                /** @description Registration Not Allowed */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "REGISTRATION_NOT_ALLOWED";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Signup Flow Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "FLOW_NOT_FOUND";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Jurisdiction Not Supported but Alternative Site Available, Host Not Supported, User Account Jurisdiction Mismatch, Jurisdiction Supported but Not Enabled, Jurisdiction Not Supported */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update Signup Flow
+         * @description
+         *     Patch the specified signup flow with additional information.
+         *
+         *     Example request body for brazilian users:
+         *     ```
+         *      {
+         *     	"first_name": "John",
+         *     	"last_name": "Doe",
+         *     	"email": "john@doe.com",
+         *     	"password": "test",
+         *     	"CPF": "549.448.010-09",
+         *     	"signup_params": {           // optional
+         *     		"utm_source": "google",
+         *     		"utm_medium": "cpc",
+         *     		"utm_campaign": "test",
+         *     		"utm_term": "test",
+         *     		"utm_content": "test",
+         *     		"utm_referrer": "test",
+         *     		"utm_adgroup": "test",
+         *     		"utm_ad": "test",
+         *     		"utm_creative": "test",
+         *     		"utm_matchtype": "test",
+         *     		"utm_network": "test",
+         *     		"utm_device": "test"
+         *     	}
+         *     }
+         *     ```
+         *
+         *     #### Testing CPFs that you can use to create a user
+         *
+         *     - 549.448.010-09
+         *     - 653.358.910-50
+         *     - 715.176.900-80
+         *     - 395.677.760-32
+         *     - 993.093.100-73
+         *
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description The ID of the signup flow to retrieve. */
+                    flow_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["PatchSignupFlowRequest"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Invalid Input Data */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INVALID_DATA";
+                            message?: string;
+                            metadata: components["schemas"]["SystemValidationErrors"];
+                        };
+                    };
+                };
+                /** @description Signup Flow Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "SIGNUP_FLOW_NOT_FOUND";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description User Account Jurisdiction Mismatch, Jurisdiction Supported but Not Enabled, Host Not Supported, Jurisdiction Not Supported, Jurisdiction Not Supported but Alternative Site Available */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/payment/deposit": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create Deposit Flow
+         * @description Create a new deposit flow.
+         *         This flow will be active as long as we don't receive a
+         *         confirmation from our payment providers, that a deposit has been completed.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["PaymentTransactionRequest"];
+                };
+            };
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CreateDepositFlowResponse"];
+                    };
+                };
+                /** @description Timeframe Amount Limit Exceeded, Payment Method Not Allowed, Timeframe Count Limit Exceeded, Cooldown Period Active, Payment Limits Exceeded, Deposit Amount Negative, No Payment Provider Available */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "DEPOSIT_AMOUNT_NEGATIVE";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "PAYMENT_METHOD_NOT_ALLOWED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "NO_PAYMENT_PROVIDER_AVAILABLE";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "LIMIT_EXCEEDED";
+                            message?: string;
+                            metadata: {
+                                bound: components["schemas"]["PaymentLimitBound"];
+                                max?: string | number | null;
+                                min?: string | number | null;
+                            };
+                        } | {
+                            /** @constant */
+                            code: "TIMEFRAME_AMOUNT_LIMIT_EXCEEDED";
+                            message?: string;
+                            metadata: {
+                                limit: string | number;
+                                /** Format: int64 */
+                                seconds: number;
+                            };
+                        } | {
+                            /** @constant */
+                            code: "TIMEFRAME_COUNT_LIMIT_EXCEEDED";
+                            message?: string;
+                            metadata: {
+                                /** Format: int64 */
+                                limit: number;
+                                /** Format: int64 */
+                                seconds: number;
+                            };
+                        } | {
+                            /** @constant */
+                            code: "COOLDOWN";
+                            message?: string;
+                            metadata: {
+                                /** Format: int64 */
+                                seconds_left: number;
+                            };
+                        };
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "UNAUTHORIZED";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description User Sandboxed */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "USER_SANDBOXED";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Host Not Supported, Jurisdiction Not Supported, Jurisdiction Not Supported but Alternative Site Available, User Account Jurisdiction Mismatch, Jurisdiction Supported but Not Enabled */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/payment/withdraw": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create Withdrawal Flow
+         * @description Create a withdrawal flow.
+         *         This flow will be active as long as we don't receive a confirmation from our payment provider,
+         *         that they have successfully withdrawn the desired amount into the user's bank account.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["PaymentTransactionRequest"];
+                };
+            };
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CreateWithdrawalFlowResponse"];
+                    };
+                };
+                /** @description Insufficient Funds, Pending Withdrawal Exists, Payment Method Not Allowed, No Payment Provider Available, Withdrawal Amount Negative, Timeframe Count Limit Exceeded, Cooldown Period Active, Timeframe Amount Limit Exceeded, Payment Limits Exceeded */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "WITHDRAWAL_AMOUNT_NEGATIVE";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "INSUFFICIENT_FUNDS";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "PAYMENT_METHOD_NOT_ALLOWED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "PENDING_WITHDRAWAL_EXISTS";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "NO_PAYMENT_PROVIDER_AVAILABLE";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "LIMIT_EXCEEDED";
+                            message?: string;
+                            metadata: {
+                                bound: components["schemas"]["PaymentLimitBound"];
+                                max?: string | number | null;
+                                min?: string | number | null;
+                            };
+                        } | {
+                            /** @constant */
+                            code: "TIMEFRAME_AMOUNT_LIMIT_EXCEEDED";
+                            message?: string;
+                            metadata: {
+                                limit: string | number;
+                                /** Format: int64 */
+                                seconds: number;
+                            };
+                        } | {
+                            /** @constant */
+                            code: "TIMEFRAME_COUNT_LIMIT_EXCEEDED";
+                            message?: string;
+                            metadata: {
+                                /** Format: int64 */
+                                limit: number;
+                                /** Format: int64 */
+                                seconds: number;
+                            };
+                        } | {
+                            /** @constant */
+                            code: "COOLDOWN";
+                            message?: string;
+                            metadata: {
+                                /** Format: int64 */
+                                seconds_left: number;
+                            };
+                        };
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "UNAUTHORIZED";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Missing KYC, User Sandboxed */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "USER_SANDBOXED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "MISSING_KYC";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Wallet Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "WALLET_NOT_FOUND";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Validation Failed */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "VALIDATION_FAILED";
+                            message?: string;
+                            metadata: components["schemas"]["SystemValidationErrors"];
+                        };
+                    };
+                };
+                /** @description Host Not Supported, Jurisdiction Not Supported, User Account Jurisdiction Mismatch, Jurisdiction Supported but Not Enabled, Jurisdiction Not Supported but Alternative Site Available */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/payment/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Payment Flows
+         * @description List all payment flows for the currently logged in user.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description The payment type to filter the payment flows by. If not set, all payment
+                     *      types will be included. */
+                    payment_type?: components["schemas"]["PaymentType"] | null;
+                    /** @description The wallet ID to filter the payment flows by. If not set, all wallets of
+                     *      the user will be included. */
+                    wallet_id?: components["schemas"]["WalletId"] | null;
+                    limit?: number;
+                    offset?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PaginatorResponse_for_PaymentFlowResponse_and_ListPaymentFlowsQuery_and_int64"];
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "UNAUTHORIZED";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Jurisdiction Not Supported, Host Not Supported, User Account Jurisdiction Mismatch, Jurisdiction Not Supported but Alternative Site Available, Jurisdiction Supported but Not Enabled */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/payment/limits": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Payment Limits
+         * @description Get the payment limits for the currently logged in user.
+         */
+        get: {
+            parameters: {
+                query: {
+                    /** @description The currency to get the payment limits for. */
+                    currency: components["schemas"]["Currency"];
+                    /** @description The payment method to get the payment limits for. */
+                    payment_method_id: components["schemas"]["PaymentMethodId"];
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PaymentLimitsResponse"];
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "UNAUTHORIZED";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Jurisdiction Not Supported but Alternative Site Available, User Account Jurisdiction Mismatch, Host Not Supported, Jurisdiction Supported but Not Enabled, Jurisdiction Not Supported */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/payment/methods": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Payment Methods
+         * @description Get all payment methods that can be used by the user for the given currency.
+         */
+        get: {
+            parameters: {
+                query: {
+                    /** @description The currency to get the payment methods for. */
+                    currency: components["schemas"]["Currency"];
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PaymentMethodResponse"][];
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "UNAUTHORIZED";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Host Not Supported, Jurisdiction Supported but Not Enabled, Jurisdiction Not Supported but Alternative Site Available, Jurisdiction Not Supported, User Account Jurisdiction Mismatch */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/payment/{flow_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Payment Flow
+         * @description Get a payment flow by its ID.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description The ID of the payment flow. */
+                    flow_id: components["schemas"]["PaymentFlowId"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PaymentFlowResponse"];
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "UNAUTHORIZED";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Payment Flow Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "PAYMENT_FLOW_NOT_FOUND";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Jurisdiction Not Supported but Alternative Site Available, Jurisdiction Supported but Not Enabled, Host Not Supported, Jurisdiction Not Supported, User Account Jurisdiction Mismatch */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/system/licenses": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Matched Licenses
+         * @description Get the available system licenses for the requested jurisdiction/site header combination.
+         *             The licenses are ordered in their priority order,
+         *             and thus the first license in the list is the most preferred one.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["LicenseResponse"][];
+                    };
+                };
+                /** @description Jurisdiction Not Supported, Jurisdiction Not Supported but Alternative Site Available, User Account Jurisdiction Mismatch, Host Not Supported, Jurisdiction Supported but Not Enabled */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/system/preflight": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Preflight Check
+         * @description This preflight endpoint should be the first endpoint
+         *             to be called by the client or the SSR implementation.
+         *             It is used to check if the user is able to access the
+         *             host + jurisdiction combination. Should they not be allowed to access
+         *             the site, the endpoint will return a `JURISDICTION_NOT_SUPPORTED` error,
+         *             possibly containing a list of alternative sites that the user can access.
+         *
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description User Account Jurisdiction Mismatch, Jurisdiction Not Supported but Alternative Site Available, Jurisdiction Not Supported, Jurisdiction Supported but Not Enabled, Host Not Supported */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/game-provider/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Game Providers
+         * @description List all game providers.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    limit?: number;
+                    offset?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PaginatorResponse_for_GameProviderResponse_and_null_and_int64"];
+                    };
+                };
+                /** @description Host Not Supported, Jurisdiction Supported but Not Enabled, User Account Jurisdiction Mismatch, Jurisdiction Not Supported but Alternative Site Available, Jurisdiction Not Supported */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/game-provider/{provider_identifier}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Game Provider
+         * @description Get a game provider by its ID.
+         *             This can be used to show a more detailed view of of the
+         *             provider profile in the frontend, which may require more data than
+         *             the search endpoint provides.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description The ID of the game provider. */
+                    provider_identifier: components["schemas"]["GameProviderIdentifier"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description The response to a game provider request. It contains all available
+                 *      information about the provider. */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["GameProviderResponse"];
+                    };
+                };
+                /** @description Game Provider Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "GAME_PROVIDER_NOT_FOUND";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description User Account Jurisdiction Mismatch, Host Not Supported, Jurisdiction Not Supported, Jurisdiction Not Supported but Alternative Site Available, Jurisdiction Supported but Not Enabled */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/game/{provider_slug}/{game_slug}/session": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Create Game Session
+         * @description Create a new game session by providing the game ID,
+         *         as well as the currency with which the game should be played with,
+         *         and the client type of the user.
+         *         The response will redirect the user to the third party URL of the game provider.
+         *         Please note that this request should be used in conjunction with an iframe,
+         *         so that the user does not get redirected from the casino website.
+         */
+        get: {
+            parameters: {
+                query: {
+                    /** @description The device type the game session is started on. Some games may only be
+                     *      available on certain devices. */
+                    client_type: components["schemas"]["Device"];
+                    /** @description The currency (wallet) to use for the game session. It can not be changed
+                     *      during the session. */
+                    currency: components["schemas"]["Currency"];
+                };
+                header?: never;
+                path: {
+                    game_slug: string;
+                    provider_slug: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Insufficient Funds */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INSUFFICIENT_FUNDS";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "UNAUTHORIZED";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Game Not Accessible */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "GAME_NOT_ACCESSIBLE";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Wallet Not Found, Game Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "GAME_NOT_FOUND";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "WALLET_NOT_FOUND";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description User Account Jurisdiction Mismatch, Host Not Supported, Jurisdiction Not Supported, Jurisdiction Supported but Not Enabled, Jurisdiction Not Supported but Alternative Site Available */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        /**
+         * Create Game Session
+         * @description Create a new game session by providing the game ID,
+         *         as well as the currency with which the game should be played with,
+         *         and the client type of the user.
+         */
+        post: {
+            parameters: {
+                query: {
+                    /** @description The device type the game session is started on. Some games may only be
+                     *      available on certain devices. */
+                    client_type: components["schemas"]["Device"];
+                    /** @description The currency (wallet) to use for the game session. It can not be changed
+                     *      during the session. */
+                    currency: components["schemas"]["Currency"];
+                };
+                header?: never;
+                path: {
+                    game_slug: string;
+                    provider_slug: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CreateGameSessionPostResponse"];
+                    };
+                };
+                /** @description Insufficient Funds */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INSUFFICIENT_FUNDS";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "UNAUTHORIZED";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Game Not Accessible */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "GAME_NOT_ACCESSIBLE";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Wallet Not Found, Game Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "GAME_NOT_FOUND";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "WALLET_NOT_FOUND";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Jurisdiction Not Supported, Host Not Supported, Jurisdiction Not Supported but Alternative Site Available, User Account Jurisdiction Mismatch, Jurisdiction Supported but Not Enabled */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/game/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Games
+         * @description List all games or games of a specific category.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description The category identifier to filter games by. If set, only games in this
+                     *      category are returned. Note: this is not the category ID, but the
+                     *      identifier. */
+                    category?: string | null;
+                    /** @description The provider to filter games by. If set, only games by this provider are
+                     *      returned. */
+                    provider_identifier?: components["schemas"]["GameProviderIdentifier"] | null;
+                    limit?: number;
+                    offset?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PaginatorResponse_for_GameResponse_and_ListGameQuery_and_int64"];
+                    };
+                };
+                /** @description Jurisdiction Not Supported, Jurisdiction Supported but Not Enabled, Jurisdiction Not Supported but Alternative Site Available, User Account Jurisdiction Mismatch, Host Not Supported */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/game/action/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Game Actions
+         * @description Get a list of all game actions of the user.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description The type of the game action to filter by. If not set, all game actions
+                     *      (bet, win, etc.) will be included. */
+                    action_type?: components["schemas"]["ListBetTypeQuery"] | null;
+                    /** @description Game ID to filter the game actions by. If not set, all game actions will
+                     *      be included. */
+                    game_identifier?: components["schemas"]["GameIdentifier"] | null;
+                    limit?: number;
+                    offset?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PaginatorResponse_for_GameActionResponse_and_ListGameActionsQuery_and_int64"];
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "UNAUTHORIZED";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Game Not Found, User Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "USER_NOT_FOUND";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "GAME_NOT_FOUND";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Jurisdiction Supported but Not Enabled, Host Not Supported, User Account Jurisdiction Mismatch, Jurisdiction Not Supported, Jurisdiction Not Supported but Alternative Site Available */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/game/category/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Available Game Categories
+         * @description Get a list of all game categories available in the casino.
+         *         This can be used to show a list of game categories to the user,
+         *         so that they can choose which category they want to explore.
+         *         There are two major types of categories, staic and dynamic.
+         *         Static categories are predefined by the casino, while dynamic categories
+         *         cover games based on user behavior and other factors.
+         *         Dynamic categories are recalcuated periodically.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description The group of game categories to filter by. If set, only categories in
+                     *      this group are returned. */
+                    group?: string | null;
+                    /** @description Whether to include the games in the category in the response. If set to
+                     *      `true`, the games in the category are included in the response. */
+                    include_games?: boolean;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["GameCategoryListResponse"][];
+                    };
+                };
+                /** @description Jurisdiction Not Supported, Jurisdiction Not Supported but Alternative Site Available, Host Not Supported, User Account Jurisdiction Mismatch, Jurisdiction Supported but Not Enabled */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/game/{provider_slug}/{game_slug}/rating": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Rate Game
+         * @description Rate a game by its ID.
+         *         This can be used to allow users to rate games,
+         *         so that other users can see the rating of the game.
+         *         Sending a rating of null will remove the rating of the user.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    game_slug: string;
+                    provider_slug: string;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["RateGameRequest"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Invalid Rating */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INVALID_RATING";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "UNAUTHORIZED";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Game Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "GAME_NOT_FOUND";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Jurisdiction Supported but Not Enabled, Host Not Supported, Jurisdiction Not Supported but Alternative Site Available, User Account Jurisdiction Mismatch, Jurisdiction Not Supported */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/game/{provider_slug}/{game_slug}/ratings": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Game Ratings
+         * @description User ratings split up into likes and dislikes
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    game_slug: string;
+                    provider_slug: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["GameRatingsResponse"];
+                    };
+                };
+                /** @description Game Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "GAME_NOT_FOUND";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Jurisdiction Not Supported, User Account Jurisdiction Mismatch, Jurisdiction Supported but Not Enabled, Jurisdiction Not Supported but Alternative Site Available, Host Not Supported */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/game/{provider_slug}/{game_slug}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Game
+         * @description Get a game by its ID. This can be used to show a more detailed view of a game,
+         *         including its name, description,
+         *         and other metadata, that might be required to display the game on the frontend.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    game_slug: string;
+                    provider_slug: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["GameResponse"];
+                    };
+                };
+                /** @description Game Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "GAME_NOT_FOUND";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description User Account Jurisdiction Mismatch, Jurisdiction Supported but Not Enabled, Jurisdiction Not Supported, Host Not Supported, Jurisdiction Not Supported but Alternative Site Available */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/notification/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get All Notifications
+         * @description Get a list of all notifications for the current user.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description The read status of the notifications to filter by. */
+                    read_status?: components["schemas"]["ReadStatus"] | null;
+                    /** @description The types of the notifications to filter by. */
+                    types?: components["schemas"]["NotificationTypeDiscriminants"][] | null;
+                    limit?: number;
+                    offset?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PaginatorResponse_for_NotificationResponse_and_ListNotificationsQuery_and_int64"];
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "UNAUTHORIZED";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Jurisdiction Supported but Not Enabled, User Account Jurisdiction Mismatch, Host Not Supported, Jurisdiction Not Supported, Jurisdiction Not Supported but Alternative Site Available */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/notification/{notification_id}/read-status": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update Notification Read Status
+         * @description Mark a notification as read.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description The ID of the notification to retrieve. */
+                    notification_id: components["schemas"]["NotificationId"];
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["ReadStatus"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "UNAUTHORIZED";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Notification Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "NOTIFICATION_NOT_FOUND";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Jurisdiction Not Supported but Alternative Site Available, Jurisdiction Supported but Not Enabled, Jurisdiction Not Supported, Host Not Supported, User Account Jurisdiction Mismatch */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/user/profile": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get User Profile
+         * @description Get the user profile of the currently logged in user.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["UserResponse"];
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "UNAUTHORIZED";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Jurisdiction Not Supported, Jurisdiction Not Supported but Alternative Site Available, Host Not Supported, Jurisdiction Supported but Not Enabled, User Account Jurisdiction Mismatch */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/user/balance": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get User Balance
+         * @description Get the balance of the currently logged in user. The wallets are returned in the order of their selection. Frontends mays utilize this order to display the wallets, and to identify the active wallet.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["UserWalletBalanceResponse"][];
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "UNAUTHORIZED";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Jurisdiction Not Supported, Jurisdiction Not Supported but Alternative Site Available, Host Not Supported, User Account Jurisdiction Mismatch, Jurisdiction Supported but Not Enabled */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/user/settings": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get User Settings
+         * @description Get the settings of the currently logged in user.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PatchUserSettingsRequest"];
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "UNAUTHORIZED";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Jurisdiction Not Supported but Alternative Site Available, Host Not Supported, Jurisdiction Not Supported, Jurisdiction Supported but Not Enabled, User Account Jurisdiction Mismatch */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update User Settings
+         * @description Update the settings of the currently logged in user.
+         *
+         *     This endpoint allows for partial updates of the user settings, by
+         *     only updating the fields that are provided in the request.
+         *
+         *     If a field is set to `null`, it will be reset to the default value.
+         *
+         *     If a field is not provided, it will not be updated.
+         *
+         *     Partial updates follow the [RFC 7396](https://datatracker.ietf.org/doc/html/rfc7396) JSON Merge Patch standard.
+         *
+         *     ```json
+         *     // Given the following JSON
+         *     {
+         *     	"title": "Goodbye!",
+         *     	"author" : {
+         *     		"givenName" : "John",
+         *     		"familyName" : "Doe"
+         *     	},
+         *     	"tags":[ "example", "sample" ],
+         *     	"content": "This will be unchanged"
+         *     }
+         *
+         *     // Merged with the following patch
+         *     {
+         *     	"title": "Hello!",
+         *     	"phoneNumber": "+01-123-456-7890",
+         *     	"author": {
+         *     		"familyName": null
+         *     	},
+         *     	"tags": [ "example" ]
+         *     }
+         *
+         *     // Will result in the following JSON
+         *     {
+         *     	"title": "Hello!",
+         *     	"author" : {
+         *     		"givenName" : "John"
+         *     	},
+         *     	"tags": [ "example" ],
+         *     	"content": "This will be unchanged",
+         *     	"phoneNumber": "+01-123-456-7890"
+         *     }
+         *     ```
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["PatchUserSettingsRequest"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "UNAUTHORIZED";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Validation Failed */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "VALIDATION_FAILED";
+                            message?: string;
+                            metadata: components["schemas"]["SystemValidationErrors"];
+                        };
+                    };
+                };
+                /** @description Jurisdiction Supported but Not Enabled, Jurisdiction Not Supported but Alternative Site Available, Jurisdiction Not Supported, Host Not Supported, User Account Jurisdiction Mismatch */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/user/address": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update User Address
+         * @description Update the address of the currently logged in user. The address is used for shipping and other purposes.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["PatchUserAddressRequest"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "UNAUTHORIZED";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Validation Failed */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "VALIDATION_FAILED";
+                            message?: string;
+                            metadata: components["schemas"]["SystemValidationErrors"];
+                        };
+                    };
+                };
+                /** @description Host Not Supported, Jurisdiction Not Supported but Alternative Site Available, Jurisdiction Supported but Not Enabled, User Account Jurisdiction Mismatch, Jurisdiction Not Supported */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/user/active-wallet": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update User Active Wallet
+         * @description Update the selected wallet of the user. The user balance endpoint will return the user's wallets in the order of their selection time.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["SelectWalletRequest"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "UNAUTHORIZED";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Wallet Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "WALLET_NOT_FOUND";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Host Not Supported, Jurisdiction Not Supported but Alternative Site Available, User Account Jurisdiction Mismatch, Jurisdiction Supported but Not Enabled, Jurisdiction Not Supported */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/user/password": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update User Password
+         * @description Update the password of the currently logged in user. The current password is required to ensure that the user is authorized to change the password.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["PatchUserPasswordRequest"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Incorrect Current Password, Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "UNAUTHORIZED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "UNAUTHORIZED";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Validation Failed */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "VALIDATION_FAILED";
+                            message?: string;
+                            metadata: components["schemas"]["SystemValidationErrors"];
+                        };
+                    };
+                };
+                /** @description Jurisdiction Supported but Not Enabled, Jurisdiction Not Supported, User Account Jurisdiction Mismatch, Host Not Supported, Jurisdiction Not Supported but Alternative Site Available */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/user/username": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update Username
+         * @description Update the username of the currently logged in user. The username must be unique.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["PatchUsernameRequest"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Inappropriate Username, Username Already Taken */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "EXPLICIT";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "TAKEN";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "UNAUTHORIZED";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Validation Failed */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "VALIDATION_FAILED";
+                            message?: string;
+                            metadata: components["schemas"]["SystemValidationErrors"];
+                        };
+                    };
+                };
+                /** @description Jurisdiction Supported but Not Enabled, User Account Jurisdiction Mismatch, Jurisdiction Not Supported, Jurisdiction Not Supported but Alternative Site Available, Host Not Supported */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/user/delete": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Delete User Account
+         * @description Delete the account of the currently logged in user. The user must provide the current password to ensure that they are authorized to delete the account.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description User Agent */
+                    "User-Agent"?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["DeleteUserAccountRequest"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Password Required, Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "UNAUTHORIZED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "UNAUTHORIZED";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Validation Failed */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "VALIDATION_FAILED";
+                            message?: string;
+                            metadata: components["schemas"]["SystemValidationErrors"];
+                        };
+                    };
+                };
+                /** @description Host Not Supported, Jurisdiction Supported but Not Enabled, Jurisdiction Not Supported but Alternative Site Available, User Account Jurisdiction Mismatch, Jurisdiction Not Supported */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/kyc/token": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Get KYC Access Token
+         * @description This endpoint returns a temporary short-lived token that is bound to the user.
+         *     It can be used in conjunction with a KYC provider's SDK to perform KYC validation in the frontend.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["KycAccessTokenResponse"];
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "UNAUTHORIZED";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Host Not Supported, User Account Jurisdiction Mismatch, Jurisdiction Supported but Not Enabled, Jurisdiction Not Supported but Alternative Site Available, Jurisdiction Not Supported */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/kyc/status": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get KYC Status
+         * @description Returns the current KYC status of the user.
+         *     This endpoint may be used to prevent the user from going through the KYC process again if they have already completed it.
+         *
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["KycStatusResponse"];
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "UNAUTHORIZED";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description User Account Jurisdiction Mismatch, Jurisdiction Not Supported but Alternative Site Available, Jurisdiction Not Supported, Host Not Supported, Jurisdiction Supported but Not Enabled */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/ticker/{channel}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Ticker Channel Events
+         * @description Get pre-buffered events for a specific ticker channel. This should be used in conjunction with SSR and the WebSocket connection to pre-fill tickers on SSR and to make them live-update on client side.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description The ticker channel */
+                    channel: components["schemas"]["WebsocketTickerChannel"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["WebsocketServerEvent"][];
+                    };
+                };
+                /** @description Channel Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "CHANNEL_NOT_FOUND";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Host Not Supported, Jurisdiction Not Supported, Jurisdiction Not Supported but Alternative Site Available, User Account Jurisdiction Mismatch, Jurisdiction Supported but Not Enabled */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/search/games": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Search Games
+         * @description Search for active games by name or other criteria.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description An organic search query to find items by. */
+                    query?: string | null;
+                    limit?: number;
+                    offset?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PaginatorResponse_for_ScoredSearchResponseItem_for_SearchGameResponse_and_SearchQuery_and_Nullable_uint"];
+                    };
+                };
+                /** @description Jurisdiction Not Supported, Jurisdiction Not Supported but Alternative Site Available, Host Not Supported, User Account Jurisdiction Mismatch, Jurisdiction Supported but Not Enabled */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/search/game-providers": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Search Game Providers
+         * @description Search for active game providers by name or other criteria.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description An organic search query to find items by. */
+                    query?: string | null;
+                    limit?: number;
+                    offset?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PaginatorResponse_for_ScoredSearchResponseItem_for_SearchGameProviderResponse_and_SearchQuery_and_Nullable_uint"];
+                    };
+                };
+                /** @description User Account Jurisdiction Mismatch, Jurisdiction Not Supported but Alternative Site Available, Host Not Supported, Jurisdiction Supported but Not Enabled, Jurisdiction Not Supported */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/system/site-setup": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Matched Site
+         * @description The the matched site based on the host header.
+         *             Use this to differentiate between different sites in a multi-site setup,
+         *             allowing for different configurations, themes, etc.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Site setup response, used for dymainc frontend branding and configuration. */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["SiteResponse"];
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/user/{user_id}/block": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Block User
+         * @description Block the user until the specified date. If date is not set, the user will be blocked indefinitely.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    user_id: components["schemas"]["UserId"];
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["BlockUserBody"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description User Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "USER_NOT_FOUND";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Validation Failed */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "VALIDATION_FAILED";
+                            message?: string;
+                            metadata: components["schemas"]["SystemValidationErrors"];
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/admin/user/{user_id}/unblock": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Unblock User
+         * @description Unblock the user.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    user_id: components["schemas"]["UserId"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description User Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "USER_NOT_FOUND";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/admin/user/{user_id}/exclude": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Exclude User
+         * @description Exclude the user until the specified date.
+         *         If date is not set, the user will be excluded indefinitely.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    user_id: components["schemas"]["UserId"];
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["BlockUserBody"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description User Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "USER_NOT_FOUND";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Validation Failed */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "VALIDATION_FAILED";
+                            message?: string;
+                            metadata: components["schemas"]["SystemValidationErrors"];
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/admin/user/{user_id}/include": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Include User
+         * @description Include the user.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    user_id: components["schemas"]["UserId"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description User Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "USER_NOT_FOUND";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/admin/payment/flow/{flow_id}/approve": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Approve Payment Flow
+         * @description Approve the specified payment flow.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    flow_id: components["schemas"]["PaymentFlowId"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Invalid Flow Type, Invalid Flow State, Insufficient Funds, No payment provider available */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INVALID_FLOW_TYPE";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "INVALID_FLOW_STATE";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "INSUFFICIENT_FUNDS";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "NO_PAYMENT_PROVIDER_AVAILABLE";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Payment Flow Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "FLOW_NOT_FOUND";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/admin/payment/flow/{flow_id}/reject": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Reject Payment Flow
+         * @description Reject the specified payment flow.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    flow_id: components["schemas"]["PaymentFlowId"];
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["RejectPaymentFlowBody"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Invalid Flow State, Invalid Flow Type */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INVALID_FLOW_TYPE";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "INVALID_FLOW_STATE";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Flow Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "FLOW_NOT_FOUND";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/admin/payment/limits/{currency}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update Payment Limits
+         * @description Update the limits for the specified currency.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    currency: components["schemas"]["Currency"];
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["LimitOverridesPrototype_for_null"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/admin/payment/balance/adjust": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update User Balance
+         * @description Adjust the balance for the specified user and currency.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["AdjustUserBalanceBody"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Delta is zero */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "DELTA_IS_ZERO";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description User Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "USER_NOT_FOUND";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/admin/wallet/{wallet_id}/limits": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update Wallet Limits
+         * @description Patch the wallet limits.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    wallet_id: components["schemas"]["WalletId"];
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["LimitOverridesPrototype_for_null"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Wallet Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "WALLET_NOT_FOUND";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
     "/": {
         parameters: {
             query?: never;
@@ -3452,16 +6601,18 @@ export interface paths {
                         "application/json": components["schemas"]["HealthcheckResponse"];
                     };
                 };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
+                /** @description Internal Error */
+                500: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["ServerError"];
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
                     };
                 };
             };
@@ -3502,16 +6653,18 @@ export interface paths {
                         "application/json": components["schemas"]["HealthcheckResponse"];
                     };
                 };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
+                /** @description Internal Error */
+                500: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["ServerError"];
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
                     };
                 };
             };
@@ -3552,16 +6705,18 @@ export interface paths {
                         "application/json": components["schemas"]["HealthcheckResponse"];
                     };
                 };
-                /** @description Represents various errors that can occur during server operations.
-                 *
-                 *      This enum covers a wide range of error scenarios, from wallet-related issues
-                 *      to payment processing problems, user authentication errors, and more. */
-                "4XX": {
+                /** @description Internal Error */
+                500: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["ServerError"];
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
                     };
                 };
             };
@@ -3582,147 +6737,47 @@ export interface components {
             /** Format: uuid */
             token: string;
         };
-        ActiveFilters: {
-            [key: string]: components["schemas"]["FilterOperator"];
-        };
         AdjustUserBalanceBody: {
             amount: components["schemas"]["SystemAmount"];
             currency: components["schemas"]["Currency"];
             note?: string | null;
             user_id: components["schemas"]["UserId"];
         };
-        AdminBetResponse: {
-            /** @description The amount of the action */
-            amount_bonus: components["schemas"]["SystemAmount"];
-            /** @description The amount of the action */
-            amount_locked: components["schemas"]["SystemAmount"];
-            /** @description The amount of the action */
-            amount_unlocked: components["schemas"]["SystemAmount"];
-            /** @description The action type */
-            bet_type: components["schemas"]["BetType"];
-            /**
-             * Format: date-time
-             * @description The date and time the action was created
-             */
-            created_at: string;
-            /** @description The currency of the action */
-            currency: components["schemas"]["Currency"];
-            /** @description The external ID of the bet */
-            ext_bet_id: string;
-            /** @description The external ID of the round */
-            ext_round_id: string;
-            /** @description The ID of the game */
-            game_id: components["schemas"]["GameId"];
-            /** @description The ID of the bet */
-            id: components["schemas"]["BetId"];
-            /** @description The ID of the integration that this bet belongs to */
-            integration_id: components["schemas"]["IntegrationId"];
-            /** @description The metadata of the action */
-            metadata?: unknown;
-            /** @description Whether the action was invalidated through a rollback */
-            rolled_back: boolean;
-            /** @description The ID of the user */
-            user_id: components["schemas"]["UserId"];
-            /** @description The ID of the wallet */
-            wallet_id: components["schemas"]["WalletId"];
+        ApproveWithdrawalErrorResponse: {
+            /** @constant */
+            code: "FLOW_NOT_FOUND";
+        } | {
+            /** @constant */
+            code: "INVALID_FLOW_TYPE";
+        } | {
+            /** @constant */
+            code: "INVALID_FLOW_STATE";
+        } | {
+            /** @constant */
+            code: "INSUFFICIENT_FUNDS";
+        } | {
+            /** @constant */
+            code: "NO_PAYMENT_PROVIDER_AVAILABLE";
+        } | {
+            /** @constant */
+            code: "INTERNAL";
+            metadata: Record<string, never>;
         };
-        AdminPaymentListResponse: {
-            /** @description The currency of the payment. */
-            currency: components["schemas"]["Currency"];
-            /** @description The ID of the payment provider. This is optional, as the payment
-             *      may be a balance adjustment, which does not have a payment provider. */
-            integration_id?: components["schemas"]["IntegrationId"] | null;
-            /** @description The amount of the payment. This is optional, as the payment may not
-             *      exist as described above. Note that this value is usually the same as
-             *      the payment flow amount, but it may differ in some rare cases. */
-            payment_amount?: components["schemas"]["SystemAmount"] | null;
-            /**
-             * Format: date-time
-             * @description The creation date of the payment. This is optional, as the payment may
-             *      not exist as described above.
-             */
-            payment_created_at?: string | null;
-            /** @description The amount of the payment flow. This is optional, as the flow may not
-             *      exist as described above. */
-            payment_flow_amount?: components["schemas"]["SystemAmount"] | null;
-            /**
-             * Format: date-time
-             * @description The creation date of the payment flow. This is optional, as the flow may
-             *      not exist as described above.
-             */
-            payment_flow_created_at?: string | null;
-            /** @description The payment flow ID of this payment. This is optional, as there may be
-             *      payments, such as balance adjustments, that do not have an associated
-             *      payment flow. */
-            payment_flow_id?: components["schemas"]["PaymentFlowId"] | null;
-            /** @description The status of the payment flow. This is optional, as the flow may not
-             *      exist as described above, or the flow has been created but not
-             *      initialized yet. */
-            payment_flow_status?: components["schemas"]["PaymentStatus"] | null;
-            /**
-             * Format: date-time
-             * @description The creation date of the payment flow status. This is optional, as the
-             *      flow may not exist as described above, or the flow has been created but
-             *      not initialized yet.
-             */
-            payment_flow_status_created_at?: string | null;
-            /** @description The payment ID of this payment. This is optional, as the associated flow
-             *      may not have been completed yet. */
-            payment_id?: components["schemas"]["PaymentId"] | null;
-            /** @description Whether this payment is an adjustment. This signifies that the payment
-             *      is not a regular payment, but an adjustment to the user's balance. */
-            payment_is_adjustment: boolean;
-            /** @description Metadata associated with the payment entry. This is optional, as the
-             *      payment may not exist as described above, or there is no metadata
-             *      associated with the payment. */
-            payment_metadata?: unknown;
-            /** @description The payment method ID of the payment. This is optional, as the payment
-             *      may be a balance adjustment, which does not have a payment method. */
-            payment_method_id?: components["schemas"]["PaymentMethodId"] | null;
-            /** @description The name of the payment method of the payment. This is optional, as the
-             *      payment may be a balance adjustment, which does not have a payment
-             *      method. */
-            payment_method_name?: string | null;
-            /** @description The name of the payment provider of the payment. This is optional, as
-             *      the payment may be a balance adjustment, which does not have a payment
-             *      provider. */
-            payment_provider_name?: string | null;
-            /** @description The type of payment that this payment is. */
-            payment_type: components["schemas"]["PaymentType"];
-            /** @description The email of the user that this payment is associated with. */
-            user_email: string;
-            /** @description The user ID of the user that this payment is associated with. */
-            user_id: components["schemas"]["UserId"];
-            /** @description The name of the user that this payment is associated with. */
-            user_name: string;
-            /** @description The wallet ID of the wallet that this payment is associated with. */
-            wallet_id: components["schemas"]["WalletId"];
+        AuthError: {
+            /** @constant */
+            code: "UNAUTHORIZED";
         };
-        AdminUserResponse: {
-            /** Format: date */
-            birthdate: string;
-            /** Format: date-time */
-            blocked_until?: string | null;
-            /** Format: date-time */
-            created_at: string;
-            /** Format: date-time */
-            deleted_at?: string | null;
-            email: string;
-            email_verified: boolean;
-            /** Format: date-time */
-            excluded_until?: string | null;
-            family_name?: string | null;
-            gender?: components["schemas"]["Gender"] | null;
-            id: components["schemas"]["UserId"];
-            jurisdiction: string;
-            name: string;
-            phone: string;
-            phone_verified: boolean;
-            /** Format: date-time */
-            updated_at: string;
+        BalanceAdjustmentErrorResponse: {
+            /** @constant */
+            code: "USER_NOT_FOUND";
+        } | {
+            /** @constant */
+            code: "DELTA_IS_ZERO";
+        } | {
+            /** @constant */
+            code: "INTERNAL";
+            metadata: Record<string, never>;
         };
-        /** @example auth_session_id_1234 */
-        AuthSessionId: string;
         /**
          * Format: int64
          * @example 1
@@ -3735,43 +6790,20 @@ export interface components {
             /** Format: date-time */
             until?: string | null;
         };
-        CategoryGroupResponse: {
-            /**
-             * Format: date-time
-             * @description The time the category group was created
-             */
-            created_at: string;
-            /** @description The category group ID */
-            id: components["schemas"]["GameCategoryGroupId"];
-            /** @description The category group identifier, used for lookups and URLs */
-            identifier: string;
-        };
-        CategoryResponse: {
-            /**
-             * Format: date-time
-             * @description The time the category was created
-             */
-            created_at: string;
-            /** @description Whether the category is hidden from the public */
-            hidden: boolean;
-            /** @description The category ID */
-            id: components["schemas"]["GameCategoryId"];
-            /** @description The category identifier, used for lookups and URLs */
-            identifier: string;
-            /** @description Whether the category is user-specific. User specific categories have
-             *      different content based on the user. For example, a user-specific
-             *      category might show different content based on the user's playing
-             *      history. */
-            user_specific: boolean;
+        BlockUserErrorResponse: {
+            /** @constant */
+            code: "USER_NOT_FOUND";
+        } | {
+            /** @constant */
+            code: "INTERNAL";
+            metadata: Record<string, never>;
         };
         /**
          * @description A country represented by its ISO 3166-1 alpha-2 code.
-         * @example US
-         * @example DE
          * @example BR
          * @enum {string}
          */
-        Country: "AF" | "AX" | "AL" | "DZ" | "AS" | "AD" | "AO" | "AI" | "AQ" | "AG" | "AR" | "AM" | "AW" | "AU" | "AT" | "AZ" | "BS" | "BH" | "BD" | "BB" | "BY" | "BE" | "BZ" | "BJ" | "BM" | "BT" | "BO" | "BQ" | "BA" | "BW" | "BV" | "BR" | "IO" | "BN" | "BG" | "BF" | "BI" | "CV" | "KH" | "CM" | "CA" | "KY" | "CF" | "TD" | "CL" | "CN" | "CX" | "CC" | "CO" | "KM" | "CG" | "CD" | "CK" | "CR" | "CI" | "HR" | "CU" | "CW" | "CY" | "CZ" | "DK" | "DJ" | "DM" | "DO" | "EC" | "EG" | "SV" | "GQ" | "ER" | "EE" | "SZ" | "ET" | "FK" | "FO" | "FJ" | "FI" | "FR" | "GF" | "PF" | "TF" | "GA" | "GM" | "GE" | "DE" | "GH" | "GI" | "GR" | "GL" | "GD" | "GP" | "GU" | "GT" | "GG" | "GN" | "GW" | "GY" | "HT" | "HM" | "VA" | "HN" | "HK" | "HU" | "IS" | "IN" | "ID" | "IR" | "IQ" | "IE" | "IM" | "IL" | "IT" | "JM" | "JP" | "JE" | "JO" | "KZ" | "KE" | "KI" | "KP" | "KR" | "KW" | "KG" | "LA" | "LV" | "LB" | "LS" | "LR" | "LY" | "LI" | "LT" | "LU" | "MO" | "MG" | "MW" | "MY" | "MV" | "ML" | "MT" | "MH" | "MQ" | "MR" | "MU" | "YT" | "MX" | "FM" | "MD" | "MC" | "MN" | "ME" | "MS" | "MA" | "MZ" | "MM" | "NA" | "NR" | "NP" | "NL" | "NC" | "NZ" | "NI" | "NE" | "NG" | "NU" | "NF" | "MK" | "MP" | "NO" | "OM" | "PK" | "PW" | "PS" | "PA" | "PG" | "PY" | "PE" | "PH" | "PN" | "PL" | "PT" | "PR" | "QA" | "RE" | "RO" | "RU" | "RW" | "BL" | "SH" | "KN" | "LC" | "MF" | "PM" | "VC" | "WS" | "SM" | "ST" | "SA" | "SN" | "RS" | "SC" | "SL" | "SG" | "SX" | "SK" | "SI" | "SB" | "SO" | "ZA" | "GS" | "SS" | "ES" | "LK" | "SD" | "SR" | "SJ" | "SE" | "CH" | "SY" | "TW" | "TJ" | "TZ" | "TH" | "TL" | "TG" | "TK" | "TO" | "TT" | "TN" | "TR" | "TM" | "TC" | "TV" | "UG" | "UA" | "AE" | "GB" | "US" | "UM" | "UY" | "UZ" | "VU" | "VE" | "VN" | "VG" | "VI" | "WF" | "EH" | "YE" | "ZM" | "ZW";
+        Country: "BR" | "AF" | "AX" | "AL" | "DZ" | "AS" | "AD" | "AO" | "AI" | "AQ" | "AG" | "AR" | "AM" | "AW" | "AU" | "AT" | "AZ" | "BS" | "BH" | "BD" | "BB" | "BY" | "BE" | "BZ" | "BJ" | "BM" | "BT" | "BO" | "BQ" | "BA" | "BW" | "BV" | "IO" | "BN" | "BG" | "BF" | "BI" | "CV" | "KH" | "CM" | "CA" | "KY" | "CF" | "TD" | "CL" | "CN" | "CX" | "CC" | "CO" | "KM" | "CG" | "CD" | "CK" | "CR" | "CI" | "HR" | "CU" | "CW" | "CY" | "CZ" | "DK" | "DJ" | "DM" | "DO" | "EC" | "EG" | "SV" | "GQ" | "ER" | "EE" | "SZ" | "ET" | "FK" | "FO" | "FJ" | "FI" | "FR" | "GF" | "PF" | "TF" | "GA" | "GM" | "GE" | "DE" | "GH" | "GI" | "GR" | "GL" | "GD" | "GP" | "GU" | "GT" | "GG" | "GN" | "GW" | "GY" | "HT" | "HM" | "VA" | "HN" | "HK" | "HU" | "IS" | "IN" | "ID" | "IR" | "IQ" | "IE" | "IM" | "IL" | "IT" | "JM" | "JP" | "JE" | "JO" | "KZ" | "KE" | "KI" | "KP" | "KR" | "KW" | "KG" | "LA" | "LV" | "LB" | "LS" | "LR" | "LY" | "LI" | "LT" | "LU" | "MO" | "MG" | "MW" | "MY" | "MV" | "ML" | "MT" | "MH" | "MQ" | "MR" | "MU" | "YT" | "MX" | "FM" | "MD" | "MC" | "MN" | "ME" | "MS" | "MA" | "MZ" | "MM" | "NA" | "NR" | "NP" | "NL" | "NC" | "NZ" | "NI" | "NE" | "NG" | "NU" | "NF" | "MK" | "MP" | "NO" | "OM" | "PK" | "PW" | "PS" | "PA" | "PG" | "PY" | "PE" | "PH" | "PN" | "PL" | "PT" | "PR" | "QA" | "RE" | "RO" | "RU" | "RW" | "BL" | "SH" | "KN" | "LC" | "MF" | "PM" | "VC" | "WS" | "SM" | "ST" | "SA" | "SN" | "RS" | "SC" | "SL" | "SG" | "SX" | "SK" | "SI" | "SB" | "SO" | "ZA" | "GS" | "SS" | "ES" | "LK" | "SD" | "SR" | "SJ" | "SE" | "CH" | "SY" | "TW" | "TJ" | "TZ" | "TH" | "TL" | "TG" | "TK" | "TO" | "TT" | "TN" | "TR" | "TM" | "TC" | "TV" | "UG" | "UA" | "AE" | "GB" | "US" | "UM" | "UY" | "UZ" | "VU" | "VE" | "VN" | "VG" | "VI" | "WF" | "EH" | "YE" | "ZM" | "ZW";
         CreateDepositFlowResponse: {
             /** @description Withdrawal payment flow ID */
             flow_id: components["schemas"]["PaymentFlowId"];
@@ -3782,6 +6814,23 @@ export interface components {
                 /** @description The PIX code used by the user for depositing the amount */
                 code: string;
             };
+        };
+        CreateGameSessionErrorResponse: {
+            /** @constant */
+            code: "GAME_NOT_FOUND";
+        } | {
+            /** @constant */
+            code: "GAME_NOT_ACCESSIBLE";
+        } | {
+            /** @constant */
+            code: "WALLET_NOT_FOUND";
+        } | {
+            /** @constant */
+            code: "INSUFFICIENT_FUNDS";
+        } | {
+            /** @constant */
+            code: "INTERNAL";
+            metadata: Record<string, never>;
         };
         CreateGameSessionPostResponse: {
             /** @description The URL to return to after the game session is finished. This URL can be
@@ -3799,6 +6848,11 @@ export interface components {
              *      during the session. */
             currency: components["schemas"]["Currency"];
         };
+        CreateSignupFlowErrorResponse: {
+            /** @constant */
+            code: "INTERNAL";
+            metadata: Record<string, never>;
+        };
         CreateSignupFlowResponse: {
             /** @description The ID of the created signup flow. */
             flow_id: string;
@@ -3811,14 +6865,18 @@ export interface components {
         };
         /**
          * @description ISO 4217 3-letter currency code or 3/4-letter crypto currency code
-         * @example USD
-         * @example EUR
          * @example BRL
-         * @example BTC
-         * @example USDT
          * @enum {string}
          */
         Currency: "AED" | "AFN" | "ALL" | "AMD" | "XCG" | "AOA" | "ARS" | "AUD" | "AWG" | "AZN" | "BAM" | "BBD" | "BDT" | "BGN" | "BHD" | "BIF" | "BMD" | "BND" | "BOB" | "BOV" | "BRL" | "BSD" | "BTN" | "BWP" | "BYN" | "BZD" | "CAD" | "CDF" | "CHE" | "CHF" | "CHW" | "CLF" | "CLP" | "CNY" | "COP" | "COU" | "CRC" | "CUC" | "CUP" | "CVE" | "CZK" | "DJF" | "DKK" | "DOP" | "DZD" | "EGP" | "ERN" | "ETB" | "EUR" | "FJD" | "FKP" | "GBP" | "GEL" | "GHS" | "GIP" | "GMD" | "GNF" | "GTQ" | "GYD" | "HKD" | "HNL" | "HRK" | "HTG" | "HUF" | "IDR" | "ILS" | "INR" | "IQD" | "IRR" | "ISK" | "JMD" | "JOD" | "JPY" | "KES" | "KGS" | "KHR" | "KMF" | "KPW" | "KRW" | "KWD" | "KYD" | "KZT" | "LAK" | "LBP" | "LKR" | "LRD" | "LSL" | "LYD" | "MAD" | "MDL" | "MGA" | "MKD" | "MMK" | "MNT" | "MOP" | "MRU" | "MUR" | "MVR" | "MWK" | "MXN" | "MXV" | "MYR" | "MZN" | "NAD" | "NGN" | "NIO" | "NOK" | "NPR" | "NZD" | "OMR" | "PAB" | "PEN" | "PGK" | "PHP" | "PKR" | "PLN" | "PYG" | "QAR" | "RON" | "RSD" | "RUB" | "RWF" | "SAR" | "SBD" | "SCR" | "SDG" | "SEK" | "SGD" | "SHP" | "SLE" | "SLL" | "SOS" | "SRD" | "SSP" | "STN" | "SVC" | "SYP" | "SZL" | "THB" | "TJS" | "TMT" | "TND" | "TOP" | "TRY" | "TTD" | "TWD" | "TZS" | "UAH" | "UGX" | "USD" | "USN" | "UYI" | "UYU" | "UYW" | "UZS" | "VED" | "VES" | "VND" | "VUV" | "WST" | "XAF" | "XAG" | "XAU" | "XBA" | "XBB" | "XBC" | "XBD" | "XCD" | "XDR" | "XOF" | "XPD" | "XPF" | "XPT" | "XSU" | "XTS" | "XUA" | "XXX" | "YER" | "ZAR" | "ZMW" | "ZWL" | "ZWG" | "BTC" | "ETH" | "USDC" | "USDT" | "BCH" | "XRP" | "FUN" | "ADA" | "TRX" | "BSV" | "BNB" | "NEO";
+        DeleteUserAccountErrorResponse: {
+            /** @constant */
+            code: "UNAUTHORIZED";
+        } | {
+            /** @constant */
+            code: "INTERNAL";
+            metadata: Record<string, never>;
+        };
         DeleteUserAccountRequest: {
             /** @description The current password of the user. This is required to ensure that the
              *      user is the one making the request. */
@@ -3830,28 +6888,13 @@ export interface components {
         Device: "mobile" | "desktop";
         /** Format: int64 */
         DurationSeconds: number;
-        FilterOperator: {
-            $eq: unknown;
+        ExcludeUserErrorResponse: {
+            /** @constant */
+            code: "USER_NOT_FOUND";
         } | {
-            $startsWith: unknown;
-        } | {
-            $contains: unknown;
-        } | {
-            $in: unknown;
-        } | {
-            $between: unknown;
-        } | {
-            $lt: unknown;
-        } | {
-            $lte: unknown;
-        } | {
-            $gt: unknown;
-        } | {
-            $gte: unknown;
-        };
-        FiltersJson: {
-            /** @default {} */
-            filters: string;
+            /** @constant */
+            code: "INTERNAL";
+            metadata: Record<string, never>;
         };
         FinalizePasswordResetRequest: {
             /** @description The new password for the user. */
@@ -3891,11 +6934,6 @@ export interface components {
          * Format: int64
          * @example 1
          */
-        GameCategoryGroupId: number;
-        /**
-         * Format: int64
-         * @example 1
-         */
         GameCategoryId: number;
         GameCategoryListQuery: {
             /** @description The group of game categories to filter by. If set, only categories in
@@ -3918,11 +6956,6 @@ export interface components {
              *      used to identify the category in the game search endpoint. */
             identifier: string;
         };
-        /**
-         * Format: int64
-         * @example 1
-         */
-        GameId: number;
         /**
          * @description Game identifier, in the format <provider>/<game>
          * @example spribe/aviator
@@ -3991,13 +7024,146 @@ export interface components {
             /** @description The JWT token for the user. */
             jwt: string;
         };
+        GetGameActionsErrorResponse: {
+            /** @constant */
+            code: "USER_NOT_FOUND";
+        } | {
+            /** @constant */
+            code: "GAME_NOT_FOUND";
+        } | {
+            /** @constant */
+            code: "INTERNAL";
+            metadata: Record<string, never>;
+        };
+        GetGameCategoriesErrorResponse: {
+            /** @constant */
+            code: "INTERNAL";
+            metadata: Record<string, never>;
+        };
+        GetGameErrorResponse: {
+            /** @constant */
+            code: "GAME_NOT_FOUND";
+        } | {
+            /** @constant */
+            code: "INTERNAL";
+            metadata: Record<string, never>;
+        };
+        GetGameListErrorResponse: {
+            /** @constant */
+            code: "INTERNAL";
+            metadata: Record<string, never>;
+        };
+        GetGameProviderErrorResponse: {
+            /** @constant */
+            code: "GAME_PROVIDER_NOT_FOUND";
+        } | {
+            /** @constant */
+            code: "INTERNAL";
+            metadata: Record<string, never>;
+        };
+        GetGameProvidersErrorResponse: {
+            /** @constant */
+            code: "INTERNAL";
+            metadata: Record<string, never>;
+        };
+        GetGameRatingsErrorResponse: {
+            /** @constant */
+            code: "GAME_NOT_FOUND";
+        } | {
+            /** @constant */
+            code: "INTERNAL";
+            metadata: Record<string, never>;
+        };
+        GetKycAccessTokenErrorResponse: {
+            /** @constant */
+            code: "INTERNAL";
+            metadata: Record<string, never>;
+        };
+        GetKycStatusErrorResponse: {
+            /** @constant */
+            code: "INTERNAL";
+            metadata: Record<string, never>;
+        };
+        GetLicensesErrorResponse: {
+            /** @constant */
+            code: "INTERNAL";
+            metadata: Record<string, never>;
+        };
+        GetNotificationListErrorResponse: {
+            /** @constant */
+            code: "INTERNAL";
+            metadata: Record<string, never>;
+        };
+        GetPaymentErrorResponse: {
+            /** @constant */
+            code: "PAYMENT_FLOW_NOT_FOUND";
+        } | {
+            /** @constant */
+            code: "INTERNAL";
+            metadata: Record<string, never>;
+        };
+        GetPaymentLimitsErrorResponse: {
+            /** @constant */
+            code: "INTERNAL";
+            metadata: Record<string, never>;
+        };
+        GetPaymentMethodsErrorResponse: {
+            /** @constant */
+            code: "INTERNAL";
+            metadata: Record<string, never>;
+        };
         GetPaymentMethodsQuery: {
             /** @description The currency to get the payment methods for. */
             currency: components["schemas"]["Currency"];
         };
+        GetSignupFlowErrorResponse: {
+            /** @constant */
+            code: "SIGNUP_FLOW_NOT_FOUND";
+        } | {
+            /** @constant */
+            code: "INTERNAL";
+            metadata: Record<string, never>;
+        };
+        GetSiteConfigurationErrorResponse: {
+            /** @constant */
+            code: "INTERNAL";
+            metadata: Record<string, never>;
+        };
+        GetTickerChannelEventsErrorResponse: {
+            /** @constant */
+            code: "CHANNEL_NOT_FOUND";
+        };
+        GetUserBalancesErrorResponse: {
+            /** @constant */
+            code: "INTERNAL";
+            metadata: Record<string, never>;
+        };
+        GetUserProfileErrorResponse: {
+            /** @constant */
+            code: "INTERNAL";
+            metadata: Record<string, never>;
+        };
+        GetUserSettingsErrorResponse: {
+            /** @constant */
+            code: "INTERNAL";
+            metadata: Record<string, never>;
+        };
+        HealthcheckErrorResponse: {
+            /** @constant */
+            code: "INTERNAL";
+            metadata: Record<string, never>;
+        };
         HealthcheckResponse: {
             /** @description The region of the server deployment */
             region?: string | null;
+        };
+        IncludeUserErrorResponse: {
+            /** @constant */
+            code: "USER_NOT_FOUND";
+        } | {
+            /** @constant */
+            code: "INTERNAL";
+            metadata: Record<string, never>;
         };
         InitializePasswordResetRequest: {
             /**
@@ -4007,14 +7173,156 @@ export interface components {
              */
             email: string;
         };
-        /**
-         * Format: int64
-         * @example 1
-         */
-        IntegrationId: number;
         /** @enum {string} */
         IntegrationIdentifier: "coinlayer" | "digito" | "fasttrack" | "fixer_io" | "infinigame" | "open_ai" | "sandbox" | "sumsub";
-        InternalError: string;
+        IssueDepositErrorResponse: {
+            /** @constant */
+            code: "USER_SANDBOXED";
+        } | {
+            /** @constant */
+            code: "DEPOSIT_AMOUNT_NEGATIVE";
+        } | {
+            /** @constant */
+            code: "PAYMENT_METHOD_NOT_ALLOWED";
+        } | {
+            /** @constant */
+            code: "NO_PAYMENT_PROVIDER_AVAILABLE";
+        } | {
+            /** @constant */
+            code: "LIMIT_EXCEEDED";
+            metadata: {
+                bound: components["schemas"]["PaymentLimitBound"];
+                max?: string | number | null;
+                min?: string | number | null;
+            };
+        } | {
+            /** @constant */
+            code: "TIMEFRAME_AMOUNT_LIMIT_EXCEEDED";
+            metadata: {
+                limit: string | number;
+                /** Format: int64 */
+                seconds: number;
+            };
+        } | {
+            /** @constant */
+            code: "TIMEFRAME_COUNT_LIMIT_EXCEEDED";
+            metadata: {
+                /** Format: int64 */
+                limit: number;
+                /** Format: int64 */
+                seconds: number;
+            };
+        } | {
+            /** @constant */
+            code: "COOLDOWN";
+            metadata: {
+                /** Format: int64 */
+                seconds_left: number;
+            };
+        } | {
+            /** @constant */
+            code: "INTERNAL";
+            metadata: Record<string, never>;
+        };
+        IssueWithdrawalErrorResponse: {
+            /** @constant */
+            code: "USER_SANDBOXED";
+        } | {
+            /** @constant */
+            code: "WITHDRAWAL_AMOUNT_NEGATIVE";
+        } | {
+            /** @constant */
+            code: "WALLET_NOT_FOUND";
+        } | {
+            /** @constant */
+            code: "MISSING_KYC";
+        } | {
+            /** @constant */
+            code: "INSUFFICIENT_FUNDS";
+        } | {
+            /** @constant */
+            code: "PAYMENT_METHOD_NOT_ALLOWED";
+        } | {
+            /** @constant */
+            code: "PENDING_WITHDRAWAL_EXISTS";
+        } | {
+            /** @constant */
+            code: "NO_PAYMENT_PROVIDER_AVAILABLE";
+        } | {
+            /** @constant */
+            code: "LIMIT_EXCEEDED";
+            metadata: {
+                bound: components["schemas"]["PaymentLimitBound"];
+                max?: string | number | null;
+                min?: string | number | null;
+            };
+        } | {
+            /** @constant */
+            code: "TIMEFRAME_AMOUNT_LIMIT_EXCEEDED";
+            metadata: {
+                limit: string | number;
+                /** Format: int64 */
+                seconds: number;
+            };
+        } | {
+            /** @constant */
+            code: "TIMEFRAME_COUNT_LIMIT_EXCEEDED";
+            metadata: {
+                /** Format: int64 */
+                limit: number;
+                /** Format: int64 */
+                seconds: number;
+            };
+        } | {
+            /** @constant */
+            code: "COOLDOWN";
+            metadata: {
+                /** Format: int64 */
+                seconds_left: number;
+            };
+        } | {
+            /** @constant */
+            code: "INTERNAL";
+            metadata: Record<string, never>;
+        };
+        /** @description Error types that can occur during jurisdiction enforcement.
+         *
+         *      These errors represent different scenarios where access to a casino site
+         *      must be restricted due to regulatory, licensing, or configuration issues. */
+        JurisdictionEnforcerErrorResponse: {
+            /** @constant */
+            code: "HOST_NOT_SUPPORTED";
+        } | {
+            /** @constant */
+            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+            metadata: {
+                /** @description The violating jurisdiction. */
+                jurisdiction: components["schemas"]["Country"];
+            };
+        } | {
+            /** @constant */
+            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+            metadata: {
+                /** @description Alternative site that the user may be redirected to */
+                alternative_site: components["schemas"]["SiteResponse"];
+                /** @description The violating jurisdiction. */
+                jurisdiction: components["schemas"]["Country"];
+            };
+        } | {
+            /** @constant */
+            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+            metadata: {
+                /** @description The violating jurisdiction. */
+                jurisdiction: components["schemas"]["Country"];
+            };
+        } | {
+            /** @constant */
+            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+            metadata: {
+                /** @description The jurisdiction that is supported but not enabled. */
+                jurisdiction: components["schemas"]["Country"];
+            };
+        };
         KycAccessTokenResponse: {
             /** @description KYC provider identifier. This should be used to differentiate which
              *      WebSDK/flow to use. */
@@ -4058,14 +7366,18 @@ export interface components {
              *      Examples include Curacao, Anjouan, etc. */
             root_jurisdiction: components["schemas"]["Country"];
         };
-        LimitOverridesPrototype: {
+        LimitOverridesPrototype_for_null: {
+            deposit_approval_threshold?: components["schemas"]["Maybe_Decimal"];
             deposit_cooldown?: components["schemas"]["Maybe_DurationSeconds"];
+            deposit_first_approval_threshold?: components["schemas"]["Maybe_Decimal"];
             deposit_max?: components["schemas"]["Maybe_Decimal"];
             deposit_max_first?: components["schemas"]["Maybe_Decimal"];
             deposit_min?: components["schemas"]["Maybe_Decimal"];
             deposit_min_first?: components["schemas"]["Maybe_Decimal"];
             timeframe_limits?: components["schemas"]["Maybe_Array_of_TimeframeLimitPrototype"];
+            withdrawal_approval_threshold?: components["schemas"]["Maybe_Decimal"];
             withdrawal_cooldown?: components["schemas"]["Maybe_DurationSeconds"];
+            withdrawal_first_approval_threshold?: components["schemas"]["Maybe_Decimal"];
             withdrawal_max?: components["schemas"]["Maybe_Decimal"];
             withdrawal_max_first?: components["schemas"]["Maybe_Decimal"];
             withdrawal_min?: components["schemas"]["Maybe_Decimal"];
@@ -4096,6 +7408,11 @@ export interface components {
             /** @description The types of the notifications to filter by. */
             types?: components["schemas"]["NotificationTypeDiscriminants"][] | null;
         };
+        ListPaymentFlowsErrorResponse: {
+            /** @constant */
+            code: "INTERNAL";
+            metadata: Record<string, never>;
+        };
         ListPaymentFlowsQuery: {
             /** @description The payment type to filter the payment flows by. If not set, all payment
              *      types will be included. */
@@ -4103,6 +7420,14 @@ export interface components {
             /** @description The wallet ID to filter the payment flows by. If not set, all wallets of
              *      the user will be included. */
             wallet_id?: components["schemas"]["WalletId"] | null;
+        };
+        LoginErrorResponse: {
+            /** @constant */
+            code: "INVALID_CREDENTIALS";
+        } | {
+            /** @constant */
+            code: "INTERNAL";
+            metadata: Record<string, never>;
         };
         LoginRequest: {
             /**
@@ -4117,11 +7442,18 @@ export interface components {
              */
             username: string;
         };
+        LogoutErrorResponse: {
+            /** @constant */
+            code: "INTERNAL";
+            metadata: Record<string, never>;
+        };
         Maybe_Array_of_TimeframeLimitPrototype: components["schemas"]["TimeframeLimitPrototype"][] | null;
         Maybe_Decimal: string | number | null;
         Maybe_DurationSeconds: components["schemas"]["DurationSeconds"] | null;
         Maybe_PixKeyTypeDiscriminants: components["schemas"]["PixKeyTypeDiscriminants"] | null;
         Maybe_boolean: boolean | null;
+        /** Format: int64 */
+        Maybe_int64: number | null;
         Maybe_string: string | null;
         /**
          * Format: int64
@@ -4180,10 +7512,6 @@ export interface components {
             };
         });
         NotificationTypeDiscriminants: "payment_status_update" | "kyc_completed" | "custom" | "banner" | "popup_modal";
-        PaginatorMetadata_for_ActiveFilters_and_int64: {
-            filters?: components["schemas"]["ActiveFilters"] | null;
-            pagination: components["schemas"]["PaginatorPosition_for_int64"];
-        };
         PaginatorMetadata_for_GameCategoryListQuery_and_int64: {
             filters?: components["schemas"]["GameCategoryListQuery"] | null;
             pagination: components["schemas"]["PaginatorPosition_for_int64"];
@@ -4240,18 +7568,6 @@ export interface components {
             /** Format: int64 */
             total_items: number;
         };
-        PaginatorResponse_for_AdminBetResponse_and_ActiveFilters_and_int64: {
-            data: components["schemas"]["AdminBetResponse"][];
-            metadata: components["schemas"]["PaginatorMetadata_for_ActiveFilters_and_int64"];
-        };
-        PaginatorResponse_for_AdminPaymentListResponse_and_ActiveFilters_and_int64: {
-            data: components["schemas"]["AdminPaymentListResponse"][];
-            metadata: components["schemas"]["PaginatorMetadata_for_ActiveFilters_and_int64"];
-        };
-        PaginatorResponse_for_AdminUserResponse_and_ActiveFilters_and_int64: {
-            data: components["schemas"]["AdminUserResponse"][];
-            metadata: components["schemas"]["PaginatorMetadata_for_ActiveFilters_and_int64"];
-        };
         PaginatorResponse_for_GameActionResponse_and_ListGameActionsQuery_and_int64: {
             data: components["schemas"]["GameActionResponse"][];
             metadata: components["schemas"]["PaginatorMetadata_for_ListGameActionsQuery_and_int64"];
@@ -4284,10 +7600,6 @@ export interface components {
             data: components["schemas"]["ScoredSearchResponseItem_for_SearchGameResponse"][];
             metadata: components["schemas"]["PaginatorMetadata_for_SearchQuery_and_Nullable_uint"];
         };
-        PaginatorResponse_for_SessionResponse_and_ActiveFilters_and_int64: {
-            data: components["schemas"]["SessionResponse"][];
-            metadata: components["schemas"]["PaginatorMetadata_for_ActiveFilters_and_int64"];
-        };
         PaginatorSelection: {
             /**
              * Format: uint64
@@ -4300,11 +7612,21 @@ export interface components {
              */
             offset: number;
         };
+        PatchCurrencyLimitsErrorResponse: {
+            /** @constant */
+            code: "INTERNAL";
+            metadata: Record<string, never>;
+        };
         PatchPaymentLimitsParams: {
             currency: components["schemas"]["Currency"];
         };
         PatchSignupFlowRequest: {
             [key: string]: unknown;
+        };
+        PatchUserAddressErrorResponse: {
+            /** @constant */
+            code: "INTERNAL";
+            metadata: Record<string, never>;
         };
         PatchUserAddressRequest: {
             /** @description The address of the user. */
@@ -4329,6 +7651,14 @@ export interface components {
             sms?: components["schemas"]["Maybe_boolean"];
             telephone?: components["schemas"]["Maybe_boolean"];
         };
+        PatchUserPasswordErrorResponse: {
+            /** @constant */
+            code: "UNAUTHORIZED";
+        } | {
+            /** @constant */
+            code: "INTERNAL";
+            metadata: Record<string, never>;
+        };
         PatchUserPasswordRequest: {
             /** @description The current password of the user. This is required to ensure that the
              *      user is the one making the request. */
@@ -4343,6 +7673,11 @@ export interface components {
             pix_key_phone?: components["schemas"]["Maybe_string"];
             pix_key_type?: components["schemas"]["Maybe_PixKeyTypeDiscriminants"];
         };
+        PatchUserSettingsErrorResponse: {
+            /** @constant */
+            code: "INTERNAL";
+            metadata: Record<string, never>;
+        };
         PatchUserSettingsRequest: {
             consents: components["schemas"]["PatchUserConsentSettingsRequest"];
             locale?: components["schemas"]["Maybe_string"];
@@ -4352,9 +7687,28 @@ export interface components {
         PatchUserWalletLimitsParams: {
             wallet_id: components["schemas"]["WalletId"];
         };
+        PatchUsernameErrorResponse: {
+            /** @constant */
+            code: "EXPLICIT";
+        } | {
+            /** @constant */
+            code: "TAKEN";
+        } | {
+            /** @constant */
+            code: "INTERNAL";
+            metadata: Record<string, never>;
+        };
         PatchUsernameRequest: {
             /** @description The new username of the user. */
             username: string;
+        };
+        PatchWalletLimitsErrorResponse: {
+            /** @constant */
+            code: "WALLET_NOT_FOUND";
+        } | {
+            /** @constant */
+            code: "INTERNAL";
+            metadata: Record<string, never>;
         };
         PathParams: {
             user_id: components["schemas"]["UserId"];
@@ -4458,11 +7812,6 @@ export interface components {
              */
             waiting_for_approval: number;
         };
-        /**
-         * Format: int64
-         * @example 1
-         */
-        PaymentId: number;
         /** @enum {string} */
         PaymentLimitBound: "min" | "max";
         PaymentLimitsQuery: {
@@ -4494,15 +7843,25 @@ export interface components {
             withdrawal_min?: components["schemas"]["SystemAmount"] | null;
         };
         PaymentLimitsTimeframeResponse: {
+            /** @description The total deposit amount limit for the timeframe. */
+            deposit_amount?: components["schemas"]["SystemAmount"] | null;
+            /**
+             * Format: int32
+             * @description The number of deposits allowed in the timeframe.
+             */
+            deposit_count?: number | null;
             /**
              * Format: int64
-             * @description The number of days the timeframe limit applies to.
+             * @description Window size in seconds for which the limits apply.
              */
-            days: number;
-            /** @description The deposit limit for the timeframe. */
-            deposit?: components["schemas"]["SystemAmount"] | null;
-            /** @description The withdrawal limit for the timeframe. */
-            withdrawal?: components["schemas"]["SystemAmount"] | null;
+            seconds: number;
+            /** @description The total withdrawal amount limit for the timeframe. */
+            withdrawal_amount?: components["schemas"]["SystemAmount"] | null;
+            /**
+             * Format: int32
+             * @description The number of withdrawals allowed in the timeframe.
+             */
+            withdrawal_count?: number | null;
         };
         /**
          * Format: int64
@@ -4556,6 +7915,11 @@ export interface components {
         };
         /** @enum {string} */
         PixKeyTypeDiscriminants: "CPF" | "EMAIL" | "PHONE" | "EVP";
+        PostAccessTokenErrorResponse: {
+            /** @constant */
+            code: "INTERNAL";
+            metadata: Record<string, never>;
+        };
         ProtocolType: "welcome" | {
             error: string;
         } | "login_complete" | "login_failed" | "unauthorized" | "logout_complete" | {
@@ -4567,6 +7931,17 @@ export interface components {
         } | {
             ticker_left: components["schemas"]["WebsocketTickerChannel"];
         } | "tracker_entered" | "tracker_left";
+        RateGameErrorResponse: {
+            /** @constant */
+            code: "GAME_NOT_FOUND";
+        } | {
+            /** @constant */
+            code: "INVALID_RATING";
+        } | {
+            /** @constant */
+            code: "INTERNAL";
+            metadata: Record<string, never>;
+        };
         RateGameRequest: {
             /** @description The rating to set for the game. If `null` the rating for the current
              *      user is removed. */
@@ -4576,6 +7951,28 @@ export interface components {
         ReadStatus: "read" | "unread";
         RejectPaymentFlowBody: {
             reason?: string | null;
+        };
+        RejectWithdrawalErrorResponse: {
+            /** @constant */
+            code: "FLOW_NOT_FOUND";
+        } | {
+            /** @constant */
+            code: "INVALID_FLOW_TYPE";
+        } | {
+            /** @constant */
+            code: "INVALID_FLOW_STATE";
+        } | {
+            /** @constant */
+            code: "INTERNAL";
+            metadata: Record<string, never>;
+        };
+        ResetPasswordErrorResponse: {
+            /** @constant */
+            code: "INVALID_TOKEN";
+        } | {
+            /** @constant */
+            code: "INTERNAL";
+            metadata: Record<string, never>;
         };
         /** @description The response to a game search request. It only contains a limited set of
          *      information about the game. If more information is needed, the game ID can
@@ -4612,6 +8009,11 @@ export interface components {
              *      contain special characters. */
             name: string;
         };
+        SearchGameProvidersErrorResponse: {
+            /** @constant */
+            code: "INTERNAL";
+            metadata: Record<string, never>;
+        };
         /** @description The response to a game provider search request. It only contains a limited
          *      set of information about the provider. If more information is needed, the
          *      provider ID can be used to fetch the full provider details via the "get
@@ -4622,282 +8024,26 @@ export interface components {
             name: string;
             provider: components["schemas"]["SearchGameProviderResponse"];
         };
+        SearchGamesErrorResponse: {
+            /** @constant */
+            code: "INTERNAL";
+            metadata: Record<string, never>;
+        };
         SearchQuery: {
             /** @description An organic search query to find items by. */
             query?: string | null;
         };
-        SelectWalletRequest: {
-            /** @description The ID of the wallet to select. */
-            currency: components["schemas"]["Currency"];
-        };
-        /** @description Represents various errors that can occur during server operations.
-         *
-         *      This enum covers a wide range of error scenarios, from wallet-related issues
-         *      to payment processing problems, user authentication errors, and more. */
-        ServerError: {
+        SelectWalletErrorResponse: {
             /** @constant */
             code: "WALLET_NOT_FOUND";
         } | {
             /** @constant */
-            code: "WALLET_PENDING_FLOW";
-            metadata: components["schemas"]["PaymentType"];
-        } | {
-            /** @constant */
-            code: "WALLET_MISSING_PAYMENT_METHOD";
-        } | {
-            /** @constant */
-            code: "WALLET_INSUFFICIENT_FUNDS";
-        } | {
-            /** @constant */
-            code: "WALLET_MISSING_DEPOSIT";
-        } | {
-            /** @constant */
-            code: "WALLET_INSUFFICIENT_WAGERS";
-        } | {
-            /** @constant */
-            code: "WALLET_PAYMENT_COOLDOWN";
-            metadata: {
-                /**
-                 * Format: int64
-                 * @description Minutes left until the user is allowed to make another payment
-                 */
-                minutes_left: number;
-            };
-        } | {
-            /** @constant */
-            code: "PAYMENT_METHOD_NOT_ALLOWED";
-        } | {
-            /** @constant */
-            code: "PAYMENT_AMOUNT_OUTSIDE_LIMITS";
-            metadata: {
-                /** @description The bound that is violated */
-                bound: components["schemas"]["PaymentLimitBound"];
-                /** @description The maximum allowed payment amount */
-                max?: string | number | null;
-                /** @description The minimum allowed payment amount */
-                min?: string | number | null;
-            };
-        } | {
-            /** @constant */
-            code: "GAME_LAUNCH_FAILED";
-            metadata: {
-                message: string;
-            };
-        } | {
-            /** @constant */
-            code: "GAME_SESSION_NOT_FOUND";
-        } | {
-            /** @constant */
-            code: "PAYMENT_AMOUNT_EXCEEDS_TIMEFRAME_LIMITS";
-            metadata: {
-                /**
-                 * Format: int64
-                 * @description The number of past days the limit is enforced for
-                 */
-                days: number;
-                /** @description The monetary limit that is not allowed to be exceeded */
-                limit: string | number;
-            };
-        } | {
-            /** @constant */
-            code: "PAYMENT_AMOUNT_OUT_OF_BOUNDS";
-        } | {
-            /** @constant */
-            code: "PAYMENT_FLOW_NOT_FOUND";
-        } | {
-            /** @constant */
-            code: "PAYMENT_FLOW_INVALID_STATE";
-        } | {
-            /** @constant */
-            code: "PAYMENT_FLOW_NOT_AWAITING_APPROVAL";
-        } | {
-            /** @constant */
-            code: "INTEGRATION_NOT_FOUND";
-        } | {
-            /** @constant */
-            code: "NO_PAYMENT_PROVIDER_AVAILABLE";
-        } | {
-            /** @constant */
-            code: "PAYMENT_METHOD_NOT_FOUND";
-        } | {
-            /** @constant */
-            code: "KYC_PROVIDER_NOT_FOUND";
-        } | {
-            /** @constant */
-            code: "SEARCH_INDEX_NOT_FOUND";
-        } | {
-            /** @constant */
-            code: "USER_NOT_FOUND";
-        } | {
-            /** @constant */
-            code: "USERNAME_TAKEN";
-        } | {
-            /** @constant */
-            code: "USERNAME_EXPLICIT";
-        } | {
-            /** @constant */
-            code: "USER_MISSING_PAYMENT_METHOD_ACCOUNT_TYPE_IDENTIFIER";
-            metadata: {
-                account_type: string;
-                payment_method: components["schemas"]["PaymentMethodIdentifier"];
-            };
-        } | {
-            /** @constant */
-            code: "USER_MISSING_DOCUMENT";
-        } | {
-            /** @constant */
-            code: "USER_SANDBOXED";
-        } | {
-            /** @constant */
-            code: "USER_INVALID_DOCUMENT";
-        } | {
-            /** @constant */
-            code: "USER_ADDRESS_MISSING";
-        } | {
-            /** @constant */
-            code: "USER_KYC_REQUIRED";
-        } | {
-            /** @constant */
-            code: "USER_EXCLUDED";
-        } | {
-            /** @constant */
-            code: "USER_BLOCKED";
-        } | {
-            /** @constant */
-            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
-            metadata: {
-                /** @description The violating jurisdiction. */
-                jurisdiction: components["schemas"]["Country"];
-            };
-        } | {
-            /** @constant */
-            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
-            metadata: {
-                /** @description Alternative site that the user may be redirected to */
-                alternative_site: components["schemas"]["SiteResponse"];
-                /** @description The violating jurisdiction. */
-                jurisdiction: components["schemas"]["Country"];
-            };
-        } | {
-            /** @constant */
-            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
-            metadata: {
-                /** @description The violating jurisdiction. */
-                jurisdiction: components["schemas"]["Country"];
-            };
-        } | {
-            /** @constant */
-            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
-            metadata: {
-                /** @description The jurisdiction that is supported but not enabled. */
-                jurisdiction: components["schemas"]["Country"];
-            };
-        } | {
-            /** @constant */
-            code: "HOST_NOT_SUPPORTED";
-        } | {
-            /** @constant */
-            code: "MISSING_ORIGIN";
-        } | {
-            /** @constant */
-            code: "GAME_NOT_FOUND";
-        } | {
-            /** @constant */
-            code: "GAME_PROVIDER_NOT_REACHABLE";
-        } | {
-            /** @constant */
-            code: "GAME_PROVIDER_NOT_FOUND";
-        } | {
-            /** @constant */
-            code: "GAME_AGGREGATOR_PROVIDER_MAPPING_NOT_FOUND";
-        } | {
-            /** @constant */
-            code: "GAME_AGGREGATOR_NOT_SUPPORTED";
-        } | {
-            /** @constant */
-            code: "GAME_AGGREGATOR_MISSING";
-        } | {
-            /** @constant */
-            code: "GAME_AGGREGATOR_NOT_FOUND";
-        } | {
-            /** @constant */
-            code: "GAME_URL_INVALID";
-        } | {
-            /** @constant */
-            code: "CHANNEL_NOT_FOUND";
-        } | {
-            /** @constant */
-            code: "SIGNUP_FLOW_NOT_FOUND";
-        } | {
-            /** @constant */
-            code: "SIGNUP_INVALID_PROFILE";
-        } | {
-            /** @constant */
-            code: "EXCHANGE_RATE_NOT_FOUND";
-            metadata: {
-                from: components["schemas"]["Currency"];
-                to: components["schemas"]["Currency"];
-            };
-        } | {
-            /** @constant */
-            code: "INVALID_SIGNATURE";
-        } | {
-            /** @constant */
-            code: "MISSING_HEADER";
-            metadata: {
-                header: string;
-            };
-        } | {
-            /** @constant */
-            code: "INVALID_ENCODING";
-        } | {
-            /** @constant */
-            code: "MISSING_SEC_WEB_SOCKET_PROTOCOL";
-        } | {
-            /** @constant */
-            code: "INVALID_USER_GEOLOCATION";
-        } | {
-            /** @constant */
-            code: "INVALID_BOT_HEADER";
-        } | {
-            /** @constant */
-            code: "LEASE_NOT_FOUND";
-        } | {
-            /** @constant */
-            code: "VALIDATION";
-            metadata: components["schemas"]["SystemValidationErrors"];
-        } | {
-            /** @constant */
-            code: "INVALID_CONTENT_TYPE";
-            metadata: {
-                /** @description The content type that was expected */
-                expected: string;
-            };
-        } | {
-            /** @constant */
-            code: "UNAUTHORIZED";
-        } | {
-            /** @constant */
-            code: "FORBIDDEN";
-        } | {
-            /** @constant */
             code: "INTERNAL";
-            metadata: components["schemas"]["InternalError"];
+            metadata: Record<string, never>;
         };
-        SessionResponse: {
-            country?: components["schemas"]["Country"] | null;
-            /** Format: date-time */
-            created_at: string;
-            device?: string | null;
-            /** Format: date-time */
-            expires_at: string;
-            id: components["schemas"]["AuthSessionId"];
-            /** Format: ip */
-            ip_address?: string | null;
-            /** Format: date-time */
-            last_interaction_at: string;
-            user_agent?: string | null;
-            user_id: components["schemas"]["UserId"];
+        SelectWalletRequest: {
+            /** @description The ID of the wallet to select. */
+            currency: components["schemas"]["Currency"];
         };
         SignupFlowParams: {
             /** @description The ID of the signup flow to retrieve. */
@@ -4972,6 +8118,21 @@ export interface components {
         };
         /** @enum {string} */
         StaticGameCategory: "slots" | "scratch" | "bingo" | "roulette" | "card" | "table" | "blackjack" | "dice" | "sport" | "keno" | "betting" | "casual" | "lottery" | "instantwin" | "poker" | "craps" | "crash" | "fishing" | "mines" | "video_poker" | "virtual_sports" | "live";
+        SubmitSignupFlowErrorResponse: {
+            /** @constant */
+            code: "FLOW_NOT_FOUND";
+        } | {
+            /** @constant */
+            code: "REGISTRATION_NOT_ALLOWED";
+        } | {
+            /** @constant */
+            code: "INVALID_DATA";
+            metadata: components["schemas"]["SystemValidationErrors"];
+        } | {
+            /** @constant */
+            code: "INTERNAL";
+            metadata: Record<string, never>;
+        };
         /** Format: float */
         SystemAmount: number;
         SystemValidationError: {
@@ -5031,10 +8192,19 @@ export interface components {
             };
         };
         TimeframeLimitPrototype: {
-            /** Format: int64 */
-            days: number;
-            deposit?: components["schemas"]["Maybe_Decimal"];
-            withdrawal?: components["schemas"]["Maybe_Decimal"];
+            /** @description The maximum total amount that can be deposited within this timeframe */
+            deposit_amount?: components["schemas"]["Maybe_Decimal"];
+            /** @description The maximum number of deposits that can be made within this timeframe */
+            deposit_count?: components["schemas"]["Maybe_int64"];
+            /**
+             * Format: int64
+             * @description The sliding window timeframe in which these limits apply, in seconds
+             */
+            seconds: number;
+            /** @description The maximum total amount that can be withdrawn within this timeframe */
+            withdrawal_amount?: components["schemas"]["Maybe_Decimal"];
+            /** @description The maximum number of withdrawals that can be made within this timeframe */
+            withdrawal_count?: components["schemas"]["Maybe_int64"];
         };
         TrackerType: {
             /** @constant */
@@ -5065,6 +8235,34 @@ export interface components {
                 status: components["schemas"]["PaymentStatus"];
                 status_counts: components["schemas"]["PaymentFlowStatusCounts"];
             };
+        };
+        UnblockUserErrorResponse: {
+            /** @constant */
+            code: "USER_NOT_FOUND";
+        } | {
+            /** @constant */
+            code: "INTERNAL";
+            metadata: Record<string, never>;
+        };
+        UpdateNotificationStatusErrorResponse: {
+            /** @constant */
+            code: "NOTIFICATION_NOT_FOUND";
+        } | {
+            /** @constant */
+            code: "INTERNAL";
+            metadata: Record<string, never>;
+        };
+        UpdateSignupFlowErrorResponse: {
+            /** @constant */
+            code: "SIGNUP_FLOW_NOT_FOUND";
+        } | {
+            /** @constant */
+            code: "INVALID_DATA";
+            metadata: components["schemas"]["SystemValidationErrors"];
+        } | {
+            /** @constant */
+            code: "INTERNAL";
+            metadata: Record<string, never>;
         };
         /**
          * Format: int64
@@ -5152,6 +8350,11 @@ export interface components {
             name: string;
             /** @description The type of the payment method. */
             payment_method_type: components["schemas"]["PaymentMethodType"];
+        };
+        ValidationErrorResponse: {
+            /** @constant */
+            code: "VALIDATION_FAILED";
+            metadata: components["schemas"]["SystemValidationErrors"];
         };
         /**
          * Format: int64

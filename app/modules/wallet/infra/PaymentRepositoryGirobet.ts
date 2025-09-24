@@ -3,7 +3,6 @@ import type { PaymentRepositoryI } from "../domain/PaymentRepository";
 import { ErrorPendingIdentityCheck } from "../domain/ErrorPendingIdentityCheck";
 import { ErrorPendingPaymentFlow } from "../domain/ErrorPendingPaymentFlow";
 import { ErrorInsufficientFunds } from "../domain/ErrorInsufficientFunds";
-import { ErrorWalletHasInsufficientWagers } from "../domain/ErrorWalletHasInsufficientWagers";
 import { ErrorWalletPaymentCooldownNotFinished } from "../domain/ErrorWalletPaymentCooldownNotFinished";
 import { ErrorPaymentAmountExceedsTimeframeLimits } from "../domain/ErrorPaymentAmountExceedsTimeframeLimits";
 import { ErrorPaymentAmountOutsideLimits } from "../domain/ErrorPaymentAmountOutsideLimits";
@@ -15,6 +14,7 @@ import { HttpBackendApiError } from "~/packages/http-client/http-backend-api-err
 import { fail, success, type Result } from "~/packages/result";
 import { InfrastructureError } from "~/packages/result/infrastructure-error";
 import type { CommonDependenciesI } from "~/dependency-injection/load-di";
+import { ErrorPaymentCountExceedsTimeframeLimits } from "../domain/ErrorPaymentCountExceedsTimeframeLimits";
 
 export class PaymentRepositoryGirobet implements PaymentRepositoryI {
   constructor(clientOptions: { baseUrl: string }, commonDependencies: CommonDependenciesI) {
@@ -104,16 +104,16 @@ export class PaymentRepositoryGirobet implements PaymentRepositoryI {
         if (error.code === "USER_SANDBOXED") {
           return fail(new ErrorUserSandboxed({ paymentMethodId }));
         }
-        if (error.code === "WALLET_PENDING_FLOW") {
-          return fail(new ErrorPendingPaymentFlow("deposit"));
+        if (error.code === "TIMEFRAME_AMOUNT_LIMIT_EXCEEDED") {
+          return fail(ErrorPaymentAmountExceedsTimeframeLimits.new(error.metadata.seconds, Number(error.metadata.limit), { ...error.metadata, amount, currency, paymentMethodId }));
         }
-        if (error.code === "PAYMENT_AMOUNT_EXCEEDS_TIMEFRAME_LIMITS") {
-          return fail(ErrorPaymentAmountExceedsTimeframeLimits.new(error.metadata.days, Number(error.metadata.limit), { ...error.metadata, amount, currency, paymentMethodId }));
+        if (error.code === "TIMEFRAME_COUNT_LIMIT_EXCEEDED") {
+          return fail(ErrorPaymentCountExceedsTimeframeLimits.new(error.metadata.seconds, error.metadata.limit, { ...error.metadata, amount, currency, paymentMethodId }));
         }
         if (error.code === "PAYMENT_METHOD_NOT_ALLOWED") {
           return fail(ErrorPaymentMethodNotAllowed.new(paymentMethodId, { amount, currency }));
         }
-        if (error.code === "PAYMENT_AMOUNT_OUTSIDE_LIMITS") {
+        if (error.code === "LIMIT_EXCEEDED") {
           return fail(ErrorPaymentAmountOutsideLimits.new(
             error.metadata.bound,
             typeof error.metadata.max === "string" ? Number(error.metadata.max) : Number(error.metadata.min),
@@ -164,31 +164,32 @@ export class PaymentRepositoryGirobet implements PaymentRepositoryI {
       }
 
       if (error) {
-        if (error.code === "USER_KYC_REQUIRED") {
+        if (error.code === "MISSING_KYC") {
           return fail(new ErrorPendingIdentityCheck());
         }
         if (error.code === "USER_SANDBOXED") {
           return fail(new ErrorUserSandboxed({ paymentMethodId }));
         }
-        if (error.code === "WALLET_PENDING_FLOW") {
-          return fail(new ErrorPendingPaymentFlow("deposit"));
+        if (error.code === "PENDING_WITHDRAWAL_EXISTS") {
+          return fail(new ErrorPendingPaymentFlow("withdrawal"));
         }
-        if (error.code === "WALLET_INSUFFICIENT_WAGERS") {
-          return fail(ErrorWalletHasInsufficientWagers.new({ amount, currency, paymentMethodId }));
-        }
-        if (error.code === "WALLET_INSUFFICIENT_FUNDS") {
+        if (error.code === "INSUFFICIENT_FUNDS") {
           return fail(ErrorInsufficientFunds.new({ amount, currency, paymentMethodId }));
         }
-        if (error.code === "PAYMENT_AMOUNT_EXCEEDS_TIMEFRAME_LIMITS") {
-          return fail(ErrorPaymentAmountExceedsTimeframeLimits.new(error.metadata.days, Number(error.metadata.limit), { ...error.metadata, amount, currency, paymentMethodId }));
+        if (error.code === "TIMEFRAME_AMOUNT_LIMIT_EXCEEDED") {
+          return fail(ErrorPaymentAmountExceedsTimeframeLimits.new(error.metadata.seconds, Number(error.metadata.limit), { ...error.metadata, amount, currency, paymentMethodId }));
         }
-        if (error.code === "WALLET_PAYMENT_COOLDOWN") {
-          return fail(ErrorWalletPaymentCooldownNotFinished.new(error.metadata.minutes_left, { amount, currency, paymentMethodId }));
+        if (error.code === "TIMEFRAME_COUNT_LIMIT_EXCEEDED") {
+          return fail(ErrorPaymentCountExceedsTimeframeLimits.new(error.metadata.seconds, error.metadata.limit, { ...error.metadata, amount, currency, paymentMethodId }));
+        }
+        if (error.code === "COOLDOWN") {
+          // TODO: Natively utilize seconds
+          return fail(ErrorWalletPaymentCooldownNotFinished.new(error.metadata.seconds_left / 60, { amount, currency, paymentMethodId }));
         }
         if (error.code === "PAYMENT_METHOD_NOT_ALLOWED") {
           return fail(ErrorPaymentMethodNotAllowed.new(paymentMethodId, { amount, currency }));
         }
-        if (error.code === "PAYMENT_AMOUNT_OUTSIDE_LIMITS") {
+        if (error.code === "LIMIT_EXCEEDED") {
           return fail(ErrorPaymentAmountOutsideLimits.new(error.metadata.bound,
             typeof error.metadata.max === "string" ? Number(error.metadata.max) : Number(error.metadata.min),
             { ...error.metadata, amount, currency, paymentMethodId },

@@ -207,10 +207,10 @@ export class AuthenticatedUserSearcherGirobet implements AuthenticatedUserReposi
       }
 
       if (error) {
-        if (error.code === "USERNAME_TAKEN") {
+        if (error.code === "TAKEN") {
           return fail(new ErrorUsernameIsTaken(username));
         }
-        if (error.code === "USERNAME_EXPLICIT") {
+        if (error.code === "EXPLICIT") {
           return fail(new ErrorUsernameCannotBeExplicit(username));
         }
         const httpError = HttpBackendApiError.newFromBackendError(error, response);

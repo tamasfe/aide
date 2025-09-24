@@ -1,5 +1,4 @@
 import type { WalletRepositoryI } from "../domain/WalletRepository";
-import { ErrorNoAuthenticatedWalletsFound } from "../domain/ErrorNoAuthenticatedWalletsFound";
 import type { ErrorCurrencyNotRecognized } from "../domain/ErrorCurrencyNotRecognized";
 import type { ErrorInvalidBalance } from "../domain/ErrorInvalidBalance";
 import { ErrorUserNotAuthorized } from "../domain/ErrorUserNotAuthorized";
@@ -15,7 +14,7 @@ export class WalletsRepositoryGirobet implements WalletRepositoryI {
     this.apiClient = createBackendOpenApiClient(clientOptions, commonDependencies);
   }
 
-  public async findAuthenticated(): Promise<Result<CamelizeKeys<components["schemas"]["UserWalletBalanceResponse"][]>, InfrastructureError | ErrorCurrencyNotRecognized | ErrorNoAuthenticatedWalletsFound | ErrorInvalidBalance | ErrorUserNotAuthorized>> {
+  public async findAuthenticated(): Promise<Result<CamelizeKeys<components["schemas"]["UserWalletBalanceResponse"][]>, InfrastructureError | ErrorCurrencyNotRecognized | ErrorInvalidBalance | ErrorUserNotAuthorized>> {
     try {
       const { data, error, response } = await this.apiClient.GET("/user/balance", {});
 
@@ -24,12 +23,6 @@ export class WalletsRepositoryGirobet implements WalletRepositoryI {
       }
 
       if (error) {
-        if (error.code === "WALLET_NOT_FOUND") {
-          return fail(
-            new ErrorNoAuthenticatedWalletsFound({}),
-          );
-        }
-
         if (error.code === "UNAUTHORIZED") {
           return fail(
             new ErrorUserNotAuthorized({}),

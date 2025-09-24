@@ -26,9 +26,6 @@ export class CreateWithdrawalFlowOnForm {
     const result = await this.createWithdrawalFlow.handle(amount, currency, paymentMethodId);
     if (result.isFailure) {
       if (result.error.name === "ErrorPendingPaymentFlow") {
-        if (result.error.pendingPaymentType === "deposit") {
-          return { message: this.t("modal_payments.error_creating_flow_pending_deposit") };
-        }
         if (result.error.pendingPaymentType === "withdrawal") {
           return { message: this.t("modal_payments.error_creating_flow_pending_withdrawal") };
         }
@@ -49,10 +46,6 @@ export class CreateWithdrawalFlowOnForm {
             },
           },
         };
-      }
-
-      if (result.error.name === "ErrorWalletHasInsufficientWagers") {
-        return { message: this.t("modal_payments.error_creating_withdrawal_insufficient_wagers") };
       }
 
       if (result.error.name === "ErrorInsufficientFunds") {

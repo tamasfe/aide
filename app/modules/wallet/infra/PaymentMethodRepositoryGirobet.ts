@@ -7,7 +7,6 @@ import { fail, success, type Result } from "~/packages/result";
 import { InfrastructureError } from "~/packages/result/infrastructure-error";
 import type { CommonDependenciesI } from "~/dependency-injection/load-di";
 import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
-import { ErrorWalletNotFound } from "../domain/ErrorWalletNotFound";
 
 export class PaymentMethodRepositoryGirobet implements PaymentMethodRepositoryI {
   constructor(clientOptions: { baseUrl: string }, commonDependencies: CommonDependenciesI) {
@@ -86,9 +85,6 @@ export class PaymentMethodRepositoryGirobet implements PaymentMethodRepositoryI 
       }
 
       if (error) {
-        if (error.code === "WALLET_NOT_FOUND") {
-          return fail(new ErrorWalletNotFound({ currency, paymentMethodId }));
-        }
         return fail(
           InfrastructureError.newFromError({ currency, paymentMethodId }, HttpBackendApiError.newFromBackendError(error, response)),
         );

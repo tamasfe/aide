@@ -23,7 +23,7 @@ const createMiddlewareJurisdictionErrorHandler: (commonDependencies: CommonDepen
       const locale = commonDependencies.requestContext.locale;
 
       const jsonResponse: unknown = await response.clone().json();
-      if (HttpBackendApiError.isBackendServerError(jsonResponse)) {
+      if (HttpBackendApiError.isJurisdictionError(jsonResponse)) {
         switch (jsonResponse.code) {
           case "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE":
             await emitOpenUserModal.handle({ modal: "restrict_license_no_alternative", data: {
@@ -101,10 +101,7 @@ const createMiddlewareCorsErrorHandler: () => Middleware = () => {
 
 export const createBackendOpenApiClient = (clientOptions: { baseUrl: string }, commonDependencies: CommonDependenciesI) => {
   const client = createClient<paths>({ baseUrl: clientOptions.baseUrl, credentials: "include", headers: {
-    ...(commonDependencies.requestContext.userJurisdiction ? { "CF-IPCountry": commonDependencies.requestContext.userJurisdiction } : {}),
     "Content-Type": "application/json",
-    "X-Forwarded-Host": commonDependencies.requestContext.headers?.host,
-    // "x-forwarded-for": commonDependencies.requestContext.headers?.["x-forwarded-for"] || "127.0.0.1",
     ...commonDependencies.requestContext.headers,
   } });
   client.use(

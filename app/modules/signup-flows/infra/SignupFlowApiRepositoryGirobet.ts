@@ -66,7 +66,7 @@ export class SignupFlowApiRepositoryGirobet implements SignupFlowApiRepositoryI 
     return fail(InfrastructureError.newFromError({ data, error, response }, new Error("Unexpected scenario: library did not return data nor error. This should never happen. Response: ")));
   }
 
-  public async submit(signupFlowId: string): Promise<EmptyResult<InfrastructureError | ErrorInvalidProfile | ErrorAlreadyTakenCpf | ErrorAlreadyTakenTelephone | ErrorAlreadyTakenEmail>> {
+  public async submit(signupFlowId: string): Promise<EmptyResult<InfrastructureError | SignupFlowNotFound | ErrorInvalidProfile | ErrorAlreadyTakenCpf | ErrorAlreadyTakenTelephone | ErrorAlreadyTakenEmail>> {
     const { data, error, response } = await this.apiClient.POST("/signup/flow/{flow_id}", {
       params: {
         path: {
@@ -76,11 +76,15 @@ export class SignupFlowApiRepositoryGirobet implements SignupFlowApiRepositoryI 
     });
 
     if (error) {
-      if (error.code === "SIGNUP_INVALID_PROFILE") {
+      if (error.code === "FLOW_NOT_FOUND") {
+        return fail(SignupFlowNotFound.newFromId(signupFlowId));
+      }
+
+      if (error.code === "REGISTRATION_NOT_ALLOWED") {
         return fail(new ErrorInvalidProfile({ signupFlowId }));
       }
 
-      if (error.code === "VALIDATION") {
+      if (error.code === "INVALID_DATA") {
         for (const [field, errors] of Object.entries(error.metadata)) {
           if (Array.isArray(errors)) {
             for (const validationError of errors) {

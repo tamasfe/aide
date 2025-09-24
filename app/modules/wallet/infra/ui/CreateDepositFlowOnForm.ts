@@ -16,15 +16,6 @@ export class CreateDepositFlowOnForm {
   public async handle(amount: number, currency: WalletCurrency, paymentMethodId: number): Promise<SubmitErrorMessage> {
     const result = await this.createDepositFlow.handle(amount, currency, paymentMethodId);
     if (result.isFailure) {
-      if (result.error.name === "ErrorPendingPaymentFlow") {
-        if (result.error.pendingPaymentType === "deposit") {
-          return this.t("modal_payments.error_creating_flow_pending_deposit");
-        }
-        if (result.error.pendingPaymentType === "withdrawal") {
-          return this.t("modal_payments.error_creating_flow_pending_withdrawal");
-        }
-      }
-
       if (result.error.name === "ErrorUserSandboxed") {
         return this.t("modal_payments.error_creating_flow_user_sandboxed");
       }

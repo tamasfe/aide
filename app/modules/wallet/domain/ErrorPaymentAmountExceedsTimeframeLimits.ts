@@ -4,15 +4,15 @@ export class ErrorPaymentAmountExceedsTimeframeLimits extends CustomError {
   public override name = "ErrorPaymentAmountExceedsTimeframeLimits" as const;
 
   public static new(
-    days: number,
+    seconds: number,
     limitAmount: number,
     metadata: Record<string, unknown>,
   ) {
-    return new ErrorPaymentAmountExceedsTimeframeLimits(days, limitAmount, metadata);
+    return new ErrorPaymentAmountExceedsTimeframeLimits(seconds, limitAmount, metadata);
   }
 
   private constructor(
-    public readonly days: number,
+    public readonly seconds: number,
     public readonly limitAmount: number,
     metadata: Record<string, unknown>,
   ) {

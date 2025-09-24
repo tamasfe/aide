@@ -1,4 +1,3 @@
-import { ErrorSearchIndexNotFound } from "../../domain/ErrorSearchIndexNotFound";
 import type { Game } from "../../domain/Game";
 import type { GamesApiRepositoryI } from "../../domain/GamesApiRepository";
 import type { LoggerI } from "~/packages/logger/Logger";
@@ -24,15 +23,6 @@ export class ListGamesPaginatingOnGrid {
     );
 
     if (result.isFailure) {
-      if (result.error instanceof ErrorSearchIndexNotFound) {
-        this.logger.warn("The search index was not found", { error: result.error });
-        return {
-          games: [],
-          canLoadMore: false,
-          totalGames: 0,
-        };
-      }
-
       // Optional TODO: alert the customer somehow in case of error
       this.logger.error("ListGamesPaginatingOnGrid failed", result.error);
       return {
