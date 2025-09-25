@@ -1,21 +1,28 @@
 <script setup lang="ts">
+import type { PaymentLimitTimeframe } from "~/modules/wallet/domain/PaymentLimits";
 import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
+import { humanizeDuration } from "~/packages/translation/domain/humanize-duration";
 
 // DESIGN STATUS:       ✅
 // ARCHITECTURE STATUS: ✅
 // TRANSLATION STATUS:  ✅
 
-defineProps<{
+const props = defineProps<{
   min: number | null;
   max: number | null;
   cooldownSeconds: number | null;
   currency: WalletCurrency;
   unlockedBalance: number | null;
+  timeframeLimits: PaymentLimitTimeframe[];
 }>();
 
-const secondsToDayFrequency = (seconds: number) => {
-  return Math.round(1 / (seconds / (60 * 60 * 24)) * 10) / 10;
-};
+const timeframesWithWithdrawalAmount = computed(() => {
+  return props.timeframeLimits.filter(t => typeof t.withdrawalAmount === "number");
+});
+
+const timeframesWithWithdrawalCount = computed(() => {
+  return props.timeframeLimits.filter(t => typeof t.withdrawalCount === "number");
+});
 </script>
 
 <template>
@@ -30,8 +37,29 @@ const secondsToDayFrequency = (seconds: number) => {
       <BaseCurrency :value="max" :currency="currency" variant="ghost" />
     </div>
 
-    <div v-if="cooldownSeconds">{{ $t("withdrawal_limits.limits_amount") }}</div>
-    <div v-if="cooldownSeconds" class="value">{{ secondsToDayFrequency(cooldownSeconds) }}/day</div>
+    <template v-if="timeframesWithWithdrawalAmount.length > 0">
+      <div>{{ $t("withdrawal_limits.limits_timeframe_amount") }}</div>
+      <div class="value">
+        <span v-for="timeframe in timeframesWithWithdrawalAmount" :key="JSON.stringify(timeframe)" class="flex items-center">
+          <BaseCurrency
+            :value="timeframe.withdrawalAmount as number"
+            :currency="currency"
+            variant="ghost"
+          /> /
+          {{ humanizeDuration(timeframe.seconds, $t) }}
+        </span>
+      </div>
+    </template>
+
+    <template v-if="timeframesWithWithdrawalCount.length > 0">
+      <div>{{ $t("withdrawal_limits.limits_timeframe_count") }}</div>
+      <div class="value">
+        <span v-for="timeframe in timeframesWithWithdrawalCount" :key="JSON.stringify(timeframe)">
+          {{ timeframe.withdrawalCount }} /
+          {{ humanizeDuration(timeframe.seconds, $t) }}
+        </span>
+      </div>
+    </template>
 
     <div>{{ $t("withdrawal_limits.limits_bets_to_withdraw") }}</div>
     <div class="value">1x</div>

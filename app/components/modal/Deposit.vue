@@ -75,13 +75,13 @@ defineProps<{
       {{ $t('modal_payments.make_deposit') }}
     </template>
     <template #subtitle>
-      <div v-if="paymentMethodData?.depositAmounts && paymentMethodData?.depositAmounts.min" class="flex items-center justify-between">
+      <div v-if="paymentMethodData?.limits.depositMin" class="flex items-center justify-between">
         <span>{{ $t('modal_payments.make_deposit_subtitle') }}</span>
         <span class="text-right block space-x-2">
           <span>{{ $t('modal_deposit.minimum') }}:</span>
           <BaseCurrency
             class="inline"
-            :value="paymentMethodData?.depositAmounts.min"
+            :value="paymentMethodData.limits.depositMin"
             :currency="currency.code"
             variant="ghost"
           />
@@ -90,8 +90,8 @@ defineProps<{
       <span v-else>{{ $t('modal_payments.make_deposit_subtitle') }}</span>
     </template>
     <FormDeposit
-      v-if="paymentMethodData?.depositAmounts && paymentMethodData.id"
-      :amounts="{ min: paymentMethodData?.depositAmounts.min, max: paymentMethodData?.depositAmounts.max }"
+      v-if="paymentMethodData"
+      :amounts="{ min: paymentMethodData.limits.depositMin ?? null, max: paymentMethodData.limits.depositMax ??null }"
       :currency="currency"
       :payment-methods="paymentMethods || []"
       :payment-method-id="paymentMethodData.id"

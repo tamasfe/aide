@@ -182,18 +182,17 @@ export class PaymentRepositoryGirobet implements PaymentRepositoryI {
         if (error.code === "TIMEFRAME_COUNT_LIMIT_EXCEEDED") {
           return fail(ErrorPaymentCountExceedsTimeframeLimits.new(error.metadata.seconds, error.metadata.limit, { ...error.metadata, amount, currency, paymentMethodId }));
         }
-        if (error.code === "COOLDOWN") {
-          // TODO: Natively utilize seconds
-          return fail(ErrorWalletPaymentCooldownNotFinished.new(error.metadata.seconds_left / 60, { amount, currency, paymentMethodId }));
-        }
-        if (error.code === "PAYMENT_METHOD_NOT_ALLOWED") {
-          return fail(ErrorPaymentMethodNotAllowed.new(paymentMethodId, { amount, currency }));
-        }
         if (error.code === "LIMIT_EXCEEDED") {
           return fail(ErrorPaymentAmountOutsideLimits.new(error.metadata.bound,
             typeof error.metadata.max === "string" ? Number(error.metadata.max) : Number(error.metadata.min),
             { ...error.metadata, amount, currency, paymentMethodId },
           ));
+        }
+        if (error.code === "COOLDOWN") {
+          return fail(ErrorWalletPaymentCooldownNotFinished.new(error.metadata.seconds_left, { amount, currency, paymentMethodId }));
+        }
+        if (error.code === "PAYMENT_METHOD_NOT_ALLOWED") {
+          return fail(ErrorPaymentMethodNotAllowed.new(paymentMethodId, { amount, currency }));
         }
         return fail(
           InfrastructureError.newFromError({

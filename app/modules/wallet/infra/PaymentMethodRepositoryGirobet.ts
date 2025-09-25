@@ -70,17 +70,21 @@ export class PaymentMethodRepositoryGirobet implements PaymentMethodRepositoryI 
       });
 
       if (data) {
+        // Need to set it manually as the camelizeKeys method does not work well with inner arrays for now
         return success({
-          deposit: {
-            cooldownSeconds: data.deposit_cooldown ?? null,
-            min: data.deposit_min ?? null,
-            max: data.deposit_max ?? null,
-          },
-          withdrawal: {
-            cooldownSeconds: data.withdrawal_cooldown ?? null,
-            min: data.withdrawal_min ?? null,
-            max: data.withdrawal_max ?? null,
-          },
+          depositCooldown: data.deposit_cooldown,
+          depositMax: data.deposit_max,
+          depositMin: data.deposit_min,
+          timeframeLimits: data.timeframe_limits.map(t => ({
+            depositAmount: t.deposit_amount,
+            depositCount: t.deposit_count,
+            seconds: t.seconds,
+            withdrawalAmount: t.withdrawal_amount,
+            withdrawalCount: t.withdrawal_count,
+          })),
+          withdrawalCooldown: data.withdrawal_cooldown,
+          withdrawalMax: data.withdrawal_max,
+          withdrawalMin: data.withdrawal_min,
         });
       }
 

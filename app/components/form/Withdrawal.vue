@@ -3,6 +3,7 @@ import { toTypedSchema } from "@vee-validate/zod";
 import { z } from "zod";
 import type { SupportedCountryFlagCode } from "@/types/constants";
 import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
+import type { PaymentLimits } from "~/modules/wallet/domain/PaymentLimits";
 
 // DESIGN STATUS:       ✴️
 //   - finish withdrawal cpf fields just like on bet7k (ignore design)
@@ -13,7 +14,7 @@ import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
 // ZOD SCHEMA:          ✅
 
 const props = defineProps<{
-  paymentMethodLimits: { min: number | null; max: number | null; cooldownSeconds: number | null };
+  paymentMethodLimits: PaymentLimits;
   userUnlockedBalance: number | null;
   currency: {
     code: WalletCurrency;
@@ -28,10 +29,10 @@ const onToggleLimits = () => {
 };
 
 const maximumWithdrawal = computed(() => {
-  if (props.paymentMethodLimits.max !== null && props.userUnlockedBalance !== null) {
-    return Math.min(props.paymentMethodLimits.max, props.userUnlockedBalance);
+  if (typeof props.paymentMethodLimits.withdrawalMax === "number" && props.userUnlockedBalance !== null) {
+    return Math.min(props.paymentMethodLimits.withdrawalMax, props.userUnlockedBalance);
   }
-  return props.paymentMethodLimits.max ?? props.userUnlockedBalance ?? null;
+  return props.paymentMethodLimits.withdrawalMax ?? props.userUnlockedBalance ?? null;
 });
 
 /**
@@ -40,14 +41,14 @@ const maximumWithdrawal = computed(() => {
  *
  */
 const { $dependencies } = useNuxtApp();
-const { t, locale } = useI18n();
+const { t } = useI18n();
 let schemaForAmount = z.number({ required_error: t("validation.amount_required") });
-if (props.paymentMethodLimits.min !== null) {
-  schemaForAmount = schemaForAmount.min(props.paymentMethodLimits.min, t("validation.amount_withdrawal_min", { min: `${props.paymentMethodLimits.min}` }));
+if (typeof props.paymentMethodLimits.withdrawalMin === "number") {
+  schemaForAmount = schemaForAmount.min(props.paymentMethodLimits.withdrawalMin, t("validation.amount_withdrawal_min", { min: `${props.paymentMethodLimits.withdrawalMin}` }));
 }
-if (maximumWithdrawal.value !== null) {
-  schemaForAmount = schemaForAmount.max(maximumWithdrawal.value, t("validation.amount_withdrawal_max", { max: `${maximumWithdrawal.value}` }));
-}
+// if (maximumWithdrawal.value !== null) {
+//   schemaForAmount = schemaForAmount.max(maximumWithdrawal.value, t("validation.amount_withdrawal_max", { max: `${maximumWithdrawal.value}` }));
+// }
 const validationSchema = toTypedSchema(
   z.object({ amount: schemaForAmount }),
 );
@@ -161,12 +162,12 @@ const onSubmit = handleSubmit(async (formData) => {
     </template>
     <template v-else>
       <InfoWithdrawalLimits
-        :min="paymentMethodLimits.min"
+        :min="paymentMethodLimits.withdrawalMin ?? null"
         :max="maximumWithdrawal"
-        :cooldown-seconds="paymentMethodLimits.cooldownSeconds"
-        :bets-to-enable-withdrawal="null"
+        :cooldown-seconds="paymentMethodLimits.withdrawalCooldown ?? null"
         :currency="currency.code"
         :unlocked-balance="userUnlockedBalance"
+        :timeframe-limits="paymentMethodLimits.timeframeLimits"
       />
 
       <BaseButton

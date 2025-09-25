@@ -14,6 +14,22 @@
       "empty": "No Recent Bets"
     }
   },
+  "duration": {
+    "year": "year",
+    "years": "years",
+    "month": "month",
+    "months": "months",
+    "week": "week",
+    "weeks": "weeks",
+    "day": "day",
+    "days": "days",
+    "hour": "hour",
+    "hours": "hours",
+    "minute": "minute",
+    "minutes": "minutes",
+    "second": "second",
+    "seconds": "seconds"
+  },
   "field": {
     "email": "Email",
     "password": "Password",
@@ -177,7 +193,8 @@
     "error_creating_deposit_flow_method_not_allowed": "The selected deposit method is not allowed. Please try another method",
     "error_creating_deposit_flow_unknown": "An error occurred while handling your deposit. Please try again",
     "error_creating_withdrawal_insufficient_funds": "Insufficient funds in your wallet to withdraw. Please deposit more funds or reduce the amount to withdraw and try again",
-    "error_creating_withdrawal_flow_amount_exceeds_timeframe_limits": "The amount you are trying to withdraw exceeds the limits for the selected timeframe. Please wait and try again",
+    "error_creating_withdrawal_flow_amount_exceeds_timeframe_limits": "The amount you are trying to withdraw exceeds the limit of: {limit}. Please wait and try again",
+    "error_creating_withdrawal_flow_count_exceeds_timeframe_limits": "The withdrawal you are trying to make exceeds the limit of: {limit}. Please wait and try again",
     "error_creating_withdrawal_cooldown_not_finished": "Your cooldown period between withdrawals finishes the {dateTime}. Please wait until then and try again",
     "error_creating_withdrawal_flow_method_not_allowed": "The selected withdrawal method is not allowed. Please try another method",
     "error_creating_withdrawal_flow_amount_below_minimum": "The amount you are trying to withdraw is below the minimum allowed {min}. Please change the amount and try again",
@@ -265,7 +282,8 @@
     "summary": "For an easy, secure and simple withdraw process, make sure to remember these: \n- The minimum withdrawal amount varies by method and is listed above. \n- The maximum withdrawal amount varies depending on your total unlocked balance, the payment provider's limits, and others. \n- Withdrawals are always to be processed to the original deposit method unless otherwise specified or if that method doesn't support withdrawals.",
     "limits_minimum": "Minimum",
     "limits_maximum": "Maximum",
-    "limits_amount": "Number of Withdrawals",
+    "limits_timeframe_count": "Number of Withdrawals",
+    "limits_timeframe_amount": "Amount withdrawn",
     "limits_bets_to_withdraw": "Bets to Enable Withdrawal",
     "unlocked_balance": "Unlocked Balance"
   },

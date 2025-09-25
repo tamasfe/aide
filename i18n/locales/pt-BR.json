@@ -14,6 +14,22 @@
       "empty": "Sem Apostas Recentes"
     }
   },
+  "duration": {
+    "second": "segundo",
+    "seconds": "segundos",
+    "minute": "minuto",
+    "minutes": "minutos",
+    "hour": "hora",
+    "hours": "horas",
+    "day": "dia",
+    "days": "dias",
+    "week": "semana",
+    "weeks": "semanas",
+    "month": "mês",
+    "months": "meses",
+    "year": "ano",
+    "years": "anos"
+  },
   "field": {
     "email": "E-mail",
     "password": "Senha",
@@ -176,7 +192,8 @@
     "error_creating_deposit_flow_method_not_allowed": "O método de depósito selecionado não é permitido. Tente outro método",
     "error_creating_deposit_flow_unknown": "Ocorreu um erro ao processar seu depósito. Por favor, tente novamente",
     "error_creating_withdrawal_insufficient_funds": "Fundos insuficientes em sua carteira para saque. Deposite mais fundos ou reduza o valor do saque e tente novamente",
-    "error_creating_withdrawal_flow_amount_exceeds_timeframe_limits": "O valor que você está tentando sacar excede os limites para o período selecionado. Aguarde e tente novamente",
+    "error_creating_withdrawal_flow_amount_exceeds_timeframe_limits": "O valor que você está tentando sacar excede o limite de: {limit}. Aguarde e tente novamente",
+    "error_creating_withdrawal_flow_count_exceeds_timeframe_limits": "O saque que você está tentando fazer excede o limite de: {limit}. Aguarde e tente novamente",
     "error_creating_withdrawal_cooldown_not_finished": "Seu período de carência entre saques termina em {dateTime}. Aguarde até lá e tente novamente",
     "error_creating_withdrawal_flow_method_not_allowed": "O método de saque selecionado não é permitido. Tente outro método",
     "error_creating_withdrawal_flow_amount_below_minimum": "O valor que você está tentando sacar está abaixo do mínimo permitido {min}. Altere o valor e tente novamente",
@@ -264,8 +281,9 @@
     "summary": "Para um processo de saque fácil, seguro e simples, lembre-se destes pontos:\n- O valor mínimo de saque varia conforme o método e está listado acima.\n- O valor máximo de saque depende do seu saldo desbloqueado, dos limites do provedor de pagamento e outros fatores.\n- Os saques sempre serão processados para o método de depósito original, a menos que especificado de outra forma ou se esse método não suportar saques.",
     "limits_minimum": "Valor Mínimo",
     "limits_maximum": "Valor Máximo",
-    "limits_amount": "Número de Saques",
     "limits_bets_to_withdraw": "Apostas para Habilitar Saque",
+    "limits_timeframe_count": "Número de Saques",
+    "limits_timeframe_amount": "Valor Sacado",
     "unlocked_balance": "Saldo Desbloqueado"
   },
   "play": {

@@ -59,8 +59,8 @@ const currency = ref<{
     </template>
 
     <FormWithdrawal
-      v-if="paymentMethodData?.withdrawalAmounts && paymentMethodData?.withdrawalAmounts"
-      :payment-method-limits="paymentMethodData?.withdrawalAmounts"
+      v-if="paymentMethodData"
+      :payment-method-limits="paymentMethodData.limits"
       :payment-method-id="paymentMethodData?.id"
       :currency="currency"
       :user-unlocked-balance="userUnlockedBalance"

@@ -1,20 +1,12 @@
 import type { PaymentMethodRepositoryI } from "../../domain/PaymentMethodRepository";
 import type { LoggerI } from "~/packages/logger/Logger";
 import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
+import type { PaymentLimits } from "../../domain/PaymentLimits";
 
 interface PaymentMethodResponseI {
   id: number;
   identifier: "pix";
-  depositAmounts: {
-    min: number | null;
-    max: number | null;
-    cooldownSeconds: number | null;
-  };
-  withdrawalAmounts: {
-    min: number | null;
-    max: number | null;
-    cooldownSeconds: number | null;
-  };
+  limits: PaymentLimits;
 }
 export class FindPreferredPaymentMethodOnPaymentModal {
   constructor(
@@ -41,32 +33,23 @@ export class FindPreferredPaymentMethodOnPaymentModal {
       return {
         id: paymentMethodResult.value.id,
         identifier: paymentMethodResult.value.identifier,
-        depositAmounts: {
-          min: this.FALLBACK_FOR_MINIMUM_AMOUNT,
-          max: this.FALLBACK_FOR_MAX_AMOUNT,
-          cooldownSeconds: this.FALLBACK_FOR_COOLDOWN_SECONDS,
+        limits: {
+          depositMin: this.FALLBACK_FOR_MINIMUM_AMOUNT,
+          depositMax: this.FALLBACK_FOR_MAX_AMOUNT,
+          depositCooldown: this.FALLBACK_FOR_COOLDOWN_SECONDS,
+          withdrawalMin: this.FALLBACK_FOR_MINIMUM_AMOUNT,
+          withdrawalMax: this.FALLBACK_FOR_MAX_AMOUNT,
+          withdrawalCooldown: this.FALLBACK_FOR_COOLDOWN_SECONDS,
+          timeframeLimits: [],
         },
-        withdrawalAmounts: {
-          min: this.FALLBACK_FOR_MINIMUM_AMOUNT,
-          max: this.FALLBACK_FOR_MAX_AMOUNT,
-          cooldownSeconds: this.FALLBACK_FOR_COOLDOWN_SECONDS,
-        },
+
       };
     }
 
     return {
       id: paymentMethodResult.value.id,
       identifier: paymentMethodResult.value.identifier,
-      depositAmounts: {
-        min: limitsResult.value.deposit.min ?? this.FALLBACK_FOR_MINIMUM_AMOUNT,
-        max: limitsResult.value.deposit.max ?? this.FALLBACK_FOR_MAX_AMOUNT,
-        cooldownSeconds: limitsResult.value.deposit.cooldownSeconds ?? this.FALLBACK_FOR_COOLDOWN_SECONDS,
-      },
-      withdrawalAmounts: {
-        min: limitsResult.value.withdrawal.min ?? this.FALLBACK_FOR_MINIMUM_AMOUNT,
-        max: limitsResult.value.withdrawal.max ?? this.FALLBACK_FOR_MAX_AMOUNT,
-        cooldownSeconds: limitsResult.value.withdrawal.cooldownSeconds ?? this.FALLBACK_FOR_COOLDOWN_SECONDS,
-      },
+      limits: limitsResult.value,
     };
   }
 }

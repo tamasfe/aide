@@ -3,6 +3,7 @@ import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
 import type { DateTimeFormatterFunctionType, NumberFormatterFunctionType, TranslateFunctionType } from "~/packages/translation";
 import type { LoggerI } from "~/packages/logger/Logger";
 import type { AsyncMessagePublisherI } from "~/packages/async-messages/async-message-publisher";
+import { humanizeDuration } from "~/packages/translation/domain/humanize-duration";
 
 type ErrorResponse = {
   message: string;
@@ -53,12 +54,25 @@ export class CreateWithdrawalFlowOnForm {
       }
 
       if (result.error.name === "ErrorPaymentAmountExceedsTimeframeLimits") {
-        // TODO: Use the error days and limit amount to format the message
-        return { message: this.t("modal_payments.error_creating_withdrawal_flow_amount_exceeds_timeframe_limits") };
+        return { message: this.t("modal_payments.error_creating_withdrawal_flow_amount_exceeds_timeframe_limits", {
+          limit: `${result.error.limitAmount} ${currency}/${humanizeDuration(result.error.seconds, this.t)}`,
+        }) };
       }
-
+      if (result.error.name === "ErrorPaymentCountExceedsTimeframeLimits") {
+        return { message: this.t("modal_payments.error_creating_withdrawal_flow_count_exceeds_timeframe_limits", {
+          limit: `${result.error.limitCount}/${humanizeDuration(result.error.seconds, this.t)}`,
+        }) };
+      }
+      if (result.error.name === "ErrorPaymentAmountOutsideLimits") {
+        if (result.error.limitExceeded === "min") {
+          return { message: this.t("modal_payments.error_creating_withdrawal_flow_amount_below_minimum", { min: this.n(result.error.amountLimit, { currency, style: "currency" }) }) };
+        }
+        if (result.error.limitExceeded === "max") {
+          return { message: this.t("modal_payments.error_creating_withdrawal_flow_amount_above_maximum", { max: this.n(result.error.amountLimit, { currency, style: "currency" }) }) };
+        }
+      }
       if (result.error.name === "ErrorWalletPaymentCooldownNotFinished") {
-        const cooldownPeriodFinishesAt = new Date(Date.now() + result.error.cooldownMinutesLeft * 60 * 1000);
+        const cooldownPeriodFinishesAt = new Date(Date.now() + result.error.cooldownSecondsLeft * 1000);
         return {
           message: this.t("modal_payments.error_creating_withdrawal_cooldown_not_finished", {
             dateTime: this.d(cooldownPeriodFinishesAt, { timeStyle: "short", dateStyle: "short" }),
@@ -68,15 +82,6 @@ export class CreateWithdrawalFlowOnForm {
 
       if (result.error.name === "ErrorPaymentMethodNotAllowed") {
         return { message: this.t("modal_payments.error_creating_withdrawal_flow_method_not_allowed") };
-      }
-
-      if (result.error.name === "ErrorPaymentAmountOutsideLimits") {
-        if (result.error.limitExceeded === "min") {
-          return { message: this.t("modal_payments.error_creating_withdrawal_flow_amount_below_minimum", { min: this.n(result.error.amountLimit, { currency, style: "currency" }) }) };
-        }
-        if (result.error.limitExceeded === "max") {
-          return { message: this.t("modal_payments.error_creating_withdrawal_flow_amount_above_maximum", { max: this.n(result.error.amountLimit, { currency, style: "currency" }) }) };
-        }
       }
 
       this.logger.error("Error creating withdrawal flow on form submission", result.error, {
