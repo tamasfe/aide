@@ -13,7 +13,7 @@ const NUMBER_OF_PAYMENTS_TO_SHOW = 25;
 
 const loading = useState(`wallet-page-payments-loading`, () => true);
 
-const { data: paymentsData } = await useAsyncData("wallet-page-payments-data", async () => {
+const { data: paymentsData, execute } = await useAsyncData("wallet-page-payments-data", async () => {
   loading.value = true;
 
   if (!walletStore.wallet) {
@@ -30,6 +30,16 @@ const { data: paymentsData } = await useAsyncData("wallet-page-payments-data", a
   lazy: DEFER_CLIENT_SIDE_LOADING,
   server: ENABLE_SERVER_SIDE_RENDERING,
   default: () => [],
+});
+
+const listenerId = ref<number | null>(null);
+onMounted(() => {
+  listenerId.value = $dependencies.common.asyncMessagePublisher.subscribe("backend:events:payments:payment-status-updated", async () => execute());
+});
+onUnmounted(() => {
+  if (listenerId.value !== null) {
+    $dependencies.common.asyncMessagePublisher.unsubscribe(listenerId.value);
+  }
 });
 </script>
 
