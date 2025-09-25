@@ -2,6 +2,7 @@
 import { InfrastructureError } from "~/packages/result/infrastructure-error";
 
 const { $dependencies } = useNuxtApp();
+const { t } = useI18n();
 
 const props = defineProps<{
   open: boolean;
@@ -13,11 +14,15 @@ const props = defineProps<{
   };
 }>();
 
+const errorMessage = ref<string | null>(null);
+
 const onError = (data: { error: string; code: string }) => {
   $dependencies.common.logger.error("Error on KYC process", InfrastructureError.newFromError({ code: data.code, provider: "sumsub" }, new Error(data.error)));
+  errorMessage.value = t("dashboard.settings.verification.error_submitting_kyc");
 };
 
 const onSubmitted = () => {
+  errorMessage.value = null;
   $dependencies.common.logger.info("KYC process finished", { provider: "sumsub", applicant: props.applicantData });
 
   // TODO: decide whether we want to close the modal ourselves or let the user.
@@ -30,6 +35,7 @@ const onSubmitted = () => {
 };
 
 const onClosed = () => {
+  errorMessage.value = null;
   $dependencies.users.ui.emitCommandCloseUserActionModal.handle();
 };
 </script>
@@ -41,6 +47,13 @@ const onClosed = () => {
     :logo="false"
     @update:open="v => !v && onClosed()"
   >
+    <BaseAlert
+      v-if="errorMessage"
+      class="mb-0.5 block h-auto"
+      level="error"
+      :message="errorMessage"
+    />
+
     <KycIFrameSumsub
       v-if="props.applicantData && props.initialAccessToken"
       class="-mt-4"

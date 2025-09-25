@@ -444,7 +444,8 @@
         "identity": "Identity",
         "address": "Address",
         "kyc_missing": "Upload your identity document and verify your account",
-        "kyc_active": "You already successfully uploaded your identity document"
+        "kyc_active": "You already successfully uploaded your identity document",
+        "error_submitting_kyc": "An error occurred while submitting your document. Please try again in some minutes. If the error persists: please contact support."
       },
       "limits": {
         "suspend_account": "Suspend Account"

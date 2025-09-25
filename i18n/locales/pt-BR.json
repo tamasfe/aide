@@ -443,7 +443,8 @@
         "identity": "Identidade",
         "address": "Endereço",
         "kyc_missing": "Você precisa enviar seu documento de identidade",
-        "kyc_active": "Você já enviou com sucesso seu documento de identidade"
+        "kyc_active": "Você já enviou com sucesso seu documento de identidade",
+        "error_submitting_kyc": "Ocorreu um erro ao enviar seu documento. Por favor, tente novamente em alguns minutos. Se o erro persistir: por favor, entre em contato com o suporte."
       },
       "limits": {
         "suspend_account": "Suspender Conta"
