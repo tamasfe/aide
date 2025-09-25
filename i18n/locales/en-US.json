@@ -235,7 +235,9 @@
     "cancel": "No thanks, I want to cancel"
   },
   "modal_forgot_password": {
-    "error_unknown": "An error occurred. Please try again"
+    "success_notification_title": "Password recovery submitted",
+    "success_notification_message": "If your email matches an account on our system, then you will soon receive instructions to reset your password.",
+    "error_unknown": "An error occurred. Please try again. If the problem persists, contact support."
   },
   "modal_restrict": {
     "expanding_headline": "Sorry, {blockedDomain} is not available within {country}",

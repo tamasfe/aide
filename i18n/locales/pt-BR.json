@@ -234,7 +234,9 @@
     "cancel": "Não, quero cancelar"
   },
   "modal_forgot_password": {
-    "error_unknown": "Ocorreu um erro. Por favor, tente novamente"
+    "success_notification_title": "Recuperação de senha enviada",
+    "success_notification_message": "Se seu e-mail corresponder a uma conta em nosso sistema, você receberá em breve instruções para redefinir sua senha.",
+    "error_unknown": "Ocorreu um erro. Por favor, tente novamente. Se o problema persistir, entre em contato com o suporte."
   },
   "modal_restrict": {
     "expanding_headline": "Desculpe, {blockedDomain} não está disponível em {country}",

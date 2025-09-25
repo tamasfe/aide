@@ -10,6 +10,7 @@ import { z } from "zod";
 
 const { $dependencies } = useNuxtApp();
 const { t } = useI18n();
+const notifications = useNotificationsStore();
 
 const validationSchema = toTypedSchema(
   z.object({
@@ -30,9 +31,20 @@ const onSubmit = handleSubmit(async (formData) => {
   const errorSubmitting = await $dependencies.users.ui.requestRecoverPasswordOnForm.handle(
     formData.email,
   );
-
   formErrorMessage.value = errorSubmitting || "";
   loading.value = false;
+
+  if (errorSubmitting) {
+    return;
+  }
+
+  notifications.showToast({
+    id: Date.now(),
+    title: t("modal_forgot_password.success_notification_title"),
+    message: t("modal_forgot_password.success_notification_message"),
+    createdAt: new Date(),
+    variant: "success",
+  });
 }, ({ results }) => {
   $dependencies.common.logger.warn("Validation failed", { validationResults: results });
 });
@@ -47,13 +59,12 @@ const onSubmit = handleSubmit(async (formData) => {
     />
 
     <BaseInputGroup
+      v-bind="emailAttrs"
+      v-model="email"
       :placeholder="$t('field.email')"
       autocomplete="email"
       inputmode="email"
       :error-message="formErrors.email"
-      v-bind="emailAttrs"
-      @input="(value) => email ? (email = value) : null"
-      @change="(value) => email ? null : email = value"
     />
 
     <BaseButton

@@ -116,6 +116,7 @@ export const createUsersDependencyInjection = async (config: PublicRuntimeConfig
       requestRecoverPasswordOnForm: new RequestRecoverPasswordOnForm(
         authenticationRepo,
         commonDependencies.asyncMessagePublisher,
+        commonDependencies.logger,
         commonDependencies.translateFunction,
       ),
     },
