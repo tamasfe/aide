@@ -2,6 +2,7 @@
 import { toTypedSchema } from "@vee-validate/zod";
 import { z } from "zod";
 import type { SearchUserSettingsResponseI } from "~/modules/users/application/SearchUserSettingsSimplified";
+import type { User } from "~/modules/users/domain/User";
 import { PAYMENT_PIX_KEY_TYPES } from "~/modules/users/domain/UserSettingsPaymentPix";
 import { DEFAULT_PREFIX, UserTelephone } from "~/modules/users/domain/UserTelephone";
 
@@ -12,13 +13,7 @@ const props = defineProps<{
   paymentSettings: SearchUserSettingsResponseI["payment"];
   initialData?: {
     email: string;
-    phoneStructured: null | {
-      value: string;
-      prefix: {
-        value: string;
-        countryCode: string;
-      };
-    };
+    phone: User["phone"];
   };
 }>();
 
@@ -83,14 +78,13 @@ evp.value = props.paymentSettings.keyEvp ?? "";
 /**
  * Telephone
  */
-
-const initialUserTelephoneResult = UserTelephone.newFromSingleValue(
-  props.paymentSettings.keyPhone ?? props.initialData?.phoneStructured?.value ?? "",
-);
+const defaultPhoneDTOResult = UserTelephone.new("", DEFAULT_PREFIX.value);
+const initalPhoneDTOResult = props.initialData?.phone ? UserTelephone.newFromBackend(props.initialData.phone) : defaultPhoneDTOResult;
 const [phone, phoneAttrs] = defineField("phone");
-phone.value = initialUserTelephoneResult.isFailure ? "" : initialUserTelephoneResult.value.telephone;
+phone.value = initalPhoneDTOResult.isFailure ? "" : initalPhoneDTOResult.value.telephone;
 const [phonePrefix] = defineField("phonePrefix");
-phonePrefix.value = initialUserTelephoneResult.isFailure ? DEFAULT_PREFIX : initialUserTelephoneResult.value.prefix;
+phonePrefix.value = initalPhoneDTOResult.isFailure ? DEFAULT_PREFIX : initalPhoneDTOResult.value.prefix;
+
 // For some reason the infered type from zod does includes the contents of the object as optional, which fails with the v-model. This fixes it.
 const phonePrefixWithFixedType = phonePrefix as globalThis.Ref<{
   value: string;

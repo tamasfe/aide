@@ -55,7 +55,10 @@ const onClosed = () => {
     <FormSettingsPixPayment
       v-if="setting === 'payment_pix' && userSettingsStore.settings"
       :payment-settings="userSettingsStore.settings.payment"
-      :initial-data="userStore.user ? userStore.user : undefined"
+      :initial-data="userStore.user ? {
+        email: userStore.user.email,
+        phone: userStore.user.phone,
+      }: undefined"
     />
   </BaseModal>
 </template>

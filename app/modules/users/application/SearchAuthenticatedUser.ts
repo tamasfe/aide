@@ -1,6 +1,5 @@
 import type { AuthenticatedUserRepositoryI } from "../domain/AuthenticatedUserRepository";
-import { UserTelephone } from "../domain/UserTelephone";
-import { newExtendedUser, newLimitedExtendedUser } from "../domain/User";
+import { newExtendedUser } from "../domain/User";
 import { success } from "~/packages/result";
 import type { LoggerI } from "~/packages/logger/Logger";
 
@@ -20,20 +19,6 @@ export class SearchAuthenticatedUser {
       return success(null);
     }
 
-    const userTelephoneResult = UserTelephone.new(String(authenticatedUserResult.value.phone.national.value), `+${authenticatedUserResult.value.phone.code.value}`);
-
-    if (userTelephoneResult.isFailure) {
-      userTelephoneResult.error.addMetadata({ user: authenticatedUserResult.value });
-      return userTelephoneResult;
-    }
-
-    const extendedUserResult = newExtendedUser(authenticatedUserResult.value);
-    if (extendedUserResult.isFailure) {
-      this.logger.warn("Error building extended user. Tolerating it but returning limited user information", { error: extendedUserResult.error, user: authenticatedUserResult.value });
-      extendedUserResult.error.addMetadata({ user: authenticatedUserResult.value });
-      return success(newLimitedExtendedUser(authenticatedUserResult.value));
-    }
-
-    return extendedUserResult;
+    return success(newExtendedUser(authenticatedUserResult.value));
   }
 }

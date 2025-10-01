@@ -1,4 +1,5 @@
 import { codes as countryCodeOptions } from "country-calling-code";
+import type { components } from "~/packages/http-client/girobet-backend-generated-http-client/openapi-typescript";
 import { CustomError, fail, success } from "~/packages/result";
 
 export const DEFAULT_PREFIX = { value: "+55", countryCode: "BR" };
@@ -51,6 +52,26 @@ export class UserTelephone {
     }
 
     return fail(ErrorInvalidUserTelephone.newFromUnrecognizedPrefix(value));
+  }
+
+  /**
+   *
+   * @param value Telephone value with the country code prefix. Starting with a "+" sign
+   * @returns
+   */
+  public static newFromBackend(phoneNumber: components["schemas"]["PhoneNumber"]) {
+    if (phoneNumber.code.source !== "plus") {
+      return fail(ErrorInvalidUserTelephone.newFromUnrecognizedPrefixFormat(phoneNumber.code.source, String(phoneNumber.code.value)));
+    }
+
+    return UserTelephone.new(String(phoneNumber.national.value), `+${phoneNumber.code.value}`);
+  }
+
+  public toJSON(): { telephone: string; prefix: string } {
+    return {
+      telephone: this.telephone,
+      prefix: this.prefix.value,
+    };
   }
 
   constructor(
@@ -153,6 +174,10 @@ export class ErrorInvalidUserTelephone extends CustomError {
 
   public static newFromUnrecognizedPrefix(value: string) {
     return new ErrorInvalidUserTelephone("Could not recognize a valid prefix from the telephone value", { value: "prefix_unrecognized" }, { value });
+  }
+
+  public static newFromUnrecognizedPrefixFormat(prefixSource: string, prefixValue: string) {
+    return new ErrorInvalidUserTelephone("Could not recognize a prefix format. Expected it to be a plus ('+')", { value: "prefix_unrecognized" }, { prefixSource, prefixValue });
   }
 
   public static newFromTelephoneTooLong(telephone: string, maxLength: number) {
