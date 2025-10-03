@@ -79,6 +79,7 @@
     "play_now": "Play Now",
     "close_account": "Close Account",
     "edit": "Edit",
+    "close": "Close",
     "change": "Change",
     "copy": "Copy",
     "upload": "Upload",
@@ -357,7 +358,17 @@
         "wager": "Wager"
       }
     },
-    "game_image_alt": "The game {game} from {provider}"
+    "game_image_alt": "The game {game} from {provider}",
+    "game_launcher": {
+      "error_insufficient_funds_title": "Insufficient Funds",
+      "error_insufficient_funds_message": "You do not have enough funds in your wallet to play this game. Please deposit more funds and try again.",
+      "error_game_not_accessible_title": "Game Not Accessible",
+      "error_game_not_accessible_message": "You do not have permission to play this game. This may be due to age restrictions, regional limitations, or account restrictions. Please contact support if you believe this is an error.",
+      "error_unauthorized_title": "Unauthorized",
+      "error_unauthorized_message": "You must be logged in to play this game.",
+      "error_generic_title": "Unable to load game",
+      "error_generic_message": "An unexpected error occurred. Please try again later, or contact support if the problem persists."
+    }
   },
   "legal": {
     "version": "Version",
