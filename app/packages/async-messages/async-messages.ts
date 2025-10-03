@@ -4,7 +4,7 @@ import type { NotificationBackend } from "~/modules/notifications/domain/Notific
 import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
 import type { CamelizeKeys } from "~/utils";
 
-type NoDataRequiredModal = "login" | "register" | "search" | "forgot_password" | "deposit" | "withdrawal" | "cancel_registration" | "close_account";
+type NoDataRequiredModal = "login" | "register" | "search" | "forgot_password" | "deposit" | "withdrawal" | "cancel_registration" | "close_account" | "promo_user_action";
 
 export type UserInteractionModalState
   = | { modal: NoDataRequiredModal }

@@ -150,6 +150,9 @@
     "error_invalid_credentials": "Seu e-mail ou senha estão incorretos",
     "error_unknown": "Ocorreu um erro ao tentar fazer login. Por favor, tente novamente."
   },
+  "modal_promo_user_action": {
+    "message": "20x Mais Grana! Deposite acima de {depositAmount} e aproveite a chance de ganhar até {winAmount} com sorteios diários 🤯\n\nCorra! Pois apenas os 100 primeiros jogadores irão receber este bônus exclusivo 🍀🎰"
+  },
   "modal_close_account": {
     "title": "Sentimos muito em vê-lo partir",
     "alternative_cool_off": "Tem certeza de que não gostaria de definir um período de Resfriamento? Confira nossas Ferramentas de Jogo Responsável para todas as formas de manter o controle dos seus hábitos de jogo.",

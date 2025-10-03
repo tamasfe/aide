@@ -51,6 +51,22 @@ $dependencies.common.asyncMessagePublisher.subscribe(
   },
 );
 
+const SECONDS_TO_AUTO_OPEN_PROMO_MODAL = 10;
+const openPromoModalIfPossible = () => {
+  if (isOpen.value) {
+    setTimeout(() => {
+      openPromoModalIfPossible();
+    }, SECONDS_TO_AUTO_OPEN_PROMO_MODAL * 1000);
+    return;
+  }
+  $dependencies.users.ui.emitCommandOpenUserActionModal.handle({ modal: "promo_user_action" });
+};
+if (!import.meta.server) {
+  setTimeout(() => {
+    openPromoModalIfPossible();
+  }, SECONDS_TO_AUTO_OPEN_PROMO_MODAL * 1000);
+}
+
 const recoverPasswordToken = useState("user-modal-recover-password-token", () => searchParams.get("recovery-token") || "");
 if (recoverPasswordToken.value) {
   $dependencies.users.ui.emitCommandOpenUserActionModal.handle({ modal: "recover_password", data: { token: recoverPasswordToken.value } });
@@ -85,6 +101,8 @@ router.beforeResolve((to, from, next) => {
 
 <template>
   <div id="app-user-interaction-modal" :data-is-open="isOpen">
+    <BaseOverlay v-if="isOpen" class="z-[10]" @click="isOpen = false" />
+
     <ModalLogin
       :open="isOpen && state.modal === 'login'"
     />
@@ -97,6 +115,9 @@ router.beforeResolve((to, from, next) => {
     <ModalRecoverPassword
       :open="isOpen && state.modal === 'recover_password'"
       :token="recoverPasswordToken"
+    />
+    <ModalPromoUserAction
+      :open="isOpen && state.modal === 'promo_user_action'"
     />
     <ModalCancelRegistration
       :open="isOpen && state.modal === 'cancel_registration'"

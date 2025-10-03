@@ -151,6 +151,9 @@
     "error_invalid_credentials": "Your email or password are incorrect",
     "error_unknown": "An error occurred while trying to log in. Please try again."
   },
+  "modal_promo_user_action": {
+    "message": "20x more money! Deposit above {depositAmount} and enjoy the chance to win up to {winAmount} with daily draws 🤯\n\nHurry! Only the first 100 players will receive this exclusive bonus 🍀🎰"
+  },
   "modal_close_account": {
     "title": "We're sorry to see you go",
     "alternative_cool_off": "Are you sure you wouldn't rather set a Cooling Off period? Check our Responsible Gaming tools for all the ways you can stay on top of your gambling habits.",
