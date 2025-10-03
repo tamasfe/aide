@@ -4,6 +4,7 @@ import type { AlertProps } from "./base/Alert.vue";
 
 const { $dependencies } = useNuxtApp();
 const { searchParams } = useRequestURL();
+const gameSessionStore = useGameSessionStore();
 
 const state = useState<(UserInteractionModalState | { modal: null }) & { alert?: AlertProps }>("user-modal-state", () => ({ modal: null }));
 const isOpen = defineModel<boolean>("open", { type: Boolean, required: true });
@@ -53,7 +54,7 @@ $dependencies.common.asyncMessagePublisher.subscribe(
 
 const SECONDS_TO_AUTO_OPEN_PROMO_MODAL = 10;
 const openPromoModalIfPossible = () => {
-  if (isOpen.value) {
+  if (isOpen.value || gameSessionStore.isPlaying) {
     setTimeout(() => {
       openPromoModalIfPossible();
     }, SECONDS_TO_AUTO_OPEN_PROMO_MODAL * 1000);
