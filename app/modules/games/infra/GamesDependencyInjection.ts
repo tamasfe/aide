@@ -1,7 +1,6 @@
 import type { PublicRuntimeConfig } from "nuxt/schema";
 import { SearchGameCategoriesByCategoryGroup } from "../application/SearchGameCategoriesByCategoryGroup";
 import { FindGameCompatibilityByIdentifier } from "../application/FindGameCompatibilityById";
-import type { GameSessionsRepositoryI } from "../domain/GameSessionsRepository";
 import type { GamesApiRepositoryI } from "../domain/GamesApiRepository";
 import type { GameActionsRepositoryI } from "../domain/GameActionsRepository";
 import type { GameRatingsRepositoryI } from "../domain/GameRatingsRepository";
@@ -11,6 +10,7 @@ import { SearchGameCategoriesByGroup } from "./ui/SearchGameCategoriesByGroup";
 import { GameCategoriesRepositoryDumb } from "./GameCategoriesRepositoryDumb";
 import { GameCategoriesRepositoryGirobet } from "./GameCategoriesRepositoryGirobet";
 import { FindGameCompatibilityByIdentifierOnGamePage } from "./ui/FindGameCompatibilityByIdOnGamePage";
+import { BuildGameSessionIFrameUrl } from "./ui/BuildGameSessionIFrameUrl";
 import { SearchGamesByQueryPaginatingOnSearchBar } from "./ui/SearchGamesByQueryPaginatingOnSearchBar";
 import { ListGamesPaginatingOnGrid } from "./ui/ListGamesPaginatingOnGrid";
 import { GameActionsRepositoryDumb } from "./GameActionsRepositoryDumb";
@@ -20,13 +20,11 @@ import { GameRatingsRepositoryDumb } from "./GameRatingsRepositoryDumb";
 import { GameRatingsRepositoryGirobet } from "./GameRatingsRepositoryGirobet";
 import { RateGameFromGameFrameVotes } from "./ui/RateGameFromGameFrameVotes";
 import { SearchGameRatingFromGameFrameVotes } from "./ui/SearchGameRatingFromGameFrameVotes";
-import { GameSessionsRepositoryDumb } from "./GameSessionsRepositoryDumb";
-import { GameSessionsRepositoryGirobet } from "./GameSessionsRepositoryGirobet";
-import { CreateGameSessionFromGamePage } from "./ui/CreateGameSessionFromGamePage";
 import type { CommonDependenciesI } from "~/dependency-injection/load-di";
 
 export interface GamesDependencyInjectionI {
   ui: {
+    buildGameSessionIFrameUrl: BuildGameSessionIFrameUrl;
     findGameCompatibilityByIdentifierOnGamePage: FindGameCompatibilityByIdentifierOnGamePage;
 
     searchGameRatingFromGameFrameVotes: SearchGameRatingFromGameFrameVotes;
@@ -35,7 +33,6 @@ export interface GamesDependencyInjectionI {
     searchGameCategoriesByGroup: SearchGameCategoriesByGroup;
     searchGameActionsPaginatingOnCasinoTable: SearchGameActionsPaginatingOnCasinoTable;
     rateGameFromGameFrameVotes: RateGameFromGameFrameVotes;
-    createGameSessionFromGamePage: CreateGameSessionFromGamePage;
   };
 }
 
@@ -75,16 +72,9 @@ export const createGamesDependencyInjection = async (publicConfig: PublicRuntime
     return new GameActionsRepositoryGirobet({ baseUrl: apiBaseUrl }, commonDependencies);
   })();
 
-  const gameSessionsRepository: GameSessionsRepositoryI = (() => {
-    if (mode === "dumb") {
-      return new GameSessionsRepositoryDumb(commonDependencies.logger);
-    }
-
-    return new GameSessionsRepositoryGirobet({ baseUrl: apiBaseUrl }, commonDependencies);
-  })();
-
   return {
     ui: {
+      buildGameSessionIFrameUrl: new BuildGameSessionIFrameUrl(useCasinoApiOrigin("api", "client")), // Force to client API origin because the iframe will never need the private server one.
       findGameCompatibilityByIdentifierOnGamePage: new FindGameCompatibilityByIdentifierOnGamePage(new FindGameCompatibilityByIdentifier(gamesApiRepository), commonDependencies.logger),
       listGamesPaginatingOnGrid: new ListGamesPaginatingOnGrid(gamesApiRepository, commonDependencies.logger),
       searchGamesByQueryPaginatingOnSearchBar: new SearchGamesByQueryPaginatingOnSearchBar(gamesApiRepository, commonDependencies.logger),
@@ -103,7 +93,6 @@ export const createGamesDependencyInjection = async (publicConfig: PublicRuntime
       ),
       searchGameRatingFromGameFrameVotes: new SearchGameRatingFromGameFrameVotes(commonDependencies.logger, gameRatingsRepository),
       rateGameFromGameFrameVotes: new RateGameFromGameFrameVotes(commonDependencies.logger, gameRatingsRepository),
-      createGameSessionFromGamePage: new CreateGameSessionFromGamePage(gameSessionsRepository, commonDependencies.logger),
     },
   };
 };

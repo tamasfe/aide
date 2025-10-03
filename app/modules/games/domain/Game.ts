@@ -13,44 +13,9 @@ export const toGameUrlSlug = (id: number, identifier: string): string => {
   return `${id}-${identifier}`;
 };
 
-export class GameIdentifier {
-  public static newFromString(identifier: string): Result<GameIdentifier, ErrorInvalidGameIdentifier> {
-    const destructuredResult = destructureGameIdentifier(identifier);
-    if (destructuredResult.isFailure) {
-      return destructuredResult;
-    }
-    const { providerSlug, gameSlug } = destructuredResult.value;
-    return success(new GameIdentifier(gameSlug, providerSlug));
-  }
-
-  public static newFromSlugs(providerSlug: string, gameSlug: string): GameIdentifier {
-    return new GameIdentifier(gameSlug, providerSlug);
-  }
-
-  public readonly value: string;
-
-  public toJSON() {
-    return {
-      value: this.value,
-      gameSlug: this.gameSlug,
-      providerSlug: this.providerSlug,
-    };
-  }
-
-  private constructor(public readonly gameSlug: string, public readonly providerSlug: string) {
-    if (!providerSlug || !gameSlug) {
-      throw new Error(`Invalid game identifier from "${providerSlug}" & "${gameSlug}"`);
-    }
-    this.value = `${providerSlug}/${gameSlug}`;
-  }
-}
-
 export const destructureGameIdentifier = (identifier: string): Result<{ providerSlug: string; gameSlug: string }, ErrorInvalidGameIdentifier> => {
-  const [first, second, third] = identifier.split("/");
+  const [first, second] = identifier.split("/");
   if (!first || !second) {
-    return fail(new ErrorInvalidGameIdentifier(identifier));
-  }
-  if (third) {
     return fail(new ErrorInvalidGameIdentifier(identifier));
   }
   return success({

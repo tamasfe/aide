@@ -3,12 +3,11 @@
 //   * lock scroll when fullscreen: import { useScrollLock } from "@vueuse/core"
 // ARCHITECTURE STATUS:  ✅
 
-const siteStore = useSiteStore();
-
 const fullScreen = defineModel<boolean>("fullscreen", {
   default: false,
 });
-const isPlaying = ref(false);
+
+const { $dependencies } = useNuxtApp();
 
 defineProps({
   gameTitle: {
@@ -19,6 +18,14 @@ defineProps({
     type: String,
     required: true,
   },
+  authenticated: {
+    type: Boolean,
+    required: true,
+  },
+  iframeUrl: {
+    type: String,
+    required: false,
+  },
 });
 
 const onToggleFullScreen = () => {
@@ -27,57 +34,65 @@ const onToggleFullScreen = () => {
 </script>
 
 <template>
-  <div
-    :class="cn(
-      'w-full h-[70vh] bg-subtle flex flex-col items-center justify-center gap-y-6',
-    )"
-  >
-    <template v-if="!isPlaying">
-      <NuxtImg
-        class="h-10"
-        :src="siteStore.getRelativeAssetPath('logos/logo.svg')"
-        alt="Logo"
-      />
-      <h1 class="text-3xl font-semibold text-center">
-        {{ gameTitle }}
-      </h1>
-      <BaseButton
-        variant="primary"
-        size="xl"
-        class="w-full gap-3 max-w-72"
-        @click="isPlaying = true"
-      >
-        <BaseIcon
-          name="lucide:play"
-          :size="20"
-        />
-        {{ $t("button.play_now") }}
-      </BaseButton>
-    </template>
-
-    <div
-      v-show="isPlaying"
-      class="w-full h-full"
-      :class="
-        { 'fixed top-0 left-0 z-[11] bg-subtle h-[90vh]': fullScreen }
-      "
+  <div class="flex flex-col">
+    <GameFrameBackdrop
+      :game-identifier="gameIdentifier"
+      :authenticated="authenticated"
+      :replace="true"
+      class="h-[70vh]"
     >
-      <div
-        v-if="fullScreen"
-        class="p-0 bg-subtle"
-      >
-        <div class="bg-subtle flex items-center justify-end w-full">
-          <BaseClose
-            @close="onToggleFullScreen"
-          />
+      <template #authenticated>
+        <div
+          v-if="iframeUrl"
+          :class="cn(
+            'w-full h-full',
+            fullScreen && 'fixed top-0 left-0 z-[11] bg-subtle',
+          )"
+        >
+          <div
+            v-if="fullScreen"
+            class="p-0 bg-subtle"
+          >
+            <div class="bg-subtle flex items-center justify-end w-full">
+              <BaseClose
+                @close="onToggleFullScreen"
+              />
+            </div>
+          </div>
+          <GameFrameLauncher :game-identifier="gameIdentifier" :src="iframeUrl" />
+        </div>
+        <div
+          v-else
+          class="flex flex-col items-center justify-center absolute inset-0"
+        >
+          <BaseSpinner class="text-subtle" :size="32" />
+        </div>
+      </template>
+
+      <div class="flex flex-col items-center gap-4">
+        <IconLogo
+          class="w-[14rem]"
+        />
+        <h1 class="text-lg font-semibold text-center">
+          {{ $t("play.login_to_play") }}
+        </h1>
+        <div class="flex gap-4 w-full">
+          <BaseButton
+            variant="subtle"
+            class="px-8"
+            @click="$dependencies.users.ui.emitCommandOpenUserActionModal.handle('login')"
+          >
+            {{ $t("button.login") }}
+          </BaseButton>
+          <BaseButton
+            variant="primary"
+            class="px-12"
+            @click="$dependencies.users.ui.emitCommandOpenUserActionModal.handle('register')"
+          >
+            {{ $t("button.register") }}
+          </BaseButton>
         </div>
       </div>
-      <GameFrameLauncher
-        v-model:playing="isPlaying"
-        class="w-full h-full"
-        :game-identifier="gameIdentifier"
-        client-type="desktop"
-      />
-    </div>
+    </GameFrameBackdrop>
   </div>
 </template>
