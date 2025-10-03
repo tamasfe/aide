@@ -40,7 +40,10 @@ export const useWalletStore = defineStore("walletStore", {
   actions: {
     async refresh() {
       const { $dependencies } = useNuxtApp();
+
       this.balanceStatus = "loading";
+      this.wallet = undefined;
+
       const result = await $dependencies.wallets.queries.findAuthenticatedUserWallet.handle();
       if (result.isFailure) {
         if (!(result.error instanceof ErrorUserNotAuthorized)) {

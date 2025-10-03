@@ -1,12 +1,15 @@
 <script setup lang="ts">
-const siteStore = useSiteStore();
-
 // DESIGN STATUS:        ✅
 //   * lock scroll when playing: import { useScrollLock } from "@vueuse/core"
 // ARCHITECTURE STATUS:  ✴️
 //   * If clicking "Play" or "Vote" when not logged in, you need to show modal popup
 
-const props = defineProps({
+const siteStore = useSiteStore();
+const { $dependencies } = useNuxtApp();
+const userStore = useUserStore();
+const walletStore = useWalletStore();
+
+defineProps({
   gameTitle: {
     type: String,
     required: true,
@@ -15,37 +18,17 @@ const props = defineProps({
     type: String,
     required: true,
   },
-  authenticated: {
-    type: Boolean,
-    required: true,
-  },
-  iframeUrl: {
-    type: String,
-    required: false,
-  },
 });
 
-const playing = ref(false);
-
-const { $dependencies } = useNuxtApp();
+const isPlaying = ref(false);
 const url = useRequestURL();
-
-const onTogglePlaying = async () => {
-  if (!props.authenticated) {
-    await $dependencies.users.ui.emitCommandOpenUserActionModal.handle("login");
-    return;
-  }
-
-  // must check if logged in etc, this is just pseudocode to show UI state
-  playing.value = !playing.value;
-};
 
 const listenerId = ref<number | null>(null);
 onMounted(() => {
   listenerId.value = $dependencies.common.asyncMessagePublisher.subscribe(
     "frontend:commands:modals:open-user-interaction-modal",
     () => {
-      playing.value = false;
+      isPlaying.value = false;
     },
   );
 });
@@ -59,89 +42,78 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="flex flex-col h-full">
-    <GameFrameBackdrop
-      :game-identifier="gameIdentifier"
-      class="h-full"
-      :authenticated="authenticated"
-      :replace="false"
-    >
-      <template #authenticated>
-        <div
-          v-if="playing && iframeUrl"
-          class="fixed top-0 left-0 bottom-0 right-0  z-[11] bg-subtle flex flex-col"
-        >
-          <div class="bg-subtle flex items-center justify-between w-full flex-shrink-0 flex-grow-0 pl-4">
-            <NuxtImg
-              class="h-5"
-              :src="siteStore.getRelativeAssetPath('logos/logo.svg')"
-              alt="Logo"
-            />
-            <div class="flex items-center gap-4">
-              <BaseButton
-                id="app-header-deposit-button"
-                variant="emphasis"
-                class="my-2"
-                @click="$dependencies.users.ui.emitCommandOpenUserActionModal.handle('deposit')"
-              >
-                {{ $t("button.deposit") }}
-              </BaseButton>
-              <BaseClose
-                size="sm"
-                @close="onTogglePlaying"
-              />
-            </div>
-          </div>
-
-          <div class="relative flex-grow">
-            <GameFrameLauncher :game-identifier="gameIdentifier" :src="iframeUrl" />
-          </div>
-        </div>
-        <div
-          v-if="playing && !iframeUrl"
-          class="flex flex-col items-center justify-center absolute inset-0"
-        >
-          <BaseSpinner class="text-subtle" :size="32" />
-        </div>
-      </template>
-
-      <div class="w-full max-w-sm sm:max-w-lg p-6 flex flex-col justify-between gap-6">
-        <div class="w-full flex flex-col sm:flex-row items-center justify-start gap-6">
-          <GameImage
-            :identifier="gameIdentifier"
-            class="w-[200px] xs:w-auto sm:max-w-44 rounded overflow-hidden flex-grow-0"
-          />
-          <div class="flex-grow flex flex-col gap-1">
-            <h2 class="text-2xl font-semibold">{{ gameTitle }}</h2>
-            <div class="mt-4 flex items-center gap-3 ">
-              <GameFrameVotes
-                :authenticated="authenticated"
-                class=" gap-4 text-subtle-light"
-                :game-identifier="gameIdentifier"
-              />
-              <ButtonShare
-                :subject="$t('play.share_subject')"
-                :body="$t('play.share_body', { game: gameTitle })"
-                :url="url.toString()"
-                class="text-subtle-light"
-              />
-            </div>
-
-            <BaseButton
-              variant="primary"
-              size="xl"
-              class="w-full gap-2 mt-4"
-              @click="onTogglePlaying"
-            >
-              <BaseIcon
-                name="lucide:play"
-                :size="20"
-              />
-              {{ $t("button.play_now") }}
-            </BaseButton>
-          </div>
-        </div>
+  <div v-if="!isPlaying" class="w-full h-full flex flex-col sm:flex-row items-center justify-start p-6 gap-6 relative overflow-hidden">
+    <div class="absolute -z-10 top-0 left-0 w-full h-full bg-default/85 backdrop-blur-2xl" />
+    <GameImage
+      :identifier="gameIdentifier"
+      class="w-[200px] xs:w-auto sm:max-w-44 rounded overflow-hidden flex-grow-0"
+    />
+    <div class="flex-grow flex flex-col gap-1">
+      <h2 class="text-2xl text-center font-semibold">{{ gameTitle }}</h2>
+      <div class="mt-4 flex items-center gap-3">
+        <GameFrameVotes
+          :authenticated="userStore.user !== null"
+          class="gap-4 text-subtle-light"
+          :game-identifier="gameIdentifier"
+        />
+        <ButtonShare
+          :subject="$t('play.share_subject')"
+          :body="$t('play.share_body', { game: gameTitle })"
+          :url="url.toString()"
+          class="text-subtle-light"
+        />
       </div>
-    </GameFrameBackdrop>
+
+      <BaseButton
+        variant="primary"
+        size="xl"
+        class="mt-6 max-w-64 gap-3"
+        @click="isPlaying = true"
+      >
+        <BaseIcon
+          name="lucide:play"
+          :size="20"
+        />
+        {{ $t("button.play_now") }}
+      </BaseButton>
+    </div>
+  </div>
+
+  <div
+    v-show="isPlaying"
+    class="w-full h-full fixed inset-0 z-[11] bg-subtle"
+  >
+    <div class="bg-subtle flex items-center justify-between w-full flex-shrink-0 flex-grow-0">
+      <BaseButton variant="ghost" class="px-4" @click="isPlaying = false">
+        <NuxtImg
+          class="h-5"
+          :src="siteStore.getRelativeAssetPath('logos/logo.svg')"
+          alt="Logo"
+        />
+      </BaseButton>
+      <div class="flex items-center gap-4">
+        <BaseButton
+          v-if="walletStore.wallet"
+          id="app-header-deposit-button"
+          variant="emphasis"
+          class="my-2"
+          @click="$dependencies.users.ui.emitCommandOpenUserActionModal.handle('deposit')"
+        >
+          {{ $t("button.deposit") }}
+        </BaseButton>
+        <BaseClose
+          class="px-4"
+          size="sm"
+          @close="isPlaying = false"
+        />
+      </div>
+    </div>
+
+    <GameFrameLauncher
+      v-model:playing="isPlaying"
+      class="h-[90vh]"
+      :game-identifier="gameIdentifier"
+      client-type="mobile"
+    />
   </div>
 </template>

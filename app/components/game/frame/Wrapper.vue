@@ -1,12 +1,8 @@
 <script setup lang="ts">
-import { DEFAULT_CURRENCY_WHILE_USER_HAS_NO_WALLET } from "~/modules/wallet/domain/Wallet";
-
 const { isMobile } = useDevice();
 const currentDevice = isMobile ? "mobile" : "desktop";
 const { $dependencies } = useNuxtApp();
-const walletStore = useWalletStore();
 const fullscreen = ref(false);
-
 const userStore = useUserStore();
 const authenticated = computed(() => {
   return userStore.isAuthenticated;
@@ -22,18 +18,6 @@ const DEFER_CLIENT_SIDE_LOADING_FOR_GAME = true;
 const { data: game, status: statusLoadingGame } = await useAsyncData(`game-${props.gameIdentifier}`, async () => {
   return $dependencies.games.ui.findGameCompatibilityByIdentifierOnGamePage.handle(props.gameIdentifier, currentDevice);
 }, { lazy: DEFER_CLIENT_SIDE_LOADING_FOR_GAME, server: ENABLE_SERVER_SIDE_RENDERING_FOR_GAME });
-
-const { data: iframeUrl } = await useAsyncData(`game-frame-url-${props.gameIdentifier}`, async () => {
-  if (!walletStore.wallet && authenticated.value) {
-    await $dependencies.users.ui.emitCommandOpenUserActionModal.handle({ modal: "deposit" }, { level: "warning", message: $t("modal_payments.alert_deposit_before_playing_game") });
-  }
-
-  return $dependencies.games.ui.buildGameSessionIFrameUrl.handle(props.gameIdentifier, currentDevice, walletStore.wallet?.currency ?? DEFAULT_CURRENCY_WHILE_USER_HAS_NO_WALLET);
-}, {
-  lazy: DEFER_CLIENT_SIDE_LOADING_FOR_GAME,
-  server: ENABLE_SERVER_SIDE_RENDERING_FOR_GAME,
-  watch: [() => game.value, () => walletStore.wallet, () => authenticated.value],
-});
 
 /* Redirect if the game is successfully searched, but server returns no results (404) */
 watch([() => game.value, () => statusLoadingGame.value], async ([game, statusLoadingGame]) => {
@@ -54,9 +38,6 @@ watch([() => game.value, () => statusLoadingGame.value], async ([game, statusLoa
           game.isCompatibleWithDevice"
         :game-title="game.name"
         :game-identifier="game.identifier"
-        :fullscreen="fullscreen"
-        :authenticated="authenticated ?? false"
-        :iframe-url="iframeUrl || ''"
       />
       <GameFloatTextNotSupportedOnDevice
         v-else-if="!game.isCompatibleWithDevice"
@@ -79,8 +60,6 @@ watch([() => game.value, () => statusLoadingGame.value], async ([game, statusLoa
         :game-title="game.name"
         :game-identifier="game.identifier"
         :fullscreen="fullscreen"
-        :authenticated="authenticated ?? false"
-        :iframe-url="iframeUrl"
       />
 
       <GameFloatTextNotSupportedOnDevice

@@ -78,6 +78,7 @@
     "play_now": "Jogar Agora",
     "close_account": "Fechar Conta",
     "edit": "Editar",
+    "close": "Fechar",
     "change": "Alterar",
     "copy": "Copiar",
     "upload": "Enviar",
@@ -353,7 +354,17 @@
         "wager": "Aposta"
       }
     },
-    "game_image_alt": "O jogo {game} do {provider}"
+    "game_image_alt": "O jogo {game} do {provider}",
+    "game_launcher": {
+      "error_insufficient_funds_title": "Fundos Insuficientes",
+      "error_insufficient_funds_message": "Você não tem fundos suficientes em sua carteira para jogar este jogo. Por favor, deposite mais fundos e tente novamente.",
+      "error_game_not_accessible_title": "Jogo Não Acessível",
+      "error_game_not_accessible_message": "Você não tem permissão para jogar este jogo. Isso pode ser devido a restrições de idade, limitações regionais ou restrições de conta. Por favor, entre em contato com o suporte se você acredita que isso é um erro.",
+      "error_unauthorized_title": "Não Autorizado",
+      "error_unauthorized_message": "Você deve estar logado para jogar.",
+      "error_generic_title": "Incapaz de carregar o jogo",
+      "error_generic_message": "Ocorreu um erro inesperado. Por favor, tente novamente mais tarde ou entre em contato com o suporte se o problema persistir."
+    }
   },
   "legal": {
     "version": "Versão",

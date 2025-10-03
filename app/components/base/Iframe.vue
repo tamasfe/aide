@@ -36,11 +36,12 @@ onBeforeMount(() => {
 
 <template>
   <div :class="cn('w-full h-full', props.class)">
-    <BaseSpinner
-      v-if="loading"
-      class="text-subtle absolute inset-0 mx-auto my-auto"
-      :size="26"
-    />
+    <div v-if="loading" class="w-full h-full flex flex-col justify-center items-center">
+      <BaseSpinner
+        class="text-subtle mx-auto my-auto"
+        :size="26"
+      />
+    </div>
     <iframe
       :id="id"
       :src="src"
