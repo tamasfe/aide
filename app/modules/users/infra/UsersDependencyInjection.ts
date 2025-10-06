@@ -11,6 +11,8 @@ import { UpdateUserSettingsChangedConsents } from "../application/UpdateUserSett
 import { CloseAccount } from "../application/CloseAccount";
 import { AuthenticatedUserRepositoryDumb } from "./AuthenticatedUserRepositoryDumb";
 import { EmitCommandOpenUserActionModalModal } from "./ui/EmitCommandOpenUserActionModal";
+import { PromoUserActionActivityLocalStorage } from "./PromoUserActionActivityLocalStorage";
+import { OpenUserPromoActionModalOncePerDay } from "./ui/OpenUserPromoActionModalOncePerDay";
 import { AuthenticatedUserSearcherGirobet } from "./AuthenticatedUserRepositoryGirobet";
 import { AuthenticationRepositoryDumb } from "./AuthenticationRepositoryDumb";
 import { AuthenticationRepositoryGirobet } from "./AuthenticationRepositoryGirobet";
@@ -45,6 +47,7 @@ export interface UsersDependencyInjectionI {
     logoutCurrentUserFromButtonClick: LogoutCurrentUserFromButtonClick;
     recoverPassword: RecoverPasswordOnForm;
     requestRecoverPasswordOnForm: RequestRecoverPasswordOnForm;
+    openUserPromoActionModalOncePerDay: OpenUserPromoActionModalOncePerDay;
   };
 }
 export const createUsersDependencyInjection = async (config: PublicRuntimeConfig, commonDependencies: CommonDependenciesI): Promise<UsersDependencyInjectionI> => {
@@ -66,6 +69,14 @@ export const createUsersDependencyInjection = async (config: PublicRuntimeConfig
   })();
 
   const updateUserSettingsCommand = new UpdateUserSettings(authenticatedUserRepo, commonDependencies.asyncMessagePublisher);
+
+  const emitCommandOpenUserActionModal = new EmitCommandOpenUserActionModalModal(commonDependencies.asyncMessagePublisher);
+  const promoUserActionActivityLocalStorage = new PromoUserActionActivityLocalStorage();
+  const openUserPromoActionModalOncePerDay = new OpenUserPromoActionModalOncePerDay(
+    promoUserActionActivityLocalStorage,
+    emitCommandOpenUserActionModal,
+    commonDependencies.logger,
+  );
 
   return {
     queries: {
@@ -103,7 +114,7 @@ export const createUsersDependencyInjection = async (config: PublicRuntimeConfig
         commonDependencies.asyncMessagePublisher,
         commonDependencies.translateFunction,
       ),
-      emitCommandOpenUserActionModal: new EmitCommandOpenUserActionModalModal(commonDependencies.asyncMessagePublisher),
+      emitCommandOpenUserActionModal,
       emitCommandCloseUserActionModal: new EmitCommandCloseUserActionModal(commonDependencies.asyncMessagePublisher),
       logoutCurrentUserFromButtonClick: new LogoutCurrentUserFromButtonClick(
         new LogoutUser(authenticationRepo, commonDependencies.asyncMessagePublisher),
@@ -119,6 +130,7 @@ export const createUsersDependencyInjection = async (config: PublicRuntimeConfig
         commonDependencies.logger,
         commonDependencies.translateFunction,
       ),
+      openUserPromoActionModalOncePerDay,
     },
   };
 };

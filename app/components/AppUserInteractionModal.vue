@@ -60,7 +60,7 @@ const openPromoModalIfPossible = () => {
     }, SECONDS_TO_AUTO_OPEN_PROMO_MODAL * 1000);
     return;
   }
-  $dependencies.users.ui.emitCommandOpenUserActionModal.handle({ modal: "promo_user_action" });
+  $dependencies.users.ui.openUserPromoActionModalOncePerDay.handle(new Date());
 };
 if (!import.meta.server) {
   setTimeout(() => {
