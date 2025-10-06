@@ -27,15 +27,15 @@ const isPlaying = defineModel<boolean>("playing", {
 });
 
 const emits = defineEmits<{
-  (e: "demo-is-ready"): void;
+  (e: "available" | "unavailable"): void;
 }>();
 
-const ENABLE_SERVER_SIDE_RENDERING = true;
+const ENABLE_SERVER_SIDE_RENDERING = false;
 const DEFER_CLIENT_SIDE_LOADING = true;
 const { data: gameSessionResult } = await useAsyncData(() =>
   $dependencies.games.ui.createGameSessionDemoFromGamePage.handle(props.gameIdentifier, i18n.localeProperties.value.language || i18n.locale.value.split("-")[0] || "", props.clientType),
 {
-  watch: [() => i18n.locale.value],
+  watch: [() => i18n.locale.value, () => props.gameIdentifier],
   lazy: DEFER_CLIENT_SIDE_LOADING,
   server: ENABLE_SERVER_SIDE_RENDERING,
 },
@@ -46,8 +46,10 @@ const { data: gameSessionResult } = await useAsyncData(() =>
  */
 watch(() => gameSessionResult.value, async (newValue) => {
   if (newValue && !newValue.isFailure) {
-    emits("demo-is-ready");
+    emits("available");
+    return;
   }
+  emits("unavailable");
   return;
 });
 </script>

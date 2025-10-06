@@ -146,7 +146,8 @@ onUnmounted(() => {
       class="h-[90vh]"
       :game-identifier="gameIdentifier"
       client-type="mobile"
-      @demo-is-ready="showDemoButton = true"
+      @available="showDemoButton = true"
+      @unavailable="showDemoButton = false"
     />
   </div>
 </template>

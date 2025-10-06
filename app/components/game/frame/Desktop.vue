@@ -109,7 +109,8 @@ const onToggleFullScreen = () => {
         class="w-full h-full"
         :game-identifier="gameIdentifier"
         client-type="desktop"
-        @demo-is-ready="showDemoButton = true"
+        @available="showDemoButton = true"
+        @unavailable="showDemoButton = false"
       />
     </div>
   </div>
