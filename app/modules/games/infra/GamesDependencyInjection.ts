@@ -24,6 +24,7 @@ import { GameSessionsRepositoryDumb } from "./GameSessionsRepositoryDumb";
 import { GameSessionsRepositoryGirobet } from "./GameSessionsRepositoryGirobet";
 import { CreateGameSessionFromGamePage } from "./ui/CreateGameSessionFromGamePage";
 import type { CommonDependenciesI } from "~/dependency-injection/load-di";
+import { CreateGameSessionDemoFromGamePage } from "./ui/CreateGameSessionDemoFromGamePage";
 
 export interface GamesDependencyInjectionI {
   ui: {
@@ -36,6 +37,7 @@ export interface GamesDependencyInjectionI {
     searchGameActionsPaginatingOnCasinoTable: SearchGameActionsPaginatingOnCasinoTable;
     rateGameFromGameFrameVotes: RateGameFromGameFrameVotes;
     createGameSessionFromGamePage: CreateGameSessionFromGamePage;
+    createGameSessionDemoFromGamePage: CreateGameSessionDemoFromGamePage;
   };
 }
 
@@ -104,6 +106,7 @@ export const createGamesDependencyInjection = async (publicConfig: PublicRuntime
       searchGameRatingFromGameFrameVotes: new SearchGameRatingFromGameFrameVotes(commonDependencies.logger, gameRatingsRepository),
       rateGameFromGameFrameVotes: new RateGameFromGameFrameVotes(commonDependencies.logger, gameRatingsRepository),
       createGameSessionFromGamePage: new CreateGameSessionFromGamePage(gameSessionsRepository, commonDependencies.logger),
+      createGameSessionDemoFromGamePage: new CreateGameSessionDemoFromGamePage(gameSessionsRepository, commonDependencies.logger),
     },
   };
 };

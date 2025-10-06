@@ -77,6 +77,7 @@
     "notify_me": "Notify Me When Available",
     "share": "Share",
     "play_now": "Play Now",
+    "play_now_demo": "Play Demo",
     "close_account": "Close Account",
     "edit": "Edit",
     "close": "Close",
@@ -366,6 +367,8 @@
       "error_game_not_accessible_message": "You do not have permission to play this game. This may be due to age restrictions, regional limitations, or account restrictions. Please contact support if you believe this is an error.",
       "error_unauthorized_title": "Unauthorized",
       "error_unauthorized_message": "You must be logged in to play this game.",
+      "error_game_has_no_demo_title": "Demo Not Available",
+      "error_game_has_no_demo_message": "This game does not have a demo mode available at the moment. Please try another game.",
       "error_generic_title": "Unable to load game",
       "error_generic_message": "An unexpected error occurred. Please try again later, or contact support if the problem persists."
     }

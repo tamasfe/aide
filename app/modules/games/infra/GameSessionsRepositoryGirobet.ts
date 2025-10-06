@@ -98,6 +98,11 @@ export class GameSessionsRepositoryGirobet implements GameSessionsRepositoryI {
             provider_slug: gameIdentifier.providerSlug,
             game_slug: gameIdentifier.gameSlug,
           },
+          // @ts-expect-error Generated types are wrong: the query params are not optional. Talk with Daniel so the types align with the behaviour.
+          query: {
+            language,
+            client_type: clientType,
+          },
         },
         body: {
           client_type: clientType,

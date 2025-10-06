@@ -20,7 +20,20 @@ defineProps({
   },
 });
 
-const isPlaying = ref(false);
+const isPlayingRealGame = ref(false);
+const isPlayingDemo = ref(false);
+const isPlaying = computed({
+  get: () => isPlayingRealGame.value || isPlayingDemo.value,
+  set: (val: boolean) => {
+    if (val === false) {
+      isPlayingRealGame.value = false;
+      isPlayingDemo.value = false;
+      return;
+    }
+    throw new Error("Cannot set isPlaying to true directly, use isPlayingRealGame or isPlayingDemo");
+  },
+});
+const showDemoButton = ref(true);
 const url = useRequestURL();
 
 const listenerId = ref<number | null>(null);
@@ -68,13 +81,26 @@ onUnmounted(() => {
         variant="primary"
         size="xl"
         class="mt-6 max-w-64 gap-3"
-        @click="isPlaying = true"
+        @click="isPlayingRealGame = true"
       >
         <BaseIcon
           name="lucide:play"
           :size="20"
         />
         {{ $t("button.play_now") }}
+      </BaseButton>
+      <BaseButton
+        v-if="showDemoButton"
+        variant="secondary"
+        size="xl"
+        class="mt-6 max-w-64 gap-3"
+        @click="isPlayingDemo = true"
+      >
+        <BaseIcon
+          name="lucide:banknote-x"
+          :size="20"
+        />
+        {{ $t("button.play_now_demo") }}
       </BaseButton>
     </div>
   </div>
@@ -110,10 +136,17 @@ onUnmounted(() => {
     </div>
 
     <GameFrameLauncher
-      v-model:playing="isPlaying"
+      v-model:playing="isPlayingRealGame"
       class="h-[90vh]"
       :game-identifier="gameIdentifier"
       client-type="mobile"
+    />
+    <GameFrameLauncherDemo
+      v-model:playing="isPlayingDemo"
+      class="h-[90vh]"
+      :game-identifier="gameIdentifier"
+      client-type="mobile"
+      @demo-is-ready="showDemoButton = true"
     />
   </div>
 </template>

@@ -8,7 +8,20 @@ const siteStore = useSiteStore();
 const fullScreen = defineModel<boolean>("fullscreen", {
   default: false,
 });
-const isPlaying = ref(false);
+const isPlayingRealGame = ref(false);
+const isPlayingDemo = ref(false);
+const isPlaying = computed({
+  get: () => isPlayingRealGame.value || isPlayingDemo.value,
+  set: (val: boolean) => {
+    if (val === false) {
+      isPlayingRealGame.value = false;
+      isPlayingDemo.value = false;
+      return;
+    }
+    throw new Error("Cannot set isPlaying to true directly, use isPlayingRealGame or isPlayingDemo");
+  },
+});
+const showDemoButton = ref(false);
 
 defineProps({
   gameTitle: {
@@ -45,13 +58,26 @@ const onToggleFullScreen = () => {
         variant="primary"
         size="xl"
         class="w-full gap-3 max-w-72"
-        @click="isPlaying = true"
+        @click="isPlayingRealGame = true"
       >
         <BaseIcon
           name="lucide:play"
           :size="20"
         />
         {{ $t("button.play_now") }}
+      </BaseButton>
+      <BaseButton
+        v-if="showDemoButton"
+        variant="secondary"
+        size="xl"
+        class="mt-6 max-w-64 gap-3"
+        @click="isPlayingDemo = true"
+      >
+        <BaseIcon
+          name="lucide:banknote-x"
+          :size="20"
+        />
+        {{ $t("button.play_now_demo") }}
       </BaseButton>
     </template>
 
@@ -73,10 +99,17 @@ const onToggleFullScreen = () => {
         </div>
       </div>
       <GameFrameLauncher
-        v-model:playing="isPlaying"
+        v-model:playing="isPlayingRealGame"
         class="w-full h-full"
         :game-identifier="gameIdentifier"
         client-type="desktop"
+      />
+      <GameFrameLauncherDemo
+        v-model:playing="isPlayingDemo"
+        class="w-full h-full"
+        :game-identifier="gameIdentifier"
+        client-type="desktop"
+        @demo-is-ready="showDemoButton = true"
       />
     </div>
   </div>

@@ -76,6 +76,7 @@
     "notify_me": "Me Avise Quando Disponível",
     "share": "Compartilhar",
     "play_now": "Jogar Agora",
+    "play_now_demo": "Jogar Demo",
     "close_account": "Fechar Conta",
     "edit": "Editar",
     "close": "Fechar",
@@ -365,6 +366,8 @@
       "error_game_not_accessible_message": "Você não tem permissão para jogar este jogo. Isso pode ser devido a restrições de idade, limitações regionais ou restrições de conta. Por favor, entre em contato com o suporte se você acredita que isso é um erro.",
       "error_unauthorized_title": "Não Autorizado",
       "error_unauthorized_message": "Você deve estar logado para jogar.",
+      "error_game_has_no_demo_title": "Demo Não Disponível",
+      "error_game_has_no_demo_message": "Este jogo não tem um modo de demonstração disponível no momento. Por favor, tente outro jogo.",
       "error_generic_title": "Incapaz de carregar o jogo",
       "error_generic_message": "Ocorreu um erro inesperado. Por favor, tente novamente mais tarde ou entre em contato com o suporte se o problema persistir."
     }
