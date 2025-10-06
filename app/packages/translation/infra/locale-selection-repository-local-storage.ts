@@ -49,5 +49,5 @@ export class LocaleSelectionRepositoryLocalStorage implements LocaleSelectionRep
     return typeof window !== "undefined" && window.localStorage;
   }
 
-  private STORAGE_ID_KEY = "girobet-locale-user-selected" as const;
+  private STORAGE_ID_KEY = "locale-user-selected" as const;
 }

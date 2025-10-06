@@ -80,5 +80,5 @@ implements SignupFlowIdClientRepositoryI {
     return typeof window !== "undefined" && window.localStorage;
   }
 
-  private STORAGE_ID_KEY = "girobet-signup-flow-id" as const;
+  private STORAGE_ID_KEY = "signup-flow-id" as const;
 }
