@@ -21,7 +21,7 @@ const isPlaying = computed({
     throw new Error("Cannot set isPlaying to true directly, use isPlayingRealGame or isPlayingDemo");
   },
 });
-const showDemoButton = ref(false);
+const showDemoButton = useState("show-demo-button-in-desktop", () => false);
 
 defineProps({
   gameTitle: {

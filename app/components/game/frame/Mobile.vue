@@ -33,7 +33,7 @@ const isPlaying = computed({
     throw new Error("Cannot set isPlaying to true directly, use isPlayingRealGame or isPlayingDemo");
   },
 });
-const showDemoButton = ref(false);
+const showDemoButton = useState("show-demo-button-in-mobile", () => false);
 const url = useRequestURL();
 
 const listenerId = ref<number | null>(null);
