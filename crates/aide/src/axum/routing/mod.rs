@@ -79,6 +79,40 @@ impl<S, E> ApiMethodRouter<S, E> {
 
         path
     }
+
+    /// Inserts an [`Operation`] into the router's operation map
+    /// for the given HTTP method.
+    ///
+    /// This method is typically used to register an OpenAPI operation metadata
+    /// associated with a specific HTTP method (e.g., `"GET"`, `"POST"`, etc.).
+    ///
+    /// # Parameters
+    ///
+    /// * `method` - The HTTP method as a `'static` string (e.g. `"GET"`, `"POST"`).
+    /// * `op` - The [`Operation`] instance describing the API operation.
+    ///
+    /// # Returns
+    ///
+    /// Returns the updated `Self` with the new operation inserted, allowing method chaining.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use aide::openapi::Operation;
+    /// use aide::axum::ApiRouter;
+    ///
+    /// let op = Operation::default();
+    /// let router = ApiRouter::default()
+    ///     .insert_operation("GET", op);
+    /// ```
+    ///
+    /// # Notes
+    ///
+    /// If an operation for the same `method` already exists, it will be **overwritten**.
+    pub fn insert_operation(mut self, method: &'static str, op: Operation) -> Self {
+        self.operations.insert(method, op);
+        self
+    }
 }
 
 /// Documentation for an API method without attaching a handler.
