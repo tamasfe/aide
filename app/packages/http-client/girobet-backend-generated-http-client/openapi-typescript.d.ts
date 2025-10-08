@@ -4,40 +4,19 @@
  */
 
 export interface paths {
-    "/ws/access-token": {
+    "/auth/whoami": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        get?: never;
-        put?: never;
         /**
-         * Issue WebSocket Access Token
-         * @description This endpoint is used to generate authentication tokens (access tokens) for WebSocket connections in our system.
-         *
-         *     ## Access Token Generation
-         *
-         *     1. Send a POST request to the access token issuer endpoint.
-         *     2. The endpoint will return an access token.
-         *
-         *     ## Access Token Properties
-         *
-         *     - Access tokens are short-lived tokens, valid for 60 seconds from the time of generation.
-         *     - Each access token, once used, is tied to a specific websocket connection and is immediately invalidated.
-         *
-         *     ## Usage
-         *
-         *     - Use the generated access token when establishing a WebSocket connection.
-         *     - For detailed information on how to use the access token in a WebSocket connection, refer to the documentation found [here](#tag/websocket/GET/ws/connect).
-         *
-         *     ## Important Notes
-         *
-         *     - Always generate a new access token before attempting to log in to the user event stream.
-         *     - Ensure your client handles access token expiration and reconnection scenarios.
+         * Whoami
+         * @description The whoami endpoint returns some basic information about the currently logged in user.
+         *     This is primarily used for verifying that the user is logged in.
          */
-        post: {
+        get: {
             parameters: {
                 query?: never;
                 header?: never;
@@ -51,7 +30,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["AccessTokenTokenResponse"];
+                        "application/json": components["schemas"]["WhoamiResponse"];
                     };
                 };
                 /** @description Unauthorized */
@@ -67,7 +46,7 @@ export interface paths {
                         };
                     };
                 };
-                /** @description Jurisdiction Supported but Not Enabled, User Account Jurisdiction Mismatch, Jurisdiction Not Supported but Alternative Site Available, Jurisdiction Not Supported, Host Not Supported */
+                /** @description Host Not Supported, Jurisdiction Not Supported but Alternative Site Available, User Account Jurisdiction Mismatch, Jurisdiction Not Supported, Jurisdiction Supported but Not Enabled */
                 451: {
                     headers: {
                         [name: string]: unknown;
@@ -114,6 +93,225 @@ export interface paths {
                         };
                     };
                 };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/fasttrack-token": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Fasttrack token
+         * @description This endpoint returns a JWT token, to be used by the Fasttrack frontend SDK for user verification
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["GetFasttrackTokenResponseBody"];
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "UNAUTHORIZED";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Jurisdiction Not Supported but Alternative Site Available, Jurisdiction Supported but Not Enabled, User Account Jurisdiction Mismatch, Jurisdiction Not Supported, Host Not Supported */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/login": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Login
+         * @description Authenticates a user and sets the session cookie
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description User Agent */
+                    "User-Agent"?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["LoginRequest"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Invalid Credentials */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INVALID_CREDENTIALS";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Validation Failed */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "VALIDATION_FAILED";
+                            message?: string;
+                            metadata: components["schemas"]["SystemValidationErrors"];
+                        };
+                    };
+                };
+                /** @description User Account Jurisdiction Mismatch, Jurisdiction Not Supported but Alternative Site Available, Jurisdiction Not Supported, Host Not Supported, Jurisdiction Supported but Not Enabled */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
                 500: {
                     headers: {
                         [name: string]: unknown;
@@ -135,76 +333,138 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/ws/connect": {
+    "/auth/logout": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
+        get?: never;
+        put?: never;
         /**
-         * Establish WebSocket Connection
-         * @description This route is the entry point for WebSocket connections in our system.
-         *
-         *     ## Connection Process
-         *
-         *     1. Connect to this endpoint using the WebSocket protocol.
-         *     2. Once connected, send a login message with your access token:
-         *
-         *        ```json
-         *        {
-         *          "type": "user_login",
-         *          "data": "<access-token>"
-         *        }
-         *        ```
-         *
-         *     ## Example (JavaScript)
-         *
-         *     ```javascript
-         *     const socket = new WebSocket("wss://your-domain.com/ws/connect");
-         *
-         *     // After connection is established, send login message
-         *     socket.onopen = () => {
-         *       const loginMessage = {
-         *         type: "user_login",
-         *         data: "your-access-token"
-         *       };
-         *       socket.send(JSON.stringify(loginMessage));
-         *     };
-         *     ```
-         *
-         *     ## Message Format
-         *
-         *     All WebSocket messages follow a JSON format. The message structure for client events matches the request body specifications in this OpenAPI documentation, while server events follow the HTTP response specifications.
-         *
-         *     ### Client Events (Sending)
-         *     Messages sent from the client should follow this format:
-         *     ```json
-         *     {
-         *       "type": "event_name",
-         *       "data": {}  // Data structure as specified in OpenAPI request bodies
-         *     }
-         *     ```
-         *
-         *     ### Server Events (Receiving)
-         *     Messages received from the server will follow this format:
-         *     ```json
-         *     {
-         *       "type": "event_name",
-         *       "data": {}  // Data structure as specified in OpenAPI responses
-         *     }
-         *     ```
-         *
-         *     ## Important Notes
-         *
-         *     - Access tokens are valid for 60 seconds.
-         *     - Ensure your client can handle reconnection if the access token expires.
-         *     - The server will emit an error event if authentication fails.
-         *     - After a successful login, you'll be subscribed to your respective channel.
-         *
-         *     For detailed information on access token generation and management, refer to the main WebSocket authentication documentation found [here](#tag/websocket/POST/ws/access-token).
+         * Logout
+         * @description User logout, which will forcefully expire the current session cookie.
          */
-        get: {
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description User Agent */
+                    "User-Agent"?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "UNAUTHORIZED";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description User Account Jurisdiction Mismatch, Jurisdiction Not Supported but Alternative Site Available, Jurisdiction Supported but Not Enabled, Host Not Supported, Jurisdiction Not Supported */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/forgot-password": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Password reset request
+         * @description This endpoint will take a user email and send out a password reset email to the user.
+         *     The email will contain a link that the user can click on to reset their password. The link will be valid for 60 minutes.
+         *     Note that this endpoint will always return a 200 status code, even if the email does not exist in the database.
+         *     This is to prevent attackers from using this endpoint to determine if an email exists in the database.
+         *     The endpoint will also always take the same amount of time to respond, regardless of whether the email exists in the database or not.
+         */
+        post: {
             parameters: {
                 query?: never;
                 header?: never;
@@ -213,7 +473,741 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["WebsocketClientEvent"];
+                    "application/json": components["schemas"]["InitializePasswordResetRequest"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Validation Failed */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "VALIDATION_FAILED";
+                            message?: string;
+                            metadata: components["schemas"]["SystemValidationErrors"];
+                        };
+                    };
+                };
+                /** @description User Account Jurisdiction Mismatch, Jurisdiction Not Supported, Jurisdiction Supported but Not Enabled, Jurisdiction Not Supported but Alternative Site Available, Host Not Supported */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/reset-password": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Password reset
+         * @description This endpoint takes a password reset token and the newly chosen password from the user.
+         *     The token is sent to the user's email when they request a password reset.
+         *     If the token is valid, the user's password will be updated to the new password.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["FinalizePasswordResetRequest"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Invalid or Expired Token */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INVALID_TOKEN";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Validation Failed */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "VALIDATION_FAILED";
+                            message?: string;
+                            metadata: components["schemas"]["SystemValidationErrors"];
+                        };
+                    };
+                };
+                /** @description Host Not Supported, Jurisdiction Supported but Not Enabled, Jurisdiction Not Supported, User Account Jurisdiction Mismatch, Jurisdiction Not Supported but Alternative Site Available */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/signup/flow": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create Signup Flow
+         * @description Create a new signup flow that can be incrementally patched and the submitted for completion.
+         *
+         *     The ID returned by the signup flow can be stored in the frontend URL or other storage
+         *     to recover the signup flow if the user reloads the page or does other destructive actions.
+         *
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CreateSignupFlowResponse"];
+                    };
+                };
+                /** @description Host Not Supported, User Account Jurisdiction Mismatch, Jurisdiction Not Supported, Jurisdiction Not Supported but Alternative Site Available, Jurisdiction Supported but Not Enabled */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/signup/flow/{flow_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Signup Flow
+         * @description Get the specified signup flow and all the fields that have been added to it.
+         *     Use this for recovering form data if the user reloads the page or does other destructive actions.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description The ID of the signup flow to retrieve. */
+                    flow_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["SignupFlowResponse"];
+                    };
+                };
+                /** @description Signup Flow Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "SIGNUP_FLOW_NOT_FOUND";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Host Not Supported, User Account Jurisdiction Mismatch, Jurisdiction Supported but Not Enabled, Jurisdiction Not Supported, Jurisdiction Not Supported but Alternative Site Available */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        /**
+         * Submit Signup Flow
+         * @description Submit the specified signup flow and create the user entry.
+         *     This can fail if certain validation of fields and jurisdiction dependent information is unsuccessful.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description User Agent */
+                    "User-Agent"?: string;
+                };
+                path: {
+                    /** @description The ID of the signup flow to retrieve. */
+                    flow_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Invalid Registration Data */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INVALID_DATA";
+                            message?: string;
+                            metadata: components["schemas"]["SystemValidationErrors"];
+                        };
+                    };
+                };
+                /** @description Registration Not Allowed */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "REGISTRATION_NOT_ALLOWED";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Signup Flow Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "FLOW_NOT_FOUND";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Jurisdiction Supported but Not Enabled, Jurisdiction Not Supported but Alternative Site Available, Host Not Supported, Jurisdiction Not Supported, User Account Jurisdiction Mismatch */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update Signup Flow
+         * @description
+         *     Patch the specified signup flow with additional information.
+         *
+         *     Example request body for brazilian users:
+         *     ```
+         *      {
+         *     	"first_name": "John",
+         *     	"last_name": "Doe",
+         *     	"email": "john@doe.com",
+         *     	"password": "test",
+         *     	"CPF": "549.448.010-09",
+         *     	"signup_params": {           // optional
+         *     		"utm_source": "google",
+         *     		"utm_medium": "cpc",
+         *     		"utm_campaign": "test",
+         *     		"utm_term": "test",
+         *     		"utm_content": "test",
+         *     		"utm_referrer": "test",
+         *     		"utm_adgroup": "test",
+         *     		"utm_ad": "test",
+         *     		"utm_creative": "test",
+         *     		"utm_matchtype": "test",
+         *     		"utm_network": "test",
+         *     		"utm_device": "test"
+         *     	}
+         *     }
+         *     ```
+         *
+         *     #### Testing CPFs that you can use to create a user
+         *
+         *     - 549.448.010-09
+         *     - 653.358.910-50
+         *     - 715.176.900-80
+         *     - 395.677.760-32
+         *     - 993.093.100-73
+         *
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description The ID of the signup flow to retrieve. */
+                    flow_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["PatchSignupFlowRequest"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Invalid Input Data */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INVALID_DATA";
+                            message?: string;
+                            metadata: components["schemas"]["SystemValidationErrors"];
+                        };
+                    };
+                };
+                /** @description Signup Flow Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "SIGNUP_FLOW_NOT_FOUND";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Host Not Supported, Jurisdiction Supported but Not Enabled, Jurisdiction Not Supported but Alternative Site Available, User Account Jurisdiction Mismatch, Jurisdiction Not Supported */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/payment/deposit": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create Deposit Flow
+         * @description Create a new deposit flow.
+         *         This flow will be active as long as we don't receive a
+         *         confirmation from our payment providers, that a deposit has been completed.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["PaymentTransactionRequest"];
                 };
             };
             responses: {
@@ -222,7 +1216,497 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["WebsocketServerEvent"];
+                        "application/json": components["schemas"]["CreateDepositFlowResponse"];
+                    };
+                };
+                /** @description Timeframe Amount Limit Exceeded, Cooldown Period Active, Timeframe Count Limit Exceeded, Deposit Amount Negative, No Payment Provider Available, Payment Limits Exceeded, Payment Method Not Allowed */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "DEPOSIT_AMOUNT_NEGATIVE";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "PAYMENT_METHOD_NOT_ALLOWED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "NO_PAYMENT_PROVIDER_AVAILABLE";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "LIMIT_EXCEEDED";
+                            message?: string;
+                            metadata: {
+                                bound: components["schemas"]["PaymentLimitBound"];
+                                max?: string | number | null;
+                                min?: string | number | null;
+                            };
+                        } | {
+                            /** @constant */
+                            code: "TIMEFRAME_AMOUNT_LIMIT_EXCEEDED";
+                            message?: string;
+                            metadata: {
+                                limit: string | number;
+                                /** Format: int64 */
+                                seconds: number;
+                            };
+                        } | {
+                            /** @constant */
+                            code: "TIMEFRAME_COUNT_LIMIT_EXCEEDED";
+                            message?: string;
+                            metadata: {
+                                /** Format: int64 */
+                                limit: number;
+                                /** Format: int64 */
+                                seconds: number;
+                            };
+                        } | {
+                            /** @constant */
+                            code: "COOLDOWN";
+                            message?: string;
+                            metadata: {
+                                /** Format: int64 */
+                                seconds_left: number;
+                            };
+                        };
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "UNAUTHORIZED";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description User Sandboxed */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "USER_SANDBOXED";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Jurisdiction Not Supported, Jurisdiction Not Supported but Alternative Site Available, Host Not Supported, Jurisdiction Supported but Not Enabled, User Account Jurisdiction Mismatch */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/payment/withdraw": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create Withdrawal Flow
+         * @description Create a withdrawal flow.
+         *         This flow will be active as long as we don't receive a confirmation from our payment provider,
+         *         that they have successfully withdrawn the desired amount into the user's bank account.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["PaymentTransactionRequest"];
+                };
+            };
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CreateWithdrawalFlowResponse"];
+                    };
+                };
+                /** @description Payment Limits Exceeded, Timeframe Amount Limit Exceeded, Pending Withdrawal Exists, Withdrawal Amount Negative, Insufficient Funds, No Payment Provider Available, Cooldown Period Active, Timeframe Count Limit Exceeded, Payment Method Not Allowed */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "WITHDRAWAL_AMOUNT_NEGATIVE";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "INSUFFICIENT_FUNDS";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "PAYMENT_METHOD_NOT_ALLOWED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "PENDING_WITHDRAWAL_EXISTS";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "NO_PAYMENT_PROVIDER_AVAILABLE";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "LIMIT_EXCEEDED";
+                            message?: string;
+                            metadata: {
+                                bound: components["schemas"]["PaymentLimitBound"];
+                                max?: string | number | null;
+                                min?: string | number | null;
+                            };
+                        } | {
+                            /** @constant */
+                            code: "TIMEFRAME_AMOUNT_LIMIT_EXCEEDED";
+                            message?: string;
+                            metadata: {
+                                limit: string | number;
+                                /** Format: int64 */
+                                seconds: number;
+                            };
+                        } | {
+                            /** @constant */
+                            code: "TIMEFRAME_COUNT_LIMIT_EXCEEDED";
+                            message?: string;
+                            metadata: {
+                                /** Format: int64 */
+                                limit: number;
+                                /** Format: int64 */
+                                seconds: number;
+                            };
+                        } | {
+                            /** @constant */
+                            code: "COOLDOWN";
+                            message?: string;
+                            metadata: {
+                                /** Format: int64 */
+                                seconds_left: number;
+                            };
+                        };
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "UNAUTHORIZED";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Missing KYC, User Sandboxed */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "USER_SANDBOXED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "MISSING_KYC";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Wallet Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "WALLET_NOT_FOUND";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Validation Failed */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "VALIDATION_FAILED";
+                            message?: string;
+                            metadata: components["schemas"]["SystemValidationErrors"];
+                        };
+                    };
+                };
+                /** @description Jurisdiction Supported but Not Enabled, User Account Jurisdiction Mismatch, Host Not Supported, Jurisdiction Not Supported but Alternative Site Available, Jurisdiction Not Supported */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/payment/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Payment Flows
+         * @description List all payment flows for the currently logged in user.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description The payment type to filter the payment flows by. If not set, all payment
+                     *      types will be included. */
+                    payment_type?: components["schemas"]["PaymentType"] | null;
+                    /** @description The wallet ID to filter the payment flows by. If not set, all wallets of
+                     *      the user will be included. */
+                    wallet_id?: components["schemas"]["WalletId"] | null;
+                    limit?: number;
+                    offset?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PaginatorResponse_for_PaymentFlowResponse_and_ListPaymentFlowsQuery_and_int64"];
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "UNAUTHORIZED";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description User Account Jurisdiction Mismatch, Jurisdiction Supported but Not Enabled, Jurisdiction Not Supported but Alternative Site Available, Host Not Supported, Jurisdiction Not Supported */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
                     };
                 };
             };
@@ -235,7 +1719,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/docs/spec.json": {
+    "/payment/limits": {
         parameters: {
             query?: never;
             header?: never;
@@ -243,18 +1727,106 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * OpenAPI Spec
-         * @description Returns the OpenAPI spec to this API
+         * Get Payment Limits
+         * @description Get the payment limits for the currently logged in user.
          */
         get: {
             parameters: {
-                query?: never;
+                query: {
+                    /** @description The currency to get the payment limits for. */
+                    currency: components["schemas"]["Currency"];
+                    /** @description The payment method to get the payment limits for. */
+                    payment_method_id: components["schemas"]["PaymentMethodId"];
+                };
                 header?: never;
                 path?: never;
                 cookie?: never;
             };
             requestBody?: never;
-            responses: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PaymentLimitsResponse"];
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "UNAUTHORIZED";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Jurisdiction Not Supported but Alternative Site Available, Jurisdiction Not Supported, Host Not Supported, User Account Jurisdiction Mismatch, Jurisdiction Supported but Not Enabled */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
         };
         put?: never;
         post?: never;
@@ -264,7 +1836,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/docs": {
+    "/payment/methods": {
         parameters: {
             query?: never;
             header?: never;
@@ -272,8 +1844,253 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * API Docs
-         * @description This documentation page
+         * Get Payment Methods
+         * @description Get all payment methods that can be used by the user for the given currency.
+         */
+        get: {
+            parameters: {
+                query: {
+                    /** @description The currency to get the payment methods for. */
+                    currency: components["schemas"]["Currency"];
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PaymentMethodResponse"][];
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "UNAUTHORIZED";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Jurisdiction Not Supported but Alternative Site Available, Jurisdiction Not Supported, Host Not Supported, User Account Jurisdiction Mismatch, Jurisdiction Supported but Not Enabled */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/payment/{flow_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Payment Flow
+         * @description Get a payment flow by its ID.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description The ID of the payment flow. */
+                    flow_id: components["schemas"]["PaymentFlowId"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PaymentFlowResponse"];
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "UNAUTHORIZED";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Payment Flow Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "PAYMENT_FLOW_NOT_FOUND";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Host Not Supported, User Account Jurisdiction Mismatch, Jurisdiction Not Supported but Alternative Site Available, Jurisdiction Not Supported, Jurisdiction Supported but Not Enabled */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/system/licenses": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Matched Licenses
+         * @description Get the available system licenses for the requested jurisdiction/site header combination.
+         *             The licenses are ordered in their priority order,
+         *             and thus the first license in the list is the most preferred one.
          */
         get: {
             parameters: {
@@ -284,13 +2101,3725 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                /** @description HTML content */
                 200: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content: {
-                        "text/html": string;
+                        "application/json": components["schemas"]["LicenseResponse"][];
+                    };
+                };
+                /** @description Jurisdiction Not Supported but Alternative Site Available, Jurisdiction Not Supported, User Account Jurisdiction Mismatch, Host Not Supported, Jurisdiction Supported but Not Enabled */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/system/preflight": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Preflight Check
+         * @description This preflight endpoint should be the first endpoint
+         *             to be called by the client or the SSR implementation.
+         *             It is used to check if the user is able to access the
+         *             host + jurisdiction combination. Should they not be allowed to access
+         *             the site, the endpoint will return a `JURISDICTION_NOT_SUPPORTED` error,
+         *             possibly containing a list of alternative sites that the user can access.
+         *
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Jurisdiction Not Supported, User Account Jurisdiction Mismatch, Jurisdiction Supported but Not Enabled, Jurisdiction Not Supported but Alternative Site Available, Host Not Supported */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/game-provider/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Game Providers
+         * @description List all game providers.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    limit?: number;
+                    offset?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PaginatorResponse_for_GameProviderResponse_and_null_and_int64"];
+                    };
+                };
+                /** @description User Account Jurisdiction Mismatch, Jurisdiction Not Supported, Jurisdiction Supported but Not Enabled, Jurisdiction Not Supported but Alternative Site Available, Host Not Supported */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/game-provider/{provider_identifier}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Game Provider
+         * @description Get a game provider by its ID.
+         *             This can be used to show a more detailed view of of the
+         *             provider profile in the frontend, which may require more data than
+         *             the search endpoint provides.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description The ID of the game provider. */
+                    provider_identifier: components["schemas"]["GameProviderIdentifier"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description The response to a game provider request. It contains all available
+                 *      information about the provider. */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["GameProviderResponse"];
+                    };
+                };
+                /** @description Game Provider Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "GAME_PROVIDER_NOT_FOUND";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Jurisdiction Not Supported, User Account Jurisdiction Mismatch, Host Not Supported, Jurisdiction Not Supported but Alternative Site Available, Jurisdiction Supported but Not Enabled */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/game/{provider_slug}/{game_slug}/session": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Create Game Session
+         * @description Create a new game session by providing the game ID,
+         *         as well as the currency with which the game should be played with,
+         *         and the client type of the user.
+         *         The response will redirect the user to the third party URL of the game provider.
+         *         Please note that this request should be used in conjunction with an iframe,
+         *         so that the user does not get redirected from the casino website.
+         */
+        get: {
+            parameters: {
+                query: {
+                    /** @description The device type the game session is started on. Some games may only be
+                     *      available on certain devices. */
+                    client_type?: components["schemas"]["Device"];
+                    /** @description The currency (wallet) to use for the game session. It can not be changed
+                     *      during the session. */
+                    currency: components["schemas"]["Currency"];
+                };
+                header?: never;
+                path: {
+                    game_slug: string;
+                    provider_slug: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Insufficient Funds */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INSUFFICIENT_FUNDS";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "UNAUTHORIZED";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Game Not Accessible */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "GAME_NOT_ACCESSIBLE";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Wallet Not Found, Game Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "GAME_NOT_FOUND";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "WALLET_NOT_FOUND";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Host Not Supported, Jurisdiction Not Supported, Jurisdiction Not Supported but Alternative Site Available, User Account Jurisdiction Mismatch, Jurisdiction Supported but Not Enabled */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        /**
+         * Create Game Session
+         * @description Create a new game session by providing the game ID,
+         *         as well as the currency with which the game should be played with,
+         *         and the client type of the user.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    game_slug: string;
+                    provider_slug: string;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["CreateGameSessionRequest"];
+                };
+            };
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CreateGameSessionPostResponse"];
+                    };
+                };
+                /** @description Insufficient Funds */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INSUFFICIENT_FUNDS";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "UNAUTHORIZED";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Game Not Accessible */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "GAME_NOT_ACCESSIBLE";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Game Not Found, Wallet Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "GAME_NOT_FOUND";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "WALLET_NOT_FOUND";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Jurisdiction Not Supported, Jurisdiction Supported but Not Enabled, Jurisdiction Not Supported but Alternative Site Available, User Account Jurisdiction Mismatch, Host Not Supported */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/game/{provider_slug}/{game_slug}/demo": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Create Demo Game Session
+         * @description Create a new demo game session by providing the game ID,
+         *         as well as the client type of the user and an optional language.
+         *         The response will redirect the user to the third party URL of the game provider.
+         *         Please note that this request should be used in conjunction with an iframe,
+         *         so that the user does not get redirected from the casino website.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description The device type the game session is started on. Some games may only be
+                     *      available on certain devices. */
+                    client_type?: components["schemas"]["Device"];
+                    /** @description The language to use for the game session. Some games may only be
+                     *      available in certain languages. */
+                    language?: components["schemas"]["Language"];
+                };
+                header?: never;
+                path: {
+                    game_slug: string;
+                    provider_slug: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Game has no demo */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "GAME_HAS_NO_DEMO";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Game Not Accessible */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "GAME_NOT_ACCESSIBLE";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Game Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "GAME_NOT_FOUND";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Host Not Supported, User Account Jurisdiction Mismatch, Jurisdiction Not Supported but Alternative Site Available, Jurisdiction Not Supported, Jurisdiction Supported but Not Enabled */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        /**
+         * Create Demo Game Session
+         * @description Create a new demo game session by providing the game ID,
+         *         as well as the client type of the user and an optional language.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    game_slug: string;
+                    provider_slug: string;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["CreateDemoGameSessionRequest"];
+                };
+            };
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CreateGameSessionPostResponse"];
+                    };
+                };
+                /** @description Game has no demo */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "GAME_HAS_NO_DEMO";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Game Not Accessible */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "GAME_NOT_ACCESSIBLE";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Game Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "GAME_NOT_FOUND";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Jurisdiction Not Supported, Host Not Supported, Jurisdiction Supported but Not Enabled, User Account Jurisdiction Mismatch, Jurisdiction Not Supported but Alternative Site Available */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/game/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Games
+         * @description List all games or games of a specific category.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description The category identifier to filter games by. If set, only games in this
+                     *      category are returned. Note: this is not the category ID, but the
+                     *      identifier. */
+                    category?: string | null;
+                    /** @description The provider to filter games by. If set, only games by this provider are
+                     *      returned. */
+                    provider_identifier?: components["schemas"]["GameProviderIdentifier"] | null;
+                    limit?: number;
+                    offset?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PaginatorResponse_for_GameResponse_and_ListGameQuery_and_int64"];
+                    };
+                };
+                /** @description Jurisdiction Not Supported but Alternative Site Available, User Account Jurisdiction Mismatch, Jurisdiction Supported but Not Enabled, Host Not Supported, Jurisdiction Not Supported */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/game/action/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Game Actions
+         * @description Get a list of all game actions of the user.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description The type of the game action to filter by. If not set, all game actions
+                     *      (bet, win, etc.) will be included. */
+                    action_type?: components["schemas"]["ListBetTypeQuery"] | null;
+                    /** @description Game ID to filter the game actions by. If not set, all game actions will
+                     *      be included. */
+                    game_identifier?: components["schemas"]["GameIdentifier"] | null;
+                    limit?: number;
+                    offset?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PaginatorResponse_for_GameActionResponse_and_ListGameActionsQuery_and_int64"];
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "UNAUTHORIZED";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Game Not Found, User Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "USER_NOT_FOUND";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "GAME_NOT_FOUND";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description User Account Jurisdiction Mismatch, Jurisdiction Not Supported, Jurisdiction Not Supported but Alternative Site Available, Host Not Supported, Jurisdiction Supported but Not Enabled */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/game/category/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Available Game Categories
+         * @description Get a list of all game categories available in the casino.
+         *         This can be used to show a list of game categories to the user,
+         *         so that they can choose which category they want to explore.
+         *         There are two major types of categories, staic and dynamic.
+         *         Static categories are predefined by the casino, while dynamic categories
+         *         cover games based on user behavior and other factors.
+         *         Dynamic categories are recalcuated periodically.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description The group of game categories to filter by. If set, only categories in
+                     *      this group are returned. */
+                    group?: string | null;
+                    /** @description Whether to include the games in the category in the response. If set to
+                     *      `true`, the games in the category are included in the response. */
+                    include_games?: boolean;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["GameCategoryListResponse"][];
+                    };
+                };
+                /** @description Host Not Supported, Jurisdiction Supported but Not Enabled, User Account Jurisdiction Mismatch, Jurisdiction Not Supported but Alternative Site Available, Jurisdiction Not Supported */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/game/{provider_slug}/{game_slug}/rating": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Rate Game
+         * @description Rate a game by its ID.
+         *         This can be used to allow users to rate games,
+         *         so that other users can see the rating of the game.
+         *         Sending a rating of null will remove the rating of the user.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    game_slug: string;
+                    provider_slug: string;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["RateGameRequest"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Invalid Rating */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INVALID_RATING";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "UNAUTHORIZED";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Game Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "GAME_NOT_FOUND";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description User Account Jurisdiction Mismatch, Jurisdiction Not Supported but Alternative Site Available, Jurisdiction Supported but Not Enabled, Host Not Supported, Jurisdiction Not Supported */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/game/{provider_slug}/{game_slug}/ratings": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Game Ratings
+         * @description User ratings split up into likes and dislikes
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    game_slug: string;
+                    provider_slug: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["GameRatingsResponse"];
+                    };
+                };
+                /** @description Game Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "GAME_NOT_FOUND";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description User Account Jurisdiction Mismatch, Jurisdiction Not Supported but Alternative Site Available, Jurisdiction Supported but Not Enabled, Jurisdiction Not Supported, Host Not Supported */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/game/{provider_slug}/{game_slug}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Game
+         * @description Get a game by its ID. This can be used to show a more detailed view of a game,
+         *         including its name, description,
+         *         and other metadata, that might be required to display the game on the frontend.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    game_slug: string;
+                    provider_slug: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["GameResponse"];
+                    };
+                };
+                /** @description Game Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "GAME_NOT_FOUND";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Jurisdiction Not Supported but Alternative Site Available, Host Not Supported, Jurisdiction Not Supported, User Account Jurisdiction Mismatch, Jurisdiction Supported but Not Enabled */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/notification/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get All Notifications
+         * @description Get a list of all notifications for the current user.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description The read status of the notifications to filter by. */
+                    read_status?: components["schemas"]["ReadStatus"] | null;
+                    /** @description The types of the notifications to filter by. */
+                    types?: components["schemas"]["NotificationTypeDiscriminants"][] | null;
+                    limit?: number;
+                    offset?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PaginatorResponse_for_NotificationResponse_and_ListNotificationsQuery_and_int64"];
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "UNAUTHORIZED";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Jurisdiction Not Supported but Alternative Site Available, User Account Jurisdiction Mismatch, Host Not Supported, Jurisdiction Not Supported, Jurisdiction Supported but Not Enabled */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/notification/{notification_id}/read-status": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update Notification Read Status
+         * @description Mark a notification as read.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description The ID of the notification to retrieve. */
+                    notification_id: components["schemas"]["NotificationId"];
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["ReadStatus"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "UNAUTHORIZED";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Notification Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "NOTIFICATION_NOT_FOUND";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Jurisdiction Not Supported, Jurisdiction Supported but Not Enabled, User Account Jurisdiction Mismatch, Host Not Supported, Jurisdiction Not Supported but Alternative Site Available */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/user/profile": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get User Profile
+         * @description Get the user profile of the currently logged in user.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["UserResponse"];
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "UNAUTHORIZED";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Host Not Supported, Jurisdiction Not Supported but Alternative Site Available, User Account Jurisdiction Mismatch, Jurisdiction Supported but Not Enabled, Jurisdiction Not Supported */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/user/balance": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get User Balance
+         * @description Get the balance of the currently logged in user. The wallets are returned in the order of their selection. Frontends mays utilize this order to display the wallets, and to identify the active wallet.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["UserWalletBalanceResponse"][];
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "UNAUTHORIZED";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Jurisdiction Supported but Not Enabled, Jurisdiction Not Supported, Host Not Supported, Jurisdiction Not Supported but Alternative Site Available, User Account Jurisdiction Mismatch */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/user/settings": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get User Settings
+         * @description Get the settings of the currently logged in user.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PatchUserSettingsRequest"];
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "UNAUTHORIZED";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Jurisdiction Not Supported but Alternative Site Available, Jurisdiction Not Supported, User Account Jurisdiction Mismatch, Jurisdiction Supported but Not Enabled, Host Not Supported */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update User Settings
+         * @description Update the settings of the currently logged in user.
+         *
+         *     This endpoint allows for partial updates of the user settings, by
+         *     only updating the fields that are provided in the request.
+         *
+         *     If a field is set to `null`, it will be reset to the default value.
+         *
+         *     If a field is not provided, it will not be updated.
+         *
+         *     Partial updates follow the [RFC 7396](https://datatracker.ietf.org/doc/html/rfc7396) JSON Merge Patch standard.
+         *
+         *     ```json
+         *     // Given the following JSON
+         *     {
+         *     	"title": "Goodbye!",
+         *     	"author" : {
+         *     		"givenName" : "John",
+         *     		"familyName" : "Doe"
+         *     	},
+         *     	"tags":[ "example", "sample" ],
+         *     	"content": "This will be unchanged"
+         *     }
+         *
+         *     // Merged with the following patch
+         *     {
+         *     	"title": "Hello!",
+         *     	"phoneNumber": "+01-123-456-7890",
+         *     	"author": {
+         *     		"familyName": null
+         *     	},
+         *     	"tags": [ "example" ]
+         *     }
+         *
+         *     // Will result in the following JSON
+         *     {
+         *     	"title": "Hello!",
+         *     	"author" : {
+         *     		"givenName" : "John"
+         *     	},
+         *     	"tags": [ "example" ],
+         *     	"content": "This will be unchanged",
+         *     	"phoneNumber": "+01-123-456-7890"
+         *     }
+         *     ```
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["PatchUserSettingsRequest"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "UNAUTHORIZED";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Validation Failed */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "VALIDATION_FAILED";
+                            message?: string;
+                            metadata: components["schemas"]["SystemValidationErrors"];
+                        };
+                    };
+                };
+                /** @description Jurisdiction Not Supported, Jurisdiction Supported but Not Enabled, User Account Jurisdiction Mismatch, Jurisdiction Not Supported but Alternative Site Available, Host Not Supported */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/user/address": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update User Address
+         * @description Update the address of the currently logged in user. The address is used for shipping and other purposes.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["PatchUserAddressRequest"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "UNAUTHORIZED";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Validation Failed */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "VALIDATION_FAILED";
+                            message?: string;
+                            metadata: components["schemas"]["SystemValidationErrors"];
+                        };
+                    };
+                };
+                /** @description Host Not Supported, User Account Jurisdiction Mismatch, Jurisdiction Not Supported but Alternative Site Available, Jurisdiction Supported but Not Enabled, Jurisdiction Not Supported */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/user/active-wallet": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update User Active Wallet
+         * @description Update the selected wallet of the user. The user balance endpoint will return the user's wallets in the order of their selection time.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["SelectWalletRequest"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "UNAUTHORIZED";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Wallet Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "WALLET_NOT_FOUND";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Jurisdiction Not Supported but Alternative Site Available, Jurisdiction Not Supported, Jurisdiction Supported but Not Enabled, User Account Jurisdiction Mismatch, Host Not Supported */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/user/password": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update User Password
+         * @description Update the password of the currently logged in user. The current password is required to ensure that the user is authorized to change the password.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["PatchUserPasswordRequest"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Incorrect Current Password, Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "UNAUTHORIZED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "UNAUTHORIZED";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Validation Failed */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "VALIDATION_FAILED";
+                            message?: string;
+                            metadata: components["schemas"]["SystemValidationErrors"];
+                        };
+                    };
+                };
+                /** @description Jurisdiction Not Supported, Host Not Supported, User Account Jurisdiction Mismatch, Jurisdiction Supported but Not Enabled, Jurisdiction Not Supported but Alternative Site Available */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/user/username": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update Username
+         * @description Update the username of the currently logged in user. The username must be unique.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["PatchUsernameRequest"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Inappropriate Username, Username Already Taken */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "EXPLICIT";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "TAKEN";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "UNAUTHORIZED";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Validation Failed */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "VALIDATION_FAILED";
+                            message?: string;
+                            metadata: components["schemas"]["SystemValidationErrors"];
+                        };
+                    };
+                };
+                /** @description Host Not Supported, Jurisdiction Not Supported, User Account Jurisdiction Mismatch, Jurisdiction Supported but Not Enabled, Jurisdiction Not Supported but Alternative Site Available */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/user/delete": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Delete User Account
+         * @description Delete the account of the currently logged in user. The user must provide the current password to ensure that they are authorized to delete the account.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description User Agent */
+                    "User-Agent"?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["DeleteUserAccountRequest"];
+                };
+            };
+            responses: {
+                /** @description no content */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized, Password Required */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "UNAUTHORIZED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "UNAUTHORIZED";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Validation Failed */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "VALIDATION_FAILED";
+                            message?: string;
+                            metadata: components["schemas"]["SystemValidationErrors"];
+                        };
+                    };
+                };
+                /** @description Host Not Supported, User Account Jurisdiction Mismatch, Jurisdiction Not Supported but Alternative Site Available, Jurisdiction Not Supported, Jurisdiction Supported but Not Enabled */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/kyc/token": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Get KYC Access Token
+         * @description This endpoint returns a temporary short-lived token that is bound to the user.
+         *     It can be used in conjunction with a KYC provider's SDK to perform KYC validation in the frontend.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["KycAccessTokenResponse"];
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "UNAUTHORIZED";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description User Account Jurisdiction Mismatch, Host Not Supported, Jurisdiction Not Supported, Jurisdiction Not Supported but Alternative Site Available, Jurisdiction Supported but Not Enabled */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/kyc/status": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get KYC Status
+         * @description Returns the current KYC status of the user.
+         *     This endpoint may be used to prevent the user from going through the KYC process again if they have already completed it.
+         *
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["KycStatusResponse"];
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "UNAUTHORIZED";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Jurisdiction Supported but Not Enabled, Jurisdiction Not Supported but Alternative Site Available, User Account Jurisdiction Mismatch, Host Not Supported, Jurisdiction Not Supported */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/ticker/{channel}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Ticker Channel Events
+         * @description Get pre-buffered events for a specific ticker channel. This should be used in conjunction with SSR and the WebSocket connection to pre-fill tickers on SSR and to make them live-update on client side.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description The ticker channel */
+                    channel: components["schemas"]["WebsocketTickerChannel"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["WebsocketServerEvent"][];
+                    };
+                };
+                /** @description Channel Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "CHANNEL_NOT_FOUND";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Jurisdiction Not Supported but Alternative Site Available, Jurisdiction Supported but Not Enabled, Host Not Supported, Jurisdiction Not Supported, User Account Jurisdiction Mismatch */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/search/games": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Search Games
+         * @description Search for active games by name or other criteria.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description An organic search query to find items by. */
+                    query?: string | null;
+                    limit?: number;
+                    offset?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PaginatorResponse_for_ScoredSearchResponseItem_for_SearchGameResponse_and_SearchQuery_and_Nullable_uint"];
+                    };
+                };
+                /** @description Jurisdiction Supported but Not Enabled, Jurisdiction Not Supported but Alternative Site Available, Jurisdiction Not Supported, User Account Jurisdiction Mismatch, Host Not Supported */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/search/game-providers": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Search Game Providers
+         * @description Search for active game providers by name or other criteria.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description An organic search query to find items by. */
+                    query?: string | null;
+                    limit?: number;
+                    offset?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PaginatorResponse_for_ScoredSearchResponseItem_for_SearchGameProviderResponse_and_SearchQuery_and_Nullable_uint"];
+                    };
+                };
+                /** @description Jurisdiction Not Supported but Alternative Site Available, Jurisdiction Not Supported, Jurisdiction Supported but Not Enabled, Host Not Supported, User Account Jurisdiction Mismatch */
+                451: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "HOST_NOT_SUPPORTED";
+                            message?: string;
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
+                            message?: string;
+                            metadata: {
+                                /** @description Alternative site that the user may be redirected to */
+                                alternative_site: components["schemas"]["SiteResponse"];
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
+                            message?: string;
+                            metadata: {
+                                /** @description The violating jurisdiction. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        } | {
+                            /** @constant */
+                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
+                            message?: string;
+                            metadata: {
+                                /** @description The jurisdiction that is supported but not enabled. */
+                                jurisdiction: components["schemas"]["Country"];
+                            };
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/system/site-setup": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Matched Site
+         * @description The the matched site based on the host header.
+         *             Use this to differentiate between different sites in a multi-site setup,
+         *             allowing for different configurations, themes, etc.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Site setup response, used for dymainc frontend branding and configuration. */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["SiteResponse"];
+                    };
+                };
+                /** @description Site could not be determined */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "SITE_NOT_DETERMINED";
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @constant */
+                            code: "INTERNAL";
+                            message?: string;
+                            metadata: Record<string, never>;
+                        };
                     };
                 };
             };
@@ -639,7 +6168,7 @@ export interface paths {
                     };
                     content?: never;
                 };
-                /** @description Insufficient Funds, Invalid Flow Type, Invalid Flow State, No payment provider available */
+                /** @description No payment provider available, Invalid Flow State, Invalid Flow Type, Insufficient Funds */
                 400: {
                     headers: {
                         [name: string]: unknown;
@@ -990,7 +6519,7 @@ export interface paths {
         };
         trace?: never;
     };
-    "/auth/whoami": {
+    "/docs/spec.json": {
         parameters: {
             query?: never;
             header?: never;
@@ -998,9 +6527,37 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Whoami
-         * @description The whoami endpoint returns some basic information about the currently logged in user.
-         *     This is primarily used for verifying that the user is logged in.
+         * OpenAPI Spec
+         * @description Returns the OpenAPI spec to this API
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: never;
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/docs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * API Docs
+         * @description This documentation page
          */
         get: {
             parameters: {
@@ -1011,72 +6568,13 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
+                /** @description HTML content */
                 200: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["WhoamiResponse"];
-                    };
-                };
-                /** @description Unauthorized */
-                401: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "UNAUTHORIZED";
-                            message?: string;
-                        };
-                    };
-                };
-                /** @description Jurisdiction Not Supported, Host Not Supported, Jurisdiction Not Supported but Alternative Site Available, User Account Jurisdiction Mismatch, Jurisdiction Supported but Not Enabled */
-                451: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "HOST_NOT_SUPPORTED";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description Alternative site that the user may be redirected to */
-                                alternative_site: components["schemas"]["SiteResponse"];
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
-                            message?: string;
-                            metadata: {
-                                /** @description The jurisdiction that is supported but not enabled. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        };
+                        "text/html": string;
                     };
                 };
             };
@@ -1089,18 +6587,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/auth/fasttrack-token": {
+    "/ws/access-token": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
+        get?: never;
+        put?: never;
         /**
-         * Fasttrack token
-         * @description This endpoint returns a JWT token, to be used by the Fasttrack frontend SDK for user verification
+         * Issue WebSocket Access Token
+         * @description This endpoint is used to generate authentication tokens (access tokens) for WebSocket connections in our system.
+         *
+         *     ## Access Token Generation
+         *
+         *     1. Send a POST request to the access token issuer endpoint.
+         *     2. The endpoint will return an access token.
+         *
+         *     ## Access Token Properties
+         *
+         *     - Access tokens are short-lived tokens, valid for 60 seconds from the time of generation.
+         *     - Each access token, once used, is tied to a specific websocket connection and is immediately invalidated.
+         *
+         *     ## Usage
+         *
+         *     - Use the generated access token when establishing a WebSocket connection.
+         *     - For detailed information on how to use the access token in a WebSocket connection, refer to the documentation found [here](#tag/websocket/GET/ws/connect).
+         *
+         *     ## Important Notes
+         *
+         *     - Always generate a new access token before attempting to log in to the user event stream.
+         *     - Ensure your client handles access token expiration and reconnection scenarios.
          */
-        get: {
+        post: {
             parameters: {
                 query?: never;
                 header?: never;
@@ -1114,7 +6634,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["GetFasttrackTokenResponseBody"];
+                        "application/json": components["schemas"]["AccessTokenTokenResponse"];
                     };
                 };
                 /** @description Unauthorized */
@@ -1130,7 +6650,7 @@ export interface paths {
                         };
                     };
                 };
-                /** @description Jurisdiction Supported but Not Enabled, Jurisdiction Not Supported but Alternative Site Available, Jurisdiction Not Supported, User Account Jurisdiction Mismatch, Host Not Supported */
+                /** @description Jurisdiction Not Supported, User Account Jurisdiction Mismatch, Jurisdiction Supported but Not Enabled, Jurisdiction Not Supported but Alternative Site Available, Host Not Supported */
                 451: {
                     headers: {
                         [name: string]: unknown;
@@ -1177,127 +6697,6 @@ export interface paths {
                         };
                     };
                 };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/auth/login": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Login
-         * @description Authenticates a user and sets the session cookie
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: {
-                    /** @description User Agent */
-                    "User-Agent"?: string;
-                };
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["LoginRequest"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description Invalid Credentials */
-                401: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "INVALID_CREDENTIALS";
-                            message?: string;
-                        };
-                    };
-                };
-                /** @description Validation Failed */
-                422: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "VALIDATION_FAILED";
-                            message?: string;
-                            metadata: components["schemas"]["SystemValidationErrors"];
-                        };
-                    };
-                };
-                /** @description Jurisdiction Not Supported, User Account Jurisdiction Mismatch, Host Not Supported, Jurisdiction Not Supported but Alternative Site Available, Jurisdiction Supported but Not Enabled */
-                451: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "HOST_NOT_SUPPORTED";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description Alternative site that the user may be redirected to */
-                                alternative_site: components["schemas"]["SiteResponse"];
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
-                            message?: string;
-                            metadata: {
-                                /** @description The jurisdiction that is supported but not enabled. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        };
-                    };
-                };
-                /** @description Internal server error */
                 500: {
                     headers: {
                         [name: string]: unknown;
@@ -1319,5026 +6718,74 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/auth/logout": {
+    "/ws/connect": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        get?: never;
-        put?: never;
         /**
-         * Logout
-         * @description User logout, which will forcefully expire the current session cookie.
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: {
-                    /** @description User Agent */
-                    "User-Agent"?: string;
-                };
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description Unauthorized */
-                401: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "UNAUTHORIZED";
-                            message?: string;
-                        };
-                    };
-                };
-                /** @description Host Not Supported, Jurisdiction Not Supported but Alternative Site Available, User Account Jurisdiction Mismatch, Jurisdiction Not Supported, Jurisdiction Supported but Not Enabled */
-                451: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "HOST_NOT_SUPPORTED";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description Alternative site that the user may be redirected to */
-                                alternative_site: components["schemas"]["SiteResponse"];
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
-                            message?: string;
-                            metadata: {
-                                /** @description The jurisdiction that is supported but not enabled. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        };
-                    };
-                };
-                /** @description Internal server error */
-                500: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "INTERNAL";
-                            message?: string;
-                            metadata: Record<string, never>;
-                        };
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/auth/forgot-password": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Password reset request
-         * @description This endpoint will take a user email and send out a password reset email to the user.
-         *     The email will contain a link that the user can click on to reset their password. The link will be valid for 60 minutes.
-         *     Note that this endpoint will always return a 200 status code, even if the email does not exist in the database.
-         *     This is to prevent attackers from using this endpoint to determine if an email exists in the database.
-         *     The endpoint will also always take the same amount of time to respond, regardless of whether the email exists in the database or not.
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["InitializePasswordResetRequest"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description Validation Failed */
-                422: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "VALIDATION_FAILED";
-                            message?: string;
-                            metadata: components["schemas"]["SystemValidationErrors"];
-                        };
-                    };
-                };
-                /** @description Jurisdiction Supported but Not Enabled, User Account Jurisdiction Mismatch, Jurisdiction Not Supported, Host Not Supported, Jurisdiction Not Supported but Alternative Site Available */
-                451: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "HOST_NOT_SUPPORTED";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description Alternative site that the user may be redirected to */
-                                alternative_site: components["schemas"]["SiteResponse"];
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
-                            message?: string;
-                            metadata: {
-                                /** @description The jurisdiction that is supported but not enabled. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        };
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/auth/reset-password": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Password reset
-         * @description This endpoint takes a password reset token and the newly chosen password from the user.
-         *     The token is sent to the user's email when they request a password reset.
-         *     If the token is valid, the user's password will be updated to the new password.
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["FinalizePasswordResetRequest"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description Invalid or Expired Token */
-                401: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "INVALID_TOKEN";
-                            message?: string;
-                        };
-                    };
-                };
-                /** @description Validation Failed */
-                422: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "VALIDATION_FAILED";
-                            message?: string;
-                            metadata: components["schemas"]["SystemValidationErrors"];
-                        };
-                    };
-                };
-                /** @description Jurisdiction Not Supported but Alternative Site Available, Host Not Supported, Jurisdiction Supported but Not Enabled, User Account Jurisdiction Mismatch, Jurisdiction Not Supported */
-                451: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "HOST_NOT_SUPPORTED";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description Alternative site that the user may be redirected to */
-                                alternative_site: components["schemas"]["SiteResponse"];
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
-                            message?: string;
-                            metadata: {
-                                /** @description The jurisdiction that is supported but not enabled. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        };
-                    };
-                };
-                /** @description Internal server error */
-                500: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "INTERNAL";
-                            message?: string;
-                            metadata: Record<string, never>;
-                        };
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/signup/flow": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Create Signup Flow
-         * @description Create a new signup flow that can be incrementally patched and the submitted for completion.
+         * Establish WebSocket Connection
+         * @description This route is the entry point for WebSocket connections in our system.
          *
-         *     The ID returned by the signup flow can be stored in the frontend URL or other storage
-         *     to recover the signup flow if the user reloads the page or does other destructive actions.
+         *     ## Connection Process
          *
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["CreateSignupFlowResponse"];
-                    };
-                };
-                /** @description User Account Jurisdiction Mismatch, Jurisdiction Not Supported but Alternative Site Available, Host Not Supported, Jurisdiction Supported but Not Enabled, Jurisdiction Not Supported */
-                451: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "HOST_NOT_SUPPORTED";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description Alternative site that the user may be redirected to */
-                                alternative_site: components["schemas"]["SiteResponse"];
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
-                            message?: string;
-                            metadata: {
-                                /** @description The jurisdiction that is supported but not enabled. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        };
-                    };
-                };
-                /** @description Internal server error */
-                500: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "INTERNAL";
-                            message?: string;
-                            metadata: Record<string, never>;
-                        };
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/signup/flow/{flow_id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get Signup Flow
-         * @description Get the specified signup flow and all the fields that have been added to it.
-         *     Use this for recovering form data if the user reloads the page or does other destructive actions.
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    /** @description The ID of the signup flow to retrieve. */
-                    flow_id: string;
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["SignupFlowResponse"];
-                    };
-                };
-                /** @description Signup Flow Not Found */
-                404: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "SIGNUP_FLOW_NOT_FOUND";
-                            message?: string;
-                        };
-                    };
-                };
-                /** @description Jurisdiction Not Supported, Jurisdiction Not Supported but Alternative Site Available, User Account Jurisdiction Mismatch, Jurisdiction Supported but Not Enabled, Host Not Supported */
-                451: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "HOST_NOT_SUPPORTED";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description Alternative site that the user may be redirected to */
-                                alternative_site: components["schemas"]["SiteResponse"];
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
-                            message?: string;
-                            metadata: {
-                                /** @description The jurisdiction that is supported but not enabled. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        };
-                    };
-                };
-                /** @description Internal server error */
-                500: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "INTERNAL";
-                            message?: string;
-                            metadata: Record<string, never>;
-                        };
-                    };
-                };
-            };
-        };
-        put?: never;
-        /**
-         * Submit Signup Flow
-         * @description Submit the specified signup flow and create the user entry.
-         *     This can fail if certain validation of fields and jurisdiction dependent information is unsuccessful.
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: {
-                    /** @description User Agent */
-                    "User-Agent"?: string;
-                };
-                path: {
-                    /** @description The ID of the signup flow to retrieve. */
-                    flow_id: string;
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description Invalid Registration Data */
-                400: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "INVALID_DATA";
-                            message?: string;
-                            metadata: components["schemas"]["SystemValidationErrors"];
-                        };
-                    };
-                };
-                /** @description Registration Not Allowed */
-                403: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "REGISTRATION_NOT_ALLOWED";
-                            message?: string;
-                        };
-                    };
-                };
-                /** @description Signup Flow Not Found */
-                404: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "FLOW_NOT_FOUND";
-                            message?: string;
-                        };
-                    };
-                };
-                /** @description Jurisdiction Not Supported, Jurisdiction Not Supported but Alternative Site Available, Host Not Supported, User Account Jurisdiction Mismatch, Jurisdiction Supported but Not Enabled */
-                451: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "HOST_NOT_SUPPORTED";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description Alternative site that the user may be redirected to */
-                                alternative_site: components["schemas"]["SiteResponse"];
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
-                            message?: string;
-                            metadata: {
-                                /** @description The jurisdiction that is supported but not enabled. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        };
-                    };
-                };
-                /** @description Internal server error */
-                500: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "INTERNAL";
-                            message?: string;
-                            metadata: Record<string, never>;
-                        };
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Update Signup Flow
-         * @description
-         *     Patch the specified signup flow with additional information.
+         *     1. Connect to this endpoint using the WebSocket protocol.
+         *     2. Once connected, send a login message with your access token:
          *
-         *     Example request body for brazilian users:
-         *     ```
-         *      {
-         *     	"first_name": "John",
-         *     	"last_name": "Doe",
-         *     	"email": "john@doe.com",
-         *     	"password": "test",
-         *     	"CPF": "549.448.010-09",
-         *     	"signup_params": {           // optional
-         *     		"utm_source": "google",
-         *     		"utm_medium": "cpc",
-         *     		"utm_campaign": "test",
-         *     		"utm_term": "test",
-         *     		"utm_content": "test",
-         *     		"utm_referrer": "test",
-         *     		"utm_adgroup": "test",
-         *     		"utm_ad": "test",
-         *     		"utm_creative": "test",
-         *     		"utm_matchtype": "test",
-         *     		"utm_network": "test",
-         *     		"utm_device": "test"
-         *     	}
-         *     }
+         *        ```json
+         *        {
+         *          "type": "user_login",
+         *          "data": "<access-token>"
+         *        }
+         *        ```
+         *
+         *     ## Example (JavaScript)
+         *
+         *     ```javascript
+         *     const socket = new WebSocket("wss://your-domain.com/ws/connect");
+         *
+         *     // After connection is established, send login message
+         *     socket.onopen = () => {
+         *       const loginMessage = {
+         *         type: "user_login",
+         *         data: "your-access-token"
+         *       };
+         *       socket.send(JSON.stringify(loginMessage));
+         *     };
          *     ```
          *
-         *     #### Testing CPFs that you can use to create a user
+         *     ## Message Format
          *
-         *     - 549.448.010-09
-         *     - 653.358.910-50
-         *     - 715.176.900-80
-         *     - 395.677.760-32
-         *     - 993.093.100-73
+         *     All WebSocket messages follow a JSON format. The message structure for client events matches the request body specifications in this OpenAPI documentation, while server events follow the HTTP response specifications.
          *
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    /** @description The ID of the signup flow to retrieve. */
-                    flow_id: string;
-                };
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["PatchSignupFlowRequest"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description Invalid Input Data */
-                400: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "INVALID_DATA";
-                            message?: string;
-                            metadata: components["schemas"]["SystemValidationErrors"];
-                        };
-                    };
-                };
-                /** @description Signup Flow Not Found */
-                404: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "SIGNUP_FLOW_NOT_FOUND";
-                            message?: string;
-                        };
-                    };
-                };
-                /** @description Jurisdiction Not Supported, Host Not Supported, User Account Jurisdiction Mismatch, Jurisdiction Not Supported but Alternative Site Available, Jurisdiction Supported but Not Enabled */
-                451: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "HOST_NOT_SUPPORTED";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description Alternative site that the user may be redirected to */
-                                alternative_site: components["schemas"]["SiteResponse"];
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
-                            message?: string;
-                            metadata: {
-                                /** @description The jurisdiction that is supported but not enabled. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        };
-                    };
-                };
-                /** @description Internal server error */
-                500: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "INTERNAL";
-                            message?: string;
-                            metadata: Record<string, never>;
-                        };
-                    };
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/payment/deposit": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Create Deposit Flow
-         * @description Create a new deposit flow.
-         *         This flow will be active as long as we don't receive a
-         *         confirmation from our payment providers, that a deposit has been completed.
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["PaymentTransactionRequest"];
-                };
-            };
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["CreateDepositFlowResponse"];
-                    };
-                };
-                /** @description Deposit Amount Negative, Timeframe Amount Limit Exceeded, Cooldown Period Active, Timeframe Count Limit Exceeded, Payment Method Not Allowed, No Payment Provider Available, Payment Limits Exceeded */
-                400: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "DEPOSIT_AMOUNT_NEGATIVE";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "PAYMENT_METHOD_NOT_ALLOWED";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "NO_PAYMENT_PROVIDER_AVAILABLE";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "LIMIT_EXCEEDED";
-                            message?: string;
-                            metadata: {
-                                bound: components["schemas"]["PaymentLimitBound"];
-                                max?: string | number | null;
-                                min?: string | number | null;
-                            };
-                        } | {
-                            /** @constant */
-                            code: "TIMEFRAME_AMOUNT_LIMIT_EXCEEDED";
-                            message?: string;
-                            metadata: {
-                                limit: string | number;
-                                /** Format: int64 */
-                                seconds: number;
-                            };
-                        } | {
-                            /** @constant */
-                            code: "TIMEFRAME_COUNT_LIMIT_EXCEEDED";
-                            message?: string;
-                            metadata: {
-                                /** Format: int64 */
-                                limit: number;
-                                /** Format: int64 */
-                                seconds: number;
-                            };
-                        } | {
-                            /** @constant */
-                            code: "COOLDOWN";
-                            message?: string;
-                            metadata: {
-                                /** Format: int64 */
-                                seconds_left: number;
-                            };
-                        };
-                    };
-                };
-                /** @description Unauthorized */
-                401: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "UNAUTHORIZED";
-                            message?: string;
-                        };
-                    };
-                };
-                /** @description User Sandboxed */
-                403: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "USER_SANDBOXED";
-                            message?: string;
-                        };
-                    };
-                };
-                /** @description Jurisdiction Not Supported but Alternative Site Available, Host Not Supported, Jurisdiction Not Supported, User Account Jurisdiction Mismatch, Jurisdiction Supported but Not Enabled */
-                451: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "HOST_NOT_SUPPORTED";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description Alternative site that the user may be redirected to */
-                                alternative_site: components["schemas"]["SiteResponse"];
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
-                            message?: string;
-                            metadata: {
-                                /** @description The jurisdiction that is supported but not enabled. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        };
-                    };
-                };
-                /** @description Internal server error */
-                500: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "INTERNAL";
-                            message?: string;
-                            metadata: Record<string, never>;
-                        };
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/payment/withdraw": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Create Withdrawal Flow
-         * @description Create a withdrawal flow.
-         *         This flow will be active as long as we don't receive a confirmation from our payment provider,
-         *         that they have successfully withdrawn the desired amount into the user's bank account.
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["PaymentTransactionRequest"];
-                };
-            };
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["CreateWithdrawalFlowResponse"];
-                    };
-                };
-                /** @description Payment Limits Exceeded, Timeframe Count Limit Exceeded, No Payment Provider Available, Cooldown Period Active, Payment Method Not Allowed, Timeframe Amount Limit Exceeded, Insufficient Funds, Pending Withdrawal Exists, Withdrawal Amount Negative */
-                400: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "WITHDRAWAL_AMOUNT_NEGATIVE";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "INSUFFICIENT_FUNDS";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "PAYMENT_METHOD_NOT_ALLOWED";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "PENDING_WITHDRAWAL_EXISTS";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "NO_PAYMENT_PROVIDER_AVAILABLE";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "LIMIT_EXCEEDED";
-                            message?: string;
-                            metadata: {
-                                bound: components["schemas"]["PaymentLimitBound"];
-                                max?: string | number | null;
-                                min?: string | number | null;
-                            };
-                        } | {
-                            /** @constant */
-                            code: "TIMEFRAME_AMOUNT_LIMIT_EXCEEDED";
-                            message?: string;
-                            metadata: {
-                                limit: string | number;
-                                /** Format: int64 */
-                                seconds: number;
-                            };
-                        } | {
-                            /** @constant */
-                            code: "TIMEFRAME_COUNT_LIMIT_EXCEEDED";
-                            message?: string;
-                            metadata: {
-                                /** Format: int64 */
-                                limit: number;
-                                /** Format: int64 */
-                                seconds: number;
-                            };
-                        } | {
-                            /** @constant */
-                            code: "COOLDOWN";
-                            message?: string;
-                            metadata: {
-                                /** Format: int64 */
-                                seconds_left: number;
-                            };
-                        };
-                    };
-                };
-                /** @description Unauthorized */
-                401: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "UNAUTHORIZED";
-                            message?: string;
-                        };
-                    };
-                };
-                /** @description User Sandboxed, Missing KYC */
-                403: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "USER_SANDBOXED";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "MISSING_KYC";
-                            message?: string;
-                        };
-                    };
-                };
-                /** @description Wallet Not Found */
-                404: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "WALLET_NOT_FOUND";
-                            message?: string;
-                        };
-                    };
-                };
-                /** @description Validation Failed */
-                422: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "VALIDATION_FAILED";
-                            message?: string;
-                            metadata: components["schemas"]["SystemValidationErrors"];
-                        };
-                    };
-                };
-                /** @description Jurisdiction Not Supported but Alternative Site Available, Jurisdiction Not Supported, Host Not Supported, User Account Jurisdiction Mismatch, Jurisdiction Supported but Not Enabled */
-                451: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "HOST_NOT_SUPPORTED";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description Alternative site that the user may be redirected to */
-                                alternative_site: components["schemas"]["SiteResponse"];
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
-                            message?: string;
-                            metadata: {
-                                /** @description The jurisdiction that is supported but not enabled. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        };
-                    };
-                };
-                /** @description Internal server error */
-                500: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "INTERNAL";
-                            message?: string;
-                            metadata: Record<string, never>;
-                        };
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/payment/list": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * List Payment Flows
-         * @description List all payment flows for the currently logged in user.
-         */
-        get: {
-            parameters: {
-                query?: {
-                    /** @description The payment type to filter the payment flows by. If not set, all payment
-                     *      types will be included. */
-                    payment_type?: components["schemas"]["PaymentType"] | null;
-                    /** @description The wallet ID to filter the payment flows by. If not set, all wallets of
-                     *      the user will be included. */
-                    wallet_id?: components["schemas"]["WalletId"] | null;
-                    limit?: number;
-                    offset?: number;
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["PaginatorResponse_for_PaymentFlowResponse_and_ListPaymentFlowsQuery_and_int64"];
-                    };
-                };
-                /** @description Unauthorized */
-                401: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "UNAUTHORIZED";
-                            message?: string;
-                        };
-                    };
-                };
-                /** @description Jurisdiction Not Supported, Jurisdiction Supported but Not Enabled, Host Not Supported, User Account Jurisdiction Mismatch, Jurisdiction Not Supported but Alternative Site Available */
-                451: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "HOST_NOT_SUPPORTED";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description Alternative site that the user may be redirected to */
-                                alternative_site: components["schemas"]["SiteResponse"];
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
-                            message?: string;
-                            metadata: {
-                                /** @description The jurisdiction that is supported but not enabled. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        };
-                    };
-                };
-                /** @description Internal server error */
-                500: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "INTERNAL";
-                            message?: string;
-                            metadata: Record<string, never>;
-                        };
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/payment/limits": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get Payment Limits
-         * @description Get the payment limits for the currently logged in user.
-         */
-        get: {
-            parameters: {
-                query: {
-                    /** @description The currency to get the payment limits for. */
-                    currency: components["schemas"]["Currency"];
-                    /** @description The payment method to get the payment limits for. */
-                    payment_method_id: components["schemas"]["PaymentMethodId"];
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["PaymentLimitsResponse"];
-                    };
-                };
-                /** @description Unauthorized */
-                401: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "UNAUTHORIZED";
-                            message?: string;
-                        };
-                    };
-                };
-                /** @description Jurisdiction Not Supported, Jurisdiction Supported but Not Enabled, User Account Jurisdiction Mismatch, Jurisdiction Not Supported but Alternative Site Available, Host Not Supported */
-                451: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "HOST_NOT_SUPPORTED";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description Alternative site that the user may be redirected to */
-                                alternative_site: components["schemas"]["SiteResponse"];
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
-                            message?: string;
-                            metadata: {
-                                /** @description The jurisdiction that is supported but not enabled. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        };
-                    };
-                };
-                /** @description Internal server error */
-                500: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "INTERNAL";
-                            message?: string;
-                            metadata: Record<string, never>;
-                        };
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/payment/methods": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get Payment Methods
-         * @description Get all payment methods that can be used by the user for the given currency.
-         */
-        get: {
-            parameters: {
-                query: {
-                    /** @description The currency to get the payment methods for. */
-                    currency: components["schemas"]["Currency"];
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["PaymentMethodResponse"][];
-                    };
-                };
-                /** @description Unauthorized */
-                401: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "UNAUTHORIZED";
-                            message?: string;
-                        };
-                    };
-                };
-                /** @description Jurisdiction Supported but Not Enabled, User Account Jurisdiction Mismatch, Host Not Supported, Jurisdiction Not Supported, Jurisdiction Not Supported but Alternative Site Available */
-                451: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "HOST_NOT_SUPPORTED";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description Alternative site that the user may be redirected to */
-                                alternative_site: components["schemas"]["SiteResponse"];
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
-                            message?: string;
-                            metadata: {
-                                /** @description The jurisdiction that is supported but not enabled. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        };
-                    };
-                };
-                /** @description Internal server error */
-                500: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "INTERNAL";
-                            message?: string;
-                            metadata: Record<string, never>;
-                        };
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/payment/{flow_id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get Payment Flow
-         * @description Get a payment flow by its ID.
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    /** @description The ID of the payment flow. */
-                    flow_id: components["schemas"]["PaymentFlowId"];
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["PaymentFlowResponse"];
-                    };
-                };
-                /** @description Unauthorized */
-                401: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "UNAUTHORIZED";
-                            message?: string;
-                        };
-                    };
-                };
-                /** @description Payment Flow Not Found */
-                404: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "PAYMENT_FLOW_NOT_FOUND";
-                            message?: string;
-                        };
-                    };
-                };
-                /** @description User Account Jurisdiction Mismatch, Jurisdiction Supported but Not Enabled, Jurisdiction Not Supported but Alternative Site Available, Host Not Supported, Jurisdiction Not Supported */
-                451: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "HOST_NOT_SUPPORTED";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description Alternative site that the user may be redirected to */
-                                alternative_site: components["schemas"]["SiteResponse"];
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
-                            message?: string;
-                            metadata: {
-                                /** @description The jurisdiction that is supported but not enabled. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        };
-                    };
-                };
-                /** @description Internal server error */
-                500: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "INTERNAL";
-                            message?: string;
-                            metadata: Record<string, never>;
-                        };
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/system/licenses": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get Matched Licenses
-         * @description Get the available system licenses for the requested jurisdiction/site header combination.
-         *             The licenses are ordered in their priority order,
-         *             and thus the first license in the list is the most preferred one.
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["LicenseResponse"][];
-                    };
-                };
-                /** @description Jurisdiction Not Supported, Jurisdiction Supported but Not Enabled, Jurisdiction Not Supported but Alternative Site Available, Host Not Supported, User Account Jurisdiction Mismatch */
-                451: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "HOST_NOT_SUPPORTED";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description Alternative site that the user may be redirected to */
-                                alternative_site: components["schemas"]["SiteResponse"];
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
-                            message?: string;
-                            metadata: {
-                                /** @description The jurisdiction that is supported but not enabled. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        };
-                    };
-                };
-                /** @description Internal server error */
-                500: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "INTERNAL";
-                            message?: string;
-                            metadata: Record<string, never>;
-                        };
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/system/preflight": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Preflight Check
-         * @description This preflight endpoint should be the first endpoint
-         *             to be called by the client or the SSR implementation.
-         *             It is used to check if the user is able to access the
-         *             host + jurisdiction combination. Should they not be allowed to access
-         *             the site, the endpoint will return a `JURISDICTION_NOT_SUPPORTED` error,
-         *             possibly containing a list of alternative sites that the user can access.
-         *
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description Jurisdiction Not Supported, Host Not Supported, User Account Jurisdiction Mismatch, Jurisdiction Not Supported but Alternative Site Available, Jurisdiction Supported but Not Enabled */
-                451: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "HOST_NOT_SUPPORTED";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description Alternative site that the user may be redirected to */
-                                alternative_site: components["schemas"]["SiteResponse"];
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
-                            message?: string;
-                            metadata: {
-                                /** @description The jurisdiction that is supported but not enabled. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        };
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/game-provider/list": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * List Game Providers
-         * @description List all game providers.
-         */
-        get: {
-            parameters: {
-                query?: {
-                    limit?: number;
-                    offset?: number;
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["PaginatorResponse_for_GameProviderResponse_and_null_and_int64"];
-                    };
-                };
-                /** @description Jurisdiction Supported but Not Enabled, Jurisdiction Not Supported, Host Not Supported, User Account Jurisdiction Mismatch, Jurisdiction Not Supported but Alternative Site Available */
-                451: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "HOST_NOT_SUPPORTED";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description Alternative site that the user may be redirected to */
-                                alternative_site: components["schemas"]["SiteResponse"];
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
-                            message?: string;
-                            metadata: {
-                                /** @description The jurisdiction that is supported but not enabled. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        };
-                    };
-                };
-                /** @description Internal server error */
-                500: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "INTERNAL";
-                            message?: string;
-                            metadata: Record<string, never>;
-                        };
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/game-provider/{provider_identifier}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get Game Provider
-         * @description Get a game provider by its ID.
-         *             This can be used to show a more detailed view of of the
-         *             provider profile in the frontend, which may require more data than
-         *             the search endpoint provides.
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    /** @description The ID of the game provider. */
-                    provider_identifier: components["schemas"]["GameProviderIdentifier"];
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description The response to a game provider request. It contains all available
-                 *      information about the provider. */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["GameProviderResponse"];
-                    };
-                };
-                /** @description Game Provider Not Found */
-                404: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "GAME_PROVIDER_NOT_FOUND";
-                            message?: string;
-                        };
-                    };
-                };
-                /** @description Jurisdiction Not Supported, Host Not Supported, User Account Jurisdiction Mismatch, Jurisdiction Supported but Not Enabled, Jurisdiction Not Supported but Alternative Site Available */
-                451: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "HOST_NOT_SUPPORTED";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description Alternative site that the user may be redirected to */
-                                alternative_site: components["schemas"]["SiteResponse"];
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
-                            message?: string;
-                            metadata: {
-                                /** @description The jurisdiction that is supported but not enabled. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        };
-                    };
-                };
-                /** @description Internal server error */
-                500: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "INTERNAL";
-                            message?: string;
-                            metadata: Record<string, never>;
-                        };
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/game/{provider_slug}/{game_slug}/session": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Create Game Session
-         * @description Create a new game session by providing the game ID,
-         *         as well as the currency with which the game should be played with,
-         *         and the client type of the user.
-         *         The response will redirect the user to the third party URL of the game provider.
-         *         Please note that this request should be used in conjunction with an iframe,
-         *         so that the user does not get redirected from the casino website.
-         */
-        get: {
-            parameters: {
-                query: {
-                    /** @description The device type the game session is started on. Some games may only be
-                     *      available on certain devices. */
-                    client_type?: components["schemas"]["Device"];
-                    /** @description The currency (wallet) to use for the game session. It can not be changed
-                     *      during the session. */
-                    currency: components["schemas"]["Currency"];
-                };
-                header?: never;
-                path: {
-                    game_slug: string;
-                    provider_slug: string;
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Insufficient Funds */
-                400: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "INSUFFICIENT_FUNDS";
-                            message?: string;
-                        };
-                    };
-                };
-                /** @description Unauthorized */
-                401: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "UNAUTHORIZED";
-                            message?: string;
-                        };
-                    };
-                };
-                /** @description Game Not Accessible */
-                403: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "GAME_NOT_ACCESSIBLE";
-                            message?: string;
-                        };
-                    };
-                };
-                /** @description Game Not Found, Wallet Not Found */
-                404: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "GAME_NOT_FOUND";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "WALLET_NOT_FOUND";
-                            message?: string;
-                        };
-                    };
-                };
-                /** @description Jurisdiction Supported but Not Enabled, Host Not Supported, Jurisdiction Not Supported, Jurisdiction Not Supported but Alternative Site Available, User Account Jurisdiction Mismatch */
-                451: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "HOST_NOT_SUPPORTED";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description Alternative site that the user may be redirected to */
-                                alternative_site: components["schemas"]["SiteResponse"];
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
-                            message?: string;
-                            metadata: {
-                                /** @description The jurisdiction that is supported but not enabled. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        };
-                    };
-                };
-                /** @description Internal server error */
-                500: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "INTERNAL";
-                            message?: string;
-                            metadata: Record<string, never>;
-                        };
-                    };
-                };
-            };
-        };
-        put?: never;
-        /**
-         * Create Game Session
-         * @description Create a new game session by providing the game ID,
-         *         as well as the currency with which the game should be played with,
-         *         and the client type of the user.
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    game_slug: string;
-                    provider_slug: string;
-                };
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["CreateGameSessionRequest"];
-                };
-            };
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["CreateGameSessionPostResponse"];
-                    };
-                };
-                /** @description Insufficient Funds */
-                400: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "INSUFFICIENT_FUNDS";
-                            message?: string;
-                        };
-                    };
-                };
-                /** @description Unauthorized */
-                401: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "UNAUTHORIZED";
-                            message?: string;
-                        };
-                    };
-                };
-                /** @description Game Not Accessible */
-                403: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "GAME_NOT_ACCESSIBLE";
-                            message?: string;
-                        };
-                    };
-                };
-                /** @description Game Not Found, Wallet Not Found */
-                404: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "GAME_NOT_FOUND";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "WALLET_NOT_FOUND";
-                            message?: string;
-                        };
-                    };
-                };
-                /** @description Jurisdiction Not Supported but Alternative Site Available, Host Not Supported, Jurisdiction Not Supported, User Account Jurisdiction Mismatch, Jurisdiction Supported but Not Enabled */
-                451: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "HOST_NOT_SUPPORTED";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description Alternative site that the user may be redirected to */
-                                alternative_site: components["schemas"]["SiteResponse"];
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
-                            message?: string;
-                            metadata: {
-                                /** @description The jurisdiction that is supported but not enabled. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        };
-                    };
-                };
-                /** @description Internal server error */
-                500: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "INTERNAL";
-                            message?: string;
-                            metadata: Record<string, never>;
-                        };
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/game/{provider_slug}/{game_slug}/demo": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Create Demo Game Session
-         * @description Create a new demo game session by providing the game ID,
-         *         as well as the client type of the user and an optional language.
-         *         The response will redirect the user to the third party URL of the game provider.
-         *         Please note that this request should be used in conjunction with an iframe,
-         *         so that the user does not get redirected from the casino website.
-         */
-        get: {
-            parameters: {
-                query?: {
-                    /** @description The device type the game session is started on. Some games may only be
-                     *      available on certain devices. */
-                    client_type?: components["schemas"]["Device"];
-                    /** @description The language to use for the game session. Some games may only be
-                     *      available in certain languages. */
-                    language?: components["schemas"]["Language"];
-                };
-                header?: never;
-                path: {
-                    game_slug: string;
-                    provider_slug: string;
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Game has no demo */
-                400: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "GAME_HAS_NO_DEMO";
-                            message?: string;
-                        };
-                    };
-                };
-                /** @description Game Not Accessible */
-                403: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "GAME_NOT_ACCESSIBLE";
-                            message?: string;
-                        };
-                    };
-                };
-                /** @description Game Not Found */
-                404: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "GAME_NOT_FOUND";
-                            message?: string;
-                        };
-                    };
-                };
-                /** @description Host Not Supported, Jurisdiction Supported but Not Enabled, User Account Jurisdiction Mismatch, Jurisdiction Not Supported but Alternative Site Available, Jurisdiction Not Supported */
-                451: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "HOST_NOT_SUPPORTED";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description Alternative site that the user may be redirected to */
-                                alternative_site: components["schemas"]["SiteResponse"];
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
-                            message?: string;
-                            metadata: {
-                                /** @description The jurisdiction that is supported but not enabled. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        };
-                    };
-                };
-                /** @description Internal server error */
-                500: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "INTERNAL";
-                            message?: string;
-                            metadata: Record<string, never>;
-                        };
-                    };
-                };
-            };
-        };
-        put?: never;
-        /**
-         * Create Demo Game Session
-         * @description Create a new demo game session by providing the game ID,
-         *         as well as the client type of the user and an optional language.
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    game_slug: string;
-                    provider_slug: string;
-                };
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["CreateDemoGameSessionRequest"];
-                };
-            };
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["CreateGameSessionPostResponse"];
-                    };
-                };
-                /** @description Game has no demo */
-                400: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "GAME_HAS_NO_DEMO";
-                            message?: string;
-                        };
-                    };
-                };
-                /** @description Game Not Accessible */
-                403: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "GAME_NOT_ACCESSIBLE";
-                            message?: string;
-                        };
-                    };
-                };
-                /** @description Game Not Found */
-                404: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "GAME_NOT_FOUND";
-                            message?: string;
-                        };
-                    };
-                };
-                /** @description Jurisdiction Supported but Not Enabled, Jurisdiction Not Supported but Alternative Site Available, User Account Jurisdiction Mismatch, Host Not Supported, Jurisdiction Not Supported */
-                451: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "HOST_NOT_SUPPORTED";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description Alternative site that the user may be redirected to */
-                                alternative_site: components["schemas"]["SiteResponse"];
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
-                            message?: string;
-                            metadata: {
-                                /** @description The jurisdiction that is supported but not enabled. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        };
-                    };
-                };
-                /** @description Internal server error */
-                500: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "INTERNAL";
-                            message?: string;
-                            metadata: Record<string, never>;
-                        };
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/game/list": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * List Games
-         * @description List all games or games of a specific category.
-         */
-        get: {
-            parameters: {
-                query?: {
-                    /** @description The category identifier to filter games by. If set, only games in this
-                     *      category are returned. Note: this is not the category ID, but the
-                     *      identifier. */
-                    category?: string | null;
-                    /** @description The provider to filter games by. If set, only games by this provider are
-                     *      returned. */
-                    provider_identifier?: components["schemas"]["GameProviderIdentifier"] | null;
-                    limit?: number;
-                    offset?: number;
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["PaginatorResponse_for_GameResponse_and_ListGameQuery_and_int64"];
-                    };
-                };
-                /** @description Jurisdiction Not Supported but Alternative Site Available, Host Not Supported, User Account Jurisdiction Mismatch, Jurisdiction Supported but Not Enabled, Jurisdiction Not Supported */
-                451: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "HOST_NOT_SUPPORTED";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description Alternative site that the user may be redirected to */
-                                alternative_site: components["schemas"]["SiteResponse"];
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
-                            message?: string;
-                            metadata: {
-                                /** @description The jurisdiction that is supported but not enabled. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        };
-                    };
-                };
-                /** @description Internal server error */
-                500: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "INTERNAL";
-                            message?: string;
-                            metadata: Record<string, never>;
-                        };
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/game/action/list": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * List Game Actions
-         * @description Get a list of all game actions of the user.
-         */
-        get: {
-            parameters: {
-                query?: {
-                    /** @description The type of the game action to filter by. If not set, all game actions
-                     *      (bet, win, etc.) will be included. */
-                    action_type?: components["schemas"]["ListBetTypeQuery"] | null;
-                    /** @description Game ID to filter the game actions by. If not set, all game actions will
-                     *      be included. */
-                    game_identifier?: components["schemas"]["GameIdentifier"] | null;
-                    limit?: number;
-                    offset?: number;
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["PaginatorResponse_for_GameActionResponse_and_ListGameActionsQuery_and_int64"];
-                    };
-                };
-                /** @description Unauthorized */
-                401: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "UNAUTHORIZED";
-                            message?: string;
-                        };
-                    };
-                };
-                /** @description User Not Found, Game Not Found */
-                404: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "USER_NOT_FOUND";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "GAME_NOT_FOUND";
-                            message?: string;
-                        };
-                    };
-                };
-                /** @description User Account Jurisdiction Mismatch, Jurisdiction Not Supported, Jurisdiction Supported but Not Enabled, Jurisdiction Not Supported but Alternative Site Available, Host Not Supported */
-                451: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "HOST_NOT_SUPPORTED";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description Alternative site that the user may be redirected to */
-                                alternative_site: components["schemas"]["SiteResponse"];
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
-                            message?: string;
-                            metadata: {
-                                /** @description The jurisdiction that is supported but not enabled. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        };
-                    };
-                };
-                /** @description Internal server error */
-                500: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "INTERNAL";
-                            message?: string;
-                            metadata: Record<string, never>;
-                        };
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/game/category/list": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get Available Game Categories
-         * @description Get a list of all game categories available in the casino.
-         *         This can be used to show a list of game categories to the user,
-         *         so that they can choose which category they want to explore.
-         *         There are two major types of categories, staic and dynamic.
-         *         Static categories are predefined by the casino, while dynamic categories
-         *         cover games based on user behavior and other factors.
-         *         Dynamic categories are recalcuated periodically.
-         */
-        get: {
-            parameters: {
-                query?: {
-                    /** @description The group of game categories to filter by. If set, only categories in
-                     *      this group are returned. */
-                    group?: string | null;
-                    /** @description Whether to include the games in the category in the response. If set to
-                     *      `true`, the games in the category are included in the response. */
-                    include_games?: boolean;
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["GameCategoryListResponse"][];
-                    };
-                };
-                /** @description Jurisdiction Not Supported but Alternative Site Available, Jurisdiction Not Supported, User Account Jurisdiction Mismatch, Jurisdiction Supported but Not Enabled, Host Not Supported */
-                451: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "HOST_NOT_SUPPORTED";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description Alternative site that the user may be redirected to */
-                                alternative_site: components["schemas"]["SiteResponse"];
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
-                            message?: string;
-                            metadata: {
-                                /** @description The jurisdiction that is supported but not enabled. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        };
-                    };
-                };
-                /** @description Internal server error */
-                500: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "INTERNAL";
-                            message?: string;
-                            metadata: Record<string, never>;
-                        };
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/game/{provider_slug}/{game_slug}/rating": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Rate Game
-         * @description Rate a game by its ID.
-         *         This can be used to allow users to rate games,
-         *         so that other users can see the rating of the game.
-         *         Sending a rating of null will remove the rating of the user.
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    game_slug: string;
-                    provider_slug: string;
-                };
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["RateGameRequest"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description Invalid Rating */
-                400: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "INVALID_RATING";
-                            message?: string;
-                        };
-                    };
-                };
-                /** @description Unauthorized */
-                401: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "UNAUTHORIZED";
-                            message?: string;
-                        };
-                    };
-                };
-                /** @description Game Not Found */
-                404: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "GAME_NOT_FOUND";
-                            message?: string;
-                        };
-                    };
-                };
-                /** @description Host Not Supported, Jurisdiction Not Supported but Alternative Site Available, Jurisdiction Supported but Not Enabled, Jurisdiction Not Supported, User Account Jurisdiction Mismatch */
-                451: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "HOST_NOT_SUPPORTED";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description Alternative site that the user may be redirected to */
-                                alternative_site: components["schemas"]["SiteResponse"];
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
-                            message?: string;
-                            metadata: {
-                                /** @description The jurisdiction that is supported but not enabled. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        };
-                    };
-                };
-                /** @description Internal server error */
-                500: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "INTERNAL";
-                            message?: string;
-                            metadata: Record<string, never>;
-                        };
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/game/{provider_slug}/{game_slug}/ratings": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get Game Ratings
-         * @description User ratings split up into likes and dislikes
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    game_slug: string;
-                    provider_slug: string;
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["GameRatingsResponse"];
-                    };
-                };
-                /** @description Game Not Found */
-                404: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "GAME_NOT_FOUND";
-                            message?: string;
-                        };
-                    };
-                };
-                /** @description Jurisdiction Not Supported, Host Not Supported, Jurisdiction Not Supported but Alternative Site Available, User Account Jurisdiction Mismatch, Jurisdiction Supported but Not Enabled */
-                451: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "HOST_NOT_SUPPORTED";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description Alternative site that the user may be redirected to */
-                                alternative_site: components["schemas"]["SiteResponse"];
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
-                            message?: string;
-                            metadata: {
-                                /** @description The jurisdiction that is supported but not enabled. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        };
-                    };
-                };
-                /** @description Internal server error */
-                500: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "INTERNAL";
-                            message?: string;
-                            metadata: Record<string, never>;
-                        };
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/game/{provider_slug}/{game_slug}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get Game
-         * @description Get a game by its ID. This can be used to show a more detailed view of a game,
-         *         including its name, description,
-         *         and other metadata, that might be required to display the game on the frontend.
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    game_slug: string;
-                    provider_slug: string;
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["GameResponse"];
-                    };
-                };
-                /** @description Game Not Found */
-                404: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "GAME_NOT_FOUND";
-                            message?: string;
-                        };
-                    };
-                };
-                /** @description User Account Jurisdiction Mismatch, Jurisdiction Supported but Not Enabled, Jurisdiction Not Supported, Jurisdiction Not Supported but Alternative Site Available, Host Not Supported */
-                451: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "HOST_NOT_SUPPORTED";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description Alternative site that the user may be redirected to */
-                                alternative_site: components["schemas"]["SiteResponse"];
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
-                            message?: string;
-                            metadata: {
-                                /** @description The jurisdiction that is supported but not enabled. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        };
-                    };
-                };
-                /** @description Internal server error */
-                500: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "INTERNAL";
-                            message?: string;
-                            metadata: Record<string, never>;
-                        };
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/notification/list": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get All Notifications
-         * @description Get a list of all notifications for the current user.
-         */
-        get: {
-            parameters: {
-                query?: {
-                    /** @description The read status of the notifications to filter by. */
-                    read_status?: components["schemas"]["ReadStatus"] | null;
-                    /** @description The types of the notifications to filter by. */
-                    types?: components["schemas"]["NotificationTypeDiscriminants"][] | null;
-                    limit?: number;
-                    offset?: number;
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["PaginatorResponse_for_NotificationResponse_and_ListNotificationsQuery_and_int64"];
-                    };
-                };
-                /** @description Unauthorized */
-                401: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "UNAUTHORIZED";
-                            message?: string;
-                        };
-                    };
-                };
-                /** @description Host Not Supported, Jurisdiction Not Supported but Alternative Site Available, User Account Jurisdiction Mismatch, Jurisdiction Not Supported, Jurisdiction Supported but Not Enabled */
-                451: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "HOST_NOT_SUPPORTED";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description Alternative site that the user may be redirected to */
-                                alternative_site: components["schemas"]["SiteResponse"];
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
-                            message?: string;
-                            metadata: {
-                                /** @description The jurisdiction that is supported but not enabled. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        };
-                    };
-                };
-                /** @description Internal server error */
-                500: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "INTERNAL";
-                            message?: string;
-                            metadata: Record<string, never>;
-                        };
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/notification/{notification_id}/read-status": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Update Notification Read Status
-         * @description Mark a notification as read.
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    /** @description The ID of the notification to retrieve. */
-                    notification_id: components["schemas"]["NotificationId"];
-                };
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["ReadStatus"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description Unauthorized */
-                401: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "UNAUTHORIZED";
-                            message?: string;
-                        };
-                    };
-                };
-                /** @description Notification Not Found */
-                404: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "NOTIFICATION_NOT_FOUND";
-                            message?: string;
-                        };
-                    };
-                };
-                /** @description User Account Jurisdiction Mismatch, Host Not Supported, Jurisdiction Supported but Not Enabled, Jurisdiction Not Supported, Jurisdiction Not Supported but Alternative Site Available */
-                451: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "HOST_NOT_SUPPORTED";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description Alternative site that the user may be redirected to */
-                                alternative_site: components["schemas"]["SiteResponse"];
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
-                            message?: string;
-                            metadata: {
-                                /** @description The jurisdiction that is supported but not enabled. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        };
-                    };
-                };
-                /** @description Internal server error */
-                500: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "INTERNAL";
-                            message?: string;
-                            metadata: Record<string, never>;
-                        };
-                    };
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/user/profile": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get User Profile
-         * @description Get the user profile of the currently logged in user.
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["UserResponse"];
-                    };
-                };
-                /** @description Unauthorized */
-                401: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "UNAUTHORIZED";
-                            message?: string;
-                        };
-                    };
-                };
-                /** @description Jurisdiction Supported but Not Enabled, User Account Jurisdiction Mismatch, Jurisdiction Not Supported but Alternative Site Available, Host Not Supported, Jurisdiction Not Supported */
-                451: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "HOST_NOT_SUPPORTED";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description Alternative site that the user may be redirected to */
-                                alternative_site: components["schemas"]["SiteResponse"];
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
-                            message?: string;
-                            metadata: {
-                                /** @description The jurisdiction that is supported but not enabled. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        };
-                    };
-                };
-                /** @description Internal server error */
-                500: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "INTERNAL";
-                            message?: string;
-                            metadata: Record<string, never>;
-                        };
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/user/balance": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get User Balance
-         * @description Get the balance of the currently logged in user. The wallets are returned in the order of their selection. Frontends mays utilize this order to display the wallets, and to identify the active wallet.
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["UserWalletBalanceResponse"][];
-                    };
-                };
-                /** @description Unauthorized */
-                401: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "UNAUTHORIZED";
-                            message?: string;
-                        };
-                    };
-                };
-                /** @description Host Not Supported, Jurisdiction Not Supported but Alternative Site Available, Jurisdiction Not Supported, User Account Jurisdiction Mismatch, Jurisdiction Supported but Not Enabled */
-                451: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "HOST_NOT_SUPPORTED";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description Alternative site that the user may be redirected to */
-                                alternative_site: components["schemas"]["SiteResponse"];
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
-                            message?: string;
-                            metadata: {
-                                /** @description The jurisdiction that is supported but not enabled. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        };
-                    };
-                };
-                /** @description Internal server error */
-                500: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "INTERNAL";
-                            message?: string;
-                            metadata: Record<string, never>;
-                        };
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/user/settings": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get User Settings
-         * @description Get the settings of the currently logged in user.
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["PatchUserSettingsRequest"];
-                    };
-                };
-                /** @description Unauthorized */
-                401: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "UNAUTHORIZED";
-                            message?: string;
-                        };
-                    };
-                };
-                /** @description Jurisdiction Not Supported, User Account Jurisdiction Mismatch, Jurisdiction Not Supported but Alternative Site Available, Host Not Supported, Jurisdiction Supported but Not Enabled */
-                451: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "HOST_NOT_SUPPORTED";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description Alternative site that the user may be redirected to */
-                                alternative_site: components["schemas"]["SiteResponse"];
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
-                            message?: string;
-                            metadata: {
-                                /** @description The jurisdiction that is supported but not enabled. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        };
-                    };
-                };
-                /** @description Internal server error */
-                500: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "INTERNAL";
-                            message?: string;
-                            metadata: Record<string, never>;
-                        };
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Update User Settings
-         * @description Update the settings of the currently logged in user.
-         *
-         *     This endpoint allows for partial updates of the user settings, by
-         *     only updating the fields that are provided in the request.
-         *
-         *     If a field is set to `null`, it will be reset to the default value.
-         *
-         *     If a field is not provided, it will not be updated.
-         *
-         *     Partial updates follow the [RFC 7396](https://datatracker.ietf.org/doc/html/rfc7396) JSON Merge Patch standard.
-         *
+         *     ### Client Events (Sending)
+         *     Messages sent from the client should follow this format:
          *     ```json
-         *     // Given the following JSON
          *     {
-         *     	"title": "Goodbye!",
-         *     	"author" : {
-         *     		"givenName" : "John",
-         *     		"familyName" : "Doe"
-         *     	},
-         *     	"tags":[ "example", "sample" ],
-         *     	"content": "This will be unchanged"
-         *     }
-         *
-         *     // Merged with the following patch
-         *     {
-         *     	"title": "Hello!",
-         *     	"phoneNumber": "+01-123-456-7890",
-         *     	"author": {
-         *     		"familyName": null
-         *     	},
-         *     	"tags": [ "example" ]
-         *     }
-         *
-         *     // Will result in the following JSON
-         *     {
-         *     	"title": "Hello!",
-         *     	"author" : {
-         *     		"givenName" : "John"
-         *     	},
-         *     	"tags": [ "example" ],
-         *     	"content": "This will be unchanged",
-         *     	"phoneNumber": "+01-123-456-7890"
+         *       "type": "event_name",
+         *       "data": {}  // Data structure as specified in OpenAPI request bodies
          *     }
          *     ```
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["PatchUserSettingsRequest"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description Unauthorized */
-                401: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "UNAUTHORIZED";
-                            message?: string;
-                        };
-                    };
-                };
-                /** @description Validation Failed */
-                422: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "VALIDATION_FAILED";
-                            message?: string;
-                            metadata: components["schemas"]["SystemValidationErrors"];
-                        };
-                    };
-                };
-                /** @description Jurisdiction Not Supported but Alternative Site Available, Jurisdiction Not Supported, Host Not Supported, User Account Jurisdiction Mismatch, Jurisdiction Supported but Not Enabled */
-                451: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "HOST_NOT_SUPPORTED";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description Alternative site that the user may be redirected to */
-                                alternative_site: components["schemas"]["SiteResponse"];
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
-                            message?: string;
-                            metadata: {
-                                /** @description The jurisdiction that is supported but not enabled. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        };
-                    };
-                };
-                /** @description Internal server error */
-                500: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "INTERNAL";
-                            message?: string;
-                            metadata: Record<string, never>;
-                        };
-                    };
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/user/address": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Update User Address
-         * @description Update the address of the currently logged in user. The address is used for shipping and other purposes.
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["PatchUserAddressRequest"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description Unauthorized */
-                401: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "UNAUTHORIZED";
-                            message?: string;
-                        };
-                    };
-                };
-                /** @description Validation Failed */
-                422: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "VALIDATION_FAILED";
-                            message?: string;
-                            metadata: components["schemas"]["SystemValidationErrors"];
-                        };
-                    };
-                };
-                /** @description User Account Jurisdiction Mismatch, Jurisdiction Not Supported but Alternative Site Available, Host Not Supported, Jurisdiction Supported but Not Enabled, Jurisdiction Not Supported */
-                451: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "HOST_NOT_SUPPORTED";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description Alternative site that the user may be redirected to */
-                                alternative_site: components["schemas"]["SiteResponse"];
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
-                            message?: string;
-                            metadata: {
-                                /** @description The jurisdiction that is supported but not enabled. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        };
-                    };
-                };
-                /** @description Internal server error */
-                500: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "INTERNAL";
-                            message?: string;
-                            metadata: Record<string, never>;
-                        };
-                    };
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/user/active-wallet": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Update User Active Wallet
-         * @description Update the selected wallet of the user. The user balance endpoint will return the user's wallets in the order of their selection time.
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["SelectWalletRequest"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description Unauthorized */
-                401: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "UNAUTHORIZED";
-                            message?: string;
-                        };
-                    };
-                };
-                /** @description Wallet Not Found */
-                404: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "WALLET_NOT_FOUND";
-                            message?: string;
-                        };
-                    };
-                };
-                /** @description Jurisdiction Supported but Not Enabled, User Account Jurisdiction Mismatch, Jurisdiction Not Supported but Alternative Site Available, Host Not Supported, Jurisdiction Not Supported */
-                451: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "HOST_NOT_SUPPORTED";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description Alternative site that the user may be redirected to */
-                                alternative_site: components["schemas"]["SiteResponse"];
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
-                            message?: string;
-                            metadata: {
-                                /** @description The jurisdiction that is supported but not enabled. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        };
-                    };
-                };
-                /** @description Internal server error */
-                500: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "INTERNAL";
-                            message?: string;
-                            metadata: Record<string, never>;
-                        };
-                    };
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/user/password": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Update User Password
-         * @description Update the password of the currently logged in user. The current password is required to ensure that the user is authorized to change the password.
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["PatchUserPasswordRequest"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description Incorrect Current Password, Unauthorized */
-                401: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "UNAUTHORIZED";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "UNAUTHORIZED";
-                            message?: string;
-                        };
-                    };
-                };
-                /** @description Validation Failed */
-                422: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "VALIDATION_FAILED";
-                            message?: string;
-                            metadata: components["schemas"]["SystemValidationErrors"];
-                        };
-                    };
-                };
-                /** @description Jurisdiction Supported but Not Enabled, User Account Jurisdiction Mismatch, Jurisdiction Not Supported, Host Not Supported, Jurisdiction Not Supported but Alternative Site Available */
-                451: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "HOST_NOT_SUPPORTED";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description Alternative site that the user may be redirected to */
-                                alternative_site: components["schemas"]["SiteResponse"];
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
-                            message?: string;
-                            metadata: {
-                                /** @description The jurisdiction that is supported but not enabled. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        };
-                    };
-                };
-                /** @description Internal server error */
-                500: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "INTERNAL";
-                            message?: string;
-                            metadata: Record<string, never>;
-                        };
-                    };
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/user/username": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Update Username
-         * @description Update the username of the currently logged in user. The username must be unique.
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["PatchUsernameRequest"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description Inappropriate Username, Username Already Taken */
-                400: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "EXPLICIT";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "TAKEN";
-                            message?: string;
-                        };
-                    };
-                };
-                /** @description Unauthorized */
-                401: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "UNAUTHORIZED";
-                            message?: string;
-                        };
-                    };
-                };
-                /** @description Validation Failed */
-                422: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "VALIDATION_FAILED";
-                            message?: string;
-                            metadata: components["schemas"]["SystemValidationErrors"];
-                        };
-                    };
-                };
-                /** @description Jurisdiction Supported but Not Enabled, Host Not Supported, Jurisdiction Not Supported, Jurisdiction Not Supported but Alternative Site Available, User Account Jurisdiction Mismatch */
-                451: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "HOST_NOT_SUPPORTED";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description Alternative site that the user may be redirected to */
-                                alternative_site: components["schemas"]["SiteResponse"];
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
-                            message?: string;
-                            metadata: {
-                                /** @description The jurisdiction that is supported but not enabled. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        };
-                    };
-                };
-                /** @description Internal server error */
-                500: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "INTERNAL";
-                            message?: string;
-                            metadata: Record<string, never>;
-                        };
-                    };
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/user/delete": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Delete User Account
-         * @description Delete the account of the currently logged in user. The user must provide the current password to ensure that they are authorized to delete the account.
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: {
-                    /** @description User Agent */
-                    "User-Agent"?: string;
-                };
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["DeleteUserAccountRequest"];
-                };
-            };
-            responses: {
-                /** @description no content */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description Password Required, Unauthorized */
-                401: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "UNAUTHORIZED";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "UNAUTHORIZED";
-                            message?: string;
-                        };
-                    };
-                };
-                /** @description Validation Failed */
-                422: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "VALIDATION_FAILED";
-                            message?: string;
-                            metadata: components["schemas"]["SystemValidationErrors"];
-                        };
-                    };
-                };
-                /** @description Jurisdiction Supported but Not Enabled, Host Not Supported, Jurisdiction Not Supported but Alternative Site Available, Jurisdiction Not Supported, User Account Jurisdiction Mismatch */
-                451: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "HOST_NOT_SUPPORTED";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description Alternative site that the user may be redirected to */
-                                alternative_site: components["schemas"]["SiteResponse"];
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
-                            message?: string;
-                            metadata: {
-                                /** @description The jurisdiction that is supported but not enabled. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        };
-                    };
-                };
-                /** @description Internal server error */
-                500: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "INTERNAL";
-                            message?: string;
-                            metadata: Record<string, never>;
-                        };
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/kyc/token": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Get KYC Access Token
-         * @description This endpoint returns a temporary short-lived token that is bound to the user.
-         *     It can be used in conjunction with a KYC provider's SDK to perform KYC validation in the frontend.
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["KycAccessTokenResponse"];
-                    };
-                };
-                /** @description Unauthorized */
-                401: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "UNAUTHORIZED";
-                            message?: string;
-                        };
-                    };
-                };
-                /** @description Host Not Supported, User Account Jurisdiction Mismatch, Jurisdiction Supported but Not Enabled, Jurisdiction Not Supported, Jurisdiction Not Supported but Alternative Site Available */
-                451: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "HOST_NOT_SUPPORTED";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description Alternative site that the user may be redirected to */
-                                alternative_site: components["schemas"]["SiteResponse"];
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
-                            message?: string;
-                            metadata: {
-                                /** @description The jurisdiction that is supported but not enabled. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        };
-                    };
-                };
-                /** @description Internal server error */
-                500: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "INTERNAL";
-                            message?: string;
-                            metadata: Record<string, never>;
-                        };
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/kyc/status": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get KYC Status
-         * @description Returns the current KYC status of the user.
-         *     This endpoint may be used to prevent the user from going through the KYC process again if they have already completed it.
          *
+         *     ### Server Events (Receiving)
+         *     Messages received from the server will follow this format:
+         *     ```json
+         *     {
+         *       "type": "event_name",
+         *       "data": {}  // Data structure as specified in OpenAPI responses
+         *     }
+         *     ```
+         *
+         *     ## Important Notes
+         *
+         *     - Access tokens are valid for 60 seconds.
+         *     - Ensure your client can handle reconnection if the access token expires.
+         *     - The server will emit an error event if authentication fails.
+         *     - After a successful login, you'll be subscribed to your respective channel.
+         *
+         *     For detailed information on access token generation and management, refer to the main WebSocket authentication documentation found [here](#tag/websocket/POST/ws/access-token).
          */
         get: {
             parameters: {
@@ -6347,452 +6794,18 @@ export interface paths {
                 path?: never;
                 cookie?: never;
             };
-            requestBody?: never;
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["WebsocketClientEvent"];
+                };
+            };
             responses: {
                 200: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["KycStatusResponse"];
-                    };
-                };
-                /** @description Unauthorized */
-                401: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "UNAUTHORIZED";
-                            message?: string;
-                        };
-                    };
-                };
-                /** @description Jurisdiction Supported but Not Enabled, Jurisdiction Not Supported, User Account Jurisdiction Mismatch, Host Not Supported, Jurisdiction Not Supported but Alternative Site Available */
-                451: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "HOST_NOT_SUPPORTED";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description Alternative site that the user may be redirected to */
-                                alternative_site: components["schemas"]["SiteResponse"];
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
-                            message?: string;
-                            metadata: {
-                                /** @description The jurisdiction that is supported but not enabled. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        };
-                    };
-                };
-                /** @description Internal server error */
-                500: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "INTERNAL";
-                            message?: string;
-                            metadata: Record<string, never>;
-                        };
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/ticker/{channel}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get Ticker Channel Events
-         * @description Get pre-buffered events for a specific ticker channel. This should be used in conjunction with SSR and the WebSocket connection to pre-fill tickers on SSR and to make them live-update on client side.
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    /** @description The ticker channel */
-                    channel: components["schemas"]["WebsocketTickerChannel"];
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["WebsocketServerEvent"][];
-                    };
-                };
-                /** @description Channel Not Found */
-                404: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "CHANNEL_NOT_FOUND";
-                            message?: string;
-                        };
-                    };
-                };
-                /** @description Jurisdiction Supported but Not Enabled, Host Not Supported, Jurisdiction Not Supported, User Account Jurisdiction Mismatch, Jurisdiction Not Supported but Alternative Site Available */
-                451: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "HOST_NOT_SUPPORTED";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description Alternative site that the user may be redirected to */
-                                alternative_site: components["schemas"]["SiteResponse"];
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
-                            message?: string;
-                            metadata: {
-                                /** @description The jurisdiction that is supported but not enabled. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        };
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/search/games": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Search Games
-         * @description Search for active games by name or other criteria.
-         */
-        get: {
-            parameters: {
-                query?: {
-                    /** @description An organic search query to find items by. */
-                    query?: string | null;
-                    limit?: number;
-                    offset?: number;
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["PaginatorResponse_for_ScoredSearchResponseItem_for_SearchGameResponse_and_SearchQuery_and_Nullable_uint"];
-                    };
-                };
-                /** @description Host Not Supported, User Account Jurisdiction Mismatch, Jurisdiction Supported but Not Enabled, Jurisdiction Not Supported but Alternative Site Available, Jurisdiction Not Supported */
-                451: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "HOST_NOT_SUPPORTED";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description Alternative site that the user may be redirected to */
-                                alternative_site: components["schemas"]["SiteResponse"];
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
-                            message?: string;
-                            metadata: {
-                                /** @description The jurisdiction that is supported but not enabled. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        };
-                    };
-                };
-                /** @description Internal server error */
-                500: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "INTERNAL";
-                            message?: string;
-                            metadata: Record<string, never>;
-                        };
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/search/game-providers": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Search Game Providers
-         * @description Search for active game providers by name or other criteria.
-         */
-        get: {
-            parameters: {
-                query?: {
-                    /** @description An organic search query to find items by. */
-                    query?: string | null;
-                    limit?: number;
-                    offset?: number;
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["PaginatorResponse_for_ScoredSearchResponseItem_for_SearchGameProviderResponse_and_SearchQuery_and_Nullable_uint"];
-                    };
-                };
-                /** @description Host Not Supported, Jurisdiction Not Supported, User Account Jurisdiction Mismatch, Jurisdiction Not Supported but Alternative Site Available, Jurisdiction Supported but Not Enabled */
-                451: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "HOST_NOT_SUPPORTED";
-                            message?: string;
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE";
-                            message?: string;
-                            metadata: {
-                                /** @description Alternative site that the user may be redirected to */
-                                alternative_site: components["schemas"]["SiteResponse"];
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "USER_ACCOUNT_JURISDICTION_MISMATCH";
-                            message?: string;
-                            metadata: {
-                                /** @description The violating jurisdiction. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        } | {
-                            /** @constant */
-                            code: "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED";
-                            message?: string;
-                            metadata: {
-                                /** @description The jurisdiction that is supported but not enabled. */
-                                jurisdiction: components["schemas"]["Country"];
-                            };
-                        };
-                    };
-                };
-                /** @description Internal server error */
-                500: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "INTERNAL";
-                            message?: string;
-                            metadata: Record<string, never>;
-                        };
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/system/site-setup": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get Matched Site
-         * @description The the matched site based on the host header.
-         *             Use this to differentiate between different sites in a multi-site setup,
-         *             allowing for different configurations, themes, etc.
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Site setup response, used for dymainc frontend branding and configuration. */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["SiteResponse"];
-                    };
-                };
-                /** @description Internal server error */
-                500: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @constant */
-                            code: "INTERNAL";
-                            message?: string;
-                            metadata: Record<string, never>;
-                        };
+                        "application/json": components["schemas"]["WebsocketServerEvent"];
                     };
                 };
             };
@@ -7428,6 +7441,9 @@ export interface components {
         };
         GetSiteConfigurationErrorResponse: {
             /** @constant */
+            code: "SITE_NOT_DETERMINED";
+        } | {
+            /** @constant */
             code: "INTERNAL";
             metadata: Record<string, never>;
         };
@@ -7476,7 +7492,7 @@ export interface components {
             email: string;
         };
         /** @enum {string} */
-        IntegrationIdentifier: "coinlayer" | "digito" | "fasttrack" | "fixer_io" | "infinigame" | "open_ai" | "sandbox" | "sumsub";
+        IntegrationIdentifier: "coinlayer" | "digito" | "prontopaga" | "fasttrack" | "fixer_io" | "infinigame" | "open_ai" | "sandbox" | "sumsub";
         IssueDepositErrorResponse: {
             /** @constant */
             code: "USER_SANDBOXED";
