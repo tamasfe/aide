@@ -12,7 +12,7 @@ const props = defineProps<{
   gameIdentifier: string;
 }>();
 
-const ENABLE_SERVER_SIDE_RENDERING_FOR_GAME = true;
+const ENABLE_SERVER_SIDE_RENDERING_FOR_GAME = false;
 const DEFER_CLIENT_SIDE_LOADING_FOR_GAME = true;
 
 const { data: game, status: statusLoadingGame } = await useAsyncData(`game-${props.gameIdentifier}`, async () => {
