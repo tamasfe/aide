@@ -24,22 +24,24 @@ const queryGameCategories = async () => $dependencies.games.ui.searchGameCategor
       <WinningNowTicker />
 
       <Tabs v-model="currentTab" class="relative space-y-[var(--giro-section-gap-sm)] md:space-y-[var(--giro-section-gap-lg)]">
-        <TabsList :sticky-on-mobile="true" class="md:hidden">
-          <TabsTrigger
-            v-for="tab in menuTabs"
-            :key="tab.value"
-            :is-active="tab.value === currentTab"
-            :value="tab.value"
-            class="space-x-2"
-          >
-            <BaseIcon :name="tab.iconName" :size="14" />
-            <span>{{ toSentenceCase(tab.label) }}</span>
-          </TabsTrigger>
-        </TabsList>
+        <div class="sticky md:static z-[5] top-[60px] md:hidden">
+          <TabsList>
+            <TabsTrigger
+              v-for="tab in menuTabs"
+              :key="tab.value"
+              :is-active="tab.value === currentTab"
+              :value="tab.value"
+              class="space-x-2"
+            >
+              <BaseIcon :name="tab.iconName" :size="14" />
+              <span>{{ toSentenceCase(tab.label) }}</span>
+            </TabsTrigger>
+          </TabsList>
+        </div>
 
         <SearchPopover class="hidden md:flex items-stretch w-full">
           <template #prefix>
-            <TabsList :sticky-on-mobile="true">
+            <TabsList>
               <TabsTrigger
                 v-for="tab in menuTabs"
                 :key="tab.value"

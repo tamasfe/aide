@@ -109,7 +109,7 @@ const handleFocusOut = (event: FocusEvent) => {
     <slot name="suffix" />
 
     <div
-      v-show="open"
+      v-if="open"
       class="z-[5] absolute w-full top-[calc(100%+0.5rem)] rounded bg-emphasis/90 backdrop-blur-2xl px-5 py-4 shadow-xl border border-muted/10"
       tabindex="-1"
       @mousedown.prevent

@@ -17,8 +17,7 @@ const delegatedProps = computed(() => {
 <template>
   <TabsList
     :class="cn(
-      'w-full flex items-center space-x-6',
-      stickyOnMobile === true ? 'sticky md:static z-[5] top-[60px]' : 'static',
+      'w-full flex items-center space-x-6'
     )"
   >
     <div
