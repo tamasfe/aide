@@ -56,7 +56,7 @@ watch([() => game.value, () => statusLoadingGame.value], async ([game, statusLoa
     <div v-if="game" class="bg-subtle rounded border border-muted/5 overflow-hidden">
       <GameFrameDesktop
         v-if="!isMobile && game.isCompatibleWithDevice"
-        class="min-h-[70vh]"
+        class="h-[70vh]"
         :game="game"
       />
 
