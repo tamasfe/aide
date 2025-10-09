@@ -29,6 +29,10 @@ Sentry.init({
 
   normalizeDepth: 5, // Or however deep you want your state context to be.
 
+  propagateTraceparent: true,
+
+  enableLogs: true,
+
   environment: runtimeConfig.public.release && runtimeConfig.public.release !== "development" ? "production" : "development",
   release: runtimeConfig.public.release,
 

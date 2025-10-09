@@ -292,7 +292,6 @@ export default defineNuxtConfig({
   },
   sentry: {
     autoInjectServerSentry: "top-level-import",
-    // dynamicImportForServerEntry: true,
     sourceMapsUploadOptions: {
       enabled:
         process.env.SENTRY_AUTH_TOKEN !== undefined
