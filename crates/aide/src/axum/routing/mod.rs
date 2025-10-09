@@ -232,7 +232,7 @@ macro_rules! method_router_top_level {
     };
 }
 
-fn set_inferred_response(
+pub fn set_inferred_response(
     ctx: &mut GenContext,
     operation: &mut Operation,
     status: Option<u16>,
