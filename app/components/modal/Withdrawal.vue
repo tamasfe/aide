@@ -16,7 +16,7 @@ const userStore = useUserStore();
 const ENABLE_SERVER_SIDE_RENDERING = false;
 const DEFER_CLIENT_SIDE_LOADING = true;
 
-const { data: paymentMethodData } = await useAsyncData("user-modals-preferred-payment-method", async () => {
+const { data: paymentMethodData } = await useAsyncData("user-modals-withdrawal-preferred-payment-method", async () => {
   if (!userStore.isAuthenticated) {
     return null;
   }
