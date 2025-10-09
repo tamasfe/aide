@@ -76,6 +76,7 @@ export class GamesApiRepositoryDumb implements GamesApiRepositoryI {
       recalledAt: null,
       releaseDate: new Date().toISOString(),
       categories: [],
+      demo: false,
     })).filter((_, i) => i !== 0);
   }
 }

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { Game } from "~/modules/games/domain/Game";
+
 // DESIGN STATUS:        ✅
 //   * lock scroll when playing: import { useScrollLock } from "@vueuse/core"
 // ARCHITECTURE STATUS:  ✴️
@@ -9,16 +11,9 @@ const { $dependencies } = useNuxtApp();
 const userStore = useUserStore();
 const walletStore = useWalletStore();
 
-defineProps({
-  gameTitle: {
-    type: String,
-    required: true,
-  },
-  gameIdentifier: {
-    type: String,
-    required: true,
-  },
-});
+defineProps<{
+  game: Game;
+}>();
 
 const isPlayingRealGame = ref(false);
 const isPlayingDemo = ref(false);
@@ -33,7 +28,7 @@ const isPlaying = computed({
     throw new Error("Cannot set isPlaying to true directly, use isPlayingRealGame or isPlayingDemo");
   },
 });
-const showDemoButton = useState("show-demo-button-in-mobile", () => false);
+const showDemoButton = ref(false);
 const url = useRequestURL();
 
 const listenerId = ref<number | null>(null);
@@ -58,20 +53,20 @@ onUnmounted(() => {
   <div v-if="!isPlaying" class="w-full h-full flex flex-col sm:flex-row items-center justify-start p-6 gap-6 relative overflow-hidden">
     <div class="absolute -z-10 top-0 left-0 w-full h-full bg-default/85 backdrop-blur-2xl" />
     <GameImage
-      :identifier="gameIdentifier"
+      :identifier="game.identifier"
       class="w-[200px] xs:w-auto sm:max-w-44 rounded overflow-hidden flex-grow-0"
     />
     <div class="flex-grow flex flex-col gap-1">
-      <h2 class="text-2xl text-center font-semibold">{{ gameTitle }}</h2>
+      <h2 class="text-2xl text-center font-semibold">{{ game.name }}</h2>
       <div class="mt-4 flex items-center gap-3">
         <GameFrameVotes
           :authenticated="userStore.user !== null"
           class="gap-4 text-subtle-light"
-          :game-identifier="gameIdentifier"
+          :game-identifier="game.identifier"
         />
         <ButtonShare
           :subject="$t('play.share_subject')"
-          :body="$t('play.share_body', { game: gameTitle })"
+          :body="$t('play.share_body', { game: game.name })"
           :url="url.toString()"
           class="text-subtle-light"
         />
@@ -138,13 +133,14 @@ onUnmounted(() => {
     <GameFrameLauncher
       v-model:playing="isPlayingRealGame"
       class="h-[90vh]"
-      :game-identifier="gameIdentifier"
+      :game-identifier="game.identifier"
       client-type="mobile"
     />
     <GameFrameLauncherDemo
+      v-if="game.demo"
       v-model:playing="isPlayingDemo"
       class="h-[90vh]"
-      :game-identifier="gameIdentifier"
+      :game-identifier="game.identifier"
       client-type="mobile"
       @available="showDemoButton = true"
       @unavailable="showDemoButton = false"

@@ -12,12 +12,7 @@ const props = defineProps<{
   gameIdentifier: string;
 }>();
 
-// We have to disable server-side rendering for the game, as we rely on our cloudflare proxy to route these requests
-// to our main-instance in ireland. If we enable SSR, the request will be made to the API instance within the same region, which means
-// in the case of a secondary region, the request will be sent against the API in that region, which then has to send mutating
-// queries to the main DB in the primary region leading to major slowdowns due to high SQL query RTT (round trip time).
-// If we want to allow SSR session inititalization, we have to first find a solution for redirecting these requests to the main region internally.
-const ENABLE_SERVER_SIDE_RENDERING_FOR_GAME = false;
+const ENABLE_SERVER_SIDE_RENDERING_FOR_GAME = true;
 const DEFER_CLIENT_SIDE_LOADING_FOR_GAME = true;
 
 const { data: game, status: statusLoadingGame } = await useAsyncData(`game-${props.gameIdentifier}`, async () => {
@@ -41,8 +36,7 @@ watch([() => game.value, () => statusLoadingGame.value], async ([game, statusLoa
       <GameFrameMobile
         v-if="
           game.isCompatibleWithDevice"
-        :game-title="game.name"
-        :game-identifier="game.identifier"
+        :game="game"
       />
       <GameFloatTextNotSupportedOnDevice
         v-else-if="!game.isCompatibleWithDevice"
@@ -50,7 +44,7 @@ watch([() => game.value, () => statusLoadingGame.value], async ([game, statusLoa
         :current-device="currentDevice"
       />
     </div>
-    <div v-else class="h-[25vh] w-full">
+    <div v-else class="h-[70vh] w-full">
       <BaseSkeleton class="w-full h-full" :loading="true" />
     </div>
   </template>
@@ -62,9 +56,8 @@ watch([() => game.value, () => statusLoadingGame.value], async ([game, statusLoa
     <div v-if="game" class="bg-subtle rounded border border-muted/5 overflow-hidden">
       <GameFrameDesktop
         v-if="!isMobile && game.isCompatibleWithDevice"
-        :game-title="game.name"
-        :game-identifier="game.identifier"
-        :fullscreen="fullscreen"
+        class="min-h-[70vh]"
+        :game="game"
       />
 
       <GameFloatTextNotSupportedOnDevice
@@ -81,7 +74,7 @@ watch([() => game.value, () => statusLoadingGame.value], async ([game, statusLoa
         @maximize="() => { fullscreen = true }"
       />
     </div>
-    <div v-else class="h-[60vh] w-full rounded-lg border border-muted/5 overflow-hidden relative">
+    <div v-else class="w-full min-h-[70vh] rounded-lg border border-muted/5 overflow-hidden relative">
       <BaseSkeleton class="absolute inset-0" :loading="true" />
     </div>
   </div>

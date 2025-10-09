@@ -1,7 +1,13 @@
 <script setup lang="ts">
+import type { Game } from "~/modules/games/domain/Game";
+
 // DESIGN STATUS:        ✅
 //   * lock scroll when fullscreen: import { useScrollLock } from "@vueuse/core"
 // ARCHITECTURE STATUS:  ✅
+
+defineProps<{
+  game: Game;
+}>();
 
 const siteStore = useSiteStore();
 
@@ -21,28 +27,22 @@ const isPlaying = computed({
     throw new Error("Cannot set isPlaying to true directly, use isPlayingRealGame or isPlayingDemo");
   },
 });
-const showDemoButton = useState("show-demo-button-in-desktop", () => false);
-
-defineProps({
-  gameTitle: {
-    type: String,
-    required: true,
-  },
-  gameIdentifier: {
-    type: String,
-    required: true,
-  },
-});
+const showDemoButton = ref(false);
 
 const onToggleFullScreen = () => {
   fullScreen.value = !fullScreen.value;
 };
+
+onUnmounted(() => {
+  fullScreen.value = false;
+  isPlaying.value = false;
+});
 </script>
 
 <template>
   <div
     :class="cn(
-      'w-full h-[70vh] bg-subtle flex flex-col items-center justify-center gap-y-6',
+      'w-full h-full bg-subtle flex flex-col items-center justify-center gap-y-6',
     )"
   >
     <template v-if="!isPlaying">
@@ -52,7 +52,7 @@ const onToggleFullScreen = () => {
         alt="Logo"
       />
       <h1 class="text-3xl font-semibold text-center">
-        {{ gameTitle }}
+        {{ game.name }}
       </h1>
       <BaseButton
         variant="primary"
@@ -101,13 +101,14 @@ const onToggleFullScreen = () => {
       <GameFrameLauncher
         v-model:playing="isPlayingRealGame"
         class="w-full h-full"
-        :game-identifier="gameIdentifier"
+        :game-identifier="game.identifier"
         client-type="desktop"
       />
       <GameFrameLauncherDemo
+        v-if="game.demo"
         v-model:playing="isPlayingDemo"
         class="w-full h-full"
-        :game-identifier="gameIdentifier"
+        :game-identifier="game.identifier"
         client-type="desktop"
         @available="showDemoButton = true"
         @unavailable="showDemoButton = false"
