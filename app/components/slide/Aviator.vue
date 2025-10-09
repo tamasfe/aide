@@ -12,7 +12,7 @@ const siteStore = useSiteStore();
       fetchpriority="high"
       preload
       provider="custom_cloudflare"
-      sizes="550px md:750px"
+      sizes="360px md:403px"
       format="webp"
       :src="siteStore.getRelativeAssetPath('slides/1.png')"
       alt=""

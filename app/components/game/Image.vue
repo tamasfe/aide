@@ -26,7 +26,6 @@ const gameTitle = computed(() => {
     provider="custom_cloudflare"
     sizes="xs:220px sm:200px md:160px lg:145px"
     :fetchpriority="priority"
-    :importance="priority"
     format="webp"
     :class="cn('w-full h-full aspect-[3/4] text-primary text-center', props.class)"
     :placeholder="siteStore.getRelativeAssetPath('logos/logo-sm.svg')"

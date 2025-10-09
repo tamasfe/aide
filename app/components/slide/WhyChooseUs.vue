@@ -18,10 +18,9 @@ const onSlideClick = () => {
     @click="() => onSlideClick()"
   >
     <NuxtImg
-      fetchpriority="high"
-      preload
+      fetchpriority="low"
       provider="custom_cloudflare"
-      sizes="550px md:750px"
+      sizes="360px md:403px"
       format="webp"
       :src="siteStore.getRelativeAssetPath('slides/6.png')"
       alt=""
