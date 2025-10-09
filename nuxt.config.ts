@@ -155,8 +155,17 @@ export default defineNuxtConfig({
     },
   },
   fonts: {
+    provider: "google",
+    defaults: {
+      weights: ["100 900"],
+      styles: ["normal"],
+      subsets: [
+        "latin-ext",
+        "latin",
+      ]
+    },
     families: [
-      { name: "Montserrat", provider: "google", weights: ["100 900"] },
+      { name: "Montserrat" },
     ],
   },
   // https://nuxt.com/modules/gtag
