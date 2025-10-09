@@ -74,7 +74,7 @@ watch([() => game.value, () => statusLoadingGame.value], async ([game, statusLoa
         @maximize="() => { fullscreen = true }"
       />
     </div>
-    <div v-else class="w-full min-h-[70vh] rounded-lg border border-muted/5 overflow-hidden relative">
+    <div v-else class="w-full min-h-[90vh] rounded-lg border border-muted/5 overflow-hidden relative">
       <BaseSkeleton class="absolute inset-0" :loading="true" />
     </div>
   </div>

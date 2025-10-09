@@ -1,12 +1,14 @@
 <script setup lang="ts">
+import type { HTMLAttributes } from "vue";
 import type { Game } from "~/modules/games/domain/Game";
 
 // DESIGN STATUS:        ✅
 //   * lock scroll when fullscreen: import { useScrollLock } from "@vueuse/core"
 // ARCHITECTURE STATUS:  ✅
 
-defineProps<{
+const props = defineProps<{
   game: Game;
+  class?: HTMLAttributes["class"];
 }>();
 
 const siteStore = useSiteStore();
@@ -43,6 +45,7 @@ onUnmounted(() => {
   <div
     :class="cn(
       'w-full h-full bg-subtle flex flex-col items-center justify-center gap-y-6',
+      props.class,
     )"
   >
     <template v-if="!isPlaying">
