@@ -24,10 +24,10 @@ const gameTitle = computed(() => {
 <template>
   <NuxtImg
     provider="custom_cloudflare"
-    sizes="xs:220px sm:200px md:160px lg:145px"
+    sizes="56px"
     :fetchpriority="priority"
     format="webp"
-    quality="50"
+    quality="20"
     :class="cn('w-full h-full aspect-[3/4] text-primary text-center', props.class)"
     :src="`/games/${props.identifier}.jpg`"
     :style="{

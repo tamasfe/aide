@@ -22,6 +22,7 @@ const onSlideClick = () => {
       provider="custom_cloudflare"
       sizes="360px md:403px"
       format="webp"
+      quality="70"
       :src="siteStore.getRelativeAssetPath('slides/4.png')"
       alt=""
       class="rounded md:rounded-lg object-cover object-center w-full h-full"
