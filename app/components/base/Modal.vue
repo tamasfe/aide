@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { DialogClose, DialogDescription, DialogTitle } from "reka-ui";
-import { getImage as getCloudflareImageSrc } from "~/providers/multi-site-custom-cloudflare-image-provider";
+// import { getImage as getCloudflareImageSrc } from "~/providers/multi-site-custom-cloudflare-image-provider";
 import type { AlertProps } from "./Alert.vue";
 
 // DESIGN STATUS: ✴️
@@ -42,36 +42,38 @@ const open = computed({
   set: (value: boolean) => emit("update:open", value),
 });
 
-const preloadBannerLinks = (() => {
-  const links = [];
-  if (props.bannerLeft) {
-    const bannerLeftSrc = props.bannerLeft.startsWith("http")
-      ? props.bannerLeft
-      : getCloudflareImageSrc(
-        props.bannerLeft,
-        { modifiers: { width: DEFAULT_PX_WIDTH_LEFT_BANNER } },
-        // @ts-expect-error: no need to pass the img ctx here. Not used
-        {},
-      ).url;
-    links.push({ rel: "preload", fetchPriority: "low", href: bannerLeftSrc, src: bannerLeftSrc, as: "image" as const });
-  }
-  if (props.bannerTop) {
-    const bannerTopSrc = props.bannerTop.startsWith("http")
-      ? props.bannerTop
-      : getCloudflareImageSrc(
-        props.bannerTop,
-        { modifiers: { width: DEFAULT_PX_WIDTH_TOP_BANNER } },
-        // @ts-expect-error: no need to pass the img ctx here. Not used
-        {},
-      ).url;
-    links.push({ rel: "preload", fetchPriority: "low", href: bannerTopSrc, src: bannerTopSrc, as: "image" as const });
-  }
-  return links;
-})();
+// Disabled, as there's no easy way of syncing up these very specific URLs, srcsets, and sizes with the modal props
+// without making it overly complex. We can always re-enable later if we find a good way
+// const preloadBannerLinks = (() => {
+//   const links = [];
+//   if (props.bannerLeft) {
+//     const bannerLeftSrc = props.bannerLeft.startsWith("http")
+//       ? props.bannerLeft
+//       : getCloudflareImageSrc(
+//         props.bannerLeft,
+//         { modifiers: { width: DEFAULT_PX_WIDTH_LEFT_BANNER } },
+//         // @ts-expect-error: no need to pass the img ctx here. Not used
+//         {},
+//       ).url;
+//     links.push({ rel: "preload", fetchPriority: "low", href: bannerLeftSrc, src: bannerLeftSrc, as: "image" as const });
+//   }
+//   if (props.bannerTop) {
+//     const bannerTopSrc = props.bannerTop.startsWith("http")
+//       ? props.bannerTop
+//       : getCloudflareImageSrc(
+//         props.bannerTop,
+//         { modifiers: { width: DEFAULT_PX_WIDTH_TOP_BANNER } },
+//         // @ts-expect-error: no need to pass the img ctx here. Not used
+//         {},
+//       ).url;
+//     links.push({ rel: "preload", fetchPriority: "low", href: bannerTopSrc, src: bannerTopSrc, as: "image" as const });
+//   }
+//   return links;
+// })();
 
-if (preloadBannerLinks.length > 0) {
-  useHead(() => ({ link: preloadBannerLinks }));
-}
+// if (preloadBannerLinks.length > 0) {
+//   useHead(() => ({ link: preloadBannerLinks }));
+// }
 </script>
 
 <template>
