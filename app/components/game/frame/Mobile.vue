@@ -52,10 +52,16 @@ onUnmounted(() => {
 <template>
   <div v-if="!isPlaying" class="w-full h-full flex flex-col sm:flex-row items-center justify-start p-6 gap-6 relative overflow-hidden">
     <div class="absolute -z-10 top-0 left-0 w-full h-full bg-default/85 backdrop-blur-2xl" />
-    <GameImage
-      :identifier="game.identifier"
-      class="w-[200px] xs:w-auto sm:max-w-44 rounded overflow-hidden flex-grow-0"
-    />
+    <BaseButton
+      variant="ghost"
+      size="ghost"
+      @click="isPlayingRealGame = true"
+    >
+      <GameImage
+        :identifier="game.identifier"
+        class="w-[200px] xs:w-auto sm:max-w-44 rounded overflow-hidden flex-grow-0"
+      />
+    </BaseButton>
     <div class="flex-grow flex flex-col gap-1">
       <h2 class="text-2xl text-center font-semibold">{{ game.name }}</h2>
       <div class="mt-4 flex items-center gap-3">
