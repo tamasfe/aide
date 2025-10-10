@@ -162,7 +162,7 @@ export default defineNuxtConfig({
       subsets: [
         "latin-ext",
         "latin",
-      ]
+      ],
     },
     families: [
       { name: "Montserrat" },
@@ -172,6 +172,7 @@ export default defineNuxtConfig({
   gtag: {
     id: "G-7F9NEQ1MND", // New "Giro" GA account
     enabled: process.env.NODE_ENV === "production",
+    initMode: "manual", // We set it to manual to avoid downloading the GA script... as the GTM module already loads it
   },
   // @nuxtjs/i18n
   i18n: {
