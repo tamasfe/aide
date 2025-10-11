@@ -1,3 +1,5 @@
+import { DEFAULT_CURRENCY_WHILE_USER_HAS_NO_WALLET } from "~/modules/wallet/domain/Wallet";
+
 export default defineNuxtPlugin({
   name: "module-wallets-initiator",
   dependsOn: ["dependency-injection"],
@@ -5,6 +7,15 @@ export default defineNuxtPlugin({
   async setup(_nuxtApp) {
     const { $dependencies } = useNuxtApp();
     const walletStore = useWalletStore();
+    const paymentMethodsStore = useWalletPaymentMethodsStore();
+
+    const refreshStores = async () => {
+      await walletStore.refresh();
+
+      paymentMethodsStore.setLoading();
+      const result = await $dependencies.wallets.ui.findPreferredPaymentMethodsOnStoreRefresh.handle(walletStore.wallet?.currency ?? DEFAULT_CURRENCY_WHILE_USER_HAS_NO_WALLET);
+      paymentMethodsStore.refresh(result);
+    };
 
     /**
      *
@@ -13,24 +24,32 @@ export default defineNuxtPlugin({
      */
     $dependencies.common.asyncMessagePublisher.subscribe(
       "frontend:events:users:user-logged-in",
-      () => walletStore.refresh(),
+      () => refreshStores(),
     );
     $dependencies.common.asyncMessagePublisher.subscribe(
       "frontend:events:users:user-logged-out",
-      () => walletStore.refresh(),
+      async () => {
+        await walletStore.refresh();
+        paymentMethodsStore.refresh(null);
+      },
     );
     $dependencies.common.asyncMessagePublisher.subscribe(
       "frontend:events:users:user-closed-account",
-      () => walletStore.refresh(),
+      async () => {
+        await walletStore.refresh();
+        paymentMethodsStore.refresh(null);
+      },
     );
     $dependencies.common.asyncMessagePublisher.subscribe(
       "frontend:events:signup-flows:signup-flow-submitted",
-      () => walletStore.refresh(),
+      () => refreshStores(),
     );
 
     $dependencies.common.asyncMessagePublisher.subscribe(
       "backend:events:payments:payment-status-updated",
-      () => walletStore.refresh(),
+      async () => {
+        await walletStore.refresh();
+      },
     );
 
     $dependencies.common.asyncMessagePublisher.subscribe(
@@ -47,7 +66,7 @@ export default defineNuxtPlugin({
      * Init user pinia store
      *
      */
-    await callOnce("wallet-store-initiation", async () => walletStore.refresh());
+    await callOnce("wallet-store-initiation", () => refreshStores());
 
     return {};
   },

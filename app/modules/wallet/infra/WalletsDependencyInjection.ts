@@ -12,11 +12,10 @@ import { PaymentRepositoryGirobet } from "./PaymentRepositoryGirobet";
 import { PaymentRepositoryDumb } from "./PaymentRepositoryDumb";
 import { SearchPaymentsOnTable } from "./ui/SearchPaymentsOnTable";
 import { CreateDepositFlowOnForm } from "./ui/CreateDepositFlowOnForm";
-import { FindPreferredPaymentMethodOnPaymentModal } from "./ui/FindPreferredPaymentMethodOnPaymentModal";
+import { FindPreferredPaymentMethodOnStoreRefresh } from "./ui/FindPreferredPaymentMethodOnPaymentModal";
 import { PaymentMethodRepositoryGirobet } from "./PaymentMethodRepositoryGirobet";
 import { PaymentMethodRepositoryDumb } from "./PaymentMethodRepositoryDumb";
 import { CreateWithdrawalFlowOnForm } from "./ui/CreateWithdrawalFlowOnForm";
-import { SearchPaymentMethodsOnDepositForm } from "./ui/SearchPaymentMethodsOnDepositForm";
 import type { CommonDependenciesI } from "~/dependency-injection/load-di";
 
 export interface WalletsDependencyInjectionI {
@@ -24,11 +23,10 @@ export interface WalletsDependencyInjectionI {
     findAuthenticatedUserWallet: FindAuthenticatedUserWallet;
   };
   ui: {
-    findPreferredPaymentMethodOnPaymentModal: FindPreferredPaymentMethodOnPaymentModal;
+    findPreferredPaymentMethodsOnStoreRefresh: FindPreferredPaymentMethodOnStoreRefresh;
     createDepositFlowOnForm: CreateDepositFlowOnForm;
     createWithdrawalFlowOnForm: CreateWithdrawalFlowOnForm;
     searchPaymentsOnTable: SearchPaymentsOnTable;
-    searchPaymentMethodsOnDepositForm: SearchPaymentMethodsOnDepositForm;
   };
 }
 
@@ -62,7 +60,7 @@ export const createWalletsDependencyInjection = (publicConfig: PublicRuntimeConf
       findAuthenticatedUserWallet: new FindAuthenticatedUserWallet(walletsRepository),
     },
     ui: {
-      findPreferredPaymentMethodOnPaymentModal: new FindPreferredPaymentMethodOnPaymentModal(paymentMethodsRepository, commonDependencies.logger),
+      findPreferredPaymentMethodsOnStoreRefresh: new FindPreferredPaymentMethodOnStoreRefresh(paymentMethodsRepository, commonDependencies.logger),
       createDepositFlowOnForm: new CreateDepositFlowOnForm(
         new CreateDepositFlow(paymentsRepository, commonDependencies.asyncMessagePublisher),
         commonDependencies.logger,
@@ -84,7 +82,6 @@ export const createWalletsDependencyInjection = (publicConfig: PublicRuntimeConf
         commonDependencies.dateTimeFormatter,
         commonDependencies.numberFormatter,
       ),
-      searchPaymentMethodsOnDepositForm: new SearchPaymentMethodsOnDepositForm(paymentMethodsRepository, commonDependencies.logger),
     },
   };
 };

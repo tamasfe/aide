@@ -2,13 +2,20 @@ import type { PaymentMethodRepositoryI } from "../../domain/PaymentMethodReposit
 import type { LoggerI } from "~/packages/logger/Logger";
 import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
 import type { PaymentLimits } from "../../domain/PaymentLimits";
+import { ErrorPaymentMethodNotFound } from "../../domain/ErrorPaymentMethodNotFound";
+import {
+  addLogoToPaymentMethod,
+  type PaymentMethodWithLogo,
+} from "../../domain/PaymentMethod";
 
 interface PaymentMethodResponseI {
-  id: number;
-  identifier: "pix";
+  currency: WalletCurrency;
+  preferred: PaymentMethodWithLogo;
+  methods: PaymentMethodWithLogo[];
   limits: PaymentLimits;
 }
-export class FindPreferredPaymentMethodOnPaymentModal {
+
+export class FindPreferredPaymentMethodOnStoreRefresh {
   constructor(
     private paymentMethodRepo: PaymentMethodRepositoryI,
     private logger: LoggerI,
@@ -20,19 +27,55 @@ export class FindPreferredPaymentMethodOnPaymentModal {
   public FALLBACK_FOR_MAX_AMOUNT = null;
   public FALLBACK_FOR_COOLDOWN_SECONDS = null;
 
-  public async handle(currency: WalletCurrency): Promise<PaymentMethodResponseI | null> {
-    const paymentMethodResult = await this.paymentMethodRepo.findOne(currency, this.PREFERRED_METHOD);
-    if (paymentMethodResult.isFailure) {
-      this.logger.error("! Error finding the payment method for the payment modal. This is critical as the user might not be able to deposit or withdraw any money!", paymentMethodResult.error);
+  public async handle(
+    currency: WalletCurrency,
+  ): Promise<PaymentMethodResponseI | null> {
+    const paymentMethodsResult = await this.paymentMethodRepo.search(currency);
+    if (paymentMethodsResult.isFailure) {
+      if (paymentMethodsResult.error.name === "ErrorUnauthorized") {
+        return null;
+      }
+      this.logger.error(
+        "! Error finding the payment methods for the payment modal. This is critical as the user might not be able to deposit or withdraw any money!",
+        paymentMethodsResult.error,
+        { currency },
+      );
       return null;
     }
 
-    const limitsResult = await this.paymentMethodRepo.findLimits(currency, paymentMethodResult.value.id);
+    const methods = paymentMethodsResult.value.map(method =>
+      addLogoToPaymentMethod(method),
+    );
+
+    const preferred = methods.find(
+      method => method.identifier === this.PREFERRED_METHOD,
+    );
+    if (!preferred) {
+      this.logger.error(
+        "! Error finding the preferred payment method for the payment modal. This is critical as the user might not be able to deposit or withdraw any money!",
+        ErrorPaymentMethodNotFound.new({
+          currency,
+          identifier: this.PREFERRED_METHOD,
+        }),
+        { currency, methods, preferredMethod: this.PREFERRED_METHOD },
+      );
+      return null;
+    }
+
+    const limitsResult = await this.paymentMethodRepo.findLimits(
+      currency,
+      preferred.id,
+    );
     if (limitsResult.isFailure) {
-      this.logger.error("Error finding pix payment limits, returning fallback amounts", limitsResult.error, { paymentMethod: paymentMethodResult.value });
+      this.logger.error(
+        "Error finding pix payment limits, returning fallback amounts",
+        limitsResult.error,
+        { preferred, methods, currency },
+      );
       return {
-        id: paymentMethodResult.value.id,
-        identifier: paymentMethodResult.value.identifier,
+        currency,
+        preferred,
+        methods,
         limits: {
           depositMin: this.FALLBACK_FOR_MINIMUM_AMOUNT,
           depositMax: this.FALLBACK_FOR_MAX_AMOUNT,
@@ -42,13 +85,13 @@ export class FindPreferredPaymentMethodOnPaymentModal {
           withdrawalCooldown: this.FALLBACK_FOR_COOLDOWN_SECONDS,
           timeframeLimits: [],
         },
-
       };
     }
 
     return {
-      id: paymentMethodResult.value.id,
-      identifier: paymentMethodResult.value.identifier,
+      currency,
+      preferred,
+      methods,
       limits: limitsResult.value,
     };
   }
