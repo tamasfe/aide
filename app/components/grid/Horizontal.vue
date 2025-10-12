@@ -81,13 +81,5 @@ defineExpose({
         <slot :item="item" />
       </div>
     </template>
-    <template #loading>
-      <div
-        class="w-full flex-shrink-0"
-        :style="{ aspectRatio: aspectRatio }"
-      >
-        <slot name="loading" />
-      </div>
-    </template>
   </BaseSlider>
 </template>

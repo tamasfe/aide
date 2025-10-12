@@ -1,5 +1,5 @@
 <script setup lang="ts" generic="T extends Array<{ key: string } | undefined>">
-import { useScroll } from "@vueuse/core";
+import { useScroll, useInfiniteScroll } from "@vueuse/core";
 
 const emit = defineEmits<{
   (e: "trigger:load"): void;
@@ -26,6 +26,20 @@ const sliderContainer = ref<HTMLElement>();
 
 // Use VueUse for scroll tracking
 const { arrivedState } = useScroll(sliderContainer, { behavior: "smooth" });
+
+// Use VueUse infinite scroll for loading additional elements
+useInfiniteScroll(
+  sliderContainer,
+  () => {
+    if (canLoadMore.value && !loading.value) {
+      emit("trigger:load");
+    }
+  },
+  {
+    direction: "right",
+    distance: 100, // Distance in pixels from the right edge
+  },
+);
 
 // Navigation state using VueUse arrivedState
 const canScrollNext = computed(() => !arrivedState.right);
@@ -110,27 +124,6 @@ const dataToRender = computed(() => {
   return props.data.length > 0 ? props.data : dataLoadingSkeleton;
 });
 
-const onScroll = async (): Promise<void> => {
-  if (!sliderContainer.value) return;
-
-  // Handle infinite loading
-  if (loading.value) return;
-  if (!canLoadMore.value) return;
-
-  const container = sliderContainer.value;
-  const { scrollLeft, scrollWidth, clientWidth } = container;
-
-  // Calculate if we're near the end (within the threshold of slidesBeforeLoad items)
-  const slideWidth = container.children[0]?.clientWidth || 0;
-  const threshold = slideWidth * props.slidesBeforeLoad;
-  const isNearEnd = scrollLeft + clientWidth >= scrollWidth - threshold;
-
-  if (isNearEnd) {
-    emit("trigger:load");
-    await nextTick();
-  }
-};
-
 // Expose methods for programmatic control
 defineExpose({
   scrollNext,
@@ -147,7 +140,6 @@ defineExpose({
     :style="{
       scrollPadding: `0 1rem`,
     }"
-    @scroll.passive="onScroll"
   >
     <div
       v-for="(item, idx) in dataToRender"
@@ -160,12 +152,6 @@ defineExpose({
         :item="item"
         :index="idx"
       />
-    </div>
-    <div
-      v-if="canLoadMore"
-      class="flex-shrink-0 snap-start w-[calc(100%/3)] sm:w-[calc(100%/4)] md:w-[calc(100%/5)] lg:w-[calc(100%/6) lg:w-[calc(100%/8)] ml-4 last:mr-4"
-    >
-      <slot name="loading" />
     </div>
   </div>
 </template>

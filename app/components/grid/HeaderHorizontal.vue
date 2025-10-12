@@ -86,10 +86,6 @@ const canScrollNext = computed(() => {
       <template #default="{ item }">
         <slot :item="item" />
       </template>
-
-      <template #loading>
-        <slot name="loading" />
-      </template>
     </GridHorizontal>
   </section>
 </template>

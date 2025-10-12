@@ -90,17 +90,5 @@ if (!props.initialGames) {
         :animation-on-hover="'vertical-translate'"
       />
     </template>
-
-    <template
-      v-if="loading"
-      #loading
-    >
-      <div class="flex items-center justify-center w-full h-full bg-subtle rounded">
-        <BaseSpinner
-          class="text-subtle"
-          :size="32"
-        />
-      </div>
-    </template>
   </GridHeaderHorizontal>
 </template>
