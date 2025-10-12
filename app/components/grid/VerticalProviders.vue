@@ -34,26 +34,29 @@ await useAsyncData(`load-vertical-providers`, () => onLoadData().then(() => true
 </script>
 
 <template>
-  <GridHeader>
-    <template #title>
-      <div class="flex gap-4 items-center">
-        <BaseButton
-          variant="subtle"
-          size="sm"
-          class="p-1.5"
-          @click="navigateBackOrHome"
-        >
-          <BaseIcon
-            name="lucide:arrow-left"
-            :size="24"
-          />
-        </BaseButton>
+  <section>
+    <GridHeader class="mb-4">
+      <template #title>
+        <div class="flex gap-4 items-center">
+          <BaseButton
+            variant="subtle"
+            size="sm"
+            class="p-1.5"
+            @click="navigateBackOrHome"
+          >
+            <BaseIcon
+              name="lucide:arrow-left"
+              :size="24"
+            />
+          </BaseButton>
 
-        <GridHeaderTitle :title="t('grid.providers')" />
-      </div>
-    </template>
+          <GridHeaderTitle :title="t('grid.providers')" />
+        </div>
+      </template>
 
-    <template #options />
+      <template #options />
+    </GridHeader>
+
     <GridVertical
       aspect-ratio="8/3"
       :columns="{ sm: 2, md: 2, lg: 3, xl: 4 }"
@@ -78,5 +81,5 @@ await useAsyncData(`load-vertical-providers`, () => onLoadData().then(() => true
         </BaseLink>
       </template>
     </GridVertical>
-  </GridHeader>
+  </section>
 </template>

@@ -73,7 +73,7 @@ const { data: myBetsData } = await useAsyncData(`winning-now-my-bets-table`, asy
     </h2>
 
     <Tabs v-model="currentTab" class="mt-4 space-y-4">
-      <TabsList class="max-w-sm">
+      <TabsList class="rounded bg-subtle inline-block">
         <TabsTrigger
           v-for="tab in WINNING_NOW_TABS"
           :key="tab"

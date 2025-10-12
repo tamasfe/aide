@@ -17,17 +17,17 @@ const delegatedProps = computed(() => {
 <template>
   <TabsList
     :class="cn(
-      'w-full flex items-center space-x-6',
+      'flex items-center space-x-6',
       props.class,
     )"
   >
     <div
-      class="w-full h-full flex px-1.5"
+      class="h-full w-full flex px-1.5"
     >
       <div
         v-bind="delegatedProps"
         :class="cn(
-          'py-1.5 w-full h-full flex items-center justify-between justify space-x-2 overflow-x-auto md:overflow-x-hidden',
+          'py-1.5 h-full flex items-center justify-between justify space-x-2 overflow-x-auto md:overflow-x-hidden',
         )"
       >
         <slot />

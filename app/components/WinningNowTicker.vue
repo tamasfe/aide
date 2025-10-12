@@ -46,10 +46,10 @@ useCreateSubscriptionToWebsocketTickerChannel(
 </script>
 
 <template>
-  <div class="flex items-center justify-center">
-    <h3 class="min-w-[6rem] sm:min-w-[8rem] text-center flex flex-col items-center justify-center">
-      <div class="mb-2 leading-none text-5xl">🏆</div>
-      <div class="whitespace-pre-wrap text-sm sm:text-base leading-tight bg-button-primary text-transparent bg-clip-text font-semibold">
+  <div class="md:flex md:items-center md:justify-center md:pr-4">
+    <h3 class="text-center flex md:flex-col items-center md:justify-center gap-1 mb-3 lg:mb-0 text-lg md:text-md px-4">
+      <div class="leading-none md:text-3xl">🏆</div>
+      <div class="whitespace-pre-wrap sm:text-base leading-tight bg-button-primary text-transparent bg-clip-text font-semibold">
         {{ $t('winning_now.title') }}
       </div>
     </h3>
@@ -60,15 +60,15 @@ useCreateSubscriptionToWebsocketTickerChannel(
           :appear="false"
           name="slide-in"
           tag="div"
-          class="flex gap-4 min-w-0"
+          class="flex gap-4 min-w-0 pl-4 md:pl-0"
         >
           <div
             v-for="item in displayedWins"
             :key="item.key"
-            class="flex-shrink-0 w-80"
+            class="flex-shrink-0 flex-grow-0 w-72 md:w-80"
           >
             <GamePageLink v-if="item.data" :identifier="item.data.data.game.identifier">
-              <div class="relative group flex items-center space-x-3 bg-subtle p-2 rounded-lg outline-none border border-muted/5 h-24">
+              <div class="relative group flex items-center space-x-3 bg-subtle p-2 rounded-lg outline-none border border-muted/5 h-18 md:h-24">
                 <div class="self-stretch relative aspect-[3/4] h-full rounded overflow-hidden border border-muted/5">
                   <GameTickerImage
                     fetchpriority="low"
@@ -76,9 +76,9 @@ useCreateSubscriptionToWebsocketTickerChannel(
                     class="block object-cover h-full w-full transition-transform transform hover:scale-105 cursor-pointer"
                   />
                 </div>
-                <div class="font-medium leading-tight space-y-1 min-w-0 flex-1">
+                <div class="font-medium leading-tight min-w-0 flex-1">
                   <div class="truncate">{{ item.data.data.userNickname }}</div>
-                  <div class="text-subtle text-sm truncate min-w-0">{{ item.data.data.game.name }}</div>
+                  <div class="text-subtle text-sm truncate min-w-0 mb-1">{{ item.data.data.game.name }}</div>
                   <div class="sm:text-lg font-semibold bg-button-primary text-transparent bg-clip-text">
                     <BaseCurrency
                       :currency="item.data.data.currency"

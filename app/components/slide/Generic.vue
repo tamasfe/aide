@@ -26,6 +26,7 @@ const component = computed(() => {
 <template>
   <component
     :is="component"
+    class="block w-full h-full"
     v-bind="slide.action.attributes"
   >
     <NuxtImg
@@ -37,7 +38,7 @@ const component = computed(() => {
       :fetchpriority="slide.fetchpriority || 'auto'"
       :src="siteStore.getRelativeAssetPath(slide.imagePath)"
       :alt="slide.alt || ''"
-      class="block rounded md:rounded-lg object-cover object-center w-full h-full border border-emphasis/50"
+      class="block rounded md:rounded-lg object-cover object-center w-full h-full aspect-[1280/607]"
     />
   </component>
 </template>

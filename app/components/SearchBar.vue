@@ -32,7 +32,7 @@ const onClickClearButton = () => {
   <BaseInputGroup
     v-model="query"
     :placeholder="$t('placeholder.search')"
-    class="relative z-[8] border border-muted/5"
+    class="relative z-[8]"
     inputmode="search"
     autocomplete="off"
     placeholder-placement="default"

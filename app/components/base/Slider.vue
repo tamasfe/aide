@@ -1,11 +1,5 @@
 <script setup lang="ts" generic="T extends Array<{ key: string } | undefined>">
-import emblaCarouselVue from "embla-carousel-vue";
-import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
-import type { EmblaCarouselType, EmblaOptionsType } from "embla-carousel";
-
-export type SliderBreakpoints = "sm" | "md" | "lg" | "xl";
-export type SliderBreakpointValues = Record<SliderBreakpoints, number>;
-export type Plugin = ReturnType<typeof WheelGesturesPlugin>;
+import { useScroll } from "@vueuse/core";
 
 const emit = defineEmits<{
   (e: "trigger:load"): void;
@@ -13,159 +7,98 @@ const emit = defineEmits<{
 
 const props = withDefaults(
   defineProps<{
-    slides: SliderBreakpointValues;
-    gap: number;
+    gap?: number;
     data: T;
-    manualScroll?: boolean;
-    slidesBeforeLoad?: number;
-    canLoadMore?: boolean;
-    options?: EmblaOptionsType;
     loading?: boolean;
+    canLoadMore?: boolean;
+    slidesBeforeLoad?: number;
   }>(),
   {
     loading: false,
+    gap: 1,
     canLoadMore: false,
     slidesBeforeLoad: 1,
-    manualScroll: false,
   },
 );
 
-const { options, canLoadMore, loading } = toRefs(props);
+const { loading, canLoadMore } = toRefs(props);
+const sliderContainer = ref<HTMLElement>();
 
-const canScrollPrev = ref(false);
-const canScrollNext = ref(false);
+// Use VueUse for scroll tracking
+const { arrivedState } = useScroll(sliderContainer, { behavior: "smooth" });
 
-const canScrollBackward = (emblaApi: EmblaCarouselType) => {
-  const { target, limit } = emblaApi.internalEngine();
-  const targetRounded = parseFloat(target.get().toFixed(2));
-  return targetRounded < limit.max;
+// Navigation state using VueUse arrivedState
+const canScrollNext = computed(() => !arrivedState.right);
+const canScrollPrev = computed(() => !arrivedState.left);
+
+// Get slide element by index
+const getSlideElement = (index: number): HTMLElement | null => {
+  if (!sliderContainer.value) return null;
+  return sliderContainer.value.children[index] as HTMLElement || null;
 };
 
-const canScrollForward = (emblaApi: EmblaCarouselType) => {
-  const { target, limit } = emblaApi.internalEngine();
-  const targetRounded = parseFloat(target.get().toFixed(2));
-  return targetRounded > limit.min;
+// Calculate how many slides are visible at once
+const getVisibleSlidesCount = (): number => {
+  if (!sliderContainer.value) return 1;
+  const container = sliderContainer.value;
+  const containerWidth = container.clientWidth;
+  const slideWidth = container.children[0]?.clientWidth || 0;
+  return Math.floor(containerWidth / slideWidth);
 };
 
-const initPlugins = () => {
-  const plugins: Plugin[] = [];
-  if (props.manualScroll) {
-    plugins.push(WheelGesturesPlugin());
+// Get current visible slide index based on scroll position
+const getCurrentSlideIndex = (): number => {
+  if (!sliderContainer.value) return 0;
+
+  const container = sliderContainer.value;
+  const scrollLeft = container.scrollLeft;
+
+  // Find the slide that's most visible
+  for (let i = 0; i < container.children.length; i++) {
+    const slideElement = container.children[i] as HTMLElement;
+    const slideLeft = slideElement.offsetLeft;
+    const slideRight = slideLeft + slideElement.offsetWidth;
+
+    if (scrollLeft >= slideLeft && scrollLeft < slideRight) {
+      return i;
+    }
   }
-  return plugins;
+
+  return 0;
 };
 
-const [emblaRef, emblaApi] = emblaCarouselVue(
-  {
-    watchSlides: (emblaApi) => {
-      const reloadEmbla = (): void => {
-        const oldEngine = emblaApi.internalEngine();
+// Programmatic navigation methods using dynamic scroll position
+const scrollNext = (): void => {
+  if (!sliderContainer.value || !canScrollNext.value) return;
 
-        emblaApi.reInit();
-        const newEngine = emblaApi.internalEngine();
-        const copyEngineModules: (keyof typeof newEngine)[] = [
-          "scrollBody",
-          "location",
-          "offsetLocation",
-          "previousLocation",
-          "target",
-        ];
-        copyEngineModules.forEach((engineModule) => {
-          Object.assign(newEngine[engineModule], oldEngine[engineModule]);
-        });
+  const visibleCount = getVisibleSlidesCount();
+  const currentIndex = getCurrentSlideIndex();
+  const nextIndex = Math.min(currentIndex + visibleCount, sliderContainer.value.children.length - 1);
 
-        newEngine.translate.to(oldEngine.location.get());
-        const { index } = newEngine.scrollTarget.byDistance(0, false);
-        newEngine.index.set(index);
-        newEngine.animation.start();
+  const targetSlide = getSlideElement(nextIndex);
+  if (!targetSlide) return;
 
-        canScrollPrev.value = canScrollBackward(emblaApi);
-        canScrollNext.value = canScrollForward(emblaApi);
-      };
-
-      const reloadAfterPointerUp = (): void => {
-        emblaApi.off("pointerUp", reloadAfterPointerUp);
-        reloadEmbla();
-      };
-
-      const engine = emblaApi.internalEngine();
-
-      if (canLoadMore.value && engine.dragHandler.pointerDown()) {
-        const boundsActive = engine.limit.reachedMax(engine.target.get());
-        engine.scrollBounds.toggleActive(boundsActive);
-        emblaApi.on("pointerUp", reloadAfterPointerUp);
-      }
-      else {
-        reloadEmbla();
-      }
-    },
-    skipSnaps: false,
-    ...options.value,
-  },
-  initPlugins(),
-);
-
-const onScroll = async () => {
-  if (!emblaApi.value) return;
-  if (loading.value) return;
-  if (!canLoadMore.value) return;
-
-  const slideIndex
-    = emblaApi.value.slideNodes().length - props.slidesBeforeLoad;
-  const slideInView = emblaApi.value.slidesInView().includes(slideIndex);
-
-  if (slideInView) {
-    emit("trigger:load");
-    await nextTick();
-  }
+  sliderContainer.value.scrollTo({
+    left: targetSlide.offsetLeft,
+    behavior: "smooth",
+  });
 };
 
-const setupInfiniteScroll = () => {
-  if (emblaApi.value && canLoadMore.value) {
-    emblaApi.value.on("scroll", onScroll);
-  }
+const scrollPrev = (): void => {
+  if (!sliderContainer.value || !canScrollPrev.value) return;
+
+  const visibleCount = getVisibleSlidesCount();
+  const currentIndex = getCurrentSlideIndex();
+  const prevIndex = Math.max(currentIndex - visibleCount, 0);
+
+  const targetSlide = getSlideElement(prevIndex);
+  if (!targetSlide) return;
+
+  sliderContainer.value.scrollTo({
+    left: targetSlide.offsetLeft,
+    behavior: "smooth",
+  });
 };
-
-const getScrollMetadata = (emblaApi: EmblaCarouselType) => {
-  canScrollNext.value = canScrollForward(emblaApi);
-  canScrollPrev.value = canScrollBackward(emblaApi);
-};
-
-onMounted(() => {
-  setupInfiniteScroll();
-  emblaApi.value
-    ?.on("init", getScrollMetadata)
-    .on("reInit", getScrollMetadata)
-    .on("select", getScrollMetadata);
-});
-
-onBeforeUnmount(() => {
-  emblaApi.value?.off("scroll", onScroll);
-  emblaApi.value?.off("init", getScrollMetadata);
-  emblaApi.value?.off("reInit", getScrollMetadata);
-  emblaApi.value?.off("select", getScrollMetadata);
-  emblaApi.value?.destroy();
-});
-
-const slideSizes = computed(() => {
-  const { slides, gap } = props;
-  return Object.keys(slides).reduce(
-    (sizes, key) => {
-      const column = slides[key as keyof SliderBreakpointValues];
-      const numberOfGaps = Math.ceil(column) - 1;
-      sizes[key as keyof SliderBreakpointValues]
-        = `calc((100% - ${numberOfGaps * gap}rem)/${column})`;
-      return sizes;
-    },
-    {} as Record<keyof SliderBreakpointValues, string>,
-  );
-});
-
-defineExpose({
-  emblaApi,
-  canScrollNext,
-  canScrollPrev,
-});
 
 const SKELETON_ITEMS_TO_SHOW = 8;
 const dataLoadingSkeleton = Array.from({ length: SKELETON_ITEMS_TO_SHOW }).map((_elem, index) => ({ key: String(index) })) as T;
@@ -176,81 +109,76 @@ const dataToRender = computed(() => {
   }
   return props.data.length > 0 ? props.data : dataLoadingSkeleton;
 });
+
+const onScroll = async (): Promise<void> => {
+  if (!sliderContainer.value) return;
+
+  // Handle infinite loading
+  if (loading.value) return;
+  if (!canLoadMore.value) return;
+
+  const container = sliderContainer.value;
+  const { scrollLeft, scrollWidth, clientWidth } = container;
+
+  // Calculate if we're near the end (within the threshold of slidesBeforeLoad items)
+  const slideWidth = container.children[0]?.clientWidth || 0;
+  const threshold = slideWidth * props.slidesBeforeLoad;
+  const isNearEnd = scrollLeft + clientWidth >= scrollWidth - threshold;
+
+  if (isNearEnd) {
+    emit("trigger:load");
+    await nextTick();
+  }
+};
+
+// Expose methods for programmatic control
+defineExpose({
+  scrollNext,
+  scrollPrev,
+  canScrollNext,
+  canScrollPrev,
+});
 </script>
 
 <template>
   <div
-    ref="emblaRef"
-    class="giro__slider px-4"
+    ref="sliderContainer"
+    class="flex overflow-x-auto scroll-smooth snap-x scrollbar-hide lg:mask-edge-fade"
+    :style="{
+      scrollPadding: `0 1rem`,
+    }"
+    @scroll.passive="onScroll"
   >
     <div
-      class="giro__slider-container w-full select-none"
-      :style="{ gap: `${gap}rem` }"
+      v-for="(item, idx) in dataToRender"
+      :key="item?.key ?? ''"
+      class="flex-shrink-0 snap-start w-[calc(100%/3)] sm:w-[calc(100%/4)] md:w-[calc(100%/5)] lg:w-[calc(100%/6) lg:w-[calc(100%/8)] ml-4 last:mr-4"
     >
-      <div
-        v-for="(item, idx) in dataToRender"
-        :key="item?.key ?? ''"
-        class="giro__slider-slide"
-      >
-        <BaseSkeleton v-if="loading === true && data.length === 0" :loading="loading" class="h-full w-full rounded" />
-        <slot
-          v-else
-          :item="item"
-          :index="idx"
-        />
-      </div>
-      <div
-        v-for="(item, idx) in dataToRender"
-        :key="item?.key ?? ''"
-        class="giro__slider-slide"
-      >
-        <BaseSkeleton v-if="loading === true && data.length === 0" :loading="loading" class="h-full w-full rounded" />
-        <slot
-          v-else
-          :item="item"
-          :index="idx"
-        />
-      </div>
-      <div
-        v-if="canLoadMore"
-        class="giro__slider-slide"
-      >
-        <slot name="loading" />
-      </div>
+      <BaseSkeleton v-if="loading === true && data.length === 0" :loading="loading" class="h-full w-full rounded" />
+      <slot
+        v-else
+        :item="item"
+        :index="idx"
+      />
+    </div>
+    <div
+      v-if="canLoadMore"
+      class="flex-shrink-0 snap-start w-[calc(100%/3)] sm:w-[calc(100%/4)] md:w-[calc(100%/5)] lg:w-[calc(100%/6) lg:w-[calc(100%/8)] ml-4 last:mr-4"
+    >
+      <slot name="loading" />
     </div>
   </div>
 </template>
 
-<style scoped lang="postcss">
-.giro__slider {
-  overflow: hidden;
-}
-.giro__slider-container {
-  display: flex;
-}
-.giro__slider-slide {
-  transform: translate3d(0, 0, 0);
-  flex-shrink: 0;
-  flex-grow: 0;
-  flex-basis: v-bind("slideSizes.sm");
-  min-width: 0;
+<style scoped>
+.scrollbar-hide {
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
 }
 
-@media (min-width: 640px) {
-  .giro__slider-slide {
-    flex-basis: v-bind("slideSizes.md");
-  }
-}
-
-@media (min-width: 768px) {
-  .giro__slider-slide {
-    flex-basis: v-bind("slideSizes.lg");
-  }
-}
-
-@media (min-width: 1024px) {
-  .giro__slider-slide {
-    flex-basis: v-bind("slideSizes.xl");
-  }
+.scrollbar-hide::-webkit-scrollbar {
+  /* Hide scrollbar for WebKit browsers */
+  display: none;
 }
 </style>

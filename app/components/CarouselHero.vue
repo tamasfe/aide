@@ -100,16 +100,18 @@ const slideData: SlideData[] = [
       :side-controls="!isMobile"
       :options="{ align: 'center' }"
       :slides="slides"
+      :slide-count="slideData.length"
       :gap="isMobile ? 0.6 : 1"
       class="w-full overflow-hidden"
       slide-ratio="1280/607"
     >
-      <SlideGeneric
-        v-for="slide in slideData"
-        :key="slide.id"
-        :slide="slide"
-        :fetchpriority="slide.fetchpriority"
-      />
+      <div v-for="slide in slideData" :key="slide.id" class="first:pl-4 pl-3 lg:pl-4 last:pr-4 w-[calc(100%-1rem)] sm:w-[calc((100%/2)-(1rem/2))] lg:w-[calc((100%/3)-(1rem/3))] flex-shrink-0">
+        <SlideGeneric
+          class="w-full"
+          :slide="slide"
+          :fetchpriority="slide.fetchpriority"
+        />
+      </div>
     </BaseCarousel>
   </div>
 </template>

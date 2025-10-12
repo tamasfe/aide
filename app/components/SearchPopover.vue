@@ -93,20 +93,25 @@ const handleFocusOut = (event: FocusEvent) => {
 <template>
   <div
     ref="containerEl"
-    class="relative flex gap-2"
+    class="relative"
     @focusout="handleFocusOut"
   >
-    <slot name="prefix" />
-    <SearchBar
-      v-model="query"
-      input-size="lg"
-      @focus="onOpen"
-      @clear="() => {
-        query = '';
-        onClose()
-      }"
-    />
-    <slot name="suffix" />
+    <div class="flex border border-muted/5 w-full bg-subtle rounded overflow-hidden">
+      <slot name="prefix" />
+      <div class="flex-grow-1 w-full">
+        <SearchBar
+          v-model="query"
+          input-size="lg"
+
+          @focus="onOpen"
+          @clear="() => {
+            query = '';
+            onClose()
+          }"
+        />
+      </div>
+      <slot name="suffix" />
+    </div>
 
     <div
       v-if="open"

@@ -1,103 +1,158 @@
 <script setup lang="ts">
-import emblaCarouselVue from "embla-carousel-vue";
-import Autoplay from "embla-carousel-autoplay";
-import type { CSSProperties } from "vue";
-import type { EmblaOptionsType } from "embla-carousel";
-import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
+import { useScroll, useIntervalFn, useMouseInElement } from "@vueuse/core";
 
 const AUTO_SLIDE_FREQUENCY_MS = 5000;
 
-type SliderBreakpoints = "sm" | "md" | "lg" | "xl";
-type SliderBreakpointValues = Record<SliderBreakpoints, number>;
-
 const props = withDefaults(
   defineProps<{
-    slides?: SliderBreakpointValues;
+    slideCount: number;
     gap?: number;
-    options?: EmblaOptionsType;
     bottomControls?: boolean;
     sideControls?: boolean;
-    slideRatio?: CSSProperties["aspectRatio"];
   }>(),
   {
-    slides: () => ({
-      sm: 1.1,
-      md: 2,
-      lg: 2,
-      xl: 3,
-    }),
     gap: 1,
     bottomControls: true,
     sideControls: false,
   },
 );
 
-const { options } = toRefs(props);
-
-const [emblaRef, emblaApi] = emblaCarouselVue({
-  ...options.value,
-}, [
-  Autoplay({ delay: AUTO_SLIDE_FREQUENCY_MS, stopOnInteraction: false, stopOnFocusIn: true, stopOnMouseEnter: true }),
-  WheelGesturesPlugin(),
-]);
-
-const items = ref<number[]>([]);
-const hasMultipleSlides = ref(false);
+const carouselContainer = ref<HTMLElement>();
 const currentIndex = ref<number>(0);
+const isUserInteracting = ref(false);
+const isProgrammaticScroll = ref(false);
 
-const goto = (index: number) => {
-  emblaApi.value?.scrollTo(index);
+// Use VueUse composables for better SSR compatibility
+const { x: scrollX, isScrolling } = useScroll(carouselContainer, { behavior: "smooth" });
+const { pause: pauseAutoplayFn, resume: resumeAutoplayFn } = useIntervalFn(() => {
+  if (!isUserInteracting.value) {
+    next();
+  }
+}, AUTO_SLIDE_FREQUENCY_MS, { immediate: false });
+
+const { isOutside: isMouseOutside } = useMouseInElement(carouselContainer);
+
+// Computed properties using slideCount prop
+const hasMultipleSlides = computed(() => props.slideCount > 1);
+const slideIndices = computed(() => {
+  return Array.from({ length: props.slideCount }, (_, index) => index);
+});
+
+// Get slide element by index
+const getSlideElement = (index: number): HTMLElement | null => {
+  if (!carouselContainer.value) return null;
+  return carouselContainer.value.children[index] as HTMLElement || null;
 };
 
-const next = () => {
-  emblaApi.value?.scrollNext();
+// Calculate slide width for tracking
+const getSlideWidth = (): number => {
+  const firstSlide = getSlideElement(0);
+  if (!firstSlide) return 0;
+  return firstSlide.offsetWidth + (props.gap * 16);
 };
 
-const prev = () => {
-  emblaApi.value?.scrollPrev();
+// Calculate current slide based on scroll position
+const updateCurrentIndex = (): void => {
+  if (!carouselContainer.value) return;
+
+  const slideWidth = getSlideWidth();
+  if (slideWidth === 0) return;
+
+  const newIndex = Math.round(scrollX.value / slideWidth);
+  currentIndex.value = Math.min(Math.max(newIndex, 0), props.slideCount - 1);
+};
+
+// Navigation methods using dynamic scroll position calculation
+const goto = (index: number): void => {
+  if (!carouselContainer.value) return;
+
+  const slideElement = getSlideElement(index);
+  if (!slideElement) return;
+
+  // Mark as programmatic scroll to avoid triggering user interaction pause
+  isProgrammaticScroll.value = true;
+
+  // Calculate scroll position using element's offsetLeft
+  const scrollPosition = slideElement.offsetLeft;
+
+  carouselContainer.value.scrollTo({
+    left: scrollPosition,
+    behavior: "smooth",
+  });
+
+  currentIndex.value = index;
+
+  // Reset programmatic scroll flag after a short delay
+  setTimeout(() => {
+    isProgrammaticScroll.value = false;
+  }, 100);
+};
+
+const next = (): void => {
+  const nextIndex = currentIndex.value + 1;
+  if (nextIndex >= props.slideCount) {
+    goto(0); // Loop back to first slide
+  }
+  else {
+    goto(nextIndex);
+  }
+};
+
+const prev = (): void => {
+  const prevIndex = currentIndex.value - 1;
+  if (prevIndex < 0) {
+    goto(props.slideCount - 1); // Loop to last slide
+  }
+  else {
+    goto(prevIndex);
+  }
+};
+
+// Autoplay control functions
+const pauseAutoplay = (): void => {
+  isUserInteracting.value = true;
+  pauseAutoplayFn();
+};
+
+const resumeAutoplay = (): void => {
+  isUserInteracting.value = false;
+  if (hasMultipleSlides.value) {
+    resumeAutoplayFn();
+  }
 };
 
 const bottomControlColorClass = (index: number) =>
   index === currentIndex.value ? "opacity-70 bg-white" : "opacity-30 bg-white";
 
-const getCarouselMetadata = () => {
-  const index = emblaApi.value?.selectedScrollSnap();
-  if (index !== undefined) {
-    currentIndex.value = index;
-  }
-
-  const slides = emblaApi.value?.scrollSnapList();
-  if (slides) {
-    hasMultipleSlides.value = slides.length > 1;
-    items.value = slides;
-  }
-};
-
-const slideSizes = computed(() => {
-  return Object.keys(props.slides).reduce(
-    (sizes, key) => {
-      const column = props.slides[key as keyof SliderBreakpointValues];
-      const numberOfGaps = Math.ceil(column) - 1;
-      sizes[key as keyof SliderBreakpointValues]
-        = `calc((100% - ${numberOfGaps * props.gap}rem)/${column})`;
-      return sizes;
-    },
-    {} as Record<keyof SliderBreakpointValues, string>,
-  );
+// Watch for scroll changes to update current index
+watch(scrollX, () => {
+  updateCurrentIndex();
 });
 
+// Watch for user scrolling to pause autoplay
+watch(isScrolling, (scrolling) => {
+  if (scrolling && !isProgrammaticScroll.value) {
+    // User is manually scrolling, pause autoplay
+    pauseAutoplay();
+  }
+});
+
+// Watch mouse enter/leave for autoplay control
+watch(isMouseOutside, (outside) => {
+  if (outside) {
+    resumeAutoplay();
+  }
+  else {
+    pauseAutoplay();
+  }
+});
+
+// Initialize on mount (SSR-safe)
 onMounted(() => {
-  emblaApi.value
-    ?.on("init", getCarouselMetadata)
-    ?.on("reInit", getCarouselMetadata)
-    ?.on("select", getCarouselMetadata);
-});
-
-onBeforeUnmount(() => {
-  emblaApi.value?.off("init", getCarouselMetadata);
-  emblaApi.value?.off("reInit", getCarouselMetadata);
-  emblaApi.value?.off("select", getCarouselMetadata);
-  emblaApi.value?.destroy();
+  updateCurrentIndex();
+  if (hasMultipleSlides.value) {
+    resumeAutoplayFn();
+  }
 });
 
 defineExpose({
@@ -107,13 +162,8 @@ defineExpose({
 </script>
 
 <template>
-  <div
-    class="relative"
-  >
-    <slot
-      v-if="sideControls && hasMultipleSlides"
-      name="controls"
-    >
+  <div class="relative">
+    <div class="hidden lg:block">
       <BaseButton
         variant="ghost"
         size="ghost"
@@ -136,16 +186,14 @@ defineExpose({
           :size="38"
         />
       </BaseButton>
-    </slot>
+    </div>
     <div
-      v-if="bottomControls && hasMultipleSlides"
-      class="pointer-events-none md:pointer-events-auto absolute z-[2] left-1/2 bottom-3 transform -translate-x-1/2 flex items-center space-x-2"
+      class="flex pointer-events-none absolute z-[2] left-1/2 bottom-3 transform -translate-x-1/2 items-center space-x-2"
     >
       <div
-        v-for="(_, index) in items"
+        v-for="(_, index) in slideIndices"
         :key="index"
         class="py-2 cursor-pointer giro__slide-dot-wrapper"
-        @click="goto(index)"
       >
         <BaseButton
           variant="ghost"
@@ -156,62 +204,31 @@ defineExpose({
       </div>
     </div>
     <div
-      ref="emblaRef"
-      class="giro__carousel h-full px-4"
+      ref="carouselContainer"
+      class="flex overflow-x-auto scroll-smooth snap-x snap-start scrollbar-hide lg:mask-edge-fade"
+      :style="{
+        scrollPadding: `0 1rem`,
+      }"
     >
-      <div
-        class="giro__carousel-container h-full select-none"
-        :style="{ gap: `${gap}rem` }"
-      >
-        <slot />
-      </div>
+      <slot />
     </div>
   </div>
 </template>
 
-<style scoped lang="postcss">
-.giro__carousel {
-  overflow: hidden;
+<style scoped>
+.scrollbar-hide {
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
 }
 
-.giro__carousel-container {
-  display: flex;
-}
-
-:deep(.giro__carousel-container > *) {
-  flex: 0 0 100%;
+.scrollbar-hide::-webkit-scrollbar {
+  /* Hide scrollbar for WebKit browsers */
+  display: none;
 }
 
 .giro__slide-dot-wrapper:hover .giro__slide-dot {
   transition: transform 150ms;
   transform: translateY(-50%);
-}
-
-.giro__carousel-container > * {
-  aspect-ratio: v-bind("slideRatio");
-  transform: translate3d(0, 0, 0);
-  flex-shrink: 0;
-  flex-grow: 0;
-  flex-basis: v-bind("slideSizes.sm");
-  min-width: 0;
-
-}
-
-@media (min-width: 640px) {
-  .giro__carousel-container > * {
-    flex-basis: v-bind("slideSizes.md");
-  }
-}
-
-@media (min-width: 768px) {
-  .giro__carousel-container > * {
-    flex-basis: v-bind("slideSizes.lg");
-  }
-}
-
-@media (min-width: 1024px) {
-  .giro__carousel-container > * {
-    flex-basis: v-bind("slideSizes.xl");
-  }
 }
 </style>

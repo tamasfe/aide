@@ -56,15 +56,6 @@ importers:
       dayjs:
         specifier: ^1.11.18
         version: 1.11.18
-      embla-carousel-autoplay:
-        specifier: ^8.6.0
-        version: 8.6.0(embla-carousel@8.6.0)
-      embla-carousel-vue:
-        specifier: ^8.6.0
-        version: 8.6.0(vue@3.5.21(typescript@5.8.3))
-      embla-carousel-wheel-gestures:
-        specifier: ^8.1.0
-        version: 8.1.0(embla-carousel@8.6.0)
       emittery:
         specifier: ^1.2.0
         version: 1.2.0
@@ -168,9 +159,6 @@ importers:
       '@vue/typescript-plugin':
         specifier: ^2.2.12
         version: 2.2.12(typescript@5.8.3)
-      embla-carousel:
-        specifier: ^8.6.0
-        version: 8.6.0
       eslint:
         specifier: ^9.35.0
         version: 9.35.0(jiti@2.5.1)
@@ -4026,30 +4014,6 @@ packages:
   electron-to-chromium@1.5.218:
     resolution: {integrity: sha512-uwwdN0TUHs8u6iRgN8vKeWZMRll4gBkz+QMqdS7DDe49uiK68/UX92lFb61oiFPrpYZNeZIqa4bA7O6Aiasnzg==}
 
-  embla-carousel-autoplay@8.6.0:
-    resolution: {integrity: sha512-OBu5G3nwaSXkZCo1A6LTaFMZ8EpkYbwIaH+bPqdBnDGQ2fh4+NbzjXjs2SktoPNKCtflfVMc75njaDHOYXcrsA==}
-    peerDependencies:
-      embla-carousel: 8.6.0
-
-  embla-carousel-reactive-utils@8.6.0:
-    resolution: {integrity: sha512-fMVUDUEx0/uIEDM0Mz3dHznDhfX+znCCDCeIophYb1QGVM7YThSWX+wz11zlYwWFOr74b4QLGg0hrGPJeG2s4A==}
-    peerDependencies:
-      embla-carousel: 8.6.0
-
-  embla-carousel-vue@8.6.0:
-    resolution: {integrity: sha512-v8UO5UsyLocZnu/LbfQA7Dn2QHuZKurJY93VUmZYP//QRWoCWOsionmvLLAlibkET3pGPs7++03VhJKbWD7vhQ==}
-    peerDependencies:
-      vue: ^3.2.37
-
-  embla-carousel-wheel-gestures@8.1.0:
-    resolution: {integrity: sha512-J68jkYrxbWDmXOm2n2YHl+uMEXzkGSKjWmjaEgL9xVvPb3HqVmg6rJSKfI3sqIDVvm7mkeTy87wtG/5263XqHQ==}
-    engines: {node: '>=10'}
-    peerDependencies:
-      embla-carousel: ^8.0.0 || ~8.0.0-rc03
-
-  embla-carousel@8.6.0:
-    resolution: {integrity: sha512-SjWyZBHJPbqxHOzckOfo8lHisEaJWmwd23XppYFYVh10bU66/Pn5tkVkbkCMZVdbUE5eTCI2nD8OyIP4Z+uwkA==}
-
   emittery@1.2.0:
     resolution: {integrity: sha512-KxdRyyFcS85pH3dnU8Y5yFUm2YJdaHwcBZWrfG8o89ZY9a13/f9itbN+YG3ELbBo9Pg5zvIozstmuV8bX13q6g==}
     engines: {node: '>=14.16'}
@@ -7329,10 +7293,6 @@ packages:
 
   whatwg-url@7.1.0:
     resolution: {integrity: sha512-WUu7Rg1DroM7oQvGWfOiAK21n74Gg+T4elXEQYkOhtyLeWiJFoOGLXPKI/9gzIie9CtwVLm8wtw6YJdKyxSjeg==}
-
-  wheel-gestures@2.2.48:
-    resolution: {integrity: sha512-f+Gy33Oa5Z14XY9679Zze+7VFhbsQfBFXodnU2x589l4kxGM9L5Y8zETTmcMR5pWOPQyRv4Z0lNax6xCO0NSlA==}
-    engines: {node: '>=18'}
 
   which-boxed-primitive@1.1.1:
     resolution: {integrity: sha512-TbX3mj8n0odCBFVlY8AxkqcHASw3L60jIuF8jFP78az3C2YhmGvqbHBpAjTRH2/xqYunrJ9g1jSyjCjpoWzIAA==}
@@ -12013,27 +11973,6 @@ snapshots:
 
   electron-to-chromium@1.5.218: {}
 
-  embla-carousel-autoplay@8.6.0(embla-carousel@8.6.0):
-    dependencies:
-      embla-carousel: 8.6.0
-
-  embla-carousel-reactive-utils@8.6.0(embla-carousel@8.6.0):
-    dependencies:
-      embla-carousel: 8.6.0
-
-  embla-carousel-vue@8.6.0(vue@3.5.21(typescript@5.8.3)):
-    dependencies:
-      embla-carousel: 8.6.0
-      embla-carousel-reactive-utils: 8.6.0(embla-carousel@8.6.0)
-      vue: 3.5.21(typescript@5.8.3)
-
-  embla-carousel-wheel-gestures@8.1.0(embla-carousel@8.6.0):
-    dependencies:
-      embla-carousel: 8.6.0
-      wheel-gestures: 2.2.48
-
-  embla-carousel@8.6.0: {}
-
   emittery@1.2.0: {}
 
   emoji-regex-xs@2.0.1: {}
@@ -16076,8 +16015,6 @@ snapshots:
       lodash.sortby: 4.7.0
       tr46: 1.0.1
       webidl-conversions: 4.0.2
-
-  wheel-gestures@2.2.48: {}
 
   which-boxed-primitive@1.1.1:
     dependencies:

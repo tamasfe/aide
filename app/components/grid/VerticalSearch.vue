@@ -32,12 +32,14 @@ const title: ComputedRef<string> = computed(() => {
 </script>
 
 <template>
-  <GridHeader>
-    <template #title>
-      <div class="flex gap-4 items-center">
-        <GridHeaderTitle :title="title" />
-      </div>
-    </template>
+  <section>
+    <GridHeader class="mb-4">
+      <template #title>
+        <div class="flex gap-4 items-center">
+          <GridHeaderTitle :title="title" />
+        </div>
+      </template>
+    </GridHeader>
 
     <GridVertical
       :data="items"
@@ -52,5 +54,5 @@ const title: ComputedRef<string> = computed(() => {
         <slot :item="data" />
       </template>
     </GridVertical>
-  </GridHeader>
+  </section>
 </template>

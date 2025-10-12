@@ -40,26 +40,27 @@ await useAsyncData(`load-games-for-vertical-${props.categoryIdentifier}`,
 </script>
 
 <template>
-  <GridHeader>
-    <template #title>
-      <div class="flex gap-4 items-center">
-        <BaseButton
-          v-if="props.showBackButton === true"
-          variant="subtle"
-          size="sm"
-          class="p-1.5"
-          @click="navigateBackOrHome"
-        >
-          <BaseIcon
-            name="lucide:arrow-left"
-            :size="24"
-          />
-        </BaseButton>
+  <section>
+    <GridHeader class="mb-4">
+      <template #title>
+        <div class="flex gap-4 items-center">
+          <BaseButton
+            v-if="props.showBackButton === true"
+            variant="subtle"
+            size="sm"
+            class="p-1.5"
+            @click="navigateBackOrHome"
+          >
+            <BaseIcon
+              name="lucide:arrow-left"
+              :size="24"
+            />
+          </BaseButton>
 
-        <GridHeaderTitle :title="title" />
-      </div>
-    </template>
-
+          <GridHeaderTitle :title="title" />
+        </div>
+      </template>
+    </GridHeader>
     <GridVertical
       aspect-ratio="3/4"
       :columns="{ sm: 3, md: 4, lg: 6, xl: 8 }"
@@ -84,5 +85,5 @@ await useAsyncData(`load-games-for-vertical-${props.categoryIdentifier}`,
       :size="32"
       text-class="text-lg"
     />
-  </GridHeader>
+  </section>
 </template>

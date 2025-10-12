@@ -20,12 +20,12 @@ const queryGameCategories = async () => $dependencies.games.ui.searchGameCategor
 
 <template>
   <NuxtLayout name="carousel">
-    <div class="max-w-screen-xl mx-auto w-full px-4 mb-6">
+    <div class="max-w-screen-xl mx-auto w-full mb-10">
       <WinningNowTicker />
     </div>
     <Tabs v-model="currentTab">
       <div class="sticky md:static z-[5] top-[56px] md:hidden max-w-screen-xl mx-auto w-full mb-6">
-        <TabsList class="bg-button-secondary px-2">
+        <TabsList class="bg-subtle px-1 w-full">
           <TabsTrigger
             v-for="tab in menuTabs"
             :key="tab.value"
@@ -39,22 +39,24 @@ const queryGameCategories = async () => $dependencies.games.ui.searchGameCategor
         </TabsList>
       </div>
 
-      <SearchPopover class="hidden md:flex items-stretch max-w-screen-xl mx-auto w-full px-4 mb-6">
-        <template #prefix>
-          <TabsList class="rounded bg-button-secondary">
-            <TabsTrigger
-              v-for="tab in menuTabs"
-              :key="tab.value"
-              :is-active="tab.value === currentTab"
-              :value="tab.value"
-              class="space-x-2"
-            >
-              <BaseIcon :name="tab.iconName" :size="14" />
-              <span>{{ toSentenceCase(tab.label) }}</span>
-            </TabsTrigger>
-          </TabsList>
-        </template>
-      </SearchPopover>
+      <div class="max-w-screen-xl mx-auto w-full px-4 mb-6">
+        <SearchPopover class="hidden md:flex items-stretch ">
+          <template #suffix>
+            <TabsList class="rounded bg-subtle">
+              <TabsTrigger
+                v-for="tab in menuTabs"
+                :key="tab.value"
+                :is-active="tab.value === currentTab"
+                :value="tab.value"
+                class="space-x-2"
+              >
+                <BaseIcon :name="tab.iconName" :size="14" />
+                <span>{{ toSentenceCase(tab.label) }}</span>
+              </TabsTrigger>
+            </TabsList>
+          </template>
+        </SearchPopover>
+      </div>
 
       <TabsContent value="lobby">
         <UseAsyncData
@@ -87,11 +89,13 @@ const queryGameCategories = async () => $dependencies.games.ui.searchGameCategor
         :key="tab.value"
         :value="tab.value"
       >
-        <GridVerticalGames
-          :title="tab.label"
-          :category-identifier="tab.value"
-          :provider-identifier="null"
-        />
+        <div class="max-w-screen-xl mx-auto w-full px-4">
+          <GridVerticalGames
+            :title="tab.label"
+            :category-identifier="tab.value"
+            :provider-identifier="null"
+          />
+        </div>
       </TabsContent>
     </Tabs>
 
