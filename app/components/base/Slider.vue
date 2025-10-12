@@ -7,7 +7,6 @@ const emit = defineEmits<{
 
 const props = withDefaults(
   defineProps<{
-    gap?: number;
     data: T;
     loading?: boolean;
     canLoadMore?: boolean;
@@ -15,7 +14,6 @@ const props = withDefaults(
   }>(),
   {
     loading: false,
-    gap: 1,
     canLoadMore: false,
     slidesBeforeLoad: 1,
   },
@@ -121,7 +119,7 @@ const dataToRender = computed(() => {
   if (props.loading === undefined) {
     return props.data;
   }
-  return props.data.length > 0 ? props.data : dataLoadingSkeleton;
+  return !props.loading ? props.data : dataLoadingSkeleton;
 });
 
 // Expose methods for programmatic control
@@ -131,8 +129,6 @@ defineExpose({
   canScrollNext,
   canScrollPrev,
 });
-
-// width formula: calc((100% - (gap * (items_per_row - 1))) / items_per_row)
 </script>
 
 <template>

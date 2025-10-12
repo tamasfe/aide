@@ -5,6 +5,8 @@ const props = defineProps<{
   identifier: string;
 }>();
 
+console.log(props.identifier);
+
 const result = destructureGameIdentifier(props.identifier);
 </script>
 

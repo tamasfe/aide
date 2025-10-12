@@ -81,25 +81,17 @@ const scrollToTop = () => {
       <!-- <FooterColumnSocialMedia class="hidden lg:flex" /> -->
     </section>
 
-    <section class="max-w-screen-xl mx-auto w-full px-4 flex items-center justify-center space-x-4">
-      <LicenseAnjouan class="w-16" />
-      <GridHorizontal
-        class="w-full"
-        :data="logos"
-        :gap="1"
-        :columns="{ sm: 3.5, md: 5.5, lg: 6.5, xl: 7.5 }"
-        aspect-ratio="16/9"
-      >
-        <template #default="{ item }">
-          <div class="w-full h-full">
-            <NuxtImg
-              :src="item.src"
-              :alt="$t(item.alt)"
-              class="w-full h-full"
-            />
-          </div>
-        </template>
-      </GridHorizontal>
+    <section class="max-w-screen-xl mx-auto w-full px-4 flex items-center gap-4">
+      <LicenseAnjouan class="h-12 w-12" />
+
+      <template v-for="item in logos" :key="item.key">
+        <NuxtImg
+          :src="item.src"
+          height="40"
+          :alt="$t(item.alt)"
+          class="h-12"
+        />
+      </template>
     </section>
 
     <section class="max-w-screen-xl mx-auto w-full px-4 relative flex flex-col text-subtle">

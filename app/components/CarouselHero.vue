@@ -101,15 +101,14 @@ const slideData: SlideData[] = [
       :options="{ align: 'center' }"
       :slides="slides"
       :slide-count="slideData.length"
-      :gap="isMobile ? 0.6 : 1"
       class="w-full overflow-hidden"
       slide-ratio="1280/607"
     >
-      <div v-for="slide in slideData" :key="slide.id" class="flex-shrink-0 snap-start w-[calc((100%-(var(--gap)*(var(--cols)-1)))/var(--cols))]">
+      <div v-for="(slide, index) in slideData" :key="slide.id" class="flex-shrink-0 snap-start w-[calc((100%-(var(--gap)*(var(--cols)-1)))/var(--cols))]">
         <SlideGeneric
           class="w-full"
           :slide="slide"
-          :fetchpriority="slide.fetchpriority"
+          :fetchpriority="isMobile ? (index == 0 ? 'high' : 'low') : (index <= 3 ? 'high' : 'low')"
         />
       </div>
     </BaseCarousel>

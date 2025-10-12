@@ -218,6 +218,7 @@ defineExpose({
         md:[--gap:1rem]
         gap-[var(--gap)]
         [--cols:1]
+        sm:[--cols:2]
         md:[--cols:3]"
       :style="{
         scrollPadding: `0 1rem`,

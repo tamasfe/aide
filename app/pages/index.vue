@@ -67,7 +67,7 @@ const queryGameCategories = async () => $dependencies.games.ui.searchGameCategor
         >
           <template #default="{ items }">
             <GridHorizontalGames
-              v-for="category in items"
+              v-for="category in items?.filter(cat => cat.games && cat.games.length > 0)"
               :key="category.identifier"
               class="mb-6"
               :category-identifier="category.identifier"

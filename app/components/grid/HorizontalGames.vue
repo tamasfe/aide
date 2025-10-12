@@ -10,22 +10,7 @@ const props = defineProps<{
 const { $dependencies } = useNuxtApp();
 const { t } = useI18n();
 
-const slidesToScroll = ref({
-  sm: 3,
-  md: 3,
-  lg: 3,
-  xl: 3,
-});
-
-const columns = ref({
-  sm: 2.7,
-  md: 3.7,
-  lg: 6,
-  xl: 8,
-});
-
 const paginationSize = computed(() => props.initialGames ? props.initialGames.length : 25);
-const slidesBeforeLoad = 4; // We aribitrarely set it to +1 the slides to scroll to give time for the loading one scroll ahead
 const games = useState<(Keyified<Game>)[]>(`grid-horizontal-games-ids-for-${props.categoryIdentifier}`, () => props.initialGames ? props.initialGames.map(game => useAddKeyFromIdentifier(game)) : []);
 const loading = useState(`grid-horizontal-games-loading-for-${props.categoryIdentifier}`, () => false);
 const nextGamesPageToSearch = useState(`grid-horizontal-games-next-page-for-${props.categoryIdentifier}`, () => props.initialGames ? 1 : 0);
@@ -51,44 +36,96 @@ if (!props.initialGames) {
     { lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING },
   );
 }
+
+// eslint-disable-next-line
+const slider = ref<any>(null);
+
+const scrollPrev = () => {
+  slider.value?.scrollPrev();
+};
+
+const scrollNext = () => {
+  slider.value?.scrollNext();
+};
+
+const canScrollPrev = computed(() => {
+  if (!slider.value) return false;
+  return slider.value.canScrollPrev;
+});
+
+const canScrollNext = computed(() => {
+  if (!slider.value) return false;
+  return slider.value.canScrollNext;
+});
 </script>
 
 <template>
-  <GridHeaderHorizontal
-    v-if="loading || games.length > 0"
-    class="gap-2"
-    :data="games"
-    :loading="loading"
-    :can-load-more="canLoadMore"
-    :slides-to-scroll="slidesToScroll"
-    :columns="columns"
-    :slides-before-load="slidesBeforeLoad"
-    :manual-scroll="true"
-    aspect-ratio="3/4"
-    @trigger:load="onLoadData"
-  >
-    <template #title>
-      <GridHeaderTitle :title="t(`category.${categoryIdentifier}`)" />
-    </template>
+  <section class="w-full max-w-screen-xl mx-auto">
+    <GridHeader class="px-4 mb-2">
+      <template #title>
+        <div class="flex gap-6 items-center">
+          <GridHeaderTitle :title="t(`category.${categoryIdentifier}`)" />
 
-    <template #options>
-      <BaseLink
-        :to="{ name: 'categories-id', params: { id: props.categoryIdentifier } }"
-      >
-        <BaseButton
-          variant="subtle"
-          size="sm"
+          <div
+            class="hidden md:flex items-center gap-x-4 text-3xl font-bold cursor-pointer"
+          >
+            <BaseButton
+              variant="subtle"
+              size="sm"
+              class="p-1.5"
+              :disabled="!canScrollPrev"
+              @click="scrollPrev"
+            >
+              <BaseIcon
+                name="lucide:chevron-left"
+                :size="24"
+              />
+            </BaseButton>
+            <BaseButton
+              variant="subtle"
+              size="sm"
+              class="p-1.5"
+              :disabled="!canScrollNext"
+              @click="scrollNext"
+            >
+              <BaseIcon
+                name="lucide:chevron-right"
+                :size="24"
+              />
+            </BaseButton>
+          </div>
+        </div>
+      </template>
+
+      <template #options>
+        <BaseLink
+          :to="{ name: 'categories-id', params: { id: props.categoryIdentifier } }"
         >
-          {{ $t("button.see_all") }}
-        </BaseButton>
-      </BaseLink>
-    </template>
+          <BaseButton
+            variant="subtle"
+            size="sm"
+          >
+            {{ $t("button.see_all") }}
+          </BaseButton>
+        </BaseLink>
+      </template>
+    </GridHeader>
 
-    <template #default="{ item: game }">
-      <GameImageLink
-        :identifier="game.identifier"
-        :animation-on-hover="'vertical-translate'"
-      />
-    </template>
-  </GridHeaderHorizontal>
+    <BaseSlider
+      ref="slider"
+      :data="games"
+      :loading="loading"
+      @trigger:load="onLoadData"
+    >
+      <template #default="{ item: game, index }">
+        <div class="pt-1">
+          <GameImageLink
+            :fetchpriority="index < 3 ? 'high' : 'low'"
+            :identifier="game.identifier"
+            :animation-on-hover="'vertical-translate'"
+          />
+        </div>
+      </template>
+    </BaseSlider>
+  </section>
 </template>
