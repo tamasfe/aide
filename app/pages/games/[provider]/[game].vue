@@ -39,7 +39,7 @@ useHead({
   title: t("page.game", { game: toSentenceCase(gameIdentifier) }),
 });
 
-const queryGameCategories = async () => $dependencies.games.ui.searchGameCategoriesByGroup.handle("game_page", false);
+const queryGameCategories = async () => $dependencies.games.ui.searchGameCategoriesByGroup.handle("game_page", true);
 </script>
 
 <template>
@@ -53,15 +53,16 @@ const queryGameCategories = async () => $dependencies.games.ui.searchGameCategor
       :wait-for-server-side-rendering="true"
     >
       <template #default="{ items }">
-        <div class="max-w-screen-xl mx-auto w-full">
-          <GridHorizontalGames
-            v-for="category in items"
-            :key="category.identifier"
-            class="mb-6"
-            :category-identifier="category.identifier"
-            :initial-games="category.games || undefined"
-          />
-        </div>
+        <GridHorizontalGames
+          v-for="category in items?.filter(cat => cat.games && cat.games.length > 0)"
+          :key="category.identifier"
+          class="mb-6"
+          :category-identifier="category.identifier"
+          :initial-games="category.games || undefined"
+        />
+      </template>
+      <template #loading>
+        <GridHorizontalGamesLoading class="mb-6" />
       </template>
     </UseAsyncData>
   </div>

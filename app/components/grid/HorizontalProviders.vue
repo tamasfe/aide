@@ -105,7 +105,7 @@ const canScrollNext = computed(() => {
     <BaseSlider
       ref="slider"
       :data="providers"
-      :loading="loading"
+      :can-load-more="canLoadMore"
       class="w-full"
       @trigger:load="onLoadData"
     >

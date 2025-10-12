@@ -8,18 +8,16 @@ const emit = defineEmits<{
 const props = withDefaults(
   defineProps<{
     data: T;
-    loading?: boolean;
     canLoadMore?: boolean;
     slidesBeforeLoad?: number;
   }>(),
   {
-    loading: false,
     canLoadMore: false,
     slidesBeforeLoad: 1,
   },
 );
 
-const { loading, canLoadMore } = toRefs(props);
+const { canLoadMore } = toRefs(props);
 const sliderContainer = ref<HTMLElement>();
 
 // Use VueUse for scroll tracking
@@ -29,13 +27,12 @@ const { arrivedState } = useScroll(sliderContainer, { behavior: "smooth" });
 useInfiniteScroll(
   sliderContainer,
   () => {
-    if (canLoadMore.value && !loading.value) {
-      emit("trigger:load");
-    }
+    emit("trigger:load");
   },
   {
     direction: "right",
-    distance: 512, // Distance in pixels from the right edge
+    distance: 128,
+    canLoadMore: () => canLoadMore.value,
   },
 );
 
@@ -112,14 +109,8 @@ const scrollPrev = (): void => {
   });
 };
 
-const SKELETON_ITEMS_TO_SHOW = 8;
-const dataLoadingSkeleton = Array.from({ length: SKELETON_ITEMS_TO_SHOW }).map((_elem, index) => ({ key: String(index) })) as T;
-
 const dataToRender = computed(() => {
-  if (props.loading === undefined) {
-    return props.data;
-  }
-  return !props.loading ? props.data : dataLoadingSkeleton;
+  return props.data;
 });
 
 // Expose methods for programmatic control
@@ -159,9 +150,7 @@ defineExpose({
       :key="item?.key ?? ''"
       class="flex-shrink-0 snap-start w-[calc((100%-(var(--gap)*(var(--cols)-1)))/var(--cols))]"
     >
-      <BaseSkeleton v-if="loading === true && data.length === 0" :loading="loading" class="h-full w-full rounded" />
       <slot
-        v-else
         :item="item"
         :index="idx"
       />

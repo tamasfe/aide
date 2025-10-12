@@ -114,7 +114,7 @@ const canScrollNext = computed(() => {
     <BaseSlider
       ref="slider"
       :data="games"
-      :loading="loading"
+      :can-load-more="canLoadMore"
       @trigger:load="onLoadData"
     >
       <template #default="{ item: game, index }">
