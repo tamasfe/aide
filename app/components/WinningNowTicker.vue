@@ -10,7 +10,7 @@ import type { Win } from "~/types/wins";
 
 const { $dependencies } = useNuxtApp();
 
-const WINS_BUFFER_SIZE = 6;
+const WINS_BUFFER_SIZE = 12;
 
 const displayedWins = useState<Keyified<Win>[]>("winning-now-ticker-displayed-wins", () => []);
 
@@ -27,6 +27,7 @@ await useAsyncData("winning-now-slider-ticker-events", async () => {
 
   // Populate initial wins
   displayedWins.value = keyifiedWins.slice(0, WINS_BUFFER_SIZE);
+
   return keyifiedWins;
 },
 { lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING },
@@ -65,20 +66,20 @@ useCreateSubscriptionToWebsocketTickerChannel(
           <div
             v-for="item in displayedWins"
             :key="item.key"
-            class="flex-shrink-0 flex-grow-0 w-72 md:w-80"
+            class="flex-shrink-0"
           >
             <GamePageLink v-if="item.data" :identifier="item.data.data.game.identifier">
-              <div class="relative group flex items-center space-x-3 bg-subtle p-2 rounded-lg outline-none border border-muted/5 h-18 md:h-24">
-                <div class="self-stretch relative aspect-[3/4] h-full rounded overflow-hidden border border-muted/5">
+              <div class="relative group flex items-center space-x-3 bg-subtle p-2 rounded-lg outline-none border border-muted/5 pr-4">
+                <div class="self-stretch relative rounded overflow-hidden border border-muted/5">
                   <GameTickerImage
                     fetchpriority="low"
                     :identifier="item.data.data.game.identifier"
-                    class="block object-cover h-full w-full transition-transform transform hover:scale-105 cursor-pointer"
+                    class="block object-cover w-full h-full transition-transform transform hover:scale-105 cursor-pointer"
                   />
                 </div>
                 <div class="leading-tight min-w-0 flex-1">
-                  <div class="truncate">{{ item.data.data.userNickname }}</div>
-                  <div class="text-subtle text-xs truncate min-w-0 mb-1">{{ item.data.data.game.name }}</div>
+                  <div class="">{{ item.data.data.userNickname }}</div>
+                  <div class="text-subtle text-xs min-w-0 mb-1">{{ item.data.data.game.name }}</div>
                   <div class="text-md sm:text-lg font-semibold bg-button-primary text-transparent bg-clip-text">
                     <BaseCurrency
                       :currency="item.data.data.currency"
@@ -118,10 +119,5 @@ useCreateSubscriptionToWebsocketTickerChannel(
 
 .slide-in-move {
   transition: transform 0.4s ease-in-out;
-}
-
-/* Fixed width for consistent sizing */
-.flex-shrink-0 {
-  width: 16rem; /* 320px fixed width */
 }
 </style>
