@@ -131,12 +131,29 @@ defineExpose({
   canScrollNext,
   canScrollPrev,
 });
+
+// width formula: calc((100% - (gap * (items_per_row - 1))) / items_per_row)
 </script>
 
 <template>
   <div
     ref="sliderContainer"
-    class="flex overflow-x-auto scroll-smooth snap-x scrollbar-hide lg:mask-edge-fade"
+    class="
+      flex
+      overflow-x-auto
+      scroll-smooth
+      snap-x
+      scrollbar-hide
+      snap-mandatory
+      md:mask-edge-fade
+      px-4
+      [--gap:0.5rem]
+      md:[--gap:1rem]
+      gap-[var(--gap)]
+      [--cols:3]
+      sm:[--cols:5]
+      md:[--cols:7]
+      lg:[--cols:8]"
     :style="{
       scrollPadding: `0 1rem`,
     }"
@@ -144,7 +161,7 @@ defineExpose({
     <div
       v-for="(item, idx) in dataToRender"
       :key="item?.key ?? ''"
-      class="flex-shrink-0 snap-start w-[calc(100%/4)] md:w-[calc(100%/5-1rem-1rem/5)] lg:w-[calc(100%/8-1rem-1rem/8)] first:ml-4 ml-2 md:ml-4 last:mr-4"
+      class="flex-shrink-0 snap-start w-[calc((100%-(var(--gap)*(var(--cols)-1)))/var(--cols))]"
     >
       <BaseSkeleton v-if="loading === true && data.length === 0" :loading="loading" class="h-full w-full rounded" />
       <slot
@@ -158,13 +175,10 @@ defineExpose({
 
 <style scoped>
 .scrollbar-hide {
-  /* Hide scrollbar for Chrome, Safari and Opera */
   scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* Internet Explorer 10+ */
 }
 
 .scrollbar-hide::-webkit-scrollbar {
-  /* Hide scrollbar for WebKit browsers */
   display: none;
 }
 </style>

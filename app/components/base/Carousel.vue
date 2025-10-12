@@ -48,7 +48,7 @@ const getSlideElement = (index: number): HTMLElement | null => {
 const getSlideWidth = (): number => {
   const firstSlide = getSlideElement(0);
   if (!firstSlide) return 0;
-  return firstSlide.offsetWidth + (props.gap * 16);
+  return firstSlide.offsetWidth;
 };
 
 // Calculate current slide based on scroll position
@@ -205,7 +205,20 @@ defineExpose({
     </div>
     <div
       ref="carouselContainer"
-      class="flex overflow-x-auto scroll-smooth snap-x snap-start scrollbar-hide lg:mask-edge-fade"
+      class="
+        flex
+        overflow-x-auto
+        scroll-smooth
+        snap-x
+        scrollbar-hide
+        snap-mandatory
+        md:mask-edge-fade
+        px-4
+        [--gap:0.5rem]
+        md:[--gap:1rem]
+        gap-[var(--gap)]
+        [--cols:1]
+        md:[--cols:3]"
       :style="{
         scrollPadding: `0 1rem`,
       }"
@@ -217,13 +230,10 @@ defineExpose({
 
 <style scoped>
 .scrollbar-hide {
-  /* Hide scrollbar for Chrome, Safari and Opera */
   scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* Internet Explorer 10+ */
 }
 
 .scrollbar-hide::-webkit-scrollbar {
-  /* Hide scrollbar for WebKit browsers */
   display: none;
 }
 
