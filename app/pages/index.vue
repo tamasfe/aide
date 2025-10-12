@@ -20,7 +20,7 @@ const queryGameCategories = async () => $dependencies.games.ui.searchGameCategor
 
 <template>
   <NuxtLayout name="carousel">
-    <div class="max-w-screen-xl mx-auto w-full mb-10">
+    <div class="max-w-screen-xl mx-auto w-full mb-6 mt-6">
       <WinningNowTicker />
     </div>
     <Tabs v-model="currentTab">
@@ -69,7 +69,7 @@ const queryGameCategories = async () => $dependencies.games.ui.searchGameCategor
             <GridHorizontalGames
               v-for="category in items"
               :key="category.identifier"
-              class="mb-8"
+              class="mb-6"
               :category-identifier="category.identifier"
               :initial-games="category.games ?? undefined"
             />

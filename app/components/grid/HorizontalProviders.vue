@@ -73,7 +73,7 @@ await useAsyncData(`load-providers`, () => onLoadData().then(() => true),
     </template>
 
     <template #default="{ item: item }">
-      <div class="group giro__sections justify-between w-full h-full">
+      <div class="group giro__sections justify-between w-full h-full mt-2">
         <div class="flex-1 rounded-lg overflow-hidden">
           <BaseLink
             :to="{

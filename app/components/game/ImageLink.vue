@@ -37,7 +37,7 @@ const animationClasses = computed(() => {
 <template>
   <GamePageLink
     :identifier="identifier"
-    :class="cn('block bg-subtle rounded w-full h-full overflow-hidden border border-emphasis/50', animationClasses.link, props.class)"
+    :class="cn('block bg-subtle rounded w-full h-full overflow-hidden border border-muted/5', animationClasses.link, props.class)"
   >
     <GameImage
       :identifier="identifier"
