@@ -110,17 +110,15 @@ const canScrollNext = computed(() => {
       @trigger:load="onLoadData"
     >
       <template #default="{ item }">
-        <div class="group justify-between w-full h-full mt-2">
-          <div class="flex-1 rounded-lg overflow-hidden">
-            <BaseLink
-              :to="{
-                name: 'games-provider',
-                params: { provider: item.identifier },
-              }"
-            >
-              <ProviderImageLoader :provider-identifier="item.identifier" />
-            </BaseLink>
-          </div>
+        <div class="pt-1">
+          <BaseLink
+            :to="{
+              name: 'games-provider',
+              params: { provider: item.identifier },
+            }"
+          >
+            <ProviderImageLoader :provider-identifier="item.identifier" />
+          </BaseLink>
         </div>
       </template>
     </BaseSlider>

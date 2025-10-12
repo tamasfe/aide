@@ -61,7 +61,7 @@ useCreateSubscriptionToWebsocketTickerChannel(
         :appear="false"
         name="slide-in"
         tag="div"
-        class="flex gap-4 pl-4 md:pl-0 mask-edge-fade-right"
+        class="flex gap-2 md:gap-4 pl-4 md:pl-0 mask-edge-fade-right"
       >
         <div
           v-for="item in displayedWins"
