@@ -48,9 +48,9 @@ useCreateSubscriptionToWebsocketTickerChannel(
 
 <template>
   <div class="md:flex md:items-center md:justify-center md:pr-4">
-    <h3 class="text-center flex md:flex-col items-center md:justify-center gap-2 mb-3 lg:mb-0 text-lg md:text-md px-4">
-      <div class="leading-none md:text-3xl">🏆</div>
-      <div class="whitespace-pre-wrap sm:text-base leading-tight bg-button-primary text-transparent bg-clip-text font-semibold">
+    <h3 class="text-center flex md:flex-col items-center md:justify-center gap-2 mb-3 lg:mb-0  px-4">
+      <div class="leading-none md:text-2xl">🏆</div>
+      <div class="text-lg md:text-sm leading-tight text-primary font-semibold">
         {{ $t('winning_now.title') }}
       </div>
     </h3>
