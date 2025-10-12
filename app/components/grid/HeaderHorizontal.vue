@@ -38,12 +38,11 @@ const canScrollNext = computed(() => {
   <section>
     <GridHeader class="w-full max-w-screen-xl mx-auto px-4 mb-2">
       <template #title>
-        <div class="flex gap-6">
+        <div class="flex gap-6 items-center">
           <slot name="title" />
 
           <div
-            v-if="!isMobile"
-            class="flex items-center gap-x-4 text-3xl font-bold cursor-pointer"
+            class="hidden md:flex items-center gap-x-4 text-3xl font-bold cursor-pointer"
           >
             <BaseButton
               variant="subtle"

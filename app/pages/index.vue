@@ -69,7 +69,7 @@ const queryGameCategories = async () => $dependencies.games.ui.searchGameCategor
             <GridHorizontalGames
               v-for="category in items"
               :key="category.identifier"
-              class="mb-6"
+              class="mb-8"
               :category-identifier="category.identifier"
               :initial-games="category.games ?? undefined"
             />
@@ -81,7 +81,7 @@ const queryGameCategories = async () => $dependencies.games.ui.searchGameCategor
           </template>
         </UseAsyncData>
 
-        <GridHorizontalProviders />
+        <GridHorizontalProviders class="mb-6" />
       </TabsContent>
 
       <TabsContent

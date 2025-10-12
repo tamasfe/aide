@@ -37,7 +37,7 @@ useInfiniteScroll(
   },
   {
     direction: "right",
-    distance: 100, // Distance in pixels from the right edge
+    distance: 512, // Distance in pixels from the right edge
   },
 );
 
@@ -144,7 +144,7 @@ defineExpose({
     <div
       v-for="(item, idx) in dataToRender"
       :key="item?.key ?? ''"
-      class="flex-shrink-0 snap-start w-[calc(100%/3)] sm:w-[calc(100%/4)] md:w-[calc(100%/5)] lg:w-[calc(100%/6) lg:w-[calc(100%/8)] ml-4 last:mr-4"
+      class="flex-shrink-0 snap-start w-[calc(100%/4)] md:w-[calc(100%/5-1rem-1rem/5)] lg:w-[calc(100%/8-1rem-1rem/8)] first:ml-4 ml-2 md:ml-4 last:mr-4"
     >
       <BaseSkeleton v-if="loading === true && data.length === 0" :loading="loading" class="h-full w-full rounded" />
       <slot
