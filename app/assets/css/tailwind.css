@@ -54,9 +54,10 @@
     }
 
     .mask-edge-fade-right {
-      --fade: 3rem;
+      --fade: 6rem;
+      --fade-padding: 0.5rem;
       mask-image:
-        linear-gradient(to left, transparent, #000 var(--fade), #000 calc(100% - var(--fade)), transparent);
+        linear-gradient(to left, transparent, transparent var(--fade-padding), #000 var(--fade), #000);
     }
 }
 
