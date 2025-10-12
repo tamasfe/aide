@@ -81,15 +81,14 @@ const scrollToTop = () => {
       <!-- <FooterColumnSocialMedia class="hidden lg:flex" /> -->
     </section>
 
-    <section class="max-w-screen-xl mx-auto w-full px-4 flex items-center gap-4">
+    <section class="max-w-screen-xl mx-auto w-full px-4 flex flex-col md:flex-row md:items-center gap-4">
       <LicenseAnjouan class="h-12 w-12" />
 
       <template v-for="item in logos" :key="item.key">
         <NuxtImg
           :src="item.src"
-          height="40"
+          width="140"
           :alt="$t(item.alt)"
-          class="h-12"
         />
       </template>
     </section>
