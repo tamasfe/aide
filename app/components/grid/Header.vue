@@ -8,7 +8,7 @@ const props = defineProps<{
 
 <template>
   <div :class="cn('flex flex-col gap-4', props.class)">
-    <div class="flex items-center justify-between">
+    <div class="flex items-center justify-between h-8">
       <slot
         v-if="$slots.title"
         name="title"

@@ -1,32 +1,43 @@
 <script setup lang="ts">
 const size = 10;
-const games = ref(Array.from({ length: size }, (_, i) => ({ key: String(i) })));
+const items = ref(Array.from({ length: size }, (_, i) => ({ key: String(i) })));
 </script>
 
 <template>
-  <GridHeader class="w-full max-w-screen-xl mx-auto px-4 mb-2">
-    <template #title>
-      <div class="flex gap-6 items-center">
-        <div class="flex items-center">
+  <section class="w-full max-w-screen-xl mx-auto">
+    <GridHeader class="px-4 mb-2">
+      <template #title>
+        <div class="flex gap-6 items-center">
           <BaseSkeleton
-            class="w-20 h-6"
-            :loading="false"
+            class="w-60 h-6 rounded bg-subtle"
+            :loading="true"
+          />
+          <BaseSkeleton
+            class="w-10 h-8 rounded bg-subtle"
+            :loading="true"
+          />
+          <BaseSkeleton
+            class="w-10 h-8 rounded bg-subtle"
+            :loading="true"
           />
         </div>
-      </div>
-    </template>
-  </GridHeader>
+      </template>
+      <template #options>
+        <BaseSkeleton
+          class="w-20 h-8 rounded bg-subtle"
+          :loading="true"
+        />
+      </template>
+    </GridHeader>
 
-  <BaseSlider
-    ref="slider"
-    :data="games"
-    :loading="true"
-    class="w-full"
-  >
-    <div class="mt-2 flex items-center justify-center w-full h-full bg-subtle rounded">
-      <BaseSkeleton
-        :loading="true"
-      />
-    </div>
-  </BaseSlider>
+    <BaseSlider
+      ref="slider"
+      :data="items"
+      class="w-full"
+    >
+      <div class="pt-1">
+        <BaseSkeleton loading class="border border-muted/5 flex items-center justify-center w-full h-full bg-subtle rounded aspect-[3/4]" />
+      </div>
+    </BaseSlider>
+  </section>
 </template>

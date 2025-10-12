@@ -4,7 +4,6 @@ import type { HTMLAttributes } from "vue";
 const props = defineProps<{
   identifier: string;
   slug?: string;
-  // altText?: string;
   animationOnHover?: "vertical-translate" | "zoom-in" | null;
   class?: HTMLAttributes["class"];
 }>();

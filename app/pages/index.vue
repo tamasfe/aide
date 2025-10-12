@@ -75,9 +75,9 @@ const queryGameCategories = async () => $dependencies.games.ui.searchGameCategor
             />
           </template>
           <template #loading>
-            <GridHorizontalGamesLoading />
-            <GridHorizontalGamesLoading />
-            <GridHorizontalGamesLoading />
+            <GridHorizontalGamesLoading class="mb-6" />
+            <GridHorizontalGamesLoading class="mb-6" />
+            <GridHorizontalGamesLoading class="mb-6" />
           </template>
         </UseAsyncData>
 
