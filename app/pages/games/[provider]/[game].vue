@@ -53,10 +53,11 @@ const queryGameCategories = async () => $dependencies.games.ui.searchGameCategor
       :wait-for-server-side-rendering="true"
     >
       <template #default="{ items }">
-        <div class="giro__container space-y-[var(--giro-section-gap-sm)] md:space-y-[var(--giro-section-gap-lg)]">
+        <div class="max-w-screen-xl mx-auto w-full">
           <GridHorizontalGames
             v-for="category in items"
             :key="category.identifier"
+            class="mb-6"
             :category-identifier="category.identifier"
             :initial-games="category.games || undefined"
           />

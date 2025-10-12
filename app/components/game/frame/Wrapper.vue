@@ -51,7 +51,7 @@ watch([() => game.value, () => statusLoadingGame.value], async ([game, statusLoa
 
   <div
     v-else-if="currentDevice === 'desktop'"
-    class="pt-4 pb-12 giro__container giro__sections"
+    class="pt-4 pb-12 max-w-screen-xl mx-auto w-full px-4 giro__sections"
   >
     <div v-if="game" class="bg-subtle rounded border border-muted/5 overflow-hidden">
       <GameFrameDesktop

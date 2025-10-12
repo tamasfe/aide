@@ -25,7 +25,7 @@ watch([() => userStore.isAuthenticated], async () => {
       />
     </ScrollOffscreen>
 
-    <div class="w-full giro__container giro__sections">
+    <div class="w-full max-w-screen-xl mx-auto px-4 giro__sections">
       <slot />
     </div>
   </div>

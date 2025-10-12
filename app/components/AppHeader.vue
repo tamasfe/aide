@@ -17,7 +17,7 @@ const emit = defineEmits([
     <!-- Reactivate when we want to have the notifications show again for PWA and others: <PromoBar /> -->
 
     <div class="w-full bg-subtle h-14">
-      <div class="giro__container h-full">
+      <div class="max-w-screen-xl mx-auto w-full px-4 h-full">
         <nav class="-mx-4 flex items-center justify-between gap-4 h-full">
           <div class="flex items-center gap-x-4 self-stretch pl-4">
             <BaseButton

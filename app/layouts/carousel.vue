@@ -1,9 +1,6 @@
 <template>
-  <div class="pt-[var(--giro-section-gap-sm)] md:pt-[var(--giro-section-gap-lg)]">
-    <div class="giro__container-full-width mb-[var(--giro-section-gap-sm)] md:mb-[var(--giro-section-gap-lg)]">
-      <CarouselHero />
-    </div>
-
+  <div class="pt-4 md:pt-6">
+    <CarouselHero class="max-w-screen-xl mx-auto w-full px-4-full-width mb-4 md:mb-6" />
     <slot />
   </div>
 </template>

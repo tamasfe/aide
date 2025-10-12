@@ -20,12 +20,28 @@ const queryGameCategories = async () => $dependencies.games.ui.searchGameCategor
 
 <template>
   <NuxtLayout name="carousel">
-    <div class="giro__container giro__sections">
+    <div class="max-w-screen-xl mx-auto w-full px-4 mb-6">
       <WinningNowTicker />
+    </div>
+    <Tabs v-model="currentTab">
+      <div class="sticky md:static z-[5] top-[56px] md:hidden max-w-screen-xl mx-auto w-full mb-6">
+        <TabsList class="bg-button-secondary px-2">
+          <TabsTrigger
+            v-for="tab in menuTabs"
+            :key="tab.value"
+            :is-active="tab.value === currentTab"
+            :value="tab.value"
+            class="space-x-2"
+          >
+            <BaseIcon :name="tab.iconName" :size="14" />
+            <span>{{ toSentenceCase(tab.label) }}</span>
+          </TabsTrigger>
+        </TabsList>
+      </div>
 
-      <Tabs v-model="currentTab" class="relative space-y-[var(--giro-section-gap-sm)] md:space-y-[var(--giro-section-gap-lg)]">
-        <div class="sticky md:static z-[5] top-[60px] md:hidden">
-          <TabsList>
+      <SearchPopover class="hidden md:flex items-stretch max-w-screen-xl mx-auto w-full px-4 mb-6">
+        <template #prefix>
+          <TabsList class="rounded bg-button-secondary">
             <TabsTrigger
               v-for="tab in menuTabs"
               :key="tab.value"
@@ -37,63 +53,49 @@ const queryGameCategories = async () => $dependencies.games.ui.searchGameCategor
               <span>{{ toSentenceCase(tab.label) }}</span>
             </TabsTrigger>
           </TabsList>
-        </div>
+        </template>
+      </SearchPopover>
 
-        <SearchPopover class="hidden md:flex items-stretch w-full">
-          <template #prefix>
-            <TabsList>
-              <TabsTrigger
-                v-for="tab in menuTabs"
-                :key="tab.value"
-                :is-active="tab.value === currentTab"
-                :value="tab.value"
-                class="space-x-2"
-              >
-                <BaseIcon :name="tab.iconName" :size="14" />
-                <span>{{ toSentenceCase(tab.label) }}</span>
-              </TabsTrigger>
-            </TabsList>
-          </template>
-        </SearchPopover>
-
-        <TabsContent value="lobby" class="giro__sections">
-          <UseAsyncData
-            id="home-page-game-categories"
-            :fetch-items="queryGameCategories"
-            :wait-for-server-side-rendering="true"
-            :defer-client-side-loading="true"
-          >
-            <template #default="{ items }">
-              <GridHorizontalGames
-                v-for="category in items"
-                :key="category.identifier"
-                :category-identifier="category.identifier"
-                :initial-games="category.games ?? undefined"
-              />
-            </template>
-            <template #loading>
-              <GridHorizontalGamesLoading />
-              <GridHorizontalGamesLoading />
-              <GridHorizontalGamesLoading />
-            </template>
-          </UseAsyncData>
-
-          <GridHorizontalProviders />
-        </TabsContent>
-
-        <TabsContent
-          v-for="tab in menuTabs.filter(tab => tab.value !== 'lobby')"
-          :key="tab.value"
-          :value="tab.value"
+      <TabsContent value="lobby">
+        <UseAsyncData
+          id="home-page-game-categories"
+          :fetch-items="queryGameCategories"
+          :wait-for-server-side-rendering="true"
+          :defer-client-side-loading="true"
         >
-          <GridVerticalGames
-            :title="tab.label"
-            :category-identifier="tab.value"
-            :provider-identifier="null"
-          />
-        </TabsContent>
-      </Tabs>
+          <template #default="{ items }">
+            <GridHorizontalGames
+              v-for="category in items"
+              :key="category.identifier"
+              class="mb-6"
+              :category-identifier="category.identifier"
+              :initial-games="category.games ?? undefined"
+            />
+          </template>
+          <template #loading>
+            <GridHorizontalGamesLoading />
+            <GridHorizontalGamesLoading />
+            <GridHorizontalGamesLoading />
+          </template>
+        </UseAsyncData>
 
+        <GridHorizontalProviders />
+      </TabsContent>
+
+      <TabsContent
+        v-for="tab in menuTabs.filter(tab => tab.value !== 'lobby')"
+        :key="tab.value"
+        :value="tab.value"
+      >
+        <GridVerticalGames
+          :title="tab.label"
+          :category-identifier="tab.value"
+          :provider-identifier="null"
+        />
+      </TabsContent>
+    </Tabs>
+
+    <div class="max-w-screen-xl mx-auto w-full px-4">
       <WinningNowTabs />
     </div>
   </NuxtLayout>

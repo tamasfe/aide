@@ -5,26 +5,11 @@ const { isMobile } = useDevice();
 const slideActions = useSlideActions();
 const localePath = useLocalePath();
 
-/**
- * In the future show it if:
- *  1. User is not authenticated
- *  2. Split test is enabled
- */
-// const userStore = useUserStore();
-const showFormWelcome = ref(false); // computed(() => userStore.isAuthenticated !== true);
-
 const slides = computed(() => {
-  if (showFormWelcome.value) return {
-    sm: 1.05,
-    md: 1.1,
-    lg: 1.5,
-    xl: 2.02,
-  };
-
   return {
-    sm: 1.05,
-    md: 1.1,
-    lg: 2.5,
+    sm: 1,
+    md: 1,
+    lg: 2,
     xl: 3,
   };
 });
@@ -110,14 +95,13 @@ const slideData: SlideData[] = [
 </script>
 
 <template>
-  <div class="w-full" :class="{ 'sm:grid sm:grid-cols-3 space-y-[var(--giro-section-gap-sm)] sm:space-y-0': showFormWelcome }">
+  <div class="w-full">
     <BaseCarousel
       :side-controls="!isMobile"
       :options="{ align: 'center' }"
       :slides="slides"
-      :gap="isMobile ? 1 : 1"
+      :gap="isMobile ? 0.6 : 1"
       class="w-full overflow-hidden"
-      :class="{ 'sm:col-span-2': showFormWelcome }"
       slide-ratio="1280/607"
     >
       <SlideGeneric
@@ -127,6 +111,5 @@ const slideData: SlideData[] = [
         :fetchpriority="slide.fetchpriority"
       />
     </BaseCarousel>
-    <FormWelcome v-if="showFormWelcome" />
   </div>
 </template>

@@ -16,7 +16,5 @@ const props = defineProps<{
 
       <slot name="options" />
     </div>
-
-    <slot />
   </div>
 </template>

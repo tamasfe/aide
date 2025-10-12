@@ -31,7 +31,7 @@ const component = computed(() => {
     <NuxtImg
       v-bind="$attrs"
       provider="custom_cloudflare"
-      sizes="372px md:403px"
+      sizes="380px md:403px"
       format="webp"
       quality="40"
       :fetchpriority="slide.fetchpriority || 'auto'"

@@ -40,7 +40,7 @@ const sliderOptions = computed<EmblaOptionsType>(() => {
     slidesToScroll: slidesToScroll.value?.sm,
     duration: props.duration,
     align: "start",
-    dragFree: true,
+    dragFree: false,
     containScroll: "keepSnaps",
     direction: props.direction,
     breakpoints: {
@@ -59,20 +59,18 @@ const sliderOptions = computed<EmblaOptionsType>(() => {
 
 const scrollNext = () => {
   if (slider.value) {
-    const emblaApi = slider.value.emblaApi;
-    emblaApi?.scrollNext();
+    slider.value.scrollNext();
   }
 };
 
 const scrollPrev = () => {
   if (slider.value) {
-    const emblaApi = slider.value.emblaApi;
-    emblaApi?.scrollPrev();
+    slider.value.scrollPrev();
   }
 };
 
-const canScrollNext = computed(() => slider.value.canScrollNext);
-const canScrollPrev = computed(() => slider.value.canScrollPrev);
+const canScrollNext = computed(() => slider.value?.canScrollNext);
+const canScrollPrev = computed(() => slider.value?.canScrollPrev);
 
 defineExpose({
   scrollNext,
@@ -83,7 +81,7 @@ defineExpose({
 </script>
 
 <template>
-  <BaseSlider
+  <BaseSliderCss
     ref="slider"
     class="w-full"
     :style="{
@@ -115,5 +113,5 @@ defineExpose({
         <slot name="loading" />
       </div>
     </template>
-  </BaseSlider>
+  </BaseSliderCss>
 </template>

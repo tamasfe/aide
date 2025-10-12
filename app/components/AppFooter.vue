@@ -36,7 +36,7 @@ const scrollToTop = () => {
 <template>
   <footer class="pt-6 md:py-12 bg-subtle flex flex-col space-y-10 print:hidden">
     <!-- main -->
-    <section class="giro__container flex flex-col md:flex-row md:justify-between sm:space-x-8 md:space-x-12 text-subtle">
+    <section class="max-w-screen-xl mx-auto w-full px-4 flex flex-col md:flex-row md:justify-between sm:space-x-8 md:space-x-12 text-subtle">
       <div class="flex-1 md:max-w-xs lg:max-w-sm flex flex-col items-center md:items-start space-y-6 md:space-y-8">
         <div class="w-40">
           <NuxtImg
@@ -81,7 +81,7 @@ const scrollToTop = () => {
       <!-- <FooterColumnSocialMedia class="hidden lg:flex" /> -->
     </section>
 
-    <section class="giro__container flex items-center justify-center space-x-4">
+    <section class="max-w-screen-xl mx-auto w-full px-4 flex items-center justify-center space-x-4">
       <LicenseAnjouan class="w-16" />
       <GridHorizontal
         class="w-full"
@@ -102,7 +102,7 @@ const scrollToTop = () => {
       </GridHorizontal>
     </section>
 
-    <section class="giro__container relative flex flex-col text-subtle">
+    <section class="max-w-screen-xl mx-auto w-full px-4 relative flex flex-col text-subtle">
       <div class="flex flex-col items-center space-y-5 md:space-y-8">
         <div class="max-w-[42rem] lg:max-w-[52rem] text-sm sm:text-center">
           <p v-if="siteStore.currentSite.identifier === 'zambabet'">
@@ -139,7 +139,7 @@ const scrollToTop = () => {
         />
       </BaseButton>
 
-      <section class="!mt-8 giro__container flex items-center justify-center" />
+      <section class="!mt-8 max-w-screen-xl mx-auto w-full px-4 flex items-center justify-center" />
     </section>
   </footer>
 </template>

@@ -181,12 +181,24 @@ const dataToRender = computed(() => {
 <template>
   <div
     ref="emblaRef"
-    class="giro__slider"
+    class="giro__slider px-4"
   >
     <div
       class="giro__slider-container w-full select-none"
       :style="{ gap: `${gap}rem` }"
     >
+      <div
+        v-for="(item, idx) in dataToRender"
+        :key="item?.key ?? ''"
+        class="giro__slider-slide"
+      >
+        <BaseSkeleton v-if="loading === true && data.length === 0" :loading="loading" class="h-full w-full rounded" />
+        <slot
+          v-else
+          :item="item"
+          :index="idx"
+        />
+      </div>
       <div
         v-for="(item, idx) in dataToRender"
         :key="item?.key ?? ''"

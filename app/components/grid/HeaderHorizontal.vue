@@ -35,49 +35,51 @@ const canScrollNext = computed(() => {
 </script>
 
 <template>
-  <GridHeader>
-    <template #title>
-      <div class="flex gap-6">
-        <slot name="title" />
+  <section>
+    <GridHeader class="w-full max-w-screen-xl mx-auto px-4 mb-2">
+      <template #title>
+        <div class="flex gap-6">
+          <slot name="title" />
 
-        <div
-          v-if="!isMobile"
-          class="flex items-center gap-x-4 text-3xl font-bold cursor-pointer"
-        >
-          <BaseButton
-            variant="subtle"
-            size="sm"
-            class="p-1.5"
-            :disabled="!canScrollPrev"
-            @click="scrollPrev"
+          <div
+            v-if="!isMobile"
+            class="flex items-center gap-x-4 text-3xl font-bold cursor-pointer"
           >
-            <BaseIcon
-              name="lucide:chevron-left"
-              :size="24"
-            />
-          </BaseButton>
-          <BaseButton
-            variant="subtle"
-            size="sm"
-            class="p-1.5"
-            :disabled="!canScrollNext"
-            @click="scrollNext"
-          >
-            <BaseIcon
-              name="lucide:chevron-right"
-              :size="24"
-            />
-          </BaseButton>
+            <BaseButton
+              variant="subtle"
+              size="sm"
+              class="p-1.5"
+              :disabled="!canScrollPrev"
+              @click="scrollPrev"
+            >
+              <BaseIcon
+                name="lucide:chevron-left"
+                :size="24"
+              />
+            </BaseButton>
+            <BaseButton
+              variant="subtle"
+              size="sm"
+              class="p-1.5"
+              :disabled="!canScrollNext"
+              @click="scrollNext"
+            >
+              <BaseIcon
+                name="lucide:chevron-right"
+                :size="24"
+              />
+            </BaseButton>
+          </div>
         </div>
-      </div>
-    </template>
+      </template>
 
-    <template #options>
-      <slot name="options" />
-    </template>
-
+      <template #options>
+        <slot name="options" />
+      </template>
+    </GridHeader>
     <GridHorizontal
       ref="grid"
+      class="w-full max-w-screen-xl mx-auto"
       v-bind="props"
       @trigger:load="emit('trigger:load')"
     >
@@ -89,5 +91,5 @@ const canScrollNext = computed(() => {
         <slot name="loading" />
       </template>
     </GridHorizontal>
-  </GridHeader>
+  </section>
 </template>
