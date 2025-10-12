@@ -15,7 +15,7 @@ const menuTabs = ref([
   { value: "live", iconName: "lucide:users", label: t(`category.live`) },
 ]);
 
-const queryGameCategories = async () => $dependencies.games.ui.searchGameCategoriesByGroup.handle("home", true);
+const { data: gameCategories, pending } = useAsyncData("home-page-game-categories", async () => $dependencies.games.ui.searchGameCategoriesByGroup.handle("home", true), { server: true, lazy: true, default: () => [] });
 </script>
 
 <template>
@@ -59,27 +59,19 @@ const queryGameCategories = async () => $dependencies.games.ui.searchGameCategor
       </div>
 
       <TabsContent value="lobby">
-        <UseAsyncData
-          id="home-page-game-categories"
-          :fetch-items="queryGameCategories"
-          :wait-for-server-side-rendering="true"
-          :defer-client-side-loading="true"
-        >
-          <template #default="{ items }">
-            <GridHorizontalGames
-              v-for="category in items?.filter(cat => cat.games && cat.games.length > 0)"
-              :key="category.identifier"
-              class="mb-6"
-              :category-identifier="category.identifier"
-              :initial-games="category.games ?? undefined"
-            />
-          </template>
-          <template #loading>
-            <GridHorizontalGamesLoading class="mb-6" />
-            <GridHorizontalGamesLoading class="mb-6" />
-            <GridHorizontalGamesLoading class="mb-6" />
-          </template>
-        </UseAsyncData>
+        <GridHorizontalGames
+          v-for="category in gameCategories?.filter(cat => cat.games && cat.games.length > 0)"
+          :key="category.identifier"
+          class="mb-6"
+          :category-identifier="category.identifier"
+          :initial-games="category.games ?? undefined"
+        />
+
+        <template v-if="pending">
+          <GridHorizontalGamesLoading class="mb-6" />
+          <GridHorizontalGamesLoading class="mb-6" />
+          <GridHorizontalGamesLoading class="mb-6" />
+        </template>
 
         <GridHorizontalProviders class="mb-6" />
       </TabsContent>

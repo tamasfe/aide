@@ -12,7 +12,7 @@ const DEFER_CLIENT_SIDE_LOADING = true;
 
 const userStore = useUserStore();
 
-const { data } = await useAsyncData("account-page-user-settings-store", async () => {
+const { data } = useAsyncData("account-page-user-settings-store", async () => {
   if (userSettingsStore.status === "unititialized") {
     await userSettingsStore.refresh();
   }

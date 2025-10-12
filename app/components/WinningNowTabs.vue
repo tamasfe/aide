@@ -24,7 +24,8 @@ const highestWinsBuffer = computed(() => {
 
 const WINS_ENABLE_SERVER_SIDE_RENDERING = true;
 const WINS_DEFER_CLIENT_SIDE_LOADING = true;
-await useAsyncData("winning-now-tabs-ticker-events", async () => {
+
+useAsyncData("winning-now-tabs-ticker-events", async () => {
   const wins = await $dependencies.tickers.ui.searchTickerEventsFromWinningNow.handle();
   for (const win of wins) {
     const keyifiedWin = useAddKeyFromIdentifier(camelizeKeys(win));
@@ -51,7 +52,7 @@ useCreateSubscriptionToWebsocketTickerChannel(
 
 const MY_BETS_ENABLE_SERVER_SIDE_RENDERING = false;
 const MY_BETS_DEFER_CLIENT_SIDE_LOADING = true;
-const { data: myBetsData } = await useAsyncData(`winning-now-my-bets-table`, async () => {
+const { data: myBetsData } = useAsyncData(`winning-now-my-bets-table`, async () => {
   if (!userStore.isAuthenticated) {
     return;
   }

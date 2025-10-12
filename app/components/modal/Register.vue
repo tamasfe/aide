@@ -12,7 +12,7 @@ const { $dependencies } = useNuxtApp();
 
 const ENABLE_SERVER_SIDE_RENDERING = false;
 const DEFER_CLIENT_SIDE_LOADING = true;
-const { data: currentStartedSignupFlow, refresh } = await useAsyncData(`current-signup-flow`, async () => {
+const { data: currentStartedSignupFlow, refresh } = useAsyncData(`current-signup-flow`, async () => {
   return $dependencies.signupFlows.ui.searchCurrentSignupFlowOnModalInit.handle();
 }, { lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING });
 

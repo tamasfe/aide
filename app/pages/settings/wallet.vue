@@ -13,7 +13,7 @@ const NUMBER_OF_PAYMENTS_TO_SHOW = 25;
 
 const loading = useState(`wallet-page-payments-loading`, () => true);
 
-const { data: paymentsData, execute } = await useAsyncData("wallet-page-payments-data", async () => {
+const { data: paymentsData, execute } = useAsyncData("wallet-page-payments-data", async () => {
   loading.value = true;
 
   if (!walletStore.wallet) {

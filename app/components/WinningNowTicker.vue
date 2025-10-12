@@ -12,7 +12,7 @@ const { $dependencies } = useNuxtApp();
 
 const WINS_BUFFER_SIZE = 12;
 
-const displayedWins = useState<Keyified<Win>[]>("winning-now-ticker-displayed-wins", () => []);
+const displayedWins = useState<Keyified<Win | null>[]>("winning-now-ticker-displayed-wins", () => []);
 
 // Add new win to FIFO array
 const addNewWin = (win: Keyified<Win>) => {
@@ -22,7 +22,8 @@ const addNewWin = (win: Keyified<Win>) => {
 
 const ENABLE_SERVER_SIDE_RENDERING = true;
 const DEFER_CLIENT_SIDE_LOADING = true;
-await useAsyncData("winning-now-slider-ticker-events", async () => {
+
+useAsyncData("winning-now-slider-ticker-events", async () => {
   const wins = await $dependencies.tickers.ui.searchTickerEventsFromWinningNow.handle();
   const keyifiedWins = wins.map(win => useAddKeyFromIdentifier(camelizeKeys(win)));
 

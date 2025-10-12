@@ -37,7 +37,7 @@ const emits = defineEmits<{
 // If we want to allow SSR session inititalization, we have to first find a solution for redirecting these requests to the main region internally.
 const ENABLE_SERVER_SIDE_RENDERING = false;
 const DEFER_CLIENT_SIDE_LOADING = true;
-const { data: gameSessionResult } = await useAsyncData(() =>
+const { data: gameSessionResult } = useAsyncData(() =>
   $dependencies.games.ui.createGameSessionDemoFromGamePage.handle(props.gameIdentifier, i18n.localeProperties.value.language || i18n.locale.value.split("-")[0] || "", props.clientType),
 {
   watch: [() => i18n.locale.value, () => props.gameIdentifier],

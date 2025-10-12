@@ -28,8 +28,8 @@ const onLoadData = async () => {
   loading.value = false;
 };
 
-await useAsyncData(`load-vertical-providers`, () => onLoadData().then(() => true),
-  { lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING },
+useAsyncData(`load-vertical-providers`, onLoadData,
+  { lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING, default: () => true },
 );
 </script>
 

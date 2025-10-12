@@ -34,7 +34,7 @@ const isPlaying = defineModel<boolean>("playing", {
 // If we want to allow SSR session inititalization, we have to first find a solution for redirecting these requests to the main region internally.
 const ENABLE_SERVER_SIDE_RENDERING = false;
 const DEFER_CLIENT_SIDE_LOADING = true;
-const { data: gameSessionResult, execute } = await useAsyncData(() =>
+const { data: gameSessionResult, execute } = useAsyncData(() =>
   $dependencies.games.ui.createGameSessionFromGamePage.handle(props.gameIdentifier, userStore.user?.id, walletStore.wallet?.currency, props.clientType),
 {
   watch: [() => userStore.isAuthenticated, () => walletStore.balanceStatus],

@@ -20,10 +20,10 @@ afterEach(() => {
 
 const ENABLE_SERVER_SIDE_RENDERING = false;
 const DEFER_CLIENT_SIDE_LOADING = true;
-const { data: categoriesData } = await useAsyncData("sidebar-category-identifiers", async () => {
+const { data: categoriesData } = useAsyncData("sidebar-category-identifiers", async () => {
   return $dependencies.games.ui.searchGameCategoriesByGroup.handle("sidebar_menu", false);
 },
-{ lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING },
+{ lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING, default: () => [] },
 );
 
 const links = [

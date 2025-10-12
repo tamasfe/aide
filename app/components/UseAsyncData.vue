@@ -11,7 +11,7 @@ const props = defineProps<{
   deferClientSideLoading: boolean;
 }>();
 
-const { data: items, status } = await useAsyncData(`loading-wrapper-${props.id}`, async () =>
+const { data: items, status } = useAsyncData(`loading-wrapper-${props.id}`, async () =>
   props.fetchItems(),
 {
   server: props.waitForServerSideRendering ?? true,

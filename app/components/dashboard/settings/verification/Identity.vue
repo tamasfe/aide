@@ -5,7 +5,7 @@ const { $dependencies } = useNuxtApp();
 
 const ENABLE_SERVER_SIDE_RENDERING = true;
 const DEFER_CLIENT_SIDE_LOADING = true;
-const { data: kycResponse } = await useAsyncData("dashboard-settings-verification-kyc",
+const { data: kycResponse } = useAsyncData("dashboard-settings-verification-kyc",
   async () => $dependencies.kyc.ui.findUserKycStatus.handle(),
   { lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING },
 );

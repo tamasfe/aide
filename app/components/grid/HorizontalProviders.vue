@@ -24,7 +24,7 @@ const onLoadData = async () => {
 
 const ENABLE_SERVER_SIDE_RENDERING = true;
 const DEFER_CLIENT_SIDE_LOADING = true;
-await useAsyncData(`load-providers`, () => onLoadData().then(() => true),
+useAsyncData(`load-providers`, () => onLoadData().then(() => true),
   { lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING },
 );
 

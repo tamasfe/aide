@@ -11,7 +11,7 @@ const { locale } = useI18n();
 
 const ENABLE_SERVER_SIDE_RENDERING = true;
 const DEFER_CLIENT_SIDE_LOADING = true;
-const { data: notificationBanners } = await useAsyncData("promo-bar",
+const { data: notificationBanners } = useAsyncData("promo-bar",
   () => $dependencies.notifications.ui.searchNotificationBannersFromPromoBar.handle(),
   { watch: [() => locale.value], lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING },
 );

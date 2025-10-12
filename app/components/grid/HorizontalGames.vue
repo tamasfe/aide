@@ -31,7 +31,7 @@ const onLoadData = async () => {
 if (!props.initialGames) {
   const ENABLE_SERVER_SIDE_RENDERING = true;
   const DEFER_CLIENT_SIDE_LOADING = true;
-  await useAsyncData(`load-games-for-horizontal-${props.categoryIdentifier}`,
+  useAsyncData(`load-games-for-horizontal-${props.categoryIdentifier}`,
     () => onLoadData().then(() => true),
     { lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING },
   );

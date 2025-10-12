@@ -16,7 +16,7 @@ useHead({
   title: t("page.provider", { provider: params.id }),
 });
 
-const { data: providerFromApi, status } = await useAsyncData(`provider-${providerIdentifier}`, async () => {
+const { data: providerFromApi, status } = useAsyncData(`provider-${providerIdentifier}`, async () => {
   return $dependencies.providers.ui.findProviderByIdentifierOnProviderPage.handle(providerIdentifier);
 }, { lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING });
 if (!providerFromApi.value && (status.value === "success" || status.value === "error")) {

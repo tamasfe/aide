@@ -15,7 +15,7 @@ const pageIndex = useState(`history-page-withdrawals-page-index`, () => 0);
 const totalItems = useState(`history-page-withdrawals-total-items`, () => $dependencies.wallets.ui.searchPaymentsOnTable.PAGE_SIZE);
 const pageSize = ref($dependencies.wallets.ui.searchPaymentsOnTable.PAGE_SIZE);
 
-const { data } = await useAsyncData("history-page-withdrawals-data", async () => {
+const { data } = useAsyncData("history-page-withdrawals-data", async () => {
   if (!walletStore.wallet) return;
 
   loading.value = true;

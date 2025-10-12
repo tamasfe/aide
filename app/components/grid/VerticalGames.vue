@@ -33,9 +33,10 @@ const onLoadData = async () => {
 
 const ENABLE_SERVER_SIDE_RENDERING = true;
 const DEFER_CLIENT_SIDE_LOADING = true;
-await useAsyncData(`load-games-for-vertical-${props.categoryIdentifier}`,
-  () => onLoadData().then(() => true),
-  { lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING },
+
+useAsyncData(`load-games-for-vertical-${props.categoryIdentifier}`,
+  onLoadData,
+  { lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING, default: () => true },
 );
 </script>
 

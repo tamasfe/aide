@@ -15,7 +15,7 @@ export default defineNuxtPlugin({
     const ENABLE_SERVER_SIDE_RENDERING = false;
     const DEFER_CLIENT_SIDE_LOADING = true;
     if (userStore.isAuthenticated) {
-      await useAsyncData("unread-toast-notifications", () =>
+      useAsyncData("unread-toast-notifications", () =>
         $dependencies.notifications.ui.searchLastUnreadNotificationToasts.handle()
           .then(notifications => notifications.map(notification => notificationsStore.showToast(notification))),
       { lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING },

@@ -24,7 +24,7 @@ const likes = ref<number>(0);
 const dislikes = ref<number>(0);
 const rating = ref<"like" | "dislike" | null>(null);
 
-await useAsyncData(`game-frame-votes-for-game-${props.gameIdentifier}`, async () => {
+useAsyncData(`game-frame-votes-for-game-${props.gameIdentifier}`, async () => {
   initialLoading.value = true;
   const result = await $dependencies.games.ui.searchGameRatingFromGameFrameVotes.handle(props.gameIdentifier);
   if (!result) return null;
