@@ -6,8 +6,6 @@ const siteStore = useSiteStore();
 
 const props = defineProps<{
   identifier: string;
-  priority?: "high" | "low";
-  // altText?: string;
   class?: HTMLAttributes["class"];
   fallbackImageClass?: HTMLAttributes["class"];
 }>();
@@ -24,10 +22,9 @@ const gameTitle = computed(() => {
 <template>
   <NuxtImg
     provider="custom_cloudflare"
-    sizes="xs:220px sm:200px md:160px lg:145px"
-    :fetchpriority="priority"
+    sizes="xs:132px sm:156px md:114px lg:156px"
     format="webp"
-    quality="50"
+    quality="30"
     :class="cn('w-full h-full aspect-[3/4] text-primary text-center', props.class)"
     :src="`/games/${props.identifier}.jpg`"
     :style="{

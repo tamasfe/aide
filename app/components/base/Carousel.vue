@@ -35,7 +35,6 @@ const props = withDefaults(
 const { options } = toRefs(props);
 
 const [emblaRef, emblaApi] = emblaCarouselVue({
-  skipSnaps: true,
   ...options.value,
 }, [
   Autoplay({ delay: AUTO_SLIDE_FREQUENCY_MS, stopOnInteraction: false, stopOnFocusIn: true, stopOnMouseEnter: true }),
@@ -158,7 +157,7 @@ defineExpose({
     </div>
     <div
       ref="emblaRef"
-      class="giro__carousel h-full"
+      class="giro__carousel h-full px-4"
     >
       <div
         class="giro__carousel-container h-full select-none"

@@ -21,3 +21,20 @@ onMounted(() => {
     <NuxtPage class="min-h-[calc(100vh-7rem)] sm:min-h-[calc(100vh-3.5rem)] relative" />
   </NuxtLayout>
 </template>
+
+// We need to put this here so it's inlined in the head and applies immediately
+<style>
+html {
+  font-optical-sizing: auto;
+  font-family:
+    "Montserrat",
+    -apple-system,
+    ui-sans-serif,
+    system-ui,
+    sans-serif,
+    "Apple Color Emoji",
+    "Segoe UI Emoji",
+    "Segoe UI Symbol",
+    "Noto Color Emoji";
+}
+</style>
