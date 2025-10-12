@@ -16,7 +16,8 @@ const displayedWins = useState<Keyified<Win>[]>("winning-now-ticker-displayed-wi
 
 // Add new win to FIFO array
 const addNewWin = (win: Keyified<Win>) => {
-  displayedWins.value = [win, ...displayedWins.value].slice(0, WINS_BUFFER_SIZE);
+  displayedWins.value.unshift(win);
+  displayedWins.value.length = Math.min(displayedWins.value.length, WINS_BUFFER_SIZE);
 };
 
 const ENABLE_SERVER_SIDE_RENDERING = true;
@@ -48,7 +49,7 @@ useCreateSubscriptionToWebsocketTickerChannel(
 
 <template>
   <div class="md:flex md:items-center md:justify-center md:pr-4">
-    <h3 class="text-center flex md:flex-col items-center md:justify-center gap-2 mb-3 lg:mb-0  px-4">
+    <h3 class="text-center flex md:flex-col items-center md:justify-center gap-2 mb-3 lg:mb-0 px-4">
       <div class="leading-none md:text-2xl">🏆</div>
       <div class="text-lg md:text-sm leading-tight text-primary font-semibold">
         {{ $t('winning_now.title') }}
@@ -56,68 +57,66 @@ useCreateSubscriptionToWebsocketTickerChannel(
     </h3>
 
     <div class="w-full overflow-hidden">
-      <div class="flex gap-4 transition-transform duration-500 ease-out">
-        <TransitionGroup
-          :appear="false"
-          name="slide-in"
-          tag="div"
-          class="flex gap-4 min-w-0 pl-4 md:pl-0"
+      <TransitionGroup
+        :appear="false"
+        name="slide-in"
+        tag="div"
+        class="flex gap-4 pl-4 md:pl-0 mask-edge-fade-right"
+      >
+        <div
+          v-for="item in displayedWins"
+          :key="item.key"
+          class="flex-shrink-0"
         >
-          <div
-            v-for="item in displayedWins"
-            :key="item.key"
-            class="flex-shrink-0"
-          >
-            <GamePageLink v-if="item.data" :identifier="item.data.data.game.identifier">
-              <div class="relative group flex items-center space-x-3 bg-subtle p-2 rounded-lg outline-none border border-muted/5 pr-4">
-                <div class="self-stretch relative rounded overflow-hidden border border-muted/5">
-                  <GameTickerImage
-                    fetchpriority="low"
-                    :identifier="item.data.data.game.identifier"
-                    class="block object-cover w-full h-full transition-transform transform hover:scale-105 cursor-pointer"
+          <GamePageLink v-if="item.data" :identifier="item.data.data.game.identifier">
+            <div class="group flex items-center space-x-3 bg-subtle p-2 rounded-lg outline-none border border-muted/5 pr-4">
+              <div class="shrink-0 relative rounded border border-muted/5 aspect-[3/4] h-14 overflow-hidden">
+                <GameTickerImage
+                  fetchpriority="low"
+                  :identifier="item.data.data.game.identifier"
+                  class="absolute inset-0 object-cover w-full h-full transition-transform transform hover:scale-105 cursor-pointer"
+                />
+              </div>
+              <div class="leading-tight min-w-0 flex-1">
+                <div class="">{{ item.data.data.userNickname }}</div>
+                <div class="text-subtle text-xs min-w-0 mb-1">{{ item.data.data.game.name }}</div>
+                <div class="text-md sm:text-lg font-semibold bg-button-primary text-transparent bg-clip-text">
+                  <BaseCurrency
+                    :currency="item.data.data.currency"
+                    :value="item.data.data.amount"
+                    variant="ghost"
+                    class="truncate"
                   />
                 </div>
-                <div class="leading-tight min-w-0 flex-1">
-                  <div class="">{{ item.data.data.userNickname }}</div>
-                  <div class="text-subtle text-xs min-w-0 mb-1">{{ item.data.data.game.name }}</div>
-                  <div class="text-md sm:text-lg font-semibold bg-button-primary text-transparent bg-clip-text">
-                    <BaseCurrency
-                      :currency="item.data.data.currency"
-                      :value="item.data.data.amount"
-                      variant="ghost"
-                      class="truncate"
-                    />
-                  </div>
-                </div>
               </div>
-            </GamePageLink>
-          </div>
-        </TransitionGroup>
-      </div>
+            </div>
+          </GamePageLink>
+        </div>
+      </TransitionGroup>
     </div>
   </div>
 </template>
 
 <style scoped>
 .slide-in-enter-active {
-  transition: all 0.4s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
 
 .slide-in-leave-active {
-  transition: all 0.4s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
 
 .slide-in-enter-from {
-  transform: translateX(-100%);
+  transform: scale(0.5);
   opacity: 0;
 }
 
 .slide-in-leave-to {
-  transform: translateX(100%);
+  transform: scale(0.5);
   opacity: 0;
 }
 
 .slide-in-move {
-  transition: transform 0.4s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
 </style>

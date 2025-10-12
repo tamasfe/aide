@@ -52,6 +52,12 @@
     mask-image:
       linear-gradient(to right, transparent, #000 var(--fade), #000 calc(100% - var(--fade)), transparent);
     }
+
+    .mask-edge-fade-right {
+      --fade: 3rem;
+      mask-image:
+        linear-gradient(to left, transparent, #000 var(--fade), #000 calc(100% - var(--fade)), transparent);
+    }
 }
 
 .max-w-screen-xl mx-auto w-full px-4 {
