@@ -21,9 +21,6 @@ import { constructGameIdentifier } from "~/modules/games/domain/Game";
 const { params } = useRoute();
 const { $dependencies } = useNuxtApp();
 const { t } = useI18n();
-const { isMobile } = useDevice();
-
-const currentDevice = isMobile ? "mobile" : "desktop";
 
 const providerSlug = params.provider;
 const gameSlug = params.game;
@@ -39,31 +36,25 @@ useHead({
   title: t("page.game", { game: toSentenceCase(gameIdentifier) }),
 });
 
-const queryGameCategories = async () => $dependencies.games.ui.searchGameCategoriesByGroup.handle("game_page", true);
+const { data: gameCategories, pending } = useAsyncData("game-page-categories", async () => $dependencies.games.ui.searchGameCategoriesByGroup.handle("game_page", true), { server: true, lazy: true, default: () => [] });
 </script>
 
 <template>
   <div>
     <GameFrameWrapper :game-identifier="gameIdentifier" />
-    <UseAsyncData
-      v-if="currentDevice === 'desktop'"
-      id="game-page-categories"
-      :fetch-items="queryGameCategories"
-      :defer-client-side-loading="true"
-      :wait-for-server-side-rendering="true"
-    >
-      <template #default="{ items }">
-        <GridHorizontalGames
-          v-for="category in items?.filter(cat => cat.games && cat.games.length > 0)"
-          :key="category.identifier"
-          class="mb-6"
-          :category-identifier="category.identifier"
-          :initial-games="category.games || undefined"
-        />
-      </template>
-      <template #loading>
-        <GridHorizontalGamesLoading class="mb-6" />
-      </template>
-    </UseAsyncData>
+
+    <template v-if="pending">
+      <GridHorizontalGamesLoading class="mb-6" />
+    </template>
+
+    <template v-else>
+      <GridHorizontalGames
+        v-for="category in gameCategories?.filter(cat => cat.games && cat.games.length > 0)"
+        :key="category.identifier"
+        class="mb-6"
+        :category-identifier="category.identifier"
+        :initial-games="category.games || undefined"
+      />
+    </template>
   </div>
 </template>

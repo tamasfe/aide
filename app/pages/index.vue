@@ -59,18 +59,20 @@ const { data: gameCategories, pending } = useAsyncData("home-page-game-categorie
       </div>
 
       <TabsContent value="lobby">
-        <GridHorizontalGames
-          v-for="category in gameCategories?.filter(cat => cat.games && cat.games.length > 0)"
-          :key="category.identifier"
-          class="mb-6"
-          :category-identifier="category.identifier"
-          :initial-games="category.games ?? undefined"
-        />
-
         <template v-if="pending">
           <GridHorizontalGamesLoading class="mb-6" />
           <GridHorizontalGamesLoading class="mb-6" />
           <GridHorizontalGamesLoading class="mb-6" />
+        </template>
+
+        <template v-else>
+          <GridHorizontalGames
+            v-for="category in gameCategories?.filter(cat => cat.games && cat.games.length > 0)"
+            :key="category.identifier"
+            class="mb-6"
+            :category-identifier="category.identifier"
+            :initial-games="category.games ?? undefined"
+          />
         </template>
 
         <GridHorizontalProviders class="mb-6" />
