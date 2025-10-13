@@ -5,15 +5,6 @@ const { isMobile } = useDevice();
 const slideActions = useSlideActions();
 const localePath = useLocalePath();
 
-const slides = computed(() => {
-  return {
-    sm: 1,
-    md: 1,
-    lg: 2,
-    xl: 3,
-  };
-});
-
 const slideData: SlideData[] = [
   {
     id: "aviator",
@@ -99,7 +90,6 @@ const slideData: SlideData[] = [
     <BaseCarousel
       :side-controls="!isMobile"
       :options="{ align: 'center' }"
-      :slides="slides"
       :slide-count="slideData.length"
       class="w-full overflow-hidden"
       slide-ratio="1280/607"

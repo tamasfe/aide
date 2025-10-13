@@ -25,7 +25,7 @@ const onLiveChatVisibilityChanged = (visibility: "minimized" | "maximized" | "hi
 </script>
 
 <template>
-  <div>
+  <div class="pt-14">
     <AppUserInteractionModal v-model:open="userActionModalIsOpen" />
 
     <NavSidebar v-model:open="sidebarIsOpen" />

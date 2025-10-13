@@ -28,7 +28,7 @@ const { data: gameCategories, pending } = useAsyncData("home-page-game-categorie
       <WinningNowTicker />
     </div>
     <Tabs v-model="currentTab">
-      <div class="sticky md:static z-[5] top-[56px] md:hidden max-w-screen-xl mx-auto w-full mb-6">
+      <div class="sticky md:static z-[5] top-14 md:hidden max-w-screen-xl mx-auto w-full mb-6">
         <TabsList class="bg-subtle px-1 w-full">
           <TabsTrigger
             v-for="tab in menuTabs"
