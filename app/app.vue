@@ -22,19 +22,6 @@ onMounted(() => {
   </NuxtLayout>
 </template>
 
-// We need to put this here so it's inlined in the head and applies immediately
 <style>
-html {
-  font-optical-sizing: auto;
-  font-family:
-    "Montserrat",
-    -apple-system,
-    ui-sans-serif,
-    system-ui,
-    sans-serif,
-    "Apple Color Emoji",
-    "Segoe UI Emoji",
-    "Segoe UI Symbol",
-    "Noto Color Emoji";
-}
+@import url("~/assets/css/fonts.css");
 </style>

@@ -2,6 +2,10 @@
 const { t } = useI18n();
 const siteStore = useSiteStore();
 const { $dependencies } = useNuxtApp();
+// defineOgImageComponent("Base", {
+//   theme: "#131232",
+//   colorMode: "dark",
+// });
 
 useHead({
   title: t("page.home", { siteName: siteStore.currentSite.name }),

@@ -16,9 +16,6 @@ export default defineNuxtConfig({
     "nuxt-gtag",
     "@nuxt/fonts",
   ],
-  devtools: {
-    enabled: true,
-  },
   app: {
     head: {
       charset: "utf-8",
@@ -40,7 +37,7 @@ export default defineNuxtConfig({
     },
     rootId: "app",
   },
-  css: ["~/assets/css/tailwind.css"],
+  css: ["~/assets/css/tailwind.css", "~/assets/css/fonts.css"],
   site: {
     url: process.env.NUXT_PUBLIC_BASE_URL,
     // description: "Welcome to my awesome site!", // TODO
