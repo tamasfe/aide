@@ -37,7 +37,7 @@ export default defineNuxtConfig({
     },
     rootId: "app",
   },
-  css: ["~/assets/css/tailwind.css", "~/assets/css/fonts.css"],
+  css: ["~/assets/css/tailwind.css"],
   site: {
     url: process.env.NUXT_PUBLIC_BASE_URL,
     // description: "Welcome to my awesome site!", // TODO
