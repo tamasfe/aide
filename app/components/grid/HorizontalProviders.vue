@@ -109,16 +109,13 @@ const canScrollNext = computed(() => {
       class="w-full"
       @trigger:load="onLoadData"
     >
-      <template #default="{ item }">
-        <div class="pt-1">
-          <BaseLink
-            :to="{
-              name: 'games-provider',
-              params: { provider: item.identifier },
-            }"
-          >
-            <ProviderImageLoader :provider-identifier="item.identifier" />
-          </BaseLink>
+      <template #default="{ item, index }">
+        <div class="pt-1 h-full">
+          <GameProviderImageLink
+            :fetchpriority="index < 3 ? 'high' : 'low'"
+            :identifier="item.identifier"
+            :animation-on-hover="'vertical-translate'"
+          />
         </div>
       </template>
     </BaseSlider>

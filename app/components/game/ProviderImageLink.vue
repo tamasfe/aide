@@ -33,13 +33,13 @@ const animationClasses = computed(() => {
 </script>
 
 <template>
-  <GamePageLink
-    :identifier="identifier"
-    :class="cn('block bg-subtle rounded w-full h-full overflow-hidden border border-muted/5', animationClasses.link, props.class)"
+  <BaseLink
+    :to="{
+      name: 'games-provider',
+      params: { provider: identifier },
+    }"
+    :class="cn('block bg-subtle rounded w-full h-full overflow-hidden border border-muted/5 p-2', animationClasses.link, props.class)"
   >
-    <GameImage
-      :identifier="identifier"
-      :class="cn('block w-full h-full object-cover cursor-pointer', animationClasses.img)"
-    />
-  </GamePageLink>
+    <ProviderImageLoader :provider-identifier="identifier" :class="cn('max-h-20', animationClasses.img)" />
+  </BaseLink>
 </template>

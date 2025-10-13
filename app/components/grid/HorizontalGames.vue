@@ -118,7 +118,7 @@ const canScrollNext = computed(() => {
       @trigger:load="onLoadData"
     >
       <template #default="{ item: game, index }">
-        <div class="pt-1">
+        <div class="pt-1 h-full">
           <GameImageLink
             :fetchpriority="index < 3 ? 'high' : 'low'"
             :identifier="game.identifier"

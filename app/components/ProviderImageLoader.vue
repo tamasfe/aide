@@ -12,11 +12,9 @@ const imageSrc = computed(() => `${siteStore.getCdnProviderImageUrl(providerIden
 </script>
 
 <template>
-  <div class="flex items-center justify-center h-full">
-    <NuxtImg
-      :src="imageSrc"
-      :alt="`Provider ${providerIdentifier} logo`"
-      class="w-full h-full object-contain group-hover:opacity-80"
-    />
-  </div>
+  <NuxtImg
+    :src="imageSrc"
+    :alt="`Provider ${providerIdentifier} logo`"
+    class="w-full h-full object-contain group-hover:opacity-80"
+  />
 </template>
