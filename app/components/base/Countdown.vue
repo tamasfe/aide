@@ -8,7 +8,7 @@ defineProps<{
 
 defineEmits<{
   // Emit when countdown is finished
-  end: () => void;
+  (e: "end"): void;
 }>();
 </script>
 

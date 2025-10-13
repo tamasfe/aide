@@ -20,7 +20,7 @@ const promotionsPreferences = ref<{
 });
 const errorUpdating = ref<string | null>(null);
 
-await callOnce("settings-preferences-refresh-user-settings", async () => {
+callOnce("settings-preferences-refresh-user-settings", async () => {
   if (userSettingsStore.status === "unititialized") {
     await userSettingsStore.refresh();
     if (userSettingsStore.settings) {
