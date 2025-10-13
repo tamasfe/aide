@@ -14,10 +14,36 @@ const WINS_BUFFER_SIZE = 12;
 
 const displayedWins = useState<Keyified<Win | null>[]>("winning-now-ticker-displayed-wins", () => []);
 
-// Add new win to FIFO array
-const addNewWin = (win: Keyified<Win>) => {
-  displayedWins.value.unshift(win);
-  displayedWins.value.length = Math.min(displayedWins.value.length, WINS_BUFFER_SIZE);
+// Preload game image using Image class to prevent flashing (client-side only)
+const preloadGameImage = (gameIdentifier: string): Promise<void> => {
+  // Skip preloading during SSR
+  if (import.meta.server) {
+    return Promise.resolve();
+  }
+
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve();
+    img.onerror = () => reject(new Error(`Failed to preload image for game: ${gameIdentifier}`));
+    img.src = `/games/${gameIdentifier}.jpg`;
+  });
+};
+
+// Add new win to FIFO array after preloading its image
+const addNewWin = async (win: Keyified<Win>) => {
+  try {
+    // Preload the game image before adding to the buffer
+    await preloadGameImage(win.data.data.game.identifier);
+
+    displayedWins.value.unshift(win);
+    displayedWins.value.length = Math.min(displayedWins.value.length, WINS_BUFFER_SIZE);
+  }
+  catch (error) {
+    // If image preloading fails, still add the win but log the error
+    console.warn("Failed to preload image, adding win anyway:", error);
+    displayedWins.value.unshift(win);
+    displayedWins.value.length = Math.min(displayedWins.value.length, WINS_BUFFER_SIZE);
+  }
 };
 
 const ENABLE_SERVER_SIDE_RENDERING = true;
@@ -27,7 +53,7 @@ useAsyncData("winning-now-slider-ticker-events", async () => {
   const wins = await $dependencies.tickers.ui.searchTickerEventsFromWinningNow.handle();
   const keyifiedWins = wins.map(win => useAddKeyFromIdentifier(camelizeKeys(win)));
 
-  // Populate initial wins
+  // Populate initial wins (no preloading needed for initial load)
   displayedWins.value = keyifiedWins.slice(0, WINS_BUFFER_SIZE);
 
   return keyifiedWins;
@@ -42,6 +68,7 @@ useCreateSubscriptionToWebsocketTickerChannel(
     message: "winning_now",
     callback: (message) => {
       const win = useAddKeyFromIdentifier(camelizeKeys(message));
+      // Use the async addNewWin function to preload image
       addNewWin(win);
     },
   },
@@ -65,26 +92,32 @@ useCreateSubscriptionToWebsocketTickerChannel(
         class="flex gap-2 md:gap-4 pl-4 md:pl-0 mask-edge-fade-right"
       >
         <div
-          v-for="item in displayedWins"
-          :key="item.key"
+          v-for="{ key, data } in displayedWins"
+          :key="key"
           class="flex-shrink-0"
         >
-          <GamePageLink v-if="item.data" :identifier="item.data.data.game.identifier">
+          <GamePageLink v-if="data" :identifier="data.data.game.identifier">
             <div class="group flex items-center space-x-3 bg-subtle p-2 rounded-lg outline-none border border-muted/5 pr-4">
               <div class="shrink-0 relative rounded border border-muted/5 aspect-[3/4] h-14 overflow-hidden">
-                <GameTickerImage
+                <NuxtImg
+                  provider="custom_cloudflare"
+                  sizes="40px"
+                  format="webp"
+                  quality="10"
                   fetchpriority="low"
-                  :identifier="item.data.data.game.identifier"
                   class="absolute inset-0 object-cover w-full h-full transition-transform transform hover:scale-105 cursor-pointer"
+                  :class="cn('w-full h-full aspect-[3/4] text-primary text-center')"
+                  :src="`/games/${data.data.game.identifier}.jpg`"
+                  :alt="data.data.game.name"
                 />
               </div>
               <div class="leading-tight min-w-0 flex-1">
-                <div class="">{{ item.data.data.userNickname }}</div>
-                <div class="text-subtle text-xs min-w-0 mb-1">{{ item.data.data.game.name }}</div>
+                <div class="">{{ data.data.userNickname }}</div>
+                <div class="text-subtle text-xs min-w-0 mb-1">{{ data.data.game.name }}</div>
                 <div class="text-md sm:text-lg font-semibold bg-button-primary text-transparent bg-clip-text">
                   <BaseCurrency
-                    :currency="item.data.data.currency"
-                    :value="item.data.data.amount"
+                    :currency="data.data.currency"
+                    :value="data.data.amount"
                     variant="ghost"
                     class="truncate"
                   />
