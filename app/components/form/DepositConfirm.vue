@@ -72,7 +72,7 @@ const onClickGenerateNewCode = async () => {
         >
           <template #default="{ copied }">
             <div>
-              <QRCode class="mx-auto px-3 bg-white rounded-lg" :value="code" :size="225" />
+              <LazyQRCode class="mx-auto px-3 bg-white rounded-lg" :value="code" :size="225" />
             </div>
 
             <div class="text-4xl flex items-center justify-center font-bold bg-button-emphasis text-transparent bg-clip-text">

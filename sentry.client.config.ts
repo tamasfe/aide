@@ -22,7 +22,6 @@ Sentry.init({
 
   // Session Replay
   integrations: [
-    Sentry.replayIntegration(),
     Sentry.browserTracingIntegration(),
     Sentry.piniaIntegration(usePinia()),
   ],
