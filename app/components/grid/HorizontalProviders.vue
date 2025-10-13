@@ -90,7 +90,7 @@ const canScrollNext = computed(() => {
 
       <template #options>
         <BaseLink
-          :to="{ name: 'categories-id', params: { name: 'providers' } }"
+          :to="{ name: 'providers' }"
         >
           <BaseButton
             variant="subtle"
