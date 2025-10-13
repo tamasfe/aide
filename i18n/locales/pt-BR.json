@@ -511,7 +511,14 @@
     "weekly-top-picks": "Melhores da Semana",
     "featured": "Destaques",
     "hot": "Top",
-    "latest-releases": "Lançamentos Recentes"
+    "latest-releases": "Lançamentos Recentes",
+    "your-top-picks": "Suas Melhores Escolhas",
+    "instantwin": "Instant Win",
+    "sport": "Esporte",
+    "dice": "Dado",
+    "keno": "Keno",
+    "bingo": "Bingo",
+    "other": "Outro"
   },
   "user_settings": {
     "payment": {

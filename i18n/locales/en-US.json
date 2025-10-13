@@ -512,7 +512,14 @@
     "weekly-top-picks": "Weekly Top Picks",
     "featured": "Featured",
     "hot": "Hot",
-    "latest-releases": "Latest Releases"
+    "latest-releases": "Latest Releases",
+    "your-top-picks": "Your Top Picks",
+    "instantwin": "Instant Win",
+    "sport": "Sport",
+    "dice": "Dice",
+    "keno": "Keno",
+    "bingo": "Bingo",
+    "other": "Other"
   },
   "user_settings": {
     "payment": {
