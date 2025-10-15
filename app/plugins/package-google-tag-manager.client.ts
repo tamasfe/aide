@@ -54,7 +54,6 @@ export default defineNuxtPlugin({
   parallel: true,
   async setup(nuxtApp) {
     const userStore = useUserStore();
-    const { $dependencies } = useNuxtApp();
     const publicConfig = useRuntimeConfig().public;
     const siteStore = useSiteStore();
 
@@ -96,103 +95,91 @@ export default defineNuxtPlugin({
       },
     );
 
-    $dependencies.common.asyncMessagePublisher.subscribe(
-      "frontend:events:signup-flows:signup-flow-submitted",
-      async () => {
-        const gtm = useGtm();
-        if (!gtm) {
-          return;
-        }
-        fireGtmEvent(
-          gtm,
-          "SIGNUP",
-          {
-            user_id: String(userStore.user?.id || ""),
-          },
-          siteStore.currentSite.id,
-        );
-      },
-    );
+    useEventBusSubscription("frontend:events:signup-flows:signup-flow-submitted", async () => {
+      const gtm = useGtm();
+      if (!gtm) {
+        return;
+      }
+      fireGtmEvent(
+        gtm,
+        "SIGNUP",
+        {
+          user_id: String(userStore.user?.id || ""),
+        },
+        siteStore.currentSite.id,
+      );
+    });
 
-    $dependencies.common.asyncMessagePublisher.subscribe(
-      "frontend:events:payments:deposit-flow-created",
-      async ({ amount, currency, totalDeposits }) => {
-        const gtm = useGtm();
-        if (!gtm) {
-          return;
-        }
-        fireGtmEvent(
-          gtm,
-          "DEPOSIT_INITIATED",
-          {
-            amount_decimal: amount,
-            deposit_count: totalDeposits,
-            currency,
-            user_id: String(userStore.user?.id || ""),
-          },
-          siteStore.currentSite.id,
-        );
-      },
-    );
+    useEventBusSubscription("frontend:events:payments:deposit-flow-created", async ({ amount, currency, totalDeposits }) => {
+      const gtm = useGtm();
+      if (!gtm) {
+        return;
+      }
+      fireGtmEvent(
+        gtm,
+        "DEPOSIT_INITIATED",
+        {
+          amount_decimal: amount,
+          deposit_count: totalDeposits,
+          currency,
+          user_id: String(userStore.user?.id || ""),
+        },
+        siteStore.currentSite.id,
+      );
+    });
 
-    $dependencies.common.asyncMessagePublisher.subscribe(
-      "frontend:events:payments:withdrawal-flow-created",
-      async ({ amount, currency, totalWithdrawals }) => {
-        const gtm = useGtm();
-        if (!gtm) {
-          return;
-        }
-        fireGtmEvent(
-          gtm,
-          "WITHDRAWAL_INITIATED",
-          {
-            amount_decimal: amount,
-            withdrawal_count: totalWithdrawals,
-            currency,
-            user_id: String(userStore.user?.id || ""),
-          },
-          siteStore.currentSite.id,
-        );
-      },
-    );
+    useEventBusSubscription("frontend:events:payments:withdrawal-flow-created", async ({ amount, currency, totalWithdrawals }) => {
+      const gtm = useGtm();
+      if (!gtm) {
+        return;
+      }
+      fireGtmEvent(
+        gtm,
+        "WITHDRAWAL_INITIATED",
+        {
+          amount_decimal: amount,
+          withdrawal_count: totalWithdrawals,
+          currency,
+          user_id: String(userStore.user?.id || ""),
+        },
+        siteStore.currentSite.id,
+      );
+    });
 
-    $dependencies.common.asyncMessagePublisher.subscribe(
-      "backend:events:tracker:payment-updated",
-      async (event) => {
-        const gtm = useGtm();
-        if (!gtm) {
-          return;
-        }
+    useEventBusSubscription("backend:events:tracker:payment-updated", async (event) => {
+      const gtm = useGtm();
+      if (!gtm) {
+        return;
+      }
 
-        if (event.status === "succeeded") {
-          if (event.paymentType === "deposit") {
-            fireGtmEvent(
-              gtm,
-              "DEPOSIT_SUCCEEDED",
-              {
-                amount_decimal: event.amount,
-                deposit_count: event.statusCounts.succeeded,
-                currency: event.currency,
-                user_id: String(userStore.user?.id || ""),
-              },
-              siteStore.currentSite.id,
-            );
-          }
-          if (event.paymentType === "withdrawal") {
-            fireGtmEvent(
-              gtm,
-              "WITHDRAWAL_SUCCEEDED",
-              {
-                amount_decimal: event.amount,
-                withdrawal_count: event.statusCounts.succeeded,
-                currency: event.currency,
-                user_id: String(userStore.user?.id || ""),
-              },
-              siteStore.currentSite.id,
-            );
-          }
+      if (event.status === "succeeded") {
+        if (event.paymentType === "deposit") {
+          fireGtmEvent(
+            gtm,
+            "DEPOSIT_SUCCEEDED",
+            {
+              amount_decimal: event.amount,
+              deposit_count: event.statusCounts.succeeded,
+              currency: event.currency,
+              user_id: String(userStore.user?.id || ""),
+            },
+            siteStore.currentSite.id,
+          );
         }
-      },
-    );
+        if (event.paymentType === "withdrawal") {
+          fireGtmEvent(
+            gtm,
+            "WITHDRAWAL_SUCCEEDED",
+            {
+              amount_decimal: event.amount,
+              withdrawal_count: event.statusCounts.succeeded,
+              currency: event.currency,
+              user_id: String(userStore.user?.id || ""),
+            },
+            siteStore.currentSite.id,
+          );
+        }
+      }
+    });
   },
 });

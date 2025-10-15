@@ -22,44 +22,39 @@ export default defineNuxtPlugin({
      * Event listeners
      *
      */
-    $dependencies.common.asyncMessagePublisher.subscribe(
-      "frontend:events:users:user-logged-in",
-      () => refreshStores(),
-    );
-    $dependencies.common.asyncMessagePublisher.subscribe(
-      "frontend:events:users:user-logged-out",
-      async () => {
-        await walletStore.refresh();
-        paymentMethodsStore.refresh(null);
-      },
-    );
-    $dependencies.common.asyncMessagePublisher.subscribe(
-      "frontend:events:users:user-closed-account",
-      async () => {
-        await walletStore.refresh();
-        paymentMethodsStore.refresh(null);
-      },
-    );
-    $dependencies.common.asyncMessagePublisher.subscribe(
-      "frontend:events:signup-flows:signup-flow-submitted",
-      () => refreshStores(),
-    );
+    // $dependencies.common.asyncMessagePublisher.subscribe(
+    //   "frontend:events:users:user-logged-in",
+    //   () => refreshStores(),
+    // );
 
-    $dependencies.common.asyncMessagePublisher.subscribe(
-      "backend:events:payments:payment-status-updated",
-      async () => {
-        await walletStore.refresh();
-      },
-    );
+    useEventBusSubscription("frontend:events:users:user-logged-in", async () => refreshStores());
 
-    $dependencies.common.asyncMessagePublisher.subscribe(
-      "backend:events:wallets:wallet-balance-updated",
-      ({ balanceBonus, currency, balanceLocked, balanceUnlocked }) => walletStore.updateBalance({
-        bonus: balanceBonus,
-        locked: balanceLocked,
-        unlocked: balanceUnlocked,
-      }, currency),
-    );
+    useEventBusSubscription("backend:events:wallets:wallet-balance-updated",
+      ({ balanceBonus, currency, balanceLocked, balanceUnlocked }) => {
+        walletStore.updateBalance({
+          bonus: balanceBonus,
+          locked: balanceLocked,
+          unlocked: balanceUnlocked,
+        }, currency);
+      });
+
+    useEventBusSubscription("backend:events:payments:payment-status-updated", async () => {
+      await walletStore.refresh();
+    });
+
+    useEventBusSubscription("frontend:events:users:user-logged-out", async () => {
+      await walletStore.refresh();
+      paymentMethodsStore.refresh(null);
+    });
+
+    useEventBusSubscription("frontend:events:users:user-closed-account", async () => {
+      await walletStore.refresh();
+      paymentMethodsStore.refresh(null);
+    });
+
+    useEventBusSubscription("frontend:events:signup-flows:signup-flow-submitted", async () => {
+      await refreshStores();
+    });
 
     /**
      *

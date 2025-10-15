@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { SlideData } from "~/types/slides";
-import BaseLink from "~/components/base/Link.vue";
+import { NuxtLink } from "#components";
 
 interface Props {
   slide: SlideData;
@@ -14,7 +14,7 @@ defineOptions({ inheritAttrs: false });
 const component = computed(() => {
   switch (props.slide.action.type) {
     case "link":
-      return BaseLink;
+      return NuxtLink;
     case "callback":
       return "button";
     default:

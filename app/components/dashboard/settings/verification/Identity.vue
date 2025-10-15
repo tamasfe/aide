@@ -16,14 +16,14 @@ const onClickUpload = (responseData: Exclude<FindUserKycStatusResponseI["data"],
 <template>
   <DashboardSection>
     <template #title>
-      {{ $t('dashboard.settings.verification.identity') }}
+      {{ $t('account.settings.verification.identity') }}
     </template>
     <template #description>
       <p v-if="kycResponse?.status === 'INACTIVE'">
-        {{ $t('dashboard.settings.verification.kyc_missing') }}
+        {{ $t('account.settings.verification.kyc_missing') }}
       </p>
       <p v-if="kycResponse?.status === 'ACTIVE'">
-        {{ $t('dashboard.settings.verification.kyc_active') }}
+        {{ $t('account.settings.verification.kyc_active') }}
       </p>
     </template>
     <ClientOnly>

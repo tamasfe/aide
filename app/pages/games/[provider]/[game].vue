@@ -1,60 +1,75 @@
 <script setup lang="ts">
-import { constructGameIdentifier } from "~/modules/games/domain/Game";
-
-// DESIGN STATUS:       ✅
-// ARCHITECTURE STATUS: ✴️
-//   * there are some edge cases we should handle, like what happens when you run out of money (how to display it to the user, etc)
-//   * for performance reasons we CANT be duplicating some heavy iframe around however which loads tons of assets (ie multiple hidden ones)
-//   * this also needs to hide the balance in menu bar (see me for details, we will do it how bet7k does)
-//   * look at how Blaze + Bet7k transition between the mobile and desktop frames
-//     based on an exact breakpoint. note that it MUST have more logic than just responsive
-//     because there can only ever be 1 game frame at once. the way these sites handle it
-//     looks to be having a v-if which unloads the frame. this is horrible as if you make
-//     your browser small, all your progress is lost. so we have 3 ways...
-//   * 1) (current approach) Load desktop or mobile to start, and dont handle that device changing screen. separate out into components
-//   * 2) switch between them but MOVE the iframe so you dont lose your place. i have no idea the nuance of this
-//   * 3) make it truly responsive and handle ALL cases... probably quite complicated and CSS spaghetti
-//
-//   Personally approach 1 seems perfectly fine now as i dont want edge cases with moving iframes in old browsers etc.
-// TRANSLATION STATUS:  ✅
-
-const { params } = useRoute();
-const { $dependencies } = useNuxtApp();
-const { t } = useI18n();
-
-const providerSlug = params.provider;
-const gameSlug = params.game;
-if (!providerSlug || !gameSlug || typeof providerSlug !== "string" || typeof gameSlug !== "string") {
-  $dependencies.common.logger.warn("Game slug route parameter is missing", { providerSlug, gameSlug });
-  await navigateTo("/");
-  throw new Error("Game slug route parameter is missing");
-}
-
-const gameIdentifier = constructGameIdentifier(providerSlug, gameSlug);
-
-useHead({
-  title: t("page.game", { game: toSentenceCase(gameIdentifier) }),
+definePageMeta({
+  layout: false,
 });
 
-const { data: gameCategories, pending } = useAsyncData("game-page-categories", async () => $dependencies.games.ui.searchGameCategoriesByGroup.handle("game_page", true), { server: true, lazy: true, default: () => [] });
+const { $dependencies } = useNuxtApp();
+const { isMobile } = useDevice();
+const walletStore = useWalletStore();
+const userStore = useUserStore();
+const i18n = useI18n();
+
+const currentDevice = isMobile ? "mobile" : "desktop";
+
+const gameIdentifier = useGameIdentifier();
+
+const { data: game } = await useAsyncData(
+  computed(() => `game-${gameIdentifier.value}`),
+  async () => {
+    return $dependencies.games.ui.findGameCompatibilityByIdentifierOnGamePage.handle(gameIdentifier.value, currentDevice);
+  }, {
+    server: true,
+    lazy: true,
+  });
+
+const emit = defineEmits<{
+  (e: "close"): void;
+}>();
+
+// We have to disable server-side rendering for the game, as we rely on our cloudflare proxy to route these requests
+// to our main-instance in ireland. If we enable SSR, the request will be made to the API instance within the same region, which means
+// in the case of a secondary region, the request will be sent against the API in that region, which then has to send mutating
+// queries to the main DB in the primary region leading to major slowdowns due to high SQL query RTT (round trip time).
+// If we want to allow SSR session inititalization, we have to first find a solution for redirecting these requests to the main region internally.
+
+const { data: gameSession } = useAsyncData(
+  computed(() => `game-${gameIdentifier.value}-session`),
+  async () => {
+    return $dependencies.games.ui.createGameSessionFromGamePage.handle(
+      gameIdentifier.value,
+      userStore.user?.id,
+      walletStore.wallet?.currency,
+      currentDevice,
+    );
+  },
+  {
+    watch: [gameIdentifier, userStore, walletStore],
+    server: false,
+  });
+
+// We can enable server side rendering for the demo session, as no user specific data is required.
+// and thus the demo session can usually be generated on the edge.
+
+const { data: gameDemoSession } = useAsyncData(
+  computed(() => `game-${gameIdentifier.value}-demo-session`),
+  async () => {
+    if (!game.value?.demo) {
+      return null;
+    }
+
+    return $dependencies.games.ui.createGameSessionDemoFromGamePage.handle(gameIdentifier.value, i18n.localeProperties.value.language || i18n.locale.value.split("-")[0] || "", currentDevice);
+  },
+  {
+    watch: [game, i18n.localeProperties],
+    server: true,
+  });
 </script>
 
 <template>
-  <div>
-    <GameFrameWrapper :game-identifier="gameIdentifier" />
-
-    <template v-if="pending">
-      <GridHorizontalGamesLoading class="mb-6" />
-    </template>
-
-    <template v-else>
-      <GridHorizontalGames
-        v-for="category in gameCategories?.filter(cat => cat.games && cat.games.length > 0)"
-        :key="category.identifier"
-        class="mb-6"
-        :category-identifier="category.identifier"
-        :initial-games="category.games || undefined"
-      />
-    </template>
-  </div>
+  <NuxtPage
+    :game="game"
+    :game-session="gameSession"
+    :game-demo-session="gameDemoSession"
+    @close="emit('close')"
+  />
 </template>

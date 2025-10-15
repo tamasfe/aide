@@ -51,12 +51,13 @@ export type EmptySuccessResult = {
  *   //          ^^^^^^-- number
  * }
  */
-export type Result<V, E extends CustomError> =
-  | FailureResult<E>
-  | SuccessResult<V>;
-export type EmptyResult<E extends CustomError> =
-  | FailureResult<E>
-  | EmptySuccessResult;
+export type Result<V, E extends CustomError>
+  = | FailureResult<E>
+    | SuccessResult<V>;
+
+export type EmptyResult<E extends CustomError>
+  = | FailureResult<E>
+    | EmptySuccessResult;
 
 export function success(): EmptySuccessResult;
 export function success<V>(value: V): SuccessResult<V>;
@@ -81,8 +82,8 @@ export function fail<E extends CustomError>(error: E): FailureResult<E> {
  * type FunctionErrors = ResultError<SomeFunctionReturn>;
  * //   ^^^^^^^^^^^^^^-- ErrorA | ErrorB
  */
-export type ResultError<R extends Result<unknown, CustomError>> =
-  R extends Result<unknown, infer E> ? E : never;
+export type ResultError<R extends Result<unknown, CustomError>>
+  = R extends Result<unknown, infer E> ? E : never;
 
 /**
  * @example
@@ -94,8 +95,8 @@ export type ResultError<R extends Result<unknown, CustomError>> =
  * type FunctionErrors = ResultValue<SomeFunctionReturn>;
  * //   ^^^^^^^^^^^^^^-- string
  */
-export type ResultValue<R extends Result<unknown, CustomError>> =
-  R extends SuccessResult<infer V> ? V : never;
+export type ResultValue<R extends Result<unknown, CustomError>>
+  = R extends SuccessResult<infer V> ? V : never;
 
 // --- Utility functions --- //
 

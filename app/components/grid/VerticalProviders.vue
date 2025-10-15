@@ -68,7 +68,7 @@ useAsyncData(`load-vertical-providers`, onLoadData,
       @trigger:load="onLoadData"
     >
       <template #default="{ data: item }">
-        <BaseLink
+        <NuxtLinkLocale
           :to="{
             name: 'games-provider',
             params: {
@@ -78,7 +78,7 @@ useAsyncData(`load-vertical-providers`, onLoadData,
           class="flex-1 rounded-lg overflow-hidden"
         >
           <ProviderImageLoader :provider-identifier="item.identifier" />
-        </BaseLink>
+        </NuxtLinkLocale>
       </template>
     </GridVertical>
   </section>

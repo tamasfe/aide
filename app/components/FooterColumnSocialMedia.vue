@@ -50,7 +50,7 @@ const links: Array<{ icon: string; url: ComputedRef }> = [
     <div
       class="mt-8 md:mt-0 flex space-x-4 lg:space-x-2 justify-evenly md:justify-start"
     >
-      <BaseLink
+      <NuxtLinkLocale
         v-for="(link, index) in links"
         :key="index"
         :to="link.url.value"
@@ -62,7 +62,7 @@ const links: Array<{ icon: string; url: ComputedRef }> = [
           :name="link.icon"
           :size="24"
         />
-      </BaseLink>
+      </NuxtLinkLocale>
     </div>
   </div>
 </template>

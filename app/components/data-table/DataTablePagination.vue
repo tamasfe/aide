@@ -17,7 +17,7 @@ defineEmits([
 </script>
 
 <template>
-  <div class="flex items-center justify-between px-2">
+  <div class="flex items-center justify-between gap-4">
     <!-- Commenting instead of deleting it in case we ever want to allow the user the following options:  -->
     <!-- <div class="text-sm text-muted-foreground">
       <div v-if="table.getFilteredSelectedRowModel().rows.length > 0">
@@ -25,9 +25,8 @@ defineEmits([
         {{ table.getFilteredRowModel().rows.length }} row(s) selected.
       </div>
     </div> -->
-    <div class="flex items-center space-x-6 lg:space-x-8">
-      <!-- Commenting instead of deleting it in case we ever want to allow the user the following options:  -->
-      <!-- <div class="flex items-center space-x-2">
+    <!-- Commenting instead of deleting it in case we ever want to allow the user the following options:  -->
+    <!-- <div class="flex items-center space-x-2">
         <p class="text-sm font-medium">Per page</p>
         <Select
           :model-value="`${table.getState().pagination.pageSize}`"
@@ -47,47 +46,46 @@ defineEmits([
           </SelectContent>
         </Select>
       </div> -->
-      <div class="flex w-[100px] items-center justify-center text-sm font-medium">
-        Page {{ table.getState().pagination.pageIndex + 1 }} of {{ table.getPageCount() }}
-      </div>
-      <div class="flex items-center space-x-2">
-        <BaseButton
-          variant="subtle"
-          class="hidden h-8 w-8 p-0 lg:flex"
-          :disabled="!table.getCanPreviousPage()"
-          @click="$emit('firstPage')"
-        >
-          <span class="sr-only">Go to first page</span>
-          <BaseIcon :size="20" name="lucide:chevrons-left" />
-        </BaseButton>
-        <BaseButton
-          variant="subtle"
-          class="h-8 w-8 p-0"
-          :disabled="!table.getCanPreviousPage()"
-          @click="$emit('previousPage')"
-        >
-          <span class="sr-only">Go to previous page</span>
-          <BaseIcon :size="20" name="lucide:chevron-left" />
-        </BaseButton>
-        <BaseButton
-          variant="subtle"
-          class="h-8 w-8 p-0"
-          :disabled="!table.getCanNextPage()"
-          @click="$emit('nextPage')"
-        >
-          <span class="sr-only">Go to next page</span>
-          <BaseIcon :size="20" name="lucide:chevron-right" />
-        </BaseButton>
-        <BaseButton
-          variant="subtle"
-          class="hidden h-8 w-8 p-0 lg:flex"
-          :disabled="!table.getCanNextPage()"
-          @click="$emit('lastPage')"
-        >
-          <span class="sr-only">Go to last page</span>
-          <BaseIcon :size="20" name="lucide:chevrons-right" />
-        </BaseButton>
-      </div>
+    <div class="flex items-center justify-center text-sm font-medium text-subtle">
+      Page {{ table.getState().pagination.pageIndex + 1 }} of {{ table.getPageCount() }}
+    </div>
+    <div class="flex items-center space-x-2">
+      <BaseButton
+        variant="subtle"
+        class="hidden h-8 w-8 p-0 lg:flex"
+        :disabled="!table.getCanPreviousPage()"
+        @click="$emit('firstPage')"
+      >
+        <span class="sr-only">Go to first page</span>
+        <BaseIcon :size="20" name="lucide:chevrons-left" />
+      </BaseButton>
+      <BaseButton
+        variant="subtle"
+        class="h-8 w-8 p-0"
+        :disabled="!table.getCanPreviousPage()"
+        @click="$emit('previousPage')"
+      >
+        <span class="sr-only">Go to previous page</span>
+        <BaseIcon :size="20" name="lucide:chevron-left" />
+      </BaseButton>
+      <BaseButton
+        variant="subtle"
+        class="h-8 w-8 p-0"
+        :disabled="!table.getCanNextPage()"
+        @click="$emit('nextPage')"
+      >
+        <span class="sr-only">Go to next page</span>
+        <BaseIcon :size="20" name="lucide:chevron-right" />
+      </BaseButton>
+      <BaseButton
+        variant="subtle"
+        class="hidden h-8 w-8 p-0 lg:flex"
+        :disabled="!table.getCanNextPage()"
+        @click="$emit('lastPage')"
+      >
+        <span class="sr-only">Go to last page</span>
+        <BaseIcon :size="20" name="lucide:chevrons-right" />
+      </BaseButton>
     </div>
   </div>
 </template>

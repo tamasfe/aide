@@ -65,7 +65,7 @@ const [keyType, keyTypeAttrs] = defineField("keyType");
 keyType.value = props.paymentSettings.keyType ?? "CPF";
 const paymentKeyTypeOptions = PAYMENT_PIX_KEY_TYPES.map(keyType => ({
   value: keyType,
-  title: t(`user_settings.payment.pix_key_type.${keyType}`),
+  title: t(`account_settings.payment.pix_key_type.${keyType}`),
 }));
 const selectedKeyType = computed(() => paymentKeyTypeOptions.find(option => option.value === keyType.value));
 
@@ -154,7 +154,7 @@ const onSubmit = handleSubmit(async (data) => {
         </div>
 
         <div v-if="selectedKeyType.value === 'CPF'">
-          <p>{{ $t('modal_user_settings.payment_pix.key_type_cpf_selected_explanation') }}</p>
+          <p>{{ $t('modal_account_settings.payment_pix.key_type_cpf_selected_explanation') }}</p>
         </div>
       </div>
 

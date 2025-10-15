@@ -16,15 +16,13 @@ const emit = defineEmits<{
   (e: "visibility-changed", visibility: "minimized" | "maximized" | "hidden"): void;
 }>();
 
-$dependencies.common.asyncMessagePublisher.subscribe(
-  "frontend:commands:modals:open-live-chat",
-  () => visibility.value = "maximized",
-);
+useEventBusSubscription("frontend:commands:modals:open-live-chat", async () => {
+  visibility.value = "maximized";
+});
 
-$dependencies.common.asyncMessagePublisher.subscribe(
-  "frontend:commands:modals:close-live-chat",
-  () => visibility.value = "hidden",
-);
+useEventBusSubscription("frontend:commands:modals:close-live-chat", async () => {
+  visibility.value = "hidden";
+});
 
 function onVisibilityChanged(event: EventHandlerPayload<"onVisibilityChanged">) {
   switch (event.visibility) {

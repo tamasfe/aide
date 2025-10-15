@@ -14,27 +14,9 @@ const WINS_BUFFER_SIZE = 12;
 
 const displayedWins = useState<Keyified<Win | null>[]>("winning-now-ticker-displayed-wins", () => []);
 
-// Preload game image using Image class to prevent flashing (client-side only)
-const preloadGameImage = (gameIdentifier: string): Promise<void> => {
-  // Skip preloading during SSR
-  if (import.meta.server) {
-    return Promise.resolve();
-  }
-
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.onload = () => resolve();
-    img.onerror = () => reject(new Error(`Failed to preload image for game: ${gameIdentifier}`));
-    img.src = `/games/${gameIdentifier}.jpg`;
-  });
-};
-
 // Add new win to FIFO array after preloading its image
 const addNewWin = async (win: Keyified<Win>) => {
   try {
-    // Preload the game image before adding to the buffer
-    await preloadGameImage(win.data.data.game.identifier);
-
     displayedWins.value.unshift(win);
     displayedWins.value.length = Math.min(displayedWins.value.length, WINS_BUFFER_SIZE);
   }
@@ -63,21 +45,18 @@ useAsyncData("winning-now-slider-ticker-events", async () => {
 
 useCreateSubscriptionToWebsocketTickerChannel(
   $dependencies.websockets.ui.wsChannelManagers.ticker,
-  {
-    id: `winning-now-ticker-${Date.now()}`,
-    message: "winning_now",
-    callback: (message) => {
-      const win = useAddKeyFromIdentifier(camelizeKeys(message));
-      // Use the async addNewWin function to preload image
-      addNewWin(win);
-    },
+  "winning_now",
+  (message) => {
+    const win = useAddKeyFromIdentifier(camelizeKeys(message));
+    // Use the async addNewWin function to preload image
+    addNewWin(win);
   },
 );
 </script>
 
 <template>
   <div class="md:flex md:items-center md:justify-center md:pr-4">
-    <h3 class="text-center flex md:flex-col items-center md:justify-center gap-2 mb-3 lg:mb-0 px-4">
+    <h3 class="text-center flex md:flex-col items-center md:justify-center gap-2 mb-3 lg:mb-0">
       <div class="leading-none md:text-2xl">🏆</div>
       <div class="text-lg md:text-sm leading-tight text-primary font-semibold">
         {{ $t('winning_now.title') }}
@@ -89,7 +68,7 @@ useCreateSubscriptionToWebsocketTickerChannel(
         :appear="false"
         name="slide-in"
         tag="div"
-        class="flex gap-2 md:gap-4 pl-4 md:pl-0 mask-edge-fade-right"
+        class="flex gap-2 md:gap-4 mask-edge-fade-right"
       >
         <div
           v-for="{ key, data } in displayedWins"
@@ -136,16 +115,7 @@ useCreateSubscriptionToWebsocketTickerChannel(
   transition: all 0.3s ease-in-out;
 }
 
-.slide-in-leave-active {
-  transition: all 0.3s ease-in-out;
-}
-
 .slide-in-enter-from {
-  transform: scale(0.5);
-  opacity: 0;
-}
-
-.slide-in-leave-to {
   transform: scale(0.5);
   opacity: 0;
 }

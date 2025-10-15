@@ -17,13 +17,13 @@ export class UpdateUsernameOnFormSubmission {
     const resultUpdating = await this.command.handle({ username });
     if (resultUpdating.isFailure) {
       if (resultUpdating.error instanceof ErrorUsernameIsTaken) {
-        return this.t("modal_user_settings.username.error_already_taken");
+        return this.t("modal_account_settings.username.error_already_taken");
       }
       if (resultUpdating.error instanceof ErrorUsernameCannotBeExplicit) {
-        return this.t("modal_user_settings.username.error_explicit");
+        return this.t("modal_account_settings.username.error_explicit");
       }
       this.logger.error("Unrecognized error updating username", resultUpdating.error);
-      return this.t("modal_user_settings.username.error_unknown");
+      return this.t("modal_account_settings.username.error_unknown");
     }
 
     await this.asyncMessagePublisher.emit("frontend:commands:modals:close-user-interaction-modal", {});

@@ -60,7 +60,7 @@ const allowedDomain = (() => {
         }) }}
       </div>
 
-      <BaseLink :to="allowedUrl" :external="true">
+      <NuxtLinkLocale :to="allowedUrl" :external="true">
         <BaseButton
           size="xl"
           class="w-full gap-1.5"
@@ -71,7 +71,7 @@ const allowedDomain = (() => {
             :size="20"
           />
         </BaseButton>
-      </BaseLink>
+      </NuxtLinkLocale>
     </div>
   </BaseModal>
 </template>

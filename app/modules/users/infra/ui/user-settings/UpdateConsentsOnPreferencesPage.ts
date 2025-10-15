@@ -28,7 +28,7 @@ export class UpdateConsentsOnPreferencesPage {
 
     if (result.isFailure) {
       this.logger.error("Unexpected error while updating the user settings consents on the preferences page", result.error, { initialConsents, newConsents });
-      return this.t("dashboard.settings.preferences.error_updating_settings");
+      return this.t("account.settings.preferences.error_updating_settings");
     }
 
     return null;

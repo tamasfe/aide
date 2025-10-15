@@ -27,9 +27,8 @@ export default defineNuxtPlugin({
      * Event listeners
      *
      */
-    $dependencies.common.asyncMessagePublisher.subscribe(
-      "backend:events:backend-notification-received",
-      ({ notification }) => $dependencies.notifications.ui.showNotificationToastToStoreFromWebsocketBackendNotification.handle(notification),
+    useEventBusSubscription("backend:events:backend-notification-received",
+      async ({ notification }) => $dependencies.notifications.ui.showNotificationToastToStoreFromWebsocketBackendNotification.handle(notification),
     );
 
     return {};

@@ -18,7 +18,7 @@ const errorMessage = ref<string | null>(null);
 
 const onError = (data: { error: string; code: string }) => {
   $dependencies.common.logger.error("Error on KYC process", InfrastructureError.newFromError({ code: data.code, provider: "sumsub" }, new Error(data.error)));
-  errorMessage.value = t("dashboard.settings.verification.error_submitting_kyc");
+  errorMessage.value = t("account.settings.verification.error_submitting_kyc");
 };
 
 const onSubmitted = () => {

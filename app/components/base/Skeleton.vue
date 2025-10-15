@@ -15,7 +15,7 @@ const props = defineProps<{
 <template>
   <div
     :class="cn(
-      { 'animate-[pulse_1.2s_cubic-bezier(0.4,0,0.6,1)_infinite] bg-white/5': loading },
+      { 'animate-[pulse_1.2s_cubic-bezier(0.4,0,0.6,1)_infinite] bg-white/5 backdrop-saturate-150': loading },
       props.class,
     )"
   >

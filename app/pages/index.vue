@@ -2,10 +2,10 @@
 const { t } = useI18n();
 const siteStore = useSiteStore();
 const { $dependencies } = useNuxtApp();
-// defineOgImageComponent("Base", {
-//   theme: "#131232",
-//   colorMode: "dark",
-// });
+
+definePageMeta({
+  layout: "carousel",
+});
 
 useHead({
   title: t("page.home", { siteName: siteStore.currentSite.name }),
@@ -19,23 +19,27 @@ const menuTabs = ref([
   { value: "live", iconName: "lucide:users", label: t(`category.live`) },
 ]);
 
-const { data: gameCategories, pending } = useAsyncData("home-page-game-categories", async () => $dependencies.games.ui.searchGameCategoriesByGroup.handle("home", true), { server: true, lazy: true, default: () => [] });
+const { data: gameCategories, pending } = useAsyncData("home-page-game-categories",
+  async () => $dependencies.games.ui.searchGameCategoriesByGroup.handle("home", true),
+  {
+    server: true,
+    lazy: true,
+    default: () => [],
+  },
+);
 </script>
 
 <template>
-  <NuxtLayout name="carousel">
-    <div class="max-w-screen-xl mx-auto w-full mb-6 mt-6">
-      <WinningNowTicker />
-    </div>
+  <div>
+    <WinningNowTicker class="mb-6" />
     <Tabs v-model="currentTab">
-      <div class="sticky md:static z-[5] top-14 md:hidden max-w-screen-xl mx-auto w-full mb-6">
+      <div class="sticky md:static z-[5] top-14 md:hidden mb-6 -mx-4">
         <TabsList class="bg-subtle px-1 w-full">
           <TabsTrigger
             v-for="tab in menuTabs"
             :key="tab.value"
             :is-active="tab.value === currentTab"
             :value="tab.value"
-            class="space-x-2"
           >
             <BaseIcon :name="tab.iconName" :size="14" />
             <span>{{ toSentenceCase(tab.label) }}</span>
@@ -43,7 +47,7 @@ const { data: gameCategories, pending } = useAsyncData("home-page-game-categorie
         </TabsList>
       </div>
 
-      <div class="max-w-screen-xl mx-auto w-full px-4 mb-6">
+      <div class="mb-6">
         <SearchPopover class="hidden md:flex items-stretch ">
           <template #suffix>
             <TabsList class="rounded bg-subtle">
@@ -52,7 +56,6 @@ const { data: gameCategories, pending } = useAsyncData("home-page-game-categorie
                 :key="tab.value"
                 :is-active="tab.value === currentTab"
                 :value="tab.value"
-                class="space-x-2"
               >
                 <BaseIcon :name="tab.iconName" :size="14" />
                 <span>{{ toSentenceCase(tab.label) }}</span>
@@ -64,16 +67,16 @@ const { data: gameCategories, pending } = useAsyncData("home-page-game-categorie
 
       <TabsContent value="lobby">
         <template v-if="pending">
-          <GridHorizontalGamesLoading class="mb-6" />
-          <GridHorizontalGamesLoading class="mb-6" />
-          <GridHorizontalGamesLoading class="mb-6" />
+          <GridHorizontalGamesLoading class="mb-6 -md-4" />
+          <GridHorizontalGamesLoading class="mb-6 -md-4" />
+          <GridHorizontalGamesLoading class="mb-6 -md-4" />
         </template>
 
         <template v-else>
           <GridHorizontalGames
             v-for="category in gameCategories?.filter(cat => cat.games && cat.games.length > 0)"
             :key="category.identifier"
-            class="mb-6"
+            class="mb-6 -mx-4"
             :category-identifier="category.identifier"
             :initial-games="category.games ?? undefined"
           />
@@ -87,18 +90,14 @@ const { data: gameCategories, pending } = useAsyncData("home-page-game-categorie
         :key="tab.value"
         :value="tab.value"
       >
-        <div class="max-w-screen-xl mx-auto w-full px-4">
-          <GridVerticalGames
-            :title="tab.label"
-            :category-identifier="tab.value"
-            :provider-identifier="null"
-          />
-        </div>
+        <GridVerticalGames
+          :title="tab.label"
+          :category-identifier="tab.value"
+          :provider-identifier="null"
+        />
       </TabsContent>
     </Tabs>
 
-    <div class="max-w-screen-xl mx-auto w-full px-4">
-      <WinningNowTabs />
-    </div>
-  </NuxtLayout>
+    <WinningNowTabs />
+  </div>
 </template>

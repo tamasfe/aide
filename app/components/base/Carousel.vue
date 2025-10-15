@@ -83,9 +83,9 @@ const goto = (index: number): void => {
   currentIndex.value = index;
 
   // Reset programmatic scroll flag after a short delay
-  setTimeout(() => {
-    isProgrammaticScroll.value = false;
-  }, 100);
+  // setTimeout(() => {
+  //   isProgrammaticScroll.value = false;
+  // }, 100);
 };
 
 const next = (): void => {
@@ -210,6 +210,7 @@ defineExpose({
         overflow-x-auto
         scroll-smooth
         snap-x
+        scroll-px-4
         scrollbar-hide
         snap-mandatory
         md:mask-edge-fade
@@ -220,9 +221,6 @@ defineExpose({
         [--cols:1]
         sm:[--cols:2]
         md:[--cols:3]"
-      :style="{
-        scrollPadding: `0 1rem`,
-      }"
     >
       <slot />
     </div>

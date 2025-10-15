@@ -4,7 +4,7 @@ import type { LoggerI } from "~/packages/logger/Logger";
 export class SearchProvidersOnGrid {
   constructor(
     private readonly query: SearchProvidersPaginating,
-    private logger: LoggerI
+    private logger: LoggerI,
   ) {}
 
   static PAGE_SIZE = 24;
@@ -13,13 +13,13 @@ export class SearchProvidersOnGrid {
     const result = await this.query.handle(
       query,
       page,
-      SearchProvidersOnGrid.PAGE_SIZE
+      SearchProvidersOnGrid.PAGE_SIZE,
     );
     if (result.isFailure) {
       this.logger.error(
         "Unexpected error while trying to search for providers",
         result.error,
-        { page, pageSize: SearchProvidersOnGrid.PAGE_SIZE }
+        { page, pageSize: SearchProvidersOnGrid.PAGE_SIZE },
       );
       return {
         results: [],

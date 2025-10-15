@@ -3,26 +3,15 @@ export default defineNuxtPlugin({
   dependsOn: ["dependency-injection"],
   parallel: true,
   async setup(_nuxtApp) {
-    const { $dependencies } = useNuxtApp();
     const gameSessionStore = useGameSessionStore();
 
-    /**
-     *
-     * Event listeners
-     *
-     */
-    $dependencies.common.asyncMessagePublisher.subscribe(
-      "frontend:events:games:game-session-started",
-      ({ gameIdentifier }) => {
-        gameSessionStore.startGameSession(gameIdentifier);
-      },
-    );
-    $dependencies.common.asyncMessagePublisher.subscribe(
-      "frontend:events:games:game-session-finished",
-      async ({ gameIdentifier }) => {
-        gameSessionStore.endGameSession(gameIdentifier);
-      },
-    );
+    useEventBusSubscription("frontend:events:games:game-session-started", async ({ gameIdentifier }) => {
+      gameSessionStore.startGameSession(gameIdentifier);
+    });
+
+    useEventBusSubscription("frontend:events:games:game-session-finished", async ({ gameIdentifier }) => {
+      gameSessionStore.endGameSession(gameIdentifier);
+    });
 
     return {};
   },

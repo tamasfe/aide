@@ -26,13 +26,13 @@ defineProps<{
     <h3 class="text-lg font-semibold text-emphasis">{{ title }}</h3>
     <div class="flex flex-col whitespace-nowrap space-y-5">
       <template v-for="(link, index) in links" :key="index">
-        <BaseLink
+        <NuxtLinkLocale
           v-if="link.to"
           :to="link.to"
           class="hover:text-emphasis"
         >
           {{ link.title }}
-        </BaseLink>
+        </NuxtLinkLocale>
         <BaseButton
           v-if="link.onClick"
           variant="ghost"

@@ -1,7 +1,6 @@
-import type { WebsocketConnectionI } from "../../domain/websocket-connection";
+import type { WebsocketConnectionI, WebsocketEventListener } from "../../domain/websocket-connection";
 import type { WebsocketAccessTokenRepositoryI } from "../../domain/websocket-access-token-repository";
 import type { LoggerI } from "~/packages/logger/Logger";
-import type { AsyncMessagePublisherI } from "~/packages/async-messages/async-message-publisher";
 import { fail, success } from "~/packages/result";
 import { ErrorWebsocketChannelNotEntered } from "../../domain/error-websocket-channel-not-entered";
 import type { WebsocketUserMessagesByType } from "../../domain/websocket-messages";
@@ -10,7 +9,6 @@ import type { WebsocketUserChannelsManagerI } from "../../domain/websocket-user-
 export class WebsocketUserChannelsManager implements WebsocketUserChannelsManagerI {
   constructor(
     private wsAccessTokenRepository: WebsocketAccessTokenRepositoryI,
-    private asyncMessagePublisher: AsyncMessagePublisherI,
     private logger: LoggerI,
   ) {}
 
@@ -50,28 +48,24 @@ export class WebsocketUserChannelsManager implements WebsocketUserChannelsManage
     return success();
   }
 
-  public async subscribe<T extends keyof WebsocketUserMessagesByType>(wsConnection: WebsocketConnectionI, subscriber: {
-    message: T;
-    callback: (message: WebsocketUserMessagesByType[T]) => void;
-    id: string;
-  }) {
+  public async subscribe<T extends keyof WebsocketUserMessagesByType>(
+    wsConnection: WebsocketConnectionI,
+    message: T,
+    callback: (message: WebsocketUserMessagesByType[T]) => void,
+  ) {
     if (!this.channelsEntered.user) {
       return fail(new ErrorWebsocketChannelNotEntered("user"));
     }
+
     if (!this.channelsEntered.tracker) {
       return fail(new ErrorWebsocketChannelNotEntered("tracker"));
     }
 
-    const resultSubscribing = wsConnection.subscribeToMessage(subscriber.message, subscriber.callback, subscriber.id);
-    if (resultSubscribing.isFailure) {
-      return resultSubscribing;
-    }
-
-    return success();
+    return wsConnection.subscribe(message, callback);
   }
 
-  public async unsubscribe(wsConnection: WebsocketConnectionI, subscriberId: string) {
-    return wsConnection.unsubscribeFromMessage(subscriberId);
+  public async unsubscribe(wsConnection: WebsocketConnectionI, callback: WebsocketEventListener) {
+    return wsConnection.unsubscribe(callback);
   }
 
   /**

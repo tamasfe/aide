@@ -2,15 +2,10 @@
 const { t } = useI18n();
 
 useHead({
-  title: t("page.dashboard_settings"),
+  title: t("page.account_settings"),
 });
 </script>
 
 <template>
-  <NuxtLayout
-    name="dashboard"
-    section="settings"
-  >
-    <DashboardSettingsVerificationIdentity />
-  </NuxtLayout>
+  <DashboardSettingsVerificationIdentity />
 </template>

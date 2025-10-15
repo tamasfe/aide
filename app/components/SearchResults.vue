@@ -7,8 +7,7 @@ const { $dependencies } = useNuxtApp();
 const { query } = defineProps({
   query: {
     type: String,
-    required: true,
-    default: "",
+    required: false,
   },
 });
 
@@ -20,7 +19,7 @@ const games = useState<Keyified<{ identifier: string; key: string }>[]>(() => []
 const gamesTotalItems = useState(() => 0);
 const gamesLoading = useState(() => false);
 const gamesOnLoadMore = async (actionOnItemsArray: "append" | "replace") => {
-  const result = await $dependencies.games.ui.searchGamesByQueryPaginatingOnSearchBar.handle(query, gamesCurrentPage.value);
+  const result = await $dependencies.games.ui.searchGamesByQueryPaginatingOnSearchBar.handle(query ?? "", gamesCurrentPage.value);
 
   gamesTotalItems.value = result.pagination.totalItems;
   if (actionOnItemsArray === "append") {
@@ -42,7 +41,7 @@ const providers = useState<Keyified<{ identifier: string; key: string }>[]>(() =
 const providersTotalItems = useState(() => 0);
 const providersLoading = useState(() => false);
 const providersOnLoadMore = async (actionOnItemsArray: "append" | "replace") => {
-  const result = await $dependencies.providers.ui.searchProvidersOnGrid.handle(query, providersCurrentPage.value);
+  const result = await $dependencies.providers.ui.searchProvidersOnGrid.handle(query ?? "", providersCurrentPage.value);
 
   providersTotalItems.value = result.pagination.totalItems;
   if (actionOnItemsArray === "append") {

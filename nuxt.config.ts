@@ -16,6 +16,13 @@ export default defineNuxtConfig({
     "nuxt-gtag",
     "@nuxt/fonts",
   ],
+
+  devtools: {
+    timeline: {
+      enabled: true,
+    },
+  },
+
   app: {
     head: {
       charset: "utf-8",
@@ -37,12 +44,15 @@ export default defineNuxtConfig({
     },
     rootId: "app",
   },
+
   css: ["~/assets/css/tailwind.css"],
+
   site: {
     url: process.env.NUXT_PUBLIC_BASE_URL,
     // description: "Welcome to my awesome site!", // TODO
     // defaultLocale: "en", // TODO not needed if you have @nuxtjs/i18n installed
   },
+
   // More info about runtime config & environment variables @ https://nuxt.com/docs/guide/going-further/runtime-config
   runtimeConfig: {
     public: {
@@ -105,17 +115,23 @@ export default defineNuxtConfig({
       },
     },
   },
+
   build: {
     transpile: ["applicationinsights"],
   },
-  sourcemap: { client: "hidden" },
+
+  sourcemap: { client: true, server: true },
+
   devServer: {
     port: 3001,
   },
+
   future: {
     compatibilityVersion: 4,
   },
+
   compatibilityDate: "2024-07-03",
+
   nitro: {
     experimental: {
       /**
@@ -128,6 +144,7 @@ export default defineNuxtConfig({
       legacyExternals: false,
     },
   },
+
   typescript: {
     strict: true,
     typeCheck: true,
@@ -135,7 +152,7 @@ export default defineNuxtConfig({
       include: ["app/packages/http-client/**/*.d.ts"],
     },
   },
-  debug: false,
+
   // @nuxtjs/eslint
   eslint: {
     config: {
@@ -151,6 +168,7 @@ export default defineNuxtConfig({
       },
     },
   },
+
   fonts: {
     provider: "fontsource",
     defaults: {
@@ -165,12 +183,14 @@ export default defineNuxtConfig({
       { name: "Montserrat" },
     ],
   },
+
   // https://nuxt.com/modules/gtag
   gtag: {
     id: "G-7F9NEQ1MND", // New "Giro" GA account
     enabled: process.env.NODE_ENV === "production",
     initMode: "manual", // We set it to manual to avoid downloading the GA script... as the GTM module already loads it
   },
+
   // @nuxtjs/i18n
   i18n: {
     baseUrl: process.env.NUXT_PUBLIC_BASE_URL,
@@ -207,6 +227,7 @@ export default defineNuxtConfig({
     defaultLocale: "en-us",
     vueI18n: "./i18n.config.ts",
   },
+
   // @nuxt/icon
   icon: {
     clientBundle: {
@@ -219,6 +240,7 @@ export default defineNuxtConfig({
       },
     ],
   },
+
   image: {
     providers: {
       custom_cloudflare: {
@@ -252,8 +274,10 @@ export default defineNuxtConfig({
       },
     },
   },
+
   // @pinia/nuxt
   pinia: {},
+
   pwa: {
     disable: true,
     client: {
@@ -297,6 +321,7 @@ export default defineNuxtConfig({
       id: "https://girobet.vip", // TODO: be able to customise this depending on current site name
     },
   },
+
   sentry: {
     autoInjectServerSentry: "top-level-import",
     sourceMapsUploadOptions: {

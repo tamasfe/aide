@@ -2,6 +2,8 @@
 import type { Game } from "~/modules/games/domain/Game";
 import type { Keyified } from "~/types/utils";
 
+defineOptions({ inheritAttrs: false });
+
 const props = defineProps<{
   categoryIdentifier: string;
   initialGames?: Game[];
@@ -60,72 +62,72 @@ const canScrollNext = computed(() => {
 </script>
 
 <template>
-  <section class="w-full max-w-screen-xl mx-auto">
-    <GridHeader class="px-4 mb-2">
-      <template #title>
-        <div class="flex gap-6 items-center">
-          <GridHeaderTitle :title="t(`category.${categoryIdentifier}`)" />
+  <GridHeader class="mb-2">
+    <template #title>
+      <div class="flex gap-6 items-center">
+        <GridHeaderTitle :title="t(`category.${categoryIdentifier}`)" />
 
-          <div
-            class="hidden md:flex items-center gap-x-4 text-3xl font-bold cursor-pointer"
-          >
-            <BaseButton
-              variant="subtle"
-              size="sm"
-              class="p-1.5"
-              :disabled="!canScrollPrev"
-              @click="scrollPrev"
-            >
-              <BaseIcon
-                name="lucide:chevron-left"
-                :size="24"
-              />
-            </BaseButton>
-            <BaseButton
-              variant="subtle"
-              size="sm"
-              class="p-1.5"
-              :disabled="!canScrollNext"
-              @click="scrollNext"
-            >
-              <BaseIcon
-                name="lucide:chevron-right"
-                :size="24"
-              />
-            </BaseButton>
-          </div>
-        </div>
-      </template>
-
-      <template #options>
-        <BaseLink
-          :to="{ name: 'categories-id', params: { id: props.categoryIdentifier } }"
+        <div
+          class="hidden md:flex items-center gap-x-4 text-3xl font-bold cursor-pointer"
         >
           <BaseButton
             variant="subtle"
             size="sm"
+            class="p-1.5"
+            :disabled="!canScrollPrev"
+            @click="scrollPrev"
           >
-            {{ $t("button.see_all") }}
+            <BaseIcon
+              name="lucide:chevron-left"
+              :size="24"
+            />
           </BaseButton>
-        </BaseLink>
-      </template>
-    </GridHeader>
-
-    <BaseSlider
-      ref="slider"
-      :data="games"
-      :can-load-more="canLoadMore"
-      @trigger:load="onLoadData"
-    >
-      <template #default="{ item: game, index }">
-        <div class="pt-1 h-full">
-          <GameImageLink
-            :fetchpriority="index < 3 ? 'high' : 'low'"
-            :identifier="game.identifier"
-            :animation-on-hover="'vertical-translate'"
-          />
+          <BaseButton
+            variant="subtle"
+            size="sm"
+            class="p-1.5"
+            :disabled="!canScrollNext"
+            @click="scrollNext"
+          >
+            <BaseIcon
+              name="lucide:chevron-right"
+              :size="24"
+            />
+          </BaseButton>
         </div>
-      </template>
-    </BaseSlider>
-  </section>
+      </div>
+    </template>
+
+    <template #options>
+      <NuxtLinkLocale
+        :to="{ name: 'categories-identifier', params: { identifier: props.categoryIdentifier } }"
+      >
+        <BaseButton
+          variant="subtle"
+          size="sm"
+        >
+          {{ $t("button.see_all") }}
+        </BaseButton>
+      </NuxtLinkLocale>
+    </template>
+  </GridHeader>
+
+  <BaseSlider
+    v-bind="$attrs"
+    ref="slider"
+    class="-mx-4"
+    :data="games"
+    :can-load-more="canLoadMore"
+    @trigger:load="onLoadData"
+  >
+    <template #default="{ item: game, index }">
+      <div class="pt-1 h-full">
+        <GameImageLink
+          :fetchpriority="index < 3 ? 'high' : 'low'"
+          :identifier="game.identifier"
+          :animation-on-hover="'vertical-translate'"
+        />
+      </div>
+    </template>
+  </BaseSlider>
 </template>

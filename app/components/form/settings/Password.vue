@@ -84,7 +84,7 @@ const onSubmit = handleSubmit(async (formData) => {
     />
 
     <!-- <div>
-      <p>{{ $t("modal_user_settings.password.instructions") }}</p>
+      <p>{{ $t("modal_account_settings.password.instructions") }}</p>
     </div> -->
 
     <div

@@ -13,7 +13,7 @@ defineProps<{
 </script>
 
 <template>
-  <BaseLink
+  <NuxtLinkLocale
     class="px-4 py-2 flex items-center text-emphasis hover:text-white"
     :to="to"
   >
@@ -24,5 +24,5 @@ defineProps<{
       class="flex-shrink-0 text-subtle"
     />
     <div class="w-full ml-4 font-medium">{{ title }}</div>
-  </BaseLink>
+  </NuxtLinkLocale>
 </template>

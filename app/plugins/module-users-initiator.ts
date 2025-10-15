@@ -14,64 +14,42 @@ export default defineNuxtPlugin({
      * Event listeners
      *
      */
-    $dependencies.common.asyncMessagePublisher.subscribe(
-      "frontend:events:users:user-logged-in",
-      () => userStore.refreshUser(),
-    );
-    $dependencies.common.asyncMessagePublisher.subscribe(
-      "frontend:events:users:user-logged-in",
-      () => userSettingsStore.refresh(),
-    );
-    $dependencies.common.asyncMessagePublisher.subscribe(
-      "frontend:events:users:user-logged-in",
-      () => $dependencies.clicks.ui.setUsersPreviousActivity(new Date().toISOString()),
-    );
+    useEventBusSubscription("frontend:events:users:user-logged-in", async () => {
+      await userStore.refreshUser();
+      await userSettingsStore.refresh();
+      await $dependencies.clicks.ui.setUsersPreviousActivity(new Date().toISOString());
+    });
 
-    $dependencies.common.asyncMessagePublisher.subscribe(
-      "frontend:events:users:user-logged-out",
-      () => userStore.refreshUser(),
-    );
-    $dependencies.common.asyncMessagePublisher.subscribe(
-      "frontend:events:users:user-logged-out",
-      () => userSettingsStore.refresh(),
-    );
+    useEventBusSubscription("frontend:events:users:user-logged-out", async () => {
+      await userStore.refreshUser();
+      await userSettingsStore.refresh();
+    });
 
-    $dependencies.common.asyncMessagePublisher.subscribe(
-      "frontend:events:users:user-closed-account",
-      () => userStore.refreshUser(),
-    );
-    $dependencies.common.asyncMessagePublisher.subscribe(
-      "frontend:events:users:user-closed-account",
-      () => userSettingsStore.refresh(),
-    );
+    useEventBusSubscription("frontend:events:users:user-closed-account", async () => {
+      await userStore.refreshUser();
+      await userSettingsStore.refresh();
+    });
 
-    $dependencies.common.asyncMessagePublisher.subscribe(
-      "frontend:events:users:user-settings-updated",
-      () => userStore.refreshUser(),
-    );
-    $dependencies.common.asyncMessagePublisher.subscribe(
-      "frontend:events:users:user-settings-updated",
-      () => userSettingsStore.refresh(),
-    );
+    useEventBusSubscription("frontend:events:users:user-settings-updated", async () => {
+      await userStore.refreshUser();
+      await userSettingsStore.refresh();
+    });
 
-    $dependencies.common.asyncMessagePublisher.subscribe(
-      "frontend:events:users:password-recovered",
-      () => $dependencies.users.ui.emitCommandOpenUserActionModal.handle("login"),
-    );
+    useEventBusSubscription("frontend:events:users:password-recovered", () => {
+      $dependencies.users.ui.emitCommandOpenUserActionModal.handle("login");
+    });
 
-    $dependencies.common.asyncMessagePublisher.subscribe(
-      "frontend:events:signup-flows:signup-flow-submitted",
-      () => userStore.refreshUser(),
-    );
-    $dependencies.common.asyncMessagePublisher.subscribe(
-      "frontend:events:signup-flows:signup-flow-submitted",
-      () => userSettingsStore.refresh(),
-    );
+    useEventBusSubscription("frontend:events:signup-flows:signup-flow-submitted", async () => {
+      await userStore.refreshUser();
+      await userSettingsStore.refresh();
+    });
 
-    $dependencies.common.asyncMessagePublisher.subscribe(
-      "frontend:events:payments:deposit-flow-created",
-      ({ flowId, code, amount, currency, paymentMethodId }) => $dependencies.users.ui.emitCommandOpenUserActionModal.handle({ modal: "deposit_confirm", data: { flowId, paymentCode: code, amount, currency, paymentMethodId } }),
-    );
+    useEventBusSubscription("frontend:events:payments:deposit-flow-created", ({ flowId, code, amount, currency, paymentMethodId }) => {
+      $dependencies.users.ui.emitCommandOpenUserActionModal.handle({
+        modal: "deposit_confirm",
+        data: { flowId, paymentCode: code, amount, currency, paymentMethodId },
+      });
+    });
 
     /**
      *

@@ -13,44 +13,35 @@ const modalIsJurisdictionModal = (modal: UserInteractionModalState["modal"] | nu
   return modal === "restrict_license_no_alternative" || modal === "restrict_license_alternative" || modal === "restrict_expanding";
 };
 
-$dependencies.common.asyncMessagePublisher.subscribe(
-  "frontend:commands:modals:open-user-interaction-modal",
-  (event) => {
-    if (modalIsJurisdictionModal(state.value.modal) && !modalIsJurisdictionModal(event.modal)) {
-      return;
-    }
+useEventBusSubscription("frontend:commands:modals:open-user-interaction-modal", async (event) => {
+  if (modalIsJurisdictionModal(state.value.modal) && !modalIsJurisdictionModal(event.modal)) {
+    return;
+  }
 
-    state.value = event;
-    isOpen.value = true;
-  },
-);
+  state.value = event;
+  isOpen.value = true;
+});
 
-$dependencies.common.asyncMessagePublisher.subscribe(
-  "frontend:commands:modals:close-user-interaction-modal",
-  () => {
-    if (modalIsJurisdictionModal(state.value.modal)) {
-      return;
-    }
+useEventBusSubscription("frontend:commands:modals:close-user-interaction-modal", async () => {
+  if (modalIsJurisdictionModal(state.value.modal)) {
+    return;
+  }
 
+  isOpen.value = false;
+});
+
+useEventBusSubscription("backend:events:payments:payment-status-updated", async ({ data }) => {
+  // If any of the invalid jurisdiction modals are open: keep them open
+  if (modalIsJurisdictionModal(state.value.modal)) {
+    return;
+  }
+  if (state.value.modal !== "deposit_confirm") {
+    return;
+  }
+  if (data.flowId === state.value.data.flowId) {
     isOpen.value = false;
-  },
-);
-
-$dependencies.common.asyncMessagePublisher.subscribe(
-  "backend:events:payments:payment-status-updated",
-  ({ data }) => {
-    // If any of the invalid jurisdiction modals are open: keep them open
-    if (modalIsJurisdictionModal(state.value.modal)) {
-      return;
-    }
-    if (state.value.modal !== "deposit_confirm") {
-      return;
-    }
-    if (data.flowId === state.value.data.flowId) {
-      isOpen.value = false;
-    }
-  },
-);
+  }
+});
 
 const SECONDS_TO_AUTO_OPEN_PROMO_MODAL = 10;
 const openPromoModalIfPossible = () => {
@@ -80,9 +71,11 @@ if (recoverPasswordToken.value) {
  */
 const router = useRouter();
 const previousUrl = ref(router.options.history.state.back);
+
 watch(() => router.currentRoute.value, () => {
   previousUrl.value = router.options.history.state.back;
 });
+
 router.beforeResolve((to, from, next) => {
   if (isOpen.value === false) {
     next();
@@ -101,66 +94,64 @@ router.beforeResolve((to, from, next) => {
 </script>
 
 <template>
-  <div id="app-user-interaction-modal" :data-is-open="isOpen">
-    <BaseOverlay v-if="isOpen" class="z-[10]" @click="isOpen = false" />
+  <BaseOverlay v-if="isOpen" class="z-[10]" @click="isOpen = false" />
 
-    <ModalLogin
-      :open="isOpen && state.modal === 'login'"
-    />
-    <ModalRegister
-      :open="isOpen && state.modal === 'register'"
-    />
-    <ModalForgotPassword
-      :open="isOpen && state.modal === 'forgot_password'"
-    />
-    <ModalRecoverPassword
-      :open="isOpen && state.modal === 'recover_password'"
-      :token="recoverPasswordToken"
-    />
-    <ModalPromoUserAction
-      :open="isOpen && state.modal === 'promo_user_action'"
-    />
-    <ModalCancelRegistration
-      :open="isOpen && state.modal === 'cancel_registration'"
-    />
-    <ModalDeposit
-      :open="isOpen && state.modal === 'deposit'"
-      :alert="state.alert"
-    />
-    <ModalDepositConfirm
-      :open="isOpen && state.modal === 'deposit_confirm'"
-      :payment="state.modal === 'deposit_confirm' ? state.data : undefined"
-    />
-    <ModalWithdrawal
-      :open="isOpen && state.modal === 'withdrawal'"
-    />
-    <ModalSearch :open="isOpen && state.modal === 'search'" />
-    <ModalUpdateSettings
-      :open="isOpen && state.modal === 'settings'"
-      :setting="state.modal === 'settings' ? state.data.setting : undefined"
-    />
-    <ModalKycFlow
-      :open="isOpen && state.modal === 'kyc'"
-      :applicant-data="state.modal === 'kyc' ? state.data.applicantData : undefined"
-      :initial-access-token="state.modal === 'kyc' ? state.data.accessToken : undefined"
-    />
-    <ModalCloseAccount
-      :open="isOpen && state.modal === 'close_account'"
-    />
-    <ModalRestrictExpanding
-      v-if="isOpen && state.modal === 'restrict_expanding'"
-      :blocked-country="state.data.blockedCountry"
-      :blocked-domain="state.data.currentHost"
-    />
-    <ModalRestrictLicenseAlternative
-      v-if="isOpen && state.modal === 'restrict_license_alternative'"
-      :blocked-country="state.data.blockedCountry"
-      :blocked-domain="state.data.currentHost"
-      :allowed-url="state.data.allowedUrl"
-    />
-    <ModalRestrictLicenseNoAlternative
-      v-if="isOpen && state.modal === 'restrict_license_no_alternative'"
-      :blocked-country="state.data.blockedCountry"
-    />
-  </div>
+  <ModalLogin
+    :open="isOpen && state.modal === 'login'"
+  />
+  <ModalRegister
+    :open="isOpen && state.modal === 'register'"
+  />
+  <ModalForgotPassword
+    :open="isOpen && state.modal === 'forgot_password'"
+  />
+  <ModalRecoverPassword
+    :open="isOpen && state.modal === 'recover_password'"
+    :token="recoverPasswordToken"
+  />
+  <ModalPromoUserAction
+    :open="isOpen && state.modal === 'promo_user_action'"
+  />
+  <ModalCancelRegistration
+    :open="isOpen && state.modal === 'cancel_registration'"
+  />
+  <ModalDeposit
+    :open="isOpen && state.modal === 'deposit'"
+    :alert="state.alert"
+  />
+  <ModalDepositConfirm
+    :open="isOpen && state.modal === 'deposit_confirm'"
+    :payment="state.modal === 'deposit_confirm' ? state.data : undefined"
+  />
+  <ModalWithdrawal
+    :open="isOpen && state.modal === 'withdrawal'"
+  />
+  <ModalSearch :open="isOpen && state.modal === 'search'" />
+  <ModalUpdateSettings
+    :open="isOpen && state.modal === 'settings'"
+    :setting="state.modal === 'settings' ? state.data.setting : undefined"
+  />
+  <ModalKycFlow
+    :open="isOpen && state.modal === 'kyc'"
+    :applicant-data="state.modal === 'kyc' ? state.data.applicantData : undefined"
+    :initial-access-token="state.modal === 'kyc' ? state.data.accessToken : undefined"
+  />
+  <ModalCloseAccount
+    :open="isOpen && state.modal === 'close_account'"
+  />
+  <ModalRestrictExpanding
+    v-if="isOpen && state.modal === 'restrict_expanding'"
+    :blocked-country="state.data.blockedCountry"
+    :blocked-domain="state.data.currentHost"
+  />
+  <ModalRestrictLicenseAlternative
+    v-if="isOpen && state.modal === 'restrict_license_alternative'"
+    :blocked-country="state.data.blockedCountry"
+    :blocked-domain="state.data.currentHost"
+    :allowed-url="state.data.allowedUrl"
+  />
+  <ModalRestrictLicenseNoAlternative
+    v-if="isOpen && state.modal === 'restrict_license_no_alternative'"
+    :blocked-country="state.data.blockedCountry"
+  />
 </template>

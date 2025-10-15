@@ -8,14 +8,12 @@ const { t } = useI18n();
 //   * we might need to check how softswiss handles multiple languages for the description
 
 // NOTE the entire bottom section might not come from the game API but would be a custom description we add ourself for the most popular games
-const { isMobile } = useDevice();
 const url = useRequestURL();
 const siteStore = useSiteStore();
 
 defineProps({
   game: {
     type: Object as PropType<Game>,
-    required: true,
   },
   authenticated: {
     type: Boolean,
@@ -30,54 +28,92 @@ const emit = defineEmits<{
 
 <template>
   <div class="p-3 pb-4 md:p-4 lg:p-6 gap-4 md:gap-6 flex flex-row rounded">
-    <div class="grid grid-cols-[auto,1fr] md:grid-cols-[auto,1fr,auto] w-full md:grid-rows-[min-content,1fr] gap-x-6 gap-y-8">
-      <div class="md:row-span-2 min-w-[100px] order-2 md:order-none">
-        <div class="flex items-center justify-center rounded overflow-hidden border border-muted/5">
+    <div class="grid grid-cols-[auto,1fr] md:grid-cols-[auto,1fr,auto] w-full md:grid-rows-[min-content,1fr] gap-4 md:gap-6">
+      <div
+        class="order-2 md:order-none h-px bg-muted/5 md:border-none col-span-full md:hidden -mx-4"
+      />
+      <div class="md:row-span-2 order-3 md:order-none">
+        <div class="flex items-center justify-center rounded overflow-hidden border border-muted/5 aspect-[3/4] w-24 md:w-32">
           <GameImage
-            v-if="!isMobile"
+            v-if="game"
             :identifier="game.identifier"
-            class="block w-full max-w-48 object-cover aspect-[3/4] transition-transform transform hover:scale-105 cursor-pointer"
+            class="block w-full object-cover transition-transform transform hover:scale-105 cursor-pointer"
           />
+          <BaseSkeleton v-else class="w-full h-full" :loading="true" />
         </div>
       </div>
-      <div class="order-3 md:order-none">
-        <h2 class="text-2xl mb-2">{{ game.name }}</h2>
-        <div class="flex items-center space-x-2">
-          <BaseLink
-            v-for="categoryIdentifier in game.categories"
-            :key="String(categoryIdentifier)"
-            :to="{
-              name: 'categories-id',
-              params: {
-                id: String(categoryIdentifier),
-              },
-            }"
-          >
-            <BaseButton
-              variant="secondary"
-              size="ghost"
-              class="rounded px-2 py-0.5"
+      <div class="order-4 md:order-none">
+        <h2 v-if="game" class="text-2xl mb-2">{{ game.name }}</h2>
+        <BaseSkeleton v-else class="h-8 w-1/3 mb-2 rounded" :loading="true" />
+
+        <div class="flex items-center flex-wrap gap-2">
+          <template v-if="game">
+            <NuxtLinkLocale
+              v-for="categoryIdentifier in game.categories"
+              :key="String(categoryIdentifier)"
+              :to="{
+                name: 'categories-identifier',
+                params: {
+                  identifier: String(categoryIdentifier),
+                },
+              }"
             >
-              {{ t(`category.${categoryIdentifier}`) }}
-            </BaseButton>
-          </BaseLink>
+              <BaseButton
+                variant="secondary"
+                size="ghost"
+                class="rounded px-2 py-0.5"
+              >
+                {{ t(`category.${categoryIdentifier}`) }}
+              </BaseButton>
+            </NuxtLinkLocale>
+          </template>
+          <template v-else>
+            <BaseSkeleton class="h-6 w-14 rounded" :loading="true" />
+            <BaseSkeleton class="h-6 w-28 rounded" :loading="true" />
+          </template>
         </div>
       </div>
-      <div class="order-1 col-span-full md:order-none md:col-span-1 self-start w-full flex justify-between md:justify-end items-center text-subtle font-semibold gap-4">
+
+      <div
+        class="
+          order-1
+          md:order-none
+          col-span-full
+          md:col-span-1
+          self-start
+          w-full
+          flex
+          justify-between
+          md:justify-end
+          items-center
+          text-subtle
+          font-semibold
+          gap-4
+        "
+      >
         <ButtonShare
+          v-if="game"
           :subject="$t('play.share_subject', { siteName: siteStore.currentSite.name })"
           :body="$t('play.share_body', { game: game.name, siteName: siteStore.currentSite.name })"
           :url="url.toString()"
           class="hover:text-subtle-light"
         />
 
-        <GameFrameVotes :authenticated="authenticated" :game-identifier="game.identifier" />
+        <BaseSkeleton v-else class="h-8 w-8 rounded" :loading="true" />
+
+        <GameVotes
+          v-if="game"
+          :authenticated="authenticated"
+          :game-identifier="game.identifier"
+        />
+
+        <BaseSkeleton v-else class="h-8 w-28 rounded" :loading="true" />
 
         <BaseButton
           v-if="authenticated"
           variant="ghost"
           size="ghost"
-          class="flex flex-row gap-1 items-center hover:text-subtle-light p-3 -m-2"
+          class="hidden md:flex flex-row gap-1 items-center hover:text-subtle-light p-3 -m-2"
           @click="emit('maximize')"
         >
           <BaseIcon
@@ -85,14 +121,16 @@ const emit = defineEmits<{
             :size="20"
           />
         </BaseButton>
+
+        <BaseSkeleton v-else class="h-8 w-8 rounded" :loading="true" />
       </div>
 
-      <p
-        v-if="game.description"
-        class="text-subtle col-span-2 order-4 md:order-none whitespace-pre"
+      <div
+        v-if="game"
+        class="text-subtle col-span-2 order-4 md:order-none"
       >
         {{ game.description }}
-      </p>
+      </div>
     </div>
   </div>
 </template>

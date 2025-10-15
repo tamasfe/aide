@@ -208,7 +208,7 @@
   "modal_deposit": {
     "minimum": "Mínimo"
   },
-  "modal_user_settings": {
+  "modal_account_settings": {
     "error_unknown": "Ocorreu um erro ao salvar suas configurações. Por favor, tente novamente em alguns minutos",
     "language": {
       "title": "Alterar o idioma da sua conta"
@@ -323,8 +323,8 @@
     "games": "Todos os Jogos",
     "game": "Jogar {game}",
     "category": "Jogos de {category}",
-    "dashboard_history": "Histórico de Transações",
-    "dashboard_settings": "Configurações da Conta"
+    "account_history": "Histórico de Transações",
+    "account_settings": "Configurações da Conta"
   },
   "wallet": {
     "payment": {
@@ -406,7 +406,7 @@
     "title": "ATENÇÃO!!!",
     "description": "Não copie/cole NADA nesta janela. Golpistas estão tentando roubar sua senha."
   },
-  "dashboard": {
+  "account": {
     "nav": {
       "wallet": "Carteira",
       "account": "Conta",
@@ -520,7 +520,7 @@
     "bingo": "Bingo",
     "other": "Outro"
   },
-  "user_settings": {
+  "account_settings": {
     "payment": {
       "pix_key_type": {
         "CPF": "CPF",

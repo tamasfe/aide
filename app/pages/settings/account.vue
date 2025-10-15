@@ -4,7 +4,7 @@ const { $dependencies } = useNuxtApp();
 const { t } = useI18n();
 
 useHead({
-  title: t("page.dashboard_settings"),
+  title: t("page.account_settings"),
 });
 
 const ENABLE_SERVER_SIDE_RENDERING = true;
@@ -23,21 +23,20 @@ const { data } = useAsyncData("account-page-user-settings-store", async () => {
 </script>
 
 <template>
-  <NuxtLayout
-    name="dashboard"
-    section="settings"
-  >
-    <DashboardSettingsAccountDetails />
-    <DashboardSettingsAccountPersonalDetails />
+  <div>
+    <DashboardSettingsAccountDetails class="mb-4" />
+    <DashboardSettingsAccountPersonalDetails class="mb-4" />
     <DashboardSettingsAccountPaymentSettings
+      class="mb-4"
       :payment-config="data?.payment || null"
       :cpf="userStore.user?.cpf || null"
       :on-click-change="() => $dependencies.users.ui.emitCommandOpenUserActionModal.handle({ modal: 'settings', data: { setting: 'payment_pix' } })"
     />
     <DashboardSettingsAccountRegionalSettings
+      class="mb-4"
       :on-click-change-language="() => $dependencies.users.ui.emitCommandOpenUserActionModal.handle({ modal: 'settings', data: { setting: 'language' } })"
       :on-click-change-time-zone="() => $dependencies.users.ui.emitCommandOpenUserActionModal.handle({ modal: 'settings', data: { setting: 'time_zone' } })"
     />
-    <DashboardSettingsAccountCloseAccount />
-  </NuxtLayout>
+    <DashboardSettingsAccountCloseAccount class="mb-4" />
+  </div>
 </template>

@@ -12,16 +12,16 @@ export class NotificationBackendRepositoryDumb implements NotificationBackendRep
   },
   limit: number, offset: number,
   ): Promise<Result<
-      {
-        notifications: NotificationBackend[];
-        pagination: {
-          limit: number;
-          offset: number;
-          totalItems: number;
-        };
-      },
-      ErrorRetrievingNotifications
-    >> {
+    {
+      notifications: NotificationBackend[];
+      pagination: {
+        limit: number;
+        offset: number;
+        totalItems: number;
+      };
+    },
+    ErrorRetrievingNotifications
+  >> {
     return success({
       notifications: [],
       pagination: {

@@ -44,7 +44,3 @@ const gameTitle = computed(() => {
     overflow: hidden;
   }
 </style>
-
-<style>
-
-</style>

@@ -1,4 +1,4 @@
-import type { WebsocketConnectionI } from "~/packages/websocket/domain/websocket-connection";
+import type { WebsocketConnectionI, WebsocketEventListener } from "~/packages/websocket/domain/websocket-connection";
 
 type WebsocketDepenencies = {
   wsConnection: null | WebsocketConnectionI;
@@ -21,20 +21,15 @@ export default defineNuxtPlugin({
       };
     }
 
-    // $dependencies.common.asyncMessagePublisher.subscribe("frontend:events:websockets:connection-state-changed", async ({ state }) => {
-    //   if (state !== "connected") return;
-
-    //   if (userStore.user) {
-    //     await $dependencies.websockets.ui.wsChannelManagers.user.subscribe(wsConnectionResult.value);
-    //     await subscribeToUserChannelsEmittingAsyncMessage();
-    //   }
-    // });
+    let balanceUpdateFp: WebsocketEventListener;
+    let notificationFp: WebsocketEventListener;
+    let trackerFp: WebsocketEventListener;
 
     watch(() => userStore.user, async (user) => {
       if (!user) {
-        await $dependencies.websockets.ui.wsChannelManagers.user.unsubscribe(wsConnectionResult.value, "balance_update_ws_to_async_message_subscriber");
-        await $dependencies.websockets.ui.wsChannelManagers.user.unsubscribe(wsConnectionResult.value, "notification_ws_to_async_message_subscriber");
-        await $dependencies.websockets.ui.wsChannelManagers.user.unsubscribe(wsConnectionResult.value, "tracker_ws_to_async_message_subscriber");
+        await $dependencies.websockets.ui.wsChannelManagers.user.unsubscribe(wsConnectionResult.value, balanceUpdateFp);
+        await $dependencies.websockets.ui.wsChannelManagers.user.unsubscribe(wsConnectionResult.value, notificationFp);
+        await $dependencies.websockets.ui.wsChannelManagers.user.unsubscribe(wsConnectionResult.value, trackerFp);
 
         const resultLeavingChannels = await $dependencies.websockets.ui.wsChannelManagers.user.leaveChannels(wsConnectionResult.value);
         if (resultLeavingChannels.isFailure) {
@@ -44,27 +39,36 @@ export default defineNuxtPlugin({
       }
 
       const resultEnteringUserChannels = await $dependencies.websockets.ui.wsChannelManagers.user.enterChannels(wsConnectionResult.value);
+
       if (resultEnteringUserChannels.isFailure) {
         $dependencies.common.logger.error("Error entering user channels", resultEnteringUserChannels.error, { connection: wsConnectionResult.value });
         return;
       }
 
-      const [resultSubscribingToBalanceUpdateMessage, resultSubscribingToNotificationMessage, resultSubscribingToTrackerMessage] = await Promise.all(
+      await Promise.all(
         [
-          $dependencies.websockets.ui.wsChannelManagers.user.subscribe(wsConnectionResult.value,
-            {
-              id: "balance_update_ws_to_async_message_subscriber",
-              message: "balance_update",
-              callback: (eventData) => {
+          (async () => {
+            const subscriptionResult = await $dependencies.websockets.ui.wsChannelManagers.user.subscribe(wsConnectionResult.value,
+              "balance_update",
+              (eventData) => {
                 $dependencies.common.asyncMessagePublisher.emit("backend:events:wallets:wallet-balance-updated", camelizeKeys(eventData.data));
               },
-            }),
-          $dependencies.websockets.ui.wsChannelManagers.user.subscribe(wsConnectionResult.value,
-            {
-              id: "notification_ws_to_async_message_subscriber",
-              message: "notification",
-              callback: (eventData) => {
+            );
+
+            if (subscriptionResult.isFailure) {
+              $dependencies.common.logger.error("Error subscribing to balance update message", subscriptionResult.error, { connection: wsConnectionResult.value });
+              return;
+            }
+            else {
+              balanceUpdateFp = subscriptionResult.value;
+            }
+          })(),
+          (async () => {
+            const subscriptionResult = await $dependencies.websockets.ui.wsChannelManagers.user.subscribe(wsConnectionResult.value,
+              "notification",
+              (eventData) => {
                 if (eventData.data.type === "payment_status_update") {
+                  console.log("Emitting payment-status-updated event");
                   $dependencies.common.asyncMessagePublisher.emit("backend:events:payments:payment-status-updated", camelizeKeys(eventData.data));
                 }
 
@@ -73,30 +77,36 @@ export default defineNuxtPlugin({
                   createdAt: new Date().toISOString(), // It would be better if this came from the Backend
                 } });
               },
-            }),
-          $dependencies.websockets.ui.wsChannelManagers.user.subscribe(wsConnectionResult.value, {
-            id: "tracker_ws_to_async_message_subscriber",
-            message: "tracker",
-            callback: (event) => {
-              if (event.data.event === "payment_update") {
-                $dependencies.common.asyncMessagePublisher.emit("backend:events:tracker:payment-updated", camelizeKeys(event.data.event_data));
-              }
-            },
-          }),
+            );
+
+            if (subscriptionResult.isFailure) {
+              $dependencies.common.logger.error("Error subscribing to notification message", subscriptionResult.error, { connection: wsConnectionResult.value });
+              return;
+            }
+            else {
+              notificationFp = subscriptionResult.value;
+            }
+          })(),
+          (async () => {
+            const subscriptionResult = await $dependencies.websockets.ui.wsChannelManagers.user.subscribe(wsConnectionResult.value,
+              "tracker",
+              (event) => {
+                if (event.data.event === "payment_update") {
+                  $dependencies.common.asyncMessagePublisher.emit("backend:events:tracker:payment-updated", camelizeKeys(event.data.event_data));
+                }
+              },
+            );
+
+            if (subscriptionResult.isFailure) {
+              $dependencies.common.logger.error("Error subscribing to tracker message", subscriptionResult.error, { connection: wsConnectionResult.value });
+              return;
+            }
+            else {
+              trackerFp = subscriptionResult.value;
+            }
+          })(),
         ],
       );
-
-      if (resultSubscribingToBalanceUpdateMessage.isFailure) {
-        $dependencies.common.logger.error("Error subscribing to balance update message", resultSubscribingToBalanceUpdateMessage.error, { connection: wsConnectionResult.value });
-      }
-
-      if (resultSubscribingToNotificationMessage.isFailure) {
-        $dependencies.common.logger.error("Error subscribing to notification message", resultSubscribingToNotificationMessage.error, { connection: wsConnectionResult.value });
-      }
-
-      if (resultSubscribingToTrackerMessage.isFailure) {
-        $dependencies.common.logger.error("Error subscribing to tracker message", resultSubscribingToTrackerMessage.error, { connection: wsConnectionResult.value });
-      }
     }, { immediate: true });
 
     const dependencies: WebsocketDepenencies = {

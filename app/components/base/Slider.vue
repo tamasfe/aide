@@ -130,6 +130,7 @@ defineExpose({
       overflow-x-auto
       scroll-smooth
       snap-x
+      scroll-px-4
       scrollbar-hide
       snap-mandatory
       md:mask-edge-fade
@@ -141,9 +142,6 @@ defineExpose({
       sm:[--cols:5]
       md:[--cols:7]
       lg:[--cols:8]"
-    :style="{
-      scrollPadding: `0 1rem`,
-    }"
   >
     <div
       v-for="(item, idx) in dataToRender"

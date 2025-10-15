@@ -4,18 +4,18 @@
 
 // e8c5df6e-64ba-4597-945a-ceb766797805
 
-export type SupportedCurrencyCode =
-  | "BRL";
+export type SupportedCurrencyCode
+  = | "BRL";
 
 /**
  * When adding new countries, make sure to add the svg file in the assets' flags folder
  */
-export type SupportedCountryFlagCode =
-  | "BR"
-  | "DE"
-  | "ES"
-  | "MX"
-  | "US";
+export type SupportedCountryFlagCode
+  = | "BR"
+    | "DE"
+    | "ES"
+    | "MX"
+    | "US";
 
 export type Currency = {
   code: SupportedCurrencyCode;
@@ -45,20 +45,20 @@ export type DeviceType = "mobile" | "desktop";
 
 export type Gender = "male" | "female" | "other";
 
-export type GameVolatility =
-  | "extreme"
-  | "very-high"
-  | "high"
-  | "medium-high"
-  | "medium"
-  | "medium-low"
-  | "low"
-  | "very-low"
-  | "none";
+export type GameVolatility
+  = | "extreme"
+    | "very-high"
+    | "high"
+    | "medium-high"
+    | "medium"
+    | "medium-low"
+    | "low"
+    | "very-low"
+    | "none";
 
-export type GameImageVariant =
-  | "small"
-  | "medium"
-  | "large"
-  | "extra_large"
-  | "background";
+export type GameImageVariant
+  = | "small"
+    | "medium"
+    | "large"
+    | "extra_large"
+    | "background";

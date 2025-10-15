@@ -24,8 +24,8 @@ export const createWebsocketDependencyInjectionI: (config: PublicRuntimeConfig, 
     ui: {
       createWebsocketConnection: new CreateWebsocketConnection(apiBaseUrl, commonDependencies.logger, commonDependencies.asyncMessagePublisher),
       wsChannelManagers: {
-        user: new WebsocketUserChannelsManager(websocketAccessTokenRepository, commonDependencies.asyncMessagePublisher, commonDependencies.logger),
-        ticker: new WebsocketTickerChannelManagerNewWins(commonDependencies.logger, commonDependencies.asyncMessagePublisher),
+        user: new WebsocketUserChannelsManager(websocketAccessTokenRepository, commonDependencies.logger),
+        ticker: new WebsocketTickerChannelManagerNewWins(commonDependencies.logger),
       },
     },
   };

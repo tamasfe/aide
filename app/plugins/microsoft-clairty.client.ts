@@ -55,21 +55,22 @@ export default defineNuxtPlugin({
       /**
        * Upgrade session & log interesting events
        */
-      $dependencies.common.asyncMessagePublisher.subscribe("frontend:events:signup-flows:signup-flow-submitted", () => {
+
+      useEventBusSubscription("frontend:events:signup-flows:signup-flow-submitted", async () => {
         Clarity.upgrade("signup");
         Clarity.event("signup");
       });
 
-      $dependencies.common.asyncMessagePublisher.subscribe("frontend:events:games:game-session-started", () => {
+      useEventBusSubscription("frontend:events:games:game-session-started", () => {
         Clarity.event("game-session-started");
       });
 
-      $dependencies.common.asyncMessagePublisher.subscribe("frontend:events:payments:deposit-flow-created", () => {
+      useEventBusSubscription("frontend:events:payments:deposit-flow-created", () => {
         Clarity.upgrade("deposit-created");
         Clarity.event("deposit-created");
       });
 
-      $dependencies.common.asyncMessagePublisher.subscribe("backend:events:payments:payment-status-updated", (event) => {
+      useEventBusSubscription("backend:events:payments:payment-status-updated", (event) => {
         if (event.data.status === "succeeded") {
           Clarity.upgrade("deposit-succeeded");
           Clarity.event("deposit-succeeded");

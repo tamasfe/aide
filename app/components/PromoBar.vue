@@ -60,13 +60,13 @@ const props = withDefaults(defineProps<{
           props.class,
         )"
       >
-        <BaseLink
+        <NuxtLinkLocale
           :to="banner.data.link || ''"
         >
           <div class="px-3 py-2 mr-10 text-sm md:text-base leading-tight text-left">
             {{ banner.data.message }}
           </div>
-        </BaseLink>
+        </NuxtLinkLocale>
         <BaseButton
           variant="ghost"
           size="ghost"

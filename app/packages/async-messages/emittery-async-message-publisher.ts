@@ -19,21 +19,14 @@ export class EmitteryAsyncMessagePublisher implements AsyncMessagePublisherI {
   subscribe<T extends keyof AsyncMessagesTypes>(
     messageName: T,
     callback: (message: AsyncMessagesTypes[T]) => void,
-    listenerId = Date.now(),
-  ): number {
-    const unsubscribe = this.emittery.on(messageName, callback);
-    // @ts-expect-error Can't make the types work, eventhough the code does what it should
-    this.listenersMap.set(listenerId, { callback, message: messageName, unsubscribe });
-    return listenerId;
+  ) {
+    this.emittery.on(messageName, callback);
   }
 
-  unsubscribe(listenerId: number): void {
-    const listener = this.listenersMap.get(listenerId);
-    if (listener) {
-      listener.unsubscribe();
-      this.emittery.off(listener.message, listener.callback);
-      this.listenersMap.delete(listenerId);
-    }
+  unsubscribe<T extends keyof AsyncMessagesTypes>(
+    messageName: T,
+    callback: (message: AsyncMessagesTypes[T]) => void): void {
+    this.emittery.off(messageName, callback);
   }
 
   once<T extends keyof AsyncMessagesTypes>(
@@ -56,10 +49,4 @@ export class EmitteryAsyncMessagePublisher implements AsyncMessagePublisherI {
       }
     } } });
   }
-
-  private listenersMap = new Map<number, {
-    callback: (message: object) => void;
-    message: keyof AsyncMessagesTypes;
-    unsubscribe: () => void;
-  }>();
 }

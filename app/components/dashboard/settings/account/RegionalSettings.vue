@@ -18,10 +18,10 @@ const currency = ref({
 <template>
   <DashboardSection>
     <template #title>
-      {{ $t('dashboard.settings.account.regional_settings') }}
+      {{ $t('account.settings.account.regional_settings') }}
     </template>
 
-    <DashboardSectionItem v-if="walletStore.wallet" :name="$t('dashboard.settings.account.wallets')">
+    <DashboardSectionItem v-if="walletStore.wallet" :name="$t('account.settings.account.wallets')">
       <template #default>
         <div class="flex items-center gap-2">
           <BaseFlag
@@ -31,7 +31,7 @@ const currency = ref({
         </div>
       </template>
     </DashboardSectionItem>
-    <DashboardSectionItem v-if="userSettings.settings" :name="$t('dashboard.settings.account.language')">
+    <DashboardSectionItem v-if="userSettings.settings" :name="$t('account.settings.account.language')">
       <template #default>
         <p>{{ userSettings.settings.locale ? useLanguageName(locale, userSettings.settings.locale) : '' }}</p>
       </template>
@@ -47,7 +47,7 @@ const currency = ref({
         </div>
       </template>
     </DashboardSectionItem>
-    <DashboardSectionItem v-if="userSettings.settings" :name="$t('dashboard.settings.account.time_zone')">
+    <DashboardSectionItem v-if="userSettings.settings" :name="$t('account.settings.account.time_zone')">
       <template #default>
         <p>{{ userSettings.settings.timeZone }}</p>
       </template>

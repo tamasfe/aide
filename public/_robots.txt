@@ -3,5 +3,4 @@ Disallow: /terms
 Disallow: /responsible-gaming
 Disallow: /aml-kyc
 Disallow: /privacy
-Disallow: /betting-terms
 

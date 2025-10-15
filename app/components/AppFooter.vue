@@ -55,18 +55,8 @@ const scrollToTop = () => {
       <FooterColumn
         :title="$t('footer.popular')"
         :links="[
-          // { title: $t('page.aviator'), to: { name: 'todo' } },
-          { title: $t('page.slots'), to: { name: 'categories-id', params: { id: 'slots' } } },
-          { title: $t('page.live_casino'), to: { name: 'categories-id', params: { id: 'live' } } },
-        ]"
-      />
-      <FooterColumn
-        :title="siteStore.currentSite.name"
-        :links="[
-          // { title: $t('page.affiliate_program'), to: { name: 'affiliate-program' } },
-          { title: $t('page.faq'), to: { name: 'faq' } },
-          { title: $t('page.support'), onClick: () => $dependencies.common.asyncMessagePublisher.emit('frontend:commands:modals:open-live-chat', {}) },
-          // { title: $t('page.telegram'), to: { name: 'todo' } },
+          { title: $t('page.slots'), to: { name: 'categories-identifier', params: { identifier: 'slots' } } },
+          { title: $t('page.live_casino'), to: { name: 'categories-identifier', params: { identifier: 'live' } } },
         ]"
       />
       <FooterColumn

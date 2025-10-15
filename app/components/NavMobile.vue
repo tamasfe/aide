@@ -24,8 +24,8 @@ const items = [
   {
     icon: "lucide:flame", text: "mobile_nav.hot", onClick: async () => {
       await navigateTo(localePath({
-        name: "categories-id",
-        params: { id: "hot" },
+        name: "categories-identifier",
+        params: { identifier: "hot" },
       }));
     },
   },

@@ -1,16 +1,14 @@
 import type { WebsocketTickerChannelManagerI } from "../../domain/websocket-ticker-channel-manager";
 import type { WebsocketTickerMessagesByType } from "../../domain/websocket-messages";
-import type { AsyncMessagePublisherI } from "~/packages/async-messages/async-message-publisher";
 import type { LoggerI } from "~/packages/logger/Logger";
 import { success } from "~/packages/result";
-import type { WebsocketConnectionI } from "../../domain/websocket-connection";
+import type { WebsocketConnectionI, WebsocketEventListener } from "../../domain/websocket-connection";
 
 export class WebsocketTickerChannelManagerNewWins implements WebsocketTickerChannelManagerI {
   channel = "newest_wins" as const;
 
   constructor(
     private logger: LoggerI,
-    private asyncMessagePublisher: AsyncMessagePublisherI,
   ) {}
 
   /**
@@ -18,33 +16,18 @@ export class WebsocketTickerChannelManagerNewWins implements WebsocketTickerChan
    * Then subscribes the handler to the specific message.
    * This method is idempotent. If already subscribed: does nothing.
    */
-  public async subscribe<T extends keyof WebsocketTickerMessagesByType>(wsConnection: WebsocketConnectionI, subscriber: {
-    message: T;
-    callback: (message: WebsocketTickerMessagesByType[T]) => void;
-    id: string;
-  }) {
-    if (this.subscriberIds.has(subscriber.id)) {
-      return success();
-    }
-
+  public async subscribe<T extends keyof WebsocketTickerMessagesByType>(
+    wsConnection: WebsocketConnectionI,
+    message: T,
+    callback: (message: WebsocketTickerMessagesByType[T]) => void,
+  ) {
     const resultEnteringChannel = await this.enterChannel(wsConnection);
+
     if (resultEnteringChannel.isFailure) {
       return resultEnteringChannel;
     }
 
-    const resultSubscribing = wsConnection.subscribeToMessage(subscriber.message, subscriber.callback, subscriber.id);
-    if (resultSubscribing.isFailure) {
-      return resultSubscribing;
-    }
-
-    this.subscriberIds.add(subscriber.id);
-    return success();
-
-    // this.eventListenerId = this.asyncMessagePublisher.subscribe("frontend:events:websockets:connection-state-changed", async (message) => {
-    //   if (message.state === "connected") {
-    //     await handler(wsConnection, callback);
-    //   }
-    // });
+    return wsConnection.subscribe(message, callback);
   }
 
   /**
@@ -52,24 +35,17 @@ export class WebsocketTickerChannelManagerNewWins implements WebsocketTickerChan
    * If no subscribers remain for this channel, then leaves the channel.
    * This method is idempotent. If already unsubscribed: does nothing.
    */
-  public async unsubscribe(wsConnection: WebsocketConnectionI, subscriberId: string) {
-    if (!this.subscriberIds.has(subscriberId)) {
-      return success();
-    }
-
-    const resultUnsubcribing = wsConnection.unsubscribeFromMessage(subscriberId);
+  public async unsubscribe(wsConnection: WebsocketConnectionI, callback: WebsocketEventListener) {
+    const resultUnsubcribing = wsConnection.unsubscribe(callback);
     if (resultUnsubcribing.isFailure) {
       return resultUnsubcribing;
     }
 
-    this.subscriberIds.delete(subscriberId);
-
     return this.leaveChannelIfNoMoreSubscribers(wsConnection);
   }
 
-  private subscriberIds: Set<string> = new Set();
-
   private hasEnteredChannel: boolean = false;
+
   private async enterChannel(wsConnection: WebsocketConnectionI) {
     if (this.hasEnteredChannel) {
       return success();
@@ -89,10 +65,6 @@ export class WebsocketTickerChannelManagerNewWins implements WebsocketTickerChan
 
   private async leaveChannelIfNoMoreSubscribers(wsConnection: WebsocketConnectionI) {
     if (!this.hasEnteredChannel) {
-      return success();
-    }
-
-    if (this.subscriberIds.size > 0) {
       return success();
     }
 

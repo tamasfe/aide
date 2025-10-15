@@ -42,32 +42,32 @@ const links = [
         title: t("page.category", { category: t("category.crash") }),
         icon: "emojione-v1:fire",
         to: {
-          name: "categories-id",
-          params: { id: "crash" },
+          name: "categories-identifier",
+          params: { identifier: "crash" },
         },
       },
       {
         title: t("page.category", { category: t("category.slots") }),
         icon: "emojione-v1:slot-machine",
         to: {
-          name: "categories-id",
-          params: { id: "slots" },
+          name: "categories-identifier",
+          params: { identifier: "slots" },
         },
       },
       {
         title: t("page.category", { category: t("category.roulette") }),
         icon: "emojione-v1:eight-spoked-asterisk",
         to: {
-          name: "categories-id",
-          params: { id: "roulette" },
+          name: "categories-identifier",
+          params: { identifier: "roulette" },
         },
       },
       {
         title: t("page.category", { category: t("category.live") }),
         icon: "emojione-v1:woman",
         to: {
-          name: "categories-id",
-          params: { id: "live" },
+          name: "categories-identifier",
+          params: { identifier: "live" },
         },
       },
       {
@@ -163,9 +163,9 @@ const emptyQuery = ref("");
             :key="category.identifier"
             :title="toSentenceCase(category.identifier)"
             :to="{
-              name: 'categories-id',
+              name: 'categories-identifier',
               params: {
-                id: category.identifier,
+                identifier: category.identifier,
               },
             }"
             :icon="guessCategoryIcon(category.identifier)"

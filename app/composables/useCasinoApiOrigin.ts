@@ -1,4 +1,4 @@
-export const useCasinoApiOrigin = (type: "api" | "tracking", at: "client" | "server" | null = null): string => {
+export default function (type: "api" | "tracking", at: "client" | "server" | null = null): string {
   const config = useRuntimeConfig();
   const siteStore = useSiteStore();
 

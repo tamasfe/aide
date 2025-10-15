@@ -47,7 +47,7 @@ watch(() => walletStore.balanceStatus, () => {
     </BaseButton>
 
     <BaseButton
-      v-if="!gameSessionStore.isPlaying &&walletStore.wallet"
+      v-if="!gameSessionStore.isPlaying && walletStore.wallet"
       variant="secondary"
       :disabled="walletStore.balanceStatus !== 'ready'"
       class="min-w-20"

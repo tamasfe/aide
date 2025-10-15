@@ -11,9 +11,8 @@ export default defineNuxtPlugin({
      * Event listeners
      *
      */
-    $dependencies.common.asyncMessagePublisher.subscribe(
-      "frontend:events:signup-flows:signup-flow-submitted",
-      () => $dependencies.signupFlows.ui.deleteCurrentSignupFlowIdOnSignupFlowSubmitted.handle(),
+    useEventBusSubscription("frontend:events:signup-flows:signup-flow-submitted",
+      async () => $dependencies.signupFlows.ui.deleteCurrentSignupFlowIdOnSignupFlowSubmitted.handle(),
     );
 
     watch(() => userStore.isAuthenticated, async (isAuthenticated) => {

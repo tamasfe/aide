@@ -11,7 +11,7 @@ export class ClicksTrackingRepoAPI implements ClickTrackingRepositoryI {
       fingerprintValue: string;
       path: string;
     },
-    queryParams: URLSearchParams
+    queryParams: URLSearchParams,
   ): Promise<EmptyResult<InfrastructureError>> {
     return fetch(`${this.baseUrl}/sessions?${queryParams.toString()}`, {
       method: "POST",
@@ -31,13 +31,13 @@ export class ClicksTrackingRepoAPI implements ClickTrackingRepositoryI {
         }
         return success();
       })
-      .catch((error) =>
+      .catch(error =>
         fail(
           InfrastructureError.newFromUnknownError(
             { inputs: { params, queryParams } },
-            error
-          )
-        )
+            error,
+          ),
+        ),
       );
   }
 
@@ -56,10 +56,10 @@ export class ClicksTrackingRepoAPI implements ClickTrackingRepositoryI {
       }),
     })
       .then(() => success())
-      .catch((error) =>
+      .catch(error =>
         fail(
-          InfrastructureError.newFromUnknownError({ inputs: { params } }, error)
-        )
+          InfrastructureError.newFromUnknownError({ inputs: { params } }, error),
+        ),
       );
   }
 }

@@ -1,7 +1,8 @@
 const DEFAULT_ROUTE = "/";
 
-export const useNavigateBackOrHome = (): { navigateBackOrHome: () => Promise<void> } => {
+export default function (): { navigateBackOrHome: () => Promise<void> } {
   const router = useRouter();
+
   const localePath = useLocalePath();
 
   return {

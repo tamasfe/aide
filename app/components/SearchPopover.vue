@@ -41,11 +41,11 @@ const checkFocusAfterHydration = async () => {
   }
 
   // Fallback: Check again after a short delay in case focus detection was too early
-  setTimeout(() => {
-    if (inputEl && document.activeElement === inputEl && !open.value) {
-      onOpen();
-    }
-  }, 100);
+  // setTimeout(() => {
+  //   if (inputEl && document.activeElement === inputEl && !open.value) {
+  //     onOpen();
+  //   }
+  // }, 100);
 };
 
 // watch(open, (isOpen) => {

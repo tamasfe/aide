@@ -48,11 +48,6 @@ declare module "@nuxt/schema" {
   }
 }
 
-declare module "@vue/runtime-core" {
-  interface ComponentCustomProperties extends _ComponentCustomProperties {}
-  interface ComponentCustomOptions extends _ComponentCustomOptions {}
-}
-
 /**
  * Used in DataTable vue component
  */

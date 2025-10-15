@@ -6,15 +6,15 @@ const userStore = useUserStore();
 <template>
   <DashboardSection>
     <template #title>
-      {{ $t('dashboard.settings.account.account_details') }}
+      {{ $t('account.settings.account.account_details') }}
     </template>
 
-    <DashboardSectionItem :name="$t('dashboard.settings.account.username')">
+    <DashboardSectionItem :name="$t('account.settings.account.username')">
       <template #default>
         <p>{{ userStore.user?.username || '' }}</p>
       </template>
       <template #description>
-        <p>{{ $t("dashboard.settings.account.username_description") }}</p>
+        <p>{{ $t("account.settings.account.username_description") }}</p>
       </template>
       <template #actions>
         <div class="flex items-center gap-4">
@@ -28,12 +28,12 @@ const userStore = useUserStore();
         </div>
       </template>
     </DashboardSectionItem>
-    <DashboardSectionItem :name="$t('dashboard.settings.account.email')">
+    <DashboardSectionItem :name="$t('account.settings.account.email')">
       <template #default>
         <p>{{ userStore.user?.email }}</p>
       </template>
     </DashboardSectionItem>
-    <DashboardSectionItem :name="$t('dashboard.settings.account.password')">
+    <DashboardSectionItem :name="$t('account.settings.account.password')">
       <template #default>
         <p>*************</p>
       </template>
@@ -49,13 +49,13 @@ const userStore = useUserStore();
         </div>
       </template>
     </DashboardSectionItem>
-    <DashboardSectionItem :name="$t('dashboard.settings.account.public_id')">
+    <DashboardSectionItem :name="$t('account.settings.account.public_id')">
       <template #default>
         <p>{{ userStore.user?.id }}</p>
       </template>
       <template #description>
         <p>
-          {{ $t("dashboard.settings.account.id_description") }}
+          {{ $t("account.settings.account.id_description") }}
         </p>
       </template>
       <template #actions>

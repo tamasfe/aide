@@ -86,21 +86,19 @@ const slideData: SlideData[] = [
 </script>
 
 <template>
-  <div class="w-full">
-    <BaseCarousel
-      :side-controls="!isMobile"
-      :options="{ align: 'center' }"
-      :slide-count="slideData.length"
-      class="w-full overflow-hidden"
-      slide-ratio="1280/607"
-    >
-      <div v-for="(slide, index) in slideData" :key="slide.id" class="flex-shrink-0 snap-start w-[calc((100%-(var(--gap)*(var(--cols)-1)))/var(--cols))]">
-        <SlideGeneric
-          class="w-full"
-          :slide="slide"
-          :fetchpriority="isMobile ? (index == 0 ? 'high' : 'low') : (index <= 3 ? 'high' : 'low')"
-        />
-      </div>
-    </BaseCarousel>
-  </div>
+  <BaseCarousel
+    :side-controls="!isMobile"
+    :options="{ align: 'center' }"
+    :slide-count="slideData.length"
+    class="overflow-hidden"
+    slide-ratio="1280/607"
+  >
+    <div v-for="(slide, index) in slideData" :key="slide.id" class="flex-shrink-0 snap-start w-[calc((100%-(var(--gap)*(var(--cols)-1)))/var(--cols))]">
+      <SlideGeneric
+        class="w-full"
+        :slide="slide"
+        :fetchpriority="isMobile ? (index == 0 ? 'high' : 'low') : (index <= 3 ? 'high' : 'low')"
+      />
+    </div>
+  </BaseCarousel>
 </template>

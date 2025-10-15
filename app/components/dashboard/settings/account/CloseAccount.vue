@@ -5,10 +5,10 @@ const { $dependencies } = useNuxtApp();
 <template>
   <DashboardSection>
     <template #title>
-      {{ $t('dashboard.settings.account.close_account') }}
+      {{ $t('account.settings.account.close_account') }}
     </template>
     <template #description>
-      {{ $t('dashboard.settings.account.close_account_warning') }}
+      {{ $t('account.settings.account.close_account_warning') }}
     </template>
 
     <div class="flex">

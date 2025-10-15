@@ -4,7 +4,7 @@ const walletStore = useWalletStore();
 const { t } = useI18n();
 
 useHead({
-  title: t("page.dashboard_history"),
+  title: t("page.account_history"),
 });
 
 const ENABLE_SERVER_SIDE_RENDERING = true;
@@ -43,21 +43,17 @@ const pagination = computed(() => {
 </script>
 
 <template>
-  <NuxtLayout
-    name="dashboard"
-    section="history"
+  <DataTableWalletPayments
+    class="bg-subtle rounded border border-muted/5 p-4"
+    :payments="data || []"
+    :loading="loading"
+    :pagination="pagination"
   >
-    <DataTableWalletPayments
-      :payments="data || []"
-      :loading="loading"
-      :pagination="pagination"
-    >
-      <template #empty>
-        <BaseEmpty
-          :title="$t('dashboard.history.deposits.table_empty')"
-          icon="lucide:circle-arrow-down"
-        />
-      </template>
-    </DataTableWalletPayments>
-  </NuxtLayout>
+    <template #empty>
+      <BaseEmpty
+        :title="$t('account.history.deposits.table_empty')"
+        icon="lucide:circle-arrow-down"
+      />
+    </template>
+  </DataTableWalletPayments>
 </template>

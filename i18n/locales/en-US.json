@@ -209,7 +209,7 @@
   "modal_deposit": {
     "minimum": "Minimum"
   },
-  "modal_user_settings": {
+  "modal_account_settings": {
     "error_unknown": "An error occurred while saving your settings. Please try again in some minutes",
     "language": {
       "title": "Change your account language"
@@ -324,8 +324,8 @@
     "games": "All Games",
     "game": "Play {game}",
     "category": "{category} Games",
-    "dashboard_history": "History of Transactions",
-    "dashboard_settings": "Account Settings"
+    "account_history": "History of Transactions",
+    "account_settings": "Account Settings"
   },
   "wallet": {
     "payment": {
@@ -407,7 +407,7 @@
     "title": "WARNING!!!",
     "description": "Do not copy/paste ANYTHING in this window. Scammers are trying to steal your password."
   },
-  "dashboard": {
+  "account": {
     "nav": {
       "wallet": "Wallet",
       "account": "Account",
@@ -521,7 +521,7 @@
     "bingo": "Bingo",
     "other": "Other"
   },
-  "user_settings": {
+  "account_settings": {
     "payment": {
       "pix_key_type": {
         "CPF": "CPF",

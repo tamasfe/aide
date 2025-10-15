@@ -6,7 +6,7 @@ const userSettingsStore = useUserSettingsStore();
 const { t } = useI18n();
 
 useHead({
-  title: t("page.dashboard_settings"),
+  title: t("page.account_settings"),
 });
 
 const promotionsPreferences = ref<{
@@ -44,38 +44,33 @@ watchDeep(() => promotionsPreferences.value,
 </script>
 
 <template>
-  <NuxtLayout
-    name="dashboard"
-    section="settings"
-  >
-    <DashboardSection class="text-subtle">
-      <template #title>
-        {{ $t("dashboard.settings.preferences.bonuses") }}
-      </template>
-      <template #description>
-        {{ $t("dashboard.settings.preferences.bonuses_description") }}
-      </template>
-      <BaseAlert
-        v-if="errorUpdating"
-        :message="errorUpdating"
-        level="error"
-        class="mb-2"
-      />
-      <div class="w-full lg:max-w-72">
-        <div v-if="promotionsPreferences" class="space-y-4">
-          <BaseToggle v-model="promotionsPreferences.email">
-            <p>{{ $t("dashboard.settings.preferences.bonuses_by_email") }}</p>
-          </BaseToggle>
+  <DashboardSection class="text-subtle">
+    <template #title>
+      {{ $t("account.settings.preferences.bonuses") }}
+    </template>
+    <template #description>
+      {{ $t("account.settings.preferences.bonuses_description") }}
+    </template>
+    <BaseAlert
+      v-if="errorUpdating"
+      :message="errorUpdating"
+      level="error"
+      class="mb-2"
+    />
+    <div class="w-full lg:max-w-72">
+      <div v-if="promotionsPreferences" class="space-y-4">
+        <BaseToggle v-model="promotionsPreferences.email">
+          <p>{{ $t("account.settings.preferences.bonuses_by_email") }}</p>
+        </BaseToggle>
 
-          <BaseToggle v-model="promotionsPreferences.phone">
-            <p>{{ $t("dashboard.settings.preferences.bonuses_by_phone") }}</p>
-          </BaseToggle>
+        <BaseToggle v-model="promotionsPreferences.phone">
+          <p>{{ $t("account.settings.preferences.bonuses_by_phone") }}</p>
+        </BaseToggle>
 
-          <BaseToggle v-model="promotionsPreferences.browser">
-            <p>{{ $t("dashboard.settings.preferences.bonuses_by_browser") }}</p>
-          </BaseToggle>
-        </div>
+        <BaseToggle v-model="promotionsPreferences.browser">
+          <p>{{ $t("account.settings.preferences.bonuses_by_browser") }}</p>
+        </BaseToggle>
       </div>
-    </DashboardSection>
-  </NuxtLayout>
+    </div>
+  </DashboardSection>
 </template>

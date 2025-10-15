@@ -122,13 +122,13 @@ const loading = computed<boolean>(() => {
 
     <div class="my-2 text-sm text-center text-subtle">
       {{ $t("modal_session.accept_terms") }}
-      <BaseLink
+      <NuxtLinkLocale
         :to="{ name: 'terms' }"
         class="font-semibold hover:text-subtle-light"
         @click="() => $dependencies.users.ui.emitCommandCloseUserActionModal.handle()"
       >
         {{ $t("page.terms") }}
-      </BaseLink>
+      </NuxtLinkLocale>
     </div>
 
     <BaseButton

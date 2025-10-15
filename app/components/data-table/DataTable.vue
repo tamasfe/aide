@@ -153,7 +153,7 @@ table {
 }
 th,
 td {
-  @apply px-2 py-1.5 sm:p-2 rounded-sm;
+  @apply px-2 py-1.5 sm:p-2;
 }
 th {
   @apply text-xs font-semibold uppercase;
@@ -162,6 +162,12 @@ td {
   @apply text-sm text-subtle-light font-medium;
 }
 tr:nth-child(odd) td {
-  @apply bg-subtle;
+  @apply bg-default;
+}
+tr:nth-child(odd) td:first-child {
+  @apply rounded-l;
+}
+tr:nth-child(odd) td:last-child {
+  @apply rounded-r;
 }
 </style>

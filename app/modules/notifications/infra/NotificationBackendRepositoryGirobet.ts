@@ -19,16 +19,16 @@ export class NotificationBackendRepositoryGirobet implements NotificationBackend
   },
   limit: number, offset: number,
   ): Promise<Result<
-      {
-        notifications: NotificationBackend[];
-        pagination: {
-          limit: number;
-          offset: number;
-          totalItems: number;
-        };
-      },
-      ErrorRetrievingNotifications
-    >> {
+    {
+      notifications: NotificationBackend[];
+      pagination: {
+        limit: number;
+        offset: number;
+        totalItems: number;
+      };
+    },
+    ErrorRetrievingNotifications
+  >> {
     try {
       const { data, error, response } = await this.apiClient.GET("/notification/list", {
         params: {

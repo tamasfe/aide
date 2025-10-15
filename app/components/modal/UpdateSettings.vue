@@ -32,19 +32,19 @@ const onClosed = () => {
   >
     <template #title>
       <span v-if="setting === 'username'">
-        {{ $t('modal_user_settings.username.title') }}
+        {{ $t('modal_account_settings.username.title') }}
       </span>
       <span v-else-if="setting === 'password'">
-        {{ $t('modal_user_settings.password.title') }}
+        {{ $t('modal_account_settings.password.title') }}
       </span>
       <span v-else-if="setting === 'language'">
-        {{ $t('modal_user_settings.language.title') }}
+        {{ $t('modal_account_settings.language.title') }}
       </span>
       <span v-else-if="setting === 'time_zone'">
-        {{ $t('modal_user_settings.time_zone.title') }}
+        {{ $t('modal_account_settings.time_zone.title') }}
       </span>
       <span v-else-if="setting === 'payment_pix'">
-        {{ $t('modal_user_settings.payment_pix.title') }}
+        {{ $t('modal_account_settings.payment_pix.title') }}
       </span>
     </template>
 

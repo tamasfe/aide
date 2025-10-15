@@ -3,7 +3,11 @@ const { params } = useRoute();
 const { $dependencies } = useNuxtApp();
 const { t } = useI18n();
 
-const categoryIdentifier = params.id;
+definePageMeta({
+  layout: "carousel",
+});
+
+const categoryIdentifier = params.identifier;
 if (!categoryIdentifier || typeof categoryIdentifier !== "string") {
   $dependencies.common.logger.warn("Id paramater in category page is not a string. It should be the Category identifier", { categoryIdentifier });
   await navigateTo("/");
@@ -16,14 +20,10 @@ useHead({
 </script>
 
 <template>
-  <NuxtLayout name="carousel">
-    <div class="max-w-screen-xl mx-auto w-full px-4 giro__sections">
-      <GridVerticalGames
-        :title="categoryTitle"
-        :category-identifier="String(categoryIdentifier)"
-        :provider-identifier="null"
-        :show-back-button="true"
-      />
-    </div>
-  </NuxtLayout>
+  <GridVerticalGames
+    :title="categoryTitle"
+    :category-identifier="String(categoryIdentifier)"
+    :provider-identifier="null"
+    :show-back-button="true"
+  />
 </template>

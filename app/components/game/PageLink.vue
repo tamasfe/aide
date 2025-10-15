@@ -9,17 +9,17 @@ const result = destructureGameIdentifier(props.identifier);
 </script>
 
 <template>
-  <BaseLink
+  <NuxtLinkLocale
     v-if="result.isFailure"
     :to="`/games/${props.identifier}`"
   >
     <slot />
-  </BaseLink>
+  </NuxtLinkLocale>
 
-  <BaseLink
+  <NuxtLinkLocale
     v-else
     :to="{ name: 'games-provider-game', params: { provider: result.value.providerSlug, game: result.value.gameSlug } }"
   >
     <slot />
-  </BaseLink>
+  </NuxtLinkLocale>
 </template>

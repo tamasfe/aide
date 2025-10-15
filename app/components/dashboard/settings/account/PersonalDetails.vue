@@ -6,15 +6,15 @@ const { locale } = useI18n();
 <template>
   <DashboardSection>
     <template #title>
-      {{ $t('dashboard.settings.account.personal_details') }}
+      {{ $t('account.settings.account.personal_details') }}
     </template>
 
-    <DashboardSectionItem :name="$t('dashboard.settings.account.name')">
+    <DashboardSectionItem :name="$t('account.settings.account.name')">
       <template #default>
         <p>{{ userStore.user?.name || '' }} {{ userStore.user?.familyName || '' }}</p>
       </template>
     </DashboardSectionItem>
-    <DashboardSectionItem :name="$t('dashboard.settings.account.phone')">
+    <DashboardSectionItem :name="$t('account.settings.account.phone')">
       <template #default>
         <p>+{{ userStore.user?.phone.code.value }} {{ userStore.user?.phone.national.value }}</p>
       </template>
@@ -29,12 +29,12 @@ const { locale } = useI18n();
         </div>
       </template> -->
     </DashboardSectionItem>
-    <DashboardSectionItem :name="$t('dashboard.settings.account.date_of_birth')">
+    <DashboardSectionItem :name="$t('account.settings.account.date_of_birth')">
       <template #default>
         <p>{{ userStore.user?.birthdate ? $d(new Date(userStore.user.birthdate)) : '' }}</p>
       </template>
     </DashboardSectionItem>
-    <DashboardSectionItem :name="$t('dashboard.settings.account.address')">
+    <DashboardSectionItem :name="$t('account.settings.account.address')">
       <template #default>
         <p>{{ userStore.user?.address?.address_lines?.join(', ') || '' }}</p>
       </template>
@@ -49,7 +49,7 @@ const { locale } = useI18n();
         </div>
       </template> -->
     </DashboardSectionItem>
-    <DashboardSectionItem :name="$t('dashboard.settings.account.city')">
+    <DashboardSectionItem :name="$t('account.settings.account.city')">
       <template #default>
         <p>{{ userStore.user?.address?.locality || '' }}</p>
       </template>
@@ -64,7 +64,7 @@ const { locale } = useI18n();
         </div>
       </template> -->
     </DashboardSectionItem>
-    <DashboardSectionItem :name="$t('dashboard.settings.account.postal_code')">
+    <DashboardSectionItem :name="$t('account.settings.account.postal_code')">
       <template #default>
         <p>{{ userStore.user?.address?.postal_code || '' }}</p>
       </template>
@@ -79,12 +79,12 @@ const { locale } = useI18n();
         </div>
       </template> -->
     </DashboardSectionItem>
-    <DashboardSectionItem :name="$t('dashboard.settings.account.country')">
+    <DashboardSectionItem :name="$t('account.settings.account.country')">
       <template #default>
         <p>{{ userStore.user?.address?.country ? (useCountryName(userStore.user?.address?.country, locale) || '') : '' }}</p>
       </template>
     </DashboardSectionItem>
-    <DashboardSectionItem :name="$t('dashboard.settings.account.document')">
+    <DashboardSectionItem :name="$t('account.settings.account.document')">
       <template #default>
         <p>{{ userStore.user?.cpf ? 'CPF: ' + userStore.user?.cpf : '' }}</p>
       </template>

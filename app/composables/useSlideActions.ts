@@ -1,4 +1,4 @@
-export const useSlideActions = () => {
+export default function () {
   const { $dependencies } = useNuxtApp();
   const userStore = useUserStore();
 

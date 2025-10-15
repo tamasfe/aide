@@ -27,19 +27,27 @@ const onLiveChatVisibilityChanged = (visibility: "minimized" | "maximized" | "hi
 <template>
   <div class="pt-14">
     <AppUserInteractionModal v-model:open="userActionModalIsOpen" />
-
     <NavSidebar v-model:open="sidebarIsOpen" />
-
-    <AppHeader @click:menu="sidebarIsOpen = !sidebarIsOpen" />
-
-    <slot />
-
+    <AppHeader class="fixed top-0 left-0 right-0 z-10 print:hidden" @click:menu="sidebarIsOpen = !sidebarIsOpen" />
+    <div
+      class="
+      min-h-[calc(100vh-7rem)]
+      sm:min-h-[calc(100vh-3.5rem)]
+      relative
+      pt-4
+      sm:pt-6
+      max-w-screen-xl
+      mx-auto
+      w-full
+      px-4"
+    >
+      <slot />
+    </div>
     <AppFooter class="mt-14 pb-14 sm:pb-0" />
-
     <NavMobile @click:menu="sidebarIsOpen = !sidebarIsOpen" />
-
-    <AppNotificationToastContainer />
-
-    <LiveChat @visibility-changed="onLiveChatVisibilityChanged" />
+    <ClientOnly>
+      <AppNotificationToastContainer />
+      <LiveChat @visibility-changed="onLiveChatVisibilityChanged" />
+    </ClientOnly>
   </div>
 </template>

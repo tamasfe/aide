@@ -33,13 +33,13 @@ const animationClasses = computed(() => {
 </script>
 
 <template>
-  <BaseLink
+  <NuxtLinkLocale
     :to="{
       name: 'games-provider',
       params: { provider: identifier },
     }"
     :class="cn('block bg-subtle rounded w-full h-full overflow-hidden border border-muted/5 p-2', animationClasses.link, props.class)"
   >
-    <ProviderImageLoader :provider-identifier="identifier" :class="cn('max-h-20', animationClasses.img)" />
-  </BaseLink>
+    <ProviderImageLoader :provider-identifier="identifier" :class="cn('aspect-square', animationClasses.img)" />
+  </NuxtLinkLocale>
 </template>

@@ -2,7 +2,7 @@ import type { LoggerI } from "~/packages/logger/Logger";
 import { GameIdentifier } from "../../domain/Game";
 import type { GameSessionsRepositoryI } from "../../domain/GameSessionsRepository";
 
-type Response = {
+export type Response = {
   isFailure: false;
   value: {
     url: string;

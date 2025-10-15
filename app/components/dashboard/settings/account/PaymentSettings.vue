@@ -13,15 +13,15 @@ const paymentSettings = computed(() => props.paymentConfig ? UserSettingsPayment
 <template>
   <DashboardSection>
     <template #title>
-      {{ $t('dashboard.settings.account.payment_settings') }}
+      {{ $t('account.settings.account.payment_settings') }}
     </template>
 
-    <DashboardSectionItem :name="$t('dashboard.settings.account.key_type')">
+    <DashboardSectionItem :name="$t('account.settings.account.key_type')">
       <template #default>
         <div v-if="paymentSettings">
           <p>
-            {{ $t(`user_settings.payment.pix_key_type.${paymentSettings.activeSettings.keyType}`, paymentSettings.activeSettings.keyType || '')
-              || $t('dashboard.settings.account.payment_settings_key_type_not_set')
+            {{ $t(`account_settings.payment.pix_key_type.${paymentSettings.activeSettings.keyType}`, paymentSettings.activeSettings.keyType || '')
+              || $t('account.settings.account.payment_settings_key_type_not_set')
             }}
           </p>
         </div>
@@ -38,14 +38,14 @@ const paymentSettings = computed(() => props.paymentConfig ? UserSettingsPayment
         </div>
       </template>
     </DashboardSectionItem>
-    <DashboardSectionItem :name="$t('dashboard.settings.account.key_value')">
+    <DashboardSectionItem :name="$t('account.settings.account.key_value')">
       <template #default>
         <div v-if="paymentSettings">
           <p v-if="paymentSettings.activeSettings.keyType === 'CPF'">
             {{ cpf || '' }}
           </p>
           <p v-if="paymentSettings.activeSettings.keyType === 'EMAIL' || paymentSettings.activeSettings.keyType === 'PHONE' || paymentSettings.activeSettings.keyType === 'EVP'">
-            {{ paymentSettings.activeSettings.keyValue || $t('dashboard.settings.account.payment_settings_key_type_not_set') }}
+            {{ paymentSettings.activeSettings.keyValue || $t('account.settings.account.payment_settings_key_type_not_set') }}
           </p>
         </div>
       </template>

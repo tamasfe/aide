@@ -3,7 +3,7 @@ import { GameIdentifier } from "../../domain/Game";
 import type { GameSessionsRepositoryI } from "../../domain/GameSessionsRepository";
 import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
 
-type Response = {
+export type Response = {
   isFailure: false;
   value: {
     url: string;

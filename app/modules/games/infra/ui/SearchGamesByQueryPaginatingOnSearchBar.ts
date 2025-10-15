@@ -1,11 +1,10 @@
-import type { GameSearchResponse } from "../../domain/Game";
 import type { GamesApiRepositoryI } from "../../domain/GamesApiRepository";
 import type { LoggerI } from "~/packages/logger/Logger";
 
 export class SearchGamesByQueryPaginatingOnSearchBar {
   constructor(
     private apiRepository: GamesApiRepositoryI,
-    private logger: LoggerI
+    private logger: LoggerI,
   ) {}
 
   public static PAGINATION_SIZE = 24;
@@ -18,7 +17,7 @@ export class SearchGamesByQueryPaginatingOnSearchBar {
       this.logger.error(
         "SearchGamesByQueryPaginatingOnSearchBar failed: ",
         result.error,
-        { query }
+        { query },
       );
       return {
         results: [],

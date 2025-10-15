@@ -20,10 +20,10 @@ export class UpdateSettingsOnForm {
     const result = await this.command.handle(settings);
     if (result.isFailure) {
       if (result.error.name === "ErrorInvalidCurrentPassword") {
-        return this.t("modal_user_settings.password.error_invalid_current_password");
+        return this.t("modal_account_settings.password.error_invalid_current_password");
       }
       this.logger.error("Failed to update user settings", result.error);
-      return this.t("modal_user_settings.error_unknown");
+      return this.t("modal_account_settings.error_unknown");
     }
 
     await this.asyncMessagePublisher.emit("frontend:commands:modals:close-user-interaction-modal", {});

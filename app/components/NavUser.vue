@@ -21,13 +21,13 @@ const links = [
     key: "wallet",
     title: t("user_nav.wallet"),
     icon: "lucide:wallet",
-    action: { toPage: { name: "settings-wallet" } },
+    action: { toPage: { name: "wallet" } },
   },
   {
     key: "history",
     title: t("user_nav.history"),
     icon: "lucide:table-properties",
-    action: { toPage: { name: "history-deposits" } },
+    action: { toPage: { name: "wallet-deposits" } },
   },
   {
     key: "account_settings",
@@ -95,7 +95,7 @@ const links = [
             class="text-subtle-light hover:text-white transition-colors duration-[50ms]"
           >
             <!-- Route link -->
-            <BaseLink
+            <NuxtLinkLocale
               v-if="item.action.toPage"
               :to="item.action.toPage"
               class="border-emphasis px-5 h-10 flex items-center whitespace-nowrap"
@@ -103,7 +103,7 @@ const links = [
             >
               <BaseIcon :name="item.icon" :size="18" class="flex-shrink-0" />
               <span class="block w-full ml-4">{{ item.title }}</span>
-            </BaseLink>
+            </NuxtLinkLocale>
 
             <!-- Buttons / actions -->
             <BaseButton

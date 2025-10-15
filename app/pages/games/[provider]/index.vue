@@ -12,6 +12,10 @@ if (!providerIdentifier || Number.isNaN(providerIdentifier)) {
   await navigateTo("/");
 }
 
+definePageMeta({
+  layout: "carousel",
+});
+
 useHead({
   title: t("page.provider", { provider: params.id }),
 });
@@ -33,14 +37,10 @@ watch(() => providerFromApi.value, (provider) => {
 </script>
 
 <template>
-  <NuxtLayout name="carousel">
-    <div class="max-w-screen-xl mx-auto w-full px-4 giro__sections">
-      <GridVerticalGames
-        :title="providerFromApi?.name || ''"
-        :provider-identifier="providerIdentifier"
-        :category-identifier="null"
-        :show-back-button="true"
-      />
-    </div>
-  </NuxtLayout>
+  <GridVerticalGames
+    :title="providerFromApi?.name || ''"
+    :provider-identifier="providerIdentifier"
+    :category-identifier="null"
+    :show-back-button="true"
+  />
 </template>

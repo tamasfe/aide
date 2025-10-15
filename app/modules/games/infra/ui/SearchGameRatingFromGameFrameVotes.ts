@@ -6,8 +6,6 @@ export class SearchGameRatingFromGameFrameVotes {
   constructor(private logger: LoggerI, private gameRatingsRepo: GameRatingsRepositoryI) {}
 
   public async handle(gameIdentifier: string): Promise<GameRating | null> {
-    // await new Promise(resolve => setTimeout(resolve, 5000)); // await for 5 seconds to simulate a slow network
-
     const result = await this.gameRatingsRepo.findById(gameIdentifier);
     if (result.isFailure) {
       if (result.error.name === "ErrorGameRatingNotFound") {
