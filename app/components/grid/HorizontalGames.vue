@@ -13,6 +13,7 @@ const { $dependencies } = useNuxtApp();
 const { t } = useI18n();
 
 const paginationSize = computed(() => props.initialGames ? props.initialGames.length : 25);
+
 const games = useState<(Keyified<Game>)[]>(`grid-horizontal-games-ids-for-${props.categoryIdentifier}`, () => props.initialGames ? props.initialGames.map(game => useAddKeyFromIdentifier(game)) : []);
 const loading = useState(`grid-horizontal-games-loading-for-${props.categoryIdentifier}`, () => false);
 const nextGamesPageToSearch = useState(`grid-horizontal-games-next-page-for-${props.categoryIdentifier}`, () => props.initialGames ? 1 : 0);
@@ -20,6 +21,7 @@ const canLoadMore = useState(`grid-horizontal-games-can-load-more-for-${props.ca
 
 const onLoadData = async () => {
   if (!canLoadMore.value) return;
+
   loading.value = true;
 
   const { games: gamesFound, canLoadMore: updatedCanLoadMore } = await $dependencies.games.ui.listGamesPaginatingOnGrid.handle(props.categoryIdentifier, null, nextGamesPageToSearch.value, paginationSize.value);
