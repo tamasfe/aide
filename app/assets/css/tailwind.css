@@ -26,7 +26,6 @@
 
   body {
     background-color: rgb(var(--color-bg));
-    height: 100vh;
     color: var(--color-text);
     @apply text-base;
   }
