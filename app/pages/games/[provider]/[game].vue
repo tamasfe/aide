@@ -61,7 +61,7 @@ const { data: gameDemoSession } = useAsyncData(
   },
   {
     watch: [game, i18n.localeProperties],
-    server: true,
+    server: false,
   });
 </script>
 

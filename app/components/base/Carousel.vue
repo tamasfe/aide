@@ -83,9 +83,9 @@ const goto = (index: number): void => {
   currentIndex.value = index;
 
   // Reset programmatic scroll flag after a short delay
-  // setTimeout(() => {
-  //   isProgrammaticScroll.value = false;
-  // }, 100);
+  setTimeout(() => {
+    isProgrammaticScroll.value = false;
+  }, 100);
 };
 
 const next = (): void => {
