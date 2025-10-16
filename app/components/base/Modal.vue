@@ -121,7 +121,7 @@ const open = computed({
           v-if="logo"
           class="logo"
         >
-          <IconLogo />
+          <BrandLogo />
         </div>
 
         <div class="content-padding">
@@ -148,7 +148,7 @@ const open = computed({
           v-if="logo"
           class="logo"
         >
-          <IconLogo />
+          <BrandLogo />
         </div>
 
         <div class="content-padding">
@@ -230,7 +230,7 @@ const open = computed({
             v-if="logo"
             class="logo"
           >
-            <IconLogo />
+            <BrandLogo />
           </div>
 
           <div class="content-padding">

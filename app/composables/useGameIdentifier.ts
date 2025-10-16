@@ -1,5 +1,3 @@
-import { constructGameIdentifier } from "../modules/games/domain/Game";
-
 export default function () {
   const { params } = useRoute();
 
@@ -11,7 +9,10 @@ export default function () {
       throw new Error("Game slug route parameter is missing");
     }
 
-    return constructGameIdentifier(providerSlug, gameSlug);
+    if (!providerSlug || !gameSlug) {
+      throw new Error(`Invalid game identifier from "${providerSlug}" & "${gameSlug}"`);
+    }
+    return `${providerSlug}/${gameSlug}`;
   });
 
   return identifier;

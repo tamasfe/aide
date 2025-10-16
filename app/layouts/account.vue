@@ -1,9 +1,6 @@
 <script setup lang="ts">
-import type { Route } from "~/components/NavBar.vue";
-
 const userStore = useUserStore();
 const localePath = useLocalePath();
-const { t } = useI18n();
 
 watch([() => userStore.isAuthenticated], async () => {
   if (!userStore.isAuthenticated) {

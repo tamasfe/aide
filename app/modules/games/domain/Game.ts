@@ -58,10 +58,3 @@ export const destructureGameIdentifier = (identifier: string): Result<{ provider
     gameSlug: second,
   });
 };
-
-export const constructGameIdentifier = (providerSlug: string, gameSlug: string): string => {
-  if (!providerSlug || !gameSlug) {
-    throw new Error(`Invalid game identifier from "${providerSlug}" & "${gameSlug}"`);
-  }
-  return `${providerSlug}/${gameSlug}`;
-};
