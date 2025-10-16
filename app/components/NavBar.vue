@@ -23,7 +23,7 @@ defineProps<{
       <a
         :href="href"
         class="py-2 px-5 snap-start rounded text-sm md:text-base"
-        :class="[isExactActive ? 'text-emphasis bg-active' : 'text-subtle bg-subtle hover:bg-muted']"
+        :class="[isExactActive ? 'text-emphasis bg-active' : 'text-subtle bg-subtle md:hover:bg-muted']"
         @click="navigate"
       >
         {{ route.title }}

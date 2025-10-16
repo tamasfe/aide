@@ -67,7 +67,7 @@ const links = [
     <PopoverTrigger
       v-bind="$attrs"
       :class="cn(
-        'h-14 px-4 flex items-center text-subtle hover:text-emphasis transition-colors duration-200 focus-visible:outline-none flex-shrink-0',
+        'h-14 px-4 flex items-center text-subtle md:hover:text-emphasis transition-colors duration-200 focus-visible:outline-none flex-shrink-0',
         open && 'text-emphasis',
       )"
       aria-label="User menu"
@@ -92,7 +92,7 @@ const links = [
           <div
             v-for="item in links"
             :key="item.key"
-            class="text-subtle-light hover:text-white transition-colors duration-[50ms]"
+            class="text-subtle-light md:hover:text-white transition-colors duration-[50ms]"
           >
             <!-- Route link -->
             <NuxtLinkLocale

@@ -49,7 +49,7 @@ const onClickPrintButton = () => {
   @apply font-semibold;
 }
 :deep(a) {
-  @apply text-emphasis hover:underline;
+  @apply text-emphasis md:hover:underline;
 }
 :deep(h4) {
   @apply my-6 text-lg font-semibold text-emphasis;

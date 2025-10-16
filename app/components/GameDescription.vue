@@ -37,7 +37,7 @@ const emit = defineEmits<{
           <GameImage
             v-if="game"
             :identifier="game.identifier"
-            class="block w-full object-cover transition-transform transform hover:scale-105 cursor-pointer"
+            class="block w-full object-cover transition-transform transform md:hover:scale-105 cursor-pointer"
           />
           <BaseSkeleton v-else class="w-full h-full" :loading="true" />
         </div>
@@ -113,7 +113,7 @@ const emit = defineEmits<{
           v-if="authenticated"
           variant="ghost"
           size="ghost"
-          class="hidden md:flex flex-row gap-1 items-center hover:text-subtle-light p-3 -m-2"
+          class="hidden md:flex flex-row gap-1 items-center md:hover:text-subtle-light p-3 -m-2"
           @click="emit('maximize')"
         >
           <BaseIcon

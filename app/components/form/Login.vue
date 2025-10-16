@@ -75,7 +75,7 @@ const onSubmit = handleSubmit(async (formData) => {
       <BaseButton
         variant="ghost"
         size="ghost"
-        class="text-sm text-subtle hover:text-subtle-light"
+        class="text-sm text-subtle md:hover:text-subtle-light"
         @click="$dependencies.users.ui.emitCommandOpenUserActionModal.handle('forgot_password')"
       >
         {{ $t("modal_session.forgot_password") }}
@@ -98,7 +98,7 @@ const onSubmit = handleSubmit(async (formData) => {
       <BaseButton
         variant="ghost"
         size="ghost"
-        class="text-primary hover:underline"
+        class="text-primary md:hover:underline"
         @click="$dependencies.users.ui.emitCommandOpenUserActionModal.handle('register')"
       >
         {{ $t("modal_session.create_free_account") }}

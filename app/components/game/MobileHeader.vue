@@ -25,7 +25,7 @@ const { params } = useRoute();
 
     <NuxtLink
       :to="localePath({ name: 'games-provider-game', params: params })"
-      class="px-4 -mr-4 h-full flex justify-center items-center text-subtle hover:text-subtle-light -ml-2"
+      class="px-4 -mr-4 h-full flex justify-center items-center text-subtle md:hover:text-subtle-light -ml-2"
       replace
     >
       <div class="px-[2px]">

@@ -26,7 +26,7 @@ const animationClasses = computed(() => {
     default:
       return {
         link: "",
-        img: "transition-transform transform hover:scale-105",
+        img: "transition-transform transform md:hover:scale-105",
       };
   }
 });

@@ -82,7 +82,7 @@ useCreateSubscriptionToWebsocketTickerChannel(
               format="webp"
               quality="10"
               fetchpriority="low"
-              class="absolute inset-0 object-cover w-full h-full transition-transform transform hover:scale-105 cursor-pointer"
+              class="absolute inset-0 object-cover w-full h-full transition-transform transform md:hover:scale-105 cursor-pointer"
               :class="cn('w-full h-full aspect-[3/4] text-primary text-center')"
               :src="`/games/${data.data.game.identifier}.jpg`"
               :alt="data.data.game.name"

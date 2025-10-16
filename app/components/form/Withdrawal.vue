@@ -132,7 +132,7 @@ const onSubmit = handleSubmit(async (formData) => {
       <div class="flex justify-between items-center cursor-pointer" @click="onToggleLimits">
         <div class="flex justify-between">
           <div
-            class="flex self-start items-center space-x-1.5 text-primary text-sm hover:text-primary-hover p-4 -m-4"
+            class="flex self-start items-center space-x-1.5 text-primary text-sm md:hover:text-primary-hover p-4 -m-4"
           >
             <BaseIcon
               name="lucide:info"

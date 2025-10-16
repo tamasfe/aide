@@ -37,7 +37,7 @@ const comboboxVariants = cva(
     variants: {
       variant: {
         subtle:
-          "text-subtle-light font-medium bg-button-subtle hover:bg-button-subtle-hover focus:bg-button-subtle",
+          "text-subtle-light font-medium bg-button-subtle md:hover:bg-button-subtle-hover focus:bg-button-subtle",
         ghost: "",
       },
       size: {

@@ -149,7 +149,7 @@ const onSubmit = handleSubmit(async (formData) => {
         :key="index"
         variant="ghost"
         class="overflow-hidden relative w-full text-white font-semibold text-base xs:text-lg"
-        :class="[presetAmount === amount ? 'bg-active ring-1 ring-success' : 'bg-subtle hover:bg-subtle/80']"
+        :class="[presetAmount === amount ? 'bg-active ring-1 ring-success' : 'bg-subtle md:hover:bg-subtle/80']"
         @click="amount = presetAmount"
       >
         <BaseCurrency
@@ -193,7 +193,7 @@ const onSubmit = handleSubmit(async (formData) => {
         variant="ghost"
 
         class="overflow-hidden relative w-full text-white font-semibold text-base xs:text-lg"
-        :class="[paymentMethod === id ? 'bg-active ring-1 ring-success' : 'bg-subtle hover:bg-subtle/80']"
+        :class="[paymentMethod === id ? 'bg-active ring-1 ring-success' : 'bg-subtle md:hover:bg-subtle/80']"
         @click="paymentMethod = id"
       >
         <NuxtImg

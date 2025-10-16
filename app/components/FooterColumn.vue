@@ -36,7 +36,7 @@ defineProps<{
         <BaseButton
           v-if="link.onClick"
           variant="ghost"
-          class="p-0 h-auto block font-normal hover:text-emphasis text-left"
+          class="p-0 h-auto block font-normal md:hover:text-emphasis text-left"
           @click="link.onClick"
         >
           {{ link.title }}

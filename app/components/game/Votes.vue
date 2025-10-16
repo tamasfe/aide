@@ -59,7 +59,7 @@ const onClickVote = async (newRating: "like" | "dislike" | null) => {
     <BaseButton
       variant="ghost"
       size="ghost"
-      class="flex flex-row gap-1 items-center hover:text-subtle-light p-3 -m-2"
+      class="flex flex-row gap-1 items-center md:hover:text-subtle-light p-3 -m-2"
       :disabled="!authenticated"
       @click="onClickVote('dislike')"
     >
@@ -79,7 +79,7 @@ const onClickVote = async (newRating: "like" | "dislike" | null) => {
     <BaseButton
       variant="ghost"
       size="ghost"
-      class="flex flex-row gap-1 items-center hover:text-subtle-light p-3 -m-2"
+      class="flex flex-row gap-1 items-center md:hover:text-subtle-light p-3 -m-2"
       :disabled="!authenticated"
       @click="onClickVote('like')"
     >

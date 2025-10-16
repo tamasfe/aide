@@ -102,7 +102,7 @@ const open = computed({
             <slot name="subtitle" />
           </DialogDescription>
         </div>
-        <DialogClose v-if="!unclosable" class="-mr-5 p-3 aspect-square h-full text-subtle hover:text-emphasis z-[10] rounded-lg transition-colors duration-200 focus:outline-none">
+        <DialogClose v-if="!unclosable" class="-mr-5 p-3 aspect-square h-full text-subtle md:hover:text-emphasis z-[10] rounded-lg transition-colors duration-200 focus:outline-none">
           <span class="sr-only">{{ $t('i18n.close') }}</span>
           <div class="aspect-square bg-subtle/80 rounded backdrop-blur h-full flex items-center justify-center">
             <BaseIcon

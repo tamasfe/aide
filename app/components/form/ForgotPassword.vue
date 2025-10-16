@@ -83,7 +83,7 @@ const onSubmit = handleSubmit(async (formData) => {
       <BaseButton
         variant="ghost"
         size="ghost"
-        class="text-primary hover:underline"
+        class="text-primary md:hover:underline"
         @click="$dependencies.users.ui.emitCommandOpenUserActionModal.handle('login')"
       >
         {{ $t("button.login") }}

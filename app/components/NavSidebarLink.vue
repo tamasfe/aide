@@ -14,7 +14,7 @@ defineProps<{
 
 <template>
   <NuxtLinkLocale
-    class="px-4 py-2 flex items-center text-emphasis hover:text-white"
+    class="px-4 py-2 flex items-center text-emphasis md:hover:text-white"
     :to="to"
   >
     <BaseIcon

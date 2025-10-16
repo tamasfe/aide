@@ -196,7 +196,7 @@ const emptyQuery = ref("");
               /> -->
               <BaseButton
                 v-if="link.onClick"
-                class="py-2 flex items-center text-emphasis hover:text-white"
+                class="py-2 flex items-center text-emphasis md:hover:text-white"
                 type="button"
                 variant="ghost"
                 @click="link.onClick"

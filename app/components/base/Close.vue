@@ -3,7 +3,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import type { HTMLAttributes } from "vue";
 
 const buttonVariants = cva(
-  "aspect-square h-full text-subtle hover:text-emphasis z-[10] rounded-lg transition-colors duration-200",
+  "aspect-square h-full text-subtle md:hover:text-emphasis z-[10] rounded-lg transition-colors duration-200",
   {
     variants: {
       size: {

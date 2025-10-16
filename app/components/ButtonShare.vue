@@ -90,7 +90,7 @@ const onShare = async () => {
     variant="ghost"
     size="ghost"
     :class="cn(
-      'flex flex-row gap-1 items-center hover:text-subtle-light p-3 -m-2',
+      'flex flex-row gap-1 items-center md:hover:text-subtle-light p-3 -m-2',
       props.class,
     )"
     @click="onShare"

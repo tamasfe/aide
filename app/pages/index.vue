@@ -60,7 +60,7 @@ const menuTabs = computed(() => [
           <a
             :href="href"
             class="py-2 px-3 snap-start rounded text-sm md:text-base flex gap-1 items-center"
-            :class="[isExactActive ? 'text-emphasis bg-active' : 'text-subtle bg-subtle hover:bg-muted']"
+            :class="[isExactActive ? 'text-emphasis bg-active' : 'text-subtle bg-subtle md:hover:bg-muted']"
             @click="navigate"
           >
 
@@ -89,7 +89,7 @@ const menuTabs = computed(() => [
               <a
                 :href="href"
                 class="px-5 rounded text-sm md:text-base flex gap-1 items-center"
-                :class="[isExactActive ? 'text-emphasis bg-active' : 'text-subtle bg-subtle hover:bg-muted']"
+                :class="[isExactActive ? 'text-emphasis bg-active' : 'text-subtle bg-subtle md:hover:bg-muted']"
                 @click="navigate"
               >
 

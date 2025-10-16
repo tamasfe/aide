@@ -30,7 +30,7 @@ const onToggle = () => {
     :class="{ 'bg-subtle': open }"
   >
     <div
-      class="flex items-center justify-between cursor-pointer text-emphasis hover:text-white"
+      class="flex items-center justify-between cursor-pointer text-emphasis md:hover:text-white"
       @click="onToggle"
     >
       <div class="px-4 py-2 flex items-center">

@@ -20,7 +20,7 @@ const emit = defineEmits([
           <BaseButton
             variant="ghost"
             size="ghost"
-            class="hidden sm:block px-4 -mx-4 h-full text-subtle hover:text-emphasis transition-colors duration-200"
+            class="hidden sm:block px-4 -mx-4 h-full text-subtle md:hover:text-emphasis transition-colors duration-200"
             @click="emit('click:menu')"
           >
             <BaseIcon

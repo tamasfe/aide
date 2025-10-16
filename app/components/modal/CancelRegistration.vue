@@ -45,7 +45,7 @@ const onClosed = () => {
       <BaseButton
         variant="ghost"
         size="ghost"
-        class="mt-6 text-center text-sm text-subtle hover:text-subtle-light"
+        class="mt-6 text-center text-sm text-subtle md:hover:text-subtle-light"
       >
         {{ $t("modal_cancel_registration.cancel") }}
       </BaseButton>

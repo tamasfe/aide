@@ -18,7 +18,7 @@ const columns: ColumnDef<WinData>[] = [
   }),
   column.accessor("game.name", {
     header: t("winning_now.table.header_game"),
-    cell: ({ row }) => h(GamePageLink, { identifier: row.original.game.identifier, class: "flex items-center gap-x-4 hover:underline" }, () => [
+    cell: ({ row }) => h(GamePageLink, { identifier: row.original.game.identifier, class: "flex items-center gap-x-4 md:hover:underline" }, () => [
       h(GameImage, { identifier: row.original.game.identifier, class: "w-6 h-6 h-full block" }),
       h("span", row.original.game.name),
     ]),

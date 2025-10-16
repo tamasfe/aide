@@ -58,7 +58,7 @@ const { data: gameCategories } = useAsyncData(async () => {
 <template>
   <div>
     <div class="bg-subtle rounded-lg border border-muted/5 overflow-hidden mb-8">
-      <div v-if="game" ref="gameFrame" class="relative h-[60vh] md:h-[70vh] border-b border-muted/5">
+      <div v-if="game" ref="gameFrame" class="relative py-40 md:py-0 md:h-[70vh] border-b border-muted/5">
         <GameLauncher
           class="absolute inset-0"
           :launch-mode="launchMode"
