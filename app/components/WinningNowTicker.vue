@@ -55,58 +55,54 @@ useCreateSubscriptionToWebsocketTickerChannel(
 </script>
 
 <template>
-  <div class="md:flex md:items-center md:justify-center md:pr-4">
-    <h3 class="text-center flex md:flex-col items-center md:justify-center gap-2 mb-3 lg:mb-0">
+  <div class="flex flex-col md:flex-row md:items-center md:justify-center gap-4">
+    <h3 class="text-center flex md:flex-col items-center md:justify-center gap-2">
       <div class="leading-none md:text-2xl">🏆</div>
       <div class="text-lg md:text-sm leading-tight text-primary font-semibold">
         {{ $t('winning_now.title') }}
       </div>
     </h3>
 
-    <div class="w-full overflow-hidden">
-      <TransitionGroup
-        :appear="false"
-        name="slide-in"
-        tag="div"
-        class="flex gap-2 md:gap-4 mask-edge-fade-right"
+    <TransitionGroup
+      :appear="false"
+      name="slide-in"
+      tag="div"
+      class="w-full overflow-hidden h-[4.5rem] md:h-20 flex gap-2 md:gap-4 mask-edge-fade-right"
+    >
+      <div
+        v-for="{ key, data } in displayedWins"
+        :key="key"
+        class="flex-shrink-0 h-full"
       >
-        <div
-          v-for="{ key, data } in displayedWins"
-          :key="key"
-          class="flex-shrink-0"
-        >
-          <GamePageLink v-if="data" :identifier="data.data.game.identifier">
-            <div class="group flex items-center space-x-3 bg-subtle p-2 rounded-lg outline-none border border-muted/5 pr-4">
-              <div class="shrink-0 relative rounded border border-muted/5 aspect-[3/4] h-14 overflow-hidden">
-                <NuxtImg
-                  provider="custom_cloudflare"
-                  sizes="40px"
-                  format="webp"
-                  quality="10"
-                  fetchpriority="low"
-                  class="absolute inset-0 object-cover w-full h-full transition-transform transform hover:scale-105 cursor-pointer"
-                  :class="cn('w-full h-full aspect-[3/4] text-primary text-center')"
-                  :src="`/games/${data.data.game.identifier}.jpg`"
-                  :alt="data.data.game.name"
-                />
-              </div>
-              <div class="leading-tight min-w-0 flex-1">
-                <div class="">{{ data.data.userNickname }}</div>
-                <div class="text-subtle text-xs min-w-0 mb-1">{{ data.data.game.name }}</div>
-                <div class="text-md sm:text-lg font-semibold bg-button-primary text-transparent bg-clip-text">
-                  <BaseCurrency
-                    :currency="data.data.currency"
-                    :value="data.data.amount"
-                    variant="ghost"
-                    class="truncate"
-                  />
-                </div>
-              </div>
+        <GamePageLink v-if="data" :identifier="data.data.game.identifier" class="h-full group flex items-center gap-2 bg-subtle p-2 rounded-lg outline-none border border-muted/5 pr-4">
+          <div class="shrink-0 relative rounded border border-muted/5 aspect-[3/4] h-full overflow-hidden">
+            <NuxtImg
+              provider="custom_cloudflare"
+              sizes="40px"
+              format="webp"
+              quality="10"
+              fetchpriority="low"
+              class="absolute inset-0 object-cover w-full h-full transition-transform transform hover:scale-105 cursor-pointer"
+              :class="cn('w-full h-full aspect-[3/4] text-primary text-center')"
+              :src="`/games/${data.data.game.identifier}.jpg`"
+              :alt="data.data.game.name"
+            />
+          </div>
+          <div class="leading-tight min-w-0 flex-1">
+            <div class="">{{ data.data.userNickname }}</div>
+            <div class="text-subtle text-xs min-w-0 mb-1">{{ data.data.game.name }}</div>
+            <div class="text-sm sm:text-lg font-semibold bg-button-primary text-transparent bg-clip-text">
+              <BaseCurrency
+                :currency="data.data.currency"
+                :value="data.data.amount"
+                variant="ghost"
+                class="truncate"
+              />
             </div>
-          </GamePageLink>
-        </div>
-      </TransitionGroup>
-    </div>
+          </div>
+        </GamePageLink>
+      </div>
+    </TransitionGroup>
   </div>
 </template>
 
