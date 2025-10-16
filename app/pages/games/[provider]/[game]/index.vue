@@ -57,7 +57,7 @@ const { data: gameCategories } = useAsyncData(async () => {
 
 <template>
   <div>
-    <div class="bg-subtle rounded border border-muted/5 overflow-hidden mb-8">
+    <div class="bg-subtle rounded-lg border border-muted/5 overflow-hidden mb-8">
       <div v-if="game" ref="gameFrame" class="relative h-[60vh] md:h-[70vh] border-b border-muted/5">
         <GameLauncher
           class="absolute inset-0"
@@ -100,7 +100,7 @@ const { data: gameCategories } = useAsyncData(async () => {
                  redirect to the game play page -->
               <NuxtLinkLocale
                 class="md:hidden"
-                :to="{ name: 'games-provider-game-play', params: params }"
+                :to="{ name: 'games-provider-game-mode', params: { ... params, mode: 'play' } }"
               >
                 <BaseButton
                   variant="primary"
@@ -138,7 +138,7 @@ const { data: gameCategories } = useAsyncData(async () => {
               <NuxtLinkLocale
                 v-if="game.demo"
                 class="md:hidden"
-                :to="{ name: 'games-provider-game-demo', params: params }"
+                :to="{ name: 'games-provider-game-mode', params: { ... params, mode: 'demo' } }"
               >
                 <BaseButton
                   variant="secondary"
@@ -173,7 +173,7 @@ const { data: gameCategories } = useAsyncData(async () => {
               <NuxtLinkLocale
                 v-if="game.demo"
                 class="md:hidden"
-                :to="{ name: 'games-provider-game-demo', params: params }"
+                :to="{ name: 'games-provider-game-mode', params: { ... params, mode: 'play' } }"
               >
                 <BaseButton
                   variant="primary"

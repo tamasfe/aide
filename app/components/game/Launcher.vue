@@ -51,7 +51,7 @@ const session = computed(() => {
 
       <div
         v-else
-        class="w-full h-full px-6 bg-subtle flex flex-col items-center justify-center"
+        class="w-full h-full px-6 flex flex-col items-center justify-center"
       >
         <NuxtImg
           class="h-7"
