@@ -161,7 +161,7 @@ const emptyQuery = ref("");
           <NavSidebarLink
             v-for="category in categoriesData"
             :key="category.identifier"
-            :title="toSentenceCase(category.identifier)"
+            :title="category.identifier"
             :to="{
               name: 'categories-identifier',
               params: {

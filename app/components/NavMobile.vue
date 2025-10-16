@@ -100,7 +100,7 @@ const items = computed<NavMobileItem[]>(() => [
         class="text-subtle mb-1"
         :size="20"
       />
-      <div class="text-subtle text-xs">{{ $t(item.text) }}</div>
+      <div class="text-subtle text-xs">{{ item.text }}</div>
     </component>
   </div>
 </template>

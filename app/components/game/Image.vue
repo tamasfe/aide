@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from "vue";
-import { destructureGameIdentifier } from "~/modules/games/domain/Game";
 
 const siteStore = useSiteStore();
 
@@ -9,14 +8,6 @@ const props = defineProps<{
   class?: HTMLAttributes["class"];
   fallbackImageClass?: HTMLAttributes["class"];
 }>();
-
-const gameTitle = computed(() => {
-  const result = destructureGameIdentifier(props.identifier);
-  if (result.isFailure) {
-    return undefined;
-  }
-  return toSentenceCase(result.value.gameSlug);
-});
 </script>
 
 <template>
@@ -33,7 +24,7 @@ const gameTitle = computed(() => {
       backgroundPosition: '50% 50%',
       backgroundSize: '35%',
     }"
-    :alt="gameTitle"
+    :alt="identifier"
   />
 </template>
 

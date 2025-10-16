@@ -79,7 +79,9 @@ const { data: myBetsData } = useAsyncData(`winning-now-my-bets-table`, async () 
           :value="tab"
           :disabled="tab === 'my_bets' && !userStore.isAuthenticated"
         >
-          {{ toSentenceCase($t(`home_page.winning_now_tabs.${tab}`)) }}
+          <div class="capitalize">
+            {{ $t(`home_page.winning_now_tabs.${tab}`) }}
+          </div>
         </TabsTrigger>
       </TabsList>
       <TabsContent value="my_bets">

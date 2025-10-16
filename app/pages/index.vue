@@ -1,102 +1,112 @@
 <script setup lang="ts">
 const { t } = useI18n();
 const siteStore = useSiteStore();
-const { $dependencies } = useNuxtApp();
-
 definePageMeta({
   layout: "carousel",
 });
+
+const localePath = useLocalePath();
 
 useHead({
   title: t("page.home", { siteName: siteStore.currentSite.name }),
 });
 
-const currentTab = ref("lobby");
-const menuTabs = ref([
-  { value: "lobby", iconName: "lucide:home", label: t(`home_page.category_tabs.lobby`) },
-  { value: "featured", iconName: "lucide:coins", label: t(`category.featured`) },
-  { value: "table", iconName: "lucide:files", label: t(`category.table`) },
-  { value: "live", iconName: "lucide:users", label: t(`category.live`) },
-]);
-
-const { data: gameCategories, pending } = useAsyncData("home-page-game-categories",
-  async () => $dependencies.games.ui.searchGameCategoriesByGroup.handle("home", true),
+const menuTabs = computed(() => [
   {
-    server: true,
-    lazy: true,
-    default: () => [],
+    value: "lobby",
+    iconName: "lucide:home",
+    label: t(`home_page.category_tabs.lobby`),
+    to: localePath({ name: "index" }),
   },
-);
+  {
+    value: "featured",
+    iconName: "lucide:coins",
+    label: t(`category.featured`),
+    to: localePath({ name: "index-category", params: { category: "featured" } }),
+  },
+  {
+    value: "hot",
+    iconName: "lucide:users",
+    label: t(`category.hot`),
+    to: localePath({ name: "index-category", params: { category: "hot" } }),
+  },
+  {
+    value: "table",
+    iconName: "lucide:files",
+    label: t(`category.table`),
+    to: localePath({ name: "index-category", params: { category: "table" } }),
+  },
+  {
+    value: "slots",
+    iconName: "lucide:files",
+    label: t(`category.slots`),
+    to: localePath({ name: "index-category", params: { category: "slots" } }),
+  },
+]);
 </script>
 
 <template>
   <div>
     <WinningNowTicker class="mb-6" />
-    <Tabs v-model="currentTab">
-      <div class="sticky md:static z-[5] top-14 md:hidden mb-6 -mx-4">
-        <TabsList class="bg-subtle px-1 w-full">
-          <TabsTrigger
-            v-for="tab in menuTabs"
-            :key="tab.value"
-            :is-active="tab.value === currentTab"
-            :value="tab.value"
+    <div class="sticky md:static z-[5] top-14 md:hidden px-4 -mx-4 bg-subtle py-2">
+      <nav class="flex gap-2 px-4 -mx-4 scroll-px-4 snap-x scroll-smooth overflow-x-auto no-scrollbar">
+        <NuxtLink
+          v-for="(route, index) in menuTabs"
+          :key="index"
+          v-slot="{ isExactActive, href, navigate }"
+          :to="route.to"
+          custom
+        >
+          <a
+            :href="href"
+            class="py-2 px-3 snap-start rounded text-sm md:text-base flex gap-1 items-center"
+            :class="[isExactActive ? 'text-emphasis bg-active' : 'text-subtle bg-subtle hover:bg-muted']"
+            @click="navigate"
           >
-            <BaseIcon :name="tab.iconName" :size="14" />
-            <span>{{ toSentenceCase(tab.label) }}</span>
-          </TabsTrigger>
-        </TabsList>
-      </div>
 
-      <div class="mb-6">
-        <SearchPopover class="hidden md:flex items-stretch ">
-          <template #suffix>
-            <TabsList class="rounded bg-subtle">
-              <TabsTrigger
-                v-for="tab in menuTabs"
-                :key="tab.value"
-                :is-active="tab.value === currentTab"
-                :value="tab.value"
+            <Icon
+              :name="route.iconName"
+              :size="14"
+              mode="svg"
+            />
+            {{ route.label }}
+          </a>
+        </NuxtLink>
+      </nav>
+    </div>
+
+    <div class="mb-6">
+      <SearchPopover class="hidden md:flex items-stretch ">
+        <template #suffix>
+          <nav class="p-1 flex gap-2">
+            <NuxtLink
+              v-for="(route, index) in menuTabs"
+              :key="index"
+              v-slot="{ isExactActive, href, navigate }"
+              :to="route.to"
+              custom
+            >
+              <a
+                :href="href"
+                class="px-5 rounded text-sm md:text-base flex gap-1 items-center"
+                :class="[isExactActive ? 'text-emphasis bg-active' : 'text-subtle bg-subtle hover:bg-muted']"
+                @click="navigate"
               >
-                <BaseIcon :name="tab.iconName" :size="14" />
-                <span>{{ toSentenceCase(tab.label) }}</span>
-              </TabsTrigger>
-            </TabsList>
-          </template>
-        </SearchPopover>
-      </div>
 
-      <TabsContent value="lobby">
-        <template v-if="pending">
-          <GridHorizontalGamesLoading class="mb-6 -md-4" />
-          <GridHorizontalGamesLoading class="mb-6 -md-4" />
-          <GridHorizontalGamesLoading class="mb-6 -md-4" />
+                <Icon
+                  :name="route.iconName"
+                  :size="14"
+                  mode="svg"
+                />
+                {{ route.label }}
+              </a>
+            </NuxtLink>
+          </nav>
         </template>
+      </SearchPopover>
+    </div>
 
-        <template v-else>
-          <GridHorizontalGames
-            v-for="category in gameCategories?.filter(cat => cat.games && cat.games.length > 0)"
-            :key="category.identifier"
-            class="mb-6 -mx-4"
-            :category-identifier="category.identifier"
-            :initial-games="category.games ?? undefined"
-          />
-        </template>
-
-        <GridHorizontalProviders class="mb-6" />
-      </TabsContent>
-
-      <TabsContent
-        v-for="tab in menuTabs.filter(tab => tab.value !== 'lobby')"
-        :key="tab.value"
-        :value="tab.value"
-      >
-        <GridVerticalGames
-          :title="tab.label"
-          :category-identifier="tab.value"
-          :provider-identifier="null"
-        />
-      </TabsContent>
-    </Tabs>
+    <NuxtPage class="mb-6" />
 
     <WinningNowTabs />
   </div>

@@ -23,6 +23,6 @@ defineProps<{
       :size="22"
       class="flex-shrink-0 text-subtle"
     />
-    <div class="w-full ml-4 font-medium">{{ title }}</div>
+    <div class="w-full ml-4 font-medium capitalize">{{ title }}</div>
   </NuxtLinkLocale>
 </template>
