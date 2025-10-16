@@ -14,6 +14,11 @@ export class LoggerMiddlewareSentryErrorCapturer implements LoggerMiddleware {
           if (error.cause instanceof HttpBackendApiError && error.cause.isJurisdictionNotSupportedError) {
             return;
           }
+
+          if (error.cause instanceof HttpBackendApiError && error.cause.code === "UNAUTHORIZED") {
+            return;
+          }
+
           // Capture the cause of the InfrastructureError instead of the InfrastructureError itself
           this.sentryCaptureException(error.cause, (scope) => {
             scope.setContext("Log", { data, message });
