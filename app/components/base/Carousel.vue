@@ -208,6 +208,7 @@ defineExpose({
       class="
         flex
         overflow-x-auto
+        no-scrollbar
         scroll-smooth
         snap-x
         scroll-px-4
@@ -228,14 +229,6 @@ defineExpose({
 </template>
 
 <style scoped>
-.scrollbar-hide {
-  scrollbar-width: none; /* Firefox */
-}
-
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
-
 .giro__slide-dot-wrapper:hover .giro__slide-dot {
   transition: transform 150ms;
   transform: translateY(-50%);

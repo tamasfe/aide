@@ -12,7 +12,7 @@ defineProps<{
 </script>
 
 <template>
-  <div class="flex gap-3 snap-x scroll-smooth overflow-x-auto">
+  <div class="flex gap-3 snap-x scroll-smooth overflow-x-auto no-scrollbar">
     <NuxtLink
       v-for="(route, index) in routes"
       :key="index"

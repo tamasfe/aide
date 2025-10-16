@@ -128,6 +128,7 @@ defineExpose({
     class="
       flex
       overflow-x-auto
+      no-scrollbar
       scroll-smooth
       snap-x
       scroll-px-4
@@ -155,13 +156,3 @@ defineExpose({
     </div>
   </div>
 </template>
-
-<style scoped>
-.scrollbar-hide {
-  scrollbar-width: none; /* Firefox */
-}
-
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
-</style>
