@@ -59,8 +59,8 @@ jobs:
           build-args: |
             VERSION=${{ github.sha }}
           tags: |
-            050295693931.dkr.ecr.eu-west-1.amazonaws.com/frontend/prod
-            050295693931.dkr.ecr.eu-west-1.amazonaws.com/frontend/prod:${{ github.sha }}
+            050295693931.dkr.ecr.eu-west-1.amazonaws.com/prod/frontend
+            050295693931.dkr.ecr.eu-west-1.amazonaws.com/prod/frontend:${{ github.sha }}
 
       - name: Get Time
         id: time
@@ -72,7 +72,7 @@ jobs:
         run: helm package helm --app-version ${{ github.sha }} --version 1.0.0-${{ steps.time.outputs.time }}
 
       - name: Helm Push
-        run: helm push frontend-*.tgz oci://050295693931.dkr.ecr.eu-west-1.amazonaws.com/frontend/prod
+        run: helm push frontend-*.tgz oci://050295693931.dkr.ecr.eu-west-1.amazonaws.com/prod
 
       # - name: Tailscale
       #   uses: tailscale/github-action@v2
