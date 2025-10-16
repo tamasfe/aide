@@ -108,7 +108,7 @@ const canScrollNext = computed(() => {
     ref="slider"
     :data="providers"
     :can-load-more="canLoadMore"
-    class="w-full -mx-4"
+    class="-mx-4"
     @trigger:load="onLoadData"
   >
     <template #default="{ item, index }">
