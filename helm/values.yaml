@@ -1,0 +1,220 @@
+# Default values for frontend.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# Image configuration
+image:
+  repository: 050295693931.dkr.ecr.eu-west-1.amazonaws.com/frontend
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+# Image pull secrets
+imagePullSecrets: []
+
+# Override the name of the chart
+nameOverride: ""
+# Override the full name of the chart
+fullnameOverride: ""
+
+# Service account configuration
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # Automatically mount a ServiceAccount's API credentials?
+  automount: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+# Pod annotations
+podAnnotations: {}
+
+# Pod labels
+podLabels: {}
+
+# Pod security context
+podSecurityContext:
+  fsGroup: 2000
+
+# Security context
+securityContext:
+  capabilities:
+    drop:
+    - ALL
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 1000
+
+# Service configuration
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: http
+  annotations: {}
+
+# Ingress configuration
+ingress:
+  enabled: true
+  className: ""
+  annotations: {}
+  # Custom ingress type (contour-httpproxy, nginx, etc.)
+  type: "contour-httpproxy"
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+
+# Certificate configuration for Contour HTTPProxy
+certificate:
+  enabled: true
+  issuerRef:
+    kind: ClusterIssuer
+    name: prod
+  duration: 2160h0m0s
+  renewBefore: 360h0m0s
+
+# Resource limits and requests
+resources:
+  limits:
+    cpu: 2000m
+    memory: 512Mi
+  requests:
+    cpu: 1000m
+    memory: 256Mi
+
+# Liveness probe configuration
+livenessProbe:
+  httpGet:
+    path: /
+    port: http
+  initialDelaySeconds: 30
+  periodSeconds: 10
+
+# Readiness probe configuration
+readinessProbe:
+  httpGet:
+    path: /
+    port: http
+  initialDelaySeconds: 5
+  periodSeconds: 5
+
+# Autoscaling configuration
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+# Deployment configuration
+deployment:
+  # Number of replicas
+  replicaCount: 3
+  # Revision history limit
+  revisionHistoryLimit: 3
+  # Update strategy
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  # Container port
+  containerPort: 3000
+
+# Priority class configuration
+priorityClass:
+  enabled: true
+  name: ""  # If empty, will use fullname-high-priority
+  value: 1000
+  globalDefault: false
+  description: "High priority class for frontend application"
+
+# Pod disruption budget
+podDisruptionBudget:
+  enabled: false
+  minAvailable: 1
+  # maxUnavailable: 1
+
+# Node selector
+nodeSelector: {}
+
+# Tolerations
+tolerations: []
+
+# Affinity configuration
+affinity:
+  # Pod affinity (prefer scheduling near API pods)
+  podAffinity:
+    enabled: true
+    weight: 100
+    topologyKey: kubernetes.io/hostname
+    labelSelector:
+      app: api
+  # Pod anti-affinity (spread across nodes)
+  podAntiAffinity:
+    enabled: true
+    weight: 100
+    topologyKey: kubernetes.io/hostname
+
+# Application configuration
+config:
+  # Public domains
+  public_domain: "chart-example.local"
+  public_api_domain: "api.chart-example.local"
+  internal_api_domain: "api.default.svc.cluster.local"
+  public_tracking_domain: "tracking.chart-example.local"
+  public_fingerprint_js_script_domain: "fingerprint.chart-example.local"
+
+  # Site configuration
+  site_name: "Frontend App"
+
+  # API configuration
+  api_mode: "api"
+
+  # Error capturing
+  error_capturing_enabled: "true"
+
+  # Logging
+  log_level: "info"
+
+  # Service name
+  service_name: "frontend"
+
+  # Signup flows
+  signup_flows_ids_client_repo: "local_storage"
+
+  # Tracking configuration
+  tracking_fingerprint_js_public_api_key: "ovcHpM99bHR6cWYgKHlA"
+  tracking_fingerprint_js_script_url_path: "/EkkWvBzKSGMIQZw4/1qDponqL8OE8LDgt"
+
+  # OpenTelemetry configuration
+  otel:
+    exporter_otlp_endpoint: "http://k8s-monitoring-alloy.monitoring.svc.cluster.local:4317"
+    bsp_schedule_delay: "2000"
+    bsp_max_export_batch_size: "1024"
+    bsp_max_queue_size: "4096"
+    bsp_export_timeout: "15000"
+    bsp_max_concurrent_exports: "2"
+
+# Extra environment variables
+extraEnvVars: []
+# - name: FOO
+#   value: "bar"
+
+# Extra environment variables from ConfigMaps or Secrets
+extraEnvVarsFrom: []
+# - configMapRef:
+#     name: my-configmap
+# - secretRef:
+#     name: my-secret
+
+# Additional volumes
+extraVolumes: []
+
+# Additional volume mounts
+extraVolumeMounts: []

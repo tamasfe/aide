@@ -1,7 +1,11 @@
+{{- if .Values.priorityClass.enabled }}
 apiVersion: scheduling.k8s.io/v1
 kind: PriorityClass
 metadata:
-  name: "{{ .Release.Name }}-high-priority"
-value: 1000
-globalDefault: false
-description: "High priority class for {{ .Release.Name }} frontend application"
+  name: {{ include "frontend.priorityClassName" . }}
+  labels:
+    {{- include "frontend.labels" . | nindent 4 }}
+value: {{ .Values.priorityClass.value }}
+globalDefault: {{ .Values.priorityClass.globalDefault }}
+description: {{ .Values.priorityClass.description | quote }}
+{{- end }}

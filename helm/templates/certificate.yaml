@@ -1,0 +1,19 @@
+{{- if and .Values.certificate.enabled .Values.ingress.enabled .Values.ingress.hosts }}
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ include "frontend.fullname" . }}
+  labels:
+    {{- include "frontend.labels" . | nindent 4 }}
+spec:
+  commonName: {{ (index .Values.ingress.hosts 0).host | quote }}
+  dnsNames:
+    {{- range .Values.ingress.hosts }}
+    - {{ .host | quote }}
+    {{- end }}
+  duration: {{ .Values.certificate.duration }}
+  issuerRef:
+    {{- toYaml .Values.certificate.issuerRef | nindent 4 }}
+  renewBefore: {{ .Values.certificate.renewBefore }}
+  secretName: {{ include "frontend.fullname" . }}-certificate
+{{- end }}

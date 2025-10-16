@@ -1,7 +1,28 @@
+# GiroBet-specific values
+# This file overrides default values for the GiroBet environment
+
+# Image configuration - specify the tag for this deployment
+image:
+  tag: "latest"  # Override this with specific version in CI/CD
+
+# Ingress configuration
+ingress:
+  enabled: true
+  type: "contour-httpproxy"
+  hosts:
+    - host: "girobet.vip"
+      paths:
+        - path: /
+          pathType: Prefix
+
+# Application configuration
 config:
+  # Domain configuration
   public_domain: "girobet.vip"
   public_api_domain: "api.girobet.vip"
   internal_api_domain: "api.default.svc.cluster.local"
   public_tracking_domain: "4.girobet.vip"
   public_fingerprint_js_script_domain: "fin.girobet.vip"
+
+  # Site configuration
   site_name: "GiroBet"

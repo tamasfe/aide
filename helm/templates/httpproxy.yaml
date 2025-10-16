@@ -1,0 +1,25 @@
+{{- if and .Values.ingress.enabled (eq .Values.ingress.type "contour-httpproxy") }}
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: {{ include "frontend.fullname" . }}
+  labels:
+    {{- include "frontend.labels" . | nindent 4 }}
+  {{- with .Values.ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  virtualhost:
+    fqdn: {{ (index .Values.ingress.hosts 0).host | quote }}
+    {{- if .Values.certificate.enabled }}
+    tls:
+      secretName: {{ include "frontend.fullname" . }}-certificate
+    {{- end }}
+  routes:
+    - timeoutPolicy:
+        response: 30s
+      services:
+        - name: {{ include "frontend.fullname" . }}
+          port: {{ .Values.service.port }}
+{{- end }}
