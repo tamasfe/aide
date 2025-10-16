@@ -4,7 +4,10 @@
 // ARCHITECTURE STATUS: ✅
 // TRANSLATION STATUS:  ✅
 
+import { NuxtLink, LiveChatButton } from "#components";
+
 const { $dependencies } = useNuxtApp();
+const { t } = useI18n();
 
 const emit = defineEmits([
   "click:menu",
@@ -12,60 +15,92 @@ const emit = defineEmits([
 
 const localePath = useLocalePath();
 
-const items = [
-  { icon: "lucide:menu", text: "mobile_nav.menu", onClick: () => emit("click:menu") },
+type NavMobileItem = {
+  component: Component | string;
+  icon: string;
+  text: string;
+  attributes?: Record<string, unknown>;
+};
+
+const items = computed<NavMobileItem[]>(() => [
   {
-    icon: "lucide:home", text: "mobile_nav.home", onClick: async () => {
-      await navigateTo(localePath({
-        name: "index",
-      }));
+    component: "div",
+    type: "action",
+    icon: "lucide:menu",
+    text: t("mobile_nav.menu"),
+    attributes: {
+      onClick: () => emit("click:menu"),
     },
   },
   {
-    icon: "lucide:flame", text: "mobile_nav.hot", onClick: async () => {
-      await navigateTo(localePath({
+    component: NuxtLink,
+    icon: "lucide:home",
+    text: t("mobile_nav.home"),
+    attributes: {
+      to: localePath({
+        name: "index",
+      }),
+    },
+  },
+  {
+    component: NuxtLink,
+    icon: "lucide:flame",
+    text: t("mobile_nav.hot"),
+    attributes: {
+      to: localePath({
         name: "categories-identifier",
         params: { identifier: "hot" },
-      }));
+      }),
     },
   },
-  { icon: "lucide:search", text: "mobile_nav.search", onClick: () => $dependencies.users.ui.emitCommandOpenUserActionModal.handle("search") },
-  // { icon: "lucide:trophy", text: "mobile_nav.promos", onClick: () => {} },
-];
+  {
+    component: "div",
+    icon: "lucide:search",
+    text: t("mobile_nav.search"),
+    attributes: {
+      onClick: () => $dependencies.users.ui.emitCommandOpenUserActionModal.handle("search"),
+    },
+  },
+  {
+    component: LiveChatButton,
+    icon: "lucide:message-circle-question",
+    text: t("mobile_nav.support"),
+    attributes: {
+      variant: "ghost",
+      size: "ghost",
+    },
+  },
+]);
 </script>
 
 <template>
   <div
-    class="h-14 fixed z-10 sm:hidden bottom-0 left-0 right-0 bg-subtle text-subtle pb-[env(safe-area-inset-bottom)]"
+    class="
+      h-14
+      fixed
+      flex
+      z-10
+      sm:hidden
+      bottom-0
+      left-0
+      right-0
+      bg-subtle
+      text-subtle
+      pb-[env(safe-area-inset-bottom)]"
   >
-    <div class="w-full grid items-center h-full" :style="{ gridTemplateColumns: 'repeat(' + (items.length + 1) + ', 1fr)' }">
-      <BaseButton
-        v-for="item in items"
-        :key="item.text"
-        variant="ghost"
-        size="ghost"
-        class="flex flex-col justify-center items-center outline-none"
-        @click="item.onClick"
-      >
-        <BaseIcon
-          :name="item.icon"
-          class="text-subtle mb-1"
-          :size="22"
-        />
-        <div class="text-subtle text-xs">{{ $t(item.text) }}</div>
-      </BaseButton>
-      <LiveChatButton
-        variant="ghost"
-        size="ghost"
-        class="flex flex-col justify-center items-center outline-none"
-      >
-        <BaseIcon
-          name="lucide:message-circle-question"
-          class="text-subtle mb-1"
-          :size="22"
-        />
-        <div class="text-subtle text-xs">{{ $t('mobile_nav.support') }}</div>
-      </LiveChatButton>
-    </div>
+    <component
+      :is="item.component"
+      v-for="item in items"
+      :key="item.text"
+      v-bind="item.attributes"
+      class="h-full flex-1 flex flex-col justify-center items-center outline-none"
+    >
+      <BaseIcon
+        :name="item.icon"
+        class="text-subtle mb-1"
+        :size="20"
+      />
+      <div class="text-subtle text-xs">{{ $t(item.text) }}</div>
+    </component>
   </div>
 </template>

@@ -31,7 +31,7 @@ const addNewWin = async (win: Keyified<Win>) => {
 const ENABLE_SERVER_SIDE_RENDERING = true;
 const DEFER_CLIENT_SIDE_LOADING = true;
 
-useAsyncData("winning-now-slider-ticker-events", async () => {
+useAsyncData(async () => {
   const wins = await $dependencies.tickers.ui.searchTickerEventsFromWinningNow.handle();
   const keyifiedWins = wins.map(win => useAddKeyFromIdentifier(camelizeKeys(win)));
 
