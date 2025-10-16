@@ -109,6 +109,9 @@ export default <Partial<Config>>{
       screens: {
         xs: "400px",
       },
+      height: {
+        screen: ["100vh", "100dvh"],
+      },
       keyframes: {
         dialogOverlayShow: {
           from: { opacity: "0" },
