@@ -43,7 +43,7 @@ const { data: gameSession } = useAsyncData(
     );
   },
   {
-    watch: [gameIdentifier, userStore, walletStore],
+    watch: [gameIdentifier, () => userStore.user?.id, () => walletStore.wallet?.currency],
     server: false,
   });
 
