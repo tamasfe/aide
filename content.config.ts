@@ -9,11 +9,10 @@ const commonSchema = z.object({
 
 export default defineContentConfig({
   collections: {
-    // English pages collection
-    pages: defineCollection({
+    terms_pages: defineCollection({
       type: "page",
       source: {
-        include: "**",
+        include: "terms_pages/**",
         prefix: "",
       },
       schema: commonSchema,

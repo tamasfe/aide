@@ -15,7 +15,7 @@ const ENABLE_SERVER_SIDE_RENDERING = true;
 const DEFER_CLIENT_SIDE_LOADING = false;
 
 const { data: pageAml } = useAsyncData("aml-policy-" + locale.value, async () => {
-  const content = await queryCollection("pages").path(`/${locale.value}/aml_policy`).first();
+  const content = await queryCollection("terms_pages").path(`/${locale.value}/aml_policy`).first();
 
   if (!content) {
     $dependencies.common.logger.error(`!! AML Policy content not found, this is critical as the user may see a blank page for a required legal document`, new ErrorTranslatedContentNotFound(locale.value, "aml_policy"));
@@ -27,7 +27,7 @@ const { data: pageAml } = useAsyncData("aml-policy-" + locale.value, async () =>
 });
 
 const { data: pageKyc } = useAsyncData("kyc-policy-" + locale.value, async () => {
-  const content = await queryCollection("pages").path(`/${locale.value}/kyc_policy`).first();
+  const content = await queryCollection("terms_pages").path(`/${locale.value}/kyc_policy`).first();
 
   if (!content) {
     $dependencies.common.logger.error(`!! KYC Policy content not found, this is critical as the user may see a blank page for a required legal document`, new ErrorTranslatedContentNotFound(locale.value, "kyc_policy"));
