@@ -26,11 +26,7 @@ watch(() => walletStore.balanceStatus, () => {
     />
     <NuxtLinkLocale :to="{ name: 'wallet' }">
       <BaseButton
-<<<<<<< HEAD
         v-if="!gameSessionStore.playing && walletStore.wallet === undefined"
-=======
-        v-if="!gameSessionStore.isPlaying && walletStore.wallet === undefined"
->>>>>>> 4be563f4 (fix: wallet link)
         variant="secondary"
         :disabled="true"
         class="min-w-20"
@@ -46,11 +42,7 @@ watch(() => walletStore.balanceStatus, () => {
       </BaseButton>
 
       <BaseButton
-<<<<<<< HEAD
         v-if="!gameSessionStore.playing && walletStore.wallet"
-=======
-        v-if="!gameSessionStore.isPlaying && walletStore.wallet"
->>>>>>> 4be563f4 (fix: wallet link)
         variant="secondary"
         :disabled="walletStore.balanceStatus !== 'ready'"
         class="min-w-20"
@@ -70,11 +62,7 @@ watch(() => walletStore.balanceStatus, () => {
       </BaseButton>
 
       <BaseButton
-<<<<<<< HEAD
         v-if="gameSessionStore.playing"
-=======
-        v-if="gameSessionStore.isPlaying"
->>>>>>> 4be563f4 (fix: wallet link)
         variant="secondary"
         :disabled="true"
         class="min-w-20"
