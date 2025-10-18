@@ -6,8 +6,9 @@
 // TRANSLATION STATUS:  ✴️
 //   * translate final menu items
 
-const { $dependencies } = useNuxtApp();
+const games = useGameModule();
 const siteStore = useSiteStore();
+const nuxtApp = useNuxtApp();
 const { t } = useI18n();
 const open = defineModel("open", { default: false, type: Boolean });
 
@@ -21,7 +22,7 @@ afterEach(() => {
 const ENABLE_SERVER_SIDE_RENDERING = false;
 const DEFER_CLIENT_SIDE_LOADING = true;
 const { data: categoriesData } = useAsyncData("sidebar-category-identifiers", async () => {
-  return $dependencies.games.ui.searchGameCategoriesByGroup.handle("sidebar_menu", false);
+  return games.ui.searchGameCategoriesByGroup.handle("sidebar_menu", false);
 },
 { lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING, default: () => [] },
 );
@@ -115,15 +116,8 @@ const links = [
   {
     title: t("side_nav.live_support"),
     icon: "emojione-v1:speech-balloon",
-    onClick: () => $dependencies.common.asyncMessagePublisher.emit("frontend:commands:modals:open-live-chat", {}),
+    onClick: () => nuxtApp.callHook("frontend:commands:modals:open-live-chat"),
   },
-  // {
-  //   title: t("side_nav.download_app"),
-  //   icon: "emojione-v1:mobile-phone",
-  //   to: {
-  //     name: "download-app",
-  //   },
-  // },
 ];
 
 const emptyQuery = ref("");
@@ -152,7 +146,7 @@ const emptyQuery = ref("");
           <SearchBar
             v-model="emptyQuery"
             input-size="md"
-            @click="$dependencies.common.asyncMessagePublisher.emit('frontend:commands:modals:open-user-interaction-modal', { modal: 'search' })"
+            @click="nuxtApp.callHook('frontend:commands:modals:open-user-interaction-modal', { modal: 'search' })"
           />
         </div>
 

@@ -12,7 +12,9 @@ defineOptions({
 });
 
 const { t } = useI18n();
-const { $dependencies } = useNuxtApp();
+const userModule = useUserModule();
+
+const nuxtApp = useNuxtApp();
 
 const loadingLogout = ref(false);
 
@@ -41,10 +43,7 @@ const links = [
     icon: "lucide:message-circle-question",
     action: {
       buttonOnClick: () =>
-        $dependencies.common.asyncMessagePublisher.emit(
-          "frontend:commands:modals:open-live-chat",
-          {},
-        ),
+        nuxtApp.callHook("frontend:commands:modals:open-live-chat"),
     },
   },
   {
@@ -54,7 +53,7 @@ const links = [
     action: {
       buttonOnClick: async () => {
         loadingLogout.value = true;
-        await $dependencies.users.ui.logoutCurrentUserFromButtonClick.handle();
+        await userModule.ui.logoutCurrentUserFromButtonClick.handle();
         loadingLogout.value = false;
       },
     },

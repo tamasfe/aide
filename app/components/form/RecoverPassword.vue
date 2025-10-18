@@ -6,8 +6,9 @@ import { UserPassword } from "~/modules/users/domain/UserPassword";
 /**
  * Dependencies
  */
-const { $dependencies } = useNuxtApp();
 const { t } = useI18n();
+const logger = useLogger();
+const user = useUserModule();
 
 const props = defineProps<{
   token: string | null;
@@ -39,14 +40,14 @@ const onSubmit = handleSubmit(async (formData) => {
   loadingForm.value = true;
   formErrorMessage.value = "";
 
-  const errorSubmitting = await $dependencies.users.ui.recoverPassword.handle(
+  const errorSubmitting = await user.ui.recoverPassword.handle(
     formData.password, props.token,
   );
 
   formErrorMessage.value = errorSubmitting || "";
   loadingForm.value = false;
 }, ({ results }) => {
-  $dependencies.common.logger.warn("Validation failed", { validationResults: results });
+  logger.warn("Validation failed", { validationResults: results });
 });
 </script>
 

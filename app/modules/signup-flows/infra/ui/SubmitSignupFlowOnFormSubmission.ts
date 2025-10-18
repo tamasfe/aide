@@ -2,20 +2,20 @@ import { SubmitSignupFlow } from "../../application/SubmitSignupFlow";
 import type { SignupFlowApiRepositoryI } from "../../domain/SignupFlowApiRepositoryI";
 import type { SignupFlowIdClientRepositoryI } from "../../domain/SignupFlowIdClientRepositoryI";
 import type { TranslateFunctionType } from "~/packages/translation";
-import type { AsyncMessagePublisherI } from "~/packages/async-messages/async-message-publisher";
 import type { LoggerI } from "~/packages/logger/Logger";
+import type { NuxtApp } from "#app";
 
 export class SubmitSignupFlowOnFormSubmission {
   constructor(
     private flowIdClientRepository: SignupFlowIdClientRepositoryI,
     private apiRepository: SignupFlowApiRepositoryI,
-    private asyncMessagePublisher: AsyncMessagePublisherI,
+    private nuxtApp: NuxtApp,
     private translateFunction: TranslateFunctionType,
     private logger: LoggerI,
   ) {}
 
   public async handle(): Promise<string | null> {
-    const result = await new SubmitSignupFlow(this.flowIdClientRepository, this.apiRepository, this.asyncMessagePublisher).handle();
+    const result = await new SubmitSignupFlow(this.flowIdClientRepository, this.apiRepository, this.nuxtApp).handle();
 
     if (result.isFailure) {
       if (result.error.name === "ErrorAlreadyTakenCpf") {
@@ -35,7 +35,7 @@ export class SubmitSignupFlowOnFormSubmission {
       return this.translateFunction("modal_session.error_submitting_flow");
     }
 
-    this.asyncMessagePublisher.emit("frontend:commands:modals:close-user-interaction-modal", {});
+    this.nuxtApp.callHook("frontend:commands:modals:close-user-interaction-modal");
 
     return null;
   }

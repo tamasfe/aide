@@ -6,8 +6,9 @@ import type { User } from "~/modules/users/domain/User";
 import { PAYMENT_PIX_KEY_TYPES } from "~/modules/users/domain/UserSettingsPaymentPix";
 import { DEFAULT_PREFIX, UserTelephone } from "~/modules/users/domain/UserTelephone";
 
-const { $dependencies } = useNuxtApp();
+const signupFlows = useSignupModule();
 const { t } = useI18n();
+const user = useUserModule();
 
 const props = defineProps<{
   paymentSettings: SearchUserSettingsResponseI["payment"];
@@ -46,7 +47,7 @@ const validationSchema = toTypedSchema(
       if (data.keyType !== "PHONE") {
         return true;
       }
-      const errorMessage = await $dependencies.signupFlows.ui.validateTelephoneOnRegisterFormChanged.handle(data.phone, data.phonePrefix?.value, data.phonePrefix?.countryCode);
+      const errorMessage = await signupFlows.ui.validateTelephoneOnRegisterFormChanged.handle(data.phone, data.phonePrefix?.value, data.phonePrefix?.countryCode);
       if (errorMessage === true) {
         return true;
       }
@@ -93,7 +94,7 @@ const phonePrefixWithFixedType = phonePrefix as globalThis.Ref<{
 
 const onSubmit = handleSubmit(async (data) => {
   const userTelephone = UserTelephone.new(data.phone || "", data.phonePrefix?.value || "");
-  formErrorMessage.value = await $dependencies.users.ui.userSettings.updateSettingsOnForm.handle({
+  formErrorMessage.value = await user.ui.userSettings.updateSettingsOnForm.handle({
     payment: {
       keyType: data.keyType,
       keyEmail: data.email || null,
@@ -164,7 +165,7 @@ const onSubmit = handleSubmit(async (data) => {
           variant="subtle"
           class="w-full space-x-1.5"
           type="button"
-          @click="$dependencies.users.ui.emitCommandCloseUserActionModal.handle()"
+          @click="user.ui.emitCommandCloseUserActionModal.handle()"
         >
           {{ $t("button.cancel") }}
         </BaseButton>

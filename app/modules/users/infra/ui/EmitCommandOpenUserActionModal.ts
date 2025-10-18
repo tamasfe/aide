@@ -1,4 +1,4 @@
-import type { AsyncMessagePublisherI } from "~/packages/async-messages/async-message-publisher";
+import type { NuxtApp } from "#app";
 import type { UserInteractionModalState } from "~/packages/async-messages/async-messages";
 import { success, type EmptySuccessResult } from "~/packages/result";
 
@@ -13,11 +13,11 @@ type Alert = {
 };
 
 export class EmitCommandOpenUserActionModalModal {
-  constructor(private readonly asyncMessagePublisher: AsyncMessagePublisherI) {}
+  constructor(private readonly nuxtApp: NuxtApp) {}
 
   public async handle(modalOrData: UserInteractionModalState | NoDataRequiredModal, alert?: Alert): Promise<EmptySuccessResult> {
     const modalState = typeof modalOrData === "string" ? { modal: modalOrData, alert } : { ...modalOrData, alert };
-    await this.asyncMessagePublisher.emit("frontend:commands:modals:open-user-interaction-modal", modalState);
+    await this.nuxtApp.callHook("frontend:commands:modals:open-user-interaction-modal", modalState);
     return success();
   }
 }

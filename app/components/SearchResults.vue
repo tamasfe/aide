@@ -2,7 +2,9 @@
 import { debouncedWatch } from "@vueuse/core";
 import type { Keyified } from "~/types/utils";
 
-const { $dependencies } = useNuxtApp();
+const gameModule = useGameModule();
+const gameProviderModule = useGameProviderModule();
+const user = useUserModule();
 
 const { query } = defineProps({
   query: {
@@ -19,7 +21,7 @@ const games = useState<Keyified<{ identifier: string; key: string }>[]>(() => []
 const gamesTotalItems = useState(() => 0);
 const gamesLoading = useState(() => false);
 const gamesOnLoadMore = async (actionOnItemsArray: "append" | "replace") => {
-  const result = await $dependencies.games.ui.searchGamesByQueryPaginatingOnSearchBar.handle(query ?? "", gamesCurrentPage.value);
+  const result = await gameModule.ui.searchGamesByQueryPaginatingOnSearchBar.handle(query ?? "", gamesCurrentPage.value);
 
   gamesTotalItems.value = result.pagination.totalItems;
   if (actionOnItemsArray === "append") {
@@ -41,7 +43,7 @@ const providers = useState<Keyified<{ identifier: string; key: string }>[]>(() =
 const providersTotalItems = useState(() => 0);
 const providersLoading = useState(() => false);
 const providersOnLoadMore = async (actionOnItemsArray: "append" | "replace") => {
-  const result = await $dependencies.providers.ui.searchProvidersOnGrid.handle(query ?? "", providersCurrentPage.value);
+  const result = await gameProviderModule.ui.searchProvidersOnGrid.handle(query ?? "", providersCurrentPage.value);
 
   providersTotalItems.value = result.pagination.totalItems;
   if (actionOnItemsArray === "append") {
@@ -78,7 +80,7 @@ const noResults = computed(() => games.value.length === 0 && providers.value.len
 debouncedWatch(() => query, onQueryChange, { debounce: 200, immediate: true });
 
 const onClickLink = () => {
-  $dependencies.users.ui.emitCommandCloseUserActionModal.handle();
+  user.ui.emitCommandCloseUserActionModal.handle();
 };
 </script>
 

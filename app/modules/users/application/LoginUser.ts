@@ -1,11 +1,11 @@
+import type { NuxtApp } from "#app";
 import type { AuthenticationRepositoryI } from "../domain/AuthenticationRepository";
-import type { AsyncMessagePublisherI } from "~/packages/async-messages/async-message-publisher";
 import { success } from "~/packages/result";
 
 export class LoginUser {
   constructor(
     private authenticationRepository: AuthenticationRepositoryI,
-    private asyncMessagePublisher: AsyncMessagePublisherI,
+    private nuxtApp: NuxtApp,
   ) {}
 
   public async handle(
@@ -17,7 +17,7 @@ export class LoginUser {
       return result;
     }
 
-    this.asyncMessagePublisher.emit("frontend:events:users:user-logged-in", {});
+    this.nuxtApp.callHook("frontend:events:users:user-logged-in");
     return success();
   }
 }

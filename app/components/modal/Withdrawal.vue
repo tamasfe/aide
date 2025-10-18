@@ -5,7 +5,7 @@ import type { SupportedCountryFlagCode } from "~/types/constants";
 // DESIGN STATUS:       ✅
 // ARCHITECTURE STATUS: ✅
 // TRANSLATION STATUS:  ✅
-const { $dependencies } = useNuxtApp();
+const userModule = useUserModule();
 const siteStore = useSiteStore();
 const walletStore = useWalletStore();
 
@@ -13,7 +13,7 @@ const userUnlockedBalance = walletStore.wallet?.balanceUnlocked ?? null;
 const paymentMethodsStore = useWalletPaymentMethodsStore();
 
 const onClosed = () => {
-  $dependencies.users.ui.emitCommandCloseUserActionModal.handle();
+  userModule.ui.emitCommandCloseUserActionModal.handle();
 };
 defineProps<{
   open: boolean;

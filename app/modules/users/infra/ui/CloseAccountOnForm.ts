@@ -1,10 +1,15 @@
 import type { CloseAccount } from "../../application/CloseAccount";
 import type { TranslateFunctionType } from "~/packages/translation";
 import type { LoggerI } from "~/packages/logger/Logger";
-import type { AsyncMessagePublisherI } from "~/packages/async-messages/async-message-publisher";
+import type { NuxtApp } from "#app";
 
 export class CloseAccountOnForm {
-  constructor(private command: CloseAccount, private logger: LoggerI, private asyncMessagePublisher: AsyncMessagePublisherI, private t: TranslateFunctionType) {}
+  constructor(
+    private command: CloseAccount,
+    private logger: LoggerI,
+    private nuxtApp: NuxtApp,
+    private t: TranslateFunctionType,
+  ) {}
 
   public async handle(reason: string | undefined, currentPassword: string) {
     const result = await this.command.handle(reason || null, currentPassword);
@@ -17,7 +22,7 @@ export class CloseAccountOnForm {
       return this.t("modal_close_account.error_unknown");
     }
 
-    await this.asyncMessagePublisher.emit("frontend:commands:modals:close-user-interaction-modal", {});
+    await this.nuxtApp.callHook("frontend:commands:modals:close-user-interaction-modal");
 
     return "";
   }

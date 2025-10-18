@@ -3,7 +3,8 @@ import type { SupportedLanguage, SupportedLocale } from "~/packages/translation"
 import { SUPPORTED_LANGUAGES } from "~/packages/translation/utils";
 
 const { locale, t } = useI18n();
-const { $dependencies } = useNuxtApp();
+const i18nModule = usei18nModule();
+const user = useUserModule();
 const userStore = useUserStore();
 
 /**
@@ -34,10 +35,10 @@ watch([() => SUPPORTED_LANGUAGES_OPTIONS_MAP.value], () => {
   selectedLanguage.value = SUPPORTED_LANGUAGES_OPTIONS_MAP.value[locale.value];
 });
 
-const onLocaleSelect = async (language: SupportedLanguageOption) => $dependencies.common.i18n.ui.userSelectsLocale.handle(language.value);
+const onLocaleSelect = async (language: SupportedLanguageOption) => i18nModule.ui.userSelectsLocale.handle(language.value);
 const onClickChangeAccountLocale = async (locale: SupportedLocale) => {
   loading.value = true;
-  await $dependencies.users.ui.userSettings.updateLocaleOnLocaleSelect.handle(locale);
+  await user.ui.userSettings.updateLocaleOnLocaleSelect.handle(locale);
   loading.value = false;
 };
 </script>

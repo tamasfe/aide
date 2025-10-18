@@ -1,7 +1,11 @@
 <script setup lang="ts">
-const { $dependencies } = useNuxtApp();
 const walletStore = useWalletStore();
 const { t } = useI18n();
+const wallet = useWalletModule();
+
+definePageMeta({
+  middleware: ["authenticated"],
+});
 
 useHead({
   title: t("page.account_history"),
@@ -12,14 +16,14 @@ const DEFER_CLIENT_SIDE_LOADING = true;
 
 const loading = useState(`history-page-deposits-loading`, () => true);
 const pageIndex = useState(`history-page-deposits-page-index`, () => 0);
-const totalItems = useState(`history-page-deposits-total-items`, () => $dependencies.wallets.ui.searchPaymentsOnTable.PAGE_SIZE);
-const pageSize = ref($dependencies.wallets.ui.searchPaymentsOnTable.PAGE_SIZE);
+const totalItems = useState(`history-page-deposits-total-items`, () => wallet.ui.searchPaymentsOnTable.PAGE_SIZE);
+const pageSize = ref(wallet.ui.searchPaymentsOnTable.PAGE_SIZE);
 
 const { data } = useAsyncData("history-page-deposits-data", async () => {
   if (!walletStore.wallet) return;
 
   loading.value = true;
-  const data = await $dependencies.wallets.ui.searchPaymentsOnTable.handle(walletStore.wallet.walletId, "deposit", pageIndex.value);
+  const data = await wallet.ui.searchPaymentsOnTable.handle(walletStore.wallet.walletId, "deposit", pageIndex.value);
 
   pageSize.value = data.pageSize;
   totalItems.value = data.totalItems;

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { $dependencies } = useNuxtApp();
+const userModule = useUserModule();
 </script>
 
 <template>
@@ -16,7 +16,7 @@ const { $dependencies } = useNuxtApp();
         <BaseButton
           variant="danger"
           size="dashboard"
-          @click="() => $dependencies.users.ui.emitCommandOpenUserActionModal.handle('close_account')"
+          @click="() => userModule.ui.emitCommandOpenUserActionModal.handle('close_account')"
         >
           {{ $t('button.close_account') }}
         </BaseButton>

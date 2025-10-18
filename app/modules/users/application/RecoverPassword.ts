@@ -1,9 +1,12 @@
+import type { NuxtApp } from "#app";
 import type { AuthenticationRepositoryI } from "../domain/AuthenticationRepository";
-import type { AsyncMessagePublisherI } from "~/packages/async-messages/async-message-publisher";
 import { success } from "~/packages/result";
 
 export class RecoverPassword {
-  constructor(private authenticationRepo: AuthenticationRepositoryI, private asyncMessagePublisher: AsyncMessagePublisherI) {}
+  constructor(
+    private authenticationRepo: AuthenticationRepositoryI,
+    private nuxtApp: NuxtApp,
+  ) {}
 
   public async handle(newPassword: string, token: string) {
     const result = await this.authenticationRepo.resetPassword(newPassword, token);
@@ -11,7 +14,7 @@ export class RecoverPassword {
       return result;
     }
 
-    await this.asyncMessagePublisher.emit("frontend:events:users:password-recovered", {});
+    await this.nuxtApp.callHook("frontend:events:users:password-recovered");
 
     return success();
   }

@@ -12,7 +12,8 @@ export default function<T extends keyof WebsocketTickerMessagesByType>(
   message: T,
   callback: (data: WebsocketTickerMessagesByType[T]) => void,
 ) {
-  const { $wsConnection, $dependencies } = useNuxtApp();
+  const { $wsConnection } = useNuxtApp();
+  const logger = useLogger();
 
   const isFocused = useWindowFocus();
 
@@ -24,7 +25,7 @@ export default function<T extends keyof WebsocketTickerMessagesByType>(
       const result = await channelManager.subscribe($wsConnection, message, callback);
 
       if (result.isFailure) {
-        $dependencies.common.logger.error("Error subscribing to websocket channel", result.error, { channel: "ticker", message });
+        logger.error("Error subscribing to websocket channel", result.error, { channel: "ticker", message });
         return;
       }
       else {
@@ -37,7 +38,7 @@ export default function<T extends keyof WebsocketTickerMessagesByType>(
           const result = await channelManager.subscribe($wsConnection, message, callback);
 
           if (result.isFailure) {
-            $dependencies.common.logger.error("Error subscribing to websocket channel", result.error, { channel: "ticker", message });
+            logger.error("Error subscribing to websocket channel", result.error, { channel: "ticker", message });
             return;
           }
 
@@ -50,7 +51,7 @@ export default function<T extends keyof WebsocketTickerMessagesByType>(
           const result = await channelManager.unsubscribe($wsConnection, listenerWrapperReference);
 
           if (result.isFailure) {
-            $dependencies.common.logger.error("Error unsubscribing from websocket channel", result.error, { channel: "ticker", message });
+            logger.error("Error unsubscribing from websocket channel", result.error, { channel: "ticker", message });
           }
         }
       });
@@ -62,7 +63,7 @@ export default function<T extends keyof WebsocketTickerMessagesByType>(
     if ($wsConnection) {
       const resultUnsubcribing = await channelManager.unsubscribe($wsConnection, listenerWrapperReference);
       if (resultUnsubcribing.isFailure) {
-        $dependencies.common.logger.error("Error unsubscribing from websocket channel", resultUnsubcribing.error, { channel: "ticker", message });
+        logger.error("Error unsubscribing from websocket channel", resultUnsubcribing.error, { channel: "ticker", message });
         return;
       }
     }

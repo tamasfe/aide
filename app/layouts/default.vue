@@ -1,6 +1,7 @@
 <script setup lang="ts">
-const sidebarIsOpen = ref(false);
+const nuxtApp = useNuxtApp();
 
+const sidebarIsOpen = ref(false);
 const userActionModalIsOpen = useState("user-modal", () => false);
 
 const closeModalOnSidebarOpen = (value: boolean) => {
@@ -17,11 +18,9 @@ const closeSidebarOnModalOpen = (value: boolean) => {
 };
 watch(userActionModalIsOpen, closeSidebarOnModalOpen);
 
-const onLiveChatVisibilityChanged = (visibility: "minimized" | "maximized" | "hidden") => {
-  if (visibility === "maximized") {
-    sidebarIsOpen.value = false;
-  }
-};
+nuxtApp.hook("frontend:commands:modals:live-chat-closed", () => {
+  sidebarIsOpen.value = false;
+});
 </script>
 
 <template>
@@ -47,7 +46,7 @@ const onLiveChatVisibilityChanged = (visibility: "minimized" | "maximized" | "hi
     <NavMobile @click:menu="sidebarIsOpen = !sidebarIsOpen" />
     <ClientOnly>
       <AppNotificationToastContainer />
-      <LiveChat @visibility-changed="onLiveChatVisibilityChanged" />
+      <LazyLiveChat />
     </ClientOnly>
   </div>
 </template>

@@ -3,18 +3,15 @@ import { ErrorInvalidCurrentPassword } from "../domain/errors/ErrorInvalidCurren
 import { UserSettings } from "../domain/UserSettings";
 import { ErrorUsernameIsTaken } from "../domain/errors/ErrorUsernameIsTaken";
 import { ErrorUsernameCannotBeExplicit } from "../domain/errors/ErrorUsernameCannotBeExplicit";
-import { createBackendOpenApiClient } from "~/packages/http-client/create-backend-open-api-client";
 import { fail, success, type EmptyResult } from "~/packages/result";
 import { InfrastructureError } from "~/packages/result/infrastructure-error";
 import { HttpBackendApiError } from "~/packages/http-client/http-backend-api-error";
 import type { SupportedLocale } from "~/packages/translation";
 import { searchSimilarLocale } from "~/packages/translation/utils";
-import type { CommonDependenciesI } from "~/dependency-injection/load-di";
+import type { ApiClient } from "../../../plugins/api-client";
 
 export class AuthenticatedUserSearcherGirobet implements AuthenticatedUserRepositoryI {
-  constructor(clientOptions: { baseUrl: string }, commonDependencies: CommonDependenciesI) {
-    this.apiClient = createBackendOpenApiClient(clientOptions, commonDependencies);
-  }
+  constructor(private readonly apiClient: ApiClient) {}
 
   public async searchProfile() {
     try {
@@ -223,6 +220,4 @@ export class AuthenticatedUserSearcherGirobet implements AuthenticatedUserReposi
       return fail(InfrastructureError.newFromUnknownError({}, error));
     }
   }
-
-  private apiClient: ReturnType<typeof createBackendOpenApiClient>;
 }

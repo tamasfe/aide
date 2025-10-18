@@ -2,6 +2,7 @@
 import { type VariantProps, cva } from "class-variance-authority";
 import type { MaskInputOptions } from "maska";
 import type { InputHTMLAttributes } from "vue";
+import { vMaska } from "maska/vue";
 
 const inputVariants = cva(
   "focus-visible:outline-none disabled:opacity-70",

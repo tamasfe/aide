@@ -3,48 +3,41 @@ import type { BaseButtonProps } from "./base/Button.vue";
 
 const props = defineProps<BaseButtonProps>();
 
-const { $dependencies } = useNuxtApp();
+const loaded = ref(false);
+const nuxtApp = useNuxtApp();
+const openIntent = ref(false);
 
-const liveChatIsReadyToOpen = ref(false);
-const showLoading = ref(false);
-
-$dependencies.common.asyncMessagePublisher.once(
+nuxtApp.hook(
   "frontend:commands:modals:live-chat-is-ready",
-  () => liveChatIsReadyToOpen.value = true,
+  () => {
+    loaded.value = true;
+  },
 );
 
-function clickOnSlot() {
-  if (showLoading.value) {
-    return;
-  }
+nuxtApp.hook(
+  "frontend:commands:modals:close-live-chat",
+  () => {
+    openIntent.value = false;
+  },
+);
 
-  if (liveChatIsReadyToOpen.value) {
-    $dependencies.common.asyncMessagePublisher.emit(
-      "frontend:commands:modals:open-live-chat",
-      {},
-    );
-    return;
-  }
-
-  showLoading.value = true;
-
-  $dependencies.common.asyncMessagePublisher.once(
-    "frontend:commands:modals:live-chat-is-ready",
-    () => {
-      $dependencies.common.asyncMessagePublisher.emit(
-        "frontend:commands:modals:open-live-chat",
-        {},
-      );
-      liveChatIsReadyToOpen.value = true;
-      showLoading.value = false;
-    },
-  );
+function onClick() {
+  openIntent.value = true;
 }
+
+watch(
+  [openIntent, loaded],
+  ([intent, loaded]) => {
+    if (intent && loaded) {
+      nuxtApp.callHook("frontend:commands:modals:open-live-chat");
+    }
+  },
+);
 </script>
 
 <template>
-  <BaseButton v-bind="props" @click="clickOnSlot">
-    <BaseSpinner v-if="showLoading" class="w-full" />
+  <BaseButton v-bind="props" @click="onClick">
+    <BaseSpinner v-if="!loaded" class="w-5 h-5" />
     <slot v-else />
   </BaseButton>
 </template>

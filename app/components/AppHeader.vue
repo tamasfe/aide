@@ -3,9 +3,9 @@
 //   * user icon size is stupid
 // ARCHITECTURE STATUS: ✅
 // TRANSLATION STATUS:  ✅
-const { $dependencies } = useNuxtApp();
 const userStore = useUserStore();
 const siteStore = useSiteStore();
+const user = useUserModule();
 
 const emit = defineEmits([
   "click:menu",
@@ -60,14 +60,14 @@ const emit = defineEmits([
               id="app-header-login-button"
               variant="secondary"
               class=""
-              @click="$dependencies.users.ui.emitCommandOpenUserActionModal.handle('login')"
+              @click="user.ui.emitCommandOpenUserActionModal.handle('login')"
             >
               {{ $t("button.login") }}
             </BaseButton>
             <BaseButton
               variant="primary"
               class=""
-              @click="$dependencies.users.ui.emitCommandOpenUserActionModal.handle('register')"
+              @click="user.ui.emitCommandOpenUserActionModal.handle('register')"
             >
               {{ $t("button.register") }}
             </BaseButton>
@@ -79,7 +79,7 @@ const emit = defineEmits([
               id="app-header-deposit-button"
               variant="emphasis"
               class=""
-              @click="$dependencies.users.ui.emitCommandOpenUserActionModal.handle('deposit')"
+              @click="user.ui.emitCommandOpenUserActionModal.handle('deposit')"
             >
               {{ $t("button.deposit") }}
             </BaseButton>

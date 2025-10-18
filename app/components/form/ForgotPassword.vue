@@ -8,9 +8,10 @@
 import { toTypedSchema } from "@vee-validate/zod";
 import { z } from "zod";
 
-const { $dependencies } = useNuxtApp();
 const { t } = useI18n();
 const notifications = useNotificationsStore();
+const logger = useLogger();
+const user = useUserModule();
 
 const validationSchema = toTypedSchema(
   z.object({
@@ -28,7 +29,7 @@ const onSubmit = handleSubmit(async (formData) => {
   loading.value = true;
   formErrorMessage.value = "";
 
-  const errorSubmitting = await $dependencies.users.ui.requestRecoverPasswordOnForm.handle(
+  const errorSubmitting = await user.ui.requestRecoverPasswordOnForm.handle(
     formData.email,
   );
   formErrorMessage.value = errorSubmitting || "";
@@ -46,7 +47,7 @@ const onSubmit = handleSubmit(async (formData) => {
     variant: "success",
   });
 }, ({ results }) => {
-  $dependencies.common.logger.warn("Validation failed", { validationResults: results });
+  logger.warn("Validation failed", { validationResults: results });
 });
 </script>
 
@@ -84,7 +85,7 @@ const onSubmit = handleSubmit(async (formData) => {
         variant="ghost"
         size="ghost"
         class="text-primary md:hover:underline"
-        @click="$dependencies.users.ui.emitCommandOpenUserActionModal.handle('login')"
+        @click="user.ui.emitCommandOpenUserActionModal.handle('login')"
       >
         {{ $t("button.login") }}
       </BaseButton>

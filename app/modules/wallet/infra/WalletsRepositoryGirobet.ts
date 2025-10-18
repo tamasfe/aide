@@ -4,15 +4,12 @@ import type { ErrorInvalidBalance } from "../domain/ErrorInvalidBalance";
 import { ErrorUserNotAuthorized } from "../domain/ErrorUserNotAuthorized";
 import { fail, success, type Result } from "~/packages/result";
 import { InfrastructureError } from "~/packages/result/infrastructure-error";
-import { createBackendOpenApiClient } from "~/packages/http-client/create-backend-open-api-client";
 import { HttpBackendApiError } from "~/packages/http-client/http-backend-api-error";
-import type { CommonDependenciesI } from "~/dependency-injection/load-di";
 import type { components } from "~/packages/http-client/girobet-backend-generated-http-client/openapi-typescript";
+import type { ApiClient } from "../../../plugins/api-client";
 
 export class WalletsRepositoryGirobet implements WalletRepositoryI {
-  constructor(clientOptions: { baseUrl: string }, commonDependencies: CommonDependenciesI) {
-    this.apiClient = createBackendOpenApiClient(clientOptions, commonDependencies);
-  }
+  constructor(private readonly apiClient: ApiClient) {}
 
   public async findAuthenticated(): Promise<Result<CamelizeKeys<components["schemas"]["UserWalletBalanceResponse"][]>, InfrastructureError | ErrorCurrencyNotRecognized | ErrorInvalidBalance | ErrorUserNotAuthorized>> {
     try {
@@ -44,6 +41,4 @@ export class WalletsRepositoryGirobet implements WalletRepositoryI {
       );
     }
   }
-
-  private readonly apiClient: ReturnType<typeof createBackendOpenApiClient>;
 }

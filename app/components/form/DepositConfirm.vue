@@ -22,6 +22,7 @@ const props = defineProps<{
 }>();
 
 const siteStore = useSiteStore();
+const user = useUserModule();
 
 const COUNTDOWN_MS = 5 * 60 * 1000;
 const countdownHasEnded = ref(false);
@@ -41,7 +42,7 @@ const onClickGenerateNewCode = async () => {
 <template>
   <BaseForm class="space-y-2">
     <div class="w-full flex gap-4 flex-row items-center justify-between mb-4">
-      <BaseButton type="button" variant="subtle" @click="$dependencies.users.ui.emitCommandOpenUserActionModal.handle('deposit')">
+      <BaseButton type="button" variant="subtle" @click="user.ui.emitCommandOpenUserActionModal.handle('deposit')">
         <BaseIcon
           name="lucide:arrow-left"
           :size="20"
@@ -109,7 +110,7 @@ const onClickGenerateNewCode = async () => {
           variant="ghost"
           size="md"
           class="text-subtle"
-          @click="$dependencies.users.ui.emitCommandCloseUserActionModal.handle()"
+          @click="user.ui.emitCommandCloseUserActionModal.handle()"
         >
           {{ $t("button.completed_payment") }}
         </BaseButton>
@@ -130,7 +131,7 @@ const onClickGenerateNewCode = async () => {
           variant="ghost"
           size="md"
           class="text-subtle"
-          @click="$dependencies.users.ui.emitCommandCloseUserActionModal.handle()"
+          @click="user.ui.emitCommandCloseUserActionModal.handle()"
         >
           {{ $t("button.cancel_deposit") }}
         </BaseButton>

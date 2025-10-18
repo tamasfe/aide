@@ -6,9 +6,9 @@ defineProps<{
 
 const siteStore = useSiteStore();
 
-const { $dependencies } = useNuxtApp();
+const userModule = useUserModule();
 const onClosed = () => {
-  $dependencies.users.ui.emitCommandCloseUserActionModal.handle();
+  userModule.ui.emitCommandCloseUserActionModal.handle();
 };
 </script>
 

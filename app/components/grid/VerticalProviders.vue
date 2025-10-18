@@ -2,8 +2,7 @@
 import type { Provider } from "~/modules/providers/domain/Provider";
 import type { Keyified } from "~/types/utils";
 
-const { $dependencies } = useNuxtApp();
-const { navigateBackOrHome } = useNavigateBackOrHome();
+const gameProviderModule = useGameProviderModule();
 const { t } = useI18n();
 
 const ENABLE_SERVER_SIDE_RENDERING = true;
@@ -19,7 +18,7 @@ const onLoadData = async () => {
   if (!canLoadMore.value) return;
   loading.value = true;
 
-  const { game_providers: foundProviders, canLoadMore: updatedCanLoadMore, totalProviders: total } = await $dependencies.providers.ui.listProvidersOnGrid.handle(nextProvidersPageToSearch.value);
+  const { game_providers: foundProviders, canLoadMore: updatedCanLoadMore, totalProviders: total } = await gameProviderModule.ui.listProvidersOnGrid.handle(nextProvidersPageToSearch.value);
   providers.value.push(...foundProviders.map(provider => useAddKeyFromIdentifier(provider)));
   canLoadMore.value = updatedCanLoadMore;
   nextProvidersPageToSearch.value += 1;
@@ -38,18 +37,20 @@ useAsyncData(`load-vertical-providers`, onLoadData,
     <GridHeader class="mb-4">
       <template #title>
         <div class="flex gap-4 items-center">
-          <BaseButton
-            variant="subtle"
-            size="sm"
-            class="p-1.5"
-            @click="navigateBackOrHome"
+          <NuxtLinkLocale
+            :to="{ name: 'index' }"
           >
-            <BaseIcon
-              name="lucide:arrow-left"
-              :size="24"
-            />
-          </BaseButton>
-
+            <BaseButton
+              variant="subtle"
+              size="sm"
+              class="p-1.5"
+            >
+              <BaseIcon
+                name="lucide:arrow-left"
+                :size="24"
+              />
+            </BaseButton>
+          </NuxtLinkLocale>
           <GridHeaderTitle :title="t('grid.providers')" />
         </div>
       </template>

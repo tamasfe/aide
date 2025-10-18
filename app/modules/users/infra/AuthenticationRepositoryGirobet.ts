@@ -2,19 +2,18 @@ import type { AuthenticationRepositoryI } from "../domain/AuthenticationReposito
 import { ErrorInvalidAuthCredentials } from "../domain/errors/ErrorInvalidAuthCredentials";
 import { ErrorInvalidPasswordRecoveryToken } from "../domain/errors/ErrorInvalidPasswordRecoveryToken";
 import type { UserEmail } from "../domain/UserEmail";
-import { createBackendOpenApiClient } from "~/packages/http-client/create-backend-open-api-client";
 import { fail, success, type EmptyResult } from "~/packages/result";
 import { InfrastructureError } from "~/packages/result/infrastructure-error";
 import { HttpBackendApiError } from "~/packages/http-client/http-backend-api-error";
-import type { CommonDependenciesI } from "~/dependency-injection/load-di";
 import type { LoggerI } from "~/packages/logger/Logger";
 import { ErrorUnauthorized } from "../domain/errors/ErrorUnauthorized";
+import type { ApiClient } from "../../../plugins/api-client";
 
 export class AuthenticationRepositoryGirobet implements AuthenticationRepositoryI {
   private logger: LoggerI;
-  constructor(clientOptions: { baseUrl: string }, commonDependencies: CommonDependenciesI) {
-    this.apiClient = createBackendOpenApiClient(clientOptions, commonDependencies);
-    this.logger = commonDependencies.logger;
+
+  constructor(private readonly apiClient: ApiClient, logger: LoggerI) {
+    this.logger = logger;
   }
 
   public async login(username: string, password: string): Promise<EmptyResult<ErrorInvalidAuthCredentials | InfrastructureError>> {
@@ -133,6 +132,4 @@ export class AuthenticationRepositoryGirobet implements AuthenticationRepository
       return fail(InfrastructureError.newFromUnknownError({ }, error));
     }
   }
-
-  private apiClient: ReturnType<typeof createBackendOpenApiClient>;
 }

@@ -8,41 +8,40 @@ import { LiveChatWidget, type EventHandlerPayload } from "@livechat/widget-vue";
  * The license number was taken from: https://my.livechatinc.com/settings/code
  */
 
-const { $dependencies } = useNuxtApp();
 const userStore = useUserStore();
+const nuxtApp = useNuxtApp();
 
 const visibility = ref<"minimized" | "maximized" | "hidden">("hidden");
-const emit = defineEmits<{
-  (e: "visibility-changed", visibility: "minimized" | "maximized" | "hidden"): void;
-}>();
 
-useEventBusSubscription("frontend:commands:modals:open-live-chat", async () => {
+nuxtApp.hook("frontend:commands:modals:open-live-chat", async () => {
   visibility.value = "maximized";
 });
 
-useEventBusSubscription("frontend:commands:modals:close-live-chat", async () => {
+nuxtApp.hook("frontend:commands:modals:close-live-chat", async () => {
   visibility.value = "hidden";
 });
 
 function onVisibilityChanged(event: EventHandlerPayload<"onVisibilityChanged">) {
   switch (event.visibility) {
     case "maximized":
+      visibility.value = "maximized";
+      nuxtApp.callHook("frontend:commands:modals:live-chat-opened");
+      break;
+
     case "hidden":
-      emit("visibility-changed", event.visibility);
+      visibility.value = "hidden";
+      nuxtApp.callHook("frontend:commands:modals:live-chat-closed");
       break;
 
     case "minimized":
-      visibility.value = "hidden";
-      emit("visibility-changed", "hidden");
+      visibility.value = "minimized";
+      nuxtApp.callHook("frontend:commands:modals:live-chat-closed");
       break;
   }
 }
 
 function onWidgetIsReady() {
-  $dependencies.common.asyncMessagePublisher.emit(
-    "frontend:commands:modals:live-chat-is-ready",
-    {},
-  );
+  nuxtApp.callHook("frontend:commands:modals:live-chat-is-ready");
 }
 
 const sessionVariables = computed(() => {

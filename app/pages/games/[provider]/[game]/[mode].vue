@@ -40,9 +40,8 @@ const props = defineProps({
 });
 
 const userStore = useUserStore();
-const { $dependencies } = useNuxtApp();
+const user = useUserModule();
 const { t } = useI18n();
-const gameIdentifier = useGameIdentifier();
 const router = useRouter();
 const { params } = useRoute();
 const localePath = useLocalePath();
@@ -61,7 +60,6 @@ useHead({
       ref="gameFrameLauncher"
       class="absolute inset-0"
       :launch-mode="mode"
-      :game-identifier="gameIdentifier"
       :game-session="gameSession"
       :game-demo-session="gameDemoSession"
       @abort="router.replace(localePath({
@@ -73,7 +71,7 @@ useHead({
         <div v-if="!userStore.isAuthenticated" class="mt-6 flex items-center gap-4">
           <BaseButton
             size="xl"
-            @click="$dependencies.users.ui.emitCommandOpenUserActionModal.handle('login')"
+            @click="user.ui.emitCommandOpenUserActionModal.handle('login')"
           >
             {{ $t("button.login") }}
           </BaseButton>

@@ -1,11 +1,11 @@
 import type { AuthenticationRepositoryI } from "../domain/AuthenticationRepository";
-import type { AsyncMessagePublisherI } from "~/packages/async-messages/async-message-publisher";
 import { success } from "~/packages/result";
+import type { NuxtApp } from "#app";
 
 export class LogoutUser {
   constructor(
     private authenticationRepository: AuthenticationRepositoryI,
-    private asyncMessagePublisher: AsyncMessagePublisherI,
+    private nuxtApp: NuxtApp,
   ) {}
 
   public async handle(
@@ -15,7 +15,7 @@ export class LogoutUser {
       return result;
     }
 
-    this.asyncMessagePublisher.emit("frontend:events:users:user-logged-out", {});
+    this.nuxtApp.callHook("frontend:events:users:user-logged-out");
 
     return success();
   }

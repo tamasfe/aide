@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
 
-const { $dependencies } = useNuxtApp();
 const siteStore = useSiteStore();
+const user = useUserModule();
+const wallet = useWalletModule();
 
 const props = defineProps<{
   open: boolean;
@@ -16,7 +17,7 @@ const props = defineProps<{
 }>();
 
 const onClosed = () => {
-  $dependencies.users.ui.emitCommandCloseUserActionModal.handle();
+  user.ui.emitCommandCloseUserActionModal.handle();
 };
 
 // DESIGN STATUS:       ✅
@@ -28,7 +29,7 @@ const createNewDeposit = async () => {
   if (!props.payment) {
     return "";
   }
-  return $dependencies.wallets.ui.createDepositFlowOnForm.handle(props.payment.amount, props.payment.currency, props.payment.paymentMethodId);
+  return wallet.ui.createDepositFlowOnForm.handle(props.payment.amount, props.payment.currency, props.payment.paymentMethodId);
 };
 </script>
 

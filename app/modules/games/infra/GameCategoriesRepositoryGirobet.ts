@@ -2,14 +2,11 @@ import type { GameCategoriesRepositoryI } from "../domain/GameCategoriesReposito
 import { GameCategory } from "../domain/GameCategory";
 import { fail, success, type Result } from "~/packages/result";
 import { InfrastructureError } from "~/packages/result/infrastructure-error";
-import { createBackendOpenApiClient } from "~/packages/http-client/create-backend-open-api-client";
 import { HttpBackendApiError } from "~/packages/http-client/http-backend-api-error";
-import type { CommonDependenciesI } from "~/dependency-injection/load-di";
+import type { ApiClient } from "../../../plugins/api-client";
 
 export class GameCategoriesRepositoryGirobet implements GameCategoriesRepositoryI {
-  constructor(clientOptions: { baseUrl: string }, commonDependencies: CommonDependenciesI) {
-    this.apiClient = createBackendOpenApiClient(clientOptions, commonDependencies);
-  }
+  constructor(private readonly apiClient: ApiClient) {}
 
   public async searchByGroup(categoryGroup: string, includeGames: boolean): Promise<Result<GameCategory[], InfrastructureError>> {
     const { data, error, response } = await this.apiClient.GET("/game/category/list", {
@@ -45,6 +42,4 @@ export class GameCategoriesRepositoryGirobet implements GameCategoriesRepository
       }, new Error("Unexpected scenario: library did not return data nor error. This should never happen")),
     );
   }
-
-  private apiClient: ReturnType<typeof createBackendOpenApiClient>;
 }

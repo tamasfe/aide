@@ -8,13 +8,13 @@ const props = defineProps<{
 }>();
 
 const { n } = useI18n();
-const { $dependencies } = useNuxtApp();
+const gameModule = useGameModule();
 
 const ENABLE_SERVER_SIDE_RENDERING = true;
 const DEFER_CLIENT_SIDE_LOADING = true;
 
 const { data, execute } = useAsyncData(`game-${props.gameIdentifier}-votes`, async () => {
-  return await $dependencies.games.ui.searchGameRatingFromGameFrameVotes.handle(props.gameIdentifier);
+  return await gameModule.ui.searchGameRatingFromGameFrameVotes.handle(props.gameIdentifier);
 },
 {
   lazy: DEFER_CLIENT_SIDE_LOADING,
@@ -43,7 +43,7 @@ const onClickVote = async (newRating: "like" | "dislike" | null) => {
     newRating = null;
   }
 
-  await $dependencies.games.ui.rateGameFromGameFrameVotes.handle(props.gameIdentifier, newRating);
+  await gameModule.ui.rateGameFromGameFrameVotes.handle(props.gameIdentifier, newRating);
 
   await execute();
 };

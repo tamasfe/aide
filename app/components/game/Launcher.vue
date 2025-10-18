@@ -3,17 +3,15 @@ import type { PropType } from "vue";
 import type { Response as DemoSessionResponse } from "~/modules/games/infra/ui/CreateGameSessionDemoFromGamePage";
 import type { Response as SessionResponse } from "~/modules/games/infra/ui/CreateGameSessionFromGamePage";
 
-const { $dependencies } = useNuxtApp();
+const userModule = useUserModule();
 const siteStore = useSiteStore();
+const gameSessionStore = useGameSessionStore();
+const nuxtApp = useNuxtApp();
 
 const props = defineProps({
   launchMode: {
     type: String as PropType<"session" | "demo" | undefined>,
     default: undefined,
-  },
-  gameIdentifier: {
-    type: String,
-    required: true,
   },
   gameSession: {
     type: Object as PropType<SessionResponse | null>,
@@ -38,15 +36,38 @@ const session = computed(() => {
   }
   return null;
 });
+
+watch(() => props.launchMode, (mode) => {
+  // The player is only really playing if it's a real session
+  if (mode === "session") {
+    gameSessionStore.playing = true;
+  }
+  else {
+    gameSessionStore.playing = false;
+  }
+
+  if (mode) {
+    nuxtApp.callHook("frontend:events:games:game-session-started");
+  }
+  else {
+    nuxtApp.callHook("frontend:events:games:game-session-finished");
+  }
+}, { immediate: true });
 </script>
 
 <template>
   <div>
     <template v-if="session">
-      <GameIframe
+      <iframe
         v-if="!session.isFailure"
-        :game-identifier="gameIdentifier"
         :src="session.value.url"
+        loading="eager"
+        width="100%"
+        height="100%"
+        frameborder="0"
+        marginwidth="0"
+        marginheight="0"
+        class="block border-0"
       />
 
       <div
@@ -72,7 +93,7 @@ const session = computed(() => {
             <BaseButton
               id="app-header-deposit-button"
               variant="emphasis"
-              @click="$dependencies.users.ui.emitCommandOpenUserActionModal.handle('deposit')"
+              @click="userModule.ui.emitCommandOpenUserActionModal.handle('deposit')"
             >
               {{ $t("button.deposit") }}
             </BaseButton>
@@ -120,7 +141,7 @@ const session = computed(() => {
             <BaseButton
               id="app-header-deposit-button"
               variant="emphasis"
-              @click="$dependencies.users.ui.emitCommandOpenUserActionModal.handle('login')"
+              @click="userModule.ui.emitCommandOpenUserActionModal.handle('login')"
             >
               {{ $t("button.login") }}
             </BaseButton>

@@ -5,7 +5,8 @@ import { z } from "zod";
 /**
  * Dependencies
  */
-const { $dependencies } = useNuxtApp();
+const user = useUserModule();
+const logger = useLogger();
 const { t } = useI18n();
 const localePath = useLocalePath();
 
@@ -27,13 +28,13 @@ const [reason, reasonAttrs] = defineField("reason");
 const [password, passwordAttrs] = defineField("password");
 
 const onSubmit = handleSubmit(async (formData) => {
-  formErrorMessage.value = await $dependencies.users.ui.closeAccountOnForm.handle(formData.reason, formData.password);
+  formErrorMessage.value = await user.ui.closeAccountOnForm.handle(formData.reason, formData.password);
 
   if (!formErrorMessage.value) {
-    await navigateTo(localePath("/"));
+    await navigateTo(localePath({ name: "index" }));
   }
 }, ({ results }) => {
-  $dependencies.common.logger.warn("Validation failed", { validationResults: results });
+  logger.warn("Validation failed", { validationResults: results });
 });
 </script>
 
@@ -84,7 +85,7 @@ const onSubmit = handleSubmit(async (formData) => {
       size="xl"
       type="button"
       variant="subtle"
-      @click="() => $dependencies.users.ui.emitCommandCloseUserActionModal.handle()"
+      @click="() => user.ui.emitCommandCloseUserActionModal.handle()"
     >
       {{ $t("button.cancel") }}
     </BaseButton>

@@ -2,7 +2,7 @@
 // DESIGN STATUS:       ✅
 // ARCHITECTURE STATUS: ✅
 // TRANSLATION STATUS:  ✅
-const { $dependencies } = useNuxtApp();
+const userModule = useUserModule();
 
 defineProps<{
   open: boolean;
@@ -11,7 +11,7 @@ defineProps<{
 const siteStore = useSiteStore();
 
 const onClosed = () => {
-  $dependencies.users.ui.emitCommandCloseUserActionModal.handle();
+  userModule.ui.emitCommandCloseUserActionModal.handle();
 };
 </script>
 

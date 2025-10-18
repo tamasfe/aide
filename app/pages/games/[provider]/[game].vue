@@ -3,7 +3,7 @@ definePageMeta({
   layout: false,
 });
 
-const { $dependencies } = useNuxtApp();
+const games = useGameModule();
 const { isMobile } = useDevice();
 const walletStore = useWalletStore();
 const userStore = useUserStore();
@@ -16,7 +16,7 @@ const gameIdentifier = useGameIdentifier();
 const { data: game } = await useAsyncData(
   computed(() => `game-${gameIdentifier.value}`),
   async () => {
-    return $dependencies.games.ui.findGameCompatibilityByIdentifierOnGamePage.handle(gameIdentifier.value, currentDevice);
+    return games.ui.findGameCompatibilityByIdentifierOnGamePage.handle(gameIdentifier.value, currentDevice);
   }, {
     server: true,
     lazy: true,
@@ -35,7 +35,7 @@ const emit = defineEmits<{
 const { data: gameSession } = useAsyncData(
   computed(() => `game-${gameIdentifier.value}-session`),
   async () => {
-    return $dependencies.games.ui.createGameSessionFromGamePage.handle(
+    return games.ui.createGameSessionFromGamePage.handle(
       gameIdentifier.value,
       userStore.user?.id,
       walletStore.wallet?.currency,
@@ -57,7 +57,7 @@ const { data: gameDemoSession } = useAsyncData(
       return null;
     }
 
-    return $dependencies.games.ui.createGameSessionDemoFromGamePage.handle(gameIdentifier.value, i18n.localeProperties.value.language || i18n.locale.value.split("-")[0] || "", currentDevice);
+    return games.ui.createGameSessionDemoFromGamePage.handle(gameIdentifier.value, i18n.localeProperties.value.language || i18n.locale.value.split("-")[0] || "", currentDevice);
   },
   {
     watch: [game, i18n.localeProperties],

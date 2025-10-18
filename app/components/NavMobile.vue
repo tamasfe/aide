@@ -6,7 +6,7 @@
 
 import { NuxtLink, LiveChatButton } from "#components";
 
-const { $dependencies } = useNuxtApp();
+const userModule = useUserModule();
 const { t } = useI18n();
 
 const emit = defineEmits([
@@ -58,7 +58,7 @@ const items = computed<NavMobileItem[]>(() => [
     icon: "lucide:search",
     text: t("mobile_nav.search"),
     attributes: {
-      onClick: () => $dependencies.users.ui.emitCommandOpenUserActionModal.handle("search"),
+      onClick: () => userModule.ui.emitCommandOpenUserActionModal.handle("search"),
     },
   },
   {

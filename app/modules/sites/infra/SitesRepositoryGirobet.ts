@@ -3,14 +3,11 @@ import type { SiteResponse } from "../domain/Site";
 import type { License } from "../domain/License";
 import { InfrastructureError } from "~/packages/result/infrastructure-error";
 import { fail, success, type Result } from "~/packages/result";
-import { createBackendOpenApiClient } from "~/packages/http-client/create-backend-open-api-client";
 import { HttpBackendApiError } from "~/packages/http-client/http-backend-api-error";
-import type { CommonDependenciesI } from "~/dependency-injection/load-di";
+import type { ApiClient } from "../../../plugins/api-client";
 
 export class SitesRepositoryGirobet implements SitesRepositoryI {
-  constructor(clientOptions: { baseUrl: string }, commonDependencies: CommonDependenciesI) {
-    this.apiClient = createBackendOpenApiClient(clientOptions, commonDependencies);
-  }
+  constructor(private readonly apiClient: ApiClient) {}
 
   public async findCurrentMatched(): Promise<Result<SiteResponse, InfrastructureError>> {
     try {
@@ -53,6 +50,4 @@ export class SitesRepositoryGirobet implements SitesRepositoryI {
       return fail(InfrastructureError.newFromUnknownError({}, error));
     }
   }
-
-  private apiClient: ReturnType<typeof createBackendOpenApiClient>;
 }

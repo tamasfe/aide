@@ -9,7 +9,7 @@ const props = defineProps<{
   initialGames?: Game[];
 }>();
 
-const { $dependencies } = useNuxtApp();
+const gameModule = useGameModule();
 const { t } = useI18n();
 
 const paginationSize = computed(() => props.initialGames ? props.initialGames.length : 25);
@@ -24,7 +24,7 @@ const onLoadData = async () => {
 
   loading.value = true;
 
-  const { games: gamesFound, canLoadMore: updatedCanLoadMore } = await $dependencies.games.ui.listGamesPaginatingOnGrid.handle(props.categoryIdentifier, null, nextGamesPageToSearch.value, paginationSize.value);
+  const { games: gamesFound, canLoadMore: updatedCanLoadMore } = await gameModule.ui.listGamesPaginatingOnGrid.handle(props.categoryIdentifier, null, nextGamesPageToSearch.value, paginationSize.value);
   games.value.push(...gamesFound.map(game => useAddKeyFromIdentifier(game)));
   canLoadMore.value = updatedCanLoadMore;
   nextGamesPageToSearch.value += 1;

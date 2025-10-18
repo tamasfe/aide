@@ -3,14 +3,11 @@ import type { GamesApiRepositoryI } from "../domain/GamesApiRepository";
 import { ErrorGameNotFound } from "../domain/ErrorGameNotFound";
 import { fail, success } from "~/packages/result";
 import { InfrastructureError } from "~/packages/result/infrastructure-error";
-import { createBackendOpenApiClient } from "~/packages/http-client/create-backend-open-api-client";
 import { HttpBackendApiError } from "~/packages/http-client/http-backend-api-error";
-import type { CommonDependenciesI } from "~/dependency-injection/load-di";
+import type { ApiClient } from "../../../plugins/api-client";
 
 export class GamesApiRepositoryGirobet implements GamesApiRepositoryI {
-  constructor(clientOptions: { baseUrl: string }, commonDependencies: CommonDependenciesI) {
-    this.apiClient = createBackendOpenApiClient(clientOptions, commonDependencies);
-  }
+  constructor(private readonly apiClient: ApiClient) {}
 
   public async searchPaginating(searchParams: { query: string | null }, pagination: { limit: number; offset: number }) {
     try {
@@ -151,6 +148,4 @@ export class GamesApiRepositoryGirobet implements GamesApiRepositoryI {
       );
     }
   }
-
-  private apiClient: ReturnType<typeof createBackendOpenApiClient>;
 }

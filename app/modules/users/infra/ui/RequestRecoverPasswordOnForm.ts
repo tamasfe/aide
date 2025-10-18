@@ -1,13 +1,13 @@
 import type { LoggerI } from "~/packages/logger/Logger";
 import type { AuthenticationRepositoryI } from "../../domain/AuthenticationRepository";
 import { UserEmail } from "../../domain/UserEmail";
-import type { AsyncMessagePublisherI } from "~/packages/async-messages/async-message-publisher";
 import type { TranslateFunctionType } from "~/packages/translation";
+import type { NuxtApp } from "#app";
 
 export class RequestRecoverPasswordOnForm {
   constructor(
     private authenticationRepo: AuthenticationRepositoryI,
-    private asyncMessagePublisher: AsyncMessagePublisherI,
+    private nuxtApp: NuxtApp,
     private logger: LoggerI,
     private t: TranslateFunctionType,
   ) {}
@@ -28,7 +28,7 @@ export class RequestRecoverPasswordOnForm {
       return this.t("modal_forgot_password.error_unknown");
     }
 
-    await this.asyncMessagePublisher.emit("frontend:commands:modals:close-user-interaction-modal", {});
+    await this.nuxtApp.callHook("frontend:commands:modals:close-user-interaction-modal");
 
     return null;
   }

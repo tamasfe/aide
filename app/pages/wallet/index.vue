@@ -1,7 +1,12 @@
 <script setup lang="ts">
-const { $dependencies } = useNuxtApp();
 const walletStore = useWalletStore();
 const { t } = useI18n();
+const wallet = useWalletModule();
+const nuxtApp = useNuxtApp();
+
+definePageMeta({
+  middleware: ["authenticated"],
+});
 
 useHead({
   title: t("page.account_settings"),
@@ -16,7 +21,7 @@ const { data: paymentsData, execute, pending } = useAsyncData("wallet-page-payme
     return;
   }
 
-  const data = await $dependencies.wallets.ui.searchPaymentsOnTable.handle(walletStore.wallet.walletId, null, 0, NUMBER_OF_PAYMENTS_TO_SHOW);
+  const data = await wallet.ui.searchPaymentsOnTable.handle(walletStore.wallet.walletId, null, 0, NUMBER_OF_PAYMENTS_TO_SHOW);
 
   return data.payments;
 }, {
@@ -26,7 +31,7 @@ const { data: paymentsData, execute, pending } = useAsyncData("wallet-page-payme
   default: () => [],
 });
 
-useEventBusSubscription("backend:events:payments:payment-status-updated", async () => {
+nuxtApp.hook("backend:events:payments:payment-status-updated", async () => {
   execute();
 });
 </script>

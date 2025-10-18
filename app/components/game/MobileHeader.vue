@@ -3,6 +3,7 @@ const localePath = useLocalePath();
 const siteStore = useSiteStore();
 const walletStore = useWalletStore();
 const { params } = useRoute();
+const userModule = useUserModule();
 </script>
 
 <template>
@@ -18,7 +19,7 @@ const { params } = useRoute();
       v-if="walletStore.wallet"
       id="app-header-deposit-button"
       variant="emphasis"
-      @click="$dependencies.users.ui.emitCommandOpenUserActionModal.handle('deposit')"
+      @click="userModule.ui.emitCommandOpenUserActionModal.handle('deposit')"
     >
       {{ $t("button.deposit") }}
     </BaseButton>

@@ -1,7 +1,11 @@
 <script setup lang="ts">
-const { $dependencies } = useNuxtApp();
+const games = useGameModule();
 const walletStore = useWalletStore();
 const { t } = useI18n();
+
+definePageMeta({
+  middleware: ["authenticated"],
+});
 
 useHead({
   title: t("page.account_history"),
@@ -11,8 +15,8 @@ const ENABLE_SERVER_SIDE_RENDERING = true;
 const DEFER_CLIENT_SIDE_LOADING = true;
 const loading = useState(`history-page-casino-loading`, () => true);
 const pageIndex = useState(`history-page-casino-page-index`, () => 0);
-const totalItems = useState(`history-page-casino-total-items`, () => $dependencies.games.ui.searchGameActionsPaginatingOnCasinoTable.PAGINATION_SIZE);
-const pageSize = ref($dependencies.games.ui.searchGameActionsPaginatingOnCasinoTable.PAGINATION_SIZE);
+const totalItems = useState(`history-page-casino-total-items`, () => games.ui.searchGameActionsPaginatingOnCasinoTable.PAGINATION_SIZE);
+const pageSize = ref(games.ui.searchGameActionsPaginatingOnCasinoTable.PAGINATION_SIZE);
 
 const { data } = useAsyncData(`dashboard-history-casino-table`, async () => {
   if (!walletStore.wallet) {
@@ -20,7 +24,7 @@ const { data } = useAsyncData(`dashboard-history-casino-table`, async () => {
   }
 
   loading.value = true;
-  const result = await $dependencies.games.ui.searchGameActionsPaginatingOnCasinoTable.handle(pageIndex.value);
+  const result = await games.ui.searchGameActionsPaginatingOnCasinoTable.handle(pageIndex.value);
 
   pageSize.value = result.pageSize;
   totalItems.value = result.totalItems;

@@ -23,7 +23,8 @@ const props = defineProps({
   },
 });
 
-const { $dependencies } = useNuxtApp();
+const games = useGameModule();
+const user = useUserModule();
 const { t } = useI18n();
 const userStore = useUserStore();
 const launchMode = ref<"session" | "demo" | undefined>(undefined);
@@ -41,7 +42,7 @@ const authenticated = computed(() => {
 });
 
 const { data: gameCategories } = useAsyncData(async () => {
-  return $dependencies.games.ui.searchGameCategoriesByGroup.handle("game_page", true);
+  return games.ui.searchGameCategoriesByGroup.handle("game_page", true);
 }, {
   server: true,
   lazy: true,
@@ -62,7 +63,6 @@ const { data: gameCategories } = useAsyncData(async () => {
         <GameLauncher
           class="absolute inset-0"
           :launch-mode="launchMode"
-          :game-identifier="game.identifier"
           :game-session="gameSession"
           :game-demo-session="gameDemoSession"
           @abort="launchMode = undefined"
@@ -191,7 +191,7 @@ const { data: gameCategories } = useAsyncData(async () => {
               <BaseButton
                 v-if="!userStore.isAuthenticated"
                 variant="secondary"
-                @click="$dependencies.users.ui.emitCommandOpenUserActionModal.handle('login')"
+                @click="user.ui.emitCommandOpenUserActionModal.handle('login')"
               >
                 {{ $t("button.login") }}
               </BaseButton>

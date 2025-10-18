@@ -2,7 +2,9 @@
 import type { Keyified } from "~/types/utils";
 import type { Win } from "~/types/wins";
 
-const { $dependencies } = useNuxtApp();
+const tickers = useTickerModule();
+const websockets = useWebsocketModule();
+const games = useGameModule();
 const userStore = useUserStore();
 
 const winsBufferSize = ref(10);
@@ -26,7 +28,7 @@ const WINS_ENABLE_SERVER_SIDE_RENDERING = true;
 const WINS_DEFER_CLIENT_SIDE_LOADING = true;
 
 useAsyncData("winning-now-tabs-ticker-events", async () => {
-  const wins = await $dependencies.tickers.ui.searchTickerEventsFromWinningNow.handle();
+  const wins = await tickers.ui.searchTickerEventsFromWinningNow.handle();
   for (const win of wins) {
     const keyifiedWin = useAddKeyFromIdentifier(camelizeKeys(win));
     uniqueWins.value.set(keyifiedWin.key, keyifiedWin);
@@ -37,7 +39,7 @@ useAsyncData("winning-now-tabs-ticker-events", async () => {
 );
 
 useCreateSubscriptionToWebsocketTickerChannel(
-  $dependencies.websockets.ui.wsChannelManagers.ticker,
+  websockets.ui.wsChannelManagers.ticker,
   "winning_now",
   (message) => {
     const keyifiedWin = useAddKeyFromIdentifier(camelizeKeys(message));
@@ -55,7 +57,7 @@ const { data: myBetsData } = useAsyncData(`winning-now-my-bets-table`, async () 
   }
 
   loadingMyBets.value = true;
-  const result = await $dependencies.games.ui.searchGameActionsPaginatingOnCasinoTable.handle(0);
+  const result = await games.ui.searchGameActionsPaginatingOnCasinoTable.handle(0);
   loadingMyBets.value = false;
 
   return result;

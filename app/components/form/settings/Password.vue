@@ -9,8 +9,9 @@ import { toTypedSchema } from "@vee-validate/zod";
 import { z } from "zod";
 import { UserPassword } from "~/modules/users/domain/UserPassword";
 
-const { $dependencies } = useNuxtApp();
 const { t } = useI18n();
+const logger = useLogger();
+const user = useUserModule();
 
 const validationSchema = toTypedSchema(
   z.object({
@@ -33,14 +34,14 @@ const [newPassword, newPasswordAttrs] = defineField("newPassword");
 const [confirmNewPassword, confirmNewPasswordAttrs] = defineField("confirmNewPassword");
 
 const onSubmit = handleSubmit(async (formData) => {
-  formErrorMessage.value = await $dependencies.users.ui.userSettings.updateSettingsOnForm.handle({
+  formErrorMessage.value = await user.ui.userSettings.updateSettingsOnForm.handle({
     password: {
       current: formData.currentPassword,
       new: formData.newPassword,
     },
   });
 }, ({ results }) => {
-  $dependencies.common.logger.warn("Validation failed", { validationResults: results });
+  logger.warn("Validation failed", { validationResults: results });
 });
 </script>
 
@@ -95,7 +96,7 @@ const onSubmit = handleSubmit(async (formData) => {
         variant="subtle"
         class="w-full space-x-1.5"
         type="button"
-        @click="$dependencies.users.ui.emitCommandCloseUserActionModal.handle()"
+        @click="user.ui.emitCommandCloseUserActionModal.handle()"
       >
         {{ $t("button.cancel") }}
       </BaseButton>

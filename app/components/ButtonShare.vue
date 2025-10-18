@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from "vue";
 import { AbstractExtendedError } from "~/packages/result";
 
-const { $dependencies } = useNuxtApp();
+const logger = useLogger();
 
 // ARCHITECTURE STATUS:       ✴️
 //   - TODO Priority of checking installed apps (see below for order)
@@ -70,16 +70,16 @@ const onShare = async () => {
     switch (errorSharing.type) {
       case "AbortError":
         // The user canceled the share, no need to log in error level
-        $dependencies.common.logger.warn("Share was aborted. Tolerating...", { shareData: shareData.value });
+        logger.warn("Share was aborted. Tolerating...", { shareData: shareData.value });
         return;
 
       case "InvalidStateError.ShareInProgress":
         // The user is already seeing the share, no need to log in error level
-        $dependencies.common.logger.warn("Share already in progress. Tolerating...", { shareData: shareData.value });
+        logger.warn("Share already in progress. Tolerating...", { shareData: shareData.value });
         return;
 
       default:
-        $dependencies.common.logger.error("Error sharing the content", errorSharing);
+        logger.error("Error sharing the content", errorSharing);
     }
   }
 };

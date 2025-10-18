@@ -2,9 +2,10 @@
 import type { UserInteractionModalState } from "~/packages/async-messages/async-messages";
 import type { AlertProps } from "./base/Alert.vue";
 
-const { $dependencies } = useNuxtApp();
 const { searchParams } = useRequestURL();
 const gameSessionStore = useGameSessionStore();
+const user = useUserModule();
+const nuxtApp = useNuxtApp();
 
 const state = useState<(UserInteractionModalState | { modal: null }) & { alert?: AlertProps }>("user-modal-state", () => ({ modal: null }));
 const isOpen = defineModel<boolean>("open", { type: Boolean, required: true });
@@ -13,7 +14,7 @@ const modalIsJurisdictionModal = (modal: UserInteractionModalState["modal"] | nu
   return modal === "restrict_license_no_alternative" || modal === "restrict_license_alternative" || modal === "restrict_expanding";
 };
 
-useEventBusSubscription("frontend:commands:modals:open-user-interaction-modal", async (event) => {
+nuxtApp.hook("frontend:commands:modals:open-user-interaction-modal", (event) => {
   if (modalIsJurisdictionModal(state.value.modal) && !modalIsJurisdictionModal(event.modal)) {
     return;
   }
@@ -22,7 +23,7 @@ useEventBusSubscription("frontend:commands:modals:open-user-interaction-modal", 
   isOpen.value = true;
 });
 
-useEventBusSubscription("frontend:commands:modals:close-user-interaction-modal", async () => {
+nuxtApp.hook("frontend:commands:modals:close-user-interaction-modal", () => {
   if (modalIsJurisdictionModal(state.value.modal)) {
     return;
   }
@@ -30,7 +31,7 @@ useEventBusSubscription("frontend:commands:modals:close-user-interaction-modal",
   isOpen.value = false;
 });
 
-useEventBusSubscription("backend:events:payments:payment-status-updated", async ({ data }) => {
+nuxtApp.hook("backend:events:payments:payment-status-updated", ({ data }) => {
   // If any of the invalid jurisdiction modals are open: keep them open
   if (modalIsJurisdictionModal(state.value.modal)) {
     return;
@@ -45,14 +46,15 @@ useEventBusSubscription("backend:events:payments:payment-status-updated", async 
 
 const SECONDS_TO_AUTO_OPEN_PROMO_MODAL = 10;
 const openPromoModalIfPossible = () => {
-  if (isOpen.value || gameSessionStore.isPlaying) {
+  if (isOpen.value || gameSessionStore.playing) {
     setTimeout(() => {
       openPromoModalIfPossible();
     }, SECONDS_TO_AUTO_OPEN_PROMO_MODAL * 1000);
     return;
   }
-  $dependencies.users.ui.openUserPromoActionModalOncePerDay.handle(new Date());
+  user.ui.openUserPromoActionModalOncePerDay.handle(new Date());
 };
+
 if (!import.meta.server) {
   setTimeout(() => {
     openPromoModalIfPossible();
@@ -60,8 +62,9 @@ if (!import.meta.server) {
 }
 
 const recoverPasswordToken = useState("user-modal-recover-password-token", () => searchParams.get("recovery-token") || "");
+
 if (recoverPasswordToken.value) {
-  $dependencies.users.ui.emitCommandOpenUserActionModal.handle({ modal: "recover_password", data: { token: recoverPasswordToken.value } });
+  user.ui.emitCommandOpenUserActionModal.handle({ modal: "recover_password", data: { token: recoverPasswordToken.value } });
 }
 
 /**
@@ -70,9 +73,10 @@ if (recoverPasswordToken.value) {
  * The watch seems to be necessary to keep updating the previous URL, but at the same time it needs to be out of the beforeResolve hook to ensure we save the previousRoute before resolving the next one.
  */
 const router = useRouter();
+const route = useRoute();
 const previousUrl = ref(router.options.history.state.back);
 
-watch(() => router.currentRoute.value, () => {
+watch(() => route, () => {
   previousUrl.value = router.options.history.state.back;
 });
 

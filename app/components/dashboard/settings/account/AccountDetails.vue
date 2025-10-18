@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-const { $dependencies } = useNuxtApp();
+const userModule = useUserModule();
 const userStore = useUserStore();
 </script>
 
@@ -21,7 +21,7 @@ const userStore = useUserStore();
           <BaseButton
             variant="secondary"
             size="dashboard"
-            @click="$dependencies.users.ui.emitCommandOpenUserActionModal.handle({ modal: 'settings', data: { setting: 'username' } })"
+            @click="userModule.ui.emitCommandOpenUserActionModal.handle({ modal: 'settings', data: { setting: 'username' } })"
           >
             {{ $t('button.edit') }}
           </BaseButton>
@@ -42,7 +42,7 @@ const userStore = useUserStore();
           <BaseButton
             variant="secondary"
             size="dashboard"
-            @click="$dependencies.users.ui.emitCommandOpenUserActionModal.handle({ modal: 'settings', data: { setting: 'password' } })"
+            @click="userModule.ui.emitCommandOpenUserActionModal.handle({ modal: 'settings', data: { setting: 'password' } })"
           >
             {{ $t('button.change') }}
           </BaseButton>

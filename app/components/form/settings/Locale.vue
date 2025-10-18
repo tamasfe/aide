@@ -2,9 +2,9 @@
 import type { SupportedLanguage, SupportedLocale } from "~/packages/translation";
 import { SUPPORTED_LANGUAGES } from "~/packages/translation/utils";
 
-const { $dependencies } = useNuxtApp();
 const userSettings = useUserSettingsStore();
 const { locale } = useI18n();
+const user = useUserModule();
 
 /**
  * We need to extend the SupportedLanguage interface to include a "title" property
@@ -33,8 +33,8 @@ const onSubmit = async () => {
    * This way the user can see the changes immediately.
    */
   userSettings.settings.locale = selectedLanguage.value.value;
-  $dependencies.users.ui.userSettings.updateSettingsOnForm.handle({ locale: selectedLanguage.value.value });
-  $dependencies.users.ui.emitCommandCloseUserActionModal.handle();
+  user.ui.userSettings.updateSettingsOnForm.handle({ locale: selectedLanguage.value.value });
+  user.ui.emitCommandCloseUserActionModal.handle();
 };
 </script>
 
@@ -75,7 +75,7 @@ const onSubmit = async () => {
           variant="subtle"
           class="w-full space-x-1.5"
           type="button"
-          @click="$dependencies.users.ui.emitCommandCloseUserActionModal.handle()"
+          @click="user.ui.emitCommandCloseUserActionModal.handle()"
         >
           {{ $t("button.cancel") }}
         </BaseButton>

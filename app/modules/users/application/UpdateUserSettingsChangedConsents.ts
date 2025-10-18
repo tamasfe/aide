@@ -1,13 +1,13 @@
+import type { NuxtApp } from "#app";
 import type { AuthenticatedUserRepositoryI } from "../domain/AuthenticatedUserRepository";
 import { UserSettings, type UserSettingsPropsI } from "../domain/UserSettings";
 import type { SearchUserSettingsResponseI } from "./SearchUserSettingsSimplified";
-import type { AsyncMessagePublisherI } from "~/packages/async-messages/async-message-publisher";
 import { success } from "~/packages/result";
 
 export class UpdateUserSettingsChangedConsents {
   public constructor(
     private readonly authenticatedUserRepository: AuthenticatedUserRepositoryI,
-    private readonly asyncMessagePublisher: AsyncMessagePublisherI,
+    private readonly nuxtApp: NuxtApp,
   ) {}
 
   public async handle(
@@ -28,7 +28,7 @@ export class UpdateUserSettingsChangedConsents {
       return result;
     }
 
-    await this.asyncMessagePublisher.emit("frontend:events:users:user-settings-updated", {
+    await this.nuxtApp.callHook("frontend:events:users:user-settings-updated", {
       settings: {
         locale: undefined,
         password: false,

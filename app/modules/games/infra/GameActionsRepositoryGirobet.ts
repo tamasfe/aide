@@ -2,14 +2,11 @@ import type { GameActionsRepositoryI } from "../domain/GameActionsRepository";
 import type { GameAction } from "../domain/GameAction";
 import { fail, success, type Result } from "~/packages/result";
 import { InfrastructureError } from "~/packages/result/infrastructure-error";
-import { createBackendOpenApiClient } from "~/packages/http-client/create-backend-open-api-client";
 import { HttpBackendApiError } from "~/packages/http-client/http-backend-api-error";
-import type { CommonDependenciesI } from "~/dependency-injection/load-di";
+import type { ApiClient } from "../../../plugins/api-client";
 
 export class GameActionsRepositoryGirobet implements GameActionsRepositoryI {
-  constructor(clientOptions: { baseUrl: string }, commonDependencies: CommonDependenciesI) {
-    this.apiClient = createBackendOpenApiClient(clientOptions, commonDependencies);
-  }
+  constructor(private readonly apiClient: ApiClient) {}
 
   public async searchPaginating(searchParams: { type: "bet" | "win" | null }, limit: number, offset: number): Promise<Result<{ gameActions: GameAction[]; pagination: { limit: number; offset: number; totalItems: number } }, InfrastructureError>> {
     try {
@@ -56,6 +53,4 @@ export class GameActionsRepositoryGirobet implements GameActionsRepositoryI {
       );
     }
   }
-
-  private apiClient: ReturnType<typeof createBackendOpenApiClient>;
 }

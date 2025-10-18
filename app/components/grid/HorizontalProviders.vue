@@ -4,7 +4,7 @@ import type { Keyified } from "~/types/utils";
 
 defineOptions({ inheritAttrs: false });
 
-const { $dependencies } = useNuxtApp();
+const gameProviderModule = useGameProviderModule();
 const { t } = useI18n();
 
 const loading = useState(`grid-horizontal-providers-loading`, () => true);
@@ -16,7 +16,7 @@ const onLoadData = async () => {
   if (!canLoadMore.value) return;
   loading.value = true;
 
-  const { game_providers: foundProviders, canLoadMore: updatedCanLoadMore } = await $dependencies.providers.ui.listProvidersOnGrid.handle(nextProvidersPageToSearch.value);
+  const { game_providers: foundProviders, canLoadMore: updatedCanLoadMore } = await gameProviderModule.ui.listProvidersOnGrid.handle(nextProvidersPageToSearch.value);
   providers.value.push(...foundProviders.map(provider => useAddKeyFromIdentifier(provider)));
   canLoadMore.value = updatedCanLoadMore;
   nextProvidersPageToSearch.value += 1;

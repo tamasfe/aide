@@ -1,22 +1,43 @@
-import type { SupportedLocale } from "../translation";
 import type { components } from "~/packages/http-client/girobet-backend-generated-http-client/openapi-typescript";
-import type { NotificationBackend } from "~/modules/notifications/domain/NotificationBackend";
 import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
-import type { CamelizeKeys } from "~/utils";
 
-type NoDataRequiredModal = "login" | "register" | "search" | "forgot_password" | "deposit" | "withdrawal" | "cancel_registration" | "close_account" | "promo_user_action";
+type NoDataRequiredModal
+  = | "login"
+    | "register"
+    | "search"
+    | "forgot_password"
+    | "deposit"
+    | "withdrawal"
+    | "cancel_registration"
+    | "close_account"
+    | "promo_user_action";
 
 export type UserInteractionModalState
   = | { modal: NoDataRequiredModal }
     | {
       modal: "recover_password";
       data: { token: string };
-    } | {
+    }
+    | {
       modal: "settings";
-      data: { setting: "password" | "language" | "time_zone" | "payment_pix" | "username" };
-    } | {
+      data: {
+        setting:
+          | "password"
+          | "language"
+          | "time_zone"
+          | "payment_pix"
+          | "username";
+      };
+    }
+    | {
       modal: "deposit_confirm";
-      data: { flowId: number; paymentCode: string; amount: number; currency: WalletCurrency; paymentMethodId: number };
+      data: {
+        flowId: number;
+        paymentCode: string;
+        amount: number;
+        currency: WalletCurrency;
+        paymentMethodId: number;
+      };
     }
     | {
       modal: "kyc";
@@ -32,91 +53,116 @@ export type UserInteractionModalState
     }
     | {
       modal: "restrict_license_alternative";
-      data: { jurisdiction: string; currentHost: string; blockedCountry: string; allowedUrl: string };
+      data: {
+        jurisdiction: string;
+        currentHost: string;
+        blockedCountry: string;
+        allowedUrl: string;
+      };
     }
     | {
       modal: "restrict_license_no_alternative";
-      data: { jurisdiction: string; currentHost: string; blockedCountry: string };
+      data: {
+        jurisdiction: string;
+        currentHost: string;
+        blockedCountry: string;
+      };
     }
     | {
       modal: "restrict_expanding";
-      data: { jurisdiction: string; currentHost: string; blockedCountry: string };
+      data: {
+        jurisdiction: string;
+        currentHost: string;
+        blockedCountry: string;
+      };
     };
 
 export interface AsyncMessagesTypes {
-  "frontend:commands:modals:open-user-interaction-modal": UserInteractionModalState;
-  "frontend:commands:modals:close-user-interaction-modal": object;
+  a: undefined;
+  // "frontend:commands:modals:open-user-interaction-modal": UserInteractionModalState;
+  // "frontend:commands:modals:close-user-interaction-modal": object;
 
-  "frontend:commands:modals:open-live-chat": object;
-  "frontend:commands:modals:close-live-chat": object;
-  "frontend:commands:modals:live-chat-is-ready": object;
+  // "frontend:commands:modals:open-live-chat": object;
+  // "frontend:commands:modals:close-live-chat": object;
+  // "frontend:commands:modals:live-chat-is-ready": object;
 
-  "frontend:events:users:user-logged-in": object;
-  "frontend:events:users:user-logged-out": object;
-  "frontend:events:users:user-closed-account": object;
-  "frontend:events:users:password-recovered": object;
-  "frontend:events:users:user-settings-updated": {
-    settings: {
-      locale?: SupportedLocale;
-      password: boolean;
-      username?: string;
-      consents?: {
-        email?: boolean | null;
-        postMail?: boolean | null;
-        pushNotification?: boolean | null;
-        siteNotification?: boolean | null;
-        sms?: boolean | null;
-        telephone?: boolean | null;
-      };
-      payment?: {
-        keyType: "CPF" | "EMAIL" | "PHONE" | "EVP" | null;
-        keyEmail: string | null;
-        keyEvp: string | null;
-        keyPhone: string | null;
-      };
-    };
-  };
+  // "frontend:events:users:user-logged-in": object;
+  // "frontend:events:users:user-logged-out": object;
+  // "frontend:events:users:user-closed-account": object;
+  // "frontend:events:users:password-recovered": object;
+  // "frontend:events:users:user-settings-updated": {
+  //   settings: {
+  //     locale?: SupportedLocale;
+  //     password: boolean;
+  //     username?: string;
+  //     consents?: {
+  //       email?: boolean | null;
+  //       postMail?: boolean | null;
+  //       pushNotification?: boolean | null;
+  //       siteNotification?: boolean | null;
+  //       sms?: boolean | null;
+  //       telephone?: boolean | null;
+  //     };
+  //     payment?: {
+  //       keyType: "CPF" | "EMAIL" | "PHONE" | "EVP" | null;
+  //       keyEmail: string | null;
+  //       keyEvp: string | null;
+  //       keyPhone: string | null;
+  //     };
+  //   };
+  // };
 
-  "frontend:events:signup-flows:signup-flow-submitted": {
-    id: string;
-  };
+  // "frontend:events:signup-flows:signup-flow-submitted": {
+  //   id: string;
+  // };
 
-  "frontend:events:games:game-session-started": {
-    gameIdentifier: string;
-  };
-  "frontend:events:games:game-session-finished": {
-    gameIdentifier: string;
-  };
+  // "frontend:events:games:game-session-started": undefined;
+  // "frontend:events:games:game-session-finished": undefined;
 
-  "frontend:events:payments:deposit-flow-created": {
-    paymentMethodId: number;
-    flowId: number;
-    code: string;
-    amount: number;
-    currency: WalletCurrency;
-    totalDeposits: number;
-  };
-  "frontend:events:payments:withdrawal-flow-created": {
-    flowId: number;
-    amount: number;
-    currency: WalletCurrency;
-    totalWithdrawals: number;
-  };
+  // "frontend:events:payments:deposit-flow-created": {
+  //   paymentMethodId: number;
+  //   flowId: number;
+  //   code: string;
+  //   amount: number;
+  //   currency: WalletCurrency;
+  //   totalDeposits: number;
+  // };
+  // "frontend:events:payments:withdrawal-flow-created": {
+  //   flowId: number;
+  //   amount: number;
+  //   currency: WalletCurrency;
+  //   totalWithdrawals: number;
+  // };
 
-  "frontend:events:websockets:connection-state-changed": {
-    state: "connected" | "disconnected";
-  };
+  // "frontend:events:websockets:connection-state-changed": {
+  //   state: "connected" | "disconnected";
+  // };
 
-  /**
-   * Events coming from the Backend
-   */
-  "backend:events:payments:payment-status-updated": CamelizeKeys<Extract<components["schemas"]["WebsocketServerEvent"]["data"], { type: "payment_status_update" }>>;
-  "backend:events:tracker:payment-updated": CamelizeKeys<Extract<components["schemas"]["TrackerType"], { event: "payment_update" }>["event_data"]>;
-  "backend:events:kyc:kyc-process-completed": {
-    notificationId: number;
-  };
-  "backend:events:wallets:wallet-balance-updated": CamelizeKeys<Extract<components["schemas"]["WebsocketServerEvent"], { type: "balance_update" }>["data"]>;
-  "backend:events:backend-notification-received": {
-    notification: NotificationBackend;
-  };
+  // /**
+  //  * Events coming from the Backend
+  //  */
+  // "backend:events:payments:payment-status-updated": CamelizeKeys<
+  //   Extract<
+  //     components["schemas"]["WebsocketServerEvent"]["data"],
+  //     { type: "payment_status_update" }
+  //   >
+  // >;
+  // "backend:events:tracker:payment-updated": CamelizeKeys<
+  //   Extract<
+  //     components["schemas"]["TrackerType"],
+  //     { event: "payment_update" }
+  //   >["event_data"]
+  // >;
+  // "backend:events:kyc:kyc-process-completed": {
+  //   notificationId: number;
+  // };
+  // "backend:events:wallets:wallet-balance-updated": CamelizeKeys<
+  //   Extract<
+  //     components["schemas"]["WebsocketServerEvent"],
+  //     { type: "balance_update" }
+  //   >["data"]
+  // >;
+  // "backend:events:backend-notification-received": {
+  //   notification: NotificationBackend;
+  // };
 }

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const { t } = useI18n();
 const siteStore = useSiteStore();
-const { $dependencies } = useNuxtApp();
+const games = useGameModule();
 
 definePageMeta({
   layout: "carousel",
@@ -12,7 +12,7 @@ useHead({
 });
 
 const { data: gameCategories, pending } = useAsyncData("home-page-game-categories",
-  async () => $dependencies.games.ui.searchGameCategoriesByGroup.handle("home", true),
+  async () => games.ui.searchGameCategoriesByGroup.handle("home", true),
   {
     server: true,
     lazy: true,

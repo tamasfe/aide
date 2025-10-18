@@ -3,11 +3,11 @@ import { InfrastructureError } from "~/packages/result/infrastructure-error";
 
 export default defineNuxtPlugin({
   name: "sentry",
-  dependsOn: ["module-users-initiator"],
+  dependsOn: ["user"],
   parallel: true,
   async setup() {
     const userStore = useUserStore();
-    const { $dependencies } = useNuxtApp();
+    const logger = useLogger();
 
     if (userStore.user) {
       try {
@@ -18,7 +18,7 @@ export default defineNuxtPlugin({
         });
       }
       catch (error) {
-        $dependencies.common.logger.error("Error setting Sentry user in plugin init", InfrastructureError.newFromUnknownError({ user: userStore.user }, error));
+        logger.error("Error setting Sentry user in plugin init", InfrastructureError.newFromUnknownError({ user: userStore.user }, error));
       }
     }
 
@@ -36,7 +36,7 @@ export default defineNuxtPlugin({
         });
       }
       catch (error) {
-        $dependencies.common.logger.error("Error setting Sentry user in userStore watch", InfrastructureError.newFromUnknownError({ user }, error));
+        logger.error("Error setting Sentry user in userStore watch", InfrastructureError.newFromUnknownError({ user }, error));
       }
     });
   },

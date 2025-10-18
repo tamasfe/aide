@@ -12,8 +12,9 @@ import { z } from "zod";
 /**
  * Dependencies
  */
-const { $dependencies } = useNuxtApp();
 const { t } = useI18n();
+const logger = useLogger();
+const user = useUserModule();
 
 /**
  * Login Form
@@ -32,13 +33,13 @@ const [password, passwordAttrs] = defineField("password");
 
 const onSubmit = handleSubmit(async (formData) => {
   loadingForm.value = true;
-  const errorSubmitting = await $dependencies.users.ui.attemptUserLoginOnFormSubmission.handle(
+  const errorSubmitting = await user.ui.attemptUserLoginOnFormSubmission.handle(
     formData.email, formData.password,
   );
   formErrorMessage.value = errorSubmitting || "";
   loadingForm.value = false;
 }, ({ results }) => {
-  $dependencies.common.logger.warn("Validation failed", { validationResults: results });
+  logger.warn("Validation failed", { validationResults: results });
 });
 </script>
 
@@ -76,7 +77,7 @@ const onSubmit = handleSubmit(async (formData) => {
         variant="ghost"
         size="ghost"
         class="text-sm text-subtle md:hover:text-subtle-light"
-        @click="$dependencies.users.ui.emitCommandOpenUserActionModal.handle('forgot_password')"
+        @click="user.ui.emitCommandOpenUserActionModal.handle('forgot_password')"
       >
         {{ $t("modal_session.forgot_password") }}
       </BaseButton>
@@ -99,7 +100,7 @@ const onSubmit = handleSubmit(async (formData) => {
         variant="ghost"
         size="ghost"
         class="text-primary md:hover:underline"
-        @click="$dependencies.users.ui.emitCommandOpenUserActionModal.handle('register')"
+        @click="user.ui.emitCommandOpenUserActionModal.handle('register')"
       >
         {{ $t("modal_session.create_free_account") }}
       </BaseButton>

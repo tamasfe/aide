@@ -3,15 +3,12 @@ import type { NotificationBackend } from "../domain/NotificationBackend";
 import { ErrorRetrievingNotifications } from "../domain/ErrorRetrievingNotifications";
 import type { ErrorNotificationNotFound } from "../domain/ErrorNotificationNotFound";
 import { ErrorSavingNotification } from "../domain/ErrorSavingNotification";
-import { createBackendOpenApiClient } from "~/packages/http-client/create-backend-open-api-client";
 import { HttpBackendApiError } from "~/packages/http-client/http-backend-api-error";
 import { fail, success, type EmptyResult, type Result } from "~/packages/result";
-import type { CommonDependenciesI } from "~/dependency-injection/load-di";
+import type { ApiClient } from "../../../plugins/api-client";
 
 export class NotificationBackendRepositoryGirobet implements NotificationBackendRepositoryI {
-  constructor(clientOptions: { baseUrl: string }, commonDependencies: CommonDependenciesI) {
-    this.apiClient = createBackendOpenApiClient(clientOptions, commonDependencies);
-  }
+  constructor(private readonly apiClient: ApiClient) {}
 
   public async searchPaginating(searchParams: {
     readStatus?: "read" | "unread" | null;
@@ -106,6 +103,4 @@ export class NotificationBackendRepositoryGirobet implements NotificationBackend
       );
     }
   }
-
-  private readonly apiClient: ReturnType<typeof createBackendOpenApiClient>;
 }

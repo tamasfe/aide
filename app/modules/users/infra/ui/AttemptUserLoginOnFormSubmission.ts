@@ -1,5 +1,5 @@
+import type { NuxtApp } from "#app";
 import type { LoginUser } from "../../application/LoginUser";
-import type { AsyncMessagePublisherI } from "~/packages/async-messages/async-message-publisher";
 import type { LoggerI } from "~/packages/logger/Logger";
 import type { TranslateFunctionType } from "~/packages/translation";
 
@@ -8,7 +8,7 @@ export class AttemptUserLoginOnFormSubmission {
     private query: LoginUser,
     private translateFunction: TranslateFunctionType,
     private logger: LoggerI,
-    private asyncMessagePublisher: AsyncMessagePublisherI,
+    private nuxtApp: NuxtApp,
   ) {
   }
 
@@ -23,7 +23,7 @@ export class AttemptUserLoginOnFormSubmission {
       return this.translateFunction("modal_login.error_unknown");
     }
 
-    this.asyncMessagePublisher.emit("frontend:commands:modals:close-user-interaction-modal", {});
+    this.nuxtApp.callHook("frontend:commands:modals:close-user-interaction-modal");
 
     return null;
   }

@@ -30,8 +30,11 @@ defineProps({
 });
 
 const { handleSubmit, meta, values } = useForm();
-const { $dependencies } = useNuxtApp();
+const signupFlows = useSignupModule();
+const clicks = useClickTrackingModule();
 const { pulse: pulseFormErrors } = provideRegisterFormErrorPulse();
+const logger = useLogger();
+const user = useUserModule();
 
 const errorMessage = ref<null | string>(null);
 const loadingSubmit = ref(false);
@@ -55,9 +58,9 @@ const onSubmit = handleSubmit(async () => {
   errorMessage.value = "";
 
   let searchParams: Record<string, string> | undefined = undefined;
-  const resultSearchParams = $dependencies.clicks.repositories.marketingSearchParamsRepo.searchAttributed();
+  const resultSearchParams = clicks.repositories.marketingSearchParamsRepo.searchAttributed();
   if (resultSearchParams.isFailure) {
-    $dependencies.common.logger.error("Error retrieving the saved marketing query parameters. This might affect our attribution", resultSearchParams.error);
+    logger.error("Error retrieving the saved marketing query parameters. This might affect our attribution", resultSearchParams.error);
   }
   else {
     if (resultSearchParams.value) {
@@ -70,7 +73,7 @@ const onSubmit = handleSubmit(async () => {
    * submission, and thus a backend error.
    */
   const telephone: UserTelephonePrimitives = values.telephone;
-  await $dependencies.signupFlows.ui.upsertSignupFlowOnRegisterFormInputChange.handle({
+  await signupFlows.ui.upsertSignupFlowOnRegisterFormInputChange.handle({
     utmParameters: searchParams,
     email: values.email,
     cpf: values.cpf,
@@ -78,12 +81,12 @@ const onSubmit = handleSubmit(async () => {
     password: values.password,
   });
 
-  const errorSubmitting = await $dependencies.signupFlows.ui.submitSignupFlowOnFormSubmission.handle();
+  const errorSubmitting = await signupFlows.ui.submitSignupFlowOnFormSubmission.handle();
 
   loadingSubmit.value = false;
   errorMessage.value = errorSubmitting;
 }, ({ results }) => {
-  $dependencies.common.logger.warn("Register form validation failed", { results });
+  logger.warn("Register form validation failed", { results });
   errorMessage.value = "";
 
   // Trigger a reactive pulse for descendants to animate their error messages
@@ -125,7 +128,7 @@ const loading = computed<boolean>(() => {
       <NuxtLinkLocale
         :to="{ name: 'terms' }"
         class="font-semibold md:hover:text-subtle-light"
-        @click="() => $dependencies.users.ui.emitCommandCloseUserActionModal.handle()"
+        @click="() => user.ui.emitCommandCloseUserActionModal.handle()"
       >
         {{ $t("page.terms") }}
       </NuxtLinkLocale>
@@ -153,7 +156,7 @@ const loading = computed<boolean>(() => {
         variant="ghost"
         size="ghost"
         class="text-primary md:hover:underline"
-        @click="$dependencies.users.ui.emitCommandOpenUserActionModal.handle('login')"
+        @click="user.ui.emitCommandOpenUserActionModal.handle('login')"
       >
         {{ $t("button.login") }}
       </BaseButton>

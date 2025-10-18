@@ -1,15 +1,15 @@
 import type { UpdateUserSettings } from "../../../application/UpdateUserSettings";
 import type { SupportedLocale, TranslateFunctionType } from "~/packages/translation";
 import type { LoggerI } from "~/packages/logger/Logger";
-import type { AsyncMessagePublisherI } from "~/packages/async-messages/async-message-publisher";
 import type { UserSettingsPaymentPixPropsI } from "~/modules/users/domain/UserSettingsPaymentPix";
+import type { NuxtApp } from "#app";
 
 export class UpdateSettingsOnForm {
   constructor(
     private readonly command: UpdateUserSettings,
     private readonly logger: LoggerI,
     private readonly t: TranslateFunctionType,
-    private readonly asyncMessagePublisher: AsyncMessagePublisherI,
+    private readonly nuxtApp: NuxtApp,
   ) {}
 
   public async handle(settings: {
@@ -26,7 +26,7 @@ export class UpdateSettingsOnForm {
       return this.t("modal_account_settings.error_unknown");
     }
 
-    await this.asyncMessagePublisher.emit("frontend:commands:modals:close-user-interaction-modal", {});
+    await this.nuxtApp.callHook("frontend:commands:modals:close-user-interaction-modal");
 
     return "";
   }

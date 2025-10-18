@@ -7,16 +7,13 @@ import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
 import { ErrorInsufficientFunds } from "~/modules/wallet/domain/ErrorInsufficientFunds";
 import { ErrorWalletNotFound } from "~/modules/wallet/domain/ErrorWalletNotFound";
 import { ErrorUnauthorized } from "~/modules/users/domain/errors/ErrorUnauthorized";
-import type { CommonDependenciesI } from "~/dependency-injection/load-di";
-import { createBackendOpenApiClient } from "~/packages/http-client/create-backend-open-api-client";
 import { HttpBackendApiError } from "~/packages/http-client/http-backend-api-error";
 import { fail, success } from "~/packages/result";
 import { InfrastructureError } from "~/packages/result/infrastructure-error";
+import type { ApiClient } from "../../../plugins/api-client";
 
 export class GameSessionsRepositoryGirobet implements GameSessionsRepositoryI {
-  constructor(clientOptions: { baseUrl: string }, commonDependencies: CommonDependenciesI) {
-    this.apiClient = createBackendOpenApiClient(clientOptions, commonDependencies);
-  }
+  constructor(private readonly apiClient: ApiClient) {}
 
   public async create(gameIdentifier: GameIdentifier, currency: WalletCurrency, clientType: "desktop" | "mobile"): ReturnType<GameSessionsRepositoryI["create"]> {
     const metadata: Record<string, unknown> = {
@@ -145,6 +142,4 @@ export class GameSessionsRepositoryGirobet implements GameSessionsRepositoryI {
       );
     }
   }
-
-  private readonly apiClient: ReturnType<typeof createBackendOpenApiClient>;
 }

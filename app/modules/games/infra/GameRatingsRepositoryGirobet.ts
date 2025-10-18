@@ -4,14 +4,11 @@ import type { GameRate } from "../domain/GameRating";
 import { destructureGameIdentifier } from "../domain/Game";
 import { fail, success } from "~/packages/result";
 import { InfrastructureError } from "~/packages/result/infrastructure-error";
-import { createBackendOpenApiClient } from "~/packages/http-client/create-backend-open-api-client";
 import { HttpBackendApiError } from "~/packages/http-client/http-backend-api-error";
-import type { CommonDependenciesI } from "~/dependency-injection/load-di";
+import type { ApiClient } from "../../../plugins/api-client";
 
 export class GameRatingsRepositoryGirobet implements GameRatingsRepositoryI {
-  constructor(clientOptions: { baseUrl: string }, commonDependencies: CommonDependenciesI) {
-    this.apiClient = createBackendOpenApiClient(clientOptions, commonDependencies);
-  }
+  constructor(private readonly apiClient: ApiClient) {}
 
   public async rate(gameIdentifier: string, rating: GameRate | null) {
     try {
@@ -101,6 +98,4 @@ export class GameRatingsRepositoryGirobet implements GameRatingsRepositoryI {
       );
     }
   }
-
-  private apiClient: ReturnType<typeof createBackendOpenApiClient>;
 }

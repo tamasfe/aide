@@ -1,13 +1,13 @@
 import type { AuthenticatedUserRepositoryI } from "../domain/AuthenticatedUserRepository";
 import { UserSettingsPaymentPix, type UserSettingsPaymentPixPropsI } from "../domain/UserSettingsPaymentPix";
 import type { SupportedLocale } from "~/packages/translation";
-import type { AsyncMessagePublisherI } from "~/packages/async-messages/async-message-publisher";
 import { success } from "~/packages/result";
+import type { NuxtApp } from "#app";
 
 export class UpdateUserSettings {
   public constructor(
     private readonly authenticatedUserRepository: AuthenticatedUserRepositoryI,
-    private readonly asyncMessagePublisher: AsyncMessagePublisherI,
+    private readonly nuxtApp: NuxtApp,
   ) {}
 
   public async handle(settings: {
@@ -66,7 +66,7 @@ export class UpdateUserSettings {
       }
     }
 
-    await this.asyncMessagePublisher.emit("frontend:events:users:user-settings-updated", {
+    await this.nuxtApp.callHook("frontend:events:users:user-settings-updated", {
       settings: {
         locale: settings.locale,
         password: settings.password ? true : false,

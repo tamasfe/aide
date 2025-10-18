@@ -7,15 +7,15 @@ import type { ErrorEnteringWebsocketChannel } from "../domain/error-entering-web
 import { success, type EmptyResult } from "~/packages/result";
 import { InfrastructureError } from "~/packages/result/infrastructure-error";
 import type { LoggerI } from "~/packages/logger/Logger";
-import type { AsyncMessagePublisherI } from "~/packages/async-messages/async-message-publisher";
+import type { NuxtApp } from "#app";
 
 export class WebsocketConnectionTs implements WebsocketConnectionI {
   public static create(
     websocketConnectUrl: string,
     logger: LoggerI,
-    asyncMessagePublisher: AsyncMessagePublisherI,
+    nuxtApp: NuxtApp,
   ): WebsocketConnectionTs {
-    return new WebsocketConnectionTs(websocketConnectUrl, logger, asyncMessagePublisher);
+    return new WebsocketConnectionTs(websocketConnectUrl, logger, nuxtApp);
   }
 
   /**
@@ -159,7 +159,11 @@ export class WebsocketConnectionTs implements WebsocketConnectionI {
 
   public status: "connected" | "disconnected" = "disconnected";
 
-  private constructor(websocketConnectUrl: string, private logger: LoggerI, private asyncMessagePublisher: AsyncMessagePublisherI) {
+  private constructor(
+    websocketConnectUrl: string,
+    private logger: LoggerI,
+    private nuxtApp: NuxtApp,
+  ) {
     this.ws = new WebsocketBuilder(websocketConnectUrl)
       .onOpen((websocket, event) => {
         this.logger.debug("WS - Connection opened", { websocket, event });
@@ -168,14 +172,14 @@ export class WebsocketConnectionTs implements WebsocketConnectionI {
         const message = JSON.parse(event.data) as WebsocketMessagesFromServer;
         if (message.type === "protocol" && message.data === "welcome") {
           if (this.status !== "connected") {
-            this.asyncMessagePublisher.emit("frontend:events:websockets:connection-state-changed", { state: "connected" });
+            this.nuxtApp.callHook("frontend:events:websockets:connection-state-changed", { state: "connected" });
           }
           this.status = "connected";
         }
       })
       .onClose((websocket, event) => {
         if (this.status !== "disconnected") {
-          this.asyncMessagePublisher.emit("frontend:events:websockets:connection-state-changed", { state: "disconnected" });
+          this.nuxtApp.callHook("frontend:events:websockets:connection-state-changed", { state: "disconnected" });
         }
         this.status = "disconnected";
         this.logger.debug("WS - Connection closed", { websocket, event });

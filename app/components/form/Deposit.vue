@@ -15,6 +15,8 @@ import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
 // ZOD SCHEMA:          ✅
 
 const siteStore = useSiteStore();
+const logger = useLogger();
+const wallet = useWalletModule();
 
 const props = defineProps({
   paymentMethodId: {
@@ -61,7 +63,6 @@ const presetAmounts = ref<{ value: number; hot: boolean }[]>([
   },
 ]);
 
-const { $dependencies } = useNuxtApp();
 const { t } = useI18n();
 
 /**
@@ -96,7 +97,7 @@ const onSubmit = handleSubmit(async (formData) => {
   loading.value = true;
   formErrorMessage.value = "";
 
-  formErrorMessage.value = await $dependencies.wallets.ui.createDepositFlowOnForm.handle(
+  formErrorMessage.value = await wallet.ui.createDepositFlowOnForm.handle(
     formData.amount,
     props.currency.code,
     formData.paymentMethod,
@@ -104,7 +105,7 @@ const onSubmit = handleSubmit(async (formData) => {
 
   loading.value = false;
 }, ({ results }) => {
-  $dependencies.common.logger.warn("Validation failed", { validationResults: results });
+  logger.warn("Validation failed", { validationResults: results });
 });
 </script>
 

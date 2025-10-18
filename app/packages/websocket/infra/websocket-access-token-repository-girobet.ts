@@ -3,14 +3,11 @@ import { WebsocketAccessToken } from "../domain/websocket-access-token";
 import { ErrorUnauthorizedForWebsocketConnection } from "../domain/error-unauthorized-for-websocket-connection";
 import { fail, success, type Result } from "~/packages/result";
 import { InfrastructureError } from "~/packages/result/infrastructure-error";
-import { createBackendOpenApiClient } from "~/packages/http-client/create-backend-open-api-client";
 import { HttpBackendApiError } from "~/packages/http-client/http-backend-api-error";
-import type { CommonDependenciesI } from "~/dependency-injection/load-di";
+import type { ApiClient } from "../../../plugins/api-client";
 
 export class WebsocketAccessTokensRepositoryGirobet implements WebsocketAccessTokenRepositoryI {
-  constructor(clientOptions: { baseUrl: string }, commonDependencies: CommonDependenciesI) {
-    this.apiClient = createBackendOpenApiClient(clientOptions, commonDependencies);
-  }
+  constructor(private readonly apiClient: ApiClient) {}
 
   public async create(channel: "user"): Promise<Result<WebsocketAccessToken, ErrorUnauthorizedForWebsocketConnection | InfrastructureError>> {
     try {
@@ -45,6 +42,4 @@ export class WebsocketAccessTokensRepositoryGirobet implements WebsocketAccessTo
       );
     }
   }
-
-  private readonly apiClient: ReturnType<typeof createBackendOpenApiClient>;
 }

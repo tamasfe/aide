@@ -8,12 +8,13 @@ const props = defineProps<{
 }>();
 
 const siteStore = useSiteStore();
-const { $dependencies } = useNuxtApp();
+const signupFlows = useSignupModule();
+const user = useUserModule();
 
 const ENABLE_SERVER_SIDE_RENDERING = false;
 const DEFER_CLIENT_SIDE_LOADING = true;
 const { data: currentStartedSignupFlow, refresh } = useAsyncData(`current-signup-flow`, async () => {
-  return $dependencies.signupFlows.ui.searchCurrentSignupFlowOnModalInit.handle();
+  return signupFlows.ui.searchCurrentSignupFlowOnModalInit.handle();
 }, { lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING });
 
 // Refresh the signup flow initial data when modal closes, for next time it opens
@@ -24,7 +25,7 @@ watch(() => props.open, async (isOpen) => {
 });
 
 const onClosed = () => {
-  $dependencies.users.ui.emitCommandCloseUserActionModal.handle();
+  user.ui.emitCommandCloseUserActionModal.handle();
 };
 </script>
 

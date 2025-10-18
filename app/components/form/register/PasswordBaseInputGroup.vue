@@ -5,7 +5,7 @@ import { useField } from "vee-validate";
 /**
  * Dependency injection
  */
-const { $dependencies } = useNuxtApp();
+const signupFlows = useSignupModule();
 const emits = defineEmits<{
   (e: "loading", value: boolean): void;
 }>();
@@ -14,15 +14,15 @@ const emits = defineEmits<{
  * Due to the need of using Zod's "parseAsync" I haven't found a way to concat min and max length validations with the use case
  */
 const { value: password, errorMessage: passwordErrorMessage } = useField("password", value =>
-  $dependencies.signupFlows.ui.validatePasswordOnRegisterFormChanged.handle(value),
+  signupFlows.ui.validatePasswordOnRegisterFormChanged.handle(value),
 { initialValue: "" },
 );
 
 // We use debounced for this field as every keystroke might be a valid value (unlike telephone or cpf that are only valid at the last one), thus we need to implement some debounce to reduce server load
 debouncedWatch(() => password.value, async (value) => {
   emits("loading", true);
-  if (true === await $dependencies.signupFlows.ui.validatePasswordOnRegisterFormChanged.handle(value)) {
-    await $dependencies.signupFlows.ui.upsertSignupFlowOnRegisterFormInputChange.handle({ password: value });
+  if (true === await signupFlows.ui.validatePasswordOnRegisterFormChanged.handle(value)) {
+    await signupFlows.ui.upsertSignupFlowOnRegisterFormInputChange.handle({ password: value });
   }
   emits("loading", false);
 }, { debounce: 300 });

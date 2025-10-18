@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useThrottleFn, watchDeep } from "@vueuse/core";
 
-const { $dependencies } = useNuxtApp();
+const userModule = useUserModule();
 const userSettingsStore = useUserSettingsStore();
 const { t } = useI18n();
 
@@ -37,7 +37,7 @@ watchDeep(() => promotionsPreferences.value,
   useThrottleFn(
     async () => {
       if (!promotionsPreferences.value || !userSettingsStore.settings) return;
-      errorUpdating.value = await $dependencies.users.ui.userSettings.updateConsentsOnPreferencesPage.handle(userSettingsStore.settings.simplifiedConsents, promotionsPreferences.value);
+      errorUpdating.value = await userModule.ui.userSettings.updateConsentsOnPreferencesPage.handle(userSettingsStore.settings.simplifiedConsents, promotionsPreferences.value);
     },
     150, true, true, true), { immediate: false },
 );

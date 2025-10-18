@@ -1,12 +1,12 @@
+import type { NuxtApp } from "#app";
 import type { UsersPreviousActivityCookieRepo } from "../users-previous-activity-cookie-repo";
-import type { AsyncMessagePublisherI } from "~/packages/async-messages/async-message-publisher";
 import type { LoggerI } from "~/packages/logger/Logger";
 
 export class HandleOpenModalSearchParam {
   constructor(
     private readonly usersPreviousActivity: UsersPreviousActivityCookieRepo,
     private readonly logger: LoggerI,
-    private readonly asyncMessagePublisher: AsyncMessagePublisherI,
+    private readonly nuxtApp: NuxtApp,
     private readonly redirectToPasswordSettingsPage: () => Promise<void>,
   ) {}
 
@@ -24,39 +24,46 @@ export class HandleOpenModalSearchParam {
           return;
         }
         if (userHasPreviouslyLoggedIn) {
-          await this.asyncMessagePublisher.emit("frontend:commands:modals:open-user-interaction-modal", { modal: "login" });
+          await this.nuxtApp.callHook("frontend:commands:modals:open-user-interaction-modal", { modal: "login" });
           return;
         }
-        await this.asyncMessagePublisher.emit("frontend:commands:modals:open-user-interaction-modal", { modal: "register" });
-        this.asyncMessagePublisher.once("frontend:events:signup-flows:signup-flow-submitted", () =>
-          this.asyncMessagePublisher.emit("frontend:commands:modals:open-user-interaction-modal", { modal: "deposit" }),
+        await this.nuxtApp.callHook("frontend:commands:modals:open-user-interaction-modal", { modal: "register" });
+
+        this.nuxtApp.hook("frontend:events:signup-flows:signup-flow-submitted", () =>
+          this.nuxtApp.callHook("frontend:commands:modals:open-user-interaction-modal", { modal: "login" }),
         );
+
         return;
 
       case "forgot":
         if (userIsCurrentlyLoggedIn) {
           return this.redirectToPasswordSettingsPage();
         }
-        await this.asyncMessagePublisher.emit("frontend:commands:modals:open-user-interaction-modal", { modal: "forgot_password" });
+        await this.nuxtApp.callHook("frontend:commands:modals:open-user-interaction-modal", { modal: "forgot_password" });
         return;
 
       case "deposit":
         if (userIsCurrentlyLoggedIn) {
-          await this.asyncMessagePublisher.emit("frontend:commands:modals:open-user-interaction-modal", { modal: "deposit" });
+          await this.nuxtApp.callHook("frontend:commands:modals:open-user-interaction-modal", { modal: "deposit" });
           return;
         }
 
         if (userHasPreviouslyLoggedIn) {
-          await this.asyncMessagePublisher.emit("frontend:commands:modals:open-user-interaction-modal", { modal: "login" });
-          this.asyncMessagePublisher.once("frontend:events:users:user-logged-in", () =>
-            this.asyncMessagePublisher.emit("frontend:commands:modals:open-user-interaction-modal", { modal: "deposit" }),
+          await this.nuxtApp.callHook("frontend:commands:modals:open-user-interaction-modal", { modal: "login" });
+
+          this.nuxtApp.hook("frontend:events:users:user-logged-in", () =>
+            this.nuxtApp.callHook("frontend:commands:modals:open-user-interaction-modal", { modal: "deposit" }),
           );
+
           return;
         }
-        await this.asyncMessagePublisher.emit("frontend:commands:modals:open-user-interaction-modal", { modal: "register" });
-        this.asyncMessagePublisher.once("frontend:events:signup-flows:signup-flow-submitted", () =>
-          this.asyncMessagePublisher.emit("frontend:commands:modals:open-user-interaction-modal", { modal: "deposit" }),
+
+        await this.nuxtApp.callHook("frontend:commands:modals:open-user-interaction-modal", { modal: "register" });
+
+        this.nuxtApp.hook("frontend:events:signup-flows:signup-flow-submitted", () =>
+          this.nuxtApp.callHook("frontend:commands:modals:open-user-interaction-modal", { modal: "deposit" }),
         );
+
         return;
     }
   }

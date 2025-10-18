@@ -3,12 +3,16 @@ import { WebsocketConnectionTs } from "../websocket-connection-websocket-ts";
 import { fail, success, type Result } from "~/packages/result";
 import { InfrastructureError } from "~/packages/result/infrastructure-error";
 import type { LoggerI } from "~/packages/logger/Logger";
-import type { AsyncMessagePublisherI } from "~/packages/async-messages/async-message-publisher";
+import type { NuxtApp } from "#app";
 
 const WS_CONNECT_PATH = "/ws/connect";
 
 export class CreateWebsocketConnection {
-  constructor(private websocketConnectBaseUrl: string, private logger: LoggerI, private asyncMessagePublisher: AsyncMessagePublisherI) { }
+  constructor(
+    private websocketConnectBaseUrl: string,
+    private logger: LoggerI,
+    private nuxtApp: NuxtApp,
+  ) { }
 
   public async handle(): Promise<Result<WebsocketConnectionI, InfrastructureError>> {
     try {
@@ -17,7 +21,7 @@ export class CreateWebsocketConnection {
         WebsocketConnectionTs.create(
           websocketConnectUrl,
           this.logger,
-          this.asyncMessagePublisher,
+          this.nuxtApp,
         ),
       );
     }

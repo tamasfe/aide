@@ -6,9 +6,7 @@ const open = ref(true);
 //   * we need to load the appropriate domain
 // TRANSLATION STATUS:  ✅
 
-const url = useRequestURL();
 const siteStore = useSiteStore();
-const blockedDomain = url.host;
 
 defineProps({
   blockedCountry: {
@@ -33,14 +31,14 @@ defineProps({
       <h1 class="text-2xl font-semibold text-center">
         {{ $t("modal_restrict.license_no_alternative_headline", {
           country: blockedCountry,
-          blockedDomain: capitalizeBrandDomain(siteStore.site?.name || blockedDomain),
+          blockedDomain: capitalizeBrandDomain(siteStore.site.name),
         }) }}
       </h1>
 
       <div class="mb-4 text-emphasis text-center">
         {{ $t("modal_restrict.license_no_alternative_body", {
           country: blockedCountry,
-          blockedDomain: capitalizeBrandDomain(siteStore.site?.name || blockedDomain),
+          blockedDomain: capitalizeBrandDomain(siteStore.site.name),
         }) }}
       </div>
     </div>

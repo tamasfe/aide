@@ -1,17 +1,14 @@
 import type { PaymentMethodRepositoryI } from "../domain/PaymentMethodRepository";
 import type { PaymentMethodI } from "../domain/PaymentMethod";
-import { createBackendOpenApiClient } from "~/packages/http-client/create-backend-open-api-client";
 import { HttpBackendApiError } from "~/packages/http-client/http-backend-api-error";
 import { fail, success, type Result } from "~/packages/result";
 import { InfrastructureError } from "~/packages/result/infrastructure-error";
-import type { CommonDependenciesI } from "~/dependency-injection/load-di";
 import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
 import { ErrorUnauthorized } from "~/modules/users/domain/errors/ErrorUnauthorized";
+import type { ApiClient } from "../../../plugins/api-client";
 
 export class PaymentMethodRepositoryGirobet implements PaymentMethodRepositoryI {
-  constructor(clientOptions: { baseUrl: string }, commonDependencies: CommonDependenciesI) {
-    this.apiClient = createBackendOpenApiClient(clientOptions, commonDependencies);
-  }
+  constructor(private readonly apiClient: ApiClient) {}
 
   public async search(currency: WalletCurrency): Promise<Result<PaymentMethodI[], ErrorUnauthorized | InfrastructureError>> {
     try {
@@ -101,6 +98,4 @@ export class PaymentMethodRepositoryGirobet implements PaymentMethodRepositoryI 
       );
     }
   }
-
-  private readonly apiClient: ReturnType<typeof createBackendOpenApiClient>;
 }

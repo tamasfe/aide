@@ -6,13 +6,13 @@ import { type VariantProps, cva } from "class-variance-authority";
 // ARCHITECTURE STATUS: ✅
 // TRANSLATION STATUS:  ✅
 
-const { $dependencies } = useNuxtApp();
+const notifications = useNotificationModule();
 const { locale } = useI18n();
 
 const ENABLE_SERVER_SIDE_RENDERING = true;
 const DEFER_CLIENT_SIDE_LOADING = true;
 const { data: notificationBanners } = useAsyncData("promo-bar",
-  () => $dependencies.notifications.ui.searchNotificationBannersFromPromoBar.handle(),
+  () => notifications.ui.searchNotificationBannersFromPromoBar.handle(),
   { watch: [() => locale.value], lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING },
 );
 
@@ -20,7 +20,7 @@ const onClickCloseNotification = (notificationId: number) => {
   if (!notificationBanners.value) return;
 
   // We do not await to increase snapiness. We suppose the request will be successful. Worst case scenario, the notification will reappear on the next page load and the error will be notified to us.
-  $dependencies.notifications.ui.markNotificationBannerAsReadFromPromoBar.handle(notificationId);
+  notifications.ui.markNotificationBannerAsReadFromPromoBar.handle(notificationId);
   notificationBanners.value = notificationBanners.value.filter(banner => banner.id !== notificationId);
 };
 

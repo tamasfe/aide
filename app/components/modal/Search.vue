@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { $dependencies } = useNuxtApp();
+const userModule = useUserModule();
 const loading = ref(false);
 const query = useState("search-modal-query", () => "");
 
@@ -11,7 +11,7 @@ defineProps({
 });
 
 const onClosed = () => {
-  $dependencies.users.ui.emitCommandCloseUserActionModal.handle();
+  userModule.ui.emitCommandCloseUserActionModal.handle();
 };
 </script>
 

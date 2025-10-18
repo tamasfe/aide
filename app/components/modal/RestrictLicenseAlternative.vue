@@ -55,7 +55,7 @@ const allowedDomain = (() => {
       <div class="text-emphasis text-center mb-4">
         {{ $t("modal_restrict.license_alternative_body", {
           country: blockedCountry,
-          blockedDomain: capitalizeBrandDomain(siteStore.site?.name || blockedDomain),
+          blockedDomain: capitalizeBrandDomain(siteStore.site.name),
           allowedDomain,
         }) }}
       </div>

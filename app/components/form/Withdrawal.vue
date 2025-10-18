@@ -40,8 +40,10 @@ const maximumWithdrawal = computed(() => {
  * Form initialisation
  *
  */
-const { $dependencies } = useNuxtApp();
 const { t } = useI18n();
+const logger = useLogger();
+const user = useUserModule();
+const wallet = useWalletModule();
 let schemaForAmount = z.number({ required_error: t("validation.amount_required") });
 if (typeof props.paymentMethodLimits.withdrawalMin === "number") {
   schemaForAmount = schemaForAmount.min(props.paymentMethodLimits.withdrawalMin, t("validation.amount_withdrawal_min", { min: `${props.paymentMethodLimits.withdrawalMin}` }));
@@ -63,7 +65,7 @@ const onSubmit = handleSubmit(async (formData) => {
   loading.value = true;
   formError.value = null;
 
-  const { cta, message } = await $dependencies.wallets.ui.createWithdrawalFlowOnForm.handle(
+  const { cta, message } = await wallet.ui.createWithdrawalFlowOnForm.handle(
     formData.amount,
     props.currency.code,
     props.paymentMethodId,
@@ -71,7 +73,7 @@ const onSubmit = handleSubmit(async (formData) => {
 
   loading.value = false;
   if (!message) {
-    $dependencies.users.ui.emitCommandCloseUserActionModal.handle();
+    user.ui.emitCommandCloseUserActionModal.handle();
   }
 
   formError.value = {
@@ -79,7 +81,7 @@ const onSubmit = handleSubmit(async (formData) => {
     cta,
   };
 }, ({ results }) => {
-  $dependencies.common.logger.warn("Validation failed", { validationResults: results });
+  logger.warn("Validation failed", { validationResults: results });
 });
 </script>
 

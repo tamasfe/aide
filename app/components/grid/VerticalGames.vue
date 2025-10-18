@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { NuxtLinkLocale } from "#components";
 import type { Game } from "~/modules/games/domain/Game";
 import type { Keyified } from "~/types/utils";
 
@@ -9,8 +10,7 @@ const props = defineProps<{
   showBackButton?: boolean;
 }>();
 
-const { $dependencies } = useNuxtApp();
-const { navigateBackOrHome } = useNavigateBackOrHome();
+const gameModule = useGameModule();
 
 const loading = useState(`grid-vertical-games-loading-for-${props.categoryIdentifier}-${props.providerIdentifier}`, () => false);
 const totalGamesOfCategory = useState(`grid-vertical-games-total-for-${props.categoryIdentifier}-${props.providerIdentifier}`, () => 0);
@@ -22,7 +22,7 @@ const onLoadData = async () => {
   if (!canLoadMore.value) return;
   loading.value = true;
 
-  const { games: gamesFound, canLoadMore: updatedCanLoadMore, totalGames } = await $dependencies.games.ui.listGamesPaginatingOnGrid.handle(props.categoryIdentifier, props.providerIdentifier, nextGamesPageToSearch.value);
+  const { games: gamesFound, canLoadMore: updatedCanLoadMore, totalGames } = await gameModule.ui.listGamesPaginatingOnGrid.handle(props.categoryIdentifier, props.providerIdentifier, nextGamesPageToSearch.value);
   games.value.push(...gamesFound.map(game => useAddKeyFromIdentifier(game)));
   canLoadMore.value = updatedCanLoadMore;
   nextGamesPageToSearch.value += 1;
@@ -45,18 +45,21 @@ useAsyncData(`load-games-for-vertical-${props.categoryIdentifier}`,
     <GridHeader class="mb-4">
       <template #title>
         <div class="flex gap-4 items-center">
-          <BaseButton
+          <NuxtLinkLocale
             v-if="props.showBackButton === true"
-            variant="subtle"
-            size="sm"
-            class="p-1.5"
-            @click="navigateBackOrHome"
+            :to="{ name: 'index' }"
           >
-            <BaseIcon
-              name="lucide:arrow-left"
-              :size="24"
-            />
-          </BaseButton>
+            <BaseButton
+              variant="subtle"
+              size="sm"
+              class="p-1.5"
+            >
+              <BaseIcon
+                name="lucide:arrow-left"
+                :size="24"
+              />
+            </BaseButton>
+          </NuxtLinkLocale>
 
           <GridHeaderTitle :title="title" />
         </div>

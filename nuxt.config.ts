@@ -13,9 +13,15 @@ export default defineNuxtConfig({
     "@sentry/nuxt/module",
     "@vee-validate/nuxt",
     "@vite-pwa/nuxt",
-    "nuxt-gtag",
     "@nuxt/fonts",
+    "@nuxt/scripts",
   ],
+
+  imports: {
+    dirs: [
+      "~/composables/modules",
+    ],
+  },
 
   devtools: {
     timeline: {
@@ -47,71 +53,48 @@ export default defineNuxtConfig({
 
   css: ["~/assets/css/tailwind.css"],
 
-  site: {
-    url: process.env.NUXT_PUBLIC_BASE_URL,
-    // description: "Welcome to my awesome site!", // TODO
-    // defaultLocale: "en", // TODO not needed if you have @nuxtjs/i18n installed
-  },
-
   // More info about runtime config & environment variables @ https://nuxt.com/docs/guide/going-further/runtime-config
   runtimeConfig: {
+    apiBaseUrl: "http://localhost:3050",
     public: {
-      env: process.env.NODE_ENV as "development" | "production" | "test",
-      apiBaseUrlClient: process.env.NUXT_PUBLIC_API_BASE_URL_CLIENT,
-      apiBaseUrlServer: process.env.NUXT_PUBLIC_API_BASE_URL_SERVER,
-      genericFixedUserJurisdiction:
-        process.env.NUXT_PUBLIC_GENERIC_API_CLIENT_FIXED_USER_JURISDICTION,
-      errorCapturingEnabled:
-        process.env.NUXT_PUBLIC_ERROR_CAPTURING_ENABLED === "true",
-      release: process.env.NUXT_PUBLIC_RELEASE || "development",
-      log: {
-        level: process.env.NUXT_PUBLIC_LOG_LEVEL as
-        | "warn"
-        | "error"
-        | "debug"
-        | "info",
+      apiClientProtocol: "http://",
+      env: "development",
+      errorCapturingEnabled: true,
+      release: undefined,
+      logLevel: "info",
+      serviceName: "frontend",
+      scripts: {
+        googleAnalytics: {
+          id: "G-7F9NEQ1MND",
+        },
+        clarity: {
+          id: "t2diq6qift",
+        },
       },
-      serviceName: process.env.NUXT_PUBLIC_SERVICE_NAME || "frontend",
-
-      apiMode: process.env.NUXT_PUBLIC_API_MODE as "dumb" | "api",
       games: {
-        apiMode: process.env.NUXT_PUBLIC_GAMES_API_MODE as "dumb" | "api",
+        apiMode: "api",
       },
       signupFlows: {
-        idsClientRepo: process.env.NUXT_PUBLIC_SIGNUP_FLOWS_IDS_CLIENT_REPO as
-        | "mock"
-        | "local_storage",
-        apiMode: process.env.NUXT_PUBLIC_SIGNUP_FLOWS_API_MODE as
-        | "dumb"
-        | "api",
+        apiMode: "api",
+        idsClientRepo: "local_storage",
       },
       users: {
-        apiMode: process.env.NUXT_PUBLIC_USERS_API_MODE as "dumb" | "api",
+        apiMode: "api",
       },
       sites: {
-        apiMode: process.env.NUXT_PUBLIC_SITES_API_MODE as "dumb" | "api",
+        apiMode: "api",
       },
       wallets: {
-        apiMode: process.env.NUXT_PUBLIC_WALLETS_API_MODE as "dumb" | "api",
+        apiMode: "api",
       },
       providers: {
-        apiMode: process.env.NUXT_PUBLIC_PROVIDERS_API_MODE as "dumb" | "api",
+        apiMode: "api",
       },
       kyc: {
-        apiMode: process.env.NUXT_PUBLIC_KYC_API_MODE as "dumb" | "api",
+        apiMode: "api",
       },
       tracking: {
-        apiMode: process.env.NUXT_PUBLIC_TRACKING_API_MODE as "dumb" | "api",
-        fingerprintJsPublicApiKey:
-          process.env.NUXT_PUBLIC_TRACKING_FINGERPRINT_JS_PUBLIC_API_KEY,
-        fingerprintJsScriptUrl:
-          process.env.NUXT_PUBLIC_TRACKING_FINGERPRINT_JS_SCRIPT_URL,
-      },
-
-      gtm: {
-        id: "GTM-MWG96744", // New "Giro" GTM account
-        enabled: process.env.NODE_ENV === "production",
-        debug: process.env.NODE_ENV !== "production", // Whether or not display console logs debugs (optional)
+        apiMode: "api",
       },
     },
   },
@@ -120,11 +103,7 @@ export default defineNuxtConfig({
     transpile: ["applicationinsights"],
   },
 
-  sourcemap: { client: true, server: true },
-
-  devServer: {
-    port: 3001,
-  },
+  sourcemap: { client: process.env.NODE_ENV === "development" ? true : "hidden" },
 
   future: {
     compatibilityVersion: 4,
@@ -184,16 +163,14 @@ export default defineNuxtConfig({
     ],
   },
 
-  // https://nuxt.com/modules/gtag
-  gtag: {
-    id: "G-7F9NEQ1MND", // New "Giro" GA account
-    enabled: process.env.NODE_ENV === "production",
-    initMode: "manual", // We set it to manual to avoid downloading the GA script... as the GTM module already loads it
-  },
-
   // @nuxtjs/i18n
   i18n: {
-    baseUrl: process.env.NUXT_PUBLIC_BASE_URL,
+
+    // We have to use this placeholder domain, to force i18n into a mode that allows us to dynamically
+    // override the baseUrl at runtime depending on the current site via a plugin.
+    baseUrl: () => {
+      return "http://placeholder-domain-for-base-url.com";
+    },
     locales: [
       {
         language: "en-US",
@@ -319,6 +296,13 @@ export default defineNuxtConfig({
       description:
         "Welcome to The GiroBet Experience the ultimate thrill of online gambling with us. Play slots, poker, blackjack, and more. Win big with our bonuses and promotions.",
       id: "https://girobet.vip", // TODO: be able to customise this depending on current site name
+    },
+  },
+
+  scripts: {
+    registry: {
+      googleAnalytics: true,
+      clarity: true,
     },
   },
 

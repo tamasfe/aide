@@ -9,11 +9,11 @@ import type { AlertProps } from "../base/Alert.vue";
 
 const paymentMethodsStore = useWalletPaymentMethodsStore();
 
-const { $dependencies } = useNuxtApp();
+const userModule = useUserModule();
 const siteStore = useSiteStore();
 
 const onClosed = () => {
-  $dependencies.users.ui.emitCommandCloseUserActionModal.handle();
+  userModule.ui.emitCommandCloseUserActionModal.handle();
 };
 
 const currency = ref<{

@@ -6,11 +6,11 @@ defineProps({
   },
 });
 
-const { $dependencies } = useNuxtApp();
+const userModule = useUserModule();
 const userStore = useUserStore();
 
 const onClosed = () => {
-  $dependencies.users.ui.emitCommandCloseUserActionModal.handle();
+  userModule.ui.emitCommandCloseUserActionModal.handle();
 };
 </script>
 
@@ -43,7 +43,7 @@ const onClosed = () => {
         <BaseButton
           variant="primary"
           class="w-full"
-          @click="$dependencies.users.ui.emitCommandOpenUserActionModal.handle('deposit')"
+          @click="userModule.ui.emitCommandOpenUserActionModal.handle('deposit')"
         >
           {{ $t("button.deposit") }}
         </BaseButton>
@@ -52,14 +52,14 @@ const onClosed = () => {
         <BaseButton
           variant="secondary"
           class="w-full"
-          @click="$dependencies.users.ui.emitCommandOpenUserActionModal.handle('login')"
+          @click="userModule.ui.emitCommandOpenUserActionModal.handle('login')"
         >
           {{ $t("button.login") }}
         </BaseButton>
         <BaseButton
           variant="primary"
           class="w-full ml-3"
-          @click="$dependencies.users.ui.emitCommandOpenUserActionModal.handle('register')"
+          @click="userModule.ui.emitCommandOpenUserActionModal.handle('register')"
         >
           {{ $t("button.register") }}
         </BaseButton>

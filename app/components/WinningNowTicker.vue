@@ -8,7 +8,8 @@ import type { Win } from "~/types/wins";
 // TRANSLATION STATUS:  ✴️
 //   * not done
 
-const { $dependencies } = useNuxtApp();
+const tickers = useTickerModule();
+const websockets = useWebsocketModule();
 
 const WINS_BUFFER_SIZE = 12;
 
@@ -32,7 +33,7 @@ const ENABLE_SERVER_SIDE_RENDERING = true;
 const DEFER_CLIENT_SIDE_LOADING = true;
 
 useAsyncData(async () => {
-  const wins = await $dependencies.tickers.ui.searchTickerEventsFromWinningNow.handle();
+  const wins = await tickers.ui.searchTickerEventsFromWinningNow.handle();
   const keyifiedWins = wins.map(win => useAddKeyFromIdentifier(camelizeKeys(win)));
 
   // Populate initial wins (no preloading needed for initial load)
@@ -44,7 +45,7 @@ useAsyncData(async () => {
 );
 
 useCreateSubscriptionToWebsocketTickerChannel(
-  $dependencies.websockets.ui.wsChannelManagers.ticker,
+  websockets.ui.wsChannelManagers.ticker,
   "winning_now",
   (message) => {
     const win = useAddKeyFromIdentifier(camelizeKeys(message));

@@ -9,17 +9,14 @@ import { ErrorPaymentAmountOutsideLimits } from "../domain/ErrorPaymentAmountOut
 import { ErrorPaymentMethodNotAllowed } from "../domain/ErrorPaymentMethodNotAllowed";
 import { ErrorUserSandboxed } from "../domain/ErrorUserSandboxed";
 import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
-import { createBackendOpenApiClient } from "~/packages/http-client/create-backend-open-api-client";
 import { HttpBackendApiError } from "~/packages/http-client/http-backend-api-error";
 import { fail, success, type Result } from "~/packages/result";
 import { InfrastructureError } from "~/packages/result/infrastructure-error";
-import type { CommonDependenciesI } from "~/dependency-injection/load-di";
 import { ErrorPaymentCountExceedsTimeframeLimits } from "../domain/ErrorPaymentCountExceedsTimeframeLimits";
+import type { ApiClient } from "../../../plugins/api-client";
 
 export class PaymentRepositoryGirobet implements PaymentRepositoryI {
-  constructor(clientOptions: { baseUrl: string }, commonDependencies: CommonDependenciesI) {
-    this.apiClient = createBackendOpenApiClient(clientOptions, commonDependencies);
-  }
+  constructor(private readonly apiClient: ApiClient) {}
 
   public async searchPaginating(searchParams: { type: PaymentType | null; walletId: number | null }, limit: number, offset: number): Promise<Result<{ payments: Payment[]; pagination: { limit: number; offset: number; totalItems: number } }, InfrastructureError>> {
     try {
@@ -256,6 +253,4 @@ export class PaymentRepositoryGirobet implements PaymentRepositoryI {
       );
     }
   }
-
-  private readonly apiClient: ReturnType<typeof createBackendOpenApiClient>;
 }

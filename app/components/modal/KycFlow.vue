@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { InfrastructureError } from "~/packages/result/infrastructure-error";
 
-const { $dependencies } = useNuxtApp();
+const kyc = useKycModule();
+const user = useUserModule();
 const { t } = useI18n();
+const logger = useLogger();
 
 const props = defineProps<{
   open: boolean;
@@ -17,13 +19,13 @@ const props = defineProps<{
 const errorMessage = ref<string | null>(null);
 
 const onError = (data: { error: string; code: string }) => {
-  $dependencies.common.logger.error("Error on KYC process", InfrastructureError.newFromError({ code: data.code, provider: "sumsub" }, new Error(data.error)));
+  logger.error("Error on KYC process", InfrastructureError.newFromError({ code: data.code, provider: "sumsub" }, new Error(data.error)));
   errorMessage.value = t("account.settings.verification.error_submitting_kyc");
 };
 
 const onSubmitted = () => {
   errorMessage.value = null;
-  $dependencies.common.logger.info("KYC process finished", { provider: "sumsub", applicant: props.applicantData });
+  logger.info("KYC process finished", { provider: "sumsub", applicant: props.applicantData });
 
   // TODO: decide whether we want to close the modal ourselves or let the user.
   // This will depend if the final success modal text has some instructions the user has to read or not. Closing it abrubtly may would not be good UX.
@@ -36,7 +38,7 @@ const onSubmitted = () => {
 
 const onClosed = () => {
   errorMessage.value = null;
-  $dependencies.users.ui.emitCommandCloseUserActionModal.handle();
+  user.ui.emitCommandCloseUserActionModal.handle();
 };
 </script>
 
@@ -59,7 +61,7 @@ const onClosed = () => {
       class="-mt-4"
       :initial-access-token="props.initialAccessToken"
       :applicant="props.applicantData"
-      :renew-access-token="() => $dependencies.kyc.ui.renewAccessToken.handle()"
+      :renew-access-token="() => kyc.ui.renewAccessToken.handle()"
       @submitted="onSubmitted"
       @error="onError"
     />

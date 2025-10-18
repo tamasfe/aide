@@ -2,8 +2,8 @@
 import snsWebSdk from "@sumsub/websdk";
 
 const loading = ref(true);
-const { $dependencies } = useNuxtApp();
 const siteStore = useSiteStore();
+const logger = useLogger();
 
 const props = defineProps<{
   initialAccessToken: string;
@@ -45,19 +45,19 @@ function launchWebSdk(accessToken: string, applicantEmail: string, applicantPhon
       theme: "dark", // "dark" | "light",
     })
     .withOptions({ addViewportTag: false, adaptIframeHeight: true })
-    .on("idCheck.onInitialized", data => $dependencies.common.logger.debug("Sumsub - WebSDK Initialized", { applicant: { phone: applicantPhone, email: applicantEmail }, data }))
+    .on("idCheck.onInitialized", data => logger.debug("Sumsub - WebSDK Initialized", { applicant: { phone: applicantPhone, email: applicantEmail }, data }))
     .on("idCheck.onReady", () => {
-      $dependencies.common.logger.debug("Sumsub - WebSDK Ready", { applicant: { phone: applicantPhone, email: applicantEmail } });
+      logger.debug("Sumsub - WebSDK Ready", { applicant: { phone: applicantPhone, email: applicantEmail } });
       loading.value = false;
     })
-    .on("idCheck.onStepInitiated", data => $dependencies.common.logger.debug("Sumsub - Step Initiated", { applicant: { phone: applicantPhone, email: applicantEmail }, data }))
-    .on("idCheck.stepCompleted", data => $dependencies.common.logger.debug("Sumsub - Step Completed", { applicant: { phone: applicantPhone, email: applicantEmail }, data }))
+    .on("idCheck.onStepInitiated", data => logger.debug("Sumsub - Step Initiated", { applicant: { phone: applicantPhone, email: applicantEmail }, data }))
+    .on("idCheck.stepCompleted", data => logger.debug("Sumsub - Step Completed", { applicant: { phone: applicantPhone, email: applicantEmail }, data }))
     .on("idCheck.onApplicantSubmitted", () => {
-      $dependencies.common.logger.debug("Sumsub - WebSDK Applicant Submitted", { applicant: { phone: applicantPhone, email: applicantEmail } });
+      logger.debug("Sumsub - WebSDK Applicant Submitted", { applicant: { phone: applicantPhone, email: applicantEmail } });
       emits("submitted");
     })
     .on("idCheck.onApplicantResubmitted", () => {
-      $dependencies.common.logger.debug("Sumsub - WebSDK Applicant Resubmitted", { applicant: { phone: applicantPhone, email: applicantEmail } });
+      logger.debug("Sumsub - WebSDK Applicant Resubmitted", { applicant: { phone: applicantPhone, email: applicantEmail } });
       emits("submitted");
     })
     .on("idCheck.onError", (error) => {

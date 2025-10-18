@@ -12,7 +12,8 @@ const props = defineProps({
 /**
  * Dependency injection
  */
-const { $dependencies } = useNuxtApp();
+const signupFlows = useSignupModule();
+const logger = useLogger();
 
 const emits = defineEmits<{
   (e: "loading", value: boolean): void;
@@ -32,7 +33,7 @@ const DEFAULT_PREFIX = { value: "+55", countryCode: "BR" };
  * Due to the need of using Zod's "parseAsync" I haven't found a way to concat min and max length validations with the use case
  */
 const initialUserTelephoneResult = UserTelephone.newFromSingleValue(props.initialValue);
-const { value: telephone, errorMessage, validate } = useField<UserTelephonePrimitives>("telephone", telephone => $dependencies.signupFlows.ui.validateTelephoneOnRegisterFormChanged.handle(telephone.value, telephone.prefix.value, telephone.prefix.countryCode),
+const { value: telephone, errorMessage, validate } = useField<UserTelephonePrimitives>("telephone", telephone => signupFlows.ui.validateTelephoneOnRegisterFormChanged.handle(telephone.value, telephone.prefix.value, telephone.prefix.countryCode),
   {
     initialValue: initialUserTelephoneResult.isFailure
       ? {
@@ -53,12 +54,12 @@ watch(telephone.value, async (telephone) => {
     const userTelephone = UserTelephone.new(telephone.value, telephone.prefix.value);
 
     if (userTelephone.isFailure) {
-      $dependencies.common.logger.error("Telephone was just validated but failed instantiating a UserTelephone, this should never happen", userTelephone.error);
+      logger.error("Telephone was just validated but failed instantiating a UserTelephone, this should never happen", userTelephone.error);
       emits("loading", false);
       return;
     }
 
-    await $dependencies.signupFlows.ui.upsertSignupFlowOnRegisterFormInputChange.handle({
+    await signupFlows.ui.upsertSignupFlowOnRegisterFormInputChange.handle({
       telephone: userTelephone.value.value,
     });
   }

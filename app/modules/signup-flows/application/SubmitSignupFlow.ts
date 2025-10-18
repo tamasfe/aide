@@ -1,13 +1,13 @@
 import type { SignupFlowIdClientRepositoryI } from "../domain/SignupFlowIdClientRepositoryI";
 import type { SignupFlowApiRepositoryI } from "../domain/SignupFlowApiRepositoryI";
 import { success } from "~/packages/result";
-import type { AsyncMessagePublisherI } from "~/packages/async-messages/async-message-publisher";
+import type { NuxtApp } from "#app";
 
 export class SubmitSignupFlow {
   constructor(
     private flowIdClientRepository: SignupFlowIdClientRepositoryI,
     private apiRepository: SignupFlowApiRepositoryI,
-    private asyncMessagePublisher: AsyncMessagePublisherI,
+    private nuxtApp: NuxtApp,
   ) {
 
   }
@@ -25,7 +25,7 @@ export class SubmitSignupFlow {
       return result;
     }
 
-    this.asyncMessagePublisher.emit("frontend:events:signup-flows:signup-flow-submitted", {
+    this.nuxtApp.callHook("frontend:events:signup-flows:signup-flow-submitted", {
       id: flowId,
     });
 

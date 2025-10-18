@@ -1,14 +1,15 @@
 <script setup lang="ts">
 const { params } = useRoute();
-const { $dependencies } = useNuxtApp();
+const providers = useGameProviderModule();
 const { t } = useI18n();
+const logger = useLogger();
 
 const ENABLE_SERVER_SIDE_RENDERING = true;
 const DEFER_CLIENT_SIDE_LOADING = true;
 
 const providerIdentifier = String(params.provider);
 if (!providerIdentifier || Number.isNaN(providerIdentifier)) {
-  $dependencies.common.logger.warn("Provider slug route parameter should be a number", { providerIdentifier });
+  logger.warn("Provider slug route parameter should be a number", { providerIdentifier });
   await navigateTo("/");
 }
 
@@ -21,7 +22,7 @@ useHead({
 });
 
 const { data: providerFromApi, status } = useAsyncData(`provider-${providerIdentifier}`, async () => {
-  return $dependencies.providers.ui.findProviderByIdentifierOnProviderPage.handle(providerIdentifier);
+  return providers.ui.findProviderByIdentifierOnProviderPage.handle(providerIdentifier);
 }, { lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING });
 if (!providerFromApi.value && (status.value === "success" || status.value === "error")) {
   await navigateTo("/");

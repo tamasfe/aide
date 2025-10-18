@@ -8,6 +8,7 @@ definePageMeta({
 const localePath = useLocalePath();
 const { t } = useI18n();
 const walletStore = useWalletStore();
+const userModule = useUserModule();
 
 const navRoutes = computed<Route[]>(() => [
   {
@@ -47,8 +48,8 @@ const navRoutes = computed<Route[]>(() => [
       :payment-method="walletStore.wallet.paymentMethod ?? undefined"
       :currency="walletStore.wallet.currency"
       :wallet-id="walletStore.wallet.walletId"
-      :on-click-deposit="() => $dependencies.users.ui.emitCommandOpenUserActionModal.handle('deposit').then(() => {})"
-      :on-click-withdraw="() => $dependencies.users.ui.emitCommandOpenUserActionModal.handle('withdrawal').then(() => {})"
+      :on-click-deposit="() => userModule.ui.emitCommandOpenUserActionModal.handle('deposit').then(() => {})"
+      :on-click-withdraw="() => userModule.ui.emitCommandOpenUserActionModal.handle('withdrawal').then(() => {})"
     />
 
     <NavBar :routes="navRoutes" class="mb-4 scroll-px-4 -mx-4 px-4" />

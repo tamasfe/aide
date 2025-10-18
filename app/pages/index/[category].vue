@@ -2,7 +2,7 @@
 const { t } = useI18n();
 const siteStore = useSiteStore();
 const { params } = useRoute();
-const { $dependencies } = useNuxtApp();
+const logger = useLogger();
 
 definePageMeta({
   layout: "carousel",
@@ -10,7 +10,7 @@ definePageMeta({
 
 const categoryIdentifier = params.category;
 if (!categoryIdentifier || typeof categoryIdentifier !== "string") {
-  $dependencies.common.logger.warn("Id paramater in category page is not a string. It should be the Category identifier", { categoryIdentifier });
+  logger.warn("Id paramater in category page is not a string. It should be the Category identifier", { categoryIdentifier });
   await navigateTo("/");
 }
 

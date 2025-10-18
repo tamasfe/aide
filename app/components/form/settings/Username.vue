@@ -15,8 +15,9 @@ const props = defineProps<{
   initial: string;
 }>();
 
-const { $dependencies } = useNuxtApp();
 const { t } = useI18n();
+const logger = useLogger();
+const user = useUserModule();
 
 const validationSchema = toTypedSchema(
   z.object({
@@ -33,9 +34,9 @@ const [username, usernameAttrs] = defineField("username");
 username.value = props.initial;
 
 const onSubmit = handleSubmit(async (formData) => {
-  formErrorMessage.value = await $dependencies.users.ui.userSettings.updateUsernameOnForm.handle(formData.username);
+  formErrorMessage.value = await user.ui.userSettings.updateUsernameOnForm.handle(formData.username);
 }, ({ results }) => {
-  $dependencies.common.logger.warn("Validation failed", { validationResults: results });
+  logger.warn("Validation failed", { validationResults: results });
 });
 </script>
 
@@ -65,7 +66,7 @@ const onSubmit = handleSubmit(async (formData) => {
         variant="subtle"
         class="w-full space-x-1.5"
         type="button"
-        @click="$dependencies.users.ui.emitCommandCloseUserActionModal.handle()"
+        @click="user.ui.emitCommandCloseUserActionModal.handle()"
       >
         {{ $t("button.cancel") }}
       </BaseButton>

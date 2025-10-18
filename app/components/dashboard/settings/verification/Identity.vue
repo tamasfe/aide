@@ -1,16 +1,17 @@
 <script setup lang="ts">
 import type { FindUserKycStatusResponseI } from "~/modules/kyc/infra/ui/FindUserKycStatusOnAccountVerification";
 
-const { $dependencies } = useNuxtApp();
+const kyc = useKycModule();
+const user = useUserModule();
 
 const ENABLE_SERVER_SIDE_RENDERING = true;
 const DEFER_CLIENT_SIDE_LOADING = true;
 const { data: kycResponse } = useAsyncData("dashboard-settings-verification-kyc",
-  async () => $dependencies.kyc.ui.findUserKycStatus.handle(),
+  async () => kyc.ui.findUserKycStatus.handle(),
   { lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING },
 );
 
-const onClickUpload = (responseData: Exclude<FindUserKycStatusResponseI["data"], null>) => $dependencies.users.ui.emitCommandOpenUserActionModal.handle({ modal: "kyc", data: responseData });
+const onClickUpload = (responseData: Exclude<FindUserKycStatusResponseI["data"], null>) => user.ui.emitCommandOpenUserActionModal.handle({ modal: "kyc", data: responseData });
 </script>
 
 <template>
