@@ -47,19 +47,15 @@ const { data: gameCategories } = useAsyncData(async () => {
   server: true,
   lazy: true,
 });
-
-/* Redirect if the game is successfully searched, but server returns no results (404) */
-// watch([() => props.game, () => statusLoadingGame.value], async ([game, statusLoadingGame]) => {
-//   if (game === null && statusLoadingGame === "success") {
-//     await navigateTo("/");
-//   }
-// });
 </script>
 
 <template>
   <div>
     <div class="bg-subtle rounded-lg border border-muted/5 overflow-hidden mb-8">
       <div v-if="game" ref="gameFrame" class="relative py-40 md:py-0 md:h-[70vh] border-b border-muted/5">
+        <div class="text-subtle absolute inset-0 flex items-center justify-center">
+          <BaseSpinner />
+        </div>
         <GameLauncher
           class="absolute inset-0"
           :launch-mode="launchMode"

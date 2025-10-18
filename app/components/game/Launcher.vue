@@ -53,6 +53,11 @@ watch(() => props.launchMode, (mode) => {
     nuxtApp.callHook("frontend:events:games:game-session-finished");
   }
 }, { immediate: true });
+
+onUnmounted(() => {
+  gameSessionStore.playing = false;
+  nuxtApp.callHook("frontend:events:games:game-session-finished");
+});
 </script>
 
 <template>
