@@ -5,44 +5,6 @@ metadata:
   labels:
     {{- include "frontend.labels" . | nindent 4 }}
 data:
-  # Base URLs
-  NUXT_PUBLIC_BASE_URL: "https://{{ .Values.config.public_domain }}"
-  NUXT_PUBLIC_API_BASE_URL_CLIENT: "https://{{ .Values.config.public_api_domain }}"
-  NUXT_PUBLIC_API_BASE_URL_SERVER: "http://{{ .Values.config.internal_api_domain }}"
-
-  # Logging
-  LOG_LEVEL: {{ .Values.config.log_level | quote }}
-  NUXT_PUBLIC_LOG_LEVEL: {{ .Values.config.log_level | quote }}
-
-  # Service
-  NUXT_PUBLIC_SERVICE_NAME: {{ .Values.config.service_name | quote }}
-  NUXT_SITE_NAME: {{ .Values.config.site_name | quote }}
-
-  # Error capturing
-  NUXT_PUBLIC_ERROR_CAPTURING_ENABLED: {{ .Values.config.error_capturing_enabled | quote }}
-
-  # API modes
-  NUXT_PUBLIC_API_MODE: {{ .Values.config.api_mode | quote }}
-  NUXT_PUBLIC_GAMES_API_MODE: {{ .Values.config.api_mode | quote }}
-  NUXT_PUBLIC_SIGNUP_FLOWS_API_MODE: {{ .Values.config.api_mode | quote }}
-  NUXT_PUBLIC_USERS_API_MODE: {{ .Values.config.api_mode | quote }}
-  NUXT_PUBLIC_SITES_API_MODE: {{ .Values.config.api_mode | quote }}
-  NUXT_PUBLIC_WALLETS_API_MODE: {{ .Values.config.api_mode | quote }}
-  NUXT_PUBLIC_PROVIDERS_API_MODE: {{ .Values.config.api_mode | quote }}
-  NUXT_PUBLIC_KYC_API_MODE: {{ .Values.config.api_mode | quote }}
-  NUXT_PUBLIC_TRACKING_API_MODE: {{ .Values.config.api_mode | quote }}
-
-  # Signup flows
-  NUXT_PUBLIC_SIGNUP_FLOWS_IDS_CLIENT_REPO: {{ .Values.config.signup_flows_ids_client_repo | quote }}
-
-  # Tracking
-  NUXT_PUBLIC_TRACKING_FINGERPRINT_JS_PUBLIC_API_KEY: {{ .Values.config.tracking_fingerprint_js_public_api_key | quote }}
-  NUXT_PUBLIC_TRACKING_FINGERPRINT_JS_SCRIPT_URL: "https://{{ .Values.config.public_fingerprint_js_script_domain }}{{ .Values.config.tracking_fingerprint_js_script_url_path }}"
-
-  # OpenTelemetry
-  OTEL_EXPORTER_OTLP_ENDPOINT: {{ .Values.config.otel.exporter_otlp_endpoint | quote }}
-  OTEL_BSP_SCHEDULE_DELAY: {{ .Values.config.otel.bsp_schedule_delay | quote }}
-  OTEL_BSP_MAX_EXPORT_BATCH_SIZE: {{ .Values.config.otel.bsp_max_export_batch_size | quote }}
-  OTEL_BSP_MAX_QUEUE_SIZE: {{ .Values.config.otel.bsp_max_queue_size | quote }}
-  OTEL_BSP_EXPORT_TIMEOUT: {{ .Values.config.otel.bsp_export_timeout | quote }}
-  OTEL_BSP_MAX_CONCURRENT_EXPORTS: {{ .Values.config.otel.bsp_max_concurrent_exports | quote }}
+  NUXT_API_BASE_URL: "http://{{ .Values.config.internal_api_domain }}"
+  NUXT_PUBLIC_API_CLIENT_PROTOCOL: "https://"
+  NUXT_PUBLIC_ENV: "production"

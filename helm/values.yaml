@@ -164,42 +164,11 @@ affinity:
 # Application configuration
 config:
   # Public domains
-  public_domain: "chart-example.local"
-  public_api_domain: "api.chart-example.local"
   internal_api_domain: "api.default.svc.cluster.local"
-  public_tracking_domain: "tracking.chart-example.local"
-  public_fingerprint_js_script_domain: "fingerprint.chart-example.local"
-
-  # Site configuration
-  site_name: "Frontend App"
-
-  # API configuration
-  api_mode: "api"
-
-  # Error capturing
-  error_capturing_enabled: "true"
-
-  # Logging
-  log_level: "info"
-
-  # Service name
-  service_name: "frontend"
-
-  # Signup flows
-  signup_flows_ids_client_repo: "local_storage"
 
   # Tracking configuration
   tracking_fingerprint_js_public_api_key: "ovcHpM99bHR6cWYgKHlA"
   tracking_fingerprint_js_script_url_path: "/EkkWvBzKSGMIQZw4/1qDponqL8OE8LDgt"
-
-  # OpenTelemetry configuration
-  otel:
-    exporter_otlp_endpoint: "http://k8s-monitoring-alloy.monitoring.svc.cluster.local:4317"
-    bsp_schedule_delay: "2000"
-    bsp_max_export_batch_size: "1024"
-    bsp_max_queue_size: "4096"
-    bsp_export_timeout: "15000"
-    bsp_max_concurrent_exports: "2"
 
 # Extra environment variables
 extraEnvVars: []
