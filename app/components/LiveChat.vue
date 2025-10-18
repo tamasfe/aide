@@ -29,12 +29,8 @@ function onVisibilityChanged(event: EventHandlerPayload<"onVisibilityChanged">) 
       break;
 
     case "hidden":
-      visibility.value = "hidden";
-      nuxtApp.callHook("frontend:commands:modals:live-chat-closed");
-      break;
-
     case "minimized":
-      visibility.value = "minimized";
+      visibility.value = "hidden";
       nuxtApp.callHook("frontend:commands:modals:live-chat-closed");
       break;
   }

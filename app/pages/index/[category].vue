@@ -6,6 +6,7 @@ const logger = useLogger();
 
 definePageMeta({
   layout: "carousel",
+  scrollToTop: false,
 });
 
 const categoryIdentifier = params.category;
