@@ -90,15 +90,15 @@ resources:
 # Liveness probe configuration
 livenessProbe:
   httpGet:
-    path: /
+    path: /live
     port: http
   initialDelaySeconds: 30
-  periodSeconds: 10
+  periodSeconds: 60
 
 # Readiness probe configuration
 readinessProbe:
   httpGet:
-    path: /
+    path: /live
     port: http
   initialDelaySeconds: 5
   periodSeconds: 5
