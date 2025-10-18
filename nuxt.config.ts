@@ -15,6 +15,7 @@ export default defineNuxtConfig({
     "@vite-pwa/nuxt",
     "@nuxt/fonts",
     "@nuxt/scripts",
+    "@nuxt/content",
   ],
 
   imports: {
@@ -177,7 +178,6 @@ export default defineNuxtConfig({
         code: "en-us",
         files: [
           "en-US.json",
-          "en-US.kyc_policy.yml",
           "en-US.responsible_gaming.yml",
           "en-US.terms_and_conditions.yml",
         ],
@@ -188,7 +188,6 @@ export default defineNuxtConfig({
         code: "pt-br",
         files: [
           "pt-BR.json",
-          "pt-BR.kyc_policy.yml",
           "pt-BR.responsible_gaming.yml",
           "pt-BR.terms_and_conditions.yml",
         ],
