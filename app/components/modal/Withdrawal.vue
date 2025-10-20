@@ -30,6 +30,7 @@ const onClosed = () => {
 };
 
 const { data: paymentMethods } = useAsyncData(
+  "payment-methods",
   async () => walletModule.ui.findPreferredPaymentMethodsOnStoreRefresh.handle(
     walletStore.wallet?.currency ?? DEFAULT_CURRENCY_WHILE_USER_HAS_NO_WALLET,
   ),
