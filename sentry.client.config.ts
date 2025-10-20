@@ -32,7 +32,7 @@ Sentry.init({
 
   enableLogs: true,
 
-  environment: runtimeConfig.public.release && runtimeConfig.public.release !== "development" ? "production" : "development",
+  environment: runtimeConfig.public.environment,
   release: runtimeConfig.public.release,
 
   ignoreErrors: [

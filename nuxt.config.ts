@@ -62,6 +62,7 @@ export default defineNuxtConfig({
       apiClientProtocol: "http://",
       errorCapturingEnabled: true,
       release: undefined,
+      environment: process.env.NODE_ENV || "development",
       logLevel: "info",
       serviceName: "frontend",
       scripts: {
@@ -132,7 +133,7 @@ export default defineNuxtConfig({
     strict: true,
     typeCheck: true,
     tsConfig: {
-      include: ["app/packages/http-client/**/*.d.ts"],
+      include: ["./app/packages/http-client/**/*.d.ts"],
     },
   },
 
