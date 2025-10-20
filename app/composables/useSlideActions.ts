@@ -4,26 +4,26 @@ export default function () {
 
   const openDepositOrLogin = () => {
     if (userStore.user) {
-      nuxtApp.callHook("frontend:commands:modals:open-user-interaction-modal", { modal: "deposit" });
+      nuxtApp.callHook("frontend:command:modal:open", { modal: "deposit" });
       return;
     }
-    nuxtApp.callHook("frontend:commands:modals:open-user-interaction-modal", { modal: "login" });
+    nuxtApp.callHook("frontend:command:modal:open", { modal: "login" });
   };
 
   const openWithdrawalOrRegister = () => {
     if (userStore.user) {
-      nuxtApp.callHook("frontend:commands:modals:open-user-interaction-modal", { modal: "withdrawal" });
+      nuxtApp.callHook("frontend:command:modal:open", { modal: "withdrawal" });
       return;
     }
-    nuxtApp.callHook("frontend:commands:modals:open-user-interaction-modal", { modal: "register" });
+    nuxtApp.callHook("frontend:command:modal:open", { modal: "register" });
   };
 
   const openDepositOrRegister = () => {
     if (userStore.user) {
-      nuxtApp.callHook("frontend:commands:modals:open-user-interaction-modal", { modal: "deposit" });
+      nuxtApp.callHook("frontend:command:modal:open", { modal: "deposit" });
       return;
     }
-    nuxtApp.callHook("frontend:commands:modals:open-user-interaction-modal", { modal: "register" });
+    nuxtApp.callHook("frontend:command:modal:open", { modal: "register" });
   };
 
   return {

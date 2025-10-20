@@ -13,11 +13,11 @@ const nuxtApp = useNuxtApp();
 
 const visibility = ref<"minimized" | "maximized" | "hidden">("hidden");
 
-nuxtApp.hook("frontend:commands:modals:open-live-chat", async () => {
+nuxtApp.hook("frontend:command:live-chat:open", async () => {
   visibility.value = "maximized";
 });
 
-nuxtApp.hook("frontend:commands:modals:close-live-chat", async () => {
+nuxtApp.hook("frontend:command:live-chat:close", async () => {
   visibility.value = "hidden";
 });
 
@@ -25,19 +25,19 @@ function onVisibilityChanged(event: EventHandlerPayload<"onVisibilityChanged">) 
   switch (event.visibility) {
     case "maximized":
       visibility.value = "maximized";
-      nuxtApp.callHook("frontend:commands:modals:live-chat-opened");
+      nuxtApp.callHook("frontend:event:live-chat:opened");
       break;
 
     case "hidden":
     case "minimized":
       visibility.value = "hidden";
-      nuxtApp.callHook("frontend:commands:modals:live-chat-closed");
+      nuxtApp.callHook("frontend:event:live-chat:closed");
       break;
   }
 }
 
 function onWidgetIsReady() {
-  nuxtApp.callHook("frontend:commands:modals:live-chat-is-ready");
+  nuxtApp.callHook("frontend:event:live-chat:ready");
 }
 
 const sessionVariables = computed(() => {

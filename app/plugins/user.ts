@@ -18,36 +18,36 @@ export default defineNuxtPlugin({
      * Event listeners
      *
      */
-    nuxtApp.hook("frontend:events:users:user-logged-in", async () => {
+    nuxtApp.hook("frontend:event:user:logged-in", async () => {
       await userStore.refreshUser();
       await userSettingsStore.refresh();
     });
 
-    nuxtApp.hook("frontend:events:users:user-logged-out", async () => {
+    nuxtApp.hook("frontend:event:user:logged-out", async () => {
       await userStore.refreshUser();
       await userSettingsStore.refresh();
     });
 
-    nuxtApp.hook("frontend:events:users:user-closed-account", async () => {
+    nuxtApp.hook("frontend:event:user:account-closed", async () => {
       await userStore.refreshUser();
       await userSettingsStore.refresh();
     });
 
-    nuxtApp.hook("frontend:events:users:user-settings-updated", async () => {
+    nuxtApp.hook("frontend:event:user:settings-updated", async () => {
       await userStore.refreshUser();
       await userSettingsStore.refresh();
     });
 
-    nuxtApp.hook("frontend:events:users:password-recovered", async () => {
+    nuxtApp.hook("frontend:event:user:password-recovered", async () => {
       userModule.ui.emitCommandOpenUserActionModal.handle("login");
     });
 
-    nuxtApp.hook("frontend:events:signup-flows:signup-flow-submitted", async () => {
+    nuxtApp.hook("frontend:event:signup-flow:submitted", async () => {
       await userStore.refreshUser();
       await userSettingsStore.refresh();
     });
 
-    nuxtApp.hook("frontend:events:payments:deposit-flow-created", ({ flowId, code, amount, currency, paymentMethodId }) => {
+    nuxtApp.hook("frontend:event:payment:deposit:created", ({ flowId, code, amount, currency, paymentMethodId }) => {
       userModule.ui.emitCommandOpenUserActionModal.handle({
         modal: "deposit_confirm",
         data: { flowId, paymentCode: code, amount, currency, paymentMethodId },

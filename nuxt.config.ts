@@ -137,6 +137,8 @@ export default defineNuxtConfig({
     },
   },
 
+  debug: true,
+
   // @nuxtjs/eslint
   eslint: {
     config: {

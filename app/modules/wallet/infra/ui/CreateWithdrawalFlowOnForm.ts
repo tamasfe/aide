@@ -63,7 +63,7 @@ export class CreateWithdrawalFlowOnForm {
             ),
             action: () => {
               this.nuxtApp.callHook(
-                "frontend:commands:modals:close-user-interaction-modal",
+                "frontend:command:modal:close",
               );
               window.location.href = "/settings/verification";
             },

@@ -43,7 +43,7 @@ const links = [
     icon: "lucide:message-circle-question",
     action: {
       buttonOnClick: () =>
-        nuxtApp.callHook("frontend:commands:modals:open-live-chat"),
+        nuxtApp.callHook("frontend:command:live-chat:open"),
     },
   },
   {

@@ -29,20 +29,20 @@ declare global {
 
 declare module "#app" {
   interface RuntimeNuxtHooks {
-    "frontend:commands:modals:open-live-chat": () => HookResult;
-    "frontend:commands:modals:live-chat-opened": () => HookResult;
-    "frontend:commands:modals:close-live-chat": () => HookResult;
-    "frontend:commands:modals:live-chat-closed": () => HookResult;
-    "frontend:commands:modals:live-chat-is-ready": () => HookResult;
+    "frontend:command:live-chat:open": () => HookResult;
+    "frontend:event:live-chat:opened": () => HookResult;
+    "frontend:command:live-chat:close": () => HookResult;
+    "frontend:event:live-chat:closed": () => HookResult;
+    "frontend:event:live-chat:ready": () => HookResult;
 
-    "frontend:commands:modals:open-user-interaction-modal": (modal: UserInteractionModalState) => HookResult;
-    "frontend:commands:modals:close-user-interaction-modal": () => HookResult;
+    "frontend:command:modal:open": (modal: UserInteractionModalState) => HookResult;
+    "frontend:command:modal:close": () => HookResult;
 
-    "frontend:events:users:user-logged-in": () => HookResult;
-    "frontend:events:users:user-logged-out": () => HookResult;
-    "frontend:events:users:user-closed-account": () => HookResult;
-    "frontend:events:users:password-recovered": () => HookResult;
-    "frontend:events:users:user-settings-updated": (data: {
+    "frontend:event:user:logged-in": () => HookResult;
+    "frontend:event:user:logged-out": () => HookResult;
+    "frontend:event:user:account-closed": () => HookResult;
+    "frontend:event:user:password-recovered": () => HookResult;
+    "frontend:event:user:settings-updated": (data: {
       settings: {
         locale?: SupportedLocale;
         password: boolean;
@@ -64,14 +64,14 @@ declare module "#app" {
       };
     }) => HookResult;
 
-    "frontend:events:signup-flows:signup-flow-submitted": (data: {
+    "frontend:event:signup-flow:submitted": (data: {
       id: string;
     }) => HookResult;
 
-    "frontend:events:games:game-session-started": () => HookResult;
-    "frontend:events:games:game-session-finished": () => HookResult;
+    "frontend:event:game-session:started": () => HookResult;
+    "frontend:event:game-session:finished": () => HookResult;
 
-    "frontend:events:payments:deposit-flow-created": (data: {
+    "frontend:event:payment:deposit:created": (data: {
       paymentMethodId: number;
       flowId: number;
       code: string;
@@ -80,46 +80,46 @@ declare module "#app" {
       totalDeposits: number;
     }) => HookResult;
 
-    "frontend:events:payments:withdrawal-flow-created": (data: {
+    "frontend:event:payment:withdrawal:created": (data: {
       flowId: number;
       amount: number;
       currency: WalletCurrency;
       totalWithdrawals: number;
     }) => HookResult;
 
-    "frontend:events:websockets:connection-state-changed": (data: {
+    "frontend:event:websocket:state-changed": (data: {
       state: "connected" | "disconnected";
     }) => HookResult;
 
     /**
        * Events coming from the Backend
        */
-    "backend:events:payments:payment-status-updated": (data: CamelizeKeys<
+    "backend:event:payment:status-updated": (data: CamelizeKeys<
       Extract<
         components["schemas"]["WebsocketServerEvent"]["data"],
         { type: "payment_status_update" }
       >
     >) => HookResult;
 
-    "backend:events:tracker:payment-updated": (data: CamelizeKeys<
+    "backend:event:tracker:payment-updated": (data: CamelizeKeys<
       Extract<
         components["schemas"]["TrackerType"],
         { event: "payment_update" }
       >["event_data"]
     >) => HookResult;
 
-    "backend:events:kyc:kyc-process-completed": (data: {
+    "backend:event:kyc:completed": (data: {
       notificationId: number;
     }) => HookResult;
 
-    "backend:events:wallets:wallet-balance-updated": (data: CamelizeKeys<
+    "backend:event:wallet:balance-updated": (data: CamelizeKeys<
       Extract<
         components["schemas"]["WebsocketServerEvent"],
         { type: "balance_update" }
       >["data"]
     >) => HookResult;
 
-    "backend:events:backend-notification-received": (data: {
+    "backend:event:notification:received": (data: {
       notification: NotificationBackend;
     }) => HookResult;
   }

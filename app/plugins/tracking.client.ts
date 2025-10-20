@@ -44,7 +44,7 @@ export default defineNuxtPlugin({
 
     await trackingModule.ui.setUsersPreviousActivity(new Date().toISOString());
 
-    nuxtApp.hook("frontend:events:users:user-logged-in", async () => {
+    nuxtApp.hook("frontend:event:user:logged-in", async () => {
       await trackingModule.ui.setUsersPreviousActivity(new Date().toISOString());
     });
 

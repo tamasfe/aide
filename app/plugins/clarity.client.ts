@@ -19,21 +19,21 @@ export default defineNuxtPlugin({
       { immediate: true },
     );
 
-    nuxtApp.hook("frontend:events:signup-flows:signup-flow-submitted", async () => {
+    nuxtApp.hook("frontend:event:signup-flow:submitted", async () => {
       proxy.clarity("upgrade");
       proxy.clarity("event", "signup");
     });
 
-    nuxtApp.hook("frontend:events:games:game-session-started", async () => {
+    nuxtApp.hook("frontend:event:game-session:started", async () => {
       proxy.clarity("event", "game-session-started");
     });
 
-    nuxtApp.hook("frontend:events:payments:deposit-flow-created", async () => {
+    nuxtApp.hook("frontend:event:payment:deposit:created", async () => {
       proxy.clarity("upgrade", "deposit-created");
       proxy.clarity("event", "deposit-created");
     });
 
-    nuxtApp.hook("backend:events:payments:payment-status-updated", async (event) => {
+    nuxtApp.hook("backend:event:payment:status-updated", async (event) => {
       if (event.data.status === "succeeded") {
         proxy.clarity("upgrade", "deposit-succeeded");
         proxy.clarity("event", "deposit-succeeded");

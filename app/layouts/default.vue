@@ -18,7 +18,7 @@ const closeSidebarOnModalOpen = (value: boolean) => {
 };
 watch(userActionModalIsOpen, closeSidebarOnModalOpen);
 
-nuxtApp.hook("frontend:commands:modals:live-chat-closed", () => {
+nuxtApp.hook("frontend:event:live-chat:closed", () => {
   sidebarIsOpen.value = false;
 });
 </script>

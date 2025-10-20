@@ -22,7 +22,7 @@ export class CloseAccountOnForm {
       return this.t("modal_close_account.error_unknown");
     }
 
-    await this.nuxtApp.callHook("frontend:commands:modals:close-user-interaction-modal");
+    await this.nuxtApp.callHook("frontend:command:modal:close");
 
     return "";
   }

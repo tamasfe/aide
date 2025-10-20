@@ -17,7 +17,7 @@ export class EmitCommandOpenUserActionModalModal {
 
   public async handle(modalOrData: UserInteractionModalState | NoDataRequiredModal, alert?: Alert): Promise<EmptySuccessResult> {
     const modalState = typeof modalOrData === "string" ? { modal: modalOrData, alert } : { ...modalOrData, alert };
-    await this.nuxtApp.callHook("frontend:commands:modals:open-user-interaction-modal", modalState);
+    await this.nuxtApp.callHook("frontend:command:modal:open", modalState);
     return success();
   }
 }

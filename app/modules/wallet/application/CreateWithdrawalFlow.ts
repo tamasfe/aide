@@ -24,7 +24,7 @@ export class CreateWithdrawalFlow {
     }
 
     await this.nuxtApp.callHook(
-      "frontend:events:payments:withdrawal-flow-created",
+      "frontend:event:payment:withdrawal:created",
       {
         flowId: result.value.flowId,
         amount,

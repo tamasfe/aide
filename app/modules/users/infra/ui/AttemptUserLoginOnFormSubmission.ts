@@ -23,7 +23,7 @@ export class AttemptUserLoginOnFormSubmission {
       return this.translateFunction("modal_login.error_unknown");
     }
 
-    this.nuxtApp.callHook("frontend:commands:modals:close-user-interaction-modal");
+    this.nuxtApp.callHook("frontend:command:modal:close");
 
     return null;
   }

@@ -26,7 +26,7 @@ export class UpdateSettingsOnForm {
       return this.t("modal_account_settings.error_unknown");
     }
 
-    await this.nuxtApp.callHook("frontend:commands:modals:close-user-interaction-modal");
+    await this.nuxtApp.callHook("frontend:command:modal:close");
 
     return "";
   }

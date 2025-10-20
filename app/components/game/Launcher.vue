@@ -47,16 +47,16 @@ watch(() => props.launchMode, (mode) => {
   }
 
   if (mode) {
-    nuxtApp.callHook("frontend:events:games:game-session-started");
+    nuxtApp.callHook("frontend:event:game-session:started");
   }
   else {
-    nuxtApp.callHook("frontend:events:games:game-session-finished");
+    nuxtApp.callHook("frontend:event:game-session:finished");
   }
 }, { immediate: true });
 
 onUnmounted(() => {
   gameSessionStore.playing = false;
-  nuxtApp.callHook("frontend:events:games:game-session-finished");
+  nuxtApp.callHook("frontend:event:game-session:finished");
 });
 </script>
 

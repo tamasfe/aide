@@ -116,7 +116,7 @@ const links = [
   {
     title: t("side_nav.live_support"),
     icon: "emojione-v1:speech-balloon",
-    onClick: () => nuxtApp.callHook("frontend:commands:modals:open-live-chat"),
+    onClick: () => nuxtApp.callHook("frontend:command:live-chat:open"),
   },
 ];
 
@@ -146,7 +146,7 @@ const emptyQuery = ref("");
           <SearchBar
             v-model="emptyQuery"
             input-size="md"
-            @click="nuxtApp.callHook('frontend:commands:modals:open-user-interaction-modal', { modal: 'search' })"
+            @click="nuxtApp.callHook('frontend:command:modal:open', { modal: 'search' })"
           />
         </div>
 

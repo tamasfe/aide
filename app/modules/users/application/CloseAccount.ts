@@ -13,7 +13,7 @@ export class CloseAccount {
       return result;
     }
 
-    await this.nuxtApp.callHook("frontend:events:users:user-closed-account");
+    await this.nuxtApp.callHook("frontend:event:user:account-closed");
 
     return success();
   }

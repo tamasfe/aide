@@ -27,14 +27,14 @@ export default defineNuxtPlugin({
       },
     );
 
-    nuxtApp.hook("frontend:events:signup-flows:signup-flow-submitted", async () => {
+    nuxtApp.hook("frontend:event:signup-flow:submitted", async () => {
       proxy.gtag("event", "SIGNUP", {
         user_id: String(userStore.user?.id || ""),
         brand_id: siteStore.currentSite.id,
       });
     });
 
-    nuxtApp.hook("frontend:events:payments:deposit-flow-created", async ({ amount, currency, totalDeposits }) => {
+    nuxtApp.hook("frontend:event:payment:deposit:created", async ({ amount, currency, totalDeposits }) => {
       proxy.gtag("event", "DEPOSIT_INITIATED", {
         user_id: String(userStore.user?.id || ""),
         brand_id: siteStore.currentSite.id,
@@ -44,7 +44,7 @@ export default defineNuxtPlugin({
       });
     });
 
-    nuxtApp.hook("frontend:events:payments:withdrawal-flow-created", async ({ amount, currency, totalWithdrawals }) => {
+    nuxtApp.hook("frontend:event:payment:withdrawal:created", async ({ amount, currency, totalWithdrawals }) => {
       proxy.gtag("event", "WITHDRAWAL_INITIATED", {
         user_id: String(userStore.user?.id || ""),
         brand_id: siteStore.currentSite.id,
@@ -54,7 +54,7 @@ export default defineNuxtPlugin({
       });
     });
 
-    nuxtApp.hook("backend:events:tracker:payment-updated", async (event) => {
+    nuxtApp.hook("backend:event:tracker:payment-updated", async (event) => {
       if (event.status === "succeeded") {
         if (event.paymentType === "deposit") {
           proxy.gtag("event", "DEPOSIT_SUCCEEDED", {

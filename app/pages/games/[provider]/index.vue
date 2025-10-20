@@ -41,7 +41,6 @@ watch(() => providerFromApi.value, (provider) => {
   <GridVerticalGames
     :title="providerFromApi?.name || ''"
     :provider-identifier="providerIdentifier"
-    :category-identifier="null"
     :show-back-button="true"
   />
 </template>

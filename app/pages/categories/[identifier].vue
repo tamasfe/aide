@@ -23,7 +23,6 @@ useHead({
   <GridVerticalGames
     :title="categoryTitle"
     :category-identifier="String(categoryIdentifier)"
-    :provider-identifier="null"
     :show-back-button="true"
   />
 </template>

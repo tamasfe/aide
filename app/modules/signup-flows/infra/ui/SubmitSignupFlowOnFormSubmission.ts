@@ -35,7 +35,7 @@ export class SubmitSignupFlowOnFormSubmission {
       return this.translateFunction("modal_session.error_submitting_flow");
     }
 
-    this.nuxtApp.callHook("frontend:commands:modals:close-user-interaction-modal");
+    this.nuxtApp.callHook("frontend:command:modal:close");
 
     return null;
   }

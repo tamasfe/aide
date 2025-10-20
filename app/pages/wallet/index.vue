@@ -31,7 +31,7 @@ const { data: paymentsData, execute, pending } = useAsyncData("wallet-page-payme
   default: () => [],
 });
 
-nuxtApp.hook("backend:events:payments:payment-status-updated", async () => {
+nuxtApp.hook("backend:event:payment:status-updated", async () => {
   execute();
 });
 </script>

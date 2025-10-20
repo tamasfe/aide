@@ -24,13 +24,13 @@ export class HandleOpenModalSearchParam {
           return;
         }
         if (userHasPreviouslyLoggedIn) {
-          await this.nuxtApp.callHook("frontend:commands:modals:open-user-interaction-modal", { modal: "login" });
+          await this.nuxtApp.callHook("frontend:command:modal:open", { modal: "login" });
           return;
         }
-        await this.nuxtApp.callHook("frontend:commands:modals:open-user-interaction-modal", { modal: "register" });
+        await this.nuxtApp.callHook("frontend:command:modal:open", { modal: "register" });
 
-        this.nuxtApp.hook("frontend:events:signup-flows:signup-flow-submitted", () =>
-          this.nuxtApp.callHook("frontend:commands:modals:open-user-interaction-modal", { modal: "login" }),
+        this.nuxtApp.hook("frontend:event:signup-flow:submitted", () =>
+          this.nuxtApp.callHook("frontend:command:modal:open", { modal: "login" }),
         );
 
         return;
@@ -39,29 +39,29 @@ export class HandleOpenModalSearchParam {
         if (userIsCurrentlyLoggedIn) {
           return this.redirectToPasswordSettingsPage();
         }
-        await this.nuxtApp.callHook("frontend:commands:modals:open-user-interaction-modal", { modal: "forgot_password" });
+        await this.nuxtApp.callHook("frontend:command:modal:open", { modal: "forgot_password" });
         return;
 
       case "deposit":
         if (userIsCurrentlyLoggedIn) {
-          await this.nuxtApp.callHook("frontend:commands:modals:open-user-interaction-modal", { modal: "deposit" });
+          await this.nuxtApp.callHook("frontend:command:modal:open", { modal: "deposit" });
           return;
         }
 
         if (userHasPreviouslyLoggedIn) {
-          await this.nuxtApp.callHook("frontend:commands:modals:open-user-interaction-modal", { modal: "login" });
+          await this.nuxtApp.callHook("frontend:command:modal:open", { modal: "login" });
 
-          this.nuxtApp.hook("frontend:events:users:user-logged-in", () =>
-            this.nuxtApp.callHook("frontend:commands:modals:open-user-interaction-modal", { modal: "deposit" }),
+          this.nuxtApp.hook("frontend:event:user:logged-in", () =>
+            this.nuxtApp.callHook("frontend:command:modal:open", { modal: "deposit" }),
           );
 
           return;
         }
 
-        await this.nuxtApp.callHook("frontend:commands:modals:open-user-interaction-modal", { modal: "register" });
+        await this.nuxtApp.callHook("frontend:command:modal:open", { modal: "register" });
 
-        this.nuxtApp.hook("frontend:events:signup-flows:signup-flow-submitted", () =>
-          this.nuxtApp.callHook("frontend:commands:modals:open-user-interaction-modal", { modal: "deposit" }),
+        this.nuxtApp.hook("frontend:event:signup-flow:submitted", () =>
+          this.nuxtApp.callHook("frontend:command:modal:open", { modal: "deposit" }),
         );
 
         return;

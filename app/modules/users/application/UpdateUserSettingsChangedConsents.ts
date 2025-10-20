@@ -28,7 +28,7 @@ export class UpdateUserSettingsChangedConsents {
       return result;
     }
 
-    await this.nuxtApp.callHook("frontend:events:users:user-settings-updated", {
+    await this.nuxtApp.callHook("frontend:event:user:settings-updated", {
       settings: {
         locale: undefined,
         password: false,

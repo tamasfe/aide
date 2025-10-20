@@ -66,7 +66,7 @@ export class UpdateUserSettings {
       }
     }
 
-    await this.nuxtApp.callHook("frontend:events:users:user-settings-updated", {
+    await this.nuxtApp.callHook("frontend:event:user:settings-updated", {
       settings: {
         locale: settings.locale,
         password: settings.password ? true : false,

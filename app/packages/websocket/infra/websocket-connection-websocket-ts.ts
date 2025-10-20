@@ -172,14 +172,14 @@ export class WebsocketConnectionTs implements WebsocketConnectionI {
         const message = JSON.parse(event.data) as WebsocketMessagesFromServer;
         if (message.type === "protocol" && message.data === "welcome") {
           if (this.status !== "connected") {
-            this.nuxtApp.callHook("frontend:events:websockets:connection-state-changed", { state: "connected" });
+            this.nuxtApp.callHook("frontend:event:websocket:state-changed", { state: "connected" });
           }
           this.status = "connected";
         }
       })
       .onClose((websocket, event) => {
         if (this.status !== "disconnected") {
-          this.nuxtApp.callHook("frontend:events:websockets:connection-state-changed", { state: "disconnected" });
+          this.nuxtApp.callHook("frontend:event:websocket:state-changed", { state: "disconnected" });
         }
         this.status = "disconnected";
         this.logger.debug("WS - Connection closed", { websocket, event });

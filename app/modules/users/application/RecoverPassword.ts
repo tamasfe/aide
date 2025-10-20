@@ -14,7 +14,7 @@ export class RecoverPassword {
       return result;
     }
 
-    await this.nuxtApp.callHook("frontend:events:users:password-recovered");
+    await this.nuxtApp.callHook("frontend:event:user:password-recovered");
 
     return success();
   }

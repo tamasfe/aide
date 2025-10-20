@@ -8,14 +8,14 @@ const nuxtApp = useNuxtApp();
 const openIntent = ref(false);
 
 nuxtApp.hook(
-  "frontend:commands:modals:live-chat-is-ready",
+  "frontend:event:live-chat:ready",
   () => {
     loaded.value = true;
   },
 );
 
 nuxtApp.hook(
-  "frontend:commands:modals:close-live-chat",
+  "frontend:command:live-chat:close",
   () => {
     openIntent.value = false;
   },
@@ -29,7 +29,7 @@ watch(
   [openIntent, loaded],
   ([intent, loaded]) => {
     if (intent && loaded) {
-      nuxtApp.callHook("frontend:commands:modals:open-live-chat");
+      nuxtApp.callHook("frontend:command:live-chat:open");
     }
   },
 );

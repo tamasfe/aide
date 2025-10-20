@@ -55,7 +55,7 @@ export default defineNuxtPlugin({
             const subscriptionResult = await websocket.ui.wsChannelManagers.user.subscribe(wsConnectionResult.value,
               "balance_update",
               (eventData) => {
-                nuxtApp.callHook("backend:events:wallets:wallet-balance-updated", camelizeKeys(eventData.data));
+                nuxtApp.callHook("backend:event:wallet:balance-updated", camelizeKeys(eventData.data));
               },
             );
 
@@ -73,10 +73,10 @@ export default defineNuxtPlugin({
               (eventData) => {
                 if (eventData.data.type === "payment_status_update") {
                   console.log("Emitting payment-status-updated event");
-                  nuxtApp.callHook("backend:events:payments:payment-status-updated", camelizeKeys(eventData.data));
+                  nuxtApp.callHook("backend:event:payment:status-updated", camelizeKeys(eventData.data));
                 }
 
-                nuxtApp.callHook("backend:events:backend-notification-received", { notification: {
+                nuxtApp.callHook("backend:event:notification:received", { notification: {
                   ...camelizeKeys(eventData).data,
                   createdAt: new Date().toISOString(), // It would be better if this came from the Backend
                 } });
@@ -96,7 +96,7 @@ export default defineNuxtPlugin({
               "tracker",
               (event) => {
                 if (event.data.event === "payment_update") {
-                  nuxtApp.callHook("backend:events:tracker:payment-updated", camelizeKeys(event.data.event_data));
+                  nuxtApp.callHook("backend:event:tracker:payment-updated", camelizeKeys(event.data.event_data));
                 }
               },
             );

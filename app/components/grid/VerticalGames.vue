@@ -5,8 +5,8 @@ import type { Keyified } from "~/types/utils";
 
 const props = defineProps<{
   title: string;
-  categoryIdentifier: string | null;
-  providerIdentifier: string | null;
+  categoryIdentifier?: string;
+  providerIdentifier?: string;
   showBackButton?: boolean;
 }>();
 
@@ -22,7 +22,7 @@ const onLoadData = async () => {
   if (!canLoadMore.value) return;
   loading.value = true;
 
-  const { games: gamesFound, canLoadMore: updatedCanLoadMore, totalGames } = await gameModule.ui.listGamesPaginatingOnGrid.handle(props.categoryIdentifier, props.providerIdentifier, nextGamesPageToSearch.value);
+  const { games: gamesFound, canLoadMore: updatedCanLoadMore, totalGames } = await gameModule.ui.listGamesPaginatingOnGrid.handle(props.categoryIdentifier ?? null, props.providerIdentifier ?? null, nextGamesPageToSearch.value);
   games.value.push(...gamesFound.map(game => useAddKeyFromIdentifier(game)));
   canLoadMore.value = updatedCanLoadMore;
   nextGamesPageToSearch.value += 1;
@@ -41,53 +41,51 @@ useAsyncData(`load-games-for-vertical-${props.categoryIdentifier}`,
 </script>
 
 <template>
-  <section>
-    <GridHeader class="mb-4">
-      <template #title>
-        <div class="flex gap-4 items-center">
-          <NuxtLinkLocale
-            v-if="props.showBackButton === true"
-            :to="{ name: 'index' }"
+  <GridHeader class="mb-4">
+    <template #title>
+      <div class="flex gap-4 items-center">
+        <NuxtLinkLocale
+          v-if="props.showBackButton === true"
+          :to="{ name: 'index' }"
+        >
+          <BaseButton
+            variant="subtle"
+            size="sm"
+            class="p-1.5"
           >
-            <BaseButton
-              variant="subtle"
-              size="sm"
-              class="p-1.5"
-            >
-              <BaseIcon
-                name="lucide:arrow-left"
-                :size="24"
-              />
-            </BaseButton>
-          </NuxtLinkLocale>
+            <BaseIcon
+              name="lucide:arrow-left"
+              :size="24"
+            />
+          </BaseButton>
+        </NuxtLinkLocale>
 
-          <GridHeaderTitle :title="title" />
-        </div>
-      </template>
-    </GridHeader>
-    <GridVertical
-      aspect-ratio="3/4"
-      :columns="{ sm: 3, md: 4, lg: 6, xl: 8 }"
-      :data="games"
-      :loading="loading"
-      :total-count="totalGamesOfCategory"
-      pagination
-      @trigger:load="onLoadData"
-    >
-      <template #default="{ data: game }">
-        <GameImageLink
-          :identifier="game.identifier"
-          animation-on-hover="vertical-translate"
-        />
-      </template>
-    </GridVertical>
+        <GridHeaderTitle :title="title" />
+      </div>
+    </template>
+  </GridHeader>
+  <GridVertical
+    aspect-ratio="3/4"
+    :columns="{ sm: 3, md: 4, lg: 6, xl: 8 }"
+    :data="games"
+    :loading="loading"
+    :total-count="totalGamesOfCategory"
+    pagination
+    @trigger:load="onLoadData"
+  >
+    <template #default="{ data: game }">
+      <GameImageLink
+        :identifier="game.identifier"
+        animation-on-hover="vertical-translate"
+      />
+    </template>
+  </GridVertical>
 
-    <BaseEmpty
-      v-if="!loading && games && games.length === 0"
-      :title="$t('search.no_games')"
-      icon="lucide:search-x"
-      :size="32"
-      text-class="text-lg"
-    />
-  </section>
+  <BaseEmpty
+    v-if="!loading && games && games.length === 0"
+    :title="$t('search.no_games')"
+    icon="lucide:search-x"
+    :size="32"
+    text-class="text-lg"
+  />
 </template>

@@ -66,6 +66,7 @@ export class FindPreferredPaymentMethodOnStoreRefresh {
       currency,
       preferred.id,
     );
+
     if (limitsResult.isFailure) {
       this.logger.error(
         "Error finding pix payment limits, returning fallback amounts",

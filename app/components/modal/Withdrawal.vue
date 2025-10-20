@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
 import type { SupportedCountryFlagCode } from "~/types/constants";
+import { DEFAULT_CURRENCY_WHILE_USER_HAS_NO_WALLET } from "~/modules/wallet/domain/Wallet";
 
 // DESIGN STATUS:       ✅
 // ARCHITECTURE STATUS: ✅
@@ -8,16 +9,14 @@ import type { SupportedCountryFlagCode } from "~/types/constants";
 const userModule = useUserModule();
 const siteStore = useSiteStore();
 const walletStore = useWalletStore();
+const walletModule = useWalletModule();
 
 const userUnlockedBalance = walletStore.wallet?.balanceUnlocked ?? null;
-const paymentMethodsStore = useWalletPaymentMethodsStore();
 
-const onClosed = () => {
-  userModule.ui.emitCommandCloseUserActionModal.handle();
-};
 defineProps<{
   open: boolean;
 }>();
+
 const currency = ref<{
   code: WalletCurrency;
   countryCode: SupportedCountryFlagCode;
@@ -25,6 +24,20 @@ const currency = ref<{
   code: "BRL",
   countryCode: "BR",
 });
+
+const onClosed = () => {
+  userModule.ui.emitCommandCloseUserActionModal.handle();
+};
+
+const { data: paymentMethods } = useAsyncData(
+  async () => walletModule.ui.findPreferredPaymentMethodsOnStoreRefresh.handle(
+    walletStore.wallet?.currency ?? DEFAULT_CURRENCY_WHILE_USER_HAS_NO_WALLET,
+  ),
+  {
+    server: true,
+    lazy: true,
+  },
+);
 </script>
 
 <template>
@@ -43,14 +56,14 @@ const currency = ref<{
     </template>
 
     <FormWithdrawal
-      v-if="paymentMethodsStore.status === 'ready'"
-      :payment-method-limits="paymentMethodsStore.limits"
-      :payment-method-id="paymentMethodsStore.preferred.id"
+      v-if="paymentMethods"
+      :payment-method-limits="paymentMethods.limits"
+      :payment-method-id="paymentMethods.preferred.id"
       :currency="currency"
       :user-unlocked-balance="userUnlockedBalance"
     />
     <BaseSkeleton
-      v-else-if="paymentMethodsStore.status === 'loading'"
+      v-else
       class="mt-2 w-full h-[30vh]"
       :loading="true"
     />

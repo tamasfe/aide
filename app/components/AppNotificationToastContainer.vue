@@ -17,7 +17,7 @@ watch(notifications.data, (value) => {
   value?.map(notification => notificationsStore.showToast(notification));
 });
 
-nuxtApp.hook("backend:events:backend-notification-received", async ({ notification }) =>
+nuxtApp.hook("backend:event:notification:received", async ({ notification }) =>
   notificationModule.ui.showNotificationToastToStoreFromWebsocketBackendNotification.handle(notification));
 </script>
 

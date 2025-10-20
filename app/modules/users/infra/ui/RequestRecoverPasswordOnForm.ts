@@ -28,7 +28,7 @@ export class RequestRecoverPasswordOnForm {
       return this.t("modal_forgot_password.error_unknown");
     }
 
-    await this.nuxtApp.callHook("frontend:commands:modals:close-user-interaction-modal");
+    await this.nuxtApp.callHook("frontend:command:modal:close");
 
     return null;
   }

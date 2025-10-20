@@ -24,7 +24,7 @@ export class CreateDepositFlow {
     }
 
     await this.nuxtApp.callHook(
-      "frontend:events:payments:deposit-flow-created",
+      "frontend:event:payment:deposit:created",
       {
         paymentMethodId,
         flowId: Number(result.value.flowId),

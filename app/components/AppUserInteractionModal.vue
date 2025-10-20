@@ -14,7 +14,7 @@ const modalIsJurisdictionModal = (modal: UserInteractionModalState["modal"] | nu
   return modal === "restrict_license_no_alternative" || modal === "restrict_license_alternative" || modal === "restrict_expanding";
 };
 
-nuxtApp.hook("frontend:commands:modals:open-user-interaction-modal", (event) => {
+nuxtApp.hook("frontend:command:modal:open", (event) => {
   if (modalIsJurisdictionModal(state.value.modal) && !modalIsJurisdictionModal(event.modal)) {
     return;
   }
@@ -23,7 +23,7 @@ nuxtApp.hook("frontend:commands:modals:open-user-interaction-modal", (event) => 
   isOpen.value = true;
 });
 
-nuxtApp.hook("frontend:commands:modals:close-user-interaction-modal", () => {
+nuxtApp.hook("frontend:command:modal:close", () => {
   if (modalIsJurisdictionModal(state.value.modal)) {
     return;
   }
@@ -31,7 +31,7 @@ nuxtApp.hook("frontend:commands:modals:close-user-interaction-modal", () => {
   isOpen.value = false;
 });
 
-nuxtApp.hook("backend:events:payments:payment-status-updated", ({ data }) => {
+nuxtApp.hook("backend:event:payment:status-updated", ({ data }) => {
   // If any of the invalid jurisdiction modals are open: keep them open
   if (modalIsJurisdictionModal(state.value.modal)) {
     return;

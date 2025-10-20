@@ -5,25 +5,26 @@ const games = useGameModule();
 
 definePageMeta({
   layout: "carousel",
+  scrollToTop: false,
 });
 
 useHead({
   title: t("page.home", { siteName: siteStore.currentSite.name }),
 });
 
-const { data: gameCategories, pending } = useAsyncData("home-page-game-categories",
+const { data: gameCategories } = useAsyncData(
   async () => games.ui.searchGameCategoriesByGroup.handle("home", true),
   {
     server: true,
     lazy: true,
-    default: () => [],
+    transform: data => data.filter(category => category.games && category.games.length > 0),
   },
 );
 </script>
 
 <template>
   <div>
-    <template v-if="pending">
+    <template v-if="!gameCategories">
       <GridHorizontalGamesLoading class="mb-6 -md-4" />
       <GridHorizontalGamesLoading class="mb-6 -md-4" />
       <GridHorizontalGamesLoading class="mb-6 -md-4" />
@@ -31,7 +32,7 @@ const { data: gameCategories, pending } = useAsyncData("home-page-game-categorie
 
     <template v-else>
       <GridHorizontalGames
-        v-for="category in gameCategories?.filter(cat => cat.games && cat.games.length > 0)"
+        v-for="category in gameCategories"
         :key="category.identifier"
         class="mb-6 -mx-4"
         :category-identifier="category.identifier"

@@ -17,7 +17,7 @@ export class LoginUser {
       return result;
     }
 
-    this.nuxtApp.callHook("frontend:events:users:user-logged-in");
+    this.nuxtApp.callHook("frontend:event:user:logged-in");
     return success();
   }
 }

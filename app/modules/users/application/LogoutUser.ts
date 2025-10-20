@@ -15,7 +15,7 @@ export class LogoutUser {
       return result;
     }
 
-    this.nuxtApp.callHook("frontend:events:users:user-logged-out");
+    this.nuxtApp.callHook("frontend:event:user:logged-out");
 
     return success();
   }

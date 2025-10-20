@@ -79,18 +79,18 @@ export type UserInteractionModalState
 
 export interface AsyncMessagesTypes {
   a: undefined;
-  // "frontend:commands:modals:open-user-interaction-modal": UserInteractionModalState;
-  // "frontend:commands:modals:close-user-interaction-modal": object;
+  // "frontend:command:modal:open": UserInteractionModalState;
+  // "frontend:command:modal:close": object;
 
-  // "frontend:commands:modals:open-live-chat": object;
-  // "frontend:commands:modals:close-live-chat": object;
-  // "frontend:commands:modals:live-chat-is-ready": object;
+  // "frontend:command:live-chat:open": object;
+  // "frontend:command:live-chat:close": object;
+  // "frontend:event:live-chat:ready": object;
 
-  // "frontend:events:users:user-logged-in": object;
-  // "frontend:events:users:user-logged-out": object;
-  // "frontend:events:users:user-closed-account": object;
-  // "frontend:events:users:password-recovered": object;
-  // "frontend:events:users:user-settings-updated": {
+  // "frontend:event:user:logged-in": object;
+  // "frontend:event:user:logged-out": object;
+  // "frontend:event:user:account-closed": object;
+  // "frontend:event:user:password-recovered": object;
+  // "frontend:event:user:settings-updated": {
   //   settings: {
   //     locale?: SupportedLocale;
   //     password: boolean;
@@ -112,14 +112,14 @@ export interface AsyncMessagesTypes {
   //   };
   // };
 
-  // "frontend:events:signup-flows:signup-flow-submitted": {
+  // "frontend:event:signup-flow:submitted": {
   //   id: string;
   // };
 
-  // "frontend:events:games:game-session-started": undefined;
-  // "frontend:events:games:game-session-finished": undefined;
+  // "frontend:event:game-session:started": undefined;
+  // "frontend:event:game-session:finished": undefined;
 
-  // "frontend:events:payments:deposit-flow-created": {
+  // "frontend:event:payment:deposit:created": {
   //   paymentMethodId: number;
   //   flowId: number;
   //   code: string;
@@ -127,42 +127,42 @@ export interface AsyncMessagesTypes {
   //   currency: WalletCurrency;
   //   totalDeposits: number;
   // };
-  // "frontend:events:payments:withdrawal-flow-created": {
+  // "frontend:event:payment:withdrawal:created": {
   //   flowId: number;
   //   amount: number;
   //   currency: WalletCurrency;
   //   totalWithdrawals: number;
   // };
 
-  // "frontend:events:websockets:connection-state-changed": {
+  // "frontend:event:websocket:state-changed": {
   //   state: "connected" | "disconnected";
   // };
 
   // /**
   //  * Events coming from the Backend
   //  */
-  // "backend:events:payments:payment-status-updated": CamelizeKeys<
+  // "backend:event:payment:status-updated": CamelizeKeys<
   //   Extract<
   //     components["schemas"]["WebsocketServerEvent"]["data"],
   //     { type: "payment_status_update" }
   //   >
   // >;
-  // "backend:events:tracker:payment-updated": CamelizeKeys<
+  // "backend:event:tracker:payment-updated": CamelizeKeys<
   //   Extract<
   //     components["schemas"]["TrackerType"],
   //     { event: "payment_update" }
   //   >["event_data"]
   // >;
-  // "backend:events:kyc:kyc-process-completed": {
+  // "backend:event:kyc:completed": {
   //   notificationId: number;
   // };
-  // "backend:events:wallets:wallet-balance-updated": CamelizeKeys<
+  // "backend:event:wallet:balance-updated": CamelizeKeys<
   //   Extract<
   //     components["schemas"]["WebsocketServerEvent"],
   //     { type: "balance_update" }
   //   >["data"]
   // >;
-  // "backend:events:backend-notification-received": {
+  // "backend:event:notification:received": {
   //   notification: NotificationBackend;
   // };
 }
