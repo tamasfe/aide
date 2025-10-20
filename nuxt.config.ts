@@ -107,7 +107,7 @@ export default defineNuxtConfig({
     transpile: ["applicationinsights"],
   },
 
-  sourcemap: { client: process.env.NODE_ENV === "development" ? true : "hidden" },
+  sourcemap: { client: "hidden" },
 
   future: {
     compatibilityVersion: 4,
