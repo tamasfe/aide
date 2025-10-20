@@ -34,7 +34,7 @@ nuxtApp.hook("frontend:commands:modals:live-chat-closed", () => {
       sm:min-h-[calc(100vh-3.5rem)]
       relative
       pt-4
-      sm:pt-6
+      xl:pt-6
       max-w-screen-xl
       mx-auto
       w-full
@@ -43,7 +43,7 @@ nuxtApp.hook("frontend:commands:modals:live-chat-closed", () => {
       <slot />
     </div>
     <AppFooter class="mt-14 pb-14 sm:pb-0" />
-    <NavMobile @click:menu="sidebarIsOpen = !sidebarIsOpen" />
+    <NavMobile class="sm:hidden" @click:menu="sidebarIsOpen = !sidebarIsOpen" />
     <ClientOnly>
       <AppNotificationToastContainer />
       <LazyLiveChat />

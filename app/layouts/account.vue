@@ -44,7 +44,7 @@ nuxtApp.hook("frontend:commands:modals:live-chat-closed", () => {
       <slot />
     </div>
     <AppFooter class="mt-14 pb-14 sm:pb-0" />
-    <NavMobile @click:menu="sidebarIsOpen = !sidebarIsOpen" />
+    <NavMobile class="sm:hidden" @click:menu="sidebarIsOpen = !sidebarIsOpen" />
     <ClientOnly>
       <AppNotificationToastContainer />
       <LazyLiveChat />

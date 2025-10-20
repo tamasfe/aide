@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useFullscreen } from "@vueuse/core";
+import { useClipboard, useFullscreen } from "@vueuse/core";
 import type { Game } from "~/modules/games/domain/Game";
 import type { Response as SessionResponse } from "~/modules/games/infra/ui/CreateGameSessionFromGamePage";
 import type { Response as DemoSessionResponse } from "~/modules/games/infra/ui/CreateGameSessionDemoFromGamePage";
@@ -31,6 +31,7 @@ const launchMode = ref<"session" | "demo" | undefined>(undefined);
 const el = useTemplateRef("gameFrame");
 const siteStore = useSiteStore();
 const { params } = useRoute();
+const notificationsStore = useNotificationsStore();
 const { enter } = useFullscreen(el);
 
 useHead({
@@ -41,12 +42,44 @@ const authenticated = computed(() => {
   return userStore.isAuthenticated;
 });
 
+const clipboard = useClipboard();
+
 const { data: gameCategories } = useAsyncData(async () => {
   return games.ui.searchGameCategoriesByGroup.handle("game_page", true);
 }, {
   server: true,
   lazy: true,
 });
+
+const copySessionUrlToClipboard = () => {
+  if (props.gameSession && !props.gameSession.isFailure) {
+    const id = useId();
+    clipboard.copy(props.gameSession.value.url);
+    notificationsStore.showToast({
+      id,
+      title: "Launch URL copied",
+      message: "The game launch URL has been copied to your clipboard.",
+      variant: "info",
+      createdAt: new Date(),
+
+    });
+  }
+};
+
+const copyDemoSessionUrlToClipboard = () => {
+  if (props.gameDemoSession && !props.gameDemoSession.isFailure) {
+    const id = useId();
+    clipboard.copy(props.gameDemoSession.value.url);
+    notificationsStore.showToast({
+      id,
+      title: "Demo launch URL copied",
+      message: "The game demo launch URL has been copied to your clipboard.",
+      variant: "info",
+      createdAt: new Date(),
+
+    });
+  }
+};
 </script>
 
 <template>
@@ -83,7 +116,8 @@ const { data: gameCategories } = useAsyncData(async () => {
                 size="xl"
                 class="hidden md:flex w-full gap-3 max-w-72"
                 :disabled="!gameSession"
-                @click="launchMode = 'session'"
+                @click.shift="copySessionUrlToClipboard()"
+                @click.exact="launchMode = 'session'"
               >
                 <BaseIcon
                   name="lucide:play"
@@ -92,7 +126,7 @@ const { data: gameCategories } = useAsyncData(async () => {
                 {{ $t("button.play_now") }}
               </BaseButton>
 
-              <!-- This button is show on mobile and will
+              <!-- This button is shown on mobile and will
                  redirect to the game play page -->
               <NuxtLinkLocale
                 class="md:hidden"
@@ -120,7 +154,8 @@ const { data: gameCategories } = useAsyncData(async () => {
                 size="xl"
                 class="mt-6 max-w-64 gap-3 hidden md:flex"
                 :disabled="!gameDemoSession"
-                @click="launchMode = 'demo'"
+                @click.shift="copyDemoSessionUrlToClipboard()"
+                @click.exact="launchMode = 'demo'"
               >
                 <BaseIcon
                   name="lucide:rocket"
@@ -157,7 +192,8 @@ const { data: gameCategories } = useAsyncData(async () => {
                 size="xl"
                 class="mt-6 max-w-64 gap-3 hidden md:flex"
                 :disabled="!gameDemoSession"
-                @click="launchMode = 'demo'"
+                @click.shift="copyDemoSessionUrlToClipboard()"
+                @click.exact="launchMode = 'demo'"
               >
                 <BaseIcon
                   name="lucide:rocket"

@@ -23,7 +23,7 @@ nuxtApp.hook("backend:events:backend-notification-received", async ({ notificati
 
 <template>
   <!-- Global notification live region, render this permanently at the end of the document -->
-  <div aria-live="assertive" class="z-10 pointer-events-none fixed inset-0 px-4 py-20 sm:p-6 flex items-start">
+  <div aria-live="assertive" class="z-10 pointer-events-none fixed left-0 right-0 top-14 bottom-14 sm:bottom-0 p-4 flex items-start">
     <div class="flex w-full flex-col items-center space-y-4 sm:items-end">
       <!-- Notification panel, dynamically insert this into the live region when it needs to be displayed -->
       <TransitionGroup

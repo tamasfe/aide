@@ -80,7 +80,6 @@ const items = computed<NavMobileItem[]>(() => [
       fixed
       flex
       z-10
-      sm:hidden
       bottom-0
       left-0
       right-0

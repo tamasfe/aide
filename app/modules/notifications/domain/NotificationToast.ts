@@ -1,5 +1,5 @@
 export type NotificationToast = {
-  id: number;
+  id: number | string;
   createdAt: Date;
   variant: "success" | "error" | "info" | "warning";
   title: string;
