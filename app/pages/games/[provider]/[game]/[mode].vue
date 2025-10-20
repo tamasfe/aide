@@ -54,7 +54,7 @@ useHead({
 <template>
   <section class="relative flex-1 overflow-hidden">
     <div class="text-subtle absolute inset-0 flex items-center justify-center -z-10">
-      <BaseSpinner />
+      <BaseSpinner :size="36" />
     </div>
     <GameLauncher
       ref="gameFrameLauncher"

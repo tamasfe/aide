@@ -131,6 +131,6 @@ const onClickLink = () => {
   />
 
   <div v-if="loading && noResults" class="flex items-center justify-center py-10">
-    <BaseSpinner class="text-subtle" :size="32" />
+    <BaseSpinner class="text-subtle" :size="36" />
   </div>
 </template>

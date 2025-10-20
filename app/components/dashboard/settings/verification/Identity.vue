@@ -29,7 +29,7 @@ const onClickUpload = (responseData: Exclude<FindUserKycStatusResponseI["data"],
     </template>
     <ClientOnly>
       <div v-if="!kycResponse" class="py-6 w-full flex items-center justify-center">
-        <BaseSpinner class="text-subtle" :size="32" />
+        <BaseSpinner class="text-subtle" :size="36" />
       </div>
       <div v-if="kycResponse?.status === 'INACTIVE'" class="space-y-8">
         <BaseButton

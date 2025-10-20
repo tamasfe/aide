@@ -83,7 +83,7 @@ if (!isServer) {
     <div v-if="loading" class="py-16">
       <BaseSpinner
         class="text-subtle mx-auto 6"
-        :size="32"
+        :size="36"
       />
     </div>
 

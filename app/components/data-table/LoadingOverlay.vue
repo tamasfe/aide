@@ -12,7 +12,7 @@ defineProps<{
     >
       <BaseSpinner
         class="text-subtle"
-        :size="32"
+        :size="36"
       />
     </div>
   </Transition>

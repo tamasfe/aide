@@ -2,7 +2,7 @@
 withDefaults(defineProps<{
   size?: number;
 }>(), {
-  size: 36,
+  size: 24,
 });
 </script>
 
