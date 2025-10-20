@@ -170,12 +170,6 @@ export default defineNuxtConfig({
 
   // @nuxtjs/i18n
   i18n: {
-
-    // We have to use this placeholder domain, to force i18n into a mode that allows us to dynamically
-    // override the baseUrl at runtime depending on the current site via a plugin.
-    baseUrl: () => {
-      return "http://placeholder-domain-for-base-url.com";
-    },
     locales: [
       {
         language: "en-US",

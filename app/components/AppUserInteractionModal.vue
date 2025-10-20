@@ -3,7 +3,6 @@ import type { UserInteractionModalState } from "~/packages/async-messages/async-
 import type { AlertProps } from "./base/Alert.vue";
 
 const { searchParams } = useRequestURL();
-const gameSessionStore = useGameSessionStore();
 const user = useUserModule();
 const nuxtApp = useNuxtApp();
 
@@ -43,23 +42,6 @@ nuxtApp.hook("backend:event:payment:status-updated", ({ data }) => {
     isOpen.value = false;
   }
 });
-
-const SECONDS_TO_AUTO_OPEN_PROMO_MODAL = 10;
-const openPromoModalIfPossible = () => {
-  if (isOpen.value || gameSessionStore.playing) {
-    setTimeout(() => {
-      openPromoModalIfPossible();
-    }, SECONDS_TO_AUTO_OPEN_PROMO_MODAL * 1000);
-    return;
-  }
-  user.ui.openUserPromoActionModalOncePerDay.handle(new Date());
-};
-
-if (!import.meta.server) {
-  setTimeout(() => {
-    openPromoModalIfPossible();
-  }, SECONDS_TO_AUTO_OPEN_PROMO_MODAL * 1000);
-}
 
 const recoverPasswordToken = useState("user-modal-recover-password-token", () => searchParams.get("recovery-token") || "");
 
@@ -113,9 +95,7 @@ router.beforeResolve((to, from, next) => {
     :open="isOpen && state.modal === 'recover_password'"
     :token="recoverPasswordToken"
   />
-  <ModalPromoUserAction
-    :open="isOpen && state.modal === 'promo_user_action'"
-  />
+  <ModalPromoUserAction />
   <ModalCancelRegistration
     :open="isOpen && state.modal === 'cancel_registration'"
   />

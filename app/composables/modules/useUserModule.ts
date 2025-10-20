@@ -10,8 +10,6 @@ import { UpdateUserSettingsChangedConsents } from "~/modules/users/application/U
 import { CloseAccount } from "~/modules/users/application/CloseAccount";
 import { AuthenticatedUserRepositoryDumb } from "~/modules/users/infra/AuthenticatedUserRepositoryDumb";
 import { EmitCommandOpenUserActionModalModal } from "~/modules/users/infra/ui/EmitCommandOpenUserActionModal";
-import { PromoUserActionActivityLocalStorage } from "~/modules/users/infra/PromoUserActionActivityLocalStorage";
-import { OpenUserPromoActionModalOncePerDay } from "~/modules/users/infra/ui/OpenUserPromoActionModalOncePerDay";
 import { AuthenticatedUserSearcherGirobet } from "~/modules/users/infra/AuthenticatedUserRepositoryGirobet";
 import { AuthenticationRepositoryDumb } from "~/modules/users/infra/AuthenticationRepositoryDumb";
 import { AuthenticationRepositoryGirobet } from "~/modules/users/infra/AuthenticationRepositoryGirobet";
@@ -53,12 +51,6 @@ export default function () {
   const updateUserSettingsCommand = new UpdateUserSettings(authenticatedUserRepo, nuxtApp);
 
   const emitCommandOpenUserActionModal = new EmitCommandOpenUserActionModalModal(nuxtApp);
-  const promoUserActionActivityLocalStorage = new PromoUserActionActivityLocalStorage();
-  const openUserPromoActionModalOncePerDay = new OpenUserPromoActionModalOncePerDay(
-    promoUserActionActivityLocalStorage,
-    emitCommandOpenUserActionModal,
-    logger,
-  );
 
   return {
     queries: {
@@ -117,7 +109,6 @@ export default function () {
         logger,
         nuxtApp.$i18n.t,
       ),
-      openUserPromoActionModalOncePerDay,
     },
   };
 }

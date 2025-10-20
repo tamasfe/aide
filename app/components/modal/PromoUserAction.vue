@@ -1,17 +1,46 @@
 <script setup lang="ts">
-defineProps({
-  open: {
-    type: Boolean,
-    required: true,
-  },
-});
+import { useLocalStorage } from "@vueuse/core";
 
 const userModule = useUserModule();
 const userStore = useUserStore();
+const gameSessionStore = useGameSessionStore();
+const nuxtApp = useNuxtApp();
+
+const open = ref(false);
 
 const onClosed = () => {
   userModule.ui.emitCommandCloseUserActionModal.handle();
 };
+
+const lastOpened = useLocalStorage<Date>("promo_last_opened", new Date(0));
+
+const SECONDS_TO_AUTO_OPEN_PROMO_MODAL = 10;
+
+nuxtApp.hook("frontend:command:modal:promo:open", () => {
+  open.value = true;
+});
+
+nuxtApp.hook("frontend:command:modal:promo:close", () => {
+  open.value = false;
+});
+
+nuxtApp.hook("frontend:command:modal:close", () => {
+  open.value = false;
+});
+
+function isSameDay(first: Date, second: Date): boolean {
+  return Math.abs(first.getTime() - second.getTime()) < 24 * 60 * 60 * 1000;
+}
+
+onMounted(() => {
+  const interval = setInterval(() => {
+    if (!gameSessionStore.playing && !isSameDay(lastOpened.value, new Date())) {
+      open.value = true;
+      lastOpened.value = new Date();
+      clearInterval(interval);
+    }
+  }, SECONDS_TO_AUTO_OPEN_PROMO_MODAL * 1000);
+});
 </script>
 
 <template>

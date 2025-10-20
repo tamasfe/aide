@@ -29,15 +29,23 @@ declare global {
 
 declare module "#app" {
   interface RuntimeNuxtHooks {
+    // Live Chat
     "frontend:command:live-chat:open": () => HookResult;
     "frontend:event:live-chat:opened": () => HookResult;
     "frontend:command:live-chat:close": () => HookResult;
     "frontend:event:live-chat:closed": () => HookResult;
     "frontend:event:live-chat:ready": () => HookResult;
 
-    "frontend:command:modal:open": (modal: UserInteractionModalState) => HookResult;
-    "frontend:command:modal:close": () => HookResult;
+    // Modals
 
+    // @deprecated
+    "frontend:command:modal:open": (modal: UserInteractionModalState) => HookResult;
+
+    "frontend:command:modal:close": () => HookResult;
+    "frontend:command:modal:promo:open": () => HookResult;
+    "frontend:command:modal:promo:close": () => HookResult;
+
+    // User
     "frontend:event:user:logged-in": () => HookResult;
     "frontend:event:user:logged-out": () => HookResult;
     "frontend:event:user:account-closed": () => HookResult;
