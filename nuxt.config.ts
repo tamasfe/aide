@@ -62,7 +62,7 @@ export default defineNuxtConfig({
       apiClientProtocol: "http://",
       errorCapturingEnabled: true,
       release: undefined,
-      environment: process.env.NODE_ENV || "development",
+      environment: "development",
       logLevel: "info",
       serviceName: "frontend",
       scripts: {

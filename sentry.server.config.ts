@@ -11,7 +11,7 @@ Sentry.init({
 
   normalizeDepth: 5, // Or however deep you want your state context to be.
 
-  environment: process.env.NODE_ENV || "development",
+  environment: process.env.NUXT_PUBLIC_ENVIRONMENT || "development",
   release: process.env.NUXT_PUBLIC_RELEASE || "development",
 
   ignoreErrors: [
