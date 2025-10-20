@@ -1,7 +1,7 @@
 import type { LoggerConsole } from "~/packages/logger/LoggerConsole";
 
 export default function (): LoggerConsole {
-  const nuxtApp = useNuxtApp();
+  const { $logger } = useNuxtApp();
 
-  return nuxtApp.$logger;
+  return $logger;
 }

@@ -39,8 +39,10 @@ const onSubmit = handleSubmit(async (formData) => {
     return;
   }
 
+  const id = useId();
+
   notifications.showToast({
-    id: Date.now(),
+    id,
     title: t("modal_forgot_password.success_notification_title"),
     message: t("modal_forgot_password.success_notification_message"),
     createdAt: new Date(),

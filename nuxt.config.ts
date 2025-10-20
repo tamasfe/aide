@@ -1,4 +1,5 @@
 // https://nuxt.com/docs/api/nuxt-config
+
 export default defineNuxtConfig({
   modules: [
     "@nuxt/eslint",
@@ -59,7 +60,6 @@ export default defineNuxtConfig({
     apiBaseUrl: "http://localhost:3050",
     public: {
       apiClientProtocol: "http://",
-      env: "development",
       errorCapturingEnabled: true,
       release: undefined,
       logLevel: "info",
@@ -71,6 +71,9 @@ export default defineNuxtConfig({
         clarity: {
           id: "t2diq6qift",
         },
+      },
+      sentry: {
+        dsn: "",
       },
       games: {
         apiMode: "api",

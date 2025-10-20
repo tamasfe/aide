@@ -7,4 +7,5 @@ metadata:
 data:
   NUXT_API_BASE_URL: "http://{{ .Values.config.internal_api_domain }}"
   NUXT_PUBLIC_API_CLIENT_PROTOCOL: "https://"
-  NUXT_PUBLIC_ENV: "production"
+  NUXT_PUBLIC_SENTRY_DSN: "{{ .Values.config.sentry_dsn }}"
+  NODE_ENV: "{{ .Values.config.environment }}"

@@ -170,6 +170,9 @@ config:
   tracking_fingerprint_js_public_api_key: "ovcHpM99bHR6cWYgKHlA"
   tracking_fingerprint_js_script_url_path: "/EkkWvBzKSGMIQZw4/1qDponqL8OE8LDgt"
 
+  sentry_dsn: ""
+  environment: "production"
+
 # Extra environment variables
 extraEnvVars: []
 # - name: FOO

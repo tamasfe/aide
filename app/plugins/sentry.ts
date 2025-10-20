@@ -9,19 +9,6 @@ export default defineNuxtPlugin({
     const userStore = useUserStore();
     const logger = useLogger();
 
-    if (userStore.user) {
-      try {
-        Sentry.setUser({
-          id: userStore.user.id.toString(),
-          email: userStore.user.email,
-          username: userStore.user.username,
-        });
-      }
-      catch (error) {
-        logger.error("Error setting Sentry user in plugin init", InfrastructureError.newFromUnknownError({ user: userStore.user }, error));
-      }
-    }
-
     watch(() => userStore.user, (user) => {
       try {
         if (!user) {
@@ -38,6 +25,6 @@ export default defineNuxtPlugin({
       catch (error) {
         logger.error("Error setting Sentry user in userStore watch", InfrastructureError.newFromUnknownError({ user }, error));
       }
-    });
+    }, { immediate: true });
   },
 });

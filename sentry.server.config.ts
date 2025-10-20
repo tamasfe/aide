@@ -1,7 +1,10 @@
 import * as Sentry from "@sentry/nuxt";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 Sentry.init({
-  dsn: "https://9d48502feda3a5b89674c4ad50c71b83@o4508212543684608.ingest.us.sentry.io/4508212545454080",
+  dsn: process.env.NUXT_PUBLIC_SENTRY_DSN,
 
   // We recommend adjusting this value in production, or using tracesSampler for finer control
   tracesSampleRate: 1.0,

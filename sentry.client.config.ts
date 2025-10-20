@@ -11,7 +11,7 @@ const runtimeConfig = useRuntimeConfig();
 Sentry.init({
   // If set up, you can use your runtime config here
   // dsn: useRuntimeConfig().public.sentry.dsn,
-  dsn: "https://9d48502feda3a5b89674c4ad50c71b83@o4508212543684608.ingest.us.sentry.io/4508212545454080",
+  dsn: runtimeConfig.public.sentry.dsn,
 
   tracesSampleRate: 1.0, // We recommend adjusting this value in production, or using tracesSampler for finer control
   replaysSessionSampleRate: 0.1, // This sets the sample rate at 10%. You may want to change it to 100% while in development and then sample at a lower rate in production.

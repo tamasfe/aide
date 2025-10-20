@@ -61,7 +61,6 @@ const copySessionUrlToClipboard = () => {
       message: "The game launch URL has been copied to your clipboard.",
       variant: "info",
       createdAt: new Date(),
-
     });
   }
 };
@@ -76,7 +75,6 @@ const copyDemoSessionUrlToClipboard = () => {
       message: "The game demo launch URL has been copied to your clipboard.",
       variant: "info",
       createdAt: new Date(),
-
     });
   }
 };
