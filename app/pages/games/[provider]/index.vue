@@ -38,9 +38,11 @@ watch(() => providerFromApi.value, (provider) => {
 </script>
 
 <template>
-  <GridVerticalGames
-    :title="providerFromApi?.name || ''"
-    :provider-identifier="providerIdentifier"
-    :show-back-button="true"
-  />
+  <div>
+    <GridVerticalGames
+      :title="providerFromApi?.name || ''"
+      :provider-identifier="providerIdentifier"
+      :show-back-button="true"
+    />
+  </div>
 </template>

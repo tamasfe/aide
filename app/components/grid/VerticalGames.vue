@@ -64,6 +64,7 @@ useAsyncData(`load-games-for-vertical-${props.categoryIdentifier}`,
       </div>
     </template>
   </GridHeader>
+
   <GridVertical
     aspect-ratio="3/4"
     :columns="{ sm: 3, md: 4, lg: 6, xl: 8 }"

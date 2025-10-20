@@ -25,8 +25,10 @@ const categoryTitle = t(`category.${categoryIdentifier}`);
 </script>
 
 <template>
-  <GridVerticalGames
-    :title="categoryTitle"
-    :category-identifier="String(categoryIdentifier)"
-  />
+  <div>
+    <GridVerticalGames
+      :title="categoryTitle"
+      :category-identifier="String(categoryIdentifier)"
+    />
+  </div>
 </template>

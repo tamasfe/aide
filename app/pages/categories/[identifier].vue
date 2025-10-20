@@ -20,9 +20,11 @@ useHead({
 </script>
 
 <template>
-  <GridVerticalGames
-    :title="categoryTitle"
-    :category-identifier="String(categoryIdentifier)"
-    :show-back-button="true"
-  />
+  <div>
+    <GridVerticalGames
+      :title="categoryTitle"
+      :category-identifier="String(categoryIdentifier)"
+      :show-back-button="true"
+    />
+  </div>
 </template>

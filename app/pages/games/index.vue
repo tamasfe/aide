@@ -10,8 +10,10 @@ useHead({ title });
 </script>
 
 <template>
-  <GridVerticalGames
-    :title="title"
-    :show-back-button="true"
-  />
+  <div>
+    <GridVerticalGames
+      :title="title"
+      :show-back-button="true"
+    />
+  </div>
 </template>
