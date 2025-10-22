@@ -23,10 +23,9 @@ export default function<T extends keyof WebsocketTickerMessagesByType>(
   const isFocused = useWindowFocus();
 
   let listenerWrapperReference: WebsocketEventListener | null = null;
-  let isSubscribed = false;
 
   const subscribe = async (): Promise<void> => {
-    if (isSubscribed) {
+    if (listenerWrapperReference) {
       return;
     }
 
@@ -38,11 +37,10 @@ export default function<T extends keyof WebsocketTickerMessagesByType>(
     }
 
     listenerWrapperReference = result.value;
-    isSubscribed = true;
   };
 
   const unsubscribe = async (): Promise<void> => {
-    if (!isSubscribed || !listenerWrapperReference) {
+    if (!listenerWrapperReference || !listenerWrapperReference) {
       return;
     }
 
@@ -54,7 +52,6 @@ export default function<T extends keyof WebsocketTickerMessagesByType>(
     }
 
     listenerWrapperReference = null;
-    isSubscribed = false;
   };
 
   onMounted(async () => {
