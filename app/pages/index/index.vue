@@ -13,7 +13,10 @@ useHead({
 });
 
 const { data: gameCategories } = useAsyncData(
-  async () => games.ui.searchGameCategoriesByGroup.handle("home", true),
+  async () => {
+    console.log("Fetching game categories for home page");
+    return await games.ui.searchGameCategoriesByGroup.handle("home", true);
+  },
   {
     server: true,
     lazy: true,

@@ -29,7 +29,7 @@ watch(open, (newValue) => {
 
 const { data: paymentMethods, execute } = useAsyncData(
   "payment-methods",
-  async () => walletModule.ui.findPreferredPaymentMethodsOnStoreRefresh.handle(),
+  walletModule.ui.findPreferredPaymentMethodsOnStoreRefresh.handle,
   {
     server: true,
     lazy: true,
