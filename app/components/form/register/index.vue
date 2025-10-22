@@ -34,7 +34,7 @@ const signupFlows = useSignupModule();
 const clicks = useClickTrackingModule();
 const { pulse: pulseFormErrors } = provideRegisterFormErrorPulse();
 const logger = useLogger();
-const user = useUserModule();
+const nuxtApp = useNuxtApp();
 
 const errorMessage = ref<null | string>(null);
 const loadingSubmit = ref(false);
@@ -83,6 +83,10 @@ const onSubmit = handleSubmit(async () => {
 
   const errorSubmitting = await signupFlows.ui.submitSignupFlowOnFormSubmission.handle();
 
+  if (!errorSubmitting) {
+    await signupFlows.ui.deleteCurrentSignupFlowIdOnSignupFlowSubmitted.handle();
+  }
+
   loadingSubmit.value = false;
   errorMessage.value = errorSubmitting;
 }, ({ results }) => {
@@ -128,7 +132,7 @@ const loading = computed<boolean>(() => {
       <NuxtLinkLocale
         :to="{ name: 'terms' }"
         class="font-semibold md:hover:text-subtle-light"
-        @click="() => user.ui.emitCommandCloseUserActionModal.handle()"
+        @click="nuxtApp.callHook('frontend:command:modal:close')"
       >
         {{ $t("page.terms") }}
       </NuxtLinkLocale>
@@ -156,7 +160,7 @@ const loading = computed<boolean>(() => {
         variant="ghost"
         size="ghost"
         class="text-primary md:hover:underline"
-        @click="user.ui.emitCommandOpenUserActionModal.handle('login')"
+        @click="nuxtApp.callHook('frontend:command:modal:login:open')"
       >
         {{ $t("button.login") }}
       </BaseButton>

@@ -6,14 +6,11 @@ import { ClicksTrackingRepoDumb } from "~/packages/click-tracking/infra/ClicksTr
 import { FingerprintService } from "~/packages/click-tracking/infra/FingerprintService";
 import { MarketingSearchParamsRepoLocalStorage } from "~/modules/search-params-tracking/marketing-search-params-repo-local-storage";
 import { StoreMarketingSearchParams } from "~/modules/search-params-tracking/ui/store-marketing-search-params";
-import { HandleOpenModalSearchParam } from "~/modules/search-params-tracking/ui/handle-open-modal-search-param";
 import { UsersPreviousActivityCookieRepo } from "~/modules/search-params-tracking/users-previous-activity-cookie-repo";
 
 export default function () {
   const runtimeConfig = useRuntimeConfig();
   const logger = useLogger();
-  const nuxtApp = useNuxtApp();
-  const router = useRouter();
 
   const siteStore = useSiteStore();
 
@@ -51,12 +48,6 @@ export default function () {
       updateTrackingSession: new UpdateTrackingSession(
         fingerprintService,
         clicksTrackingRepo,
-      ),
-      handleOpenModalSearchParam: new HandleOpenModalSearchParam(
-        usersPreviousActivityCookieRepo,
-        logger,
-        nuxtApp,
-        () => router.push({ path: "/settings/account" }).then(() => {}),
       ),
       setUsersPreviousActivity: async (value: string): Promise<void> => {
         const result = await usersPreviousActivityCookieRepo.set(value);

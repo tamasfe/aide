@@ -20,15 +20,11 @@ const props = defineProps({
     type: Object as PropType<components["schemas"]["UserWalletPaymentMethodResponse"]>,
     required: false,
   },
-  onClickDeposit: {
-    type: Function as PropType<() => Promise<void>>,
-    required: true,
-  },
-  onClickWithdraw: {
-    type: Function as PropType<() => Promise<void>>,
-    required: true,
-  },
 });
+
+const emit = defineEmits<{
+  (e: "click-deposit" | "click-withdraw"): void;
+}>();
 
 const clipboard = useClipboard({
   source: props.walletId.toString(),
@@ -76,7 +72,7 @@ const clipboard = useClipboard({
           variant="secondary"
           size="md"
           class="w-full"
-          @click="onClickWithdraw"
+          @click="emit('click-withdraw')"
         >
           {{ $t('button.withdraw') }}
         </BaseButton>
@@ -84,7 +80,7 @@ const clipboard = useClipboard({
           variant="emphasis"
           size="md"
           class="w-full"
-          @click="onClickDeposit"
+          @click="emit('click-deposit')"
         >
           {{ $t('button.deposit') }}
         </BaseButton>

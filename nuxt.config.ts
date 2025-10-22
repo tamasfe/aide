@@ -132,10 +132,12 @@ export default defineNuxtConfig({
   typescript: {
     strict: true,
     typeCheck: true,
-    tsConfig: {
-      include: ["./app/packages/http-client/**/*.d.ts"],
-    },
+    // tsConfig: {
+    //   include: ["./app/packages/http-client/**/*.d.ts"],
+    // },
   },
+
+  // debug: true,
 
   // @nuxtjs/eslint
   eslint: {

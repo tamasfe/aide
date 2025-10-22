@@ -4,7 +4,10 @@ import { UserSettingsPaymentPix, type UserSettingsPaymentPixPropsI } from "~/mod
 const props = defineProps<{
   paymentConfig: null | UserSettingsPaymentPixPropsI;
   cpf: null | string;
-  onClickChange: () => void;
+}>();
+
+const emit = defineEmits<{
+  (e: "click-change"): void;
 }>();
 
 const paymentSettings = computed(() => props.paymentConfig ? UserSettingsPaymentPix.new(props.paymentConfig) : null);
@@ -31,7 +34,7 @@ const paymentSettings = computed(() => props.paymentConfig ? UserSettingsPayment
           <BaseButton
             variant="secondary"
             size="dashboard"
-            @click="onClickChange"
+            @click="emit('click-change')"
           >
             {{ $t('button.change') }}
           </BaseButton>

@@ -3,7 +3,7 @@ const localePath = useLocalePath();
 const siteStore = useSiteStore();
 const walletStore = useWalletStore();
 const { params } = useRoute();
-const userModule = useUserModule();
+const nuxtApp = useNuxtApp();
 </script>
 
 <template>
@@ -19,7 +19,7 @@ const userModule = useUserModule();
       v-if="walletStore.wallet"
       id="app-header-deposit-button"
       variant="emphasis"
-      @click="userModule.ui.emitCommandOpenUserActionModal.handle('deposit')"
+      @click="nuxtApp.callHook('frontend:command:modal:deposit:open')"
     >
       {{ $t("button.deposit") }}
     </BaseButton>

@@ -2,7 +2,6 @@
 import { toTypedSchema } from "@vee-validate/zod";
 import { z } from "zod";
 import type { PropType } from "vue";
-import type { SupportedCountryFlagCode } from "@/types/constants";
 import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
 
 // DESIGN STATUS:       ✅
@@ -33,10 +32,7 @@ const props = defineProps({
     default: () => [],
   },
   currency: {
-    type: Object as PropType<{
-      code: WalletCurrency;
-      countryCode: SupportedCountryFlagCode;
-    }>,
+    type: String as PropType<WalletCurrency>,
     required: true,
   },
 });
@@ -72,10 +68,10 @@ const { t } = useI18n();
  */
 let schemaForAmount = z.number({ required_error: t("validation.amount_required") });
 if (props.amounts.min !== null) {
-  schemaForAmount = schemaForAmount.min(props.amounts.min, t("validation.amount_deposit_min", { min: `${props.amounts.min} ${props.currency.code}` }));
+  schemaForAmount = schemaForAmount.min(props.amounts.min, t("validation.amount_deposit_min", { min: `${props.amounts.min} ${props.currency}` }));
 }
 if (props.amounts.max !== null) {
-  schemaForAmount = schemaForAmount.max(props.amounts.max, t("validation.amount_deposit_max", { max: `${props.amounts.max} ${props.currency.code}` }));
+  schemaForAmount = schemaForAmount.max(props.amounts.max, t("validation.amount_deposit_max", { max: `${props.amounts.max} ${props.currency}` }));
 }
 const validationSchema = toTypedSchema(
   z.object({
@@ -90,6 +86,8 @@ const loading = ref(false);
 const [amount, amountAttrs] = defineField("amount");
 amount.value = presetAmounts.value[0]?.value;
 
+const countryCode = useCurrencyToIcon(props.currency);
+
 const [paymentMethod, _paymentMethodAttrs] = defineField("paymentMethod");
 paymentMethod.value = props.paymentMethods[0]?.id;
 
@@ -99,7 +97,7 @@ const onSubmit = handleSubmit(async (formData) => {
 
   formErrorMessage.value = await wallet.ui.createDepositFlowOnForm.handle(
     formData.amount,
-    props.currency.code,
+    props.currency,
     formData.paymentMethod,
   );
 
@@ -131,15 +129,18 @@ const onSubmit = handleSubmit(async (formData) => {
       :mask="{ type: 'money' }"
     >
       <template #prefix>
-        <!-- TODO in the future: make this part multi-currency friendly -->
-        <div class="self-center mr-2 font-semibold text-lg bg-button-emphasis text-transparent bg-clip-text">
-          R$
-        </div>
+        <BaseCurrency
+          :currency="currency"
+          variant="ghost"
+          class="self-center mr-2 font-semibold text-lg bg-button-emphasis text-transparent bg-clip-text"
+        />
       </template>
       <template #suffix>
         <div class="ml-5 flex flex-row justify-center items-center gap-1.5">
-          <BaseFlag :country-code="currency.countryCode" />
-          <div class="text-sm font-medium text-subtle-light">{{ currency.code }}</div>
+          <BaseFlag :country-code="countryCode" />
+          <div class="text-sm font-medium text-subtle-light">
+            {{ currency }}
+          </div>
         </div>
       </template>
     </BaseInputGroup>
@@ -154,7 +155,7 @@ const onSubmit = handleSubmit(async (formData) => {
         @click="amount = presetAmount"
       >
         <BaseCurrency
-          :currency="currency.code"
+          :currency="currency"
           :value="presetAmount"
           trailing-zero-display="stripIfInteger"
           variant="emphasis"

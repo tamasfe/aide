@@ -7,7 +7,7 @@ import { PaymentMethodRepositoryGirobet } from "~/modules/wallet/infra/PaymentMe
 import { PaymentRepositoryGirobet } from "~/modules/wallet/infra/PaymentRepositoryGirobet";
 import type { PaymentRepositoryI } from "~/modules/wallet/domain/PaymentRepository";
 import type { PaymentMethodRepositoryI } from "~/modules/wallet/domain/PaymentMethodRepository";
-import { FindAuthenticatedUserWallet } from "~/modules/wallet/application/FindAuthenticatedUserWallet";
+import { FindAuthenticatedUserWallets } from "~/modules/wallet/application/FindAuthenticatedUserWallet";
 import { FindPreferredPaymentMethodOnStoreRefresh } from "~/modules/wallet/infra/ui/FindPreferredPaymentMethodOnPaymentModal";
 import { CreateDepositFlowOnForm } from "~/modules/wallet/infra/ui/CreateDepositFlowOnForm";
 import { CreateWithdrawalFlowOnForm } from "~/modules/wallet/infra/ui/CreateWithdrawalFlowOnForm";
@@ -16,6 +16,7 @@ import { SearchPaymentsOnTable } from "~/modules/wallet/infra/ui/SearchPaymentsO
 import { CreateWithdrawalFlow } from "~/modules/wallet/application/CreateWithdrawalFlow";
 import { CreateDepositFlow } from "~/modules/wallet/application/CreateDepositFlow";
 import { SearchPaymentsPaginating } from "~/modules/wallet/application/SearchPaymentsPaginating";
+import { GetAvailableCurrencies } from "../../modules/wallet/application/GetAvailableCurrencies";
 
 export default function () {
   const runtimeConfig = useRuntimeConfig();
@@ -52,7 +53,10 @@ export default function () {
 
   return {
     queries: {
-      findAuthenticatedUserWallet: new FindAuthenticatedUserWallet(
+      getAvailableCurrencies: new GetAvailableCurrencies(
+        walletsRepository,
+      ),
+      findUserWallets: new FindAuthenticatedUserWallets(
         walletsRepository,
       ),
     },

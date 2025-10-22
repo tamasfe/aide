@@ -1,9 +1,9 @@
 import type { WalletRepositoryI } from "../domain/WalletRepository";
 
-export class FindAuthenticatedUserWallets {
+export class GetAvailableCurrencies {
   constructor(private walletRepository: WalletRepositoryI) {}
 
   async handle() {
-    return this.walletRepository.findAuthenticated();
+    return this.walletRepository.getAvailableCurrencies();
   }
 }

@@ -2,7 +2,7 @@
 import type { FindUserKycStatusResponseI } from "~/modules/kyc/infra/ui/FindUserKycStatusOnAccountVerification";
 
 const kyc = useKycModule();
-const user = useUserModule();
+const nuxtApp = useNuxtApp();
 
 const ENABLE_SERVER_SIDE_RENDERING = true;
 const DEFER_CLIENT_SIDE_LOADING = true;
@@ -11,7 +11,7 @@ const { data: kycResponse } = useAsyncData("dashboard-settings-verification-kyc"
   { lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING },
 );
 
-const onClickUpload = (responseData: Exclude<FindUserKycStatusResponseI["data"], null>) => user.ui.emitCommandOpenUserActionModal.handle({ modal: "kyc", data: responseData });
+const onClickUpload = (responseData: Exclude<FindUserKycStatusResponseI["data"], null>) => nuxtApp.callHook("frontend:command:modal:kyc:open", responseData);
 </script>
 
 <template>

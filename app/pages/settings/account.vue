@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const userSettingsStore = useUserSettingsStore();
-const userModule = useUserModule();
+const nuxtApp = useNuxtApp();
+
 const { t } = useI18n();
 
 useHead({
@@ -30,12 +31,12 @@ const { data } = useAsyncData("account-page-user-settings-store", async () => {
       class="mb-4"
       :payment-config="data?.payment || null"
       :cpf="userStore.user?.cpf || null"
-      :on-click-change="() => userModule.ui.emitCommandOpenUserActionModal.handle({ modal: 'settings', data: { setting: 'payment_pix' } })"
+      @click-change="nuxtApp.callHook('frontend:command:modal:settings:open', 'payment_pix')"
     />
     <DashboardSettingsAccountRegionalSettings
       class="mb-4"
-      :on-click-change-language="() => userModule.ui.emitCommandOpenUserActionModal.handle({ modal: 'settings', data: { setting: 'language' } })"
-      :on-click-change-time-zone="() => userModule.ui.emitCommandOpenUserActionModal.handle({ modal: 'settings', data: { setting: 'time_zone' } })"
+      @click-change-language="nuxtApp.callHook('frontend:command:modal:settings:open', 'language')"
+      @click-change-time-zone="nuxtApp.callHook('frontend:command:modal:settings:open', 'time_zone')"
     />
     <DashboardSettingsAccountCloseAccount class="mb-4" />
   </div>

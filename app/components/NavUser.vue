@@ -13,20 +13,22 @@ defineOptions({
 
 const { t } = useI18n();
 const userModule = useUserModule();
-
 const nuxtApp = useNuxtApp();
+const walletStore = useWalletStore();
 
 const loadingLogout = ref(false);
 
-const links = [
+const rawLinks = [
   {
     key: "wallet",
+    requires: ["activeWallet"],
     title: t("user_nav.wallet"),
     icon: "lucide:wallet",
     action: { toPage: { name: "wallet" } },
   },
   {
     key: "history",
+    requires: ["activeWallet"],
     title: t("user_nav.history"),
     icon: "lucide:table-properties",
     action: { toPage: { name: "wallet-deposits" } },
@@ -59,6 +61,13 @@ const links = [
     },
   },
 ];
+
+const links = computed(() => rawLinks.filter((link) => {
+  if (link.requires?.includes("activeWallet")) {
+    return !!walletStore.wallet;
+  }
+  return true;
+}));
 </script>
 
 <template>

@@ -46,7 +46,9 @@ const props = defineProps<AlertProps>();
       props.class,
     )"
   >
-    <div class="whitespace-pre-wrap">{{ message }}</div>
+    <div class="whitespace-pre-wrap">
+      {{ message }}
+    </div>
     <slot />
   </div>
 </template>

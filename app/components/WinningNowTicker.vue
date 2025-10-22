@@ -58,7 +58,9 @@ useCreateSubscriptionToWebsocketTickerChannel(
 <template>
   <div class="flex flex-col md:flex-row md:items-center md:justify-center gap-4">
     <h3 class="text-center flex md:flex-col items-center md:justify-center gap-2">
-      <div class="leading-none md:text-2xl">🏆</div>
+      <div class="leading-none md:text-2xl">
+        🏆
+      </div>
       <div class="text-lg md:text-sm leading-tight text-primary font-semibold">
         {{ $t('winning_now.title') }}
       </div>
@@ -90,8 +92,12 @@ useCreateSubscriptionToWebsocketTickerChannel(
             />
           </div>
           <div class="leading-tight min-w-0 flex-1">
-            <div class="">{{ data.data.userNickname }}</div>
-            <div class="text-subtle text-xs min-w-0 mb-1">{{ data.data.game.name }}</div>
+            <div class="">
+              {{ data.data.userNickname }}
+            </div>
+            <div class="text-subtle text-xs min-w-0 mb-1">
+              {{ data.data.game.name }}
+            </div>
             <div class="text-sm sm:text-lg font-semibold bg-button-primary text-transparent bg-clip-text">
               <BaseCurrency
                 :currency="data.data.currency"

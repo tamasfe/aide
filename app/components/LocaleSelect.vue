@@ -74,8 +74,12 @@ const onClickChangeAccountLocale = async (locale: SupportedLocale) => {
     </BaseSelect>
 
     <div v-if="showChangeAccountLocale" class="mt-4 text-sm">
-      <p v-if="accountLanguage">{{ t("footer.user_account_language", { language: accountLanguage.title }) }}</p>
-      <p v-else>{{ t("footer.user_account_language_unknown") }}</p>
+      <p v-if="accountLanguage">
+        {{ t("footer.user_account_language", { language: accountLanguage.title }) }}
+      </p>
+      <p v-else>
+        {{ t("footer.user_account_language_unknown") }}
+      </p>
       <BaseButton
         class="mt-2 text-sm"
         variant="secondary"

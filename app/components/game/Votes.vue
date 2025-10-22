@@ -74,7 +74,9 @@ const onClickVote = async (newRating: "like" | "dislike" | null) => {
       <div v-if="likesPercentage !== null" class="flex flex-col gap-1 leading-none whitespace-nowrap items-center text-sm text-center justify-center">
         <span class="font-medium tabular-nums">{{ n(likesPercentage, { style: "percent" }) }}</span>
       </div>
-      <div v-if="likesPercentage == null && data">-</div>
+      <div v-if="likesPercentage == null && data">
+        -
+      </div>
     </div>
     <BaseButton
       variant="ghost"

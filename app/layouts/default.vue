@@ -2,30 +2,22 @@
 const nuxtApp = useNuxtApp();
 
 const sidebarIsOpen = ref(false);
-const userActionModalIsOpen = useState("user-modal", () => false);
 
 const closeModalOnSidebarOpen = (value: boolean) => {
   if (value === true) {
-    userActionModalIsOpen.value = false;
+    nuxtApp.callHook("frontend:command:modal:close");
   }
 };
 watch(sidebarIsOpen, closeModalOnSidebarOpen);
 
-const closeSidebarOnModalOpen = (value: boolean) => {
-  if (value === true) {
-    sidebarIsOpen.value = false;
-  }
-};
-watch(userActionModalIsOpen, closeSidebarOnModalOpen);
-
-nuxtApp.hook("frontend:event:live-chat:closed", () => {
+useRuntimeHook("frontend:event:live-chat:closed", () => {
   sidebarIsOpen.value = false;
 });
 </script>
 
 <template>
   <div class="pt-14">
-    <AppUserInteractionModal v-model:open="userActionModalIsOpen" />
+    <AppUserInteractionModal />
     <NavSidebar v-model:open="sidebarIsOpen" />
     <AppHeader class="fixed top-0 left-0 right-0 z-10 print:hidden" @click:menu="sidebarIsOpen = !sidebarIsOpen" />
     <div

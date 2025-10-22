@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed } from "vue";
 import type { HTMLAttributes } from "vue";
 import { cva, type VariantProps } from "class-variance-authority";
 import {
@@ -10,7 +9,7 @@ import {
 } from "reka-ui";
 
 const dialogVariants = cva(
-  ["z-20 h-full sm:h-auto absolute sm:block inset-0 sm:inset-auto sm:max-h-[calc(100vh-2rem)] overflow-y-scroll no-scrollbar outline outline-emphasis/50 relative"],
+  ["h-full sm:h-auto absolute sm:block inset-0 sm:inset-auto sm:max-h-[calc(100vh-2rem)] overflow-y-scroll no-scrollbar outline outline-emphasis/50 relative"],
   {
     variants: {
       variant: { default: "bg-emphasis" },
@@ -28,7 +27,6 @@ defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(
   defineProps<{
-    open: boolean;
     disabled?: boolean;
     variant?: DialogVariants["variant"];
     size?: DialogVariants["size"];
@@ -38,11 +36,8 @@ const props = withDefaults(
   { disabled: false, closeOnClickOutside: true },
 );
 
-const emit = defineEmits<{ (e: "update:open", value: boolean): void }>();
-
-const open = computed({
-  get: () => props.open,
-  set: (v: boolean) => emit("update:open", v),
+const open = defineModel<boolean>("open", {
+  required: true,
 });
 
 const onClose = (force = false) => {

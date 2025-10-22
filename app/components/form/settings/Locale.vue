@@ -5,6 +5,7 @@ import { SUPPORTED_LANGUAGES } from "~/packages/translation/utils";
 const userSettings = useUserSettingsStore();
 const { locale } = useI18n();
 const user = useUserModule();
+const nuxtApp = useNuxtApp();
 
 /**
  * We need to extend the SupportedLanguage interface to include a "title" property
@@ -34,7 +35,7 @@ const onSubmit = async () => {
    */
   userSettings.settings.locale = selectedLanguage.value.value;
   user.ui.userSettings.updateSettingsOnForm.handle({ locale: selectedLanguage.value.value });
-  user.ui.emitCommandCloseUserActionModal.handle();
+  nuxtApp.callHook("frontend:command:modal:close");
 };
 </script>
 
@@ -75,7 +76,7 @@ const onSubmit = async () => {
           variant="subtle"
           class="w-full space-x-1.5"
           type="button"
-          @click="user.ui.emitCommandCloseUserActionModal.handle()"
+          @click="nuxtApp.callHook('frontend:command:modal:close')"
         >
           {{ $t("button.cancel") }}
         </BaseButton>

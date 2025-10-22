@@ -1,26 +1,46 @@
 <script setup lang="ts">
-defineProps<{
-  open: boolean;
-  token: string;
-}>();
-
 const siteStore = useSiteStore();
+const nuxtApp = useNuxtApp();
+const { searchParams } = useRequestURL();
+const recoverPasswordToken = useState("user-modal-recover-password-token", () => searchParams.get("recovery-token") || "");
+const open = ref(false);
 
-const userModule = useUserModule();
-const onClosed = () => {
-  userModule.ui.emitCommandCloseUserActionModal.handle();
-};
+useRuntimeHook("frontend:command:modal:recover-password:open", () => {
+  open.value = true;
+});
+
+useRuntimeHook("frontend:command:modal:recover-password:close", () => {
+  open.value = false;
+});
+
+useRuntimeHook("frontend:command:modal:close", () => {
+  open.value = false;
+});
+
+watch(open, (newValue) => {
+  if (newValue) {
+    nuxtApp.callHook("frontend:event:modal:recover-password:opened");
+  }
+  else {
+    nuxtApp.callHook("frontend:event:modal:recover-password:closed");
+  }
+});
+
+onMounted(() => {
+  if (recoverPasswordToken.value) {
+    open.value = true;
+  }
+});
 </script>
 
 <template>
   <BaseModal
     id="base-modal-recover-password"
-    :open="open"
+    v-model:open="open"
     banner="left"
     :banner-left="siteStore.getRelativeAssetPath('banners/login_vertical.png')"
     :banner-top="siteStore.getRelativeAssetPath('banners/login_horizontal.png')"
-    @update:open="v => !v && onClosed()"
   >
-    <FormRecoverPassword :token="token" />
+    <FormRecoverPassword :token="recoverPasswordToken" />
   </BaseModal>
 </template>

@@ -1,39 +1,40 @@
 <script setup lang="ts">
-import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
-import type { SupportedCountryFlagCode } from "~/types/constants";
-import { DEFAULT_CURRENCY_WHILE_USER_HAS_NO_WALLET } from "~/modules/wallet/domain/Wallet";
-
 // DESIGN STATUS:       ✅
 // ARCHITECTURE STATUS: ✅
 // TRANSLATION STATUS:  ✅
-const userModule = useUserModule();
 const siteStore = useSiteStore();
 const walletStore = useWalletStore();
 const walletModule = useWalletModule();
+const nuxtApp = useNuxtApp();
+const open = ref(false);
 
-const userUnlockedBalance = walletStore.wallet?.balanceUnlocked ?? null;
-
-defineProps<{
-  open: boolean;
-}>();
-
-const currency = ref<{
-  code: WalletCurrency;
-  countryCode: SupportedCountryFlagCode;
-}>({
-  code: "BRL",
-  countryCode: "BR",
+useRuntimeHook("frontend:command:modal:withdraw:open", () => {
+  open.value = true;
+  execute();
 });
 
-const onClosed = () => {
-  userModule.ui.emitCommandCloseUserActionModal.handle();
-};
+useRuntimeHook("frontend:command:modal:withdraw:close", () => {
+  open.value = false;
+});
 
-const { data: paymentMethods } = useAsyncData(
+useRuntimeHook("frontend:command:modal:close", () => {
+  open.value = false;
+});
+
+watch(open, (newValue) => {
+  if (newValue) {
+    nuxtApp.callHook("frontend:event:modal:withdraw:opened");
+  }
+  else {
+    nuxtApp.callHook("frontend:event:modal:withdraw:closed");
+  }
+});
+
+const userUnlockedBalance = computed(() => walletStore.wallet?.balance_unlocked ?? null);
+
+const { data: paymentMethods, execute } = useAsyncData(
   "payment-methods",
-  async () => walletModule.ui.findPreferredPaymentMethodsOnStoreRefresh.handle(
-    walletStore.wallet?.currency ?? DEFAULT_CURRENCY_WHILE_USER_HAS_NO_WALLET,
-  ),
+  async () => walletModule.ui.findPreferredPaymentMethodsOnStoreRefresh.handle(),
   {
     server: true,
     lazy: true,
@@ -43,11 +44,10 @@ const { data: paymentMethods } = useAsyncData(
 
 <template>
   <BaseModal
-    :open="open"
+    v-model:open="open"
     :logo="false"
     banner="top"
     :banner-top="siteStore.getRelativeAssetPath('banners/withdrawal_horizontal.jpg')"
-    @update:open="v => !v && onClosed()"
   >
     <template #title>
       {{ $t('modal_payments.make_withdrawal') }}
@@ -57,10 +57,10 @@ const { data: paymentMethods } = useAsyncData(
     </template>
 
     <FormWithdrawal
-      v-if="paymentMethods"
+      v-if="paymentMethods && walletStore.wallet"
       :payment-method-limits="paymentMethods.limits"
       :payment-method-id="paymentMethods.preferred.id"
-      :currency="currency"
+      :currency="walletStore.wallet.currency"
       :user-unlocked-balance="userUnlockedBalance"
     />
     <BaseSkeleton

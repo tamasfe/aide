@@ -24,6 +24,10 @@ export class CreateDepositFlow {
     }
 
     await this.nuxtApp.callHook(
+      "frontend:command:modal:deposit:close",
+    );
+
+    await this.nuxtApp.callHook(
       "frontend:event:payment:deposit:created",
       {
         paymentMethodId,

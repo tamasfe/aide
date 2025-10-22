@@ -1,52 +1,70 @@
 <script setup lang="ts">
-import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
+import type { CustomError } from "~/packages/result";
+import type { DepositConfirmPayload } from "~/types/hooks";
 
 const siteStore = useSiteStore();
-const user = useUserModule();
 const wallet = useWalletModule();
+const nuxtApp = useNuxtApp();
+const deposit = ref<DepositConfirmPayload | null>(null);
+const open = ref(false);
+const logger = useLogger();
 
-const props = defineProps<{
-  open: boolean;
-  payment?: {
-    paymentCode: string;
-    amount: number;
-    currency: WalletCurrency;
-    paymentMethodId: number;
-    flowId: number;
-  };
-}>();
+useRuntimeHook("frontend:command:modal:deposit-confirm:open", (data) => {
+  deposit.value = data;
+  open.value = true;
+});
 
-const onClosed = () => {
-  user.ui.emitCommandCloseUserActionModal.handle();
-};
+useRuntimeHook("frontend:command:modal:deposit-confirm:close", () => {
+  open.value = false;
+});
 
-// DESIGN STATUS:       ✅
-// ARCHITECTURE STATUS: ✴️
-//   - currently this is hardcoded for pix... eventually this needs to be generalized and refactored to support multiple payment methods/currencies/providers/jurisdictions
-// TRANSLATION STATUS:  ✅
+useRuntimeHook("frontend:command:modal:close", () => {
+  open.value = false;
+});
+
+useRuntimeHook("backend:event:payment:status-updated", (event) => {
+  if (event.data.flow_id === deposit.value?.flowId) {
+    open.value = false;
+  }
+});
+
+watch(open, (newValue) => {
+  if (newValue) {
+    nuxtApp.callHook("frontend:event:modal:deposit-confirm:opened");
+  }
+  else {
+    nuxtApp.callHook("frontend:event:modal:deposit-confirm:closed");
+    deposit.value = null;
+  }
+});
 
 const createNewDeposit = async () => {
-  if (!props.payment) {
+  if (!deposit.value) {
     return "";
   }
-  return wallet.ui.createDepositFlowOnForm.handle(props.payment.amount, props.payment.currency, props.payment.paymentMethodId);
+  try {
+    return await wallet.ui.createDepositFlowOnForm.handle(deposit.value.amount, deposit.value.currency, deposit.value.paymentMethodId);
+  }
+  catch (error) {
+    logger.error("Failed to create deposit floww", error as CustomError);
+    return "";
+  }
 };
 </script>
 
 <template>
   <BaseModal
-    :open="open"
+    v-model:open="open"
     :logo="false"
     banner="top"
     :banner-top="siteStore.getRelativeAssetPath('banners/deposit_horizontal.jpg')"
-    @update:open="v => !v && onClosed()"
   >
     <FormDepositConfirm
-      v-if="payment"
-      :key="payment.flowId"
-      :code="payment.paymentCode"
-      :amount="payment.amount"
-      :currency="payment.currency"
+      v-if="deposit"
+      :key="deposit.flowId"
+      :code="deposit.paymentCode"
+      :amount="deposit.amount"
+      :currency="deposit.currency"
       :create-new-deposit="createNewDeposit"
     />
   </BaseModal>

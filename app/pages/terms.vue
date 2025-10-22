@@ -18,7 +18,9 @@ useHead({
   >
     <div v-for="index in NUMBER_OF_TERM_SECTIONS" :key="index">
       <h4>{{ $t(`terms_and_conditions.subtitle_${index}`) }}</h4>
-      <p class="whitespace-pre-wrap">{{ $t(`terms_and_conditions.content_${index}`, { host: url.host }) }}</p>
+      <p class="whitespace-pre-wrap">
+        {{ $t(`terms_and_conditions.content_${index}`, { host: url.host }) }}
+      </p>
     </div>
   </AppPage>
 </template>

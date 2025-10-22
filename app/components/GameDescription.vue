@@ -43,8 +43,10 @@ const emit = defineEmits<{
         </div>
       </div>
       <div class="order-4 md:order-none">
-        <h2 v-if="game" class="text-2xl mb-2">{{ game.name }}</h2>
-        <BaseSkeleton v-else class="h-8 w-1/3 mb-2 rounded" :loading="true" />
+        <h2 v-if="game" class="text-2xl mb-2">
+          {{ game.name }}
+        </h2>
+        <BaseSkeleton v-else class="h-8 w-1/3 mb-2" :loading="true" />
 
         <div class="flex items-center flex-wrap gap-2">
           <template v-if="game">
@@ -68,8 +70,8 @@ const emit = defineEmits<{
             </NuxtLinkLocale>
           </template>
           <template v-else>
-            <BaseSkeleton class="h-6 w-14 rounded" :loading="true" />
-            <BaseSkeleton class="h-6 w-28 rounded" :loading="true" />
+            <BaseSkeleton class="h-6 w-14" :loading="true" />
+            <BaseSkeleton class="h-6 w-28" :loading="true" />
           </template>
         </div>
       </div>
@@ -99,7 +101,7 @@ const emit = defineEmits<{
           class="hover:text-subtle-light"
         />
 
-        <BaseSkeleton v-else class="h-8 w-8 rounded" :loading="true" />
+        <BaseSkeleton v-else class="h-8 w-8" :loading="true" />
 
         <GameVotes
           v-if="game"
@@ -107,7 +109,7 @@ const emit = defineEmits<{
           :game-identifier="game.identifier"
         />
 
-        <BaseSkeleton v-else class="h-8 w-28 rounded" :loading="true" />
+        <BaseSkeleton v-else class="h-8 w-28" :loading="true" />
 
         <BaseButton
           v-if="authenticated"
@@ -122,7 +124,7 @@ const emit = defineEmits<{
           />
         </BaseButton>
 
-        <BaseSkeleton v-else class="h-8 w-8 rounded" :loading="true" />
+        <BaseSkeleton v-else class="h-8 w-8" :loading="true" />
       </div>
 
       <div

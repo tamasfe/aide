@@ -11,12 +11,43 @@ import type { ApiClient } from "../../../plugins/api-client";
 export class WalletsRepositoryGirobet implements WalletRepositoryI {
   constructor(private readonly apiClient: ApiClient) {}
 
-  public async findAuthenticated(): Promise<Result<CamelizeKeys<components["schemas"]["UserWalletBalanceResponse"][]>, InfrastructureError | ErrorCurrencyNotRecognized | ErrorInvalidBalance | ErrorUserNotAuthorized>> {
+  public async findAuthenticated(): Promise<Result<components["schemas"]["UserWalletBalanceResponse"][], InfrastructureError | ErrorCurrencyNotRecognized | ErrorInvalidBalance | ErrorUserNotAuthorized>> {
     try {
       const { data, error, response } = await this.apiClient.GET("/user/balance", {});
 
       if (data) {
-        return success(data.map(wallet => camelizeKeys(wallet)));
+        return success(data);
+      }
+
+      if (error) {
+        if (error.code === "UNAUTHORIZED") {
+          return fail(
+            new ErrorUserNotAuthorized({}),
+          );
+        }
+
+        return fail(
+          InfrastructureError.newFromError({}, HttpBackendApiError.newFromBackendError(error, response)),
+        );
+      }
+
+      return fail(
+        InfrastructureError.newFromUnknownError({}, new Error("Unexpected scenario: library did not return data nor error. This should never happen")),
+      );
+    }
+    catch (error: unknown) {
+      return fail(
+        InfrastructureError.newFromUnknownError({}, error),
+      );
+    }
+  }
+
+  public async getAvailableCurrencies(): Promise<Result<components["schemas"]["Currency"][], InfrastructureError | ErrorUserNotAuthorized>> {
+    try {
+      const { data, error, response } = await this.apiClient.GET("/payment/currencies", {});
+
+      if (data) {
+        return success(data);
       }
 
       if (error) {

@@ -2,23 +2,20 @@ import { ErrorUserNotAuthorized } from "~/modules/wallet/domain/ErrorUserNotAuth
 import type { Wallet } from "~/modules/wallet/domain/Wallet";
 import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
 
-type WalletBalanceStatus = "ready" | "loading";
-
 /**
  * Meaning of the different wallet states:
- * - wallet === undefined => not init or error loading it ("not defined")
- * - wallet === null => loaded correctly but user does not have a wallet yet. This is the case for new users before their first deposit.
- * - wallet === truthy => wallet loaded correctly
++ * - wallet === null => either loading/failed or loaded but user has no wallet yet.
++ *   When refresh() completes successfully with no wallet, wallet stays null.
  */
 type WalletStoreI = {
-  balanceStatus: WalletBalanceStatus;
-  wallet: undefined | null | Wallet;
+  wallet: null | Wallet;
+  currencies: WalletCurrency[];
 };
 
 export default defineStore("wallet", {
   state: (): WalletStoreI => ({
-    balanceStatus: "loading",
-    wallet: undefined,
+    wallet: null,
+    currencies: [],
   }),
 
   getters: {
@@ -26,14 +23,21 @@ export default defineStore("wallet", {
       if (!state.wallet) {
         return 0;
       }
-      return state.wallet.balanceLocked + state.wallet.balanceUnlocked + state.wallet.balanceBonus;
+      return state.wallet.balance_locked + state.wallet.balance_unlocked + state.wallet.balance_bonus;
     },
 
     balanceBonus: (state): number => {
       if (!state.wallet) {
         return 0;
       }
-      return state.wallet.balanceBonus;
+      return state.wallet.balance_bonus;
+    },
+
+    activeCurrency: (state): WalletCurrency | null => {
+      if (!state.wallet) {
+        return state.currencies[0] ?? null;
+      }
+      return state.wallet.currency;
     },
   },
 
@@ -42,33 +46,33 @@ export default defineStore("wallet", {
       const logger = useLogger();
       const walletModule = useWalletModule();
 
-      this.balanceStatus = "loading";
-      this.wallet = undefined;
+      this.wallet = null;
 
-      const result = await walletModule.queries.findAuthenticatedUserWallet.handle();
+      const [result, currencies] = await Promise.all([
+        walletModule.queries.findUserWallets.handle(),
+        walletModule.queries.getAvailableCurrencies.handle(),
+      ]);
+
       if (result.isFailure) {
         if (!(result.error instanceof ErrorUserNotAuthorized)) {
-          logger.error("Unexpected error while fetching the wallet's balance of the authenticated user", result.error);
+          logger.error("Unexpected error while fetching the wallet balances of the authenticated user", result.error);
         }
-      }
 
-      // Remove previous wallet
-      if (result.isFailure) {
-        this.wallet = undefined;
-        this.balanceStatus = "ready";
-        return;
-      }
-
-      // New user without payments: no wallet yet
-      if (result.value === null) {
         this.wallet = null;
-        this.balanceStatus = "ready";
         return;
       }
 
-      // Save wallet
-      this.wallet = result.value;
-      this.balanceStatus = "ready";
+      if (currencies.isFailure) {
+        if (!(currencies.error instanceof ErrorUserNotAuthorized)) {
+          logger.error("Unexpected error while fetching the available wallet currencies", currencies.error);
+        }
+
+        this.currencies = [];
+        return;
+      }
+
+      this.wallet = result.value[0] ?? null;
+      this.currencies = currencies.value;
 
       return;
     },
@@ -82,9 +86,9 @@ export default defineStore("wallet", {
         return;
       }
 
-      this.wallet.balanceBonus = balances.bonus;
-      this.wallet.balanceLocked = balances.locked;
-      this.wallet.balanceUnlocked = balances.unlocked;
+      this.wallet.balance_bonus = balances.bonus;
+      this.wallet.balance_locked = balances.locked;
+      this.wallet.balance_unlocked = balances.unlocked;
       this.wallet.currency = currency;
     },
   },

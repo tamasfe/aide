@@ -1,6 +1,5 @@
 import type {
   Country,
-  Jurisdiction,
 } from "~/types/constants";
 
 // shows in phone dropdown
@@ -48,14 +47,4 @@ export const COUNTRIES: Country[] = [
       phone: ["(###) ###-####"],
     },
   },
-];
-
-export const JURISDICTIONS: Jurisdiction[] = [
-  // {
-  //   country: COUNTRIES[0], // TODO
-  //   currency: {
-  //     code: "BRL",
-  //     symbol: "R$",
-  //   },
-  // },
 ];

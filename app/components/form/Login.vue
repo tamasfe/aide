@@ -15,6 +15,7 @@ import { z } from "zod";
 const { t } = useI18n();
 const logger = useLogger();
 const user = useUserModule();
+const nuxtApp = useNuxtApp();
 
 /**
  * Login Form
@@ -77,7 +78,7 @@ const onSubmit = handleSubmit(async (formData) => {
         variant="ghost"
         size="ghost"
         class="text-sm text-subtle md:hover:text-subtle-light"
-        @click="user.ui.emitCommandOpenUserActionModal.handle('forgot_password')"
+        @click="nuxtApp.callHook('frontend:command:modal:forgot-password:open')"
       >
         {{ $t("modal_session.forgot_password") }}
       </BaseButton>
@@ -100,7 +101,7 @@ const onSubmit = handleSubmit(async (formData) => {
         variant="ghost"
         size="ghost"
         class="text-primary md:hover:underline"
-        @click="user.ui.emitCommandOpenUserActionModal.handle('register')"
+        @click="nuxtApp.callHook('frontend:command:modal:register:open')"
       >
         {{ $t("modal_session.create_free_account") }}
       </BaseButton>

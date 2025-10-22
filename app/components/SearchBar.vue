@@ -4,12 +4,10 @@
 
 withDefaults(defineProps<{
   loading?: boolean;
-  open?: boolean;
   inputSize?: "md" | "lg" | "ghost";
   onClear?: () => void;
 }>(), {
   loading: false,
-  open: false,
 });
 
 const emit = defineEmits<{

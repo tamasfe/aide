@@ -1,35 +1,39 @@
 <script setup lang="ts">
-const userModule = useUserModule();
-const loading = ref(false);
 const query = useState("search-modal-query", () => "");
+const nuxtApp = useNuxtApp();
+const open = ref(false);
 
-defineProps({
-  open: {
-    type: Boolean,
-    required: true,
-  },
+useRuntimeHook("frontend:command:modal:search:open", () => {
+  open.value = true;
 });
 
-const onClosed = () => {
-  userModule.ui.emitCommandCloseUserActionModal.handle();
-};
+useRuntimeHook("frontend:command:modal:search:close", () => {
+  open.value = false;
+});
+
+useRuntimeHook("frontend:command:modal:close", () => {
+  open.value = false;
+});
+
+watch(open, (newValue) => {
+  if (newValue) {
+    nuxtApp.callHook("frontend:event:modal:search:opened");
+  }
+  else {
+    nuxtApp.callHook("frontend:event:modal:search:closed");
+  }
+});
 </script>
 
 <template>
   <BaseModal
-    :open="open"
-    :disabled="false"
-    :close-on-click-outside="true"
+    v-model:open="open"
     banner="none"
     class="sm:max-w-screen-lg sm:mx-4 sm:h-[80vh]"
-    @update:open="v => !v && onClosed()"
   >
     <SearchBar
       v-model="query"
-      :open="open"
-      :loading="loading"
       input-size="lg"
-      @close="onClosed"
     />
 
     <transition

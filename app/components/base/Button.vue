@@ -68,6 +68,7 @@ const props = withDefaults(defineProps<BaseButtonProps>(), {
   >
     <BaseSpinner
       v-if="loading"
+      :size="18"
       class="mr-2"
     />
     <slot />

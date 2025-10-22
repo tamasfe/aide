@@ -2,6 +2,10 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import type { HTMLAttributes } from "vue";
 
+const { n } = useI18n();
+
+// i18n.getNumberFormat;
+
 /**
  * As of 2024/10/25: The component I18nN seems to have some weird thing going on. We need to use the named slots in order to give the
  * formatting we want it. But we find the following:
@@ -46,7 +50,6 @@ const props = defineProps({
   },
   value: {
     type: Number,
-    required: true,
   },
   variant: {
     type: String as PropType<CurrencyVariants["variant"]>,
@@ -61,21 +64,41 @@ const props = defineProps({
     required: false,
   },
 });
+
+const symbol = computed(() => {
+  if (props.value !== undefined) {
+    return;
+  }
+
+  const num = n(props.value ?? 0, {
+    part: true,
+    key: "currency",
+    currency: props.currency,
+    trailingZeroDisplay: props.trailingZeroDisplay,
+  });
+
+  const symbol = num.find(part => part.type === "currency")?.value || "";
+
+  return symbol;
+});
 </script>
 
 <template>
-  <I18nN
-    :class="cn('flex items-center tabular-nums', props.class)"
-    scope="global"
-    tag="span"
-    :value="value"
-    :format="{ key: 'currency', currency, trailingZeroDisplay } as ExtendedNumberFormatOptions"
-  >
-    <template #currency="slotProps">
-      <span :class="currencyVariants({ variant })">{{ slotProps.currency }}</span>
+  <span :class="cn('flex items-center tabular-nums', props.class)">
+    <I18nN
+      v-if="value !== undefined"
+      scope="global"
+      :value="value"
+      :format="{ key: 'currency', currency, trailingZeroDisplay } as ExtendedNumberFormatOptions"
+    >
+      <template #currency="slotProps">
+        <span :class="currencyVariants({ variant })">{{ slotProps.currency }}</span>
+      </template>
+    </I18nN>
+    <template
+      v-else
+    >
+      {{ symbol }}
     </template>
-    <template #integer="slotProps">
-      <span>{{ slotProps.integer }}</span>
-    </template>
-  </I18nN>
+  </span>
 </template>

@@ -3,14 +3,12 @@ const walletStore = useWalletStore();
 const userSettings = useUserSettingsStore();
 const { locale } = useI18n();
 
-defineProps<{
-  onClickChangeLanguage: () => void;
-  onClickChangeTimeZone: () => void;
+const emit = defineEmits<{
+  (e: "click-change-language" | "click-change-time-zone"): void;
 }>();
 
 // TODO for multi-currency: Make this dependent on the user's currency
 const currency = ref({
-  code: "BRL" as const,
   countryCode: "BR" as const,
 });
 </script>
@@ -27,7 +25,7 @@ const currency = ref({
           <BaseFlag
             :country-code="currency.countryCode"
           />
-          <p>{{ walletStore.wallet.currency }} (ID: #{{ walletStore.wallet.walletId }})</p>
+          <p>{{ walletStore.wallet.currency }} (ID: #{{ walletStore.wallet.wallet_id }})</p>
         </div>
       </template>
     </DashboardSectionItem>
@@ -40,7 +38,7 @@ const currency = ref({
           <BaseButton
             variant="secondary"
             size="dashboard"
-            @click="onClickChangeLanguage"
+            @click="emit('click-change-language')"
           >
             {{ $t('button.change') }}
           </BaseButton>
@@ -56,7 +54,7 @@ const currency = ref({
           <BaseButton
             variant="secondary"
             size="dashboard"
-            @click="onClickChangeTimeZone"
+            @click="emit('click-change-time-zone')"
           >
             {{ $t('button.change') }}
           </BaseButton>

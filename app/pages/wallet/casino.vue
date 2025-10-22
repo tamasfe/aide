@@ -4,7 +4,7 @@ const walletStore = useWalletStore();
 const { t } = useI18n();
 
 definePageMeta({
-  middleware: ["authenticated"],
+  middleware: ["authenticated", "active-wallet"],
 });
 
 useHead({

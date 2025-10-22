@@ -1,18 +1,32 @@
 <script setup lang="ts">
-const open = ref(true);
-
-// DESIGN STATUS:       ✅
-// ARCHITECTURE STATUS: ✴️
-//   * we need to load the appropriate domain
-// TRANSLATION STATUS:  ✅
+import type { RestrictLicenseNoAlternativePayload } from "~/types/hooks";
 
 const siteStore = useSiteStore();
+const nuxtApp = useNuxtApp();
+const open = ref(false);
+const payload = ref<RestrictLicenseNoAlternativePayload | null>(null);
 
-defineProps({
-  blockedCountry: {
-    type: String,
-    required: true,
-  },
+useRuntimeHook("frontend:command:modal:restrict-license-no-alternative:open", (data) => {
+  payload.value = data;
+  open.value = true;
+});
+
+useRuntimeHook("frontend:command:modal:restrict-license-no-alternative:close", () => {
+  open.value = false;
+});
+
+useRuntimeHook("frontend:command:modal:close", () => {
+  open.value = false;
+});
+
+watch(open, (newValue) => {
+  if (newValue) {
+    nuxtApp.callHook("frontend:event:modal:restrict-license-no-alternative:opened");
+  }
+  else {
+    nuxtApp.callHook("frontend:event:modal:restrict-license-no-alternative:closed");
+    payload.value = null;
+  }
 });
 </script>
 
@@ -27,18 +41,18 @@ defineProps({
     banner="top"
     :banner-top="siteStore.getRelativeAssetPath('banners/jurisdiction_horizontal.jpg')"
   >
-    <div class="flex flex-col items-center gap-4">
+    <div v-if="payload" class="flex flex-col items-center gap-4">
       <h1 class="text-2xl font-semibold text-center">
         {{ $t("modal_restrict.license_no_alternative_headline", {
-          country: blockedCountry,
-          blockedDomain: capitalizeBrandDomain(siteStore.site.name),
+          country: payload.blockedCountry,
+          blockedName: siteStore.site.name,
         }) }}
       </h1>
 
       <div class="mb-4 text-emphasis text-center">
         {{ $t("modal_restrict.license_no_alternative_body", {
-          country: blockedCountry,
-          blockedDomain: capitalizeBrandDomain(siteStore.site.name),
+          country: payload.blockedCountry,
+          blockedName: siteStore.site.name,
         }) }}
       </div>
     </div>

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-const userModule = useUserModule();
 const userStore = useUserStore();
+const nuxtApp = useNuxtApp();
 </script>
 
 <template>
@@ -21,7 +21,7 @@ const userStore = useUserStore();
           <BaseButton
             variant="secondary"
             size="dashboard"
-            @click="userModule.ui.emitCommandOpenUserActionModal.handle({ modal: 'settings', data: { setting: 'username' } })"
+            @click="nuxtApp.callHook('frontend:command:modal:settings:open', 'username')"
           >
             {{ $t('button.edit') }}
           </BaseButton>
@@ -42,7 +42,7 @@ const userStore = useUserStore();
           <BaseButton
             variant="secondary"
             size="dashboard"
-            @click="userModule.ui.emitCommandOpenUserActionModal.handle({ modal: 'settings', data: { setting: 'password' } })"
+            @click="nuxtApp.callHook('frontend:command:modal:settings:open', 'password')"
           >
             {{ $t('button.change') }}
           </BaseButton>

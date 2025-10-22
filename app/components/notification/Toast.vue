@@ -46,8 +46,12 @@ const emits = defineEmits<{
     <div class="p-4">
       <div class="flex items-start gap-x-4">
         <div class="w-0 flex-1 pt-0.5">
-          <p class="text-base">{{ title }}</p>
-          <p class="mt-1 text-sm">{{ message }}</p>
+          <p class="text-base">
+            {{ title }}
+          </p>
+          <p class="mt-1 text-sm">
+            {{ message }}
+          </p>
         </div>
         <div class="flex shrink-0">
           <BaseButton

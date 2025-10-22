@@ -2,7 +2,6 @@
 const notificationsStore = useNotificationsStore();
 const userStore = useUserStore();
 const notificationModule = useNotificationModule();
-const nuxtApp = useNuxtApp();
 
 const notifications = useAsyncData(
   () => notificationModule.ui.searchLastUnreadNotificationToasts.handle(),
@@ -17,7 +16,7 @@ watch(notifications.data, (value) => {
   value?.map(notification => notificationsStore.showToast(notification));
 });
 
-nuxtApp.hook("backend:event:notification:received", async ({ notification }) =>
+useRuntimeHook("backend:event:notification:received", async ({ notification }) =>
   notificationModule.ui.showNotificationToastToStoreFromWebsocketBackendNotification.handle(notification));
 </script>
 

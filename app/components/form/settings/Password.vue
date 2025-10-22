@@ -12,6 +12,7 @@ import { UserPassword } from "~/modules/users/domain/UserPassword";
 const { t } = useI18n();
 const logger = useLogger();
 const user = useUserModule();
+const nuxtApp = useNuxtApp();
 
 const validationSchema = toTypedSchema(
   z.object({
@@ -96,7 +97,7 @@ const onSubmit = handleSubmit(async (formData) => {
         variant="subtle"
         class="w-full space-x-1.5"
         type="button"
-        @click="user.ui.emitCommandCloseUserActionModal.handle()"
+        @click="nuxtApp.callHook('frontend:command:modal:close')"
       >
         {{ $t("button.cancel") }}
       </BaseButton>

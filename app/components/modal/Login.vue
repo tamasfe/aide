@@ -1,29 +1,37 @@
 <script setup lang="ts">
-// DESIGN STATUS:       ✅
-// ARCHITECTURE STATUS: ✅
-// TRANSLATION STATUS:  ✅
-defineProps<{
-  open: boolean;
-}>();
-
-const loading = ref(false);
+const nuxtApp = useNuxtApp();
 const siteStore = useSiteStore();
-const userModule = useUserModule();
+const open = ref(false);
 
-const onClosed = () => {
-  userModule.ui.emitCommandCloseUserActionModal.handle();
-};
+useRuntimeHook("frontend:command:modal:login:open", () => {
+  open.value = true;
+});
+
+useRuntimeHook("frontend:command:modal:login:close", () => {
+  open.value = false;
+});
+
+useRuntimeHook("frontend:command:modal:close", () => {
+  open.value = false;
+});
+
+watch(open, (newValue) => {
+  if (newValue) {
+    nuxtApp.callHook("frontend:event:modal:login:opened");
+  }
+  else {
+    nuxtApp.callHook("frontend:event:modal:login:closed");
+  }
+});
 </script>
 
 <template>
   <BaseModal
     id="base-modal-login"
-    :open="open"
-    :disabled="loading"
+    v-model:open="open"
     banner="left"
     :banner-left="siteStore.getRelativeAssetPath('banners/login_vertical.png')"
     :banner-top="siteStore.getRelativeAssetPath('banners/login_horizontal.png')"
-    @update:open="v => !v && onClosed()"
   >
     <FormLogin />
   </BaseModal>

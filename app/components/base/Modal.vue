@@ -1,22 +1,12 @@
 <script setup lang="ts">
 import { DialogClose, DialogDescription, DialogTitle } from "reka-ui";
-// import { getImage as getCloudflareImageSrc } from "~/providers/multi-site-custom-cloudflare-image-provider";
 import type { AlertProps } from "./Alert.vue";
-
-// DESIGN STATUS: ✴️
-//   * close button ideally should float and not scroll
-//   * if a banner is present (left or top) we need to show bg on close thats semi-transparent black
-//   * the flexbox on this could probably be improved... its sort of close however. top/none work fine, but "left" is kind of a doozie
-// ARCHITECTURE STATUS: ✴️
-//   * I want banner/bannerLeft/bannerTop to be properly validated by typescript
-// TRANSLATION STATUS:  ✅
 
 const DEFAULT_PX_WIDTH_LEFT_BANNER = 300;
 const DEFAULT_PX_WIDTH_TOP_BANNER = 640;
 
-const props = withDefaults(
+withDefaults(
   defineProps<{
-    open: boolean;
     disabled?: boolean;
     unclosable?: boolean;
     logo?: boolean;
@@ -33,53 +23,14 @@ const props = withDefaults(
   },
 );
 
-const emit = defineEmits<{
-  (e: "update:open", value: boolean): void;
-}>();
-
-const open = computed({
-  get: () => props.open,
-  set: (value: boolean) => emit("update:open", value),
+const open = defineModel<boolean>("open", {
+  required: true,
 });
-
-// Disabled, as there's no easy way of syncing up these very specific URLs, srcsets, and sizes with the modal props
-// without making it overly complex. We can always re-enable later if we find a good way
-// const preloadBannerLinks = (() => {
-//   const links = [];
-//   if (props.bannerLeft) {
-//     const bannerLeftSrc = props.bannerLeft.startsWith("http")
-//       ? props.bannerLeft
-//       : getCloudflareImageSrc(
-//         props.bannerLeft,
-//         { modifiers: { width: DEFAULT_PX_WIDTH_LEFT_BANNER } },
-//         // @ts-expect-error: no need to pass the img ctx here. Not used
-//         {},
-//       ).url;
-//     links.push({ rel: "preload", fetchPriority: "low", href: bannerLeftSrc, src: bannerLeftSrc, as: "image" as const });
-//   }
-//   if (props.bannerTop) {
-//     const bannerTopSrc = props.bannerTop.startsWith("http")
-//       ? props.bannerTop
-//       : getCloudflareImageSrc(
-//         props.bannerTop,
-//         { modifiers: { width: DEFAULT_PX_WIDTH_TOP_BANNER } },
-//         // @ts-expect-error: no need to pass the img ctx here. Not used
-//         {},
-//       ).url;
-//     links.push({ rel: "preload", fetchPriority: "low", href: bannerTopSrc, src: bannerTopSrc, as: "image" as const });
-//   }
-//   return links;
-// })();
-
-// if (preloadBannerLinks.length > 0) {
-//   useHead(() => ({ link: preloadBannerLinks }));
-// }
 </script>
 
 <template>
   <BaseDialog
     v-model:open="open"
-    v-bind="$attrs"
     :disabled="disabled"
     :class="cn(
       'p-0',
@@ -102,7 +53,7 @@ const open = computed({
             <slot name="subtitle" />
           </DialogDescription>
         </div>
-        <DialogClose v-if="!unclosable" class="-mr-5 p-3 aspect-square h-full text-subtle md:hover:text-emphasis z-[10] rounded-lg transition-colors duration-200 focus:outline-none">
+        <DialogClose v-if="!unclosable" class="-mr-5 p-3 aspect-square h-full text-subtle md:hover:text-emphasis rounded-lg transition-colors duration-200 focus:outline-none">
           <span class="sr-only">{{ $t('i18n.close') }}</span>
           <div class="aspect-square bg-subtle/80 rounded backdrop-blur h-full flex items-center justify-center">
             <BaseIcon
@@ -161,7 +112,9 @@ const open = computed({
           <DialogTitle is="h2" v-if="$slots.title" class="text-xl leading-snug">
             <slot name="title" />
           </DialogTitle>
-          <h3 v-if="$slots.subtitle" class="text-subtle text-sm leading-snug"><slot name="subtitle" /></h3>
+          <h3 v-if="$slots.subtitle" class="text-subtle text-sm leading-snug">
+            <slot name="subtitle" />
+          </h3>
           <DialogDescription
             :class="{
               'pt-4': $slots.title || $slots.subtitle,
@@ -216,7 +169,9 @@ const open = computed({
               <DialogTitle is="h2" v-if="$slots.title" class="text-xl leading-snug">
                 <slot name="title" />
               </DialogTitle>
-              <h3 v-if="$slots.subtitle" class="text-subtle text-sm leading-snug"><slot name="subtitle" /></h3>
+              <h3 v-if="$slots.subtitle" class="text-subtle text-sm leading-snug">
+                <slot name="subtitle" />
+              </h3>
             </div>
             <BaseClose
               v-if="!unclosable"

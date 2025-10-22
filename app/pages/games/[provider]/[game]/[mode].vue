@@ -40,7 +40,7 @@ const props = defineProps({
 });
 
 const userStore = useUserStore();
-const user = useUserModule();
+const nuxtApp = useNuxtApp();
 const { t } = useI18n();
 const router = useRouter();
 const { params } = useRoute();
@@ -71,7 +71,7 @@ useHead({
         <div v-if="!userStore.isAuthenticated" class="mt-6 flex items-center gap-4">
           <BaseButton
             size="xl"
-            @click="user.ui.emitCommandOpenUserActionModal.handle('login')"
+            @click="nuxtApp.callHook('frontend:command:modal:login:open')"
           >
             {{ $t("button.login") }}
           </BaseButton>

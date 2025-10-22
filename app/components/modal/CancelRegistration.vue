@@ -1,27 +1,15 @@
 <script setup lang="ts">
-// DESIGN STATUS:       ✅
-// ARCHITECTURE STATUS: ✅
-// TRANSLATION STATUS:  ✅
-const userModule = useUserModule();
-
-defineProps<{
-  open: boolean;
-}>();
+const open = ref(false);
 
 const siteStore = useSiteStore();
-
-const onClosed = () => {
-  userModule.ui.emitCommandCloseUserActionModal.handle();
-};
 </script>
 
 <template>
   <BaseModal
-    :open="open"
+    v-model:open="open"
     :logo="false"
     banner="top"
     :banner-top="siteStore.getRelativeAssetPath('banners/cancel_registration.jpg')"
-    @update:open="v => !v && onClosed()"
   >
     <template #title>
       {{ $t("modal_cancel_registration.title") }}

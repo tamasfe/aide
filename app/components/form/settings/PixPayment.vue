@@ -9,6 +9,7 @@ import { DEFAULT_PREFIX, UserTelephone } from "~/modules/users/domain/UserTeleph
 const signupFlows = useSignupModule();
 const { t } = useI18n();
 const user = useUserModule();
+const nuxtApp = useNuxtApp();
 
 const props = defineProps<{
   paymentSettings: SearchUserSettingsResponseI["payment"];
@@ -165,7 +166,7 @@ const onSubmit = handleSubmit(async (data) => {
           variant="subtle"
           class="w-full space-x-1.5"
           type="button"
-          @click="user.ui.emitCommandCloseUserActionModal.handle()"
+          @click="nuxtApp.callHook('frontend:command:modal:close')"
         >
           {{ $t("button.cancel") }}
         </BaseButton>

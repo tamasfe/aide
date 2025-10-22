@@ -1,31 +1,45 @@
 <script setup lang="ts">
-defineProps({
-  open: {
-    type: Boolean,
-    required: true,
-  },
+const nuxtApp = useNuxtApp();
+const open = ref(false);
+
+useRuntimeHook("frontend:command:modal:close-account:open", () => {
+  open.value = true;
 });
 
-const userModule = useUserModule();
+useRuntimeHook("frontend:command:modal:close-account:close", () => {
+  open.value = false;
+});
 
-const onClosed = () => {
-  userModule.ui.emitCommandCloseUserActionModal.handle();
-};
+useRuntimeHook("frontend:command:modal:close", () => {
+  open.value = false;
+});
+
+watch(open, (newValue) => {
+  if (newValue) {
+    nuxtApp.callHook("frontend:event:modal:close-account:opened");
+  }
+  else {
+    nuxtApp.callHook("frontend:event:modal:close-account:closed");
+  }
+});
 </script>
 
 <template>
   <BaseModal
     id="base-modal-close-account"
-    :open="open"
+    v-model:open="open"
     :logo="false"
-    @update:open="v => !v && onClosed()"
   >
     <template #title>
       {{ $t("modal_close_account.title") }}
     </template>
 
-    <p class="mb-4 text-emphasis">{{ $t("modal_close_account.alternative_cool_off") }}</p>
-    <p class="mb-4 text-emphasis">{{ $t("modal_close_account.help_us_improve") }}</p>
+    <p class="mb-4 text-emphasis">
+      {{ $t("modal_close_account.alternative_cool_off") }}
+    </p>
+    <p class="mb-4 text-emphasis">
+      {{ $t("modal_close_account.help_us_improve") }}
+    </p>
     <FormCloseAccount />
   </BaseModal>
 </template>

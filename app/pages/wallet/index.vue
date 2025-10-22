@@ -2,10 +2,9 @@
 const walletStore = useWalletStore();
 const { t } = useI18n();
 const wallet = useWalletModule();
-const nuxtApp = useNuxtApp();
 
 definePageMeta({
-  middleware: ["authenticated"],
+  middleware: ["authenticated", "active-wallet"],
 });
 
 useHead({
@@ -21,24 +20,26 @@ const { data: paymentsData, execute, pending } = useAsyncData("wallet-page-payme
     return;
   }
 
-  const data = await wallet.ui.searchPaymentsOnTable.handle(walletStore.wallet.walletId, null, 0, NUMBER_OF_PAYMENTS_TO_SHOW);
+  const data = await wallet.ui.searchPaymentsOnTable.handle(walletStore.wallet.wallet_id, null, 0, NUMBER_OF_PAYMENTS_TO_SHOW);
 
   return data.payments;
 }, {
-  watch: [() => walletStore.wallet?.walletId, () => walletStore.balance],
+  watch: [() => walletStore.wallet?.wallet_id, () => walletStore.balance],
   lazy: DEFER_CLIENT_SIDE_LOADING,
   server: ENABLE_SERVER_SIDE_RENDERING,
   default: () => [],
 });
 
-nuxtApp.hook("backend:event:payment:status-updated", async () => {
+useRuntimeHook("backend:event:payment:status-updated", async () => {
   execute();
 });
 </script>
 
 <template>
   <section class="bg-subtle rounded border border-muted/5 p-4">
-    <h2 class="mb-4 text-lg font-medium">{{ $t('account.settings.wallet.transactions_title') }}</h2>
+    <h2 class="mb-4 text-lg font-medium">
+      {{ $t('account.settings.wallet.transactions_title') }}
+    </h2>
     <DataTableWalletPayments
       :title-empty="$t('account.settings.wallet.transactions_empty')"
       :payments="paymentsData ?? []"

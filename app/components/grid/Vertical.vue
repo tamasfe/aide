@@ -59,7 +59,7 @@ const dataToRender = computed<(T[number] & { isSkeleton?: boolean })[]>(() => {
         :style="{ aspectRatio: aspectRatio }"
       >
         <slot v-if="datapoint.isSkeleton" name="loading">
-          <BaseSkeleton :loading="true" class="h-full w-full rounded" />
+          <BaseSkeleton :loading="true" class="h-full w-full" />
         </slot>
         <slot v-else :data="datapoint" />
       </div>

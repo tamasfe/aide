@@ -244,13 +244,13 @@
     "error_unknown": "Ocorreu um erro. Por favor, tente novamente. Se o problema persistir, entre em contato com o suporte."
   },
   "modal_restrict": {
-    "expanding_headline": "Desculpe, {blockedDomain} não está disponível em {country}",
+    "expanding_headline": "Desculpe, {blockedName} não está disponível em {country}",
     "expanding_body": "Infelizmente, no momento, não temos opções de depósito local para jogadores de {country}. Estamos crescendo o mais rápido possível e procurando atendê-lo assim que pudermos. Volte em breve para se juntar ao cassino online mais sortudo do mundo!",
-    "expanding_subject": "Me adicione à lista de espera em {country} para {blockedDomain}",
+    "expanding_subject": "Me adicione à lista de espera em {country} para {blockedName}",
     "license_alternative_headline": "Vá para {allowedDomain} para a Melhor Experiência de Cassino em {country}",
-    "license_alternative_body": "Devido às restrições de nossa licença de jogo, o url {blockedDomain} não pode aceitar jogadores localizados em {country}. No entanto, podemos fornecer uma experiência completa sem restrições em nosso site dedicado a {country} em {allowedDomain}!",
-    "license_no_alternative_headline": "Desculpe, {blockedDomain} não está disponível em {country}",
-    "license_no_alternative_body": "Devido às restrições de nossa licença de jogo, o url {blockedDomain} não pode aceitar jogadores localizados em {country}. Se você acha que isso é um erro, verifique sua conexão ou com seu provedor de internet. Pedimos desculpas pelo inconveniente e esperamos poder atendê-lo em breve."
+    "license_alternative_body": "Devido às restrições de nossa licença de jogo, o url {blockedName} não pode aceitar jogadores localizados em {country}. No entanto, podemos fornecer uma experiência completa sem restrições em nosso site dedicado a {country} em {allowedDomain}!",
+    "license_no_alternative_headline": "Desculpe, {blockedName} não está disponível em {country}",
+    "license_no_alternative_body": "Devido às restrições de nossa licença de jogo, o url {blockedName} não pode aceitar jogadores localizados em {country}. Se você acha que isso é um erro, verifique sua conexão ou com seu provedor de internet. Pedimos desculpas pelo inconveniente e esperamos poder atendê-lo em breve."
   },
   "validation": {
     "cpf_invalid": "CPF inválido",
@@ -362,6 +362,8 @@
     "game_launcher": {
       "error_insufficient_funds_title": "Fundos Insuficientes",
       "error_insufficient_funds_message": "Você não tem fundos suficientes em sua carteira para jogar este jogo. Por favor, deposite mais fundos e tente novamente.",
+       "error_wallet_not_found_title": "Carteira Não Encontrada",
+      "error_wallet_not_found_message": "Não conseguimos encontrar uma carteira associada à sua conta. Por favor, deposite fundos para criar uma carteira e tente novamente.",
       "error_game_not_accessible_title": "Jogo Não Acessível",
       "error_game_not_accessible_message": "Você não tem permissão para jogar este jogo. Isso pode ser devido a restrições de idade, limitações regionais ou restrições de conta. Por favor, entre em contato com o suporte se você acredita que isso é um erro.",
       "error_unauthorized_title": "Não Autorizado",

@@ -1,31 +1,34 @@
 <script setup lang="ts">
 import { useLocalStorage } from "@vueuse/core";
 
-const userModule = useUserModule();
 const userStore = useUserStore();
 const gameSessionStore = useGameSessionStore();
 const nuxtApp = useNuxtApp();
-
 const open = ref(false);
-
-const onClosed = () => {
-  userModule.ui.emitCommandCloseUserActionModal.handle();
-};
 
 const lastOpened = useLocalStorage<Date>("promo_last_opened", new Date(0));
 
 const SECONDS_TO_AUTO_OPEN_PROMO_MODAL = 10;
 
-nuxtApp.hook("frontend:command:modal:promo:open", () => {
+useRuntimeHook("frontend:command:modal:promo:open", () => {
   open.value = true;
 });
 
-nuxtApp.hook("frontend:command:modal:promo:close", () => {
+useRuntimeHook("frontend:command:modal:promo:close", () => {
   open.value = false;
 });
 
-nuxtApp.hook("frontend:command:modal:close", () => {
+useRuntimeHook("frontend:command:modal:close", () => {
   open.value = false;
+});
+
+watch(open, (newValue) => {
+  if (newValue) {
+    nuxtApp.callHook("frontend:event:modal:promo:opened");
+  }
+  else {
+    nuxtApp.callHook("frontend:event:modal:promo:closed");
+  }
 });
 
 function isSameDay(first: Date, second: Date): boolean {
@@ -46,10 +49,9 @@ onMounted(() => {
 <template>
   <BaseModal
     id="base-modal-promo-user-action"
+    v-model:open="open"
     class="mx-4 h-auto flex flex-col items-stretch justify-center"
-    :open="open"
     :logo="true"
-    @update:open="v => !v && onClosed()"
   >
     <i18n-t keypath="modal_promo_user_action.message" tag="p" class="text-emphasis text-center whitespace-pre-line">
       <template #depositAmount>
@@ -65,14 +67,14 @@ onMounted(() => {
         <BaseButton
           variant="secondary"
           class="w-full"
-          @click="onClosed"
+          @click="open = false"
         >
           {{ $t("button.close") }}
         </BaseButton>
         <BaseButton
           variant="primary"
           class="w-full"
-          @click="userModule.ui.emitCommandOpenUserActionModal.handle('deposit')"
+          @click="nuxtApp.callHook('frontend:command:modal:deposit:open')"
         >
           {{ $t("button.deposit") }}
         </BaseButton>
@@ -81,14 +83,14 @@ onMounted(() => {
         <BaseButton
           variant="secondary"
           class="w-full"
-          @click="userModule.ui.emitCommandOpenUserActionModal.handle('login')"
+          @click="nuxtApp.callHook('frontend:command:modal:login:open')"
         >
           {{ $t("button.login") }}
         </BaseButton>
         <BaseButton
           variant="primary"
           class="w-full ml-3"
-          @click="userModule.ui.emitCommandOpenUserActionModal.handle('register')"
+          @click="nuxtApp.callHook('frontend:command:modal:register:open')"
         >
           {{ $t("button.register") }}
         </BaseButton>

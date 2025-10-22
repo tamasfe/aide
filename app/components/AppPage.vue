@@ -17,12 +17,18 @@ const onClickPrintButton = () => {
 
 <template>
   <section class="px-6 py-8 text-base md:text-lg max-w-[850px] mx-auto flex flex-col gap-8 md:gap-12 bg-subtle rounded-lg border border-muted/5">
-    <h1 class="text-3xl font-semibold text-white">{{ title }}</h1>
+    <h1 class="text-3xl font-semibold text-white">
+      {{ title }}
+    </h1>
 
     <div v-if="version || date || showPrintButton" class="md:flex md:items-start md:justify-between space-y-4 md:space-y-0">
       <div class="space-y-1 text-lg">
-        <div v-if="version"><span class="text-emphasis font-medium">{{ $t('legal.version') }}:</span> {{ version }}</div>
-        <div v-if="date"><span class="text-emphasis font-medium">{{ $t('legal.updated') }}:</span> {{ date }}</div>
+        <div v-if="version">
+          <span class="text-emphasis font-medium">{{ $t('legal.version') }}:</span> {{ version }}
+        </div>
+        <div v-if="date">
+          <span class="text-emphasis font-medium">{{ $t('legal.updated') }}:</span> {{ date }}
+        </div>
       </div>
       <div v-if="showPrintButton" class="print:hidden">
         <BaseButton variant="secondary" @click="onClickPrintButton">

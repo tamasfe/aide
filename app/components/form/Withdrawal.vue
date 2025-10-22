@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { toTypedSchema } from "@vee-validate/zod";
 import { z } from "zod";
-import type { SupportedCountryFlagCode } from "@/types/constants";
 import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
 import type { PaymentLimits } from "~/modules/wallet/domain/PaymentLimits";
 
@@ -16,10 +15,7 @@ import type { PaymentLimits } from "~/modules/wallet/domain/PaymentLimits";
 const props = defineProps<{
   paymentMethodLimits: PaymentLimits;
   userUnlockedBalance: number | null;
-  currency: {
-    code: WalletCurrency;
-    countryCode: SupportedCountryFlagCode;
-  };
+  currency: WalletCurrency;
   paymentMethodId: number;
 }>();
 
@@ -42,8 +38,9 @@ const maximumWithdrawal = computed(() => {
  */
 const { t } = useI18n();
 const logger = useLogger();
-const user = useUserModule();
 const wallet = useWalletModule();
+const nuxtApp = useNuxtApp();
+
 let schemaForAmount = z.number({ required_error: t("validation.amount_required") });
 if (typeof props.paymentMethodLimits.withdrawalMin === "number") {
   schemaForAmount = schemaForAmount.min(props.paymentMethodLimits.withdrawalMin, t("validation.amount_withdrawal_min", { min: `${props.paymentMethodLimits.withdrawalMin}` }));
@@ -61,19 +58,21 @@ const loading = ref(false);
 const [amount, amountAttrs] = defineField("amount");
 amount.value = undefined;
 
+const countryCode = useCurrencyToIcon(props.currency);
+
 const onSubmit = handleSubmit(async (formData) => {
   loading.value = true;
   formError.value = null;
 
   const { cta, message } = await wallet.ui.createWithdrawalFlowOnForm.handle(
     formData.amount,
-    props.currency.code,
+    props.currency,
     props.paymentMethodId,
   );
 
   loading.value = false;
   if (!message) {
-    user.ui.emitCommandCloseUserActionModal.handle();
+    nuxtApp.callHook("frontend:command:modal:close");
   }
 
   formError.value = {
@@ -118,15 +117,18 @@ const onSubmit = handleSubmit(async (formData) => {
         @input="(value) => amount = Number(value.replace(/[^\d.]/g, ''))"
       >
         <template #prefix>
-          <!-- TODO in the future: make this part multi-currency friendly -->
-          <div class="self-center mr-2 font-semibold text-lg bg-button-emphasis text-transparent bg-clip-text">
-            R$
-          </div>
+          <BaseCurrency
+            :currency="currency"
+            variant="ghost"
+            class="self-center mr-2 font-semibold text-lg bg-button-emphasis text-transparent bg-clip-text"
+          />
         </template>
         <template #suffix>
           <div class="ml-5 flex flex-row justify-center items-center gap-1.5">
-            <BaseFlag :country-code="currency.countryCode" />
-            <div class="text-sm font-medium text-subtle-light">{{ currency.code }}</div>
+            <BaseFlag :country-code="countryCode" />
+            <div class="text-sm font-medium text-subtle-light">
+              {{ currency }}
+            </div>
           </div>
         </template>
       </BaseInputGroup>
@@ -140,13 +142,17 @@ const onSubmit = handleSubmit(async (formData) => {
               name="lucide:info"
               :size="15"
             />
-            <div class="hover:underline">{{ $t('modal_payments.limits') }}</div>
+            <div class="hover:underline">
+              {{ $t('modal_payments.limits') }}
+            </div>
           </div>
         </div>
         <div v-if="maximumWithdrawal !== null" class="flex space-x-2 font-medium text-sm">
-          <div class="text-subtle">{{ $t('modal_payments.available_withdraw') }}:</div>
+          <div class="text-subtle">
+            {{ $t('modal_payments.available_withdraw') }}:
+          </div>
           <div class="text-subtle-light font-semibold">
-            <BaseCurrency :value="maximumWithdrawal" :currency="currency.code" variant="ghost" />
+            <BaseCurrency :value="maximumWithdrawal" :currency="currency" variant="ghost" />
           </div>
         </div>
       </div>
@@ -167,7 +173,7 @@ const onSubmit = handleSubmit(async (formData) => {
         :min="paymentMethodLimits.withdrawalMin ?? null"
         :max="maximumWithdrawal"
         :cooldown-seconds="paymentMethodLimits.withdrawalCooldown ?? null"
-        :currency="currency.code"
+        :currency="currency"
         :unlocked-balance="userUnlockedBalance"
         :timeframe-limits="paymentMethodLimits.timeframeLimits"
       />

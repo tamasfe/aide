@@ -1,22 +1,39 @@
 <script setup lang="ts">
 import { InfrastructureError } from "~/packages/result/infrastructure-error";
+import type { KycPayload } from "~/types/hooks";
 
 const kyc = useKycModule();
-const user = useUserModule();
 const { t } = useI18n();
 const logger = useLogger();
-
-const props = defineProps<{
-  open: boolean;
-  initialAccessToken?: string;
-  applicantData?: {
-    email: string;
-    phone: string;
-    language: string;
-  };
-}>();
-
+const nuxtApp = useNuxtApp();
 const errorMessage = ref<string | null>(null);
+const kycData = ref<KycPayload | null>(null);
+const open = ref(false);
+
+useRuntimeHook("frontend:command:modal:kyc:open", (data) => {
+  kycData.value = data;
+  open.value = true;
+  errorMessage.value = null;
+});
+
+useRuntimeHook("frontend:command:modal:kyc:close", () => {
+  open.value = false;
+});
+
+useRuntimeHook("frontend:command:modal:close", () => {
+  open.value = false;
+});
+
+watch(open, (newValue) => {
+  if (newValue) {
+    nuxtApp.callHook("frontend:event:modal:kyc:opened");
+  }
+  else {
+    nuxtApp.callHook("frontend:event:modal:kyc:closed");
+    kycData.value = null;
+    errorMessage.value = null;
+  }
+});
 
 const onError = (data: { error: string; code: string }) => {
   logger.error("Error on KYC process", InfrastructureError.newFromError({ code: data.code, provider: "sumsub" }, new Error(data.error)));
@@ -25,29 +42,14 @@ const onError = (data: { error: string; code: string }) => {
 
 const onSubmitted = () => {
   errorMessage.value = null;
-  logger.info("KYC process finished", { provider: "sumsub", applicant: props.applicantData });
-
-  // TODO: decide whether we want to close the modal ourselves or let the user.
-  // This will depend if the final success modal text has some instructions the user has to read or not. Closing it abrubtly may would not be good UX.
-
-  // A good option would be to reload the page after X time has passed, so the user sees the updated KYC state. If we want to avoid a page reload: we will probably need a KYC pinia store that tracks the state of the KYC verification.
-
-  // const DELAY_TO_ALLOW_USER_TO_READ = 3000;
-  // setTimeout(() => router.go(0), DELAY_TO_ALLOW_USER_TO_READ);
-};
-
-const onClosed = () => {
-  errorMessage.value = null;
-  user.ui.emitCommandCloseUserActionModal.handle();
+  logger.info("KYC process finished", { provider: kycData.value?.provider });
 };
 </script>
 
 <template>
   <BaseModal
-    :disabled="false"
-    :open="open"
+    v-model:open="open"
     :logo="false"
-    @update:open="v => !v && onClosed()"
   >
     <BaseAlert
       v-if="errorMessage"
@@ -57,10 +59,10 @@ const onClosed = () => {
     />
 
     <KycIFrameSumsub
-      v-if="props.applicantData && props.initialAccessToken"
+      v-if="kycData"
       class="-mt-4"
-      :initial-access-token="props.initialAccessToken"
-      :applicant="props.applicantData"
+      :initial-access-token="kycData.accessToken"
+      :applicant="kycData.applicantData"
       :renew-access-token="() => kyc.ui.renewAccessToken.handle()"
       @submitted="onSubmitted"
       @error="onError"

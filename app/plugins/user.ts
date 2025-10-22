@@ -7,7 +7,6 @@ export default defineNuxtPlugin({
   async setup(nuxtApp) {
     const userStore = useUserStore();
     const userSettingsStore = useUserSettingsStore();
-    const userModule = useUserModule();
     const logger = useLogger();
 
     await userStore.refreshUser()
@@ -39,7 +38,7 @@ export default defineNuxtPlugin({
     });
 
     nuxtApp.hook("frontend:event:user:password-recovered", async () => {
-      userModule.ui.emitCommandOpenUserActionModal.handle("login");
+      nuxtApp.callHook("frontend:command:modal:login:open");
     });
 
     nuxtApp.hook("frontend:event:signup-flow:submitted", async () => {
@@ -48,9 +47,12 @@ export default defineNuxtPlugin({
     });
 
     nuxtApp.hook("frontend:event:payment:deposit:created", ({ flowId, code, amount, currency, paymentMethodId }) => {
-      userModule.ui.emitCommandOpenUserActionModal.handle({
-        modal: "deposit_confirm",
-        data: { flowId, paymentCode: code, amount, currency, paymentMethodId },
+      nuxtApp.callHook("frontend:command:modal:deposit-confirm:open", {
+        flowId,
+        paymentCode: code,
+        amount,
+        currency,
+        paymentMethodId,
       });
     });
 

@@ -1,27 +1,36 @@
 <script setup lang="ts">
-defineProps<{
-  open: boolean;
-}>();
+const nuxtApp = useNuxtApp();
+const open = ref(false);
 
-const loading = ref(false);
+useRuntimeHook("frontend:command:modal:forgot-password:open", () => {
+  open.value = true;
+});
 
-const userModule = useUserModule();
+useRuntimeHook("frontend:command:modal:forgot-password:close", () => {
+  open.value = false;
+});
 
-const onClosed = () => {
-  userModule.ui.emitCommandCloseUserActionModal.handle();
-};
-// DESIGN STATUS:       ✅
-// ARCHITECTURE STATUS: ✅
-// TRANSLATION STATUS:  ✅
+useRuntimeHook("frontend:command:modal:close", () => {
+  open.value = false;
+});
+
+watch(open, (newValue) => {
+  if (newValue) {
+    nuxtApp.callHook("frontend:event:modal:forgot-password:opened");
+  }
+  else {
+    nuxtApp.callHook("frontend:event:modal:forgot-password:closed");
+  }
+});
 </script>
 
 <template>
   <BaseModal
-    :open="open"
-    :disabled="loading"
+    v-model:open="open"
     banner="none"
-    @update:open="v => !v && onClosed()"
   >
-    <FormForgotPassword />
+    <FormForgotPassword
+      @submitted="() => open=false"
+    />
   </BaseModal>
 </template>

@@ -25,9 +25,7 @@ export class SubmitSignupFlow {
       return result;
     }
 
-    this.nuxtApp.callHook("frontend:event:signup-flow:submitted", {
-      id: flowId,
-    });
+    this.nuxtApp.callHook("frontend:event:signup-flow:submitted");
 
     return success();
   }

@@ -4,7 +4,7 @@ import type { Keyified } from "~/types/utils";
 
 const gameModule = useGameModule();
 const gameProviderModule = useGameProviderModule();
-const user = useUserModule();
+const nuxtApp = useNuxtApp();
 
 const { query } = defineProps({
   query: {
@@ -80,7 +80,7 @@ const noResults = computed(() => games.value.length === 0 && providers.value.len
 debouncedWatch(() => query, onQueryChange, { debounce: 200, immediate: true });
 
 const onClickLink = () => {
-  user.ui.emitCommandCloseUserActionModal.handle();
+  nuxtApp.callHook("frontend:command:modal:close");
 };
 </script>
 

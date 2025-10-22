@@ -146,7 +146,7 @@ const emptyQuery = ref("");
           <SearchBar
             v-model="emptyQuery"
             input-size="md"
-            @click="nuxtApp.callHook('frontend:command:modal:open', { modal: 'search' })"
+            @click="nuxtApp.callHook('frontend:command:modal:search:open')"
           />
         </div>
 
@@ -201,7 +201,9 @@ const emptyQuery = ref("");
                   :size="22"
                   class="flex-shrink-0 text-subtle"
                 />
-                <div class="w-full ml-4 font-medium">{{ link.title }}</div>
+                <div class="w-full ml-4 font-medium">
+                  {{ link.title }}
+                </div>
               </BaseButton>
             </div>
           </template>

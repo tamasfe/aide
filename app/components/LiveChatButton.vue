@@ -7,14 +7,14 @@ const loaded = ref(false);
 const nuxtApp = useNuxtApp();
 const openIntent = ref(false);
 
-nuxtApp.hook(
+useRuntimeHook(
   "frontend:event:live-chat:ready",
   () => {
     loaded.value = true;
   },
 );
 
-nuxtApp.hook(
+useRuntimeHook(
   "frontend:command:live-chat:close",
   () => {
     openIntent.value = false;

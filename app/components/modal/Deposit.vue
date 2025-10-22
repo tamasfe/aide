@@ -1,56 +1,49 @@
 <script setup lang="ts">
-import type { WalletCurrency } from "~/modules/wallet/domain/WalletCurrency";
-import type { SupportedCountryFlagCode } from "~/types/constants";
-import type { AlertProps } from "../base/Alert.vue";
-import { DEFAULT_CURRENCY_WHILE_USER_HAS_NO_WALLET } from "~/modules/wallet/domain/Wallet";
-
-// DESIGN STATUS:       ✅
-// ARCHITECTURE STATUS: ✅
-// TRANSLATION STATUS:  ✅
-
-const userModule = useUserModule();
 const walletModule = useWalletModule();
-const siteStore = useSiteStore();
 const walletStore = useWalletStore();
+const nuxtApp = useNuxtApp();
+const siteStore = useSiteStore();
+const open = ref(false);
 
-const onClosed = () => {
-  userModule.ui.emitCommandCloseUserActionModal.handle();
-};
-
-const currency = ref<{
-  code: WalletCurrency;
-  countryCode: SupportedCountryFlagCode;
-}>({
-  code: "BRL",
-  countryCode: "BR",
+useRuntimeHook("frontend:command:modal:deposit:open", () => {
+  open.value = true;
+  execute();
 });
 
-const { data: paymentMethods } = useAsyncData(
+useRuntimeHook("frontend:command:modal:deposit:close", () => {
+  open.value = false;
+});
+
+useRuntimeHook("frontend:command:modal:close", () => {
+  open.value = false;
+});
+
+watch(open, (newValue) => {
+  if (newValue) {
+    nuxtApp.callHook("frontend:event:modal:deposit:opened");
+  }
+  else {
+    nuxtApp.callHook("frontend:event:modal:deposit:closed");
+  }
+});
+
+const { data: paymentMethods, execute } = useAsyncData(
   "payment-methods",
-  async () => walletModule.ui.findPreferredPaymentMethodsOnStoreRefresh.handle(
-    walletStore.wallet?.currency ?? DEFAULT_CURRENCY_WHILE_USER_HAS_NO_WALLET,
-  ),
+  async () => walletModule.ui.findPreferredPaymentMethodsOnStoreRefresh.handle(),
   {
     server: true,
     lazy: true,
   },
 );
-
-defineProps<{
-  open: boolean;
-  alert?: AlertProps;
-}>();
 </script>
 
 <template>
   <BaseModal
-    :open="open"
+    v-model:open="open"
     :disabled="false"
     :logo="false"
     banner="top"
     :banner-top="siteStore.getRelativeAssetPath('banners/deposit_horizontal.jpg')"
-    :alert="alert"
-    @update:open="v => !v && onClosed()"
   >
     <template #title>
       {{ $t('modal_payments.make_deposit') }}
@@ -61,9 +54,10 @@ defineProps<{
         <span class="text-right block space-x-2">
           <span>{{ $t('modal_deposit.minimum') }}:</span>
           <BaseCurrency
+            v-if="walletStore.activeCurrency"
             class="inline"
             :value="paymentMethods.limits?.depositMin"
-            :currency="currency.code"
+            :currency="walletStore.activeCurrency"
             variant="ghost"
           />
         </span>
@@ -72,9 +66,9 @@ defineProps<{
     </template>
 
     <FormDeposit
-      v-if="paymentMethods"
+      v-if="paymentMethods && walletStore.activeCurrency"
       :amounts="{ min: paymentMethods.limits.depositMin ?? null, max: paymentMethods.limits.depositMax ?? null }"
-      :currency="currency"
+      :currency="walletStore.activeCurrency"
       :payment-methods="paymentMethods.methods"
       :payment-method-id="paymentMethods.preferred.id"
     />

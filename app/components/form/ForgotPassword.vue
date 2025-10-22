@@ -12,6 +12,7 @@ const { t } = useI18n();
 const notifications = useNotificationsStore();
 const logger = useLogger();
 const user = useUserModule();
+const nuxtApp = useNuxtApp();
 
 const validationSchema = toTypedSchema(
   z.object({
@@ -19,6 +20,11 @@ const validationSchema = toTypedSchema(
       .email(t("validation.email_invalid")),
   }),
 );
+
+const emit = defineEmits<{
+  (e: "submitted"): void;
+}>();
+
 const { handleSubmit, errors: formErrors, defineField, meta } = useForm({ validationSchema });
 
 const formErrorMessage = ref("");
@@ -48,6 +54,8 @@ const onSubmit = handleSubmit(async (formData) => {
     createdAt: new Date(),
     variant: "success",
   });
+
+  emit("submitted");
 }, ({ results }) => {
   logger.warn("Validation failed", { validationResults: results });
 });
@@ -87,7 +95,7 @@ const onSubmit = handleSubmit(async (formData) => {
         variant="ghost"
         size="ghost"
         class="text-primary md:hover:underline"
-        @click="user.ui.emitCommandOpenUserActionModal.handle('login')"
+        @click="nuxtApp.callHook('frontend:command:modal:login:open')"
       >
         {{ $t("button.login") }}
       </BaseButton>

@@ -53,12 +53,10 @@ export default function () {
 
   const localeSelectionRepository = new LocaleSelectionRepositoryCookie();
   const findLocaleForUser = new FindLocaleForUser(localeSelectionRepository, $i18n.getBrowserLocale);
-  // const findUserSelectedLocale = new SearchUserSelectedLocale(localeSelectionRepository);
 
   return {
     signupFlowApiRepository,
     clientSignupFlowIdRepository,
-
     ui: {
       startSignupFlowOnInitAnonymousUser: new StartSignupFlowOnInitAnonymousUser(
         new CreateSignupFlow(signupFlowApiRepository, clientSignupFlowIdRepository),

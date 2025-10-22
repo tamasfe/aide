@@ -22,7 +22,7 @@ const props = defineProps<{
 }>();
 
 const siteStore = useSiteStore();
-const user = useUserModule();
+const nuxtApp = useNuxtApp();
 
 const COUNTDOWN_MS = 5 * 60 * 1000;
 const countdownHasEnded = ref(false);
@@ -42,15 +42,26 @@ const onClickGenerateNewCode = async () => {
 <template>
   <BaseForm class="space-y-2">
     <div class="w-full flex gap-4 flex-row items-center justify-between mb-4">
-      <BaseButton type="button" variant="subtle" @click="user.ui.emitCommandOpenUserActionModal.handle('deposit')">
+      <BaseButton
+        type="button"
+        variant="subtle"
+        @click="async () => {
+          await nuxtApp.callHook('frontend:command:modal:close');
+          await nuxtApp.callHook('frontend:command:modal:deposit:open')
+        }"
+      >
         <BaseIcon
           name="lucide:arrow-left"
           :size="20"
         />
       </BaseButton>
       <div class="leading-snug flex-1">
-        <h2 class="text-xl font-semibold">{{ $t('modal_payments.finalize_deposit') }}</h2>
-        <h3 class="text-sm font-medium text-subtle">{{ $t('modal_payments.finalize_deposit_subtitle') }}</h3>
+        <h2 class="text-xl font-semibold">
+          {{ $t('modal_payments.finalize_deposit') }}
+        </h2>
+        <h3 class="text-sm font-medium text-subtle">
+          {{ $t('modal_payments.finalize_deposit_subtitle') }}
+        </h3>
       </div>
       <NuxtImg
         class="w-[6rem] h-auto"
@@ -100,8 +111,12 @@ const onClickGenerateNewCode = async () => {
             </BaseInputGroup>
 
             <BaseButton v-if="!countdownHasEnded" size="xl" class="w-full px-0">
-              <div v-if="copied">{{ $t('button.copied_code') }}</div>
-              <div v-else>{{ $t('button.copy_code', { remaining: formatDuration(minutes, seconds) }) }}</div>
+              <div v-if="copied">
+                {{ $t('button.copied_code') }}
+              </div>
+              <div v-else>
+                {{ $t('button.copy_code', { remaining: formatDuration(minutes, seconds) }) }}
+              </div>
             </BaseButton>
           </template>
         </BaseCopy>
@@ -110,14 +125,16 @@ const onClickGenerateNewCode = async () => {
           variant="ghost"
           size="md"
           class="text-subtle"
-          @click="user.ui.emitCommandCloseUserActionModal.handle()"
+          @click="nuxtApp.callHook('frontend:command:modal:close')"
         >
           {{ $t("button.completed_payment") }}
         </BaseButton>
       </div>
 
       <div v-if="countdownHasEnded" class="w-full text-center">
-        <p class="w-full text-lg text-alert-error">{{ $t('modal_payments.finalize_deposit_code_has_expired') }}</p>
+        <p class="w-full text-lg text-alert-error">
+          {{ $t('modal_payments.finalize_deposit_code_has_expired') }}
+        </p>
         <BaseButton
           size="xl"
           class="mt-4 w-full px-0"
@@ -131,7 +148,7 @@ const onClickGenerateNewCode = async () => {
           variant="ghost"
           size="md"
           class="text-subtle"
-          @click="user.ui.emitCommandCloseUserActionModal.handle()"
+          @click="nuxtApp.callHook('frontend:command:modal:close')"
         >
           {{ $t("button.cancel_deposit") }}
         </BaseButton>

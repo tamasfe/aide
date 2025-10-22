@@ -9,13 +9,11 @@ import { SearchUserSettingsSimplified } from "~/modules/users/application/Search
 import { UpdateUserSettingsChangedConsents } from "~/modules/users/application/UpdateUserSettingsChangedConsents";
 import { CloseAccount } from "~/modules/users/application/CloseAccount";
 import { AuthenticatedUserRepositoryDumb } from "~/modules/users/infra/AuthenticatedUserRepositoryDumb";
-import { EmitCommandOpenUserActionModalModal } from "~/modules/users/infra/ui/EmitCommandOpenUserActionModal";
 import { AuthenticatedUserSearcherGirobet } from "~/modules/users/infra/AuthenticatedUserRepositoryGirobet";
 import { AuthenticationRepositoryDumb } from "~/modules/users/infra/AuthenticationRepositoryDumb";
 import { AuthenticationRepositoryGirobet } from "~/modules/users/infra/AuthenticationRepositoryGirobet";
 import { AttemptUserLoginOnFormSubmission } from "~/modules/users/infra/ui/AttemptUserLoginOnFormSubmission";
 import { LogoutCurrentUserFromButtonClick } from "~/modules/users/infra/ui/LogoutCurrentUserFromButtonClick";
-import { EmitCommandCloseUserActionModal } from "~/modules/users/infra/ui/EmitCommandCloseUserActionModal";
 import { RecoverPasswordOnForm } from "~/modules/users/infra/ui/RecoverPasswordOnForm";
 import { RequestRecoverPasswordOnForm } from "~/modules/users/infra/ui/RequestRecoverPasswordOnForm";
 import { UpdateUserLocaleOnLocaleSelect } from "~/modules/users/infra/ui/user-settings/UpdateUserLocaleOnLocaleSelect";
@@ -49,8 +47,6 @@ export default function () {
   })();
 
   const updateUserSettingsCommand = new UpdateUserSettings(authenticatedUserRepo, nuxtApp);
-
-  const emitCommandOpenUserActionModal = new EmitCommandOpenUserActionModalModal(nuxtApp);
 
   return {
     queries: {
@@ -93,8 +89,7 @@ export default function () {
         nuxtApp,
         nuxtApp.$i18n.t,
       ),
-      emitCommandOpenUserActionModal,
-      emitCommandCloseUserActionModal: new EmitCommandCloseUserActionModal(nuxtApp),
+
       logoutCurrentUserFromButtonClick: new LogoutCurrentUserFromButtonClick(
         new LogoutUser(authenticationRepo, nuxtApp),
         logger,

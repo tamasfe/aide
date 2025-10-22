@@ -24,7 +24,7 @@ const props = defineProps({
 });
 
 const games = useGameModule();
-const user = useUserModule();
+const nuxtApp = useNuxtApp();
 const { t } = useI18n();
 const userStore = useUserStore();
 const launchMode = ref<"session" | "demo" | undefined>(undefined);
@@ -33,6 +33,7 @@ const siteStore = useSiteStore();
 const { params } = useRoute();
 const notificationsStore = useNotificationsStore();
 const { enter } = useFullscreen(el);
+const walletStore = useWalletStore();
 
 useHead({
   title: t("page.game", { game: props.game?.name }),
@@ -110,6 +111,7 @@ const copyDemoSessionUrlToClipboard = () => {
               <!-- This button is show on desktop and will
                  trigger a game session on the same page -->
               <BaseButton
+                v-if="walletStore.wallet"
                 variant="primary"
                 size="xl"
                 class="hidden md:flex w-full gap-3 max-w-72"
@@ -127,6 +129,7 @@ const copyDemoSessionUrlToClipboard = () => {
               <!-- This button is shown on mobile and will
                  redirect to the game play page -->
               <NuxtLinkLocale
+                v-if="walletStore.wallet"
                 class="md:hidden"
                 :to="{ name: 'games-provider-game-mode', params: { ... params, mode: 'play' } }"
               >
@@ -150,7 +153,7 @@ const copyDemoSessionUrlToClipboard = () => {
                 v-if="game.demo"
                 variant="secondary"
                 size="xl"
-                class="mt-6 max-w-64 gap-3 hidden md:flex"
+                class="max-w-64 gap-3 hidden md:flex"
                 :disabled="!gameDemoSession"
                 @click.shift="copyDemoSessionUrlToClipboard()"
                 @click.exact="launchMode = 'demo'"
@@ -188,7 +191,7 @@ const copyDemoSessionUrlToClipboard = () => {
                 v-if="game.demo"
                 variant="primary"
                 size="xl"
-                class="mt-6 max-w-64 gap-3 hidden md:flex"
+                class="max-w-64 gap-3 hidden md:flex"
                 :disabled="!gameDemoSession"
                 @click.shift="copyDemoSessionUrlToClipboard()"
                 @click.exact="launchMode = 'demo'"
@@ -221,7 +224,7 @@ const copyDemoSessionUrlToClipboard = () => {
               <BaseButton
                 v-if="!userStore.isAuthenticated"
                 variant="secondary"
-                @click="user.ui.emitCommandOpenUserActionModal.handle('login')"
+                @click="nuxtApp.callHook('frontend:command:modal:login:open')"
               >
                 {{ $t("button.login") }}
               </BaseButton>

@@ -11,6 +11,7 @@ export default defineNuxtPlugin({
 
     if (import.meta.client) {
       nuxtApp.hook("frontend:event:user:logged-in", async () => walletStore.refresh());
+      nuxtApp.hook("frontend:event:user:logged-out", async () => walletStore.refresh());
 
       nuxtApp.hook("backend:event:wallet:balance-updated",
         ({ balanceBonus, currency, balanceLocked, balanceUnlocked }) => {

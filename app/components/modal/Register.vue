@@ -1,46 +1,49 @@
 <script setup lang="ts">
-// DESIGN STATUS:       ✅
-// ARCHITECTURE STATUS: ✅
-// TRANSLATION STATUS:  ✅
-
-const props = defineProps<{
-  open: boolean;
-}>();
-
 const siteStore = useSiteStore();
-const signupFlows = useSignupModule();
-const user = useUserModule();
+const nuxtApp = useNuxtApp();
+const open = ref(false);
+const signupModule = useSignupModule();
 
-const ENABLE_SERVER_SIDE_RENDERING = false;
-const DEFER_CLIENT_SIDE_LOADING = true;
-const { data: currentStartedSignupFlow, refresh } = useAsyncData(`current-signup-flow`, async () => {
-  return signupFlows.ui.searchCurrentSignupFlowOnModalInit.handle();
-}, { lazy: DEFER_CLIENT_SIDE_LOADING, server: ENABLE_SERVER_SIDE_RENDERING });
+useRuntimeHook("frontend:command:modal:register:open", () => {
+  open.value = true;
+});
 
-// Refresh the signup flow initial data when modal closes, for next time it opens
-watch(() => props.open, async (isOpen) => {
-  if (!isOpen) {
-    await refresh();
+useRuntimeHook("frontend:command:modal:register:close", () => {
+  open.value = false;
+});
+
+useRuntimeHook("frontend:command:modal:close", () => {
+  open.value = false;
+});
+
+watch(open, (newValue) => {
+  if (newValue) {
+    nuxtApp.callHook("frontend:event:modal:register:opened");
+  }
+  else {
+    nuxtApp.callHook("frontend:event:modal:register:closed");
   }
 });
 
-const onClosed = () => {
-  user.ui.emitCommandCloseUserActionModal.handle();
-};
+const { data: currentStartedSignupFlow } = useAsyncData(`current-signup-flow`, async () => {
+  return signupModule.ui.searchCurrentSignupFlowOnModalInit.handle();
+}, {
+  lazy: true,
+  server: false,
+});
 </script>
 
 <template>
   <BaseModal
-    :open="open"
+    v-model:open="open"
     banner="left"
     :banner-left="siteStore.getRelativeAssetPath('banners/register_vertical.png')"
     :banner-top="siteStore.getRelativeAssetPath('banners/register_horizontal.png')"
-    @update:open="v => !v && onClosed()"
   >
     <FormRegister
-      :email="currentStartedSignupFlow?.email || ''"
-      :cpf="currentStartedSignupFlow?.cpf || ''"
-      :telephone="currentStartedSignupFlow?.telephone || ''"
+      :email="currentStartedSignupFlow?.email ?? ''"
+      :cpf="currentStartedSignupFlow?.cpf ?? ''"
+      :telephone="currentStartedSignupFlow?.telephone ?? ''"
     />
   </BaseModal>
 </template>

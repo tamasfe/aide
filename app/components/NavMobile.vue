@@ -6,7 +6,7 @@
 
 import { NuxtLink, LiveChatButton } from "#components";
 
-const userModule = useUserModule();
+const nuxtApp = useNuxtApp();
 const { t } = useI18n();
 
 const emit = defineEmits([
@@ -58,7 +58,7 @@ const items = computed<NavMobileItem[]>(() => [
     icon: "lucide:search",
     text: t("mobile_nav.search"),
     attributes: {
-      onClick: () => userModule.ui.emitCommandOpenUserActionModal.handle("search"),
+      onClick: () => nuxtApp.callHook("frontend:command:modal:search:open"),
     },
   },
   {
@@ -99,7 +99,9 @@ const items = computed<NavMobileItem[]>(() => [
         class="text-subtle mb-1"
         :size="20"
       />
-      <div class="text-subtle text-xs">{{ item.text }}</div>
+      <div class="text-subtle text-xs">
+        {{ item.text }}
+      </div>
     </component>
   </div>
 </template>

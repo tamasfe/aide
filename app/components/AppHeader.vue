@@ -1,11 +1,7 @@
 <script setup lang="ts">
-// DESIGN STATUS:       ✴️
-//   * user icon size is stupid
-// ARCHITECTURE STATUS: ✅
-// TRANSLATION STATUS:  ✅
 const userStore = useUserStore();
 const siteStore = useSiteStore();
-const user = useUserModule();
+const nuxtApp = useNuxtApp();
 
 const emit = defineEmits([
   "click:menu",
@@ -60,14 +56,14 @@ const emit = defineEmits([
               id="app-header-login-button"
               variant="secondary"
               class=""
-              @click="user.ui.emitCommandOpenUserActionModal.handle('login')"
+              @click="nuxtApp.callHook('frontend:command:modal:login:open')"
             >
               {{ $t("button.login") }}
             </BaseButton>
             <BaseButton
               variant="primary"
               class=""
-              @click="user.ui.emitCommandOpenUserActionModal.handle('register')"
+              @click="nuxtApp.callHook('frontend:command:modal:register:open')"
             >
               {{ $t("button.register") }}
             </BaseButton>
@@ -79,7 +75,7 @@ const emit = defineEmits([
               id="app-header-deposit-button"
               variant="emphasis"
               class=""
-              @click="user.ui.emitCommandOpenUserActionModal.handle('deposit')"
+              @click="nuxtApp.callHook('frontend:command:modal:deposit:open')"
             >
               {{ $t("button.deposit") }}
             </BaseButton>

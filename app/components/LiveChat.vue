@@ -13,11 +13,11 @@ const nuxtApp = useNuxtApp();
 
 const visibility = ref<"minimized" | "maximized" | "hidden">("hidden");
 
-nuxtApp.hook("frontend:command:live-chat:open", async () => {
+useRuntimeHook("frontend:command:live-chat:open", async () => {
   visibility.value = "maximized";
 });
 
-nuxtApp.hook("frontend:command:live-chat:close", async () => {
+useRuntimeHook("frontend:command:live-chat:close", async () => {
   visibility.value = "hidden";
 });
 

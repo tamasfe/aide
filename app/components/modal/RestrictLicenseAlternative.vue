@@ -1,36 +1,37 @@
 <script setup lang="ts">
-const open = ref(true);
+import type { RestrictLicenseAlternativePayload } from "~/types/hooks";
+
 const siteStore = useSiteStore();
+const nuxtApp = useNuxtApp();
+const open = ref(false);
+const payload = ref<RestrictLicenseAlternativePayload | null>(null);
 
-// DESIGN STATUS:       ✅
-// ARCHITECTURE STATUS: ✴️
-//   * we need to load the appropriate domain
-// TRANSLATION STATUS:  ✅
-
-const props = defineProps({
-  blockedDomain: {
-    type: String,
-    required: true,
-  },
-  allowedUrl: {
-    type: String,
-    required: true,
-  },
-  blockedCountry: {
-    type: String,
-    required: true,
-  },
+useRuntimeHook("frontend:command:modal:restrict-license-alternative:open", (data) => {
+  payload.value = data;
+  open.value = true;
 });
 
-const allowedDomain = (() => {
-  try {
-    return ref(capitalize(capitalizeBrandDomain(new URL(props.allowedUrl).hostname)));
+useRuntimeHook("frontend:command:modal:restrict-license-alternative:close", () => {
+  open.value = false;
+});
+
+useRuntimeHook("frontend:command:modal:close", () => {
+  open.value = false;
+});
+
+watch(open, (newValue) => {
+  if (newValue) {
+    nuxtApp.callHook("frontend:event:modal:restrict-license-alternative:opened");
   }
-  catch (error) {
-    console.error("Invalid URL provided for allowedUrl prop:", { allowedUrl: props.allowedUrl, error });
-    return ref(capitalize(capitalizeBrandDomain(props.allowedUrl)));
+  else {
+    nuxtApp.callHook("frontend:event:modal:restrict-license-alternative:closed");
+    payload.value = null;
   }
-})();
+});
+
+const allowedDomain = computed(() => {
+  return new URL(payload.value!.allowedUrl).hostname;
+});
 </script>
 
 <template>
@@ -44,23 +45,23 @@ const allowedDomain = (() => {
     banner="top"
     :banner-top="siteStore.getRelativeAssetPath('banners/jurisdiction_horizontal.jpg')"
   >
-    <div class="flex flex-col items-center gap-4">
+    <div v-if="payload" class="flex flex-col items-center gap-4">
       <h1 class="text-2xl font-semibold text-center">
         {{ $t("modal_restrict.license_alternative_headline", {
-          country: blockedCountry,
+          country: payload.blockedCountry,
           allowedDomain,
         }) }}
       </h1>
 
       <div class="text-emphasis text-center mb-4">
         {{ $t("modal_restrict.license_alternative_body", {
-          country: blockedCountry,
-          blockedDomain: capitalizeBrandDomain(siteStore.site.name),
+          country: payload.blockedCountry,
+          blockedName: siteStore.site.name,
           allowedDomain,
         }) }}
       </div>
 
-      <NuxtLinkLocale :to="allowedUrl" :external="true">
+      <NuxtLinkLocale :to="payload.allowedUrl" external>
         <BaseButton
           size="xl"
           class="w-full gap-1.5"

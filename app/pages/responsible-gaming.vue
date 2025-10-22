@@ -14,15 +14,23 @@ useHead({
     date="September 1, 2024"
     :show-print-button="true"
   >
-    <p class="whitespace-pre-wrap">{{ $t('responsible_gaming.content_1', { host: url.host }) }}</p>
+    <p class="whitespace-pre-wrap">
+      {{ $t('responsible_gaming.content_1', { host: url.host }) }}
+    </p>
 
     <h4>{{ $t('responsible_gaming.subtitle_2') }}</h4>
-    <p class="whitespace-pre-wrap">{{ $t('responsible_gaming.content_2', { host: url.host }) }}</p>
+    <p class="whitespace-pre-wrap">
+      {{ $t('responsible_gaming.content_2', { host: url.host }) }}
+    </p>
 
     <h4>{{ $t('responsible_gaming.subtitle_3') }}</h4>
-    <p class="whitespace-pre-wrap">{{ $t('responsible_gaming.content_3', { host: url.host }) }}</p>
+    <p class="whitespace-pre-wrap">
+      {{ $t('responsible_gaming.content_3', { host: url.host }) }}
+    </p>
 
     <h4>{{ $t('responsible_gaming.subtitle_4') }}</h4>
-    <p class="whitespace-pre-wrap">{{ $t('responsible_gaming.content_4', { host: url.host }) }}</p>
+    <p class="whitespace-pre-wrap">
+      {{ $t('responsible_gaming.content_4', { host: url.host }) }}
+    </p>
   </AppPage>
 </template>

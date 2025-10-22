@@ -4,7 +4,7 @@ const { t } = useI18n();
 const wallet = useWalletModule();
 
 definePageMeta({
-  middleware: ["authenticated"],
+  middleware: ["authenticated", "active-wallet"],
 });
 
 useHead({
@@ -23,7 +23,7 @@ const { data } = useAsyncData("history-page-withdrawals-data", async () => {
   if (!walletStore.wallet) return;
 
   loading.value = true;
-  const data = await wallet.ui.searchPaymentsOnTable.handle(walletStore.wallet.walletId, "withdrawal", pageIndex.value);
+  const data = await wallet.ui.searchPaymentsOnTable.handle(walletStore.wallet.wallet_id, "withdrawal", pageIndex.value);
 
   pageSize.value = data.pageSize;
   totalItems.value = data.totalItems;
@@ -31,7 +31,7 @@ const { data } = useAsyncData("history-page-withdrawals-data", async () => {
 
   return data.payments;
 }, {
-  watch: [() => walletStore.wallet?.walletId, () => walletStore.balance, pageIndex],
+  watch: [() => walletStore.wallet?.wallet_id, () => walletStore.balance, pageIndex],
   lazy: DEFER_CLIENT_SIDE_LOADING,
   server: ENABLE_SERVER_SIDE_RENDERING,
 });

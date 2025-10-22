@@ -14,8 +14,6 @@ export default defineNuxtPlugin({
     const logger = useLogger();
     const nuxtApp = useNuxtApp();
 
-    console.log("Setting up websocket plugin");
-
     const wsConnectionResult = await websocket.ui.createWebsocketConnection.handle();
     if (wsConnectionResult.isFailure) {
       logger.error("Failed to create websocket connection", wsConnectionResult.error);
@@ -72,13 +70,12 @@ export default defineNuxtPlugin({
               "notification",
               (eventData) => {
                 if (eventData.data.type === "payment_status_update") {
-                  console.log("Emitting payment-status-updated event");
-                  nuxtApp.callHook("backend:event:payment:status-updated", camelizeKeys(eventData.data));
+                  nuxtApp.callHook("backend:event:payment:status-updated", eventData.data);
                 }
 
                 nuxtApp.callHook("backend:event:notification:received", { notification: {
                   ...camelizeKeys(eventData).data,
-                  createdAt: new Date().toISOString(), // It would be better if this came from the Backend
+                  createdAt: eventData.timestamp, // It would be better if this came from the Backend
                 } });
               },
             );

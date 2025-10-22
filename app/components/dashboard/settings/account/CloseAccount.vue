@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const userModule = useUserModule();
+const nuxtApp = useNuxtApp();
 </script>
 
 <template>
@@ -16,7 +16,7 @@ const userModule = useUserModule();
         <BaseButton
           variant="danger"
           size="dashboard"
-          @click="() => userModule.ui.emitCommandOpenUserActionModal.handle('close_account')"
+          @click="nuxtApp.callHook('frontend:command:modal:close-account:open')"
         >
           {{ $t('button.close_account') }}
         </BaseButton>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const userSettings = useUserSettingsStore();
 const user = useUserModule();
+const nuxtApp = useNuxtApp();
 
 const supportedTimeZoneOptions = Intl.supportedValuesOf("timeZone").map(timeZone => ({
   value: timeZone,
@@ -20,7 +21,7 @@ const onSubmit = async () => {
    */
   userSettings.settings.timeZone = selectedTimezone.value;
   user.ui.userSettings.updateSettingsOnForm.handle({ timeZone: selectedTimezone.value });
-  user.ui.emitCommandCloseUserActionModal.handle();
+  nuxtApp.callHook("frontend:command:modal:close");
 };
 
 /**
@@ -49,7 +50,7 @@ const filteredOptions = computed(() => {
           variant="subtle"
           class="w-full space-x-1.5"
           type="button"
-          @click="user.ui.emitCommandCloseUserActionModal.handle()"
+          @click="nuxtApp.callHook('frontend:command:modal:close')"
         >
           {{ $t("button.cancel") }}
         </BaseButton>

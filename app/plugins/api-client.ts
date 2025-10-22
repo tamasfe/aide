@@ -1,6 +1,5 @@
 import createClient, { type Client, type Middleware } from "openapi-fetch";
 import type { paths } from "../packages/http-client/girobet-backend-generated-http-client/openapi-typescript";
-import { EmitCommandOpenUserActionModalModal } from "~/modules/users/infra/ui/EmitCommandOpenUserActionModal";
 import { HttpBackendApiError } from "../packages/http-client/http-backend-api-error";
 import { ErrorFailedToFetch } from "../packages/http-client/error-failed-to-fetch";
 import type { SupportedLocale } from "../packages/translation";
@@ -58,8 +57,6 @@ export default defineNuxtPlugin({
 });
 
 function createMiddlewareJurisdictionErrorHandler(nuxtApp: NuxtApp, hostname: string, locale: SupportedLocale): Middleware {
-  const emitOpenUserModal = new EmitCommandOpenUserActionModalModal(nuxtApp);
-
   return {
     async onResponse({ response }) {
       /* If a CORS error happens, the response may be null or undefined */
@@ -75,55 +72,36 @@ function createMiddlewareJurisdictionErrorHandler(nuxtApp: NuxtApp, hostname: st
       if (HttpBackendApiError.isJurisdictionError(jsonResponse)) {
         switch (jsonResponse.code) {
           case "JURISDICTION_NOT_SUPPORTED_NO_ALTERNATIVE_SITE":
-            await emitOpenUserModal.handle({ modal: "restrict_license_no_alternative", data: {
+            await nuxtApp.callHook("frontend:command:modal:restrict-license-no-alternative:open", {
               jurisdiction: jsonResponse.metadata.jurisdiction,
               currentHost: hostname,
               blockedCountry: useCountryName(jsonResponse.metadata.jurisdiction, locale) || jsonResponse.metadata.jurisdiction,
-            } });
+            });
             return;
 
           case "JURISDICTION_NOT_SUPPORTED_ALTERNATIVE_SITE": {
-            const allowedUrl = jsonResponse.metadata.alternative_site.domain.frontend ? `https://${jsonResponse.metadata.alternative_site.domain.frontend}` : null;
-            if (!allowedUrl) {
-              await emitOpenUserModal.handle({ modal: "restrict_license_no_alternative", data: {
-                jurisdiction: jsonResponse.metadata.jurisdiction,
-                currentHost: hostname,
-                blockedCountry: useCountryName(jsonResponse.metadata.jurisdiction, locale) || jsonResponse.metadata.jurisdiction,
-              } });
-              return;
-            }
-
-            await emitOpenUserModal.handle({
-              modal: "restrict_license_alternative",
-              data: {
-                jurisdiction: jsonResponse.metadata.jurisdiction,
-                allowedUrl,
-                currentHost: hostname,
-                blockedCountry: useCountryName(jsonResponse.metadata.jurisdiction, locale) || jsonResponse.metadata.jurisdiction,
-              },
+            await nuxtApp.callHook("frontend:command:modal:restrict-license-alternative:open", {
+              jurisdiction: jsonResponse.metadata.jurisdiction,
+              allowedUrl: `https://${jsonResponse.metadata.alternative_site.domain.frontend}`,
+              currentHost: hostname,
+              blockedCountry: useCountryName(jsonResponse.metadata.jurisdiction, locale) || jsonResponse.metadata.jurisdiction,
             });
             return;
           }
 
           case "USER_ACCOUNT_JURISDICTION_MISMATCH":
-            await emitOpenUserModal.handle({
-              modal: "restrict_license_no_alternative",
-              data: {
-                jurisdiction: jsonResponse.metadata.jurisdiction,
-                currentHost: hostname,
-                blockedCountry: useCountryName(jsonResponse.metadata.jurisdiction, locale) || jsonResponse.metadata.jurisdiction,
-              },
+            await nuxtApp.callHook("frontend:command:modal:restrict-license-no-alternative:open", {
+              jurisdiction: jsonResponse.metadata.jurisdiction,
+              currentHost: hostname,
+              blockedCountry: useCountryName(jsonResponse.metadata.jurisdiction, locale) || jsonResponse.metadata.jurisdiction,
             });
             return;
 
           case "JURISDICTION_SUPPORTED_BUT_NOT_ENABLED":
-            await emitOpenUserModal.handle({
-              modal: "restrict_expanding",
-              data: {
-                jurisdiction: jsonResponse.metadata.jurisdiction,
-                currentHost: hostname,
-                blockedCountry: useCountryName(jsonResponse.metadata.jurisdiction, locale) || jsonResponse.metadata.jurisdiction,
-              },
+            await nuxtApp.callHook("frontend:command:modal:restrict-expanding:open", {
+              jurisdiction: jsonResponse.metadata.jurisdiction,
+              currentHost: hostname,
+              blockedCountry: useCountryName(jsonResponse.metadata.jurisdiction, locale) || jsonResponse.metadata.jurisdiction,
             });
             return;
 

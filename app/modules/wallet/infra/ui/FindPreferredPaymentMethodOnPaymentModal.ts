@@ -27,9 +27,18 @@ export class FindPreferredPaymentMethodOnStoreRefresh {
   public FALLBACK_FOR_MAX_AMOUNT = null;
   public FALLBACK_FOR_COOLDOWN_SECONDS = null;
 
-  public async handle(
-    currency: WalletCurrency,
-  ): Promise<PaymentMethodResponseI | null> {
+  public async handle(): Promise<PaymentMethodResponseI | null> {
+    const walletStore = useWalletStore();
+
+    const currency = walletStore.activeCurrency;
+
+    if (!currency) {
+      this.logger.warn(
+        "No wallet currency found when trying to find preferred payment method on payment modal",
+      );
+      return null;
+    }
+
     const paymentMethodsResult = await this.paymentMethodRepo.search(currency);
     if (paymentMethodsResult.isFailure) {
       if (paymentMethodsResult.error.name === "ErrorUnauthorized") {

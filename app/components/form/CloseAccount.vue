@@ -7,6 +7,7 @@ import { z } from "zod";
  */
 const user = useUserModule();
 const logger = useLogger();
+const nuxtApp = useNuxtApp();
 const { t } = useI18n();
 const localePath = useLocalePath();
 
@@ -85,7 +86,7 @@ const onSubmit = handleSubmit(async (formData) => {
       size="xl"
       type="button"
       variant="subtle"
-      @click="() => user.ui.emitCommandCloseUserActionModal.handle()"
+      @click="nuxtApp.callHook('frontend:command:modal:close')"
     >
       {{ $t("button.cancel") }}
     </BaseButton>
