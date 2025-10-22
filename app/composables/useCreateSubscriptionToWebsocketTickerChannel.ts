@@ -17,42 +17,54 @@ export default function<T extends keyof WebsocketTickerMessagesByType>(
 
   const isFocused = useWindowFocus();
 
-  let listenerWrapperReference: WebsocketEventListener;
+  let listenerWrapperReference: WebsocketEventListener | null = null;
+  let isSubscribed = false;
+
+  const subscribe = async (): Promise<void> => {
+    if (!$wsConnection || isSubscribed) {
+      return;
+    }
+
+    const result = await channelManager.subscribe($wsConnection, message, callback);
+
+    if (result.isFailure) {
+      logger.error("Error subscribing to websocket channel", result.error, { channel: "ticker", message });
+      return;
+    }
+
+    listenerWrapperReference = result.value;
+    isSubscribed = true;
+  };
+
+  const unsubscribe = async (): Promise<void> => {
+    if (!$wsConnection || !isSubscribed || !listenerWrapperReference) {
+      return;
+    }
+
+    const result = await channelManager.unsubscribe($wsConnection, listenerWrapperReference);
+
+    if (result.isFailure) {
+      logger.error("Error unsubscribing from websocket channel", result.error, { channel: "ticker", message });
+      return;
+    }
+
+    listenerWrapperReference = null;
+    isSubscribed = false;
+  };
 
   if ($wsConnection) {
     onMounted(async () => {
       // Initially subscribe, as we assume on mount the window is focused
-      const result = await channelManager.subscribe($wsConnection, message, callback);
-
-      if (result.isFailure) {
-        logger.error("Error subscribing to websocket channel", result.error, { channel: "ticker", message });
-        return;
-      }
-      else {
-        listenerWrapperReference = result.value;
-      }
+      await subscribe();
 
       watch(() => isFocused.value, async (newValue) => {
-        // If window becomes focused: subscribe (knowing that if it's already subscribed this does nothing)
         if (newValue) {
-          const result = await channelManager.subscribe($wsConnection, message, callback);
-
-          if (result.isFailure) {
-            logger.error("Error subscribing to websocket channel", result.error, { channel: "ticker", message });
-            return;
-          }
-
-          listenerWrapperReference = result.value;
+          // If window becomes focused: subscribe only if not already subscribed
+          await subscribe();
         }
-
-        // If window becomes unfocused: wait X seconds, then check at that moment if it's focused, then unsubscribe if still unfocused
-        // const SECONDS_TO_WAIT_BEFORE_UNSUBSCRIBING_WHEN_UNFOCUSED = 5;
         else {
-          const result = await channelManager.unsubscribe($wsConnection, listenerWrapperReference);
-
-          if (result.isFailure) {
-            logger.error("Error unsubscribing from websocket channel", result.error, { channel: "ticker", message });
-          }
+          // If window becomes unfocused: unsubscribe immediately
+          await unsubscribe();
         }
       });
     });
@@ -60,12 +72,6 @@ export default function<T extends keyof WebsocketTickerMessagesByType>(
 
   // Under no circumstance we want to keep subscribed when the component unmounts
   onUnmounted(async () => {
-    if ($wsConnection) {
-      const resultUnsubcribing = await channelManager.unsubscribe($wsConnection, listenerWrapperReference);
-      if (resultUnsubcribing.isFailure) {
-        logger.error("Error unsubscribing from websocket channel", resultUnsubcribing.error, { channel: "ticker", message });
-        return;
-      }
-    }
+    await unsubscribe();
   });
 };
