@@ -15,13 +15,18 @@ export default function<T extends keyof WebsocketTickerMessagesByType>(
   const { $wsConnection } = useNuxtApp();
   const logger = useLogger();
 
+  if (!$wsConnection) {
+    logger.warn("Websocket connection is not available. Subscription to ticker channel will not be created.", { channel: "ticker", message });
+    return;
+  }
+
   const isFocused = useWindowFocus();
 
   let listenerWrapperReference: WebsocketEventListener | null = null;
   let isSubscribed = false;
 
   const subscribe = async (): Promise<void> => {
-    if (!$wsConnection || isSubscribed) {
+    if (isSubscribed) {
       return;
     }
 
@@ -37,7 +42,7 @@ export default function<T extends keyof WebsocketTickerMessagesByType>(
   };
 
   const unsubscribe = async (): Promise<void> => {
-    if (!$wsConnection || !isSubscribed || !listenerWrapperReference) {
+    if (!isSubscribed || !listenerWrapperReference) {
       return;
     }
 
@@ -52,23 +57,21 @@ export default function<T extends keyof WebsocketTickerMessagesByType>(
     isSubscribed = false;
   };
 
-  if ($wsConnection) {
-    onMounted(async () => {
-      // Initially subscribe, as we assume on mount the window is focused
-      await subscribe();
+  onMounted(async () => {
+    // Initially subscribe, as we assume on mount the window is focused
+    await subscribe();
 
-      watch(() => isFocused.value, async (newValue) => {
-        if (newValue) {
-          // If window becomes focused: subscribe only if not already subscribed
-          await subscribe();
-        }
-        else {
-          // If window becomes unfocused: unsubscribe immediately
-          await unsubscribe();
-        }
-      });
+    watch(() => isFocused.value, async (newValue) => {
+      if (newValue) {
+        // If window becomes focused: subscribe only if not already subscribed
+        await subscribe();
+      }
+      else {
+        // If window becomes unfocused: unsubscribe immediately
+        await unsubscribe();
+      }
     });
-  }
+  });
 
   // Under no circumstance we want to keep subscribed when the component unmounts
   onUnmounted(async () => {
