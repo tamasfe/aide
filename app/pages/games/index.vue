@@ -1,9 +1,9 @@
 <script setup lang="ts">
 const { t } = useI18n();
 
-definePageMeta({
-  layout: "carousel",
-});
+// definePageMeta({
+//   layout: "carousel",
+// });
 
 const title = t("page.games");
 useHead({ title });
@@ -11,6 +11,7 @@ useHead({ title });
 
 <template>
   <div>
+    <CarouselHero class="mb-4 md:mb-6 -mx-4" />
     <GridVerticalGames
       :title="title"
       :show-back-button="true"

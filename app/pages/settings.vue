@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { Route } from "~/components/NavBar.vue";
 
-definePageMeta({
-  layout: "account",
-});
+// definePageMeta({
+//   layout: "account",
+// });
 
 const localePath = useLocalePath();
 const { t } = useI18n();
@@ -32,7 +32,7 @@ const navRoutes = computed<Route[]>(() => [
 
 <template>
   <div>
-    <NavBar :routes="navRoutes" class="mb-4 md:mb-6 scroll-px-4 -mx-4 px-4" />
+    <NavBar :routes="navRoutes" class="mb-4 scroll-px-4 -mx-4 px-4" />
     <NuxtPage />
   </div>
 </template>

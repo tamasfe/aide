@@ -26,13 +26,6 @@ const onClickRefreshPWA = async () => {
 
   await $pwa.updateServiceWorker(true);
 };
-
-// onMounted(async () => {
-//   if (!$pwa) {
-//     return;
-//   }
-//   await $pwa.updateServiceWorker();
-// });
 </script>
 
 <template>

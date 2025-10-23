@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { Route } from "~/components/NavBar.vue";
 
-definePageMeta({
-  layout: "account",
-});
+// definePageMeta({
+//   layout: "account",
+// });
 
 const localePath = useLocalePath();
 const { t } = useI18n();

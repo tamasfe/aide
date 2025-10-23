@@ -1,15 +1,14 @@
 <script setup lang="ts">
 const { t } = useI18n();
 
-definePageMeta({
-  layout: "carousel",
-});
-
 useHead({
   title: t("page.providers"),
 });
 </script>
 
 <template>
-  <GridVerticalProviders />
+  <div>
+    <CarouselHero class="mb-4 md:mb-6 -mx-4" />
+    <GridVerticalProviders />
+  </div>
 </template>

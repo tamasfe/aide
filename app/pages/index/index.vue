@@ -4,7 +4,6 @@ const siteStore = useSiteStore();
 const games = useGameModule();
 
 definePageMeta({
-  layout: "carousel",
   scrollToTop: false,
 });
 

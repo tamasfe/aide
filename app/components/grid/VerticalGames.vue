@@ -44,7 +44,7 @@ useAsyncData(`load-games-for-vertical-${props.categoryIdentifier}`,
 </script>
 
 <template>
-  <GridHeader class="mb-4">
+  <GridHeader class="mb-2">
     <template #title>
       <div class="flex gap-4 items-center">
         <NuxtLinkLocale

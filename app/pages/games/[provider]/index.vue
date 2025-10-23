@@ -13,9 +13,9 @@ if (!providerIdentifier || Number.isNaN(providerIdentifier)) {
   await navigateTo("/");
 }
 
-definePageMeta({
-  layout: "carousel",
-});
+// definePageMeta({
+//   layout: "carousel",
+// });
 
 useHead({
   title: t("page.provider", { provider: params.id }),
@@ -39,6 +39,7 @@ watch(() => providerFromApi.value, (provider) => {
 
 <template>
   <div>
+    <CarouselHero class="mb-4 md:mb-6 -mx-4" />
     <GridVerticalGames
       :title="providerFromApi?.name || ''"
       :provider-identifier="providerIdentifier"

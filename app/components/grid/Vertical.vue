@@ -50,8 +50,7 @@ const dataToRender = computed<(T[number] & { isSkeleton?: boolean })[]>(() => {
 <template>
   <div>
     <div
-      class="giro__grid-vertical-container"
-      :style="{ gap: `${gap}rem` }"
+      class="grid gap-2 md:gap-4 grid-cols-3 sm:grid-cols-5 md:grid-cols-7 lg:grid-cols-8 pt-1"
     >
       <div
         v-for="(datapoint) in dataToRender"
@@ -90,28 +89,3 @@ const dataToRender = computed<(T[number] & { isSkeleton?: boolean })[]>(() => {
     </div>
   </div>
 </template>
-
-<style scoped lang="postcss">
-.giro__grid-vertical-container {
-  @apply grid;
-  grid-template-columns: repeat(v-bind("columns.sm"), minmax(0, 1fr));
-}
-
-@media (min-width: 640px) {
-  .giro__grid-vertical-container {
-    grid-template-columns: repeat(v-bind("columns.md"), minmax(0, 1fr));
-  }
-}
-
-@media (min-width: 768px) {
-  .giro__grid-vertical-container {
-    grid-template-columns: repeat(v-bind("columns.lg"), minmax(0, 1fr));
-  }
-}
-
-@media (min-width: 1024px) {
-  .giro__grid-vertical-container {
-    grid-template-columns: repeat(v-bind("columns.xl"), minmax(0, 1fr));
-  }
-}
-</style>

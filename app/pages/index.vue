@@ -1,8 +1,9 @@
 <script setup lang="ts">
 const { t } = useI18n();
 const siteStore = useSiteStore();
+
 definePageMeta({
-  layout: "carousel",
+  keepalive: true,
 });
 
 const localePath = useLocalePath();
@@ -47,6 +48,7 @@ const menuTabs = computed(() => [
 
 <template>
   <div>
+    <CarouselHero class="mb-4 md:mb-6 -mx-4" />
     <WinningNowTicker class="mb-6" />
     <div class="sticky md:static z-[5] top-14 md:hidden px-4 -mx-4 bg-subtle py-2">
       <nav class="flex gap-2 px-4 -mx-4 scroll-px-4 snap-x scroll-smooth overflow-x-auto no-scrollbar">

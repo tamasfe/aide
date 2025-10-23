@@ -3,9 +3,9 @@ const { params } = useRoute();
 const { t } = useI18n();
 const logger = useLogger();
 
-definePageMeta({
-  layout: "carousel",
-});
+// definePageMeta({
+// layout: "carousel",
+// });
 
 const categoryIdentifier = params.identifier;
 if (!categoryIdentifier || typeof categoryIdentifier !== "string") {
@@ -21,6 +21,7 @@ useHead({
 
 <template>
   <div>
+    <CarouselHero class="mb-4 md:mb-6 -mx-4" />
     <GridVerticalGames
       :title="categoryTitle"
       :category-identifier="String(categoryIdentifier)"

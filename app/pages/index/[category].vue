@@ -4,7 +4,6 @@ const siteStore = useSiteStore();
 const { params } = useRoute();
 
 definePageMeta({
-  layout: "carousel",
   scrollToTop: false,
   middleware: [(to) => {
     if (!to.params.category) {
