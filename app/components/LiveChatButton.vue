@@ -37,7 +37,6 @@ watch(
 
 <template>
   <BaseButton v-bind="props" @click="onClick">
-    <BaseSpinner v-if="!loaded" />
-    <slot v-else />
+    <slot />
   </BaseButton>
 </template>
