@@ -70,7 +70,7 @@ const onClickVote = async (newRating: "like" | "dislike" | null) => {
       />
     </BaseButton>
 
-    <div class="w-16 h-8 bg-button-subtle-hover rounded flex items-center justify-center">
+    <div class="w-16 h-8 bg-white/5 rounded flex items-center justify-center">
       <div v-if="likesPercentage !== null" class="flex flex-col gap-1 leading-none whitespace-nowrap items-center text-sm text-center justify-center">
         <span class="font-medium tabular-nums">{{ n(likesPercentage, { style: "percent" }) }}</span>
       </div>

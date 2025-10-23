@@ -83,10 +83,29 @@ const copyDemoSessionUrlToClipboard = () => {
 
 <template>
   <div>
-    <div class="bg-subtle rounded-lg border border-muted/5 overflow-hidden mb-8">
+    <div class="bg-subtle rounded-lg border border-muted/5 overflow-hidden mb-8 relative">
       <div v-if="game" ref="gameFrame" class="relative py-40 md:py-0 md:h-[70vh]">
         <div class="text-subtle absolute inset-0 flex items-center justify-center">
           <BaseSpinner :size="36" />
+        </div>
+
+        <div
+          class="transition-opacity duration-[5s] pointer-events-none absolute -left-64 -top-64 -right-64 bottom-0 bg-subtle"
+          :class="{
+            'opacity-100': !launchMode,
+            'opacity-0': launchMode,
+          }"
+        >
+          <NuxtImg
+            provider="custom_cloudflare"
+            format="webp"
+            densities="1x"
+            width="60"
+            quality="1"
+            class="absolute inset-0 object-cover w-full h-full opacity-40 blur-[160px]"
+            :src="`/games/${game.identifier}.jpg`"
+            alt=" "
+          />
         </div>
 
         <GameLauncher
@@ -96,18 +115,6 @@ const copyDemoSessionUrlToClipboard = () => {
           :game-demo-session="gameDemoSession"
           @abort="launchMode = undefined"
         >
-          <div class="pointer-events-none absolute inset-0 blur-[140px] bg-subtle">
-            <NuxtImg
-              provider="custom_cloudflare"
-              format="webp"
-              densities="1x"
-              width="20"
-              quality="1"
-              class="absolute inset-0 object-cover w-full h-full opacity-40"
-              :src="`/games/${game.identifier}.jpg`"
-              alt=" "
-            />
-          </div>
           <div
             class="w-full h-full relative flex flex-col items-center justify-center gap-y-6"
           >
@@ -250,7 +257,7 @@ const copyDemoSessionUrlToClipboard = () => {
 
       <GameDescription
         :game="game ?? undefined"
-        class="bg-subtle"
+        class="relative"
         :authenticated="authenticated ?? false"
         @maximize="enter()"
       />

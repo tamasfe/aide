@@ -57,13 +57,11 @@ const emit = defineEmits<{
                 },
               }"
             >
-              <BaseButton
-                variant="secondary"
-                size="ghost"
-                class="rounded px-2 py-0.5"
+              <button
+                class="bg-white/5 backdrop:saturate-200 rounded px-2 py-0.5 text-subtle hover:text-default"
               >
                 {{ t(`category.${categoryIdentifier}`) }}
-              </BaseButton>
+              </button>
             </NuxtLinkLocale>
           </template>
           <template v-else>
