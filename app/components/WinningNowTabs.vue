@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { TabsContent, TabsList, TabsRoot, TabsTrigger } from "reka-ui";
 import type { Keyified } from "~/types/utils";
 import type { Win } from "~/types/wins";
 
@@ -72,11 +73,36 @@ const { data: myBetsData } = useAsyncData(`winning-now-my-bets-table`, async () 
       {{ $t('winning_now.title') }}
     </h2>
 
-    <Tabs v-model="currentTab" class="mt-4 space-y-4">
-      <TabsList class="rounded bg-subtle lg:inline-block w-full">
+    <TabsRoot v-model="currentTab" class="mt-4 p-4 rounded-lg bg-subtle">
+      <TabsList class="flex gap-2 mb-4">
         <TabsTrigger
           v-for="tab in WINNING_NOW_TABS"
           :key="tab"
+          class="
+              px-4
+              py-2
+              h-full
+              flex-1
+              md:flex-grow-0
+              inline-flex
+              items-center
+              justify-center
+              whitespace-nowrap
+              text-md
+              font-medium
+              ring-offset-background
+              transition-all
+              rounded
+              data-[state=active]:bg-button-secondary
+              data-[state=active]:text-foreground
+              data-[state=active]:shadow
+              md:hover:bg-button-secondary-hover
+              disabled:pointer-events-none
+              disabled:opacity-50
+              focus-visible:outline-none
+              focus-visible:ring
+              focus-visible:ring-offset
+            "
           :is-active="tab === currentTab"
           :value="tab"
           :disabled="tab === 'my_bets' && !userStore.isAuthenticated"
@@ -109,6 +135,6 @@ const { data: myBetsData } = useAsyncData(`winning-now-my-bets-table`, async () 
           :loading="false"
         />
       </TabsContent>
-    </Tabs>
+    </TabsRoot>
   </div>
 </template>
