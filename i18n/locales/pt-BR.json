@@ -248,9 +248,9 @@
     "expanding_body": "Infelizmente, no momento, não temos opções de depósito local para jogadores de {country}. Estamos crescendo o mais rápido possível e procurando atendê-lo assim que pudermos. Volte em breve para se juntar ao cassino online mais sortudo do mundo!",
     "expanding_subject": "Me adicione à lista de espera em {country} para {blockedName}",
     "license_alternative_headline": "Vá para {allowedDomain} para a Melhor Experiência de Cassino em {country}",
-    "license_alternative_body": "Devido às restrições de nossa licença de jogo, o url {blockedName} não pode aceitar jogadores localizados em {country}. No entanto, podemos fornecer uma experiência completa sem restrições em nosso site dedicado a {country} em {allowedDomain}!",
+    "license_alternative_body": "Devido às restrições da nossa licença de jogo, o {blockedName} não pode aceitar jogadores localizados em {country}. No entanto, podemos oferecer a você uma experiência completa e sem restrições em nosso site dedicado a {country}, acessível em {allowedDomain}!",
     "license_no_alternative_headline": "Desculpe, {blockedName} não está disponível em {country}",
-    "license_no_alternative_body": "Devido às restrições de nossa licença de jogo, o url {blockedName} não pode aceitar jogadores localizados em {country}. Se você acha que isso é um erro, verifique sua conexão ou com seu provedor de internet. Pedimos desculpas pelo inconveniente e esperamos poder atendê-lo em breve."
+    "license_no_alternative_body": "Devido às restrições da nossa licença de jogo, o {blockedName} não pode aceitar jogadores localizados em {country}. Se você acredita que isso é um engano, verifique sua conexão ou entre em contato com seu provedor de internet (ISP). Pedimos desculpas pelo inconveniente e esperamos poder atendê-lo em breve."
   },
   "validation": {
     "cpf_invalid": "CPF inválido",

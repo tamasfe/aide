@@ -249,9 +249,9 @@
     "expanding_body": "Unfortunately, at this time we don't have local deposit options for players from {country}. We're growing as fast as possible and looking to serve you as soon as we can. Check back soon to join the luckiest online casino in the world!",
     "expanding_subject": "Add me to the waitlist in {country} for {blockedName}",
     "license_alternative_headline": "Go to {allowedDomain} for the Best Casino Experience in {country}",
-    "license_alternative_body": "Due to the restrictions of our gaming license, the url {blockedName} cannot accept players located in {country}. However, we can provide you a full unrestricted experience on our dedicated {country} website at {allowedDomain}!",
+    "license_alternative_body": "Due to the restrictions of our gaming license, {blockedName} cannot accept players located in {country}. However, we can provide you a full unrestricted experience on our dedicated {country} website at {allowedDomain}!",
     "license_no_alternative_headline": "Sorry, {blockedName} is not available within {country}",
-    "license_no_alternative_body": "Due to the restrictions of our gaming license, the url {blockedName} cannot accept players located in {country}. If you think this is a mistake, please check your connection or with your ISP. We apologize for the inconvenience and hope to serve you in the near future."
+    "license_no_alternative_body": "Due to the restrictions of our gaming license, {blockedName} cannot accept players located in {country}. If you think this is a mistake, please check your connection or with your ISP. We apologize for the inconvenience and hope to serve you in the near future."
   },
   "validation": {
     "cpf_invalid": "Invalid CPF",
