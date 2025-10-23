@@ -90,22 +90,21 @@ const copyDemoSessionUrlToClipboard = () => {
         </div>
 
         <div
-          class="transition-opacity duration-[5s] pointer-events-none absolute -left-64 -top-64 -right-64 bottom-0 bg-subtle"
-          :class="{
-            'opacity-100': !launchMode,
-            'opacity-0': launchMode,
-          }"
+          v-show="!launchMode"
+          class="pointer-events-none absolute -left-20 -top-20 -right-20 bottom-0 bg-subtle"
         >
-          <NuxtImg
-            provider="custom_cloudflare"
-            format="webp"
-            densities="1x"
-            width="60"
-            quality="1"
-            class="absolute inset-0 object-cover w-full h-full opacity-40 blur-[160px]"
-            :src="`/games/${game.identifier}.jpg`"
-            alt=" "
-          />
+          <div class="absolute inset-0 opacity-40 blur-[100px]">
+            <NuxtImg
+              provider="custom_cloudflare"
+              format="webp"
+              densities="1x"
+              width="60"
+              quality="1"
+              class="object-cover w-full h-full "
+              :src="`/games/${game.identifier}.jpg`"
+              alt=" "
+            />
+          </div>
         </div>
 
         <GameLauncher
