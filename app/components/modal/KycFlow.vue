@@ -10,6 +10,8 @@ const errorMessage = ref<string | null>(null);
 const kycData = ref<KycPayload | null>(null);
 const open = ref(false);
 
+useActiveModals("kyc", open);
+
 useRuntimeHook("frontend:command:modal:kyc:open", (data) => {
   kycData.value = data;
   open.value = true;

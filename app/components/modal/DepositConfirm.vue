@@ -9,6 +9,8 @@ const deposit = ref<DepositConfirmPayload | null>(null);
 const open = ref(false);
 const logger = useLogger();
 
+useActiveModals("deposit-confirm", open);
+
 useRuntimeHook("frontend:command:modal:deposit-confirm:open", (data) => {
   deposit.value = data;
   open.value = true;

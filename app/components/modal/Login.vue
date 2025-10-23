@@ -3,6 +3,8 @@ const nuxtApp = useNuxtApp();
 const siteStore = useSiteStore();
 const open = ref(false);
 
+useActiveModals("login", open);
+
 useRuntimeHook("frontend:command:modal:login:open", () => {
   open.value = true;
 });

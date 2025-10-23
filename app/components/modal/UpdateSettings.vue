@@ -7,6 +7,8 @@ const userStore = useUserStore();
 const open = ref(false);
 const setting = ref<SettingsPayload | null>(null);
 
+useActiveModals("settings", open);
+
 useRuntimeHook("frontend:command:modal:settings:open", (data) => {
   setting.value = data;
   open.value = true;

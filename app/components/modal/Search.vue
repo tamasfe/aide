@@ -3,6 +3,8 @@ const query = useState("search-modal-query", () => "");
 const nuxtApp = useNuxtApp();
 const open = ref(false);
 
+useActiveModals("search", open);
+
 useRuntimeHook("frontend:command:modal:search:open", () => {
   open.value = true;
 });

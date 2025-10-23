@@ -5,6 +5,8 @@ const nuxtApp = useNuxtApp();
 const siteStore = useSiteStore();
 const open = ref(false);
 
+useActiveModals("deposit", open);
+
 useRuntimeHook("frontend:command:modal:deposit:open", () => {
   open.value = true;
   execute();

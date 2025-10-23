@@ -2,6 +2,8 @@
 const nuxtApp = useNuxtApp();
 const open = ref(false);
 
+useActiveModals("close-account", open);
+
 useRuntimeHook("frontend:command:modal:close-account:open", () => {
   open.value = true;
 });

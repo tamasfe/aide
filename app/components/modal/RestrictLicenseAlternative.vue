@@ -6,6 +6,8 @@ const nuxtApp = useNuxtApp();
 const open = ref(false);
 const payload = ref<RestrictLicenseAlternativePayload | null>(null);
 
+useActiveModals("restrict-license-alternative", open);
+
 useRuntimeHook("frontend:command:modal:restrict-license-alternative:open", (data) => {
   payload.value = data;
   open.value = true;

@@ -160,7 +160,10 @@ const loading = computed<boolean>(() => {
         variant="ghost"
         size="ghost"
         class="text-primary md:hover:underline"
-        @click="nuxtApp.callHook('frontend:command:modal:login:open')"
+        @click="async () => {
+          await nuxtApp.callHook('frontend:command:modal:close')
+          await nuxtApp.callHook('frontend:command:modal:login:open')
+        }"
       >
         {{ $t("button.login") }}
       </BaseButton>

@@ -8,6 +8,8 @@ const walletModule = useWalletModule();
 const nuxtApp = useNuxtApp();
 const open = ref(false);
 
+useActiveModals("withdraw", open);
+
 useRuntimeHook("frontend:command:modal:withdraw:open", () => {
   open.value = true;
   execute();

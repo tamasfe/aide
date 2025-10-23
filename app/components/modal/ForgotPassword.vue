@@ -2,6 +2,8 @@
 const nuxtApp = useNuxtApp();
 const open = ref(false);
 
+useActiveModals("forgot-password", open);
+
 useRuntimeHook("frontend:command:modal:forgot-password:open", () => {
   open.value = true;
 });

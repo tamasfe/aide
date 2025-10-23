@@ -11,6 +11,7 @@ const nuxtApp = useNuxtApp();
       {{ $t('account.settings.account.close_account_warning') }}
     </template>
 
+    <ModalCloseAccount />
     <div class="flex">
       <div>
         <BaseButton

@@ -1,6 +1,5 @@
 <template>
   <ModalLogin />
-  <ModalPromoUserAction />
   <ModalRegister />
   <ModalDeposit />
   <ModalRecoverPassword />
@@ -8,10 +7,8 @@
   <ModalDepositConfirm />
   <ModalForgotPassword />
   <ModalSearch />
-  <ModalUpdateSettings />
-  <ModalKycFlow />
-  <ModalCloseAccount />
   <ModalRestrictExpanding />
   <ModalRestrictLicenseAlternative />
   <ModalRestrictLicenseNoAlternative />
+  <ModalPromoUserAction />
 </template>

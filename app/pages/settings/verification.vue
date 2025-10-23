@@ -11,5 +11,8 @@ useHead({
 </script>
 
 <template>
-  <DashboardSettingsVerificationIdentity />
+  <div>
+    <ModalKycFlow />
+    <DashboardSettingsVerificationIdentity />
+  </div>
 </template>

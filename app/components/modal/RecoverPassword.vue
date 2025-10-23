@@ -5,6 +5,8 @@ const { searchParams } = useRequestURL();
 const recoverPasswordToken = useState("user-modal-recover-password-token", () => searchParams.get("recovery-token") || "");
 const open = ref(false);
 
+useActiveModals("recover-password", open);
+
 useRuntimeHook("frontend:command:modal:recover-password:open", () => {
   open.value = true;
 });

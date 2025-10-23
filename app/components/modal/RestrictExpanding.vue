@@ -7,6 +7,8 @@ const nuxtApp = useNuxtApp();
 const open = ref(false);
 const payload = ref<RestrictExpandingPayload | null>(null);
 
+useActiveModals("restrict-expanding", open);
+
 useRuntimeHook("frontend:command:modal:restrict-expanding:open", (data) => {
   payload.value = data;
   open.value = true;

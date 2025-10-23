@@ -123,8 +123,6 @@ const emit = defineEmits<{
             :size="20"
           />
         </BaseButton>
-
-        <BaseSkeleton v-else class="h-8 w-8" :loading="true" />
       </div>
 
       <div

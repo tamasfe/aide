@@ -4,6 +4,8 @@ const nuxtApp = useNuxtApp();
 const open = ref(false);
 const signupModule = useSignupModule();
 
+useActiveModals("register", open);
+
 useRuntimeHook("frontend:command:modal:register:open", () => {
   open.value = true;
 });

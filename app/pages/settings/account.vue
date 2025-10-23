@@ -29,6 +29,7 @@ const { data } = useAsyncData("account-page-user-settings-store", async () => {
 
 <template>
   <div>
+    <ModalUpdateSettings />
     <DashboardSettingsAccountDetails class="mb-4" />
     <DashboardSettingsAccountPersonalDetails class="mb-4" />
     <DashboardSettingsAccountPaymentSettings

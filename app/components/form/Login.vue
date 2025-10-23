@@ -101,7 +101,10 @@ const onSubmit = handleSubmit(async (formData) => {
         variant="ghost"
         size="ghost"
         class="text-primary md:hover:underline"
-        @click="nuxtApp.callHook('frontend:command:modal:register:open')"
+        @click="async () => {
+          await nuxtApp.callHook('frontend:command:modal:close')
+          await nuxtApp.callHook('frontend:command:modal:register:open')
+        }"
       >
         {{ $t("modal_session.create_free_account") }}
       </BaseButton>
