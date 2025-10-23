@@ -73,7 +73,11 @@ fn operation_input_json<T: JsonSchema>(
     operation: &mut Operation,
 ) {
     let json_schema = ctx.schema.subschema_for::<T>();
-    let resolved_schema = ctx.resolve_schema(&json_schema);
+    let mut resolved_schema = ctx.resolve_schema(&json_schema).clone();
+
+    for transform in ctx.schema.transforms_mut() {
+        transform.transform(&mut resolved_schema);
+    }
 
     set_body(
         ctx,
