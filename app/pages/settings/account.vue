@@ -4,6 +4,10 @@ const nuxtApp = useNuxtApp();
 
 const { t } = useI18n();
 
+definePageMeta({
+  middleware: ["authenticated"],
+});
+
 useHead({
   title: t("page.account_settings"),
 });

@@ -34,7 +34,7 @@ const userUnlockedBalance = computed(() => walletStore.wallet?.balance_unlocked 
 
 const { data: paymentMethods, execute } = useAsyncData(
   "payment-methods",
-  walletModule.ui.findPreferredPaymentMethodsOnStoreRefresh.handle,
+  async () => walletModule.ui.findPreferredPaymentMethodsOnStoreRefresh.handle(),
   {
     server: true,
     lazy: true,

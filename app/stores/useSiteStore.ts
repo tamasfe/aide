@@ -157,6 +157,7 @@ export default defineStore("site", {
 
       // @ts-expect-error it's correct
       const initMethodObject = window[activeLicenseData.windowInitMethod];
+
       if (!initMethodObject || typeof initMethodObject !== "object" || false === "init" in initMethodObject || typeof initMethodObject.init !== "function") {
         logger.error("Anjouan script not loaded properly.", new ErrorAnjouanLicenseScriptWasNotFound("The Anjouan license script was not found on the window object."));
         return;

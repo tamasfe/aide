@@ -121,6 +121,11 @@ const links = [
 ];
 
 const emptyQuery = ref("");
+
+function openSearch() {
+  open.value = false;
+  nuxtApp.callHook("frontend:command:modal:search:open");
+}
 </script>
 
 <template>
@@ -146,7 +151,7 @@ const emptyQuery = ref("");
           <SearchBar
             v-model="emptyQuery"
             input-size="md"
-            @click="nuxtApp.callHook('frontend:command:modal:search:open')"
+            @click="openSearch"
           />
         </div>
 
@@ -182,12 +187,6 @@ const emptyQuery = ref("");
               v-else
               :key="`link-${index}`"
             >
-              <!-- <NavSidebarLink
-                v-if="link.to"
-                :title="link.title"
-                :to="link.to"
-                :icon="link.icon"
-              /> -->
               <BaseButton
                 v-if="link.onClick"
                 class="py-2 flex items-center text-emphasis md:hover:text-white"

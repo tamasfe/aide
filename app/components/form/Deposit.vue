@@ -132,11 +132,11 @@ const onSubmit = handleSubmit(async (formData) => {
         <BaseCurrency
           :currency="currency"
           variant="ghost"
-          class="self-center mr-2 font-semibold text-lg bg-button-emphasis text-transparent bg-clip-text"
+          class="self-center pl-4 pr-2 font-semibold text-lg bg-button-emphasis text-transparent bg-clip-text"
         />
       </template>
       <template #suffix>
-        <div class="ml-5 flex flex-row justify-center items-center gap-1.5">
+        <div class="px-4 flex flex-row justify-center items-center gap-1.5">
           <BaseFlag :country-code="countryCode" />
           <div class="text-sm font-medium text-subtle-light">
             {{ currency }}

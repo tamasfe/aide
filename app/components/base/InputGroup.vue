@@ -145,10 +145,12 @@ const errorIsPulsing = useRegisterFormErrorIsPulsing();
   <div class="w-full flex flex-col gap-0.5">
     <div
       :class="cn(
-        'flex flex-row px-5 relative h-[var(--giro-field-height)] rounded bg-subtle text-subtle transition-all duration-700',
+        'flex flex-row relative h-[var(--giro-field-height)] rounded bg-subtle text-subtle transition-all duration-700',
         props.class,
         {
           'bg-alert-error': props.errorMessage && errorIsPulsing,
+          'pr-5': !$slots.suffix,
+          'pl-5': !$slots.prefix,
         },
       )"
     >
@@ -157,27 +159,26 @@ const errorIsPulsing = useRegisterFormErrorIsPulsing();
         name="prefix"
       />
 
-      <label
-        v-if="placeholderPlacement === 'floating' && placeholder"
-        ref="floatingLabel"
-        :for="id"
-        class="floating-label pointer-events-none"
-        :class="{
-          'giro__input-has-value': !!value,
-          'focused': isInputFocused,
-        }"
-      >
-        <span>{{ placeholder }}</span>
-        <span
-          v-if="required"
-          class="opacity-50 inline-block ml-[5px] mt-[1px] align-top leading-[1rem] text-lg text-alert-error"
-        >*</span>
-      </label>
-
       <div
         ref="inputGroupContainer"
         class="giro__input-group-container flex-1 flex items-end h-full relative"
       >
+        <label
+          v-if="placeholderPlacement === 'floating' && placeholder"
+          ref="floatingLabel"
+          :for="id"
+          class="floating-label pointer-events-none"
+          :class="{
+            'giro__input-has-value': !!value,
+            'focused': isInputFocused,
+          }"
+        >
+          <span>{{ placeholder }}</span>
+          <span
+            v-if="required"
+            class="opacity-50 inline-block ml-[5px] mt-[1px] align-top leading-[1rem] text-lg text-alert-error"
+          >*</span>
+        </label>
         <BaseInput
           v-if="fieldType === 'input'"
           :id="id"
@@ -248,7 +249,7 @@ const errorIsPulsing = useRegisterFormErrorIsPulsing();
 
 <style scoped>
 .floating-label {
-  @apply absolute left-5 top-1/2 -translate-y-1/2 font-medium;
+  @apply absolute top-1/2 -translate-y-1/2 font-medium;
   transition: transform 0.20s cubic-bezier(0.25, 0, 0.25, 1);
   transform-origin: 0 0;
 }

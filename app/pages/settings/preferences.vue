@@ -5,6 +5,10 @@ const userModule = useUserModule();
 const userSettingsStore = useUserSettingsStore();
 const { t } = useI18n();
 
+definePageMeta({
+  middleware: ["authenticated"],
+});
+
 useHead({
   title: t("page.account_settings"),
 });

@@ -54,13 +54,13 @@ const selectedPrefix = computed({
     :mask-behaviour-eager="true"
     :error-message="errorMessage"
   >
-    <template #suffix>
+    <template #prefix>
       <BaseSelect
         v-model="selectedPrefix"
         :options="prefixOptions"
-        :options-offset="{ right: -20 }"
+        :options-offset="{ }"
         container-class="w-auto"
-        class="pr-0 bg-subtle"
+        class="bg-subtle"
       >
         <template #selected="{ selected }">
           <div class="flex flex-shrink-0 items-center gap-2">
@@ -76,7 +76,7 @@ const selectedPrefix = computed({
             <BaseFlag
               :country-code="option.countryCode"
             />
-            <span>{{ option.title }} ({{ option.value }})</span>
+            <span>({{ option.value }})</span>
           </div>
         </template>
       </BaseSelect>

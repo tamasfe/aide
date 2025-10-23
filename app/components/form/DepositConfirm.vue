@@ -99,7 +99,7 @@ const onClickGenerateNewCode = async () => {
               class="pointer-events-none text-subtle text-sm"
             >
               <template #suffix>
-                <div class="ml-5 flex justify-center items-center">
+                <div class="px-4 flex justify-center items-center">
                   <BaseCopy
                     :value="code"
                     :copied="copied"

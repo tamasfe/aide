@@ -38,7 +38,7 @@ const onClickClearButton = () => {
     :input-size="inputSize"
   >
     <template #prefix>
-      <div class="mr-4 flex justify-center items-center">
+      <div class="px-4 flex justify-center items-center pointer-events-none">
         <BaseSpinner
           v-if="loading"
           class="text-subtle"
@@ -52,22 +52,22 @@ const onClickClearButton = () => {
       </div>
     </template>
     <template #suffix>
-      <div
+      <button
         v-if="query.length"
-        class="ml-4 flex justify-center items-center"
+        class="px-4 flex justify-center items-center"
+        @click="onClickClearButton"
       >
         <BaseButton
           variant="ghost"
           size="ghost"
           class="p-1"
-          @click="onClickClearButton"
         >
           <BaseIcon
             name="lucide:x"
             :size="20"
           />
         </BaseButton>
-      </div>
+      </button>
     </template>
   </BaseInputGroup>
 </template>

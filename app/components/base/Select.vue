@@ -118,8 +118,7 @@ const onUpdateModelValue = (value: T | undefined) => {
       <SelectPortal>
         <SelectContent
           position="popper"
-          position-strategy="absolute"
-          align="end"
+          align="start"
           class="rounded-b bg-emphasis text-sm text-subtle w-[var(--reka-popper-anchor-width)]
                    focus-visible:outline-none overflow-hidden border border-muted/5 shadow-xl z-30"
         >
