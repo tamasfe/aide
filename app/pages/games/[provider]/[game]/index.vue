@@ -84,22 +84,35 @@ const copyDemoSessionUrlToClipboard = () => {
 <template>
   <div>
     <div class="bg-subtle rounded-lg border border-muted/5 overflow-hidden mb-8">
-      <div v-if="game" ref="gameFrame" class="relative py-40 md:py-0 md:h-[70vh] border-b border-muted/5">
+      <div v-if="game" ref="gameFrame" class="relative py-40 md:py-0 md:h-[70vh]">
         <div class="text-subtle absolute inset-0 flex items-center justify-center">
           <BaseSpinner :size="36" />
         </div>
+
         <GameLauncher
-          class="absolute inset-0"
+          class="absolute inset-0 "
           :launch-mode="launchMode"
           :game-session="gameSession"
           :game-demo-session="gameDemoSession"
           @abort="launchMode = undefined"
         >
+          <div class="pointer-events-none absolute inset-0 blur-[140px] bg-subtle">
+            <NuxtImg
+              provider="custom_cloudflare"
+              format="webp"
+              densities="1x"
+              width="20"
+              quality="1"
+              class="absolute inset-0 object-cover w-full h-full opacity-40"
+              :src="`/games/${game.identifier}.jpg`"
+              alt=" "
+            />
+          </div>
           <div
-            class="w-full h-full bg-subtle flex flex-col items-center justify-center gap-y-6"
+            class="w-full h-full relative flex flex-col items-center justify-center gap-y-6"
           >
             <NuxtImg
-              class="h-8"
+              class="h-8 relative"
               :src="siteStore.getRelativeAssetPath('logos/logo.svg')"
               alt="Logo"
             />

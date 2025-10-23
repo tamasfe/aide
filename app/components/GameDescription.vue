@@ -29,9 +29,6 @@ const emit = defineEmits<{
 <template>
   <div class="p-3 pb-4 md:p-4 lg:p-6 gap-4 md:gap-6 flex flex-row rounded">
     <div class="grid grid-cols-[auto,1fr] md:grid-cols-[auto,1fr,auto] w-full md:grid-rows-[min-content,1fr] gap-4 md:gap-6">
-      <div
-        class="order-2 md:order-none h-px bg-muted/5 md:border-none col-span-full md:hidden -mx-4"
-      />
       <div class="md:row-span-2 order-3 md:order-none">
         <div class="flex items-center justify-center rounded overflow-hidden border border-muted/5 aspect-[3/4] w-24 md:w-32">
           <GameImage
