@@ -83,6 +83,7 @@ const copyDemoSessionUrlToClipboard = () => {
 
 <template>
   <div>
+    <BaseSpinner />
     <div class="bg-subtle rounded-lg border border-muted/5 overflow-hidden mb-8 relative">
       <div v-if="game" ref="gameFrame" class="relative py-40 md:py-0 md:h-[70vh]">
         <div class="text-subtle absolute inset-0 flex items-center justify-center">
