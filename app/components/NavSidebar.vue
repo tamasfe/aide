@@ -160,7 +160,7 @@ function openSearch() {
           <NavSidebarLink
             v-for="category in categoriesData"
             :key="category.identifier"
-            :title="category.identifier"
+            :title="$t(`category.${category.identifier}`)"
             :to="{
               name: 'categories-identifier',
               params: {
