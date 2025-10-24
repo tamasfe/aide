@@ -37,8 +37,8 @@ where
     type Inner = T;
 
     fn operation_response(ctx: &mut GenContext, _operation: &mut Operation) -> Option<Response> {
-        let json_schema = ctx.schema.subschema_for::<T>();
-        let resolved_schema = ctx.resolve_schema(&json_schema);
+        let json_schema = ctx.output_generator.subschema_for::<T>();
+        let resolved_schema = ctx.resolve_output_schema(&json_schema);
 
         Some(Response {
             description: resolved_schema
@@ -91,8 +91,8 @@ where
     type Inner = T;
 
     fn operation_response(ctx: &mut GenContext, _operation: &mut Operation) -> Option<Response> {
-        let json_schema = ctx.schema.subschema_for::<T>();
-        let resolved_schema = ctx.resolve_schema(&json_schema);
+        let json_schema = ctx.output_generator.subschema_for::<T>();
+        let resolved_schema = ctx.resolve_output_schema(&json_schema);
 
         Some(Response {
             description: resolved_schema

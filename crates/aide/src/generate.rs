@@ -99,9 +99,13 @@ pub fn reset_context() {
 /// A context for API document generation
 /// that provides settings and a [`SchemaGenerator`].
 pub struct GenContext {
-    /// Schema generator that should be used
-    /// for generating JSON schemas.
-    pub schema: SchemaGenerator,
+    /// Generator that should be used
+    /// for generating operation input schemas.
+    pub input_generator: SchemaGenerator,
+
+    /// Generator that should be used
+    /// for generating operation output schemas.
+    pub output_generator: SchemaGenerator,
 
     pub(crate) infer_responses: bool,
 
@@ -131,7 +135,8 @@ impl GenContext {
         }
 
         let mut this = Self {
-            schema: SchemaGenerator::new(SchemaSettings::draft07()),
+            input_generator: SchemaGenerator::new(SchemaSettings::draft07().for_deserialize()),
+            output_generator: SchemaGenerator::new(SchemaSettings::draft07().for_serialize()),
             infer_responses: true,
             all_error_responses: false,
             extract_schemas: true,
@@ -148,13 +153,13 @@ impl GenContext {
     }
     fn set_extract_schemas(&mut self, extract: bool) {
         if extract {
-            self.schema = SchemaGenerator::new(SchemaSettings::draft07().with(|s| {
+            self.input_generator = SchemaGenerator::new(SchemaSettings::draft07().with(|s| {
                 s.inline_subschemas = false;
                 s.definitions_path = "#/components/schemas/".into();
             }));
             self.extract_schemas = true;
         } else {
-            self.schema = SchemaGenerator::new(SchemaSettings::draft07().with(|s| {
+            self.input_generator = SchemaGenerator::new(SchemaSettings::draft07().with(|s| {
                 s.inline_subschemas = true;
             }));
             self.extract_schemas = false;
@@ -184,10 +189,24 @@ impl GenContext {
     /// if [`extract_schemas`] is enabled, in which case most generated
     /// schema objects are references.
     #[must_use]
-    pub fn resolve_schema<'s>(&'s self, schema_or_ref: &'s Schema) -> &'s Schema {
+    pub fn resolve_input_schema<'s>(&'s self, schema_or_ref: &'s Schema) -> &'s Schema {
         match &schema_or_ref.as_object().and_then(|o| o.get("$ref")) {
             Some(Value::String(r)) => self
-                .schema
+                .input_generator
+                .definitions()
+                .get(r.strip_prefix("#/components/schemas/").unwrap_or(r))
+                .and_then(|s| Into::<serde_json::Result<&Schema>>::into(s.try_into()).ok())
+                .unwrap_or(schema_or_ref),
+            _ => schema_or_ref,
+        }
+    }
+
+    /// Resolve a schema reference to a schema that
+    #[must_use]
+    pub fn resolve_output_schema<'s>(&'s self, schema_or_ref: &'s Schema) -> &'s Schema {
+        match &schema_or_ref.as_object().and_then(|o| o.get("$ref")) {
+            Some(Value::String(r)) => self
+                .output_generator
                 .definitions()
                 .get(r.strip_prefix("#/components/schemas/").unwrap_or(r))
                 .and_then(|s| Into::<serde_json::Result<&Schema>>::into(s.try_into()).ok())

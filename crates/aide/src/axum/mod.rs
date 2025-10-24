@@ -450,7 +450,7 @@ where
             let components = api.components.get_or_insert_with(Default::default);
             components
                 .schemas
-                .extend(ctx.schema.take_definitions(true).into_iter().map(
+                .extend(ctx.input_generator.take_definitions(true).into_iter().map(
                     |(name, json_schema)| {
                         (
                             name,
