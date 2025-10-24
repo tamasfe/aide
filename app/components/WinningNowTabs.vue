@@ -74,11 +74,12 @@ const { data: myBetsData } = useAsyncData(`winning-now-my-bets-table`, async () 
     </h2>
 
     <TabsRoot v-model="currentTab" class="mt-4 p-4 rounded-lg bg-subtle">
-      <TabsList class="flex gap-2 mb-4">
+      <TabsList class="flex gap-2 mb-4 overflow-x-auto snap-x scroll-px-4 no-scrollbar px-4 -mx-4">
         <TabsTrigger
           v-for="tab in WINNING_NOW_TABS"
           :key="tab"
           class="
+              snap-start
               px-4
               py-2
               h-full
@@ -93,8 +94,9 @@ const { data: myBetsData } = useAsyncData(`winning-now-my-bets-table`, async () 
               ring-offset-background
               transition-all
               rounded
+              text-subtle
               data-[state=active]:bg-button-secondary
-              data-[state=active]:text-foreground
+              data-[state=active]:text-default
               data-[state=active]:shadow
               md:hover:bg-button-secondary-hover
               disabled:pointer-events-none
