@@ -153,15 +153,38 @@ impl GenContext {
     }
     fn set_extract_schemas(&mut self, extract: bool) {
         if extract {
-            self.input_generator = SchemaGenerator::new(SchemaSettings::draft07().with(|s| {
-                s.inline_subschemas = false;
-                s.definitions_path = "#/components/schemas/".into();
-            }));
+            self.input_generator = SchemaGenerator::new(
+                SchemaSettings::draft07()
+                    .with(|s| {
+                        s.inline_subschemas = false;
+                        s.definitions_path = "#/components/schemas/".into();
+                    })
+                    .for_deserialize(),
+            );
+            self.output_generator = SchemaGenerator::new(
+                SchemaSettings::draft07()
+                    .with(|s| {
+                        s.inline_subschemas = false;
+                        s.definitions_path = "#/components/schemas/".into();
+                    })
+                    .for_serialize(),
+            );
             self.extract_schemas = true;
         } else {
-            self.input_generator = SchemaGenerator::new(SchemaSettings::draft07().with(|s| {
-                s.inline_subschemas = true;
-            }));
+            self.input_generator = SchemaGenerator::new(
+                SchemaSettings::draft07()
+                    .with(|s| {
+                        s.inline_subschemas = true;
+                    })
+                    .for_deserialize(),
+            );
+            self.output_generator = SchemaGenerator::new(
+                SchemaSettings::draft07()
+                    .with(|s| {
+                        s.inline_subschemas = true;
+                    })
+                    .for_serialize(),
+            );
             self.extract_schemas = false;
         }
     }

@@ -448,20 +448,35 @@ where
             }
 
             let components = api.components.get_or_insert_with(Default::default);
-            components
-                .schemas
-                .extend(ctx.input_generator.take_definitions(true).into_iter().map(
-                    |(name, json_schema)| {
-                        (
-                            name,
-                            SchemaObject {
-                                json_schema: json_schema.try_into().expect("Invalid schema"),
-                                example: None,
-                                external_docs: None,
-                            },
-                        )
-                    },
-                ));
+
+            let input_definitions = ctx.input_generator.take_definitions(true).into_iter().map(
+                |(name, json_schema)| {
+                    (
+                        name,
+                        SchemaObject {
+                            json_schema: json_schema.try_into().expect("Invalid schema"),
+                            example: None,
+                            external_docs: None,
+                        },
+                    )
+                },
+            );
+
+            let output_definitions = ctx.output_generator.take_definitions(true).into_iter().map(
+                |(name, json_schema)| {
+                    (
+                        name,
+                        SchemaObject {
+                            json_schema: json_schema.try_into().expect("Invalid schema"),
+                            example: None,
+                            external_docs: None,
+                        },
+                    )
+                },
+            );
+
+            components.schemas.extend(input_definitions);
+            components.schemas.extend(output_definitions);
 
             true
         });
