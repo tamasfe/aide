@@ -134,9 +134,11 @@ impl GenContext {
             }
         }
 
+        let schema_settings = SchemaSettings::draft07();
+
         let mut this = Self {
-            input_generator: SchemaGenerator::new(SchemaSettings::draft07().for_deserialize()),
-            output_generator: SchemaGenerator::new(SchemaSettings::draft07().for_serialize()),
+            input_generator: SchemaGenerator::new(schema_settings.clone().for_deserialize()),
+            output_generator: SchemaGenerator::new(schema_settings.for_serialize()),
             infer_responses: true,
             all_error_responses: false,
             extract_schemas: true,
@@ -153,38 +155,21 @@ impl GenContext {
     }
     fn set_extract_schemas(&mut self, extract: bool) {
         if extract {
-            self.input_generator = SchemaGenerator::new(
-                SchemaSettings::draft07()
-                    .with(|s| {
-                        s.inline_subschemas = false;
-                        s.definitions_path = "#/components/schemas/".into();
-                    })
-                    .for_deserialize(),
-            );
-            self.output_generator = SchemaGenerator::new(
-                SchemaSettings::draft07()
-                    .with(|s| {
-                        s.inline_subschemas = false;
-                        s.definitions_path = "#/components/schemas/".into();
-                    })
-                    .for_serialize(),
-            );
+            let settings = SchemaSettings::draft07().with(|s| {
+                s.inline_subschemas = false;
+                s.definitions_path = "#/components/schemas/".into();
+            });
+
+            self.input_generator = SchemaGenerator::new(settings.clone().for_deserialize());
+            self.output_generator = SchemaGenerator::new(settings.for_serialize());
             self.extract_schemas = true;
         } else {
-            self.input_generator = SchemaGenerator::new(
-                SchemaSettings::draft07()
-                    .with(|s| {
-                        s.inline_subschemas = true;
-                    })
-                    .for_deserialize(),
-            );
-            self.output_generator = SchemaGenerator::new(
-                SchemaSettings::draft07()
-                    .with(|s| {
-                        s.inline_subschemas = true;
-                    })
-                    .for_serialize(),
-            );
+            let settings = SchemaSettings::draft07().with(|s| {
+                s.inline_subschemas = true;
+            });
+
+            self.input_generator = SchemaGenerator::new(settings.clone().for_deserialize());
+            self.output_generator = SchemaGenerator::new(settings.for_serialize());
             self.extract_schemas = false;
         }
     }
@@ -223,15 +208,7 @@ impl GenContext {
     /// for input schemas.
     #[must_use]
     pub fn resolve_input_schema<'s>(&'s self, schema_or_ref: &'s Schema) -> &'s Schema {
-        match &schema_or_ref.as_object().and_then(|o| o.get("$ref")) {
-            Some(Value::String(r)) => self
-                .input_generator
-                .definitions()
-                .get(r.strip_prefix("#/components/schemas/").unwrap_or(r))
-                .and_then(|s| Into::<serde_json::Result<&Schema>>::into(s.try_into()).ok())
-                .unwrap_or(schema_or_ref),
-            _ => schema_or_ref,
-        }
+        extract_schema_by_ref(&self.input_generator, schema_or_ref).unwrap_or(schema_or_ref)
     }
 
     /// Resolve a schema reference to a output schema
@@ -241,18 +218,23 @@ impl GenContext {
     /// for output schemas.
     #[must_use]
     pub fn resolve_output_schema<'s>(&'s self, schema_or_ref: &'s Schema) -> &'s Schema {
-        match &schema_or_ref.as_object().and_then(|o| o.get("$ref")) {
-            Some(Value::String(r)) => self
-                .output_generator
-                .definitions()
-                .get(r.strip_prefix("#/components/schemas/").unwrap_or(r))
-                .and_then(|s| Into::<serde_json::Result<&Schema>>::into(s.try_into()).ok())
-                .unwrap_or(schema_or_ref),
-            _ => schema_or_ref,
-        }
+        extract_schema_by_ref(&self.output_generator, schema_or_ref).unwrap_or(schema_or_ref)
     }
 }
 
 fn default_error_filter(_: &Error) -> bool {
     true
+}
+
+fn extract_schema_by_ref<'s>(
+    generator: &'s SchemaGenerator,
+    schema_or_ref: &'s Schema,
+) -> Option<&'s Schema> {
+    match &schema_or_ref.as_object().and_then(|o| o.get("$ref")) {
+        Some(Value::String(r)) => generator
+            .definitions()
+            .get(r.strip_prefix("#/components/schemas/").unwrap_or(r))
+            .and_then(|s| Into::<serde_json::Result<&Schema>>::into(s.try_into()).ok()),
+        _ => None,
+    }
 }
