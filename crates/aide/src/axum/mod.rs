@@ -168,7 +168,7 @@
 //! and the documented routes will be updated as expected.
 //!
 
-use std::{convert::Infallible, future::Future, pin::Pin};
+use std::{convert::Infallible, future::Future, iter::Map, pin::Pin};
 
 use crate::{
     generate::{self, in_context},
@@ -189,6 +189,7 @@ use axum::{
 };
 use indexmap::map::Entry;
 use indexmap::IndexMap;
+use serde_json::Value;
 use tower_layer::Layer;
 use tower_service::Service;
 
@@ -447,21 +448,24 @@ where
                 return false;
             }
 
-            let components = api.components.get_or_insert_with(Default::default);
-            components
-                .schemas
-                .extend(ctx.schema.take_definitions(true).into_iter().map(
-                    |(name, json_schema)| {
-                        (
-                            name,
-                            SchemaObject {
-                                json_schema: json_schema.try_into().expect("Invalid schema"),
-                                example: None,
-                                external_docs: None,
-                            },
-                        )
+            let mut definitions = ctx.input_generator.take_definitions(true);
+            definitions.extend(ctx.output_generator.take_definitions(true));
+
+            let mapped_definitions = definitions.into_iter().map(|(name, json_schema)| {
+                (
+                    name,
+                    SchemaObject {
+                        json_schema: json_schema.try_into().expect("Invalid schema"),
+                        example: None,
+                        external_docs: None,
                     },
-                ));
+                )
+            });
+
+            api.components
+                .get_or_insert_with(Default::default)
+                .schemas
+                .extend(mapped_definitions);
 
             true
         });
