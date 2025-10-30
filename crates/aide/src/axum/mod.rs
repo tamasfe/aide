@@ -10,7 +10,7 @@
 //!
 //! # Examples
 //!
-//! Take the following `axum` example:
+//! Take the following `axum` example (requires aide's `axum-json` feature):
 //!
 //! ```no_run
 //! use axum::{response::IntoResponse, routing::post, Json, Router};
