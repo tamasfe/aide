@@ -15,6 +15,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v5
+      - uses: Swatinem/rust-cache@v2
+        with:
+          # only save cache from master branch
+          save-if: ${{ github.ref == 'refs/heads/master' }}
       - uses: taiki-e/install-action@cargo-hack
       - name: Check formatting
         run: cargo fmt --check
