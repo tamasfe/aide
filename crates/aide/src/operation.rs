@@ -204,7 +204,11 @@ pub fn parameters_from_schema(
     schema: Schema,
     location: ParamLocation,
 ) -> Vec<Parameter> {
-    let schema = ctx.resolve_schema(&schema);
+    let mut schema = ctx.resolve_schema(&schema).clone();
+
+    for transform in ctx.schema.transforms_mut() {
+        transform.transform(&mut schema);
+    }
 
     let mut params = Vec::new();
 
