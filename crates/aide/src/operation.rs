@@ -11,7 +11,7 @@ use crate::openapi::{
 use crate::Error;
 
 #[cfg(feature = "macros")]
-pub use aide_macros::{OperationIo, OperationOutput};
+pub use aide_macros::OperationIo;
 
 /// A trait for operation input schema generation.
 ///

@@ -199,7 +199,7 @@ pub fn axum_typed_path(_attr: TokenStream, item: TokenStream) -> TokenStream {
 ///
 /// ```ignore
 ///    use aide::axum::IntoApiResponse;
-///    use aide::{OperationIo, OperationOutputDerive};
+///    use aide::{OperationIo, derive::OperationOutput};
 ///    use axum::response::IntoResponse;
 ///    use schemars::JsonSchema;
 ///    use serde::Serialize;
@@ -213,7 +213,7 @@ pub fn axum_typed_path(_attr: TokenStream, item: TokenStream) -> TokenStream {
 ///        pub success: bool,
 ///    }
 ///
-///    #[derive(Debug, Serialize, OperationOutputDerive)]
+///    #[derive(Debug, Serialize, OperationOutput)]
 ///    pub enum MyMultiResponse {
 ///        // Use a literal status code.
 ///        #[aide(status_code = 200)]

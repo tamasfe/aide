@@ -158,4 +158,10 @@ pub use error::Error;
 pub use operation::{OperationInput, OperationOutput};
 
 #[cfg(feature = "macros")]
-pub use aide_macros::{OperationIo, OperationOutput as OperationOutputDerive};
+pub use aide_macros::OperationIo;
+
+/// Derive macros that are under development.
+#[cfg(feature = "macros")]
+pub mod derive {
+    pub use aide_macros::OperationOutput;
+}

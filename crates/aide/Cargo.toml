@@ -29,7 +29,6 @@ tower-service = { version = "0.3", optional = true }
 cfg-if = "1.0.0"
 
 [features]
-default = ["macros", "axum"]
 macros = ["dep:aide-macros"]
 redoc = []
 swagger = []

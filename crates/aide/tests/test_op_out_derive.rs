@@ -3,7 +3,7 @@
 #[test]
 fn test_op_out_derive() {
     use aide::axum::IntoApiResponse;
-    use aide::{OperationIo, OperationOutputDerive};
+    use aide::{derive::OperationOutput, OperationIo};
     use axum::{body::Body, response::IntoResponse};
     use http::StatusCode;
     use schemars::JsonSchema;
@@ -18,7 +18,7 @@ fn test_op_out_derive() {
         pub success: bool,
     }
 
-    #[derive(Debug, Serialize, OperationOutputDerive)]
+    #[derive(Debug, Serialize, OperationOutput)]
     pub enum MyMultiResponse {
         // Use a literal status code.
         #[aide(status_code = 200)]
