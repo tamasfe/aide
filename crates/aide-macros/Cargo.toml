@@ -1,6 +1,6 @@
 [package]
 name = "aide-macros"
-version = "0.16.0-alpha.1" # remember to update the dependency in aide, even for patch releases
+version = "0.16.0-alpha.1"                  # remember to update the dependency in aide, even for patch releases
 authors = ["tamasfe"]
 edition = "2021"
 license = "MIT OR Apache-2.0"
@@ -14,6 +14,7 @@ darling = "0.20.0"
 quote = "1.0.21"
 syn = "2.0.15"
 proc-macro2 = "1.0"
+aide-macro-impl = { path = "../aide-macro-impl" }
 
 [features]
 axum-extra-typed-routing = []

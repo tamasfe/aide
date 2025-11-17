@@ -158,4 +158,4 @@ pub use error::Error;
 pub use operation::{OperationInput, OperationOutput};
 
 #[cfg(feature = "macros")]
-pub use aide_macros::OperationIo;
+pub use aide_macros::{OperationIo, OperationOutput as OperationOutputDerive};
