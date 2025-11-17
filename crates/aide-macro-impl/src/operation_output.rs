@@ -63,17 +63,15 @@ pub fn operation_output_impl(input: DeriveInput) -> Result<TokenStream, syn::Err
         variants_with_status.push((variant_name, field_type, status_code));
     }
 
-    // Determine if this is a single-variant enum (with only one error type)
-    let is_single_variant = variants_with_status.len() == 1;
-
     // Generate the implementation
-    let operation_response_impl = if is_single_variant {
+    let operation_response_impl = if variants_with_status.len() == 1 {
         let (_, field_type, _) = &variants_with_status[0];
         quote! {
             fn operation_response(
                 ctx: &mut ::aide::generate::GenContext,
                 operation: &mut ::aide::openapi::Operation,
             ) -> Option<::aide::openapi::Response> {
+                // For single variant enums, we can use the field type's operation_response
                 <#field_type as ::aide::OperationOutput>::operation_response(ctx, operation)
             }
         }
@@ -90,17 +88,7 @@ pub fn operation_output_impl(input: DeriveInput) -> Result<TokenStream, syn::Err
         }
     };
 
-    let inferred_responses_impl = if is_single_variant {
-        let (_, field_type, _) = &variants_with_status[0];
-        quote! {
-            fn inferred_responses(
-                ctx: &mut ::aide::generate::GenContext,
-                operation: &mut ::aide::openapi::Operation,
-            ) -> Vec<(Option<::aide::openapi::StatusCode>, ::aide::openapi::Response)> {
-                <#field_type as ::aide::OperationOutput>::inferred_responses(ctx, operation)
-            }
-        }
-    } else {
+    let inferred_responses_impl = {
         let response_arms = variants_with_status.iter().map(|(_variant_name, field_type, status_code)| {
             if let Some(code) = status_code {
                 // If status_code attribute is provided, use it and get the response from operation_response
