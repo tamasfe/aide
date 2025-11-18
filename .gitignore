@@ -3,3 +3,4 @@ target
 .local*
 .vscode
 Cargo.lock
+.zed
