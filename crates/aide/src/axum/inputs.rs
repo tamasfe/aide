@@ -322,89 +322,83 @@ impl OperationInput for axum::extract::Multipart {
     }
 }
 
+#[cfg(feature = "axum-extra-cached")]
+impl<T> OperationInput for axum_extra::extract::Cached<T>
+where
+    T: OperationInput,
+{
+    fn operation_input(
+        ctx: &mut crate::generate::GenContext,
+        operation: &mut crate::openapi::Operation,
+    ) {
+        T::operation_input(ctx, operation);
+    }
+}
+
+#[cfg(feature = "axum-extra-with-rejection")]
+impl<T, R> OperationInput for axum_extra::extract::WithRejection<T, R>
+where
+    T: OperationInput,
+{
+    fn operation_input(
+        ctx: &mut crate::generate::GenContext,
+        operation: &mut crate::openapi::Operation,
+    ) {
+        T::operation_input(ctx, operation);
+    }
+}
+
 #[cfg(feature = "axum-extra")]
-#[allow(unused_imports)]
-mod extra {
-    use axum_extra::extract;
+impl OperationInput for axum_extra::extract::Host {}
 
-    use super::*;
-    use crate::operation::OperationInput;
+#[cfg(feature = "axum-extra-cookie")]
+impl OperationInput for axum_extra::extract::CookieJar {}
 
-    impl<T> OperationInput for extract::Cached<T>
-    where
-        T: OperationInput,
-    {
-        fn operation_input(
-            ctx: &mut crate::generate::GenContext,
-            operation: &mut crate::openapi::Operation,
-        ) {
-            T::operation_input(ctx, operation);
-        }
+#[cfg(feature = "axum-extra-cookie-private")]
+impl OperationInput for axum_extra::extract::PrivateCookieJar {}
+
+#[cfg(feature = "axum-extra-form")]
+impl<T> OperationInput for axum_extra::extract::Form<T>
+where
+    T: JsonSchema,
+{
+    fn operation_input(ctx: &mut crate::generate::GenContext, operation: &mut Operation) {
+        let schema = ctx.input_generator.subschema_for::<T>();
+        let resolved_schema = ctx.resolve_schema(&schema);
+
+        set_body(
+            ctx,
+            operation,
+            RequestBody {
+                description: resolved_schema
+                    .get("description")
+                    .and_then(|d| d.as_str())
+                    .map(String::from),
+                content: IndexMap::from_iter([(
+                    "application/x-www-form-urlencoded".into(),
+                    MediaType {
+                        schema: Some(SchemaObject {
+                            json_schema: schema.into(),
+                            example: None,
+                            external_docs: None,
+                        }),
+                        ..Default::default()
+                    },
+                )]),
+                required: true,
+                extensions: IndexMap::default(),
+            },
+        );
     }
-
-    impl<T, R> OperationInput for extract::WithRejection<T, R>
-    where
-        T: OperationInput,
-    {
-        fn operation_input(
-            ctx: &mut crate::generate::GenContext,
-            operation: &mut crate::openapi::Operation,
-        ) {
-            T::operation_input(ctx, operation);
-        }
-    }
-
-    impl OperationInput for extract::Host {}
-
-    #[cfg(feature = "axum-extra-cookie")]
-    impl OperationInput for extract::CookieJar {}
-
-    #[cfg(feature = "axum-extra-cookie-private")]
-    impl OperationInput for extract::PrivateCookieJar {}
-
-    #[cfg(feature = "axum-extra-form")]
-    impl<T> OperationInput for extract::Form<T>
-    where
-        T: JsonSchema,
-    {
-        fn operation_input(ctx: &mut crate::generate::GenContext, operation: &mut Operation) {
-            let schema = ctx.input_generator.subschema_for::<T>();
-            let resolved_schema = ctx.resolve_input_schema(&schema);
-
-            set_body(
-                ctx,
-                operation,
-                RequestBody {
-                    description: resolved_schema
-                        .get("description")
-                        .and_then(|d| d.as_str())
-                        .map(String::from),
-                    content: IndexMap::from_iter([(
-                        "application/x-www-form-urlencoded".into(),
-                        MediaType {
-                            schema: Some(SchemaObject {
-                                json_schema: schema.into(),
-                                example: None,
-                                external_docs: None,
-                            }),
-                            ..Default::default()
-                        },
-                    )]),
-                    required: true,
-                    extensions: IndexMap::default(),
-                },
-            );
-        }
-    }
-    #[cfg(feature = "axum-extra-query")]
-    impl<T> OperationInput for extract::Query<T>
-    where
-        T: JsonSchema,
-    {
-        fn operation_input(ctx: &mut crate::generate::GenContext, operation: &mut Operation) {
-            let schema = ctx.input_generator.subschema_for::<T>();
-            let params = parameters_from_schema(ctx, schema, ParamLocation::Query);
-            add_parameters(ctx, operation, params);
-        }
+}
+#[cfg(feature = "axum-extra-query")]
+impl<T> OperationInput for axum_extra::extract::Query<T>
+where
+    T: JsonSchema,
+{
+    fn operation_input(ctx: &mut crate::generate::GenContext, operation: &mut Operation) {
+        let schema = ctx.input_generator.subschema_for::<T>();
+        let params = parameters_from_schema(ctx, schema, ParamLocation::Query);
+        add_parameters(ctx, operation, params);
     }
 }

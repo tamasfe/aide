@@ -1,6 +1,6 @@
 [package]
 name = "aide"
-version = "0.15.1"
+version = "0.16.0-alpha.1"
 authors = ["tamasfe"]
 edition = "2021"
 keywords = ["generate", "api", "openapi", "documentation", "specification"]
@@ -16,14 +16,14 @@ serde = { version = "1.0.144", features = ["derive"] }
 serde_json = "1"
 thiserror = "2.0"
 tracing = "0.1"
-aide-macros = { version = "=0.15.0", path = "../aide-macros", optional = true }
+aide-macros = { version = "=0.16.0-alpha.1", path = "../aide-macros", optional = true }
 
 bytes = { version = "1", optional = true }
 http = { version = "1.0.0", optional = true }
 serde_qs = { version = "0.14", optional = true }
 
 axum = { version = "0.8.1", optional = true, default-features = false }
-axum-extra = { version = "0.10", optional = true }
+axum-extra = { version = "0.12", optional = true }
 tower-layer = { version = "0.3", optional = true }
 tower-service = { version = "0.3", optional = true }
 cfg-if = "1.0.0"
@@ -47,17 +47,20 @@ axum-tokio = ["axum", "axum/tokio"]
 axum-ws = ["axum", "axum/ws"]
 
 axum-extra = ["axum", "dep:axum-extra"]
+axum-extra-cached = ["axum-extra", "axum-extra/cached"]
 axum-extra-cookie = ["axum-extra", "axum-extra/cookie"]
 axum-extra-cookie-private = ["axum-extra", "axum-extra/cookie-private"]
 axum-extra-form = ["axum-extra", "axum-extra/form"]
 axum-extra-headers = ["axum-extra/typed-header"]
 axum-extra-query = ["axum-extra", "axum-extra/query"]
 axum-extra-json-deserializer = ["axum-extra", "axum-extra/json-deserializer"]
+axum-extra-routing = ["axum-extra", "axum-extra/routing"]
 axum-extra-typed-routing = [
-    "axum-extra",
+    "axum-extra-routing",
     "axum-extra/typed-routing",
     "aide-macros?/axum-extra-typed-routing",
 ]
+axum-extra-with-rejection = ["axum-extra", "axum-extra/with-rejection"]
 
 [dev-dependencies]
 tokio = { version = "1.21.0", features = ["macros", "rt-multi-thread"] }

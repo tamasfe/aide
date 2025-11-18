@@ -10,7 +10,7 @@
 //!
 //! # Examples
 //!
-//! Take the following `axum` example:
+//! Take the following `axum` example (requires aide's `axum-json` feature):
 //!
 //! ```no_run
 //! use axum::{response::IntoResponse, routing::post, Json, Router};
@@ -193,7 +193,7 @@ use serde_json::Value;
 use tower_layer::Layer;
 use tower_service::Service;
 
-#[cfg(feature = "axum-extra")]
+#[cfg(feature = "axum-extra-routing")]
 use axum_extra::routing::RouterExt as _;
 
 use self::routing::ApiMethodRouter;
@@ -314,7 +314,7 @@ where
         self
     }
 
-    #[cfg(feature = "axum-extra")]
+    #[cfg(feature = "axum-extra-routing")]
     /// Create a route to the given method router with trailing slash removal and include it in
     /// the API documentation.
     ///
@@ -368,7 +368,7 @@ where
         self
     }
 
-    #[cfg(feature = "axum-extra")]
+    #[cfg(feature = "axum-extra-routing")]
     /// Create a route to the given method router with trailing slash removal and include it in
     /// the API documentation.
     ///
@@ -543,7 +543,7 @@ where
     /// See [`axum_extra::routing::RouterExt::route_with_tsr`] for details.
     ///
     /// This method accepts [`ApiMethodRouter`] but does not generate API documentation.
-    #[cfg(feature = "axum-extra")]
+    #[cfg(feature = "axum-extra-routing")]
     #[tracing::instrument(skip_all)]
     pub fn route_with_tsr(
         mut self,
@@ -569,7 +569,7 @@ where
     }
 
     /// See [`axum_extra::routing::RouterExt::route_service_with_tsr`] for details.
-    #[cfg(feature = "axum-extra")]
+    #[cfg(feature = "axum-extra-routing")]
     #[tracing::instrument(skip_all)]
     pub fn route_service_with_tsr<T>(mut self, path: &str, service: T) -> Self
     where
@@ -774,7 +774,7 @@ pub trait RouterExt<S>: private::Sealed + Sized {
     ///
     /// This method additionally turns the router into an [`ApiRouter`].
     fn api_route(self, path: &str, method_router: ApiMethodRouter<S>) -> ApiRouter<S>;
-    #[cfg(feature = "axum-extra")]
+    #[cfg(feature = "axum-extra-routing")]
     /// Add an API route, see [`ApiRouter::api_route_with_tsr`](crate::axum::ApiRouter::api_route_with_tsr)
     /// for details.
     ///
@@ -796,7 +796,7 @@ where
         ApiRouter::from(self).api_route(path, method_router)
     }
 
-    #[cfg(feature = "axum-extra")]
+    #[cfg(feature = "axum-extra-routing")]
     #[tracing::instrument(skip_all)]
     fn api_route_with_tsr(self, path: &str, method_router: ApiMethodRouter<S>) -> ApiRouter<S> {
         ApiRouter::from(self).api_route_with_tsr(path, method_router)

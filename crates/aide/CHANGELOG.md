@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.16.0-alpha.1
+
+- **changed:** Use `StatusCode` instead of `u16` for inferred responses
+- **changed:** Upgraded schemars to 1.0
+- **changed:** Upgraded axum-extra to 0.12
+
 ## 0.15.1
 
 - **fixed:** Serialization of SchemaObject with boolean json_schema ([#238])
