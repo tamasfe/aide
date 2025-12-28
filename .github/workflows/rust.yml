@@ -2,9 +2,9 @@ name: Rust
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [main]
   pull_request:
-    branches: [ "master" ]
+    branches: [main]
 
 env:
   CARGO_TERM_COLOR: always
@@ -17,8 +17,8 @@ jobs:
       - uses: actions/checkout@v5
       - uses: Swatinem/rust-cache@v2
         with:
-          # only save cache from master branch
-          save-if: ${{ github.ref == 'refs/heads/master' }}
+          # only save cache from main branch
+          save-if: ${{ github.ref == 'refs/heads/main' }}
       - uses: taiki-e/install-action@cargo-hack
       - name: Check formatting
         run: cargo fmt --check
