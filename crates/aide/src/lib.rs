@@ -125,6 +125,11 @@
     clippy::manual_let_else
 )]
 
+// Required for using macros such as the `OperationIo` derive macro in tests.
+// These macros use paths starting with `aide::` which would otherwise be invalid within this crate.
+#[cfg(test)]
+extern crate self as aide;
+
 #[macro_use]
 mod macros;
 mod impls;

@@ -373,13 +373,11 @@ pub fn add_parameters(
 
 #[cfg(test)]
 mod tests {
-    use schemars::JsonSchema;
-    // Hack so that the proc macro can reference paths starting with `aide` even though we are aide
-    use crate as aide;
     use crate::generate::GenContext;
     use crate::openapi::{Operation, Response, StatusCode};
     use crate::{generate, OperationInput, OperationOutput};
     use aide_macros::OperationIo;
+    use schemars::JsonSchema;
 
     fn assert_default_input_impl<T: OperationInput>(ctx: &mut GenContext) {
         let mut operation = Operation::default();
