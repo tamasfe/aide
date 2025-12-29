@@ -1,0 +1,9 @@
+[package]
+name = "aide-macro-impl"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+proc-macro2 = "1.0.103"
+quote = "1.0.42"
+syn = "2.0.110"
