@@ -370,3 +370,142 @@ pub fn add_parameters(
         operation.parameters.push(ReferenceOr::Item(param));
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use crate::generate::GenContext;
+    use crate::openapi::{Operation, Response, StatusCode};
+    use crate::{generate, OperationInput, OperationOutput};
+    use aide_macros::OperationIo;
+    use schemars::JsonSchema;
+
+    fn assert_default_input_impl<T: OperationInput>(ctx: &mut GenContext) {
+        let mut operation = Operation::default();
+
+        T::operation_input(ctx, &mut operation);
+        assert_eq!(operation, Operation::default());
+
+        assert_eq!(T::inferred_early_responses(ctx, &mut operation), Vec::new());
+        assert_eq!(operation, Operation::default());
+    }
+
+    fn assert_default_output_impl<T: OperationOutput<Inner = T>>(ctx: &mut GenContext) {
+        let mut operation = Operation::default();
+
+        assert_eq!(T::operation_response(ctx, &mut operation), None);
+        assert_eq!(operation, Operation::default());
+
+        assert_eq!(T::inferred_responses(ctx, &mut operation), Vec::new());
+        assert_eq!(operation, Operation::default());
+    }
+
+    #[test]
+    fn operation_io() {
+        #[derive(OperationIo)]
+        struct OperationInputOutput;
+        #[derive(OperationIo)]
+        #[aide(input, output)]
+        struct OperationInputOutput2;
+        #[derive(OperationIo)]
+        struct OperationInputOutputGeneric<T>(T);
+        #[derive(OperationIo)]
+        #[aide(input)]
+        struct OperationInput;
+        #[derive(OperationIo)]
+        #[aide(output)]
+        struct OperationOutput;
+
+        generate::in_context(|ctx| {
+            assert_default_input_impl::<OperationInputOutput>(ctx);
+            assert_default_output_impl::<OperationInputOutput>(ctx);
+
+            assert_default_input_impl::<OperationInputOutput2>(ctx);
+            assert_default_output_impl::<OperationInputOutput2>(ctx);
+
+            assert_default_input_impl::<OperationInputOutputGeneric<()>>(ctx);
+            assert_default_output_impl::<OperationInputOutputGeneric<()>>(ctx);
+
+            assert_default_input_impl::<OperationInput>(ctx);
+
+            assert_default_output_impl::<OperationOutput>(ctx);
+        });
+    }
+
+    #[test]
+    fn operation_io_with() {
+        struct ImplsOperationInput;
+        impl OperationInput for ImplsOperationInput {
+            fn operation_input(_ctx: &mut GenContext, operation: &mut Operation) {
+                // Changing a property of the operation so that we know this function was called
+                operation.deprecated = true;
+            }
+        }
+
+        struct ImplsOperationOutput;
+        impl OperationOutput for ImplsOperationOutput {
+            type Inner = ();
+
+            fn operation_response(
+                _ctx: &mut GenContext,
+                _operation: &mut Operation,
+            ) -> Option<Response> {
+                Some(Response::default())
+            }
+
+            fn inferred_responses(
+                _ctx: &mut GenContext,
+                _operation: &mut Operation,
+            ) -> Vec<(Option<StatusCode>, Response)> {
+                vec![(None, Response::default())]
+            }
+        }
+
+        #[derive(OperationIo)]
+        #[aide(
+            input_with = "ImplsOperationInput",
+            output_with = "ImplsOperationOutput"
+        )]
+        struct OperationIoWith;
+
+        generate::in_context(|ctx| {
+            let mut operation = Operation::default();
+
+            OperationIoWith::operation_input(ctx, &mut operation);
+            assert!(operation.deprecated);
+
+            assert_eq!(
+                OperationIoWith::operation_response(ctx, &mut operation),
+                Some(Response::default()),
+            );
+            assert_eq!(
+                OperationIoWith::inferred_responses(ctx, &mut operation),
+                vec![(None, Response::default())],
+            );
+            #[allow(clippy::items_after_statements)]
+            fn assert_inner_is_unit<T: OperationOutput<Inner = ()>>() {}
+            assert_inner_is_unit::<OperationIoWith>();
+        });
+    }
+
+    #[test]
+    fn operation_io_json_schema() {
+        // The `input_with`/`output_with` ensures that this test will only compile if
+        // the `json_schema` trait bounds are correct.
+        #[derive(OperationIo)]
+        #[aide(
+            input_with = "OperationInputOutputIfJsonSchema<T, U>",
+            output_with = "OperationInputOutputIfJsonSchema<T, U>",
+            json_schema
+        )]
+        struct OperationInputOutput<T, U>(T, U);
+
+        struct OperationInputOutputIfJsonSchema<T, U>(T, U);
+        impl<T: JsonSchema, U: JsonSchema> OperationInput for OperationInputOutputIfJsonSchema<T, U> {}
+        impl<T: JsonSchema, U: JsonSchema> OperationOutput for OperationInputOutputIfJsonSchema<T, U> {
+            type Inner = Self;
+        }
+
+        fn assert_impls_operation_input_output<T: OperationInput + OperationOutput>() {}
+        assert_impls_operation_input_output::<OperationInputOutput<(), i32>>();
+    }
+}
