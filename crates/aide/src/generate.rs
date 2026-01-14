@@ -84,6 +84,19 @@ pub fn all_error_responses(infer: bool) {
     });
 }
 
+/// Automatically strip null types from query parameter schemas.
+///
+/// Query strings cannot express null values - a parameter is either
+/// present with a value or absent. When enabled, null types are
+/// automatically removed from query parameter schemas during finalization.
+///
+/// This is enabled by default.
+pub fn strip_query_null_types(strip: bool) {
+    in_context(|ctx| {
+        ctx.strip_query_null_types = strip;
+    });
+}
+
 /// Reset the state of the thread-local context.
 ///
 /// Currently clears:
@@ -110,6 +123,9 @@ pub struct GenContext {
     /// Extract schemas.
     pub(crate) extract_schemas: bool,
 
+    /// Strip null types from query parameter schemas.
+    pub(crate) strip_query_null_types: bool,
+
     /// Status code for no content.
     pub(crate) no_content_status: u16,
 
@@ -135,6 +151,7 @@ impl GenContext {
             infer_responses: true,
             all_error_responses: false,
             extract_schemas: true,
+            strip_query_null_types: true,
             show_error: default_error_filter,
             error_handler: None,
             no_content_status,
