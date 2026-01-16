@@ -51,13 +51,14 @@ use std::{any::type_name, marker::PhantomData};
 use crate::{
     generate::GenContext,
     openapi::{
-        Components, Contact, Info, License, OpenApi, Operation, Parameter, PathItem, ReferenceOr,
-        Response, SecurityScheme, Server, StatusCode, Tag,
+        Components, Contact, Info, License, OpenApi, Operation, Parameter, ParameterSchemaOrContent,
+        PathItem, ReferenceOr, Response, SecurityScheme, Server, StatusCode, Tag,
     },
     OperationInput,
 };
 use indexmap::IndexMap;
 use serde::Serialize;
+use serde_json::Value;
 
 use crate::{
     error::Error, generate::in_context, operation::OperationOutput, util::iter_operations_mut,
@@ -191,6 +192,23 @@ impl<'t> TransformOpenApi<'t> {
             }
         }
 
+        self
+    }
+
+    /// Strip null types from query parameter schemas.
+    ///
+    /// Query strings cannot express null values - a parameter is either
+    /// present with a value or absent. This method removes `null` from
+    /// type arrays (e.g., `["string", "null"]` becomes `"string"`) and
+    /// unwraps `anyOf` variants containing null types.
+    ///
+    /// Note: This is called automatically when the transform is finalized
+    /// (unless disabled via [`aide::generate::strip_query_null_types`]).
+    /// You only need to call this explicitly if you want to apply it
+    /// at a specific point in your transform chain.
+    #[tracing::instrument(skip_all)]
+    pub fn strip_null_from_query_params(self) -> Self {
+        strip_null_from_query_params_impl(self.api);
         self
     }
 
@@ -1319,4 +1337,69 @@ impl<'t> TransformCallback<'t> {
 
 fn filter_no_duplicate_response(err: &Error) -> bool {
     !matches!(err, Error::DefaultResponseExists | Error::ResponseExists(_))
+}
+
+pub(crate) fn strip_null_from_query_params_impl(api: &mut OpenApi) {
+    let Some(paths) = &mut api.paths else { return };
+
+    for (_, path_item) in &mut paths.paths {
+        let ReferenceOr::Item(path_item) = path_item else {
+            continue;
+        };
+
+        for (_, op) in iter_operations_mut(path_item) {
+            for param in &mut op.parameters {
+                let ReferenceOr::Item(Parameter::Query { parameter_data, .. }) = param else {
+                    continue;
+                };
+
+                let ParameterSchemaOrContent::Schema(schema_obj) = &mut parameter_data.format
+                else {
+                    continue;
+                };
+
+                strip_null_from_type(&mut schema_obj.json_schema);
+            }
+        }
+    }
+}
+
+fn strip_null_from_type(schema: &mut schemars::Schema) {
+    // Handle type: ["string", "null"] -> type: "string"
+    if let Some(Value::Array(types)) = schema.get_mut("type") {
+        let null_count = types.iter().filter(|t| *t == "null").count();
+        if null_count == 0 || null_count == types.len() {
+            return; // No nulls, or all nulls - don't modify
+        }
+        types.retain(|t| t != "null");
+        if types.len() == 1 {
+            *schema.get_mut("type").unwrap() = types.remove(0);
+        }
+        return;
+    }
+
+    // Handle anyOf: [..., {type: "null"}] -> remove null variants
+    let Some(Value::Array(items)) = schema.get_mut("anyOf") else {
+        return;
+    };
+
+    let is_null = |v: &Value| matches!(v.get("type"), Some(Value::String(s)) if s == "null");
+    let null_count = items.iter().filter(|item| is_null(item)).count();
+    if null_count == 0 || null_count == items.len() {
+        return; // No nulls, or all nulls - don't modify
+    }
+
+    items.retain(|item| !is_null(item));
+
+    // Single item remains: unwrap the anyOf
+    if items.len() == 1 {
+        if let Some(Value::Object(obj)) = items.pop() {
+            if let Some(schema_obj) = schema.as_object_mut() {
+                schema_obj.remove("anyOf");
+                for (key, value) in obj {
+                    schema_obj.insert(key, value);
+                }
+            }
+        }
+    }
 }

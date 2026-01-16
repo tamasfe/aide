@@ -443,6 +443,11 @@ where
         let _ = transform(TransformOpenApi::new(api));
 
         let needs_reset = in_context(|ctx| {
+            // Strip null types from query parameters if enabled
+            if ctx.strip_query_null_types {
+                crate::transform::strip_null_from_query_params_impl(api);
+            }
+
             if !ctx.extract_schemas {
                 return false;
             }
