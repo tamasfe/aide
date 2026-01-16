@@ -1,6 +1,6 @@
 [package]
 name = "aide-macros"
-version = "0.16.0-alpha.1" # remember to update the dependency in aide, even for patch releases
+version = "0.16.0-alpha.2" # remember to update the dependency in aide, even for patch releases
 authors = ["tamasfe"]
 edition = "2021"
 license = "MIT OR Apache-2.0"

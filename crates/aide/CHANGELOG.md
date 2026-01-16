@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.16.0-alpha.2
+
+- **fixed:** Use `StatusCode` instead of `u16` in `OperationIo` derive output ([#271])
+
+[#271]: https://github.com/tamasfe/aide/pull/271
+
 ## 0.16.0-alpha.1
 
 - **changed:** Use `StatusCode` instead of `u16` for inferred responses
