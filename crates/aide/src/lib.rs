@@ -113,7 +113,7 @@
 //! The library will always support the latest stable Rust version,
 //! it might support older versions but without guarantees.
 //!
-#![cfg_attr(docsrs, feature(doc_auto_cfg))]
+#![cfg_attr(docsrs, feature(doc_cfg))]
 #![warn(clippy::pedantic, missing_docs, unreachable_pub, rust_2018_idioms)]
 #![allow(
     clippy::default_trait_access,
