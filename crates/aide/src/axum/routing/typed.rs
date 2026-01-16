@@ -301,7 +301,7 @@ where
 {
     fn operation_input(ctx: &mut crate::generate::GenContext, operation: &mut Operation) {
         // `subschema_for` `description` is none, while `root_schema_for` is some
-        let schema = ctx.schema.root_schema_for::<T>();
+        let schema = ctx.input_generator.root_schema_for::<T>();
         operation.description = schema
             .get("description")
             .and_then(|d| d.as_str())
