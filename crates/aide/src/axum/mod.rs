@@ -906,8 +906,9 @@ mod tests {
         generate::in_context(|ctx| {
             let mut operation = Operation::default();
 
-            // Touch the type so `dead_code` doesn't warn on fields in this test-only struct.
-            let _ = Example { value: 0 };
+            // Read a field so `dead_code` doesn't warn on this test-only type.
+            let example = Example { value: 0 };
+            let _ = example.value;
 
             let responses = <Json<Example> as OperationInput>::inferred_early_responses(
                 ctx,
