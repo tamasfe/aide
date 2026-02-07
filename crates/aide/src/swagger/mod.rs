@@ -6,13 +6,13 @@
 //! // Replace some of the `axum::` types with `aide::axum::` ones.
 //! use aide::{
 //!     axum::{
-//!         routing::{get, post},
+//!         routing::post,
 //!         ApiRouter, IntoApiResponse,
 //!     },
 //!     openapi::{Info, OpenApi},
 //!     swagger::Swagger,
 //! };
-//! use axum::{Extension, Json};
+//! use axum::{response::IntoResponse, routing::get, Extension, Json};
 //! use schemars::JsonSchema;
 //! use serde::Deserialize;
 //!
@@ -30,7 +30,7 @@
 //! // Note that this clones the document on each request.
 //! // To be more efficient, we could wrap it into an Arc,
 //! // or even store it as a serialized string.
-//! async fn serve_api(Extension(api): Extension<OpenApi>) -> impl IntoApiResponse {
+//! async fn serve_api(Extension(api): Extension<OpenApi>) -> impl IntoResponse {
 //!     Json(api)
 //! }
 //!
@@ -55,17 +55,16 @@
 //!
 //!     let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
 //!
-//!     axum::serve(
-//!         listener,
-//!         app
-//!             // Generate the documentation.
-//!             .finish_api(&mut api)
-//!             // Expose the documentation to the handlers.
-//!             .layer(Extension(api))
-//!             .into_make_service(),
-//!     )
-//!     .await
-//!     .unwrap();
+//!     // NOTE: to actually run, call `axum::serve(listener, svc).await.unwrap()`.
+//!     // This is omitted because `axum::serve` is feature-gated in `axum` and
+//!     // isn't available with all feature combinations.
+//!     let svc = app
+//!         // Generate the documentation.
+//!         .finish_api(&mut api)
+//!         // Expose the documentation to the handlers.
+//!         .layer(Extension(api))
+//!         .into_make_service();
+//!     let _ = (listener, svc);
 //! }
 //! ```
 
