@@ -389,7 +389,6 @@ where
 }
 
 #[cfg(feature = "axum-extra")]
-#[allow(deprecated)]
 impl OperationInput for axum_extra::extract::Host {}
 
 #[cfg(feature = "axum-extra-cookie")]
