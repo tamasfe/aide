@@ -890,6 +890,47 @@ mod tests {
 
     async fn test_handler3() {}
 
+    #[cfg(feature = "axum-json")]
+    #[test]
+    fn inferred_early_responses_for_json_are_documented() {
+        use crate::{generate, openapi::Operation, OperationInput};
+        use axum::Json;
+        use schemars::JsonSchema;
+        use serde::Deserialize;
+
+        #[derive(Deserialize, JsonSchema)]
+        struct Example {
+            value: usize,
+        }
+
+        generate::in_context(|ctx| {
+            let mut operation = Operation::default();
+
+            // Touch the type so `dead_code` doesn't warn on fields in this test-only struct.
+            let _ = Example { value: 0 };
+
+            let responses = <Json<Example> as OperationInput>::inferred_early_responses(
+                ctx,
+                &mut operation,
+            );
+
+            let mut codes = responses
+                .into_iter()
+                .map(|(code, _)| code.expect("status code"))
+                .collect::<Vec<_>>();
+            codes.sort_by(|a, b| a.to_string().cmp(&b.to_string()));
+
+            assert_eq!(
+                codes,
+                vec![
+                    crate::openapi::StatusCode::Code(400),
+                    crate::openapi::StatusCode::Code(415),
+                    crate::openapi::StatusCode::Code(422),
+                ]
+            );
+        });
+    }
+
     fn nested_route() -> ApiRouter {
         ApiRouter::new()
             .api_route_with("/", routing::post(test_handler3), |t| t)

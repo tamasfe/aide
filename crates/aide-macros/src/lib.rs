@@ -133,6 +133,16 @@ pub fn derive_operation_io(ts: TokenStream) -> TokenStream {
                             operation
                         );
                     }
+
+                    fn inferred_early_responses(
+                        ctx: &mut aide::generate::GenContext,
+                        operation: &mut aide::openapi::Operation
+                    ) -> Vec<(Option<aide::openapi::StatusCode>, aide::openapi::Response)> {
+                        <#input as aide::OperationInput>::inferred_early_responses(
+                            ctx,
+                            operation
+                        )
+                    }
                 }
             });
         }
