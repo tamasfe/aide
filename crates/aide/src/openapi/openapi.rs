@@ -112,9 +112,13 @@ mod serde_version {
     pub(super) fn deserialize<'de, D: Deserializer<'de>>(
         de: D,
     ) -> Result<Cow<'static, str>, D::Error> {
-        <&'de str>::deserialize(de).and_then(|s| match s == "3.1.0" {
-            true => Ok(Cow::Owned("3.1.0".to_owned())),
-            false => Err(serde::de::Error::custom("expected 3.1.0")),
+        // Accept any patch version of 3.1.x.
+        <&'de str>::deserialize(de).and_then(|s| {
+            if s.starts_with("3.1.") {
+                Ok(Cow::Owned("3.1.0".to_owned()))
+            } else {
+                Err(serde::de::Error::custom("expected 3.1.x"))
+            }
         })
     }
 }

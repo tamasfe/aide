@@ -11,7 +11,7 @@
 //! See the [examples](https://github.com/tamasfe/aide/tree/master/examples)
 //! to see how Aide is used with various frameworks.
 //!
-//! Currently only Open API version `3.1.0` is supported.
+//! Currently only Open API version `3.1.x` is supported.
 //!
 //! Previous releases of aide relied heavily on macros, and the
 //! [`linkme`](https://docs.rs/linkme/latest/linkme/) crate for automagic global state.
