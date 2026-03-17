@@ -910,10 +910,8 @@ mod tests {
             let example = Example { value: 0 };
             let _ = example.value;
 
-            let responses = <Json<Example> as OperationInput>::inferred_early_responses(
-                ctx,
-                &mut operation,
-            );
+            let responses =
+                <Json<Example> as OperationInput>::inferred_early_responses(ctx, &mut operation);
 
             let mut codes = responses
                 .into_iter()
