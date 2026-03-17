@@ -47,6 +47,7 @@ axum-tokio = ["axum", "axum/tokio"]
 axum-ws = ["axum", "axum/ws"]
 
 axum-extra = ["axum", "dep:axum-extra"]
+axum-extra-attachment = ["axum-extra", "axum-extra/attachment"]
 axum-extra-cached = ["axum-extra", "axum-extra/cached"]
 axum-extra-cookie = ["axum-extra", "axum-extra/cookie"]
 axum-extra-cookie-private = ["axum-extra", "axum-extra/cookie-private"]

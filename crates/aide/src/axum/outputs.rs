@@ -255,10 +255,16 @@ impl OperationOutput for Redirect {
 #[cfg(feature = "axum-extra")]
 #[allow(unused_imports)]
 mod extra {
-    use axum_extra::extract;
+    use axum_extra::{extract, response};
 
     use super::*;
-    use crate::operation::OperationOutput;
+    use crate::{
+        openapi::{
+            Header, HeaderStyle, MediaType, ParameterSchemaOrContent, ReferenceOr, Response,
+            SchemaObject,
+        },
+        operation::OperationOutput,
+    };
 
     #[cfg(feature = "axum-extra-cookie")]
     impl OperationOutput for extract::CookieJar {
@@ -268,5 +274,76 @@ mod extra {
     #[cfg(feature = "axum-extra-cookie-private")]
     impl OperationOutput for extract::PrivateCookieJar {
         type Inner = ();
+    }
+
+    #[cfg(feature = "axum-extra-attachment")]
+    impl<T> OperationOutput for response::Attachment<T> {
+        type Inner = Self;
+
+        fn operation_response(
+            _ctx: &mut GenContext,
+            _operation: &mut Operation,
+        ) -> Option<Response> {
+            Some(Response {
+                description: "File download".to_owned(),
+                headers: [
+                    (
+                        "Content-Disposition".to_owned(),
+                        ReferenceOr::Item(Header {
+                            description: Some(
+                                "Controls download behavior. Use `attachment` to prompt save dialog, `inline` to display in browser. Includes suggested filename."
+                                    .to_owned(),
+                            ),
+                            required: false,
+                            format: ParameterSchemaOrContent::Schema(SchemaObject {
+                                json_schema: json_schema!({
+                                    "type": "string",
+                                }),
+                                example: None,
+                                external_docs: None,
+                            }),
+                            extensions: Default::default(),
+                            deprecated: None,
+                            example: Some(serde_json::json!(r#"attachment; filename="xyz.pdf""#)),
+                            examples: IndexMap::default(),
+                            style: HeaderStyle::Simple,
+                        }),
+                    ),
+                    (
+                        "Content-Type".to_owned(),
+                        ReferenceOr::Item(Header {
+                            description: Some("MIME type of the file".to_owned()),
+                            required: false,
+                            format: ParameterSchemaOrContent::Schema(SchemaObject {
+                                json_schema: json_schema!({
+                                    "type": "string",
+                                }),
+                                external_docs: None,
+                                example: None,
+                            }),
+                            extensions: Default::default(),
+                            deprecated: None,
+                            example: Some(serde_json::json!("application/pdf")),
+                            examples: IndexMap::default(),
+                            style: HeaderStyle::Simple,
+                        }),
+                    ),
+                ]
+                .into_iter()
+                .collect(),
+                content: [("application/octet-stream".to_owned(), MediaType::default())] .into_iter()
+                .collect(),
+                ..Default::default()
+            })
+        }
+
+        fn inferred_responses(
+            ctx: &mut GenContext,
+            operation: &mut Operation,
+        ) -> Vec<(Option<StatusCode>, Response)> {
+            Self::operation_response(ctx, operation)
+                .map(|r| vec![(Some(StatusCode::Code(200)), r)])
+                .unwrap_or_default()
+        }
     }
 }
