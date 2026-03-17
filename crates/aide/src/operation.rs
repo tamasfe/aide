@@ -439,6 +439,13 @@ mod tests {
                 // Changing a property of the operation so that we know this function was called
                 operation.deprecated = true;
             }
+
+            fn inferred_early_responses(
+                _ctx: &mut GenContext,
+                _operation: &mut Operation,
+            ) -> Vec<(Option<StatusCode>, Response)> {
+                vec![(Some(StatusCode::Code(400)), Response::default())]
+            }
         }
 
         struct ImplsOperationOutput;
@@ -472,6 +479,11 @@ mod tests {
 
             OperationIoWith::operation_input(ctx, &mut operation);
             assert!(operation.deprecated);
+
+            assert_eq!(
+                OperationIoWith::inferred_early_responses(ctx, &mut operation),
+                vec![(Some(StatusCode::Code(400)), Response::default())],
+            );
 
             assert_eq!(
                 OperationIoWith::operation_response(ctx, &mut operation),
