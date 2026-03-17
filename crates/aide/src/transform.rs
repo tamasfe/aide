@@ -51,8 +51,9 @@ use std::{any::type_name, marker::PhantomData};
 use crate::{
     generate::GenContext,
     openapi::{
-        Components, Contact, Info, License, OpenApi, Operation, Parameter, ParameterSchemaOrContent,
-        PathItem, ReferenceOr, Response, SecurityScheme, Server, StatusCode, Tag,
+        Components, Contact, Info, License, OpenApi, Operation, Parameter,
+        ParameterSchemaOrContent, PathItem, ReferenceOr, Response, SecurityScheme, Server,
+        StatusCode, Tag,
     },
     OperationInput,
 };
@@ -1401,5 +1402,161 @@ fn strip_null_from_type(schema: &mut schemars::Schema) {
                 }
             }
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::openapi::{
+        MediaType, OpenApi, Operation, Parameter, ParameterData, ParameterSchemaOrContent, Paths,
+        ReferenceOr, RequestBody, SchemaObject,
+    };
+    use indexmap::IndexMap;
+    use schemars::JsonSchema;
+    use serde_json::json;
+
+    use super::TransformOpenApi;
+
+    fn inline_schema_for<T: JsonSchema>() -> schemars::Schema {
+        let settings = schemars::generate::SchemaSettings::draft07().with(|s| {
+            s.inline_subschemas = true;
+        });
+        let mut gen = settings.into_generator();
+        gen.subschema_for::<T>()
+    }
+
+    fn property_schema(struct_schema: &schemars::Schema, name: &str) -> schemars::Schema {
+        struct_schema
+            .get("properties")
+            .and_then(|p| p.get(name))
+            .unwrap_or_else(|| panic!("property {name:?} not found"))
+            .clone()
+            .try_into()
+            .unwrap()
+    }
+
+    fn build_api(params: Vec<Parameter>, body_schema: Option<schemars::Schema>) -> OpenApi {
+        let mut op = Operation::default();
+        op.parameters = params.into_iter().map(ReferenceOr::Item).collect();
+        if let Some(schema) = body_schema {
+            op.request_body = Some(ReferenceOr::Item(RequestBody {
+                content: IndexMap::from_iter([(
+                    "application/json".into(),
+                    MediaType {
+                        schema: Some(SchemaObject {
+                            json_schema: schema,
+                            external_docs: None,
+                            example: None,
+                        }),
+                        ..Default::default()
+                    },
+                )]),
+                ..Default::default()
+            }));
+        }
+
+        let mut path_item = crate::openapi::PathItem::default();
+        path_item.get = Some(op);
+
+        OpenApi {
+            paths: Some(Paths {
+                paths: IndexMap::from([("/test".to_string(), ReferenceOr::Item(path_item))]),
+                extensions: IndexMap::new(),
+            }),
+            ..OpenApi::default()
+        }
+    }
+
+    fn query_param(name: &str, schema: schemars::Schema) -> Parameter {
+        Parameter::Query {
+            parameter_data: ParameterData {
+                name: name.to_string(),
+                description: None,
+                required: false,
+                deprecated: None,
+                format: ParameterSchemaOrContent::Schema(SchemaObject {
+                    json_schema: schema,
+                    external_docs: None,
+                    example: None,
+                }),
+                example: None,
+                examples: IndexMap::new(),
+                explode: None,
+                extensions: IndexMap::new(),
+            },
+            allow_reserved: false,
+            style: Default::default(),
+            allow_empty_value: None,
+        }
+    }
+
+    fn get_param_schema(api: &OpenApi, param_index: usize) -> &schemars::Schema {
+        let paths = api.paths.as_ref().unwrap();
+        let ReferenceOr::Item(path_item) = &paths.paths["/test"] else {
+            panic!("expected item");
+        };
+        let op = path_item.get.as_ref().unwrap();
+        let ReferenceOr::Item(param) = &op.parameters[param_index] else {
+            panic!("expected parameter item");
+        };
+        let ParameterSchemaOrContent::Schema(schema_obj) = &param.parameter_data_ref().format
+        else {
+            panic!("expected schema");
+        };
+        &schema_obj.json_schema
+    }
+
+    fn get_body_schema(api: &OpenApi) -> &schemars::Schema {
+        let paths = api.paths.as_ref().unwrap();
+        let ReferenceOr::Item(path_item) = &paths.paths["/test"] else {
+            panic!("expected item");
+        };
+        let op = path_item.get.as_ref().unwrap();
+        let Some(ReferenceOr::Item(body)) = &op.request_body else {
+            panic!("expected request body");
+        };
+        &body.content["application/json"]
+            .schema
+            .as_ref()
+            .unwrap()
+            .json_schema
+    }
+
+    #[test]
+    fn strip_null_from_query_params() {
+        #[derive(JsonSchema)]
+        #[allow(dead_code)]
+        struct QueryParams {
+            optional: Option<String>,
+        }
+
+        #[derive(JsonSchema)]
+        #[allow(dead_code)]
+        struct Body {
+            optional: Option<String>,
+        }
+
+        let query_field = property_schema(&inline_schema_for::<QueryParams>(), "optional");
+        let body_field = property_schema(&inline_schema_for::<Body>(), "optional");
+
+        // Both should start out nullable
+        assert_eq!(query_field.get("type"), Some(&json!(["string", "null"])));
+        assert_eq!(body_field.get("type"), Some(&json!(["string", "null"])));
+
+        let mut api = build_api(vec![query_param("optional", query_field)], Some(body_field));
+        let _ = TransformOpenApi::new(&mut api).strip_null_from_query_params();
+
+        // Query param should have null stripped
+        assert_eq!(
+            get_param_schema(&api, 0).get("type"),
+            Some(&json!("string"))
+        );
+
+        // Request body schema should be unchanged
+        assert_eq!(
+            get_body_schema(&api).get("type"),
+            Some(&json!(["string", "null"])),
+            "request body schema should retain its nullable type"
+        );
     }
 }
