@@ -100,6 +100,44 @@ fn operation_input_json<T: JsonSchema>(
     );
 }
 
+#[cfg(any(feature = "axum-json", feature = "axum-extra-json-deserializer"))]
+fn inferred_early_responses_json() -> Vec<(Option<StatusCode>, Response)> {
+    let schema = SchemaObject {
+        json_schema: json_schema!({
+            "type": "string",
+        }),
+        example: None,
+        external_docs: None,
+    };
+
+    let mk = |description: &'static str| Response {
+        description: description.into(),
+        content: IndexMap::from_iter([(
+            "text/plain".into(),
+            MediaType {
+                schema: Some(schema.clone()),
+                ..Default::default()
+            },
+        )]),
+        ..Default::default()
+    };
+
+    vec![
+        (
+            Some(StatusCode::Code(400)),
+            mk("Failed to parse the request body as JSON"),
+        ),
+        (
+            Some(StatusCode::Code(415)),
+            mk("Expected request with `Content-Type: application/json`"),
+        ),
+        (
+            Some(StatusCode::Code(422)),
+            mk("Failed to deserialize the JSON body into the target type"),
+        ),
+    ]
+}
+
 #[cfg(feature = "axum-json")]
 impl<T> OperationInput for axum::Json<T>
 where
@@ -113,40 +151,7 @@ where
         _ctx: &mut crate::generate::GenContext,
         _operation: &mut Operation,
     ) -> Vec<(Option<StatusCode>, Response)> {
-        let schema = SchemaObject {
-            json_schema: json_schema!({
-                "type": "string",
-            }),
-            example: None,
-            external_docs: None,
-        };
-
-        let mk = |description: &'static str| Response {
-            description: description.into(),
-            content: IndexMap::from_iter([(
-                "text/plain".into(),
-                MediaType {
-                    schema: Some(schema.clone()),
-                    ..Default::default()
-                },
-            )]),
-            ..Default::default()
-        };
-
-        vec![
-            (
-                Some(StatusCode::Code(400)),
-                mk("Failed to parse the request body as JSON"),
-            ),
-            (
-                Some(StatusCode::Code(415)),
-                mk("Expected request with `Content-Type: application/json`"),
-            ),
-            (
-                Some(StatusCode::Code(422)),
-                mk("Failed to deserialize the JSON body into the target type"),
-            ),
-        ]
+        inferred_early_responses_json()
     }
 }
 
@@ -157,6 +162,13 @@ where
 {
     fn operation_input(ctx: &mut crate::generate::GenContext, operation: &mut Operation) {
         operation_input_json::<T>(ctx, operation);
+    }
+
+    fn inferred_early_responses(
+        _ctx: &mut crate::generate::GenContext,
+        _operation: &mut Operation,
+    ) -> Vec<(Option<StatusCode>, Response)> {
+        inferred_early_responses_json()
     }
 }
 
