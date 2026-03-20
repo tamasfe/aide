@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.16.0-alpha.3
+
+- **fixed:** Inferred early responses for `input_with` and `axum::Json` ([#287])
+- **fixed:** Support deserializating any v3.1.x spec, instead of just v3.1.0 ([#291])
+- **added:** `impl OperationOutput for axum_extra::response::Attachment` ([#276])
+- **docs:** Fixed axum doctest examples ([#286])
+
+[#276]: https://github.com/tamasfe/aide/pull/276
+[#286]: https://github.com/tamasfe/aide/pull/286
+[#287]: https://github.com/tamasfe/aide/pull/287
+[#291]: https://github.com/tamasfe/aide/pull/291
+
 ## 0.16.0-alpha.2
 
 - **fixed:** Use `StatusCode` instead of `u16` in `OperationIo` derive output ([#271])
