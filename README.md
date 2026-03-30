@@ -20,6 +20,7 @@ If your project isn't listed here and you would like it to be, please feel free 
 
 - [aide-axum-typed-multipart-2](https://crates.io/crates/aide-axum-typed-multipart-2): Wrapper around [`axum_typed_multipart`](https://docs.rs/axum_typed_multipart/0.11.0/axum_typed_multipart/)
 to generate documentation for multipart requests.
+- [rovo](https://github.com/Arthurdw/rovo): Doc-comment-driven OpenAPI documentation generation for Axum web applications, built on top of aide.
 
 ## Contributing
 
