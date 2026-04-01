@@ -39,7 +39,7 @@ where
     T: axum_extra::headers::Header,
 {
     fn operation_input(ctx: &mut crate::generate::GenContext, operation: &mut Operation) {
-        let s = ctx.schema.subschema_for::<String>();
+        let s = ctx.input_generator.subschema_for::<String>();
         add_parameters(
             ctx,
             operation,
@@ -72,8 +72,8 @@ fn operation_input_json<T: JsonSchema>(
     ctx: &mut crate::generate::GenContext,
     operation: &mut Operation,
 ) {
-    let json_schema = ctx.schema.subschema_for::<T>();
-    let resolved_schema = ctx.resolve_schema(&json_schema);
+    let json_schema = ctx.input_generator.subschema_for::<T>();
+    let resolved_schema = ctx.resolve_input_schema(&json_schema);
 
     set_body(
         ctx,
@@ -178,8 +178,8 @@ where
     T: JsonSchema,
 {
     fn operation_input(ctx: &mut crate::generate::GenContext, operation: &mut Operation) {
-        let schema = ctx.schema.subschema_for::<T>();
-        let resolved_schema = ctx.resolve_schema(&schema);
+        let schema = ctx.input_generator.subschema_for::<T>();
+        let resolved_schema = ctx.resolve_input_schema(&schema);
 
         set_body(
             ctx,
@@ -212,7 +212,7 @@ where
     T: JsonSchema,
 {
     fn operation_input(ctx: &mut crate::generate::GenContext, operation: &mut Operation) {
-        let schema = ctx.schema.subschema_for::<T>();
+        let schema = ctx.input_generator.subschema_for::<T>();
         let params = parameters_from_schema(ctx, schema, ParamLocation::Path);
         add_parameters(ctx, operation, params);
     }
@@ -224,7 +224,7 @@ where
     T: JsonSchema,
 {
     fn operation_input(ctx: &mut crate::generate::GenContext, operation: &mut Operation) {
-        let schema = ctx.schema.subschema_for::<T>();
+        let schema = ctx.input_generator.subschema_for::<T>();
         let params = parameters_from_schema(ctx, schema, ParamLocation::Query);
         add_parameters(ctx, operation, params);
     }
@@ -415,7 +415,7 @@ where
     T: JsonSchema,
 {
     fn operation_input(ctx: &mut crate::generate::GenContext, operation: &mut Operation) {
-        let schema = ctx.schema.subschema_for::<T>();
+        let schema = ctx.input_generator.subschema_for::<T>();
         let resolved_schema = ctx.resolve_schema(&schema);
 
         set_body(
@@ -449,7 +449,7 @@ where
     T: JsonSchema,
 {
     fn operation_input(ctx: &mut crate::generate::GenContext, operation: &mut Operation) {
-        let schema = ctx.schema.subschema_for::<T>();
+        let schema = ctx.input_generator.subschema_for::<T>();
         let params = parameters_from_schema(ctx, schema, ParamLocation::Query);
         add_parameters(ctx, operation, params);
     }
