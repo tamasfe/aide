@@ -115,11 +115,12 @@ impl Scalar {
                   id="api-reference"></script>
                 <script>
                   var configuration = {{
+                    url: '{spec_url}',
                     theme: 'purple',
                     customCss: `{scalar_css}`,
-                    spec: {{
-                        url: '{spec_url}'
-                    }}
+                    agent: {{
+                        disabled: true,
+                    }},
                   }}
 
                   var apiReference = document.getElementById('api-reference')
