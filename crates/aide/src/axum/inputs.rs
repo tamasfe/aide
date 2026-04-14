@@ -400,9 +400,6 @@ where
     }
 }
 
-#[cfg(feature = "axum-extra")]
-impl OperationInput for axum_extra::extract::Host {}
-
 #[cfg(feature = "axum-extra-cookie")]
 impl OperationInput for axum_extra::extract::CookieJar {}
 
