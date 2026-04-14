@@ -480,6 +480,7 @@ where
     /// This method allows you to add OpenAPI documentation to routes that have been
     /// previously defined using `Router` methods, particularly useful when working
     /// with frameworks like Leptos that only implement traits for `axum::Router`.
+    #[expect(clippy::needless_pass_by_value)]
     pub fn api_route_docs(mut self, path: &str, docs: routing::ApiMethodDocs) -> Self {
         in_context(|_ctx| {
             if let Some(path_item) = self.paths.get_mut(path) {
@@ -499,6 +500,7 @@ where
     /// This method allows you to add OpenAPI documentation to routes that have been
     /// previously defined using `Router` methods, and additionally provides a transform
     /// function to edit the generated path item.
+    #[expect(clippy::needless_pass_by_value)]
     pub fn api_route_docs_with(
         mut self,
         path: &str,
