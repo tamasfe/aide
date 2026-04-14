@@ -1436,10 +1436,10 @@ mod tests {
     }
 
     fn build_api(params: Vec<Parameter>, body_schema: Option<schemars::Schema>) -> OpenApi {
-        let mut op = Operation::default();
-        op.parameters = params.into_iter().map(ReferenceOr::Item).collect();
-        if let Some(schema) = body_schema {
-            op.request_body = Some(ReferenceOr::Item(RequestBody {
+        let parameters = params.into_iter().map(ReferenceOr::Item).collect();
+
+        let request_body = body_schema.map(|schema| {
+            ReferenceOr::Item(RequestBody {
                 content: IndexMap::from_iter([(
                     "application/json".into(),
                     MediaType {
@@ -1452,11 +1452,19 @@ mod tests {
                     },
                 )]),
                 ..Default::default()
-            }));
-        }
+            })
+        });
 
-        let mut path_item = crate::openapi::PathItem::default();
-        path_item.get = Some(op);
+        let op = Operation {
+            parameters,
+            request_body,
+            ..Default::default()
+        };
+
+        let path_item = crate::openapi::PathItem {
+            get: Some(op),
+            ..Default::default()
+        };
 
         OpenApi {
             paths: Some(Paths {

@@ -924,7 +924,7 @@ mod tests {
                 .into_iter()
                 .map(|(code, _)| code.expect("status code"))
                 .collect::<Vec<_>>();
-            codes.sort_by(|a, b| a.to_string().cmp(&b.to_string()));
+            codes.sort_by_key(ToString::to_string);
 
             assert_eq!(
                 codes,
