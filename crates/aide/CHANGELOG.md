@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.16.0-alpha.4
+
+- **removed:** `OperationInput` implementation for deprecated type `axum_extra::extract::Host`
+- **fixed:** Strip null from query parameter schemas ([#275])
+- **changed:** Upgraded `serde_qs` to 1.0 ([#297])
+
+[#275]: https://github.com/tamasfe/aide/pull/275
+[#297]: https://github.com/tamasfe/aide/pull/297
+
 ## 0.16.0-alpha.3
 
 - **fixed:** Inferred early responses for `input_with` and `axum::Json` ([#287])
