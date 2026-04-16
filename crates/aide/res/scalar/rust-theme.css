@@ -1,5 +1,5 @@
 :root {
-  --scalar-font: "Inter", var(--system-fonts);
+  --scalar-font: "Inter", var(--system-fonts, "sans-serif");
 }
 
 /* basic theme */
