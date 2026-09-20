@@ -164,3 +164,5 @@ pub use operation::{OperationInput, OperationOutput};
 
 #[cfg(feature = "macros")]
 pub use aide_macros::OperationIo;
+
+pub use schemars;
