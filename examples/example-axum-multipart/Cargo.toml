@@ -1,0 +1,18 @@
+[package]
+name = "example-axum-multipart"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[dependencies]
+aide = { path = "../../crates/aide", features = [
+    "axum-json",
+    "scalar",
+] }
+axum = "0.8.1"
+axum_typed_multipart = "0.16"
+indexmap = "2"
+schemars = "1.0.4"
+serde = { version = "1.0.144", features = ["derive"] }
+serde_json = "1.0.85"
+tokio = { version = "1.21.0", features = ["macros", "rt-multi-thread"] }
