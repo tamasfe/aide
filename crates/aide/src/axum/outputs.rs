@@ -37,15 +37,17 @@ where
     type Inner = T;
 
     fn operation_response(ctx: &mut GenContext, _operation: &mut Operation) -> Option<Response> {
-        let json_schema = ctx.schema.subschema_for::<T>();
-        let resolved_schema = ctx.resolve_schema(&json_schema);
+        let mut json_schema = ctx.schema.subschema_for::<T>();
+        let description = ctx
+            .resolve_schema(&json_schema)
+            .get("description")
+            .and_then(|d| d.as_str())
+            .map(String::from)
+            .unwrap_or_default();
+        ctx.apply_transforms(&mut json_schema);
 
         Some(Response {
-            description: resolved_schema
-                .get("description")
-                .and_then(|d| d.as_str())
-                .map(String::from)
-                .unwrap_or_default(),
+            description,
             content: IndexMap::from_iter([(
                 "application/json".into(),
                 MediaType {
@@ -91,15 +93,17 @@ where
     type Inner = T;
 
     fn operation_response(ctx: &mut GenContext, _operation: &mut Operation) -> Option<Response> {
-        let json_schema = ctx.schema.subschema_for::<T>();
-        let resolved_schema = ctx.resolve_schema(&json_schema);
+        let mut json_schema = ctx.schema.subschema_for::<T>();
+        let description = ctx
+            .resolve_schema(&json_schema)
+            .get("description")
+            .and_then(|d| d.as_str())
+            .map(String::from)
+            .unwrap_or_default();
+        ctx.apply_transforms(&mut json_schema);
 
         Some(Response {
-            description: resolved_schema
-                .get("description")
-                .and_then(|d| d.as_str())
-                .map(String::from)
-                .unwrap_or_default(),
+            description,
             content: IndexMap::from_iter([(
                 "application/x-www-form-urlencoded".into(),
                 MediaType {

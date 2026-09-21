@@ -204,7 +204,7 @@ pub fn parameters_from_schema(
     schema: Schema,
     location: ParamLocation,
 ) -> Vec<Parameter> {
-    let schema = ctx.resolve_schema(&schema);
+    let schema = ctx.resolve_schema_transformed(&schema);
 
     let mut params = Vec::new();
 
@@ -373,8 +373,9 @@ pub fn add_parameters(
 
 #[cfg(test)]
 mod tests {
+    use super::{parameters_from_schema, ParamLocation};
     use crate::generate::GenContext;
-    use crate::openapi::{Operation, Response, StatusCode};
+    use crate::openapi::{Operation, Parameter, ParameterSchemaOrContent, Response, StatusCode};
     use crate::{generate, OperationInput, OperationOutput};
     use aide_macros::OperationIo;
     use schemars::JsonSchema;
@@ -519,5 +520,48 @@ mod tests {
 
         fn assert_impls_operation_input_output<T: OperationInput + OperationOutput>() {}
         assert_impls_operation_input_output::<OperationInputOutput<(), i32>>();
+    }
+
+    /// The schema generator's transforms must be applied to the schemas that
+    /// end up inlined in a parameter, not just to the extracted definitions.
+    ///
+    /// `aide` defaults to [`schemars::generate::SchemaSettings::draft07`], and
+    /// draft 7 has no `prefixItems` keyword, so its `ReplacePrefixItems`
+    /// transform rewrites `prefixItems` into `items`. A tuple is inlined by
+    /// `schemars` rather than being extracted into its own definition, which
+    /// makes it a direct probe for the inlined code path.
+    #[test]
+    fn parameters_have_generator_transforms_applied() {
+        #[derive(JsonSchema)]
+        #[allow(dead_code)]
+        struct Params {
+            range: (u8, u8),
+        }
+
+        let params = generate::in_context(|ctx| {
+            let schema = ctx.schema.subschema_for::<Params>();
+            parameters_from_schema(ctx, schema, ParamLocation::Query)
+        });
+        generate::reset_context();
+
+        let [Parameter::Query { parameter_data, .. }] = params.as_slice() else {
+            panic!("expected exactly one query parameter, got {params:?}");
+        };
+        assert_eq!(parameter_data.name, "range");
+
+        let ParameterSchemaOrContent::Schema(schema) = &parameter_data.format else {
+            panic!("expected a schema, not content");
+        };
+
+        assert_eq!(
+            schema.json_schema.get("prefixItems"),
+            None,
+            "`prefixItems` is not valid in draft 7 and should have been transformed away"
+        );
+        assert!(
+            schema.json_schema.get("items").is_some(),
+            "`prefixItems` should have been rewritten to `items`, got {:?}",
+            schema.json_schema
+        );
     }
 }

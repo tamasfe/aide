@@ -212,6 +212,39 @@ impl GenContext {
             _ => schema_or_ref,
         }
     }
+
+    /// Resolve a schema reference and apply the schema generator's
+    /// transforms to the result.
+    ///
+    /// Unlike [`resolve_schema`](Self::resolve_schema) this returns an owned
+    /// schema, because the transforms mutate it.
+    ///
+    /// Use this instead of [`resolve_schema`](Self::resolve_schema) whenever
+    /// the resolved schema is embedded into the documentation directly rather
+    /// than as a reference. `schemars` only applies the transforms configured
+    /// in its settings when generating root schemas or when taking the
+    /// definitions out of the generator, so schemas that `aide` inlines would
+    /// otherwise ignore those settings entirely.
+    #[must_use]
+    pub fn resolve_schema_transformed(&mut self, schema_or_ref: &Schema) -> Schema {
+        let mut schema = self.resolve_schema(schema_or_ref).clone();
+        self.apply_transforms(&mut schema);
+        schema
+    }
+
+    /// Apply the schema generator's transforms to a generated schema in place.
+    ///
+    /// Schema references are left untouched, as the definitions they point at
+    /// are transformed when they are merged into the documentation.
+    pub fn apply_transforms(&mut self, schema: &mut Schema) {
+        if schema.as_object().is_some_and(|o| o.contains_key("$ref")) {
+            return;
+        }
+
+        for transform in self.schema.transforms_mut() {
+            transform.transform(schema);
+        }
+    }
 }
 
 fn default_error_filter(_: &Error) -> bool {

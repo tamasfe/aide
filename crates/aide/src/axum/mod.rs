@@ -937,6 +937,112 @@ mod tests {
         });
     }
 
+    /// The schema generator's transforms must be applied to request body
+    /// schemas that are inlined into the document.
+    ///
+    /// With `extract_schemas` disabled the body schema is embedded verbatim
+    /// rather than as a `$ref`, so nothing else will ever transform it. `aide`
+    /// defaults to draft 7, which has no `prefixItems` keyword, and a tuple is
+    /// inlined by `schemars` rather than extracted into its own definition.
+    #[cfg(feature = "axum-json")]
+    #[test]
+    fn inlined_request_body_has_generator_transforms_applied() {
+        use crate::{generate, openapi::Operation, OperationInput};
+        use axum::Json;
+        use schemars::JsonSchema;
+
+        #[derive(JsonSchema)]
+        #[allow(dead_code)]
+        struct Body {
+            range: (u8, u8),
+        }
+
+        generate::extract_schemas(false);
+        let mut operation = Operation::default();
+        generate::in_context(|ctx| {
+            <Json<Body> as OperationInput>::operation_input(ctx, &mut operation);
+        });
+        generate::reset_context();
+
+        let body = operation
+            .request_body
+            .expect("request body")
+            .into_item()
+            .expect("inline request body");
+        let schema = &body.content["application/json"]
+            .schema
+            .as_ref()
+            .expect("schema")
+            .json_schema;
+
+        let range = schema
+            .get("properties")
+            .and_then(|p| p.get("range"))
+            .expect("`range` property");
+        assert_eq!(
+            range.get("prefixItems"),
+            None,
+            "`prefixItems` is not valid in draft 7 and should have been transformed away"
+        );
+        assert!(
+            range.get("items").is_some(),
+            "`prefixItems` should have been rewritten to `items`, got {range:?}"
+        );
+    }
+
+    /// `TypedHeader` embeds a generated `String` schema straight into a header
+    /// parameter, so it needs the generator's transforms like every other
+    /// inline embedding site.
+    #[cfg(feature = "axum-extra-headers")]
+    #[test]
+    fn typed_header_schema_has_generator_transforms_applied() {
+        use crate::{generate, openapi::Operation, OperationInput};
+        use axum_extra::typed_header::TypedHeader;
+        use schemars::transform::Transform;
+
+        #[derive(Debug, Clone)]
+        struct Marker;
+
+        impl Transform for Marker {
+            fn transform(&mut self, schema: &mut schemars::Schema) {
+                schemars::transform::transform_subschemas(self, schema);
+                schema.insert("x-marked".to_owned(), true.into());
+            }
+        }
+
+        let mut operation = Operation::default();
+        generate::in_context(|ctx| {
+            let settings = schemars::generate::SchemaSettings::draft07()
+                .with(|s| s.transforms = vec![Box::new(Marker)]);
+            ctx.schema = schemars::SchemaGenerator::new(settings);
+
+            <TypedHeader<axum_extra::headers::ContentType> as OperationInput>::operation_input(
+                ctx,
+                &mut operation,
+            );
+        });
+        generate::reset_context();
+
+        let param = operation
+            .parameters
+            .first()
+            .expect("one header parameter")
+            .as_item()
+            .expect("inline parameter");
+        let crate::openapi::ParameterSchemaOrContent::Schema(schema) =
+            &param.parameter_data_ref().format
+        else {
+            panic!("expected a schema, not content");
+        };
+
+        assert_eq!(
+            schema.json_schema.get("x-marked"),
+            Some(&serde_json::json!(true)),
+            "generator transforms should reach the header schema, got {:?}",
+            schema.json_schema
+        );
+    }
+
     fn nested_route() -> ApiRouter {
         ApiRouter::new()
             .api_route_with("/", routing::post(test_handler3), |t| t)

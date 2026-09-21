@@ -301,11 +301,17 @@ where
 {
     fn operation_input(ctx: &mut crate::generate::GenContext, operation: &mut Operation) {
         // `subschema_for` `description` is none, while `root_schema_for` is some
-        let schema = ctx.schema.root_schema_for::<T>();
-        operation.description = schema
+        let root_schema = ctx.schema.root_schema_for::<T>();
+        operation.description = root_schema
             .get("description")
             .and_then(|d| d.as_str())
             .map(String::from);
+
+        // Take the parameters from `subschema_for` rather than reusing the root
+        // schema: `root_schema_for` has already applied the generator's
+        // transforms, and `parameters_from_schema` applies them again, so
+        // passing the root schema here would transform it twice.
+        let schema = ctx.schema.subschema_for::<T>();
         let params = parameters_from_schema(ctx, schema, ParamLocation::Path);
         add_parameters(ctx, operation, params);
     }
@@ -337,5 +343,85 @@ where
     ) -> Result<Option<Self>, Self::Rejection> {
         let path = axum::extract::Path::<T>::from_request_parts(parts, state).await?;
         Ok(path.map(|x| Self(x.0)))
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::TypedPath;
+    use crate::{generate, openapi::Operation, OperationInput};
+    use schemars::{transform::Transform, JsonSchema};
+
+    /// Records how many times the generator's transforms have run over a schema.
+    #[derive(Debug, Clone)]
+    struct CountPasses;
+
+    impl Transform for CountPasses {
+        fn transform(&mut self, schema: &mut schemars::Schema) {
+            schemars::transform::transform_subschemas(self, schema);
+            let passes = schema
+                .get("x-passes")
+                .and_then(serde_json::Value::as_u64)
+                .unwrap_or(0);
+            schema.insert("x-passes".to_owned(), (passes + 1).into());
+        }
+    }
+
+    #[derive(JsonSchema)]
+    #[allow(dead_code)]
+    struct UserPath {
+        id: String,
+    }
+
+    impl std::fmt::Display for UserPath {
+        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+            f.write_str("/users/x")
+        }
+    }
+
+    impl axum_extra::routing::TypedPath for UserPath {
+        const PATH: &'static str = "/users/{id}";
+    }
+
+    /// `TypedPath` reads the operation description out of `root_schema_for`,
+    /// which has already applied the generator's transforms. The parameters must
+    /// not be taken from that same schema, or every transform runs twice.
+    ///
+    /// Transforms are not required to be idempotent, so a second pass can
+    /// corrupt the parameter schemas rather than merely repeat work.
+    #[test]
+    fn typed_path_parameters_are_transformed_exactly_once() {
+        let mut operation = Operation::default();
+
+        generate::in_context(|ctx| {
+            let settings = schemars::generate::SchemaSettings::draft07().with(|s| {
+                s.inline_subschemas = false;
+                s.definitions_path = "#/components/schemas/".into();
+                s.transforms = vec![Box::new(CountPasses)];
+            });
+            ctx.schema = schemars::SchemaGenerator::new(settings);
+
+            <TypedPath<UserPath> as OperationInput>::operation_input(ctx, &mut operation);
+        });
+        generate::reset_context();
+
+        let param = operation
+            .parameters
+            .first()
+            .expect("one path parameter")
+            .as_item()
+            .expect("inline parameter");
+        let crate::openapi::ParameterSchemaOrContent::Schema(schema) =
+            &param.parameter_data_ref().format
+        else {
+            panic!("expected a schema, not content");
+        };
+
+        assert_eq!(
+            schema.json_schema.get("x-passes"),
+            Some(&serde_json::json!(1)),
+            "transforms should run exactly once, got {:?}",
+            schema.json_schema
+        );
     }
 }

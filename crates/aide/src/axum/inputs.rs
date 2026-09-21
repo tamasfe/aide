@@ -39,7 +39,8 @@ where
     T: axum_extra::headers::Header,
 {
     fn operation_input(ctx: &mut crate::generate::GenContext, operation: &mut Operation) {
-        let s = ctx.schema.subschema_for::<String>();
+        let mut s = ctx.schema.subschema_for::<String>();
+        ctx.apply_transforms(&mut s);
         add_parameters(
             ctx,
             operation,
@@ -72,17 +73,19 @@ fn operation_input_json<T: JsonSchema>(
     ctx: &mut crate::generate::GenContext,
     operation: &mut Operation,
 ) {
-    let json_schema = ctx.schema.subschema_for::<T>();
-    let resolved_schema = ctx.resolve_schema(&json_schema);
+    let mut json_schema = ctx.schema.subschema_for::<T>();
+    let description = ctx
+        .resolve_schema(&json_schema)
+        .get("description")
+        .and_then(|d| d.as_str())
+        .map(String::from);
+    ctx.apply_transforms(&mut json_schema);
 
     set_body(
         ctx,
         operation,
         RequestBody {
-            description: resolved_schema
-                .get("description")
-                .and_then(|d| d.as_str())
-                .map(String::from),
+            description,
             content: IndexMap::from_iter([(
                 "application/json".into(),
                 MediaType {
@@ -178,17 +181,19 @@ where
     T: JsonSchema,
 {
     fn operation_input(ctx: &mut crate::generate::GenContext, operation: &mut Operation) {
-        let schema = ctx.schema.subschema_for::<T>();
-        let resolved_schema = ctx.resolve_schema(&schema);
+        let mut schema = ctx.schema.subschema_for::<T>();
+        let description = ctx
+            .resolve_schema(&schema)
+            .get("description")
+            .and_then(|d| d.as_str())
+            .map(String::from);
+        ctx.apply_transforms(&mut schema);
 
         set_body(
             ctx,
             operation,
             RequestBody {
-                description: resolved_schema
-                    .get("description")
-                    .and_then(|d| d.as_str())
-                    .map(String::from),
+                description,
                 content: IndexMap::from_iter([(
                     "application/x-www-form-urlencoded".into(),
                     MediaType {
@@ -412,17 +417,19 @@ where
     T: JsonSchema,
 {
     fn operation_input(ctx: &mut crate::generate::GenContext, operation: &mut Operation) {
-        let schema = ctx.schema.subschema_for::<T>();
-        let resolved_schema = ctx.resolve_schema(&schema);
+        let mut schema = ctx.schema.subschema_for::<T>();
+        let description = ctx
+            .resolve_schema(&schema)
+            .get("description")
+            .and_then(|d| d.as_str())
+            .map(String::from);
+        ctx.apply_transforms(&mut schema);
 
         set_body(
             ctx,
             operation,
             RequestBody {
-                description: resolved_schema
-                    .get("description")
-                    .and_then(|d| d.as_str())
-                    .map(String::from),
+                description,
                 content: IndexMap::from_iter([(
                     "application/x-www-form-urlencoded".into(),
                     MediaType {
