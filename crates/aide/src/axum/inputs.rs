@@ -20,6 +20,9 @@ use crate::{
     operation::{parameters_from_schema, OperationInput, ParamLocation},
 };
 
+#[cfg(feature = "axum")]
+pub(crate) const PATH_INPUT_SCHEMA_EXTENSION: &str = "x-aide-axum-path-input-schema";
+
 impl<T> OperationInput for Extension<T> {}
 impl<T> OperationInput for State<T> {}
 
@@ -28,10 +31,11 @@ impl OperationInput for RawQuery {}
 
 #[cfg(feature = "axum-tokio")]
 impl<T> OperationInput for axum::extract::ConnectInfo<T> {}
-#[cfg(feature = "axum-matched-path")]
-impl OperationInput for axum::extract::MatchedPath {}
 #[cfg(feature = "axum-original-uri")]
 impl OperationInput for axum::extract::OriginalUri {}
+
+#[cfg(feature = "axum-matched-path")]
+impl OperationInput for axum::extract::MatchedPath {}
 
 #[cfg(feature = "axum-extra-headers")]
 impl<T> OperationInput for axum_extra::typed_header::TypedHeader<T>
@@ -218,6 +222,11 @@ where
 {
     fn operation_input(ctx: &mut crate::generate::GenContext, operation: &mut Operation) {
         let schema = ctx.schema.subschema_for::<T>();
+        if let Ok(schema_value) = serde_json::to_value(&schema) {
+            operation
+                .extensions
+                .insert(PATH_INPUT_SCHEMA_EXTENSION.to_string(), schema_value);
+        }
         let params = parameters_from_schema(ctx, schema, ParamLocation::Path);
         add_parameters(ctx, operation, params);
     }

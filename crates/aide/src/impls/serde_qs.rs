@@ -6,7 +6,6 @@ use crate::{
     OperationInput,
 };
 
-#[cfg(feature = "axum")]
 impl<T> OperationInput for serde_qs::axum::QsQuery<T>
 where
     T: JsonSchema,
