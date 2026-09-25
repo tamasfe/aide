@@ -259,7 +259,7 @@ impl OperationOutput for Redirect {
 #[cfg(feature = "axum-extra")]
 #[allow(unused_imports)]
 mod extra {
-    use axum_extra::{extract, response};
+    use axum_extra::{either, extract, response};
 
     use super::*;
     use crate::{
@@ -269,6 +269,34 @@ mod extra {
         },
         operation::OperationOutput,
     };
+
+    macro_rules! impl_either {
+        ($ty:ident, $($e:ident),*) => {
+            impl<$($e),*> OperationOutput for either::$ty<$($e),*>
+            where
+                $($e: OperationOutput),*
+            {
+                type Inner = Self;
+
+                fn inferred_responses(
+                    ctx: &mut GenContext,
+                    operation: &mut Operation,
+                ) -> Vec<(Option<StatusCode>, Response)> {
+                    let mut responses = Vec::new();
+                    $(responses.extend($e::inferred_responses(ctx, operation));)*
+                    responses
+                }
+            }
+        }
+    }
+
+    impl_either!(Either, E1, E2);
+    impl_either!(Either3, E1, E2, E3);
+    impl_either!(Either4, E1, E2, E3, E4);
+    impl_either!(Either5, E1, E2, E3, E4, E5);
+    impl_either!(Either6, E1, E2, E3, E4, E5, E6);
+    impl_either!(Either7, E1, E2, E3, E4, E5, E6, E7);
+    impl_either!(Either8, E1, E2, E3, E4, E5, E6, E7, E8);
 
     #[cfg(feature = "axum-extra-cookie")]
     impl OperationOutput for extract::CookieJar {
