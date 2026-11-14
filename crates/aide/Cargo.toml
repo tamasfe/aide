@@ -38,6 +38,28 @@ serde_qs = ["dep:serde_qs"]
 
 axum = ["dep:axum", "bytes", "http", "dep:tower-layer", "dep:tower-service", "serde_qs?/axum"]
 axum-form = ["axum", "axum/form"]
+axum-full = [
+  "axum",
+  "axum-extra",
+  "axum-extra-attachment",
+  "axum-extra-cached",
+  "axum-extra-cookie",
+  "axum-extra-cookie-private",
+  "axum-extra-form",
+  "axum-extra-headers",
+  "axum-extra-json-deserializer",
+  "axum-extra-query",
+  "axum-extra-routing",
+  "axum-extra-typed-routing",
+  "axum-extra-with-rejection",
+  "axum-form",
+  "axum-json",
+  "axum-matched-path",
+  "axum-multipart",
+  "axum-original-uri",
+  "axum-query",
+  "axum-tokio",
+]
 axum-json = ["axum", "axum/json"]
 axum-matched-path = ["axum", "axum/matched-path"]
 axum-multipart = ["axum", "axum/multipart"]
