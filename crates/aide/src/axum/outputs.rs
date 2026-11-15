@@ -6,7 +6,7 @@ use crate::{
 use axum::extract::rejection::FormRejection;
 #[cfg(feature = "axum-json")]
 use axum::extract::rejection::JsonRejection;
-use axum::response::{Html, NoContent, Redirect};
+use axum::response::{ErrorResponse, Html, NoContent, Redirect};
 use indexmap::IndexMap;
 use schemars::json_schema;
 #[cfg(any(feature = "axum-form", feature = "axum-json"))]
@@ -348,6 +348,35 @@ mod extra {
             Self::operation_response(ctx, operation)
                 .map(|r| vec![(Some(StatusCode::Code(200)), r)])
                 .unwrap_or_default()
+        }
+    }
+}
+
+impl OperationOutput for ErrorResponse {
+    type Inner = Self;
+
+    fn operation_response(_ctx: &mut GenContext, _operation: &mut Operation) -> Option<Response> {
+        Some(Response {
+            description: "An error response".to_string(),
+            headers: Default::default(),
+            content: Default::default(),
+            links: Default::default(),
+            extensions: Default::default(),
+        })
+    }
+
+    fn inferred_responses(
+        ctx: &mut GenContext,
+        operation: &mut Operation,
+    ) -> Vec<(Option<StatusCode>, Response)> {
+        match Self::operation_response(ctx, operation) {
+            Some(response) => {
+                vec![
+                    (Some(StatusCode::Range(4)), response.clone()),
+                    (Some(StatusCode::Range(5)), response.clone()),
+                ]
+            }
+            None => Vec::new(),
         }
     }
 }
