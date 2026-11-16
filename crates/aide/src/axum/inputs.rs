@@ -458,3 +458,40 @@ where
         add_parameters(ctx, operation, params);
     }
 }
+
+#[cfg(feature = "axum-extra")]
+mod extra {
+    use axum_extra::either;
+
+    use super::*;
+
+    macro_rules! impl_either {
+        ($ty:ident, $($e:ident),*) => {
+            impl<$($e),*> OperationInput for either::$ty<$($e),*>
+            where
+                $($e: OperationInput),*
+            {
+                fn operation_input(ctx: &mut crate::generate::GenContext, operation: &mut Operation) {
+                    $($e::operation_input(ctx, operation);)*
+                }
+
+                fn inferred_early_responses(
+                    ctx: &mut crate::generate::GenContext,
+                    operation: &mut Operation,
+                ) -> Vec<(Option<StatusCode>, Response)> {
+                    let mut responses = Vec::new();
+                    $(responses.extend($e::inferred_early_responses(ctx, operation));)*
+                    responses
+                }
+            }
+        }
+    }
+
+    impl_either!(Either, E1, E2);
+    impl_either!(Either3, E1, E2, E3);
+    impl_either!(Either4, E1, E2, E3, E4);
+    impl_either!(Either5, E1, E2, E3, E4, E5);
+    impl_either!(Either6, E1, E2, E3, E4, E5, E6);
+    impl_either!(Either7, E1, E2, E3, E4, E5, E6, E7);
+    impl_either!(Either8, E1, E2, E3, E4, E5, E6, E7, E8);
+}
