@@ -212,14 +212,34 @@ where
     }
 }
 
+/// Internal marker carrying scalar/tuple `Path<T>` schemas to the route
+/// step, where placeholder names are known. Drained before emit.
+pub(crate) const PENDING_PATH_PARAMS_EXT: &str = "x-aide-pending-path-params";
+
 impl<T> OperationInput for Path<T>
 where
     T: JsonSchema,
 {
     fn operation_input(ctx: &mut crate::generate::GenContext, operation: &mut Operation) {
         let schema = ctx.schema.subschema_for::<T>();
-        let params = parameters_from_schema(ctx, schema, ParamLocation::Path);
-        add_parameters(ctx, operation, params);
+        let resolved = ctx.resolve_schema(&schema);
+
+        // An object schema is the struct form: walk its fields as named params.
+        if resolved.get("properties").is_some() {
+            let params = parameters_from_schema(ctx, schema, ParamLocation::Path);
+            add_parameters(ctx, operation, params);
+            return;
+        }
+
+        let pending = match resolved.get("prefixItems") {
+            Some(serde_json::Value::Array(items)) => items.clone(),
+            _ => vec![resolved.clone().to_value()],
+        };
+
+        operation.extensions.insert(
+            PENDING_PATH_PARAMS_EXT.to_string(),
+            serde_json::Value::Array(pending),
+        );
     }
 }
 

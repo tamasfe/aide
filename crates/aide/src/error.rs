@@ -27,6 +27,8 @@ pub enum Error {
     DuplicateRequestBody,
     #[error(r#"duplicate parameter "{0}" for the operation"#)]
     DuplicateParameter(String),
+    #[error(r#"path "{0}" has {1} placeholder(s), but the `Path` extractor has arity {2}"#)]
+    PathPlaceholderArityMismatch(String, usize, usize),
     #[error(r#"transformations do not support references"#)]
     UnexpectedReference,
     #[error("did not apply inferred response because a response for status {0} already exists")]
