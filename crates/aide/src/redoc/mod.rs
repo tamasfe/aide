@@ -182,6 +182,7 @@ mod axum_impl {
     }
 }
 
+#[cfg(feature = "axum")]
 fn get_static_str(string: String) -> &'static str {
     let static_str = Box::leak(string.into_boxed_str());
     static_str
