@@ -452,21 +452,28 @@ where
                 return false;
             }
 
+            // Response schemas reference the private output definitions path,
+            // and components split by contract are renamed: rewrite every
+            // `$ref` in the document before the components are added.
+            let (definitions, renames) = ctx.take_merged_definitions();
+            // Schemas live only in paths, webhooks and components.
+            renames.apply(&mut api.paths);
+            renames.apply(&mut api.webhooks);
+            renames.apply(&mut api.components);
+
             let components = api.components.get_or_insert_with(Default::default);
             components
                 .schemas
-                .extend(ctx.schema.take_definitions(true).into_iter().map(
-                    |(name, json_schema)| {
-                        (
-                            name,
-                            SchemaObject {
-                                json_schema: json_schema.try_into().expect("Invalid schema"),
-                                example: None,
-                                external_docs: None,
-                            },
-                        )
-                    },
-                ));
+                .extend(definitions.into_iter().map(|(name, json_schema)| {
+                    (
+                        name,
+                        SchemaObject {
+                            json_schema: json_schema.try_into().expect("Invalid schema"),
+                            example: None,
+                            external_docs: None,
+                        },
+                    )
+                }));
 
             true
         });
@@ -885,6 +892,10 @@ where
     O: OperationOutput,
 {
 }
+
+#[cfg(all(test, feature = "axum-json", feature = "axum-query"))]
+#[allow(clippy::unused_async)]
+mod contract_tests;
 
 #[cfg(test)]
 #[allow(clippy::unused_async)]

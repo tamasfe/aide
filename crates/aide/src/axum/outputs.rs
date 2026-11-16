@@ -37,14 +37,14 @@ where
     type Inner = T;
 
     fn operation_response(ctx: &mut GenContext, _operation: &mut Operation) -> Option<Response> {
-        let mut json_schema = ctx.schema.subschema_for::<T>();
+        let mut json_schema = ctx.output_schema.subschema_for::<T>();
         let description = ctx
-            .resolve_schema(&json_schema)
+            .resolve_output_schema(&json_schema)
             .get("description")
             .and_then(|d| d.as_str())
             .map(String::from)
             .unwrap_or_default();
-        ctx.apply_transforms(&mut json_schema);
+        ctx.apply_output_transforms(&mut json_schema);
 
         Some(Response {
             description,
@@ -93,14 +93,14 @@ where
     type Inner = T;
 
     fn operation_response(ctx: &mut GenContext, _operation: &mut Operation) -> Option<Response> {
-        let mut json_schema = ctx.schema.subschema_for::<T>();
+        let mut json_schema = ctx.output_schema.subschema_for::<T>();
         let description = ctx
-            .resolve_schema(&json_schema)
+            .resolve_output_schema(&json_schema)
             .get("description")
             .and_then(|d| d.as_str())
             .map(String::from)
             .unwrap_or_default();
-        ctx.apply_transforms(&mut json_schema);
+        ctx.apply_output_transforms(&mut json_schema);
 
         Some(Response {
             description,
