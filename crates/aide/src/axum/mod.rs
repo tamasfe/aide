@@ -162,6 +162,21 @@
 //! // ...
 //! ```
 //!
+//! # Multipart/form-data
+//!
+//! Aide has built-in support for `axum::extract::Multipart` via the `axum-multipart`
+//! feature, but it only generates a generic schema without typed fields.
+//!
+//! For **typed multipart/form-data** with proper per-field OpenAPI schemas, you can either:
+//!
+//! - Use the community-maintained [`aide-axum-typed-multipart-2`](https://crates.io/crates/aide-axum-typed-multipart-2)
+//!   crate, which provides drop-in replacements for `axum_typed_multipart`'s
+//!   `TypedMultipart` and `FieldData` that implement [`OperationInput`](crate::OperationInput)
+//!   and `JsonSchema` respectively.
+//!
+//! - Implement [`OperationInput`](crate::OperationInput) manually with a newtype wrapper.
+//!   See the `example-axum-multipart` example for a complete working setup.
+//!
 //! # Composability
 //!
 //! Just like in `axum`, nesting and merging routers is possible,
